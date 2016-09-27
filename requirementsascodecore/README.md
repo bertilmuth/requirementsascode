@@ -1,12 +1,3 @@
-# requirementsascode
-Living specification of application requirements in code, for long term changeability.
-
-Note that as this is an experimental project, the API is likely to change.
-
-Subprojects:
-* requirementsascodecore: the core library to be used, with no third-party dependencies.
-* requirementsascodesamples: sample projects illustrating the use of requirementsascodecore.
-
 # Functional requirements as code
 With requirementsascode, you can specify your application's functional requirements in the code itself,
 in a form similar to use case specifications.
