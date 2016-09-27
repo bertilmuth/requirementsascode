@@ -49,4 +49,4 @@ useCaseModelRun.reactTo(enterFirstNameEvent());
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java) project.
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java).
