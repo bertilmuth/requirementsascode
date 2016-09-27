@@ -7,6 +7,7 @@ Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
 * [requirementsascodesamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples): sample projects illustrating the use of requirementsascodecore.
 
+# Benefits
 With requirementsascode, you can specify your application's functional requirements in the code itself,
 in a form similar to use case specifications.
 
