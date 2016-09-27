@@ -19,17 +19,34 @@ Benefits of this approach include:
 In the future it will also be possible to generate always up-to-date documentation from the code, 
 that documents how the application really works.
 
-# Hello World Example
+# Hello World Example - System prints "Hello, User."
 ``` java
 UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
 UseCaseModel useCaseModel = useCaseModelRun.getModel();
-		
+
 Actor user = useCaseModel.newActor("User");
-		
+
 useCaseModel.newUseCase("Get greeted")
-  .basicFlow()
-    .newStep("User gets greeted by the system.")
-      .system(() -> System.out.println("Hello, user."));
-		
+	.basicFlow()
+		.newStep("System greets user.")
+			.system(() -> System.out.println("Hello, User."));
+
 useCaseModelRun.as(user);
 ```
+
+# Hello World Example - User enters first name, system prints it.
+``` java
+// Seup useCaseModelRun, useCaseModel and actor same as before 
+
+useCaseModel.newUseCase("Get greeted")
+	.basicFlow()
+		.newStep("User enters first name. System greets user with first name.")
+			.actor(user, EnterFirstName.class)
+			.system(greetUser());
+
+useCaseModelRun.as(user);
+useCaseModelRun.reactTo(enterFirstNameEvent());
+
+// Implementations of the methods ...
+```
+For the full source code, have a look at the [helloworld](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java) project.

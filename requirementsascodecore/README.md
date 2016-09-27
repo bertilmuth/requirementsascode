@@ -21,15 +21,15 @@ that documents how the application really works.
 
 # Hello World Example
 ``` java
-UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
-UseCaseModel useCaseModel = useCaseModelRun.getModel();
+	UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
+	UseCaseModel useCaseModel = useCaseModelRun.getModel();
+
+	Actor user = useCaseModel.newActor("User");
+
+	useCaseModel.newUseCase("Get greeted")
+		.basicFlow()
+			.newStep("System greets user.")
+				.system(() -> System.out.println("Hello, user."));
 		
-Actor user = useCaseModel.newActor("User");
-		
-useCaseModel.newUseCase("Get greeted")
-  .basicFlow()
-    .newStep("User gets greeted by the system.")
-      .system(() -> System.out.println("Hello, user."));
-		
-useCaseModelRun.as(user);
+	useCaseModelRun.as(user);
 ```

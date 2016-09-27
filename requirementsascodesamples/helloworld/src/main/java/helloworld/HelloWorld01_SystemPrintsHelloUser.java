@@ -4,7 +4,7 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRun;
 
-public class HelloWorld {
+public class HelloWorld01_SystemPrintsHelloUser {
 	public static void main(String[] args) {
 		UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
 		UseCaseModel useCaseModel = useCaseModelRun.getModel();
@@ -13,8 +13,8 @@ public class HelloWorld {
 		
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
-				.newStep("User gets greeted by the system.")
-					.system(() -> System.out.println("Hello, user."));
+				.newStep("System greets user.")
+					.system(() -> System.out.println("Hello, User."));
 		
 		useCaseModelRun.as(user);
 	}
