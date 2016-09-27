@@ -49,6 +49,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
 	}
+	
 	@Test
 	public void shouldPrintTextTwice() {
 		useCaseModel

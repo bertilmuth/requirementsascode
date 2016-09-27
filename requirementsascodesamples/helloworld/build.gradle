@@ -10,7 +10,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Requirements as Code - Shopping Application JavaFX',
+        attributes 'Implementation-Title': 'Requirements as Code - Hello World',
                    'Implementation-Version': version
     }
 }
