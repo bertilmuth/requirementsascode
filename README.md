@@ -36,7 +36,7 @@ useCaseModelRun.as(user);
 
 # Hello World Example - User enters name, system prints it
 ``` java
-// Setup useCaseModelRun, useCaseModel and actor same as before 
+// Setup useCaseModelRun, useCaseModel and user same as before 
 
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
@@ -49,4 +49,4 @@ useCaseModelRun.reactTo(enterFirstNameEvent());
 
 // Implementations of the methods ...
 ```
-For the full source code, have a look at the [helloworld](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java) project.
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java) project.
