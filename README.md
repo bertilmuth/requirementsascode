@@ -36,7 +36,7 @@ useCaseModelRun.as(user);
 
 # Hello World Example - User enters name, system prints it
 ``` java
-// Seup useCaseModelRun, useCaseModel and actor same as before 
+// Setup useCaseModelRun, useCaseModel and actor same as before 
 
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
