@@ -1,0 +1,19 @@
+version = '0.1'
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Requirements as Code - Core',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+  	testCompile 'junit:junit:4.12'
+}

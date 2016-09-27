@@ -1,0 +1,26 @@
+version = '0.1'
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Requirements as Code - Samples',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+	compile 'com.dooapp.fxform2:core:8.0.12' 
+	compile project(':requirementsascodecore')
+  	testCompile 'junit:junit:4.12'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.13'
+}
