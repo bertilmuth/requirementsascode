@@ -5,9 +5,8 @@ Note that as this is an experimental project, the API is likely to change.
 
 Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
-* [requirementsascodesamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples): sample project illustrating the use of requirementsascodecore.
+* [requirementsascodesamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples): sample projects illustrating the use of requirementsascodecore.
 
-# Functional requirements as code
 With requirementsascode, you can specify your application's functional requirements in the code itself,
 in a form similar to use case specifications.
 
@@ -19,7 +18,7 @@ Benefits of this approach include:
 In the future it will also be possible to generate always up-to-date documentation from the code, 
 that documents how the application really works.
 
-## Hello World Example
+# Hello World Example
 ``` java
 UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
 UseCaseModel useCaseModel = useCaseModelRun.getModel();
