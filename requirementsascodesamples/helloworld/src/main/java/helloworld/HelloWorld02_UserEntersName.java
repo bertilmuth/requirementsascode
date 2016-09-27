@@ -25,11 +25,16 @@ public class HelloWorld02_UserEntersName {
 	}
 	
 	private static EnterFirstName enterFirstNameEvent() {
+		String firstName = enterFirstNameInConsole();
+		return new EnterFirstName(firstName);
+	}
+
+	private static String enterFirstNameInConsole() {
 		System.out.print("Please enter your first name: ");
 		Scanner scanner = new Scanner(System.in);
 		String firstName = scanner.next();
 		scanner.close();
-		return new EnterFirstName(firstName);
+		return firstName;
 	}
 	
 	private static Consumer<EnterFirstName> greetUser() {
