@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.UseCaseFlow.ConditionalPart;
 import org.requirementsascode.event.AutonomousSystemReactionEvent;
 
 public class UseCaseStep extends UseCaseModelElement{
@@ -128,10 +127,10 @@ public class UseCaseStep extends UseCaseModelElement{
 			return newUseCase;
 		}
 		
-		public ConditionalPart newFlow(String flowName) {
+		public UseCaseFlow newFlow(String flowName) {
 			Objects.requireNonNull(flowName);
 
-			ConditionalPart newFlow = getUseCase().newFlow(flowName);
+			UseCaseFlow newFlow = getUseCase().newFlow(flowName);
 			return newFlow;
 		}
 

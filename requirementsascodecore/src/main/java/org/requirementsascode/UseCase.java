@@ -8,14 +8,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.UseCaseFlow.ConditionalPart;
 import org.requirementsascode.exception.ElementAlreadyExistsException;
 import org.requirementsascode.exception.NoSuchElementExistsException;
 
 public class UseCase extends UseCaseModelElement{
 	private List<UseCaseFlow> flows;
 	private LinkedList<UseCaseStep> steps;
-	private ConditionalPart basicFlow;
+	private UseCaseFlow basicFlow;
 
 	UseCase(String name, UseCaseModel useCaseModel) {
 		super(name, useCaseModel);
@@ -24,11 +23,11 @@ public class UseCase extends UseCaseModelElement{
 		this.basicFlow = newFlow("Basic Flow");
 	} 
 
-	public ConditionalPart basicFlow() {
+	public UseCaseFlow basicFlow() {
 		return basicFlow;
 	}
 	
-	public ConditionalPart newFlow(String flowName) {
+	public UseCaseFlow newFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
 		if(hasFlow(flowName)){
@@ -36,7 +35,7 @@ public class UseCase extends UseCaseModelElement{
 		}
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
 		flows.add(flow);
-		return flow.newConditionalPart();
+		return flow;
 	}
 	
 	public UseCaseFlow getFlow(String flowName) {
