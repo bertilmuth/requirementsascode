@@ -22,6 +22,8 @@ public class Actor extends UseCaseModelElement{
 	}
 
 	public List<UseCaseStep> getUseCaseSteps(UseCase useCase) {
+		Objects.requireNonNull(useCase);
+
 		List<UseCaseStep> steps = getModifiableUseCaseStepsList(useCase);
 		return Collections.unmodifiableList(steps);
 	}
@@ -35,6 +37,8 @@ public class Actor extends UseCaseModelElement{
 	}
 
 	private List<UseCaseStep> getModifiableUseCaseStepsList(UseCase useCase) {
+		Objects.requireNonNull(useCase);
+		
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}
