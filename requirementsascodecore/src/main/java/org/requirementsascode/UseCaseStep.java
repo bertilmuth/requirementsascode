@@ -147,6 +147,8 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		public SystemPart<T> repeatWhile(Predicate<UseCaseModelRun> condition) {
+			Objects.requireNonNull(condition);
+			
 			String thisStepName = getName();
 			String newRepeatStepName = uniqueRepeatStepName();
 			
@@ -183,7 +185,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 	}
 	
-	protected String uniqueRepeatStepName() {
+	private String uniqueRepeatStepName() {
 		return uniqueStepName(getName(), "REPEAT");
 	}
 	

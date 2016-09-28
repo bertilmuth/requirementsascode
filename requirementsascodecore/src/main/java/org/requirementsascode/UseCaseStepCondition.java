@@ -7,6 +7,8 @@ public class UseCaseStepCondition {
 	private UseCaseStepCondition(){};
 	
 	public static Predicate<UseCaseModelRun> isSystemInDifferentFlowThan(UseCaseFlow useCaseFlow) {
+		Objects.requireNonNull(useCaseFlow);
+		
 		Predicate<UseCaseModelRun> isSystemInDifferentFlow = 
 			useCaseModelRun -> !useCaseFlow.equals(useCaseModelRun.getLatestFlow());
 		return isSystemInDifferentFlow;
@@ -16,7 +18,7 @@ public class UseCaseStepCondition {
 		return afterStep(null);
 	}
 	
-	public static Predicate<UseCaseModelRun> afterStep(UseCaseStep afterThatStep) {
+	public static Predicate<UseCaseModelRun> afterStep(UseCaseStep afterThatStep) {		
 		return useCaseModelRun -> {
 			UseCaseStep stepRunLastBySystem = useCaseModelRun.getLatestStep();
 			boolean isSystemAtRightStep = Objects.equals(stepRunLastBySystem, afterThatStep);
