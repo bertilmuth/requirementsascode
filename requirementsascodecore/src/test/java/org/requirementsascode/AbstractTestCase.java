@@ -96,7 +96,6 @@ public abstract class AbstractTestCase {
 	protected Consumer<ArrayIndexOutOfBoundsException> reactsToArrayIndexOutOfBoundsException() {
 		return e -> {
 			runStepNames.add(getLatestStepName());
-			e.printStackTrace();
 		};
 	}
 	

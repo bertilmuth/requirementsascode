@@ -35,10 +35,8 @@ public class UseCaseModelRun {
 		Objects.requireNonNull(actor);
 		
 		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		
-		actorsRunWith = Arrays.asList(actor, autonomousSystemActor);	
-		
+		actorsRunWith = Arrays.asList(actor, autonomousSystemActor);		
 		triggerAutonomousSystemReaction();
-		
 		return this;
 	}
 	void triggerAutonomousSystemReaction() {
@@ -58,9 +56,7 @@ public class UseCaseModelRun {
 				
 		Class<? extends Object> currentEventClass = event.getClass();
 		Set<UseCaseStep> reactingUseCaseSteps = getStepsEnabledFor(currentEventClass);
-		 
 		UseCaseStep latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
-		
 		return latestStepRun;
 	}
 
@@ -81,7 +77,7 @@ public class UseCaseModelRun {
 		return enabledSteps;
 	}
 
-	private <T> UseCaseStep triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
+	protected <T> UseCaseStep triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
 		UseCaseStep useCaseStep = null;
 
 		if(useCaseSteps.size() == 1){
@@ -94,10 +90,16 @@ public class UseCaseModelRun {
 		
 		return useCaseStep;
 	}
+	protected <T> String getMoreThanOneStepCouldReactExceptionMessage(Collection<UseCaseStep> useCaseSteps) {
+		String message = "System could react to more than one step: ";
+		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
+				.collect(Collectors.joining(",", message, ""));
+		return useCaseStepsClassNames;
+	}
 	
-	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
+	protected <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
 		if(useCaseStep.getSystemPart() == null){
-			String message = "Use Case Step \"" + useCaseStep + "\" has no defined system part! Please have a look and update your Use Case Model for this step!";
+			String message = getMissingSystemPartExceptionMessage(useCaseStep);
 			throw new MissingUseCaseStepPartException(message);
 		}
 		
@@ -118,30 +120,31 @@ public class UseCaseModelRun {
 
 		return useCaseStep;
 	}
+	protected String getMissingSystemPartExceptionMessage(UseCaseStep useCaseStep) {
+		String message = "Use Case Step \"" + useCaseStep + "\" has no defined system part! Please have a look and update your Use Case Model for this step!";
+		return message;
+	}
 	
-	private <T> void triggerSystemReaction(T event, Consumer<T> systemReaction) {
+	protected <T> void triggerSystemReaction(T event, Consumer<T> systemReaction) {
 		systemReaction.accept(event);
 	}
 
-	private void handleException(Exception e) {
+	protected void handleException(Exception e) {
 		reactTo(e);
-	}
-
-	private <T> String getMoreThanOneStepCouldReactExceptionMessage(Collection<UseCaseStep> useCaseSteps) {
-		String message = "System could react to more than one step: ";
-		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
-				.collect(Collectors.joining(","));
-		return message + useCaseStepsClassNames;
 	}
 
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
 		ActorPart<?> actorPart = useCaseStep.getActorPart();
 		if(actorPart == null){
-			String message = "Use Case Step \"" + useCaseStep + "\" has no defined actor part! Please have a look and update your Use Case Model for this step!";
+			String message = getMissingActorPartExceptionMessage(useCaseStep);
 			throw(new MissingUseCaseStepPartException(message));
 		}
 		
 		return actorsRunWith.contains(actorPart.getActor());
+	}
+	protected String getMissingActorPartExceptionMessage(UseCaseStep useCaseStep) {
+		String message = "Use Case Step \"" + useCaseStep + "\" has no defined actor part! Please have a look and update your Use Case Model for this step!";
+		return message;
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
