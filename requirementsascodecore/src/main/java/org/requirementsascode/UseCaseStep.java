@@ -1,10 +1,12 @@
 package org.requirementsascode;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-
+import java.util.stream.Stream;
 import org.requirementsascode.event.AutonomousSystemReactionEvent;
+import static org.requirementsascode.UseCaseStepCondition.*;
 
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
@@ -75,6 +77,9 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	public Predicate<UseCaseModelRun> getPredicate() {
+		if(predicate == null){
+			predicate = afterPreviousStepWhenNoOtherStepIsEnabled(previousStep, this);
+		}
 		return predicate;
 	} 
 	
@@ -139,6 +144,7 @@ public class UseCaseStep extends UseCaseModelElement{
 
 			UseCaseStep newStep = 
 				getUseCase().newStep(stepName, getUseCaseFlow(), UseCaseStep.this, null);
+			
 			return newStep;
 		}
 		
@@ -179,6 +185,25 @@ public class UseCaseStep extends UseCaseModelElement{
 					getUseCaseFlow().jumpTo(null);
 				});
 		}
+	}
+	
+	private Predicate<UseCaseModelRun> afterPreviousStepWhenNoOtherStepIsEnabled(UseCaseStep previousStep, UseCaseStep thisStep) {
+		return afterStep(previousStep).and(noOtherStepIsEnabledThan(thisStep));
+	}
+	
+	private Predicate<UseCaseModelRun> noOtherStepIsEnabledThan(UseCaseStep theStep) {
+		return run -> {
+			Class<?> currentEventClass = theStep.getActorPart().getEventClass();
+			
+			UseCaseModel useCaseModel = theStep.getModel();
+			
+			Stream<UseCaseStep> otherStepsStream = 
+				useCaseModel.getUseCaseSteps().stream()
+					.filter(step -> !step.equals(theStep));
+			
+			Set<UseCaseStep> enabledOtherSteps = run.getEnabledStepSubset(currentEventClass, otherStepsStream);
+			return enabledOtherSteps.size() == 0;
+		};
 	}
 	
 	private String uniqueRepeatStepName() {

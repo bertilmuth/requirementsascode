@@ -68,7 +68,7 @@ public class UseCaseModelRun {
 		return enabledSteps;
 	}
 	
-	private Set<UseCaseStep> getEnabledStepSubset(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
+	Set<UseCaseStep> getEnabledStepSubset(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> enabledSteps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
 			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
@@ -172,8 +172,8 @@ public class UseCaseModelRun {
 		Predicate<UseCaseModelRun> predicate = useCaseStep.getPredicate();
 		
 		if(predicate == null){
-			predicate = 
-				afterPreviousStepWhenNoOtherStepIsEnabled(useCaseStep);
+			//predicate = 
+				//afterPreviousStepWhenNoOtherStepIsEnabled(useCaseStep);
 		}	
 
 		boolean result = predicate.test(this);
@@ -194,6 +194,8 @@ public class UseCaseModelRun {
 	private Predicate<UseCaseModelRun> noOtherStepIsEnabled(UseCaseStep thisStep) {
 		return run -> {
 			Class<?> currentEventClass = thisStep.getActorPart().getEventClass();
+			
+			UseCaseModel useCaseModel = thisStep.getModel();
 			
 			Stream<UseCaseStep> otherStepsStream = 
 				useCaseModel.getUseCaseSteps().stream()
