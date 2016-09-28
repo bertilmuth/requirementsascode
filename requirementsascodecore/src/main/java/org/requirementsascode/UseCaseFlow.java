@@ -63,10 +63,10 @@ public class UseCaseFlow extends UseCaseModelElement{
 
 
 		private ConditionalPart() {
-			stepPredicate = inDifferentFlow();
+			stepPredicate = isRunInDifferentFlow();
 		}
 
-		private Predicate<UseCaseModelRun> inDifferentFlow() {
+		private Predicate<UseCaseModelRun> isRunInDifferentFlow() {
 			Predicate<UseCaseModelRun> inDifferentFlowPredicate = 
 				isSystemInDifferentFlowThan(UseCaseFlow.this);
 			return inDifferentFlowPredicate;
@@ -81,7 +81,7 @@ public class UseCaseFlow extends UseCaseModelElement{
 		}
 		
 		public ConditionalPart atFirst() {
-			stepPredicate = inDifferentFlow().and(atFirstStep());
+			stepPredicate = isRunInDifferentFlow().and(atFirstStep());
 			completePredicate = stepPredicate;
 			return this;
 		}
@@ -90,7 +90,7 @@ public class UseCaseFlow extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 			
 			UseCaseStep useCaseStep = useCase.getStep(stepName);
-			stepPredicate = inDifferentFlow().and(afterStep(useCaseStep));
+			stepPredicate = isRunInDifferentFlow().and(afterStep(useCaseStep));
 			completePredicate = stepPredicate;
 
 			return this;
