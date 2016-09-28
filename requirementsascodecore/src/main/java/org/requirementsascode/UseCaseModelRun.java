@@ -152,6 +152,12 @@ public class UseCaseModelRun {
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	
+	private boolean isConditionFulfilled(UseCaseStep useCaseStep) {
+		Predicate<UseCaseModelRun> predicate = useCaseStep.getPredicate();
+		boolean result = predicate.test(this);
+		return result;
+	}
+	
 	public UseCaseStep getLatestStep() {
 		return latestStep;
 	}
@@ -166,43 +172,5 @@ public class UseCaseModelRun {
 	
 	public void setLatestFlow(UseCaseFlow latestFlow) {
 		this.latestFlow = latestFlow;
-	}
-	
-	private boolean isConditionFulfilled(UseCaseStep useCaseStep) {
-		Predicate<UseCaseModelRun> predicate = useCaseStep.getPredicate();
-		
-		if(predicate == null){
-			//predicate = 
-				//afterPreviousStepWhenNoOtherStepIsEnabled(useCaseStep);
-		}	
-
-		boolean result = predicate.test(this);
-		return result;
-	}
-	
-	private Predicate<UseCaseModelRun> afterPreviousStepWhenNoOtherStepIsEnabled(UseCaseStep useCaseStep) {
-		return afterPreviousStep(useCaseStep).and(noOtherStepIsEnabled(useCaseStep));
-	}
-
-	private Predicate<UseCaseModelRun> afterPreviousStep(UseCaseStep thisStep) {
-		return run -> {
-			UseCaseStep latestStep = run.getLatestStep();
-			return Objects.equals(thisStep.getPreviousStep(),latestStep);
-		};
-	}
-	
-	private Predicate<UseCaseModelRun> noOtherStepIsEnabled(UseCaseStep thisStep) {
-		return run -> {
-			Class<?> currentEventClass = thisStep.getActorPart().getEventClass();
-			
-			UseCaseModel useCaseModel = thisStep.getModel();
-			
-			Stream<UseCaseStep> otherStepsStream = 
-				useCaseModel.getUseCaseSteps().stream()
-					.filter(step -> !step.equals(thisStep));
-			
-			Set<UseCaseStep> enabledOtherSteps = getEnabledStepSubset(currentEventClass, otherStepsStream);
-			return enabledOtherSteps.size() == 0;
-		};
 	}
 }

@@ -17,7 +17,6 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 		Objects.requireNonNull(useCase);
 		this.useCase = useCase;
-		this.stepPredicate = isRunInDifferentFlow();
 	}
 
 	public UseCase getUseCase() {
@@ -64,17 +63,19 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 
 	public UseCaseFlow atFirst() {
-		stepPredicate = isRunInDifferentFlow().and(atFirstStep());
-		completePredicate = stepPredicate;
+		setCompleteStepPredicate(isRunInDifferentFlow().and(atFirstStep()));
 		return this;
+	}
+	private void setCompleteStepPredicate(Predicate<UseCaseModelRun> stepPredicate){
+		this.stepPredicate = stepPredicate;
+		this.completePredicate = stepPredicate;
 	}
 
 	public UseCaseFlow after(String stepName) {
 		Objects.requireNonNull(stepName);
 
 		UseCaseStep useCaseStep = useCase.getStep(stepName);
-		stepPredicate = isRunInDifferentFlow().and(afterStep(useCaseStep));
-		completePredicate = stepPredicate;
+		setCompleteStepPredicate(isRunInDifferentFlow().and(afterStep(useCaseStep)));
 
 		return this;
 	}
@@ -82,6 +83,9 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow when(Predicate<UseCaseModelRun> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
+		if(stepPredicate == null){
+			this.stepPredicate = isRunInDifferentFlow();
+		}
 		completePredicate = stepPredicate.and(whenPredicate);
 		return this;
 	}
