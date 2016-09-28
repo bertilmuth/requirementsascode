@@ -78,10 +78,28 @@ public class UseCaseStep extends UseCaseModelElement{
 	
 	public Predicate<UseCaseModelRun> getPredicate() {
 		if(predicate == null){
-			predicate = afterPreviousStepWhenNoOtherStepIsEnabled(previousStep, this);
+			predicate = afterPreviousStepWhenNoOtherStepIsEnabled();
 		}
 		return predicate;
 	} 
+	private Predicate<UseCaseModelRun> afterPreviousStepWhenNoOtherStepIsEnabled() {
+		return afterStep(previousStep).and(noOtherStepIsEnabledThan(this));
+	}
+	
+	private Predicate<UseCaseModelRun> noOtherStepIsEnabledThan(UseCaseStep theStep) {
+		return run -> {
+			Class<?> currentEventClass = theStep.getActorPart().getEventClass();
+			
+			UseCaseModel useCaseModel = theStep.getModel();
+			
+			Stream<UseCaseStep> otherStepsStream = 
+				useCaseModel.getUseCaseSteps().stream()
+					.filter(step -> !step.equals(theStep));
+			
+			Set<UseCaseStep> enabledOtherSteps = run.getEnabledStepSubset(currentEventClass, otherStepsStream);
+			return enabledOtherSteps.size() == 0;
+		};
+	}
 	
 	public class ActorPart<T>{
 		private Actor namedActor;
@@ -179,7 +197,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 
 		public void reset() {
-			newStep(uniqueRerunStepName()).system(
+			newStep(uniqueResetStepName()).system(
 				() -> {
 					getModel().run().setLatestFlow(null);
 					getUseCaseFlow().jumpTo(null);
@@ -187,30 +205,11 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 	}
 	
-	private Predicate<UseCaseModelRun> afterPreviousStepWhenNoOtherStepIsEnabled(UseCaseStep previousStep, UseCaseStep thisStep) {
-		return afterStep(previousStep).and(noOtherStepIsEnabledThan(thisStep));
-	}
-	
-	private Predicate<UseCaseModelRun> noOtherStepIsEnabledThan(UseCaseStep theStep) {
-		return run -> {
-			Class<?> currentEventClass = theStep.getActorPart().getEventClass();
-			
-			UseCaseModel useCaseModel = theStep.getModel();
-			
-			Stream<UseCaseStep> otherStepsStream = 
-				useCaseModel.getUseCaseSteps().stream()
-					.filter(step -> !step.equals(theStep));
-			
-			Set<UseCaseStep> enabledOtherSteps = run.getEnabledStepSubset(currentEventClass, otherStepsStream);
-			return enabledOtherSteps.size() == 0;
-		};
-	}
-	
 	private String uniqueRepeatStepName() {
 		return uniqueStepName(getName(), "REPEAT");
 	}
 	
-	private String uniqueRerunStepName() {
-		return uniqueStepName("Use Case reruns");
+	private String uniqueResetStepName() {
+		return uniqueStepName("Use Case Run resets");
 	}
 }
