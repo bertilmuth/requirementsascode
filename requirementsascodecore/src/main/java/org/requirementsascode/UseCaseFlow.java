@@ -68,9 +68,9 @@ public class UseCaseFlow extends UseCaseModelElement{
 		}
 
 		private Predicate<UseCaseModelRun> inDifferentFlow() {
-			Predicate<UseCaseModelRun> alternativeFlowPredicate = 
+			Predicate<UseCaseModelRun> inDifferentFlowPredicate = 
 				isSystemInDifferentFlowThan(UseCaseFlow.this);
-			return alternativeFlowPredicate;
+			return inDifferentFlowPredicate;
 		}
 
 		public UseCaseStep newStep(String stepName) {
@@ -98,6 +98,8 @@ public class UseCaseFlow extends UseCaseModelElement{
 		}
 		
 		public ConditionalPart when(Predicate<UseCaseModelRun> whenPredicate) {
+			Objects.requireNonNull(whenPredicate);
+			
 			completePredicate = stepPredicate.and(whenPredicate);
 			return this;
 		}
