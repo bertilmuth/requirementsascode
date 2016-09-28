@@ -47,6 +47,7 @@ public class UseCaseModelRun {
 	
 	public void reactTo(Object... events) {
 		Objects.requireNonNull(events);
+		
 		for (Object event : events) {
 			reactTo(event);
 		}		
@@ -56,23 +57,25 @@ public class UseCaseModelRun {
 		Objects.requireNonNull(event);
 				
 		Class<? extends Object> currentEventClass = event.getClass();
-		Set<UseCaseStep> reactingUseCaseSteps = getEnabledSteps(currentEventClass);
+		Set<UseCaseStep> reactingUseCaseSteps = getStepsEnabledFor(currentEventClass);
 		 
 		UseCaseStep latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
 		
 		return latestStepRun;
 	}
 
-	public Set<UseCaseStep> getEnabledSteps(Class<? extends Object> currentEventClass) {
+	public Set<UseCaseStep> getStepsEnabledFor(Class<? extends Object> eventClass) {
+		Objects.requireNonNull(eventClass);
+		
 		Stream<UseCaseStep> stepStream = useCaseModel.getUseCaseSteps().stream();
-		Set<UseCaseStep> enabledSteps = getEnabledStepSubset(currentEventClass, stepStream);
+		Set<UseCaseStep> enabledSteps = getEnabledStepSubset(eventClass, stepStream);
 		return enabledSteps;
 	}
 	
-	private Set<UseCaseStep> getEnabledStepSubset(Class<? extends Object> currentEventClass, Stream<UseCaseStep> stepStream) {
+	private Set<UseCaseStep> getEnabledStepSubset(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> enabledSteps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
-			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, currentEventClass))
+			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 			.filter(step -> isConditionFulfilled(step))
 			.collect(Collectors.toSet());
 		return enabledSteps;
