@@ -16,15 +16,12 @@ public class UseCaseStep extends UseCaseModelElement{
 	private SystemPart<?> systemPart;
 		
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, UseCaseStep previousStep, Predicate<UseCaseModelRun> predicate) {
-		super(stepName, useCaseFlow.getUseCaseModel());
-		
+		super(stepName, useCaseFlow.getModel());
 		Objects.requireNonNull(useCaseFlow);
+		
 		this.useCaseFlow = useCaseFlow;
-		
 		this.previousStep = previousStep;
-		this.predicate = predicate;
-		
-		getUseCase().addStep(this);
+		this.predicate = predicate;		
 	}
 	
 	public <U> UseCaseStep.ActorPart<U> actor(Actor actor, Class<U> eventClass) {
@@ -39,7 +36,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public UseCaseStep.SystemPart<?> system(Runnable autonomousSystemReaction) {
 		Objects.requireNonNull(autonomousSystemReaction);
 		
-		Actor autoReactionActor = getUseCaseModel().getAutonomousSystemReactionActor();
+		Actor autoReactionActor = getModel().getAutonomousSystemReactionActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
 			actor(autoReactionActor, AutonomousSystemReactionEvent.class).
@@ -51,7 +48,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public <T> ActorPart<T> handle(Class<T> exceptionOrEventClass) {
 		Objects.requireNonNull(exceptionOrEventClass);
 
-		Actor autoReactionActor = getUseCaseModel().getAutonomousSystemReactionActor();
+		Actor autoReactionActor = getModel().getAutonomousSystemReactionActor();
 		ActorPart<T> newActorPart = actor(autoReactionActor, exceptionOrEventClass);
 		this.actorPart = newActorPart;
 		
@@ -127,7 +124,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase newUseCase(String useCaseName) {
 			Objects.requireNonNull(useCaseName);
 
-			UseCase newUseCase = getUseCaseModel().newUseCase(useCaseName);
+			UseCase newUseCase = getModel().newUseCase(useCaseName);
 			return newUseCase;
 		}
 		
@@ -179,7 +176,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public void reset() {
 			newStep(uniqueRerunStepName()).system(
 				() -> {
-					getUseCaseModel().run().setLatestFlow(null);
+					getModel().run().setLatestFlow(null);
 					getUseCaseFlow().jumpTo(null);
 				});
 		}

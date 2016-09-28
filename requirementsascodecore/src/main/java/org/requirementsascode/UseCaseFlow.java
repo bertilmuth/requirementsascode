@@ -10,11 +10,10 @@ public class UseCaseFlow extends UseCaseModelElement{
 	private ConditionalPart conditionalPart;
 
 	public UseCaseFlow(String name, UseCase useCase) {
-		super(name, useCase.getUseCaseModel());
+		super(name, useCase.getModel());
 
 		Objects.requireNonNull(useCase);
 		this.useCase = useCase;
-		this.useCase.addFlow(this);
 	}
 
 	public UseCase getUseCase() {
@@ -51,7 +50,7 @@ public class UseCaseFlow extends UseCaseModelElement{
 	}
 	
 	Runnable jumpTo(UseCaseStep stepToContinueAfter) {
-		return () -> getUseCaseModel().run().setLatestStep(stepToContinueAfter);
+		return () -> getModel().run().setLatestStep(stepToContinueAfter);
 	}
 	
 	private String uniqueStepWhereJumpHappensName(String stepName) {

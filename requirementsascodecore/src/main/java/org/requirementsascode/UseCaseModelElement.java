@@ -4,24 +4,23 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class UseCaseModelElement {
-
 	private String name;
-	private UseCaseModel useCaseModel;
+	private UseCaseModel model;
 
-	public UseCaseModelElement(String name, UseCaseModel useCaseModel) {
+	public UseCaseModelElement(String name, UseCaseModel model) {
 		Objects.requireNonNull(name);
-		Objects.requireNonNull(useCaseModel);
+		Objects.requireNonNull(model);
 		
 		this.name = name;
-		this.useCaseModel = useCaseModel;
+		this.model = model;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public UseCaseModel getUseCaseModel() {
-		return useCaseModel;
+	public UseCaseModel getModel() {
+		return model;
 	}
 
 	@Override

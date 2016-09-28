@@ -35,13 +35,8 @@ public class UseCase extends UseCaseModelElement{
 			throw new ElementAlreadyExistsException(flowName);
 		}
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
-		return flow.newConditionalPart();
-	}
-	
-	void addFlow(UseCaseFlow flow){
-		Objects.requireNonNull(flow);
-		
 		flows.add(flow);
+		return flow.newConditionalPart();
 	}
 	
 	public UseCaseFlow getFlow(String flowName) {
@@ -76,13 +71,8 @@ public class UseCase extends UseCaseModelElement{
 			throw new ElementAlreadyExistsException(stepName);
 		}
 		UseCaseStep newStep = new UseCaseStep(stepName, flow, previousStep, predicate);
+		steps.add(newStep);
 		return newStep;
-	}
-	
-	void addStep(UseCaseStep step){
-		Objects.requireNonNull(step);
-		
-		steps.add(step);
 	}
 	
 	public boolean hasStep(String stepName) {
@@ -99,7 +89,7 @@ public class UseCase extends UseCaseModelElement{
 		return hasStep;
 	}
 
-	public List<UseCaseStep> getUseCaseSteps() {
+	public List<UseCaseStep> getSteps() {
 		return Collections.unmodifiableList(steps);
 	}
 }

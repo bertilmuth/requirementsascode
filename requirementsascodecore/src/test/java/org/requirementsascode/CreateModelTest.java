@@ -66,7 +66,7 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldCreateNoStep() {
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 
-		List<UseCaseStep> steps = useCase.getUseCaseSteps();
+		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(0, steps.size());
 	}
 
@@ -77,7 +77,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText());
 		
-		List<UseCaseStep> steps = useCase.getUseCaseSteps();
+		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
 		UseCaseStep step = steps.get(0);
@@ -137,7 +137,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
 
-		List<UseCaseStep> steps = useCase.getUseCaseSteps();
+		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		UseCaseStep previousStep = steps.get(0).getPreviousStep();
 		
@@ -156,7 +156,7 @@ public class CreateModelTest extends AbstractTestCase{
 		assertTrue(useCaseModel.getActors().contains(useCaseModel.getAutonomousSystemReactionActor()));
 		assertTrue(useCaseModel.getActors().contains(customer));
 		
-		List<UseCaseStep> steps = namedUseCase.getUseCaseSteps();
+		List<UseCaseStep> steps = namedUseCase.getSteps();
 		assertEquals(2, steps.size());
 
 		UseCaseStep step = steps.get(0);

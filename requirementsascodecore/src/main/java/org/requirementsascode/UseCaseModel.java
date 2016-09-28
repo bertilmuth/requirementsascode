@@ -40,10 +40,8 @@ public class UseCaseModel {
 		if(hasActor(actorName)){
 			throw new ElementAlreadyExistsException(actorName);
 		}
-		
 		Actor actor = new Actor(actorName, this);
 		nameToActorMap.put(actorName, actor);
-		
 		return actor;
 	}
 
@@ -63,10 +61,8 @@ public class UseCaseModel {
 		if(hasUseCase(useCaseName)){
 			throw new ElementAlreadyExistsException(useCaseName);
 		}
-		
 		UseCase useCase = new UseCase(useCaseName, this);
 		nameToUseCaseMap.put(useCaseName, useCase);
-		
 		return useCase;
 	}
 	
@@ -76,7 +72,6 @@ public class UseCaseModel {
 		if(!hasActor(actorName)){
 			throw new NoSuchElementExistsException(actorName);
 		}
-		
 		Actor existingActor = getActorByName(actorName);
 		return existingActor;
 	}
@@ -87,7 +82,6 @@ public class UseCaseModel {
 		if(!hasUseCase(useCaseName)){
 			throw new NoSuchElementExistsException(useCaseName);
 		}
-		
 		UseCase existingUseCase = getUseCaseByName(useCaseName);
 		return existingUseCase;
 	}
@@ -102,7 +96,7 @@ public class UseCaseModel {
 	
 	public Set<UseCaseStep> getUseCaseSteps() {
 		return getUseCases().stream()
-			.map(useCase -> useCase.getUseCaseSteps())
+			.map(useCase -> useCase.getSteps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
 	}
