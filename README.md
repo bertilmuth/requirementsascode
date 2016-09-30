@@ -31,10 +31,11 @@ useCaseModel.newUseCase("Get greeted")
 
 useCaseRunner.run();
 ```
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld01_SystemPrintsHelloUser.java).
 
 # Hello World Example - User enters name, system prints it
 ``` java
-// Setup useCaseModelRunner and useCaseModel same as before 
+// Setup useCaseRunner and useCaseModel same as before 
 
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
@@ -43,7 +44,9 @@ useCaseModel.newUseCase("Get greeted")
 			.system(greetUser());
 
 useCaseRunner.run();
-useCaseRunner.reactTo(enterFirstNameEvent());
+
+String firstName = enterFirstNameInConsole();
+useCaseRunner.reactTo(new EnterFirstName(firstName));
 
 // Implementations of the methods ...
 ```

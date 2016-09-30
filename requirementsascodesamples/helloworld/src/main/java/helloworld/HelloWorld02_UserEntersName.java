@@ -18,12 +18,9 @@ public class HelloWorld02_UserEntersName {
 					.system(greetUser());
 		
 		useCaseRunner.run();
-		useCaseRunner.reactTo(enterFirstNameEvent());
-	}
-	
-	private static EnterFirstName enterFirstNameEvent() {
+		
 		String firstName = enterFirstNameInConsole();
-		return new EnterFirstName(firstName);
+		useCaseRunner.reactTo(new EnterFirstName(firstName));
 	}
 
 	private static String enterFirstNameInConsole() {
