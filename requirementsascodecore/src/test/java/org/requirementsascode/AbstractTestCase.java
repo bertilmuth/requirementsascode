@@ -27,10 +27,6 @@ public abstract class AbstractTestCase {
 		displayedText = null;
 	}
 	
-	protected Class<EnterNumber> enterNumberEventClass() {
-		return EnterNumber.class;
-	}
-	
 	protected Predicate<UseCaseRunner> textIsAvailablePredicate() {
 		return r -> displayedText != null;
 	}
