@@ -67,7 +67,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactToOneStep() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText());
 				
 		UseCaseStep latestStepRun = 
 				useCaseRunner.as(customer).reactTo(enterTextEvent());
