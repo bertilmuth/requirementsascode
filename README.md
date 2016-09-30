@@ -7,7 +7,7 @@ Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
 * [requirementsascodesamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples): sample projects illustrating the use of requirementsascodecore.
 
-# Benefits
+# Why bother?
 With requirementsascode, you can specify your application's functional requirements in the code itself,
 in a form similar to use case specifications.
 
@@ -16,7 +16,7 @@ Benefits of this approach include:
 * Always up-to-date traceability from requirements to code (inside the code)
 * Clear separation between requirements and realization, making technological changes easier
 
-In the future it will also be possible to generate always up-to-date documentation from the code, 
+In the future it will also be possible to generate always up-to-date documentation from the code 
 that documents how the application really works.
 
 # Hello World Example - System prints "Hello, User."
