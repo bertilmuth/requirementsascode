@@ -153,7 +153,7 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText()) 
 				.newStep(SYSTEM_DISPLAYS_NUMBER).actor(customer, EnterNumber.class).system(displayEnteredNumber());
 
-		assertTrue(useCaseModel.getActors().contains(useCaseModel.getAutonomousSystemReactionActor()));
+		assertTrue(useCaseModel.getActors().contains(useCaseModel.getSystemActor()));
 		assertTrue(useCaseModel.getActors().contains(customer));
 		
 		List<UseCaseStep> steps = namedUseCase.getSteps();

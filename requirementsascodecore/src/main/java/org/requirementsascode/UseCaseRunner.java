@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -23,8 +22,8 @@ public class UseCaseRunner {
 	private UseCaseFlow latestFlow;
 
 	public UseCaseRunner() {
-		this.actorsRunWith = new ArrayList<>();
 		this.useCaseModel = new UseCaseModel(this);
+		this.actorsRunWith = Arrays.asList(useCaseModel.getSystemActor());
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -32,8 +31,6 @@ public class UseCaseRunner {
 	}
 	
 	public UseCaseRunner run() {
-		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		
-		actorsRunWith = Arrays.asList(autonomousSystemActor);
 		triggerAutonomousSystemReaction();
 		return this;
 	}
@@ -41,8 +38,7 @@ public class UseCaseRunner {
 	public UseCaseRunner run(Actor actor) {
 		Objects.requireNonNull(actor);
 		
-		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		
-		actorsRunWith = Arrays.asList(actor, autonomousSystemActor);		
+		actorsRunWith = Arrays.asList(actor, useCaseModel.getSystemActor());		
 		triggerAutonomousSystemReaction();
 		return this;
 	}

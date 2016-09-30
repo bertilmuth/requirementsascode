@@ -105,7 +105,7 @@ public class UseCaseModel {
 		return useCaseRunner;
 	}
 
-	public Actor getAutonomousSystemReactionActor() {
+	public Actor getSystemActor() {
 		return autonomousSystemReactionActor;
 	}
 }

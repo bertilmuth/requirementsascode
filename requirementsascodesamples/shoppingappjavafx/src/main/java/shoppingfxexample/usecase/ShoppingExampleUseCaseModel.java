@@ -2,7 +2,6 @@ package shoppingfxexample.usecase;
 
 import java.util.function.Predicate;
 
-import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
@@ -15,7 +14,6 @@ import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class ShoppingExampleUseCaseModel{
 	private UseCaseModel useCaseModel;
-	private Actor endCustomerActor;
 
 	private ShoppingApplicationDisplay display;
 	private PurchaseOrder purchaseOrder;
@@ -31,8 +29,6 @@ public class ShoppingExampleUseCaseModel{
 	}
 
 	private void createModel() {
-		endCustomerActor = useCaseModel.newActor("End Customer");
-
 		useCaseModel.newUseCase("Buy product")
 			.basicFlow()
 				.newStep("System creates new purchase order.")
@@ -67,10 +63,6 @@ public class ShoppingExampleUseCaseModel{
 
 	public Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar() {
 		return r -> purchaseOrder.getProducts().size() < 10;
-	}
-
-	public Actor getEndCustomerActor() {
-		return endCustomerActor;
 	}
 
 	public PurchaseOrder getPurchaseOrder() {
