@@ -15,15 +15,18 @@ import org.requirementsascode.event.AutonomousSystemReactionEvent;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 
+
 public class UseCaseRunner {
-	private List<Actor> actors;
+	private List<Actor> actorsToRunAs;
 	private UseCaseModel useCaseModel;
 	private UseCaseStep latestStep;
 	private UseCaseFlow latestFlow;
+	private boolean isRunning;
 
 	public UseCaseRunner() {
+		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
-		this.actors = Arrays.asList(useCaseModel.getAutonomousSystemActor());
+		actorsToRunAs = Arrays.asList(useCaseModel.getAutonomousSystemActor());
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -31,9 +34,11 @@ public class UseCaseRunner {
 	}
 	
 	public UseCaseRunner run() {
+		isRunning = true;
 		triggerAutonomousSystemReaction();
 		return this;
 	}
+	
 	private void triggerAutonomousSystemReaction() {
 		reactTo(new AutonomousSystemReactionEvent());
 	}
@@ -41,7 +46,7 @@ public class UseCaseRunner {
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
-		actors = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());		
+		actorsToRunAs = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());
 		return this;
 	}
 	
@@ -55,10 +60,13 @@ public class UseCaseRunner {
 
 	public <T> UseCaseStep reactTo(T event) {
 		Objects.requireNonNull(event);
-				
-		Class<? extends Object> currentEventClass = event.getClass();
-		Set<UseCaseStep> reactingUseCaseSteps = getStepsEnabledFor(currentEventClass);
-		UseCaseStep latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
+		
+		UseCaseStep latestStepRun = null;
+		if(isRunning){
+			Class<? extends Object> currentEventClass = event.getClass();
+			Set<UseCaseStep> reactingUseCaseSteps = getStepsEnabledFor(currentEventClass);
+			latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
+		}
 		return latestStepRun;
 	}
 
@@ -142,8 +150,9 @@ public class UseCaseRunner {
 			throw(new MissingUseCaseStepPartException(message));
 		}
 		
-		return actors.contains(actorPart.getActor());
+		return actorsToRunAs.contains(actorPart.getActor());
 	}
+	
 	protected String getMissingActorPartExceptionMessage(UseCaseStep useCaseStep) {
 		String message = "Use Case Step \"" + useCaseStep + "\" has no defined actor part! Please have a look and update your Use Case Model for this step!";
 		return message;
