@@ -16,14 +16,14 @@ import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 
 public class UseCaseRunner {
-	private List<Actor> actorsRunWith;
+	private List<Actor> actors;
 	private UseCaseModel useCaseModel;
 	private UseCaseStep latestStep;
 	private UseCaseFlow latestFlow;
 
 	public UseCaseRunner() {
 		this.useCaseModel = new UseCaseModel(this);
-		this.actorsRunWith = Arrays.asList(useCaseModel.getAutonomousSystemActor());
+		this.actors = Arrays.asList(useCaseModel.getAutonomousSystemActor());
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -34,15 +34,15 @@ public class UseCaseRunner {
 		triggerAutonomousSystemReaction();
 		return this;
 	}
+	private void triggerAutonomousSystemReaction() {
+		reactTo(new AutonomousSystemReactionEvent());
+	}
 
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
-		actorsRunWith = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());		
+		actors = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());		
 		return this;
-	}
-	private void triggerAutonomousSystemReaction() {
-		reactTo(new AutonomousSystemReactionEvent());
 	}
 	
 	public void reactTo(Object... events) {
@@ -142,7 +142,7 @@ public class UseCaseRunner {
 			throw(new MissingUseCaseStepPartException(message));
 		}
 		
-		return actorsRunWith.contains(actorPart.getActor());
+		return actors.contains(actorPart.getActor());
 	}
 	protected String getMissingActorPartExceptionMessage(UseCaseStep useCaseStep) {
 		String message = "Use Case Step \"" + useCaseStep + "\" has no defined actor part! Please have a look and update your Use Case Model for this step!";
