@@ -122,7 +122,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 			.newFlow("Alternative Flow: Enabled as well").when(run -> true)
 				.newStep(ALTERNATIVE_FLOW_STEP).system(displayConstantText());
 		
-		useCaseRunner.run(customer);
+		useCaseRunner.run();
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(stepWithoutActor);
 			
-		useCaseRunner.run(customer).reactTo(enterTextEvent());
+		useCaseRunner.run().reactTo(enterTextEvent());
 		
 		assertEquals(0, getRunStepNames().size());
 	}
