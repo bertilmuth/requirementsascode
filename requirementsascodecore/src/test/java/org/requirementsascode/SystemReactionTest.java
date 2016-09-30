@@ -194,7 +194,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(secondActor, EnterText.class).system(displayEnteredText());
 		
-		useCaseRunner.run(rightActor).reactTo(enterTextEvent(), enterTextEvent());
+		useCaseRunner.as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
 	}
@@ -206,8 +206,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_NUMBER).actor(secondActor, EnterNumber.class).system(displayEnteredNumber());
 		
-		useCaseRunner.run(customer).reactTo(enterTextEvent());
-		useCaseRunner.run(secondActor).reactTo(enterNumberEvent());
+		useCaseRunner.as(customer).reactTo(enterTextEvent());
+		useCaseRunner.as(secondActor).reactTo(enterNumberEvent());
 		
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_NUMBER), getRunStepNames());
 	}
@@ -320,7 +320,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(secondActor, EnterText.class).system(throwRuntimeException());
 		
-		useCaseRunner.run(rightActor).reactTo(enterTextEvent(), enterTextEvent());
+		useCaseRunner.as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
 	}
@@ -335,7 +335,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.newFlow(ALTERNATIVE_FLOW).when(textIsNotAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(rightActor, EnterText.class).system(displayEnteredText());
 		
-		UseCaseStep lastStepRun = useCaseRunner.run(rightActor).reactTo(enterTextEvent());
+		UseCaseStep lastStepRun = useCaseRunner.as(rightActor).reactTo(enterTextEvent());
 		
 		assertEquals(CUSTOMER_ENTERS_SOME_TEXT_AGAIN, lastStepRun.getName());
 	}
@@ -351,7 +351,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT)
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(secondActor, EnterText.class).system(throwRuntimeException());
 		
-		useCaseRunner.run(rightActor).reactTo(enterTextEvent(), enterTextEvent());
+		useCaseRunner.as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		assertEquals(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, getLatestStepName());
 	}
 	
@@ -366,7 +366,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(actorWithDisabledStep, EnterText.class).system(displayEnteredText());
 				
 		UseCaseStep lastStepRun = 
-			useCaseRunner.run(actorWithDisabledStep).reactTo(enterTextEvent());
+			useCaseRunner.as(actorWithDisabledStep).reactTo(enterTextEvent());
 		
 		assertNull(lastStepRun);
 	}

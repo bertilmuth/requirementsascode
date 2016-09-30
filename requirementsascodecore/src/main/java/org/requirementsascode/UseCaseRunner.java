@@ -23,7 +23,7 @@ public class UseCaseRunner {
 
 	public UseCaseRunner() {
 		this.useCaseModel = new UseCaseModel(this);
-		this.actorsRunWith = Arrays.asList(useCaseModel.getSystemActor());
+		this.actorsRunWith = Arrays.asList(useCaseModel.getAutonomousSystemActor());
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -35,14 +35,13 @@ public class UseCaseRunner {
 		return this;
 	}
 
-	public UseCaseRunner run(Actor actor) {
+	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
-		actorsRunWith = Arrays.asList(actor, useCaseModel.getSystemActor());		
-		triggerAutonomousSystemReaction();
+		actorsRunWith = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());		
 		return this;
 	}
-	void triggerAutonomousSystemReaction() {
+	private void triggerAutonomousSystemReaction() {
 		reactTo(new AutonomousSystemReactionEvent());
 	}
 	
