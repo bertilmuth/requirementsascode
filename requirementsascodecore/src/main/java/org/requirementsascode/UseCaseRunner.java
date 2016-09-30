@@ -30,8 +30,15 @@ public class UseCaseRunner {
 	public UseCaseModel getUseCaseModel() {
 		return useCaseModel;
 	}
+	
+	public UseCaseRunner run() {
+		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		
+		actorsRunWith = Arrays.asList(autonomousSystemActor);
+		triggerAutonomousSystemReaction();
+		return this;
+	}
 
-	public UseCaseRunner as(Actor actor) {
+	public UseCaseRunner run(Actor actor) {
 		Objects.requireNonNull(actor);
 		
 		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		

@@ -47,7 +47,7 @@ public class ShoppingApplication extends Application {
 		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel 
 			= new ShoppingExampleUseCaseModel(useCaseModelRun.getUseCaseModel(), display);
 		
-		useCaseModelRun.as(shoppingExampleUseCaseModel.getEndCustomerActor());
+		useCaseModelRun.run(shoppingExampleUseCaseModel.getEndCustomerActor());
 		displayStockedProductsAndPurchaseOrder(stock.getProducts(), shoppingExampleUseCaseModel.getPurchaseOrder());
 	}
 

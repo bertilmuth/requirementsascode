@@ -3,7 +3,6 @@ package helloworld;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
@@ -11,16 +10,14 @@ public class HelloWorld02_UserEntersName {
 	public static void main(String[] args) {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
-		
-		Actor user = useCaseModel.newActor("User");
-		
+				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
 				.newStep("User enters first name. System greets user with first name.")
-					.actor(user, EnterFirstName.class)
+					.handle(EnterFirstName.class)
 					.system(greetUser());
 		
-		useCaseRunner.as(user);
+		useCaseRunner.run();
 		useCaseRunner.reactTo(enterFirstNameEvent());
 	}
 	

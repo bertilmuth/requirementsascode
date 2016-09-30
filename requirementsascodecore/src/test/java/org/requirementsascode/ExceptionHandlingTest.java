@@ -25,7 +25,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.newStep(SYSTEM_HANDLES_EXCEPTION)
 						.handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 
-		useCaseRunner.as(customer);
+		useCaseRunner.run(customer);
 
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
 	}
@@ -39,7 +39,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.after(SYSTEM_DISPLAYS_TEXT).when(r -> true)
 					.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseRunner.as(customer);
+		useCaseRunner.run(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
 	}
@@ -52,7 +52,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			.newFlow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
 				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseRunner.as(customer);
+		useCaseRunner.run(customer);
 		
 		assertEquals(SYSTEM_HANDLES_EXCEPTION, useCaseRunner.getLatestStep().getName());
 	}
@@ -67,7 +67,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			.newFlow(EXCEPTION_HANDLING_FLOW).when(r -> true)
 				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseRunner.as(customer);
+		useCaseRunner.run(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
 	}
@@ -83,7 +83,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			.newFlow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
 				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseRunner.as(customer);
+		useCaseRunner.run(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
 	}

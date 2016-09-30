@@ -23,29 +23,27 @@ that documents how the application really works.
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
-
-Actor user = useCaseModel.newActor("User");
-
+		
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
 		.newStep("System greets user.")
 			.system(() -> System.out.println("Hello, User."));
 
-useCaseRunner.as(user);
+useCaseRunner.run();
 ```
 
 # Hello World Example - User enters name, system prints it
 ``` java
-// Setup useCaseModelRun, useCaseModel and user same as before 
-				
-	useCaseModel.newUseCase("Get greeted")
-		.basicFlow()
-			.newStep("User enters first name. System greets user with first name.")
-				.actor(user, EnterFirstName.class)
-				.system(greetUser());
-	
-	useCaseRunner.as(user);
-	useCaseRunner.reactTo(enterFirstNameEvent());
+// Setup useCaseModelRunner and useCaseModel same as before 
+
+useCaseModel.newUseCase("Get greeted")
+	.basicFlow()
+		.newStep("User enters first name. System greets user with first name.")
+			.handle(EnterFirstName.class)
+			.system(greetUser());
+
+useCaseRunner.run();
+useCaseRunner.reactTo(enterFirstNameEvent());
 
 // Implementations of the methods ...
 ```
