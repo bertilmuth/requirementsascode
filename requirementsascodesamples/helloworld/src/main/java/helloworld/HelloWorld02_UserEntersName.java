@@ -5,12 +5,12 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld02_UserEntersName {
 	public static void main(String[] args) {
-		UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
-		UseCaseModel useCaseModel = useCaseModelRun.getModel();
+		UseCaseRunner useCaseModelRun = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseModelRun.getUseCaseModel();
 		
 		Actor user = useCaseModel.newActor("User");
 		

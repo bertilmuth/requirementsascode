@@ -14,14 +14,14 @@ import org.requirementsascode.exception.NoSuchElementExistsException;
 public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
 	private Map<String, UseCase> nameToUseCaseMap;
-	private UseCaseModelRun useCaseModelRun;
+	private UseCaseRunner useCaseRunner;
 	private Actor autonomousSystemReactionActor;
 	
-	UseCaseModel(UseCaseModelRun useCaseModelRun) {
+	UseCaseModel(UseCaseRunner useCaseModelRun) {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
 		this.autonomousSystemReactionActor = newActor("Autonomous System Reaction Actor");
-		this.useCaseModelRun = useCaseModelRun;
+		this.useCaseRunner = useCaseModelRun;
 	}
 
 	public boolean hasActor(String actorName) {
@@ -101,8 +101,8 @@ public class UseCaseModel {
 			.collect(Collectors.toSet());
 	}
 	
-	public UseCaseModelRun run() {
-		return useCaseModelRun;
+	public UseCaseRunner getUseCaseRunner() {
+		return useCaseRunner;
 	}
 
 	public Actor getAutonomousSystemReactionActor() {

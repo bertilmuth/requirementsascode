@@ -11,12 +11,12 @@ import static org.requirementsascode.UseCaseStepCondition.*;
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
 	private UseCaseStep previousStep;
-	private Predicate<UseCaseModelRun> predicate;
+	private Predicate<UseCaseRunner> predicate;
 	
 	private ActorPart<?> actorPart;
 	private SystemPart<?> systemPart;
 		
-	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, UseCaseStep previousStep, Predicate<UseCaseModelRun> predicate) {
+	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
 		super(stepName, useCaseFlow.getModel());
 		Objects.requireNonNull(useCaseFlow);
 		
@@ -76,17 +76,17 @@ public class UseCaseStep extends UseCaseModelElement{
 		return systemPart;
 	}
 	
-	public Predicate<UseCaseModelRun> getPredicate() {
+	public Predicate<UseCaseRunner> getPredicate() {
 		if(predicate == null){
 			predicate = afterPreviousStepWhenNoOtherStepIsEnabled();
 		}
 		return predicate;
 	} 
-	private Predicate<UseCaseModelRun> afterPreviousStepWhenNoOtherStepIsEnabled() {
+	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
 		return afterStep(previousStep).and(noOtherStepIsEnabledThan(this));
 	}
 	
-	private Predicate<UseCaseModelRun> noOtherStepIsEnabledThan(UseCaseStep theStep) {
+	private Predicate<UseCaseRunner> noOtherStepIsEnabledThan(UseCaseStep theStep) {
 		return run -> {
 			Class<?> currentEventClass = theStep.getActorPart().getEventClass();
 			
@@ -166,7 +166,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			return newStep;
 		}
 		
-		public SystemPart<T> repeatWhile(Predicate<UseCaseModelRun> condition) {
+		public SystemPart<T> repeatWhile(Predicate<UseCaseRunner> condition) {
 			Objects.requireNonNull(condition);
 			
 			String thisStepName = getName();
@@ -199,7 +199,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public void reset() {
 			newStep(uniqueResetStepName()).system(
 				() -> {
-					getModel().run().setLatestFlow(null);
+					getModel().getUseCaseRunner().setLatestFlow(null);
 					getUseCaseFlow().jumpTo(null);
 				});
 		}

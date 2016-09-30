@@ -1,11 +1,11 @@
 package org.requirementsascode.event;
-public class EnteredText{
+public class EnterText{
 	private String text;
 	
-	public EnteredText() {
+	public EnterText() {
 	}
 	
-	public EnteredText(String text) {
+	public EnterText(String text) {
 		set(text);
 	}
 	

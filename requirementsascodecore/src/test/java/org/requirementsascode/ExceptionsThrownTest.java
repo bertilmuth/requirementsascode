@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.event.EnteredText;
+import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyExistsException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 import org.requirementsascode.exception.NoSuchElementExistsException;
@@ -106,8 +106,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
-				.newStep(name).system(displaysConstantText())			
-				.newStep(name).system(displaysConstantText());
+				.newStep(name).system(displayConstantText())			
+				.newStep(name).system(displayConstantText());
 	}
 	
 	@Test
@@ -118,11 +118,11 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow().when(run -> true)
-				.newStep(BASIC_FLOW_STEP).system(displaysConstantText())
+				.newStep(BASIC_FLOW_STEP).system(displayConstantText())
 			.newFlow("Alternative Flow: Enabled as well").when(run -> true)
-				.newStep(ALTERNATIVE_FLOW_STEP).system(displaysConstantText());
+				.newStep(ALTERNATIVE_FLOW_STEP).system(displayConstantText());
 		
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(stepWithoutActor);
 			
-		useCaseModelRun.as(customer).reactTo(enteredTextEvent());
+		useCaseRunner.as(customer).reactTo(enterTextEvent());
 		
 		assertEquals(0, getRunStepNames().size());
 	}
@@ -150,9 +150,9 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(stepWithoutSystemReaction).actor(customer, EnteredText.class);
+				.newStep(stepWithoutSystemReaction).actor(customer, EnterText.class);
 			
-		useCaseModelRun.as(customer).reactTo(enteredTextEvent());
+		useCaseRunner.as(customer).reactTo(enterTextEvent());
 		
 		assertEquals(0, getRunStepNames().size());
 	}

@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
@@ -65,7 +65,7 @@ public class ShoppingExampleUseCaseModel{
 					.handle(Throwable.class).system(t -> t.printStackTrace());
 	}
 
-	public Predicate<UseCaseModelRun> lessThenTenProductsBoughtSoFar() {
+	public Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar() {
 		return r -> purchaseOrder.getProducts().size() < 10;
 	}
 

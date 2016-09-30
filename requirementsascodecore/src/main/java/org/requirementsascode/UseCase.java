@@ -62,7 +62,7 @@ public class UseCase extends UseCaseModelElement{
 		return optionalStep.get();
 	}
 	
-	UseCaseStep newStep(String stepName, UseCaseFlow flow, UseCaseStep previousStep, Predicate<UseCaseModelRun> predicate) {
+	UseCaseStep newStep(String stepName, UseCaseFlow flow, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
 		Objects.requireNonNull(stepName);
 		Objects.requireNonNull(flow);
 		

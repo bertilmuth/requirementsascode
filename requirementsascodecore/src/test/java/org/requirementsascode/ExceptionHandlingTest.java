@@ -19,13 +19,13 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	public void shouldNotHandleExceptionIfUserInputDoesNotThrowException() {		
 		useCaseModel.newUseCase(SAY_HELLO)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.newFlow("Exception Handling Flow - Should not be entered as no exception occurs")
 				.after(SYSTEM_DISPLAYS_TEXT).when(r -> true)
 					.newStep(SYSTEM_HANDLES_EXCEPTION)
-						.handle(ArrayIndexOutOfBoundsException.class).system(reactsToArrayIndexOutOfBoundsException());
+						.handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
 	}
@@ -34,12 +34,12 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	public void shouldNotHandleExceptionIfSystemReactionDoesNotThrowException() {		
 		useCaseModel.newUseCase(SAY_HELLO)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.newFlow("Exception Handling Flow - Should not be entered as no exception occurs")
 				.after(SYSTEM_DISPLAYS_TEXT).when(r -> true)
-					.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactsToArrayIndexOutOfBoundsException());
+					.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
 	}
@@ -50,24 +50,24 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())		
 			.newFlow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactsToArrayIndexOutOfBoundsException());
+				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 		
-		assertEquals(SYSTEM_HANDLES_EXCEPTION, useCaseModelRun.getLatestStep().getName());
+		assertEquals(SYSTEM_HANDLES_EXCEPTION, useCaseRunner.getLatestStep().getName());
 	}
 	
 	@Test
 	public void shouldHandleExceptionAtAnyTime() {			
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.newFlow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 				.newStep(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())
 			.newFlow(EXCEPTION_HANDLING_FLOW).when(r -> true)
-				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactsToArrayIndexOutOfBoundsException());
+				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
 	}
@@ -76,14 +76,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	public void shouldHandleExceptionIfSystemReactionOfStepContinuedAfterThrowsException() {
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.newStep(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())	
 			.newFlow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 				.continueAfter(SYSTEM_DISPLAYS_TEXT)		
 			.newFlow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactsToArrayIndexOutOfBoundsException());
+				.newStep(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
 		
-		useCaseModelRun.as(customer);
+		useCaseRunner.as(customer);
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
 	}

@@ -1,6 +1,6 @@
 package shoppingfxexample.gui.controller;
 
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 import com.dooapp.fxform.FXForm;
 
@@ -21,7 +21,7 @@ public class EnterShippingInformationController {
     private Button confirmButton;
 
 	private ShippingInformation shippingInformation;
-	private UseCaseModelRun useCaseModelRun;
+	private UseCaseRunner useCaseModelRun;
     
     @FXML
     void onConfirm(ActionEvent event) {
@@ -37,7 +37,7 @@ public class EnterShippingInformationController {
     	vBox.getChildren().add(shippingInformationForm);
 	}
 	
-	public void setUseCaseModelRun(UseCaseModelRun useCaseModelRun) {
+	public void setUseCaseModelRun(UseCaseRunner useCaseModelRun) {
 		this.useCaseModelRun = useCaseModelRun;
 	}
 }

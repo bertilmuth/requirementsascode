@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.requirementsascode.event.EnteredNumber;
-import org.requirementsascode.event.EnteredText;
+import org.requirementsascode.event.EnterNumber;
+import org.requirementsascode.event.EnterText;
 
 public class CreateModelTest extends AbstractTestCase{	
 	private static final String USE_CASE = "Use Case";
@@ -75,7 +75,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 		
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
@@ -92,7 +92,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.getActor(customer.getName());
 		assertEquals(customer.getName(), actorFromModel.getName());
@@ -103,7 +103,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.getActor(customer.getName());
 		
@@ -118,7 +118,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.getActor(customer.getName());
 		List<UseCaseStep> steps = actorFromModel.getUseCaseSteps(useCase);
@@ -135,7 +135,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
 
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
@@ -150,8 +150,8 @@ public class CreateModelTest extends AbstractTestCase{
 		
 		namedUseCase
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText()) 
-				.newStep(SYSTEM_DISPLAYS_NUMBER).actor(customer, EnteredNumber.class).system(displaysEnteredNumber());
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText()) 
+				.newStep(SYSTEM_DISPLAYS_NUMBER).actor(customer, EnterNumber.class).system(displayEnteredNumber());
 
 		assertTrue(useCaseModel.getActors().contains(useCaseModel.getAutonomousSystemReactionActor()));
 		assertTrue(useCaseModel.getActors().contains(customer));
@@ -173,8 +173,8 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase namedUseCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		namedUseCase
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
 		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
@@ -192,8 +192,8 @@ public class CreateModelTest extends AbstractTestCase{
 			
 		useCase
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
 		UseCaseStep firstUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT);
 		UseCaseStep secondUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
@@ -206,9 +206,9 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCaseInFirstFlow = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCaseInFirstFlow
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())	
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())	
 			.newFlow("Alternative Flow")
-				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
 		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT);
 		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
@@ -221,9 +221,9 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldUniquelyIdentifyUseCasesByName() {		
 		useCaseModel.newUseCase(USE_CASE)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.newFlow("Alternative Flow")
-				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());		
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());		
 		
 		assertEquals(1, useCaseModel.getUseCases().size());
 		assertEquals(useCaseModel.getUseCase(USE_CASE), useCaseModel.getUseCases().iterator().next());
@@ -243,11 +243,11 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldUniquelyIdentifyBasicFlow() {		
 		useCaseModel.newUseCase(USE_CASE)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
 
 		useCaseModel.getUseCase(USE_CASE)
 			.basicFlow()
-				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());		
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());		
 		
 		UseCase uc = useCaseModel.getUseCase(USE_CASE);
 		assertEquals(1, uc.getFlows().size());
@@ -257,8 +257,8 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldUniquelyIdentifyActorsByNameInOneUseCase() {
 		useCaseModel.newUseCase(USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText())
-				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnteredText.class).system(displaysEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterText.class).system(displayEnteredText());
 		
 		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
@@ -276,10 +276,10 @@ public class CreateModelTest extends AbstractTestCase{
 		useCaseModel
 			.newUseCase("Use Case 1")
 				.basicFlow()
-					.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnteredText.class).system(displaysEnteredText())
+					.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText())
 			.newUseCase("Use Case 2")
 				.basicFlow()
-					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnteredText.class).system(displaysEnteredText());		
+					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterText.class).system(displayEnteredText());		
 				
 		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());

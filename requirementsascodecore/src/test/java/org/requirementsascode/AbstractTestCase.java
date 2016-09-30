@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import org.junit.Before;
-import org.requirementsascode.event.EnteredNumber;
-import org.requirementsascode.event.EnteredText;
+import org.requirementsascode.event.EnterNumber;
+import org.requirementsascode.event.EnterText;
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
-	protected UseCaseModelRun useCaseModelRun;
+	protected UseCaseRunner useCaseRunner;
 	protected UseCaseModel useCaseModel;
 	
 	private String displayedText;
@@ -20,49 +19,41 @@ public abstract class AbstractTestCase {
 
 	@Before
 	public void setup(){
-		this.useCaseModelRun = new UseCaseModelRun();
-		this.useCaseModel = useCaseModelRun.getModel();
+		this.useCaseRunner = new UseCaseRunner();
+		this.useCaseModel = useCaseRunner.getUseCaseModel();
 		this.customer = useCaseModel.newActor("Customer");
 		
 		runStepNames = new ArrayList<>();
 		displayedText = null;
 	}
 	
-	protected Class<EnteredNumber> enteredNumberEventClass() {
-		return EnteredNumber.class;
+	protected Class<EnterNumber> enterNumberEventClass() {
+		return EnterNumber.class;
 	}
 	
-	protected Predicate<UseCaseModelRun> textIsAvailablePredicate() {
+	protected Predicate<UseCaseRunner> textIsAvailablePredicate() {
 		return r -> displayedText != null;
 	}
-
-	protected Supplier<Boolean> textIsAvailable() {
-		return () -> displayedText != null;
-	}
-
-	protected Supplier<Boolean> textIsNotAvailable() {
-		return () -> displayedText == null;
-	}
 	
-	protected Predicate<UseCaseModelRun> textIsNotAvailablePredicate() {
+	protected Predicate<UseCaseRunner> textIsNotAvailablePredicate() {
 		return r -> displayedText == null;
 	}
 	
-	protected EnteredText enteredTextEvent(){
-		return new EnteredText("Hello, Basic Flow!");
+	protected EnterText enterTextEvent(){
+		return new EnterText("Hello, Basic Flow!");
 	}
 	
-	protected EnteredText enteredDifferentTextEvent(){
-		return new EnteredText("Hello, I am an Alternative Flow!");
+	protected EnterText enterDifferentTextEvent(){
+		return new EnterText("Hello, I am an Alternative Flow!");
 	}
 	
-	protected EnteredNumber enteredNumberEvent(){
-		EnteredNumber enteredNumber = new EnteredNumber();
-		enteredNumber.value = 42;
-		return enteredNumber;
+	protected EnterNumber enterNumberEvent(){
+		EnterNumber enterNumber = new EnterNumber();
+		enterNumber.value = 42;
+		return enterNumber;
 	}
 	
-	protected Runnable displaysConstantText() {
+	protected Runnable displayConstantText() {
 		return () -> {
 			runStepNames.add(getLatestStepName());
 			displayedText = "Hello, Basic Flow!";
@@ -70,7 +61,7 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnteredText> displaysEnteredText() {
+	protected Consumer<EnterText> displayEnteredText() {
 		return (text) -> {
 			runStepNames.add(getLatestStepName());
 			displayedText = text.toString();
@@ -78,7 +69,7 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnteredNumber> displaysEnteredNumber() {
+	protected Consumer<EnterNumber> displayEnteredNumber() {
 		return (integerContainer) -> {
 			runStepNames.add(getLatestStepName());
 			displayedText = integerContainer.value.toString();
@@ -93,13 +84,13 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<ArrayIndexOutOfBoundsException> reactsToArrayIndexOutOfBoundsException() {
+	protected Consumer<ArrayIndexOutOfBoundsException> reactToArrayIndexOutOfBoundsException() {
 		return e -> {
 			runStepNames.add(getLatestStepName());
 		};
 	}
 	
-	protected Consumer<EnteredText> throwRuntimeException() {
+	protected Consumer<EnterText> throwRuntimeException() {
 		return (object) -> {throw new RuntimeException("Test failed!");};
 	}
 	
@@ -108,7 +99,7 @@ public abstract class AbstractTestCase {
 	}
 
 	protected String getLatestStepName() {
-		UseCaseStep latestStep = useCaseModelRun.getLatestStep();
+		UseCaseStep latestStep = useCaseRunner.getLatestStep();
 		return latestStep != null ? latestStep.getName() : null;
 	}
 }

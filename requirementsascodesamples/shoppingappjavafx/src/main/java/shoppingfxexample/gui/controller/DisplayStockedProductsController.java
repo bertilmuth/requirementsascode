@@ -3,7 +3,7 @@ package shoppingfxexample.gui.controller;
 import static javafx.beans.binding.Bindings.convert;
 import static javafx.beans.binding.Bindings.size;
 
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +31,7 @@ public class DisplayStockedProductsController {
     private ListView<Product> productsListView;
     
 	private PurchaseOrder purchaseOrder;
-	private UseCaseModelRun useCaseModelRun;
+	private UseCaseRunner useCaseModelRun;
     
     @FXML
     void onCheckout(ActionEvent event) {
@@ -74,7 +74,7 @@ public class DisplayStockedProductsController {
         }
     }
 
-	public void setUseCaseModelRun(UseCaseModelRun useCaseModelRun) {
+	public void setUseCaseModelRun(UseCaseRunner useCaseModelRun) {
 		this.useCaseModelRun = useCaseModelRun;
 	}
 

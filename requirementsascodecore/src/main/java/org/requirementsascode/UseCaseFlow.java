@@ -9,8 +9,8 @@ import java.util.function.Predicate;
 
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
-	private Predicate<UseCaseModelRun> stepPredicate;
-	private Predicate<UseCaseModelRun> completePredicate;
+	private Predicate<UseCaseRunner> stepPredicate;
+	private Predicate<UseCaseRunner> completePredicate;
 
 	public UseCaseFlow(String name, UseCase useCase) {
 		super(name, useCase.getModel());
@@ -31,7 +31,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 
 	private void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens,
-			Predicate<UseCaseModelRun> predicate) {
+			Predicate<UseCaseRunner> predicate) {
 		UseCaseStep continueAfterStep = getUseCase().getStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
 
@@ -53,20 +53,20 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return newStep;
 	}
 
-	private UseCaseStep newStep(String stepName, UseCaseStep previousStep, Predicate<UseCaseModelRun> predicate) {
+	private UseCaseStep newStep(String stepName, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
 		UseCaseStep stepToLeave = getUseCase().newStep(stepName, this, previousStep, predicate);
 		return stepToLeave;
 	}
 
 	Runnable jumpTo(UseCaseStep stepToContinueAfter) {
-		return () -> getModel().run().setLatestStep(stepToContinueAfter);
+		return () -> getModel().getUseCaseRunner().setLatestStep(stepToContinueAfter);
 	}
 
 	public UseCaseFlow atFirst() {
 		setCompleteStepPredicate(isRunInDifferentFlow().and(atFirstStep()));
 		return this;
 	}
-	private void setCompleteStepPredicate(Predicate<UseCaseModelRun> stepPredicate){
+	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
 		this.stepPredicate = stepPredicate;
 		this.completePredicate = stepPredicate;
 	}
@@ -80,7 +80,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return this;
 	}
 
-	public UseCaseFlow when(Predicate<UseCaseModelRun> whenPredicate) {
+	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
 		if(stepPredicate == null){
@@ -90,8 +90,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return this;
 	}
 	
-	private Predicate<UseCaseModelRun> isRunInDifferentFlow() {
-		Predicate<UseCaseModelRun> inDifferentFlowPredicate = isSystemInDifferentFlowThan(UseCaseFlow.this);
+	private Predicate<UseCaseRunner> isRunInDifferentFlow() {
+		Predicate<UseCaseRunner> inDifferentFlowPredicate = isSystemInDifferentFlowThan(UseCaseFlow.this);
 		return inDifferentFlowPredicate;
 	}
 	

@@ -16,22 +16,22 @@ import org.requirementsascode.event.AutonomousSystemReactionEvent;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 
-public class UseCaseModelRun {
+public class UseCaseRunner {
 	private List<Actor> actorsRunWith;
 	private UseCaseModel useCaseModel;
 	private UseCaseStep latestStep;
 	private UseCaseFlow latestFlow;
 
-	public UseCaseModelRun() {
+	public UseCaseRunner() {
 		this.actorsRunWith = new ArrayList<>();
 		this.useCaseModel = new UseCaseModel(this);
 	}
 	
-	public UseCaseModel getModel() {
+	public UseCaseModel getUseCaseModel() {
 		return useCaseModel;
 	}
 
-	public UseCaseModelRun as(Actor actor) {
+	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
 		Actor autonomousSystemActor = useCaseModel.getAutonomousSystemReactionActor();		
@@ -153,7 +153,7 @@ public class UseCaseModelRun {
 	}
 	
 	private boolean isConditionFulfilled(UseCaseStep useCaseStep) {
-		Predicate<UseCaseModelRun> predicate = useCaseStep.getPredicate();
+		Predicate<UseCaseRunner> predicate = useCaseStep.getPredicate();
 		boolean result = predicate.test(this);
 		return result;
 	}

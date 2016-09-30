@@ -2,7 +2,7 @@ package shoppingfxexample.gui;
 
 import java.io.IOException;
 
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -17,7 +17,7 @@ import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrder;
 public class ShoppingApplication extends Application {
 	private Stock stock;
 	private Stage primaryStage;
-	private UseCaseModelRun useCaseModelRun;
+	private UseCaseRunner useCaseModelRun;
 	private ShoppingApplicationDisplay display;
 
 	@Override
@@ -33,7 +33,7 @@ public class ShoppingApplication extends Application {
 	}
 
 	private void createUseCaseModelRun() {
-		this.useCaseModelRun = new UseCaseModelRun();
+		this.useCaseModelRun = new UseCaseRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
@@ -45,7 +45,7 @@ public class ShoppingApplication extends Application {
 	
 	public void createAndRunUseCaseModel(Stage primaryStage) {				
 		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel 
-			= new ShoppingExampleUseCaseModel(useCaseModelRun.getModel(), display);
+			= new ShoppingExampleUseCaseModel(useCaseModelRun.getUseCaseModel(), display);
 		
 		useCaseModelRun.as(shoppingExampleUseCaseModel.getEndCustomerActor());
 		displayStockedProductsAndPurchaseOrder(stock.getProducts(), shoppingExampleUseCaseModel.getPurchaseOrder());

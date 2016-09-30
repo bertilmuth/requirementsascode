@@ -2,12 +2,12 @@ package helloworld;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRun;
+import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld01_SystemPrintsHelloUser {
 	public static void main(String[] args) {
-		UseCaseModelRun useCaseModelRun = new UseCaseModelRun();
-		UseCaseModel useCaseModel = useCaseModelRun.getModel();
+		UseCaseRunner useCaseModelRun = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseModelRun.getUseCaseModel();
 		
 		Actor user = useCaseModel.newActor("User");
 		
