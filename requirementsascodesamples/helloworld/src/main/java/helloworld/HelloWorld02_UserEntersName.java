@@ -9,8 +9,8 @@ import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld02_UserEntersName {
 	public static void main(String[] args) {
-		UseCaseRunner useCaseModelRun = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseModelRun.getUseCaseModel();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 		
 		Actor user = useCaseModel.newActor("User");
 		
@@ -20,8 +20,8 @@ public class HelloWorld02_UserEntersName {
 					.actor(user, EnterFirstName.class)
 					.system(greetUser());
 		
-		useCaseModelRun.as(user);
-		useCaseModelRun.reactTo(enterFirstNameEvent());
+		useCaseRunner.as(user);
+		useCaseRunner.reactTo(enterFirstNameEvent());
 	}
 	
 	private static EnterFirstName enterFirstNameEvent() {

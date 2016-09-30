@@ -43,17 +43,17 @@ public class ShoppingExampleUseCaseModel{
 					.system(display::displayStockedProductsAndPurchaseOrder)
 					
 				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
-					.actor(endCustomerActor, BuyProduct.class)
+					.handle(BuyProduct.class)
 					.system(buyProduct -> 
 						purchaseOrder.addProduct(buyProduct.getProduct()))
 					.repeatWhile(lessThenTenProductsBoughtSoFar())
 					
 				.newStep("End Customer checks out. System prompts End Customer to enter shipping information.")
-					.actor(endCustomerActor, CheckoutPurchase.class)
+					.handle(CheckoutPurchase.class)
 					.system(display::enterShippingInformation)
 					
 				.newStep("Customer enters shipping information. System adds shipping information to purchase order.")
-					.actor(endCustomerActor, EnterShippingInformation.class)
+					.handle(EnterShippingInformation.class)
 					.system(enterShippingInformation -> 
 						purchaseOrder.setShippingInformation(enterShippingInformation.getShippingInformation()))
 					

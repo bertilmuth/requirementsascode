@@ -6,8 +6,8 @@ import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld01_SystemPrintsHelloUser {
 	public static void main(String[] args) {
-		UseCaseRunner useCaseModelRun = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseModelRun.getUseCaseModel();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 		
 		Actor user = useCaseModel.newActor("User");
 		
@@ -16,6 +16,6 @@ public class HelloWorld01_SystemPrintsHelloUser {
 				.newStep("System greets user.")
 					.system(() -> System.out.println("Hello, User."));
 		
-		useCaseModelRun.as(user);
+		useCaseRunner.as(user);
 	}
 }
