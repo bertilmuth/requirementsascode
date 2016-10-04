@@ -27,6 +27,13 @@ public class UseCase extends UseCaseModelElement{
 		return basicFlow;
 	}
 	
+	public boolean hasFlow(String flowName) {
+		Objects.requireNonNull(flowName);
+		
+		boolean hasStep = flows.containsKey(flowName); 
+		return hasStep;
+	}
+	
 	public UseCaseFlow newFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
@@ -51,6 +58,13 @@ public class UseCase extends UseCaseModelElement{
 		return Collections.unmodifiableList(flowsList);
 	}
 	
+	public boolean hasStep(String stepName) {
+		Objects.requireNonNull(stepName);
+		
+		boolean hasStep = steps.containsKey(stepName);
+		return hasStep;
+	}
+	
 	public UseCaseStep getStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
@@ -68,20 +82,6 @@ public class UseCase extends UseCaseModelElement{
 		UseCaseStep newStep = new UseCaseStep(stepName, flow, previousStep, predicate);
 		steps.put(stepName, newStep);
 		return newStep;
-	}
-	
-	public boolean hasStep(String stepName) {
-		Objects.requireNonNull(stepName);
-		
-		boolean hasStep = steps.containsKey(stepName);
-		return hasStep;
-	}
-	
-	public boolean hasFlow(String flowName) {
-		Objects.requireNonNull(flowName);
-		
-		boolean hasStep = flows.containsKey(flowName); 
-		return hasStep;
 	}
 
 	public List<UseCaseStep> getSteps() {
