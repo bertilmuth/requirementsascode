@@ -5,11 +5,12 @@ import static org.requirementsascode.UseCaseStepCondition.atFirstStep;
 import static org.requirementsascode.UseCaseStepCondition.isSystemInDifferentFlowThan;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
-	private Predicate<UseCaseRunner> stepPredicate;
+	private Optional<Predicate<UseCaseRunner>> optionalStepPredicate;
 	private Predicate<UseCaseRunner> completePredicate;
 
 	public UseCaseFlow(String name, UseCase useCase) {
@@ -17,6 +18,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 		Objects.requireNonNull(useCase);
 		this.useCase = useCase;
+		this.optionalStepPredicate = Optional.empty();
 	}
 
 	public UseCase getUseCase() {
@@ -67,7 +69,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return this;
 	}
 	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-		this.stepPredicate = stepPredicate;
+		this.optionalStepPredicate = Optional.of(stepPredicate);
 		this.completePredicate = stepPredicate;
 	}
 
@@ -83,10 +85,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
-		if(stepPredicate == null){
-			this.stepPredicate = isRunInDifferentFlow();
-		}
-		completePredicate = stepPredicate.and(whenPredicate);
+		completePredicate = optionalStepPredicate.orElse(isRunInDifferentFlow()).and(whenPredicate);
 		return this;
 	}
 	
