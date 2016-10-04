@@ -36,7 +36,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 	private void continueAfter(String continueAfterStepName, Optional<UseCaseStep> optionalStepBeforeJumpHappens,
 			Predicate<UseCaseRunner> predicate) {
-		Optional<UseCaseStep> continueAfterStep = getUseCase().getStep(continueAfterStepName);
+		Optional<UseCaseStep> continueAfterStep = getUseCase().findStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
 
 		continueAfterStep.map(step -> 
@@ -80,7 +80,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow after(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		Optional<UseCaseStep> useCaseStep = useCase.getStep(stepName);
+		Optional<UseCaseStep> useCaseStep = useCase.findStep(stepName);
 		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(useCaseStep)));
 
 		return this;

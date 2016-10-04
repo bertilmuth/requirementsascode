@@ -195,8 +195,8 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
-		UseCaseStep firstUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT).get();
-		UseCaseStep secondUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
+		UseCaseStep firstUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT).get();
+		UseCaseStep secondUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
 		
 		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStep().get());
 	}
@@ -210,8 +210,8 @@ public class CreateModelTest extends AbstractTestCase{
 			.newFlow("Alternative Flow")
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
-		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT).get();
-		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
+		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT).get();
+		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
 		
 		assertFalse(firstUseCaseStep.getPreviousStep().isPresent());
 		assertFalse(secondUseCaseStep.getPreviousStep().isPresent());
@@ -232,7 +232,7 @@ public class CreateModelTest extends AbstractTestCase{
 	@Test
 	public void shouldUniquelyIdentifyFlowsByName() {		
 		useCaseModel.newUseCase(USE_CASE).newFlow(ANOTHER_FLOW);
-		Optional<UseCaseFlow> existingFlow = useCaseModel.getUseCase(USE_CASE).getFlow(ANOTHER_FLOW);
+		Optional<UseCaseFlow> existingFlow = useCaseModel.getUseCase(USE_CASE).findFlow(ANOTHER_FLOW);
 		
 		UseCase uc = useCaseModel.getUseCase(USE_CASE);
 		assertEquals(2, uc.getFlows().size()); // This is 2 because the basic flow always exists

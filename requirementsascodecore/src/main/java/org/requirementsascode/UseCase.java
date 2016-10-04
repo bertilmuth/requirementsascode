@@ -45,7 +45,7 @@ public class UseCase extends UseCaseModelElement{
 		return flow;
 	}
 	
-	public Optional<UseCaseFlow> getFlow(String flowName) {
+	public Optional<UseCaseFlow> findFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
 		Optional<UseCaseFlow> flow = findUseCaseModelElement(flowName, flows);
@@ -65,7 +65,7 @@ public class UseCase extends UseCaseModelElement{
 		return hasStep;
 	}
 	
-	public Optional<UseCaseStep> getStep(String stepName) {
+	public Optional<UseCaseStep> findStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
 		Optional<UseCaseStep> step = findUseCaseModelElement(stepName, steps);
