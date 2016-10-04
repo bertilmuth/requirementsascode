@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -17,13 +18,14 @@ public class UseCaseStepCondition {
 	}
 	
 	public static Predicate<UseCaseRunner> atFirstStep() {
-		return afterStep(null);
+		return afterStep(Optional.empty());
 	}
 	
-	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {		
+	public static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStep) {		
 		return useCaseRunner -> {
-			UseCaseStep stepRunLastBySystem = useCaseRunner.getLatestStep();
-			boolean isSystemAtRightStep = Objects.equals(stepRunLastBySystem, afterThatStep);
+			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.getLatestStep();
+			boolean isSystemAtRightStep = 
+				Objects.equals(stepRunLastBySystem, afterThatStep);
 			return isSystemAtRightStep;
 		};
 	}

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -19,7 +20,7 @@ import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 public class UseCaseRunner {
 	private List<Actor> actorsToRunAs;
 	private UseCaseModel useCaseModel;
-	private UseCaseStep latestStep;
+	private Optional<UseCaseStep> optionalLatestStep;
 	private UseCaseFlow latestFlow;
 	private boolean isRunning;
 
@@ -27,6 +28,7 @@ public class UseCaseRunner {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
 		this.actorsToRunAs = Arrays.asList(useCaseModel.getAutonomousSystemActor());
+		this.optionalLatestStep = Optional.empty();
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -169,12 +171,12 @@ public class UseCaseRunner {
 		return result;
 	}
 	
-	public UseCaseStep getLatestStep() {
-		return latestStep;
+	public Optional<UseCaseStep> getLatestStep() {
+		return optionalLatestStep;
 	}
 	
 	public void setLatestStep(UseCaseStep latestStep) {
-		this.latestStep = latestStep;
+		this.optionalLatestStep = Optional.of(latestStep);
 	}
 	
 	public UseCaseFlow getLatestFlow() {

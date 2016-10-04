@@ -95,7 +95,9 @@ public abstract class AbstractTestCase {
 	}
 
 	protected String getLatestStepName() {
-		UseCaseStep latestStep = useCaseRunner.getLatestStep();
-		return latestStep != null ? latestStep.getName() : null;
+		String latestStepName = 
+			useCaseRunner.getLatestStep()
+				.map(step -> step.getName()).orElse(null);
+		return latestStepName;
 	}
 }

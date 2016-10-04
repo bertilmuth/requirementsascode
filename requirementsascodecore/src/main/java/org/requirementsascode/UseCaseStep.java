@@ -87,7 +87,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	} 
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
 		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
-			optionalPreviousStep.map(step -> afterStep(step)).orElse(atFirstStep());
+			optionalPreviousStep.map(s -> afterStep(optionalPreviousStep)).orElse(atFirstStep());
 		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	

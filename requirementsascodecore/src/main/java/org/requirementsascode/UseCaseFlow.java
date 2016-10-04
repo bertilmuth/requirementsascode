@@ -77,7 +77,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow after(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		UseCaseStep useCaseStep = useCase.getStep(stepName);
+		Optional<UseCaseStep> useCaseStep = Optional.of(useCase.getStep(stepName));
 		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(useCaseStep)));
 
 		return this;

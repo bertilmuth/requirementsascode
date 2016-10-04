@@ -54,7 +54,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(SYSTEM_HANDLES_EXCEPTION, useCaseRunner.getLatestStep().getName());
+		assertEquals(SYSTEM_HANDLES_EXCEPTION, getLatestStepName());
 	}
 	
 	@Test
