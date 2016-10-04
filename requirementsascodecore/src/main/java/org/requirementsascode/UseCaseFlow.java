@@ -65,7 +65,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 
 	public UseCaseFlow atFirst() {
-		setCompleteStepPredicate(isSystemInDifferentFlowThan(this).and(atFirstStep()));
+		setCompleteStepPredicate(alternativeFlowPredicate().and(atFirstStep()));
 		return this;
 	}
 	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
@@ -77,7 +77,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 		Objects.requireNonNull(stepName);
 
 		UseCaseStep useCaseStep = useCase.getStep(stepName);
-		setCompleteStepPredicate(isSystemInDifferentFlowThan(this).and(afterStep(useCaseStep)));
+		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(useCaseStep)));
 
 		return this;
 	}
@@ -86,9 +86,13 @@ public class UseCaseFlow extends UseCaseModelElement {
 		Objects.requireNonNull(whenPredicate);
 
 		completePredicate = optionalStepPredicate
-			.orElse(isSystemInDifferentFlowThan(this))
+			.orElse(alternativeFlowPredicate())
 			.and(whenPredicate);
 		return this;
+	}
+	
+	private Predicate<UseCaseRunner> alternativeFlowPredicate() {
+		return isSystemInDifferentFlowThan(this);
 	}
 	
 	protected String uniqueStepWhereJumpHappensName(String stepName) {
