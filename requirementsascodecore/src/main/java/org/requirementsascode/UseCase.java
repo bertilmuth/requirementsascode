@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,11 +42,8 @@ public class UseCase extends UseCaseModelElement{
 	public UseCaseFlow getFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
-		Optional<UseCaseFlow> optionalFlow = flows.stream().filter(flow -> flowName.equals(flow.getName())).findAny();
-		if(!optionalFlow.isPresent()){
-			throw new NoSuchElementExistsException(flowName);
-		}
-		return optionalFlow.get();
+		UseCaseFlow flow = getUseCaseModelElementByName(flowName, flows);
+		return flow;
 	}
 	
 	public List<UseCaseFlow> getFlows() {
@@ -55,11 +53,8 @@ public class UseCase extends UseCaseModelElement{
 	public UseCaseStep getStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		Optional<UseCaseStep> optionalStep = steps.stream().filter(step -> stepName.equals(step.getName())).findAny();
-		if(!optionalStep.isPresent()){
-			throw new NoSuchElementExistsException(stepName);
-		}
-		return optionalStep.get();
+		UseCaseStep step = getUseCaseModelElementByName(stepName, steps);
+		return step;
 	}
 	
 	UseCaseStep newStep(String stepName, UseCaseFlow flow, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
@@ -84,11 +79,20 @@ public class UseCase extends UseCaseModelElement{
 	public boolean hasFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 		
-		boolean hasStep = flows.stream().anyMatch(flow -> flowName.equals(flow.getName()));
+		boolean hasStep = flows.stream().anyMatch(hasName(flowName));
 		return hasStep;
 	}
 
 	public List<UseCaseStep> getSteps() {
 		return Collections.unmodifiableList(steps);
+	}
+	
+	private <T extends UseCaseModelElement> T getUseCaseModelElementByName(String useCaseModelElementName, Collection<T> useCaseModelElements) {
+		Optional<T> optionalUseCaseModelElement = useCaseModelElements.stream().filter(hasName(useCaseModelElementName)).findAny();
+		T useCaseModelElement = optionalUseCaseModelElement.orElseThrow(() -> new NoSuchElementExistsException(useCaseModelElementName));
+		return useCaseModelElement;
+	}
+	private Predicate<? super UseCaseModelElement> hasName(String name) {
+		return useCaseModelElement -> name.equals(useCaseModelElement.getName());
 	}
 }
