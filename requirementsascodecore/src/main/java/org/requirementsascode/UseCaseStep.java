@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepCondition.afterStep;
+import static org.requirementsascode.UseCaseStepCondition.atFirstStep;
 import static org.requirementsascode.UseCaseStepCondition.noOtherStepIsEnabledThan;
 
 import java.util.Objects;
@@ -85,6 +86,9 @@ public class UseCaseStep extends UseCaseModelElement{
 		return predicate;
 	} 
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
+		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
+			optionalPreviousStep.map(step -> afterStep(step)).orElse(atFirstStep());
+		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	
 	public class ActorPart<T>{
