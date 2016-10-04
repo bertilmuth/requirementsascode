@@ -28,35 +28,36 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		continueAfter(stepName, null, completePredicate);
+		continueAfter(stepName, Optional.empty(), completePredicate);
 		return getUseCase();
 	}
 
-	private void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens,
+	private void continueAfter(String continueAfterStepName, Optional<UseCaseStep> optionalStepBeforeJumpHappens,
 			Predicate<UseCaseRunner> predicate) {
 		UseCaseStep continueAfterStep = getUseCase().getStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
 
-		newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(jumpTo(continueAfterStep));
+		newStep(stepWhereJumpHappensName, optionalStepBeforeJumpHappens, predicate)
+			.system(jumpTo(continueAfterStep));
 	}
 	
 	void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens) {
 		Objects.requireNonNull(continueAfterStepName);
 		Objects.requireNonNull(stepBeforeJumpHappens);
 
-		continueAfter(continueAfterStepName, stepBeforeJumpHappens, null);
+		continueAfter(continueAfterStepName, Optional.of(stepBeforeJumpHappens), null);
 	}
 	
 	public UseCaseStep newStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		UseCaseStep newStep = newStep(stepName, null, completePredicate);
+		UseCaseStep newStep = newStep(stepName, Optional.empty(), completePredicate);
 
 		return newStep;
 	}
 
-	private UseCaseStep newStep(String stepName, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
-		UseCaseStep stepToLeave = getUseCase().newStep(stepName, this, previousStep, predicate);
+	private UseCaseStep newStep(String stepName, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
+		UseCaseStep stepToLeave = getUseCase().newStep(stepName, this, optionalPreviousStep, predicate);
 		return stepToLeave;
 	}
 

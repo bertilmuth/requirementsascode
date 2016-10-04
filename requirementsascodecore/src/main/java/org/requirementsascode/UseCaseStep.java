@@ -4,6 +4,7 @@ import static org.requirementsascode.UseCaseStepCondition.afterStep;
 import static org.requirementsascode.UseCaseStepCondition.noOtherStepIsEnabledThan;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -11,18 +12,18 @@ import org.requirementsascode.event.AutonomousSystemReactionEvent;
 
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
-	private UseCaseStep previousStep;
+	private Optional<UseCaseStep> optionalPreviousStep;
 	private Predicate<UseCaseRunner> predicate;
 	
 	private ActorPart<?> actorPart;
 	private SystemPart<?> systemPart;
 		
-	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
+	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
 		super(stepName, useCaseFlow.getModel());
 		Objects.requireNonNull(useCaseFlow);
 		
 		this.useCaseFlow = useCaseFlow;
-		this.previousStep = previousStep;
+		this.optionalPreviousStep = optionalPreviousStep;
 		this.predicate = predicate;		
 	}
 	
@@ -65,8 +66,8 @@ public class UseCaseStep extends UseCaseModelElement{
 		return getUseCaseFlow().getUseCase();
 	}
 	
-	public UseCaseStep getPreviousStep() {
-		return previousStep;
+	public Optional<UseCaseStep> getOptionalPreviousStep() {
+		return optionalPreviousStep;
 	}
 	
 	public ActorPart<?> getActorPart() {
@@ -84,7 +85,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		return predicate;
 	} 
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
-		return afterStep(previousStep).and(noOtherStepIsEnabledThan(this));
+		return afterStep(optionalPreviousStep.orElse(null)).and(noOtherStepIsEnabledThan(this));
 	}
 	
 	public class ActorPart<T>{
@@ -147,9 +148,9 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 
 			UseCaseStep newStep = 
-				getUseCase().newStep(stepName, getUseCaseFlow(), UseCaseStep.this, null);
+				getUseCase().newStep(stepName, getUseCaseFlow(), Optional.of(UseCaseStep.this), null);
 			
-			return newStep;
+			return newStep; 
 		}
 		
 		public SystemPart<T> repeatWhile(Predicate<UseCaseRunner> condition) {

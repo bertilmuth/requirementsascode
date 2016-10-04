@@ -26,7 +26,7 @@ public class UseCaseRunner {
 	public UseCaseRunner() {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
-		actorsToRunAs = Arrays.asList(useCaseModel.getAutonomousSystemActor());
+		this.actorsToRunAs = Arrays.asList(useCaseModel.getAutonomousSystemActor());
 	}
 	
 	public UseCaseModel getUseCaseModel() {

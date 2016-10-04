@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyExistsException;
@@ -72,14 +73,14 @@ public class UseCase extends UseCaseModelElement{
 		return step;
 	}
 	
-	UseCaseStep newStep(String stepName, UseCaseFlow flow, UseCaseStep previousStep, Predicate<UseCaseRunner> predicate) {
+	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
 		Objects.requireNonNull(stepName);
 		Objects.requireNonNull(flow);
 		
 		if(hasStep(stepName)){
 			throw new ElementAlreadyExistsException(stepName);
 		}
-		UseCaseStep newStep = new UseCaseStep(stepName, flow, previousStep, predicate);
+		UseCaseStep newStep = new UseCaseStep(stepName, flow, optionalPreviousStep, predicate);
 		steps.put(stepName, newStep);
 		return newStep;
 	}

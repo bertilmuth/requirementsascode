@@ -1,12 +1,11 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Test;
@@ -139,9 +138,10 @@ public class CreateModelTest extends AbstractTestCase{
 
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
-		UseCaseStep previousStep = steps.get(0).getPreviousStep();
 		
-		assertNull(previousStep);
+		Optional<UseCaseStep> optionalPreviousStep = steps.get(0).getOptionalPreviousStep();
+		
+		assertFalse(optionalPreviousStep.isPresent());
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep firstUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT);
 		UseCaseStep secondUseCaseStep = useCase.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStep());
+		assertEquals(firstUseCaseStep, secondUseCaseStep.getOptionalPreviousStep().get());
 	}
 	
 	@Test
@@ -213,8 +213,8 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT);
 		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.getStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertNull(firstUseCaseStep.getPreviousStep());
-		assertNull(secondUseCaseStep.getPreviousStep());
+		assertFalse(firstUseCaseStep.getOptionalPreviousStep().isPresent());
+		assertFalse(secondUseCaseStep.getOptionalPreviousStep().isPresent());
 	}
 	
 	@Test
