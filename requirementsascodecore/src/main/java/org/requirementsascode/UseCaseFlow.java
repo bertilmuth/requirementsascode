@@ -92,7 +92,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return this;
 	}
 	
-	private Predicate<UseCaseRunner> alternativeFlowPredicate() {
+	public Predicate<UseCaseRunner> alternativeFlowPredicate() {
 		return isRunnerInDifferentFlowThan(this);
 	}
 	

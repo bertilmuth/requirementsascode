@@ -16,6 +16,8 @@ public class SystemReactionTest extends AbstractTestCase{
 	private Actor actorWithDisabledStep;
 	
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
+	private static final String ANOTHER_USE_CASE = "Another Use Case";
+
 	private static final String ALTERNATIVE_FLOW = "Alternative Flow";
 	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	private static final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
@@ -238,7 +240,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactToFirstStepAlternativeWhenTextIsNotAvailable() {		
+	public void shouldReactToFirstStepAlternativeWhen() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())
@@ -254,7 +256,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactToSecondStepAlternativeWhenThereIsOneSystemReactionBefore() {		
+	public void shouldReactToSecondStepAlternativeWhen() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
@@ -318,6 +320,21 @@ public class SystemReactionTest extends AbstractTestCase{
 			useCaseRunner.run().reactTo(enterTextEvent());
 		
 		assertEquals(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, latestStep.getName());
+	}
+	
+	@Test
+	public void shouldReactToDifferentEventsInDifferentUseCases() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText());
+		
+		useCaseModel.newUseCase(ANOTHER_USE_CASE)
+			.basicFlow().when(runner -> true)
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
+		
+		useCaseRunner.run().reactTo(enterTextEvent(), enterNumberEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_NUMBER), getRunStepNames());
 	}
 	
 	@Test

@@ -85,7 +85,6 @@ public class UseCaseStep extends UseCaseModelElement{
 		return predicate;
 	} 
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
-		return afterStep(optionalPreviousStep.orElse(null)).and(noOtherStepIsEnabledThan(this));
 	}
 	
 	public class ActorPart<T>{
