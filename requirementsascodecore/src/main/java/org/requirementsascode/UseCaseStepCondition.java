@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 public class UseCaseStepCondition {
 	private UseCaseStepCondition(){};
 	
-	public static Predicate<UseCaseRunner> isSystemInDifferentFlowThan(UseCaseFlow useCaseFlow) {
+	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
 		Objects.requireNonNull(useCaseFlow);
 		
-		Predicate<UseCaseRunner> isSystemInDifferentFlow = 
-			useCaseModelRun -> !useCaseFlow.equals(useCaseModelRun.getLatestFlow());
-		return isSystemInDifferentFlow;
+		Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
+			useCaseModelRunner -> !useCaseFlow.equals(useCaseModelRunner.getLatestFlow());
+		return isRunnerInDifferentFlow;
 	}
 	
 	public static Predicate<UseCaseRunner> atFirstStep() {
@@ -21,15 +21,15 @@ public class UseCaseStepCondition {
 	}
 	
 	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {		
-		return useCaseModelRun -> {
-			UseCaseStep stepRunLastBySystem = useCaseModelRun.getLatestStep();
+		return useCaseModelRunner -> {
+			UseCaseStep stepRunLastBySystem = useCaseModelRunner.getLatestStep();
 			boolean isSystemAtRightStep = Objects.equals(stepRunLastBySystem, afterThatStep);
 			return isSystemAtRightStep;
 		};
 	}
 	
 	public static Predicate<UseCaseRunner> noOtherStepIsEnabledThan(UseCaseStep theStep) {
-		return run -> {
+		return useCaseModelRunner -> {
 			Class<?> theStepsEventClass = theStep.getActorPart().getEventClass();
 			UseCaseModel useCaseModel = theStep.getModel();
 			
@@ -37,7 +37,7 @@ public class UseCaseStepCondition {
 				useCaseModel.getUseCaseSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<UseCaseStep> enabledOtherSteps = run.getEnabledStepSubset(theStepsEventClass, otherStepsStream);
+			Set<UseCaseStep> enabledOtherSteps = useCaseModelRunner.getEnabledStepSubset(theStepsEventClass, otherStepsStream);
 			return enabledOtherSteps.size() == 0;
 		};
 	}

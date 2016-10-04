@@ -2,7 +2,7 @@ package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepCondition.afterStep;
 import static org.requirementsascode.UseCaseStepCondition.atFirstStep;
-import static org.requirementsascode.UseCaseStepCondition.isSystemInDifferentFlowThan;
+import static org.requirementsascode.UseCaseStepCondition.isRunnerInDifferentFlowThan;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -92,7 +92,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	private Predicate<UseCaseRunner> alternativeFlowPredicate() {
-		return isSystemInDifferentFlowThan(this);
+		return isRunnerInDifferentFlowThan(this);
 	}
 	
 	protected String uniqueStepWhereJumpHappensName(String stepName) {
