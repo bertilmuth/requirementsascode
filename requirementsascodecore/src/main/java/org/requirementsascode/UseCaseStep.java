@@ -67,7 +67,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		return getUseCaseFlow().getUseCase();
 	}
 	
-	public Optional<UseCaseStep> getOptionalPreviousStep() {
+	public Optional<UseCaseStep> getPreviousStep() {
 		return optionalPreviousStep;
 	}
 	

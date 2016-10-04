@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.requirementsascode.exception.NoSuchElementExistsException;
+
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
 	private Optional<Predicate<UseCaseRunner>> optionalStepPredicate;
@@ -34,11 +36,12 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 	private void continueAfter(String continueAfterStepName, Optional<UseCaseStep> optionalStepBeforeJumpHappens,
 			Predicate<UseCaseRunner> predicate) {
-		UseCaseStep continueAfterStep = getUseCase().getStep(continueAfterStepName);
+		Optional<UseCaseStep> continueAfterStep = getUseCase().getStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
 
-		newStep(stepWhereJumpHappensName, optionalStepBeforeJumpHappens, predicate)
-			.system(jumpTo(continueAfterStep));
+		continueAfterStep.map(step -> 
+			newStep(stepWhereJumpHappensName, optionalStepBeforeJumpHappens, predicate).system(jumpTo(step)))
+			.orElseThrow(() -> new NoSuchElementExistsException(continueAfterStepName));
 	}
 	
 	void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens) {
@@ -77,7 +80,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow after(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		Optional<UseCaseStep> useCaseStep = Optional.of(useCase.getStep(stepName));
+		Optional<UseCaseStep> useCaseStep = useCase.getStep(stepName);
 		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(useCaseStep)));
 
 		return this;

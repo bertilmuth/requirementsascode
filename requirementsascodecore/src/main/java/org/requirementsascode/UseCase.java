@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyExistsException;
-import org.requirementsascode.exception.NoSuchElementExistsException;
 
 public class UseCase extends UseCaseModelElement{
 	private Map<String, UseCaseFlow> flows;
@@ -46,10 +45,10 @@ public class UseCase extends UseCaseModelElement{
 		return flow;
 	}
 	
-	public UseCaseFlow getFlow(String flowName) {
+	public Optional<UseCaseFlow> getFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
-		UseCaseFlow flow = getByNameOrThrowException(flowName, flows);
+		Optional<UseCaseFlow> flow = findUseCaseModelElement(flowName, flows);
 		return flow;
 	}
 	
@@ -66,10 +65,10 @@ public class UseCase extends UseCaseModelElement{
 		return hasStep;
 	}
 	
-	public UseCaseStep getStep(String stepName) {
+	public Optional<UseCaseStep> getStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		UseCaseStep step = getByNameOrThrowException(stepName, steps);
+		Optional<UseCaseStep> step = findUseCaseModelElement(stepName, steps);
 		return step;
 	}
 	
@@ -91,11 +90,9 @@ public class UseCase extends UseCaseModelElement{
 		return Collections.unmodifiableList(stepsList);
 	}
 	
-	private <T extends UseCaseModelElement> T getByNameOrThrowException(String useCaseModelElementName, Map<String, T> useCaseModelElements) {
-		T useCaseModelElement = useCaseModelElements.get(useCaseModelElementName);
-		if(useCaseModelElement == null){
-			throw new NoSuchElementExistsException(useCaseModelElementName);
-		}
-		return useCaseModelElement;
+	private <T extends UseCaseModelElement> Optional<T> findUseCaseModelElement(String useCaseModelElementName, Map<String, T> useCaseModelElements) {
+		Optional<T> optionalUseCaseModelElement = useCaseModelElements.containsKey(useCaseModelElementName)?
+			Optional.of(useCaseModelElements.get(useCaseModelElementName)) : Optional.empty();
+		return optionalUseCaseModelElement;
 	}
 }

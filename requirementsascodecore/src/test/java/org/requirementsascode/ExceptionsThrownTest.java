@@ -42,26 +42,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfFlowNotExists() {
-		String name = "Unknown Flow";
-		
-		thrown.expect(NoSuchElementExistsException.class);
-		thrown.expectMessage(name);
-		
-		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE).getFlow(name);
-	}
-	
-	@Test
-	public void shouldThrowExceptionIfStepNotExists() {
-		String name = "Unknown Step";
-		
-		thrown.expect(NoSuchElementExistsException.class);
-		thrown.expectMessage(name);
-		
-		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE).getStep(name);
-	}
-	
-	@Test
 	public void shouldThrowExceptionIfActorIsCreatedTwice() {
 		String name = "Duplicate Actor";
 		
