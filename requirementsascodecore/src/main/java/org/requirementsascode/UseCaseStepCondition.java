@@ -1,7 +1,9 @@
 package org.requirementsascode;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class UseCaseStepCondition {
 	private UseCaseStepCondition(){};
@@ -23,6 +25,20 @@ public class UseCaseStepCondition {
 			UseCaseStep stepRunLastBySystem = useCaseModelRun.getLatestStep();
 			boolean isSystemAtRightStep = Objects.equals(stepRunLastBySystem, afterThatStep);
 			return isSystemAtRightStep;
+		};
+	}
+	
+	public static Predicate<UseCaseRunner> noOtherStepIsEnabledThan(UseCaseStep theStep) {
+		return run -> {
+			Class<?> theStepsEventClass = theStep.getActorPart().getEventClass();
+			UseCaseModel useCaseModel = theStep.getModel();
+			
+			Stream<UseCaseStep> otherStepsStream = 
+				useCaseModel.getUseCaseSteps().stream()
+					.filter(step -> !step.equals(theStep));
+			
+			Set<UseCaseStep> enabledOtherSteps = run.getEnabledStepSubset(theStepsEventClass, otherStepsStream);
+			return enabledOtherSteps.size() == 0;
 		};
 	}
 }
