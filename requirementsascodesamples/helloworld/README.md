@@ -1,4 +1,4 @@
-# Hello World Example - System prints "Hello, User."
+# Hello World Sample - System prints "Hello, User."
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
@@ -12,7 +12,7 @@ useCaseRunner.run();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld01_SystemPrintsHelloUser.java).
 
-# Hello World Example - User enters name, system prints it
+# Hello World Sample - User enters name, system prints it
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
