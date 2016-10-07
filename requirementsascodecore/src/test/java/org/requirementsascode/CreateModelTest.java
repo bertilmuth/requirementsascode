@@ -37,10 +37,11 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldCreateSingleUseCase() {
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		
+		assertTrue(useCaseModel.hasUseCase(SAY_HELLO_USE_CASE));
+
 		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(1, useCases.size());
 		assertEquals(SAY_HELLO_USE_CASE, useCases.iterator().next().getName());
-		assertEquals(SAY_HELLO_USE_CASE, useCases.iterator().next().toString());
 	}
 
 	@Test
@@ -54,11 +55,12 @@ public class CreateModelTest extends AbstractTestCase{
 	
 	@Test
 	public void shouldHaveBasicFlowInAnyCase() {
-		List<UseCaseFlow> flows = useCaseModel.newUseCase(SAY_HELLO_USE_CASE).getFlows();
+		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
+		List<UseCaseFlow> flows = useCase.getFlows();
 		
 		assertEquals(1, flows.size());
+		assertTrue(useCase.hasFlow(BASIC_FLOW));
 		assertEquals(BASIC_FLOW, flows.iterator().next().getName());
-		assertEquals(BASIC_FLOW, flows.iterator().next().toString());
 	}
 
 	@Test
@@ -75,13 +77,12 @@ public class CreateModelTest extends AbstractTestCase{
 		useCase
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
-		
+				
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
 		UseCaseStep step = steps.get(0);
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
 		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());		
 		assertEquals(customer, step.getActorPart().getActor());
 	}
@@ -93,8 +94,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
-		Actor actorFromModel = useCaseModel.findActor(customer.getName()).get();
-		assertEquals(customer.getName(), actorFromModel.getName());
+		assertTrue(useCaseModel.hasActor(customer.getName()));
 	}
 	
 	@Test
