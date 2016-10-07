@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.exception.ElementAlreadyExistsException;
+import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
 
 public class UseCase extends UseCaseModelElement{
 	private Map<String, UseCaseFlow> flows;
@@ -38,7 +38,7 @@ public class UseCase extends UseCaseModelElement{
 		Objects.requireNonNull(flowName);
 
 		if(hasFlow(flowName)){
-			throw new ElementAlreadyExistsException(flowName);
+			throw new ElementAlreadyExistsInModelException(flowName);
 		}
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
 		flows.put(flowName, flow);
@@ -77,7 +77,7 @@ public class UseCase extends UseCaseModelElement{
 		Objects.requireNonNull(flow);
 		
 		if(hasStep(stepName)){
-			throw new ElementAlreadyExistsException(stepName);
+			throw new ElementAlreadyExistsInModelException(stepName);
 		}
 		UseCaseStep newStep = new UseCaseStep(stepName, flow, optionalPreviousStep, predicate);
 		steps.put(stepName, newStep);

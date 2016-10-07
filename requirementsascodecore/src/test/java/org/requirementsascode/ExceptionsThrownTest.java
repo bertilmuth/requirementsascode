@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.requirementsascode.event.EnterText;
-import org.requirementsascode.exception.ElementAlreadyExistsException;
+import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 import org.requirementsascode.exception.NoSuchElementExistsInModelException;
 import org.requirementsascode.exception.NoSuchElementExistsInUseCaseException;
@@ -85,7 +85,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void shouldThrowExceptionIfActorIsCreatedTwice() {
 		String name = "Duplicate Actor";
 		
-		thrown.expect(ElementAlreadyExistsException.class);
+		thrown.expect(ElementAlreadyExistsInModelException.class);
 		thrown.expectMessage(name);
 		
 		useCaseModel.newActor(name);
@@ -96,7 +96,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void shouldThrowExceptionIfUseCaseIsCreatedTwice() {
 		String name = "Duplicate Use Case";
 		
-		thrown.expect(ElementAlreadyExistsException.class);
+		thrown.expect(ElementAlreadyExistsInModelException.class);
 		thrown.expectMessage(name);
 		
 		useCaseModel.newUseCase(name);
@@ -107,7 +107,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void shouldThrowExceptionIfFlowIsCreatedTwice() {
 		String name = "Duplicate Flow";
 		
-		thrown.expect(ElementAlreadyExistsException.class);
+		thrown.expect(ElementAlreadyExistsInModelException.class);
 		thrown.expectMessage(name);
 		
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
@@ -121,7 +121,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void shouldThrowExceptionIfStepIsCreatedTwice() {
 		String name = "Duplicate Step";
 		
-		thrown.expect(ElementAlreadyExistsException.class);
+		thrown.expect(ElementAlreadyExistsInModelException.class);
 		thrown.expectMessage(name);
 		
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)

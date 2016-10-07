@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.exception.ElementAlreadyExistsException;
+import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
 import org.requirementsascode.exception.NoSuchElementExistsInModelException;
 
 public class UseCaseModel {
@@ -38,7 +38,7 @@ public class UseCaseModel {
 		Objects.requireNonNull(actorName);
 		
 		if(hasActor(actorName)){
-			throw new ElementAlreadyExistsException(actorName);
+			throw new ElementAlreadyExistsInModelException(actorName);
 		}
 		Actor actor = new Actor(actorName, this);
 		nameToActorMap.put(actorName, actor);
@@ -59,7 +59,7 @@ public class UseCaseModel {
 		Objects.requireNonNull(useCaseName);
 		
 		if(hasUseCase(useCaseName)){
-			throw new ElementAlreadyExistsException(useCaseName);
+			throw new ElementAlreadyExistsInModelException(useCaseName);
 		}
 		UseCase useCase = new UseCase(useCaseName, this);
 		nameToUseCaseMap.put(useCaseName, useCase);
