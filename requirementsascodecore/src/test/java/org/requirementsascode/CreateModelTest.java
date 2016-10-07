@@ -93,7 +93,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
-		Actor actorFromModel = useCaseModel.getActor(customer.getName());
+		Actor actorFromModel = useCaseModel.findActor(customer.getName());
 		assertEquals(customer.getName(), actorFromModel.getName());
 	}
 	
@@ -104,7 +104,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
-		Actor actorFromModel = useCaseModel.getActor(customer.getName());
+		Actor actorFromModel = useCaseModel.findActor(customer.getName());
 		
 		Set<UseCase> useCases = actorFromModel.getUseCases();
 		assertEquals(1, useCases.size());
@@ -119,7 +119,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
 
-		Actor actorFromModel = useCaseModel.getActor(customer.getName());
+		Actor actorFromModel = useCaseModel.findActor(customer.getName());
 		List<UseCaseStep> steps = actorFromModel.getUseCaseSteps(useCase);
 		
 		UseCaseStep step = steps.get(0);
@@ -226,15 +226,15 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());		
 		
 		assertEquals(1, useCaseModel.getUseCases().size());
-		assertEquals(useCaseModel.getUseCase(USE_CASE), useCaseModel.getUseCases().iterator().next());
+		assertEquals(useCaseModel.findUseCase(USE_CASE), useCaseModel.getUseCases().iterator().next());
 	}
 	
 	@Test
 	public void shouldUniquelyIdentifyFlowsByName() {		
 		useCaseModel.newUseCase(USE_CASE).newFlow(ANOTHER_FLOW);
-		Optional<UseCaseFlow> existingFlow = useCaseModel.getUseCase(USE_CASE).findFlow(ANOTHER_FLOW);
+		Optional<UseCaseFlow> existingFlow = useCaseModel.findUseCase(USE_CASE).findFlow(ANOTHER_FLOW);
 		
-		UseCase uc = useCaseModel.getUseCase(USE_CASE);
+		UseCase uc = useCaseModel.findUseCase(USE_CASE);
 		assertEquals(2, uc.getFlows().size()); // This is 2 because the basic flow always exists
 		assertEquals(existingFlow.get(), uc.getFlows().get(1));
 	}
@@ -245,11 +245,11 @@ public class CreateModelTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
 
-		useCaseModel.getUseCase(USE_CASE)
+		useCaseModel.findUseCase(USE_CASE)
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());		
 		
-		UseCase uc = useCaseModel.getUseCase(USE_CASE);
+		UseCase uc = useCaseModel.findUseCase(USE_CASE);
 		assertEquals(1, uc.getFlows().size());
 	}
 	

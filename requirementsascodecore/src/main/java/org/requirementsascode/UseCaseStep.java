@@ -20,7 +20,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	private SystemPart<?> systemPart;
 		
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
-		super(stepName, useCaseFlow.getModel());
+		super(stepName, useCaseFlow.getUseCaseModel());
 		Objects.requireNonNull(useCaseFlow);
 		
 		this.useCaseFlow = useCaseFlow;
@@ -40,7 +40,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public UseCaseStep.SystemPart<?> system(Runnable autonomousSystemReaction) {
 		Objects.requireNonNull(autonomousSystemReaction);
 		
-		Actor autoReactionActor = getModel().getAutonomousSystemActor();
+		Actor autoReactionActor = getUseCaseModel().getAutonomousSystemActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
 			actor(autoReactionActor, AutonomousSystemReactionEvent.class).
@@ -52,7 +52,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public <T> ActorPart<T> handle(Class<T> exceptionOrEventClass) {
 		Objects.requireNonNull(exceptionOrEventClass);
 
-		Actor autoReactionActor = getModel().getAutonomousSystemActor();
+		Actor autoReactionActor = getUseCaseModel().getAutonomousSystemActor();
 		ActorPart<T> newActorPart = actor(autoReactionActor, exceptionOrEventClass);
 		this.actorPart = newActorPart;
 		
@@ -136,7 +136,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase newUseCase(String useCaseName) {
 			Objects.requireNonNull(useCaseName);
 
-			UseCase newUseCase = getModel().newUseCase(useCaseName);
+			UseCase newUseCase = getUseCaseModel().newUseCase(useCaseName);
 			return newUseCase;
 		}
 		
@@ -189,7 +189,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public void reset() {
 			newStep(uniqueResetStepName()).system(
 				() -> {
-					getModel().getUseCaseRunner().setLatestFlow(null);
+					getUseCaseModel().getUseCaseRunner().setLatestFlow(null);
 					getUseCaseFlow().jumpTo(null);
 				});
 		}

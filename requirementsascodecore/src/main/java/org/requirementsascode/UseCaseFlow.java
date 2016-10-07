@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.exception.NoSuchElementExistsException;
+import org.requirementsascode.exception.NoSuchElementExistsInUseCaseException;
 
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
@@ -16,7 +16,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	private Predicate<UseCaseRunner> completePredicate;
 
 	public UseCaseFlow(String name, UseCase useCase) {
-		super(name, useCase.getModel());
+		super(name, useCase.getUseCaseModel());
 
 		Objects.requireNonNull(useCase);
 		this.useCase = useCase;
@@ -41,7 +41,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 		continueAfterStep.map(step -> 
 			newStep(stepWhereJumpHappensName, optionalStepBeforeJumpHappens, predicate).system(jumpTo(step)))
-			.orElseThrow(() -> new NoSuchElementExistsException(continueAfterStepName));
+			.orElseThrow(() -> new NoSuchElementExistsInUseCaseException(continueAfterStepName));
 	}
 	
 	void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens) {
@@ -65,7 +65,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 
 	Runnable jumpTo(UseCaseStep stepToContinueAfter) {
-		return () -> getModel().getUseCaseRunner().setLatestStep(stepToContinueAfter);
+		return () -> getUseCaseModel().getUseCaseRunner().setLatestStep(stepToContinueAfter);
 	}
 
 	public UseCaseFlow atFirst() {
@@ -76,14 +76,23 @@ public class UseCaseFlow extends UseCaseModelElement {
 		this.optionalStepPredicate = Optional.of(stepPredicate);
 		this.completePredicate = stepPredicate;
 	}
+	
+	public UseCaseFlow after(String stepName, String useCaseName) {
+		Objects.requireNonNull(stepName);
+		Objects.requireNonNull(useCaseName);
+		UseCase useCase = getUseCaseModel().findUseCase(useCaseName);
+		return after(stepName, useCase);
+	}
+	private UseCaseFlow after(String stepName, UseCase useCase) {
+		NoSuchElementExistsInUseCaseException exception = new NoSuchElementExistsInUseCaseException(stepName);
+		Optional<UseCaseStep> foundStep = useCase.findStep(stepName);
+		foundStep.orElseThrow(() -> exception);
+		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(foundStep)));
+		return this;
+	}
 
 	public UseCaseFlow after(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		Optional<UseCaseStep> useCaseStep = useCase.findStep(stepName);
-		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(useCaseStep)));
-
-		return this;
+		return after(stepName, useCase);
 	}
 
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {

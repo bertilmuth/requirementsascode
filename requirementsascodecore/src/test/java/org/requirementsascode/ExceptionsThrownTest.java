@@ -8,7 +8,8 @@ import org.junit.rules.ExpectedException;
 import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyExistsException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
-import org.requirementsascode.exception.NoSuchElementExistsException;
+import org.requirementsascode.exception.NoSuchElementExistsInModelException;
+import org.requirementsascode.exception.NoSuchElementExistsInUseCaseException;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
@@ -25,20 +26,42 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void shouldThrowExceptionIfActorNotExists() {
 		String name = "Unknown Actor";
 		
-		thrown.expect(NoSuchElementExistsException.class);
+		thrown.expect(NoSuchElementExistsInModelException.class);
 		thrown.expectMessage(name);
 		
-		useCaseModel.getActor(name);
+		useCaseModel.findActor(name);
 	}
 	
 	@Test
 	public void shouldThrowExceptionIfUseCaseNotExists() {
 		String name = "Unknown Use Case";
 		
-		thrown.expect(NoSuchElementExistsException.class);
+		thrown.expect(NoSuchElementExistsInModelException.class);
 		thrown.expectMessage(name);
 		
-		useCaseModel.getUseCase(name);
+		useCaseModel.findUseCase(name);
+	}
+	
+	@Test
+	public void shouldThrowExceptionIfAfterNotExists() {
+		String name = "Unknown Step";
+		
+		thrown.expect(NoSuchElementExistsInUseCaseException.class);
+		thrown.expectMessage(name);
+		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow().after(name);
+	}
+	
+	@Test
+	public void shouldThrowExceptionIfContinueAfterNotExists() {
+		String name = "Unknown Step";
+		
+		thrown.expect(NoSuchElementExistsInUseCaseException.class);
+		thrown.expectMessage(name);
+		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow().continueAfter(name);
 	}
 	
 	@Test
@@ -73,7 +96,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.newFlow(name);
 			
-		useCaseModel.getUseCase(EXCEPTION_THROWING_USE_CASE)
+		useCaseModel.findUseCase(EXCEPTION_THROWING_USE_CASE)
 			.newFlow(name);
 	}
 	

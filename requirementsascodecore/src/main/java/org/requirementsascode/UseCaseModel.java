@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.ElementAlreadyExistsException;
-import org.requirementsascode.exception.NoSuchElementExistsException;
+import org.requirementsascode.exception.NoSuchElementExistsInModelException;
 
 public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
@@ -27,10 +27,10 @@ public class UseCaseModel {
 	public boolean hasActor(String actorName) {
 		Objects.requireNonNull(actorName);
 		
-		return getActorByName(actorName)!=null;
+		return findActorByName(actorName)!=null;
 	}
 	
-	private Actor getActorByName(String actorName) {
+	private Actor findActorByName(String actorName) {
 		return nameToActorMap.get(actorName);
 	}
 	
@@ -48,10 +48,10 @@ public class UseCaseModel {
 	public boolean hasUseCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		
-		return getUseCaseByName(useCaseName)!=null;
+		return findUseCaseByName(useCaseName)!=null;
 	}
 	
-	private UseCase getUseCaseByName(String useCaseName) {		
+	private UseCase findUseCaseByName(String useCaseName) {		
 		return nameToUseCaseMap.get(useCaseName);
 	}
 
@@ -66,23 +66,23 @@ public class UseCaseModel {
 		return useCase;
 	}
 	
-	public Actor getActor(String actorName) {
+	public Actor findActor(String actorName) {
 		Objects.requireNonNull(actorName);
 		
 		if(!hasActor(actorName)){
-			throw new NoSuchElementExistsException(actorName);
+			throw new NoSuchElementExistsInModelException(actorName);
 		}
-		Actor existingActor = getActorByName(actorName);
+		Actor existingActor = findActorByName(actorName);
 		return existingActor;
 	}
 
-	public UseCase getUseCase(String useCaseName) {
+	public UseCase findUseCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		
 		if(!hasUseCase(useCaseName)){
-			throw new NoSuchElementExistsException(useCaseName);
+			throw new NoSuchElementExistsInModelException(useCaseName);
 		}
-		UseCase existingUseCase = getUseCaseByName(useCaseName);
+		UseCase existingUseCase = findUseCaseByName(useCaseName);
 		return existingUseCase;
 	}
 

@@ -48,7 +48,7 @@ public class UseCase extends UseCaseModelElement{
 	public Optional<UseCaseFlow> findFlow(String flowName) {
 		Objects.requireNonNull(flowName);
 
-		Optional<UseCaseFlow> flow = findUseCaseModelElement(flowName, flows);
+		Optional<UseCaseFlow> flow = findUseCaseElement(flowName, flows);
 		return flow;
 	}
 	
@@ -68,7 +68,7 @@ public class UseCase extends UseCaseModelElement{
 	public Optional<UseCaseStep> findStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		Optional<UseCaseStep> step = findUseCaseModelElement(stepName, steps);
+		Optional<UseCaseStep> step = findUseCaseElement(stepName, steps);
 		return step;
 	}
 	
@@ -90,9 +90,9 @@ public class UseCase extends UseCaseModelElement{
 		return Collections.unmodifiableList(stepsList);
 	}
 	
-	private <T extends UseCaseModelElement> Optional<T> findUseCaseModelElement(String useCaseModelElementName, Map<String, T> useCaseModelElements) {
-		Optional<T> optionalUseCaseModelElement = useCaseModelElements.containsKey(useCaseModelElementName)?
-			Optional.of(useCaseModelElements.get(useCaseModelElementName)) : Optional.empty();
+	private <T extends UseCaseModelElement> Optional<T> findUseCaseElement(String useCaseElementName, Map<String, T> useCaseElements) {
+		Optional<T> optionalUseCaseModelElement = useCaseElements.containsKey(useCaseElementName)?
+			Optional.of(useCaseElements.get(useCaseElementName)) : Optional.empty();
 		return optionalUseCaseModelElement;
 	}
 }

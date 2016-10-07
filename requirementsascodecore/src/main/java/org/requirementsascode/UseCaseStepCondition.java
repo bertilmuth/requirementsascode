@@ -33,7 +33,7 @@ public class UseCaseStepCondition {
 	public static Predicate<UseCaseRunner> noOtherStepIsEnabledThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getActorPart().getEventClass();
-			UseCaseModel useCaseModel = theStep.getModel();
+			UseCaseModel useCaseModel = theStep.getUseCaseModel();
 			
 			Stream<UseCaseStep> otherStepsStream = 
 				useCaseModel.getUseCaseSteps().stream()
