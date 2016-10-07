@@ -17,28 +17,29 @@ public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
 	private Map<String, UseCase> nameToUseCaseMap;
 	private UseCaseRunner useCaseRunner;
-	private Actor autonomousSystemReactionActor;
+	private Actor systemActor;
 	
 	UseCaseModel(UseCaseRunner useCaseModelRun) {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
-		this.autonomousSystemReactionActor = newActor("Autonomous System Reaction Actor");
+		this.systemActor = newActor("Autonomous System Reaction Actor");
 		this.useCaseRunner = useCaseModelRun;
 	}
 
 	public boolean hasActor(String actorName) {		
-		return hasModelElement(actorName, nameToActorMap);
-	}
-	
-	public Actor newActor(String actorName) {
-		Objects.requireNonNull(actorName);
-		Actor actor = new Actor(actorName, this);
-		saveModelElement(actor, nameToActorMap);
-		return actor;
+		boolean hasActor = hasModelElement(actorName, nameToActorMap);
+		return hasActor;
 	}
 
 	public boolean hasUseCase(String useCaseName) {		
-		return hasModelElement(useCaseName, nameToUseCaseMap);
+		boolean hasUseCase = hasModelElement(useCaseName, nameToUseCaseMap);
+		return hasUseCase;
+	}
+	
+	public Actor newActor(String actorName) {
+		Actor actor = new Actor(actorName, this);
+		saveModelElement(actor, nameToActorMap);
+		return actor;
 	}
 
 	public UseCase newUseCase(String useCaseName) {		
@@ -76,8 +77,8 @@ public class UseCaseModel {
 		return useCaseRunner;
 	}
 
-	public Actor getAutonomousSystemActor() {
-		return autonomousSystemReactionActor;
+	public Actor getSystemActor() {
+		return systemActor;
 	}
 	
 	static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {

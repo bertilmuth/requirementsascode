@@ -26,7 +26,7 @@ public class UseCaseRunner {
 	public UseCaseRunner() {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
-		this.actorsToRunAs = Arrays.asList(useCaseModel.getAutonomousSystemActor());
+		this.actorsToRunAs = Arrays.asList(useCaseModel.getSystemActor());
 		this.optionalLatestStep = Optional.empty();
 	}
 	
@@ -41,13 +41,13 @@ public class UseCaseRunner {
 	}
 	
 	private void triggerAutonomousSystemReaction() {
-		reactTo(new AutonomousSystemReactionEvent());
+		reactTo(new SystemEvent());
 	}
 
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
-		actorsToRunAs = Arrays.asList(actor, useCaseModel.getAutonomousSystemActor());
+		actorsToRunAs = Arrays.asList(actor, useCaseModel.getSystemActor());
 		return this;
 	}
 	
