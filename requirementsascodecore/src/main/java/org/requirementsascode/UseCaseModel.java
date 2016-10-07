@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
+import org.requirementsascode.exception.ElementAlreadyInModelException;
 
 public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
@@ -99,7 +99,7 @@ public class UseCaseModel {
 		Objects.requireNonNull(modelElementNameToElementMap);
 		String modelElementName = modelElement.getName();
 		if(hasModelElement(modelElementName, modelElementNameToElementMap)){
-			throw new ElementAlreadyExistsInModelException(modelElementName);
+			throw new ElementAlreadyInModelException(modelElementName);
 		}
 		modelElementNameToElementMap.put(modelElementName, modelElement);
 	}

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.requirementsascode.UseCaseStep.ActorPart;
-import org.requirementsascode.event.AutonomousSystemReactionEvent;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 

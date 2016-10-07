@@ -1,4 +1,4 @@
-package org.requirementsascode.event;
+package org.requirementsascode;
 
 public class AutonomousSystemReactionEvent {
 }

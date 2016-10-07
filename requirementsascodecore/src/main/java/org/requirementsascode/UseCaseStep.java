@@ -9,8 +9,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.event.AutonomousSystemReactionEvent;
-
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> optionalPreviousStep;
