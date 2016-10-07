@@ -121,4 +121,12 @@ public class UseCaseModel {
 	static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		return findModelElement(modelElementName, modelElementNameToElementMap).isPresent();
 	}
+	
+	static <T extends UseCaseModelElement> void saveModelElement(T modelElement, Map<String, T> modelElementNameToElementMap) {
+		String modelElementName = modelElement.getName();
+		if(hasModelElement(modelElementName, modelElementNameToElementMap)){
+			throw new ElementAlreadyExistsInModelException(modelElementName);
+		}
+		modelElementNameToElementMap.put(modelElementName, modelElement);
+	}
 }

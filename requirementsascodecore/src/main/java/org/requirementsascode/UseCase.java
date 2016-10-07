@@ -34,12 +34,9 @@ public class UseCase extends UseCaseModelElement{
 	
 	public UseCaseFlow newFlow(String flowName) {
 		Objects.requireNonNull(flowName);
-
-		if(hasFlow(flowName)){
-			throw new ElementAlreadyExistsInModelException(flowName);
-		}
+ 
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
-		flows.put(flowName, flow);
+		UseCaseModel.saveModelElement(flow, flows);
 		return flow;
 	}
 	
