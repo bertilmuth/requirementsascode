@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -107,5 +108,17 @@ public class UseCaseModel {
 
 	public Actor getAutonomousSystemActor() {
 		return autonomousSystemReactionActor;
+	}
+	
+	static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+		Objects.requireNonNull(modelElementName);
+		Objects.requireNonNull(modelElementNameToElementMap);
+		Optional<T> optionalUseCaseModelElement = modelElementNameToElementMap.containsKey(modelElementName)?
+			Optional.of(modelElementNameToElementMap.get(modelElementName)) : Optional.empty();
+		return optionalUseCaseModelElement;
+	}
+	
+	static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+		return findModelElement(modelElementName, modelElementNameToElementMap).isPresent();
 	}
 }

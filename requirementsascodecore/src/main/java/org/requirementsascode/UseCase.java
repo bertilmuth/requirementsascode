@@ -27,11 +27,9 @@ public class UseCase extends UseCaseModelElement{
 		return basicFlow;
 	}
 	
-	public boolean hasFlow(String flowName) {
-		Objects.requireNonNull(flowName);
-		
-		boolean hasStep = flows.containsKey(flowName); 
-		return hasStep;
+	public boolean hasFlow(String flowName) {		
+		boolean hasFlow = UseCaseModel.hasModelElement(flowName, flows);
+		return hasFlow;
 	}
 	
 	public UseCaseFlow newFlow(String flowName) {
@@ -46,9 +44,7 @@ public class UseCase extends UseCaseModelElement{
 	}
 	
 	public Optional<UseCaseFlow> findFlow(String flowName) {
-		Objects.requireNonNull(flowName);
-
-		Optional<UseCaseFlow> flow = findUseCaseElement(flowName, flows);
+		Optional<UseCaseFlow> flow = UseCaseModel.findModelElement(flowName, flows);
 		return flow;
 	}
 	
@@ -59,23 +55,18 @@ public class UseCase extends UseCaseModelElement{
 	}
 	
 	public boolean hasStep(String stepName) {
-		Objects.requireNonNull(stepName);
-		
-		boolean hasStep = steps.containsKey(stepName);
+		boolean hasStep = UseCaseModel.hasModelElement(stepName, steps);		
 		return hasStep;
 	}
 	
 	public Optional<UseCaseStep> findStep(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		Optional<UseCaseStep> step = findUseCaseElement(stepName, steps);
+		Optional<UseCaseStep> step = UseCaseModel.findModelElement(stepName, steps);
 		return step;
 	}
 	
 	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
 		Objects.requireNonNull(stepName);
 		Objects.requireNonNull(flow);
-		
 		if(hasStep(stepName)){
 			throw new ElementAlreadyExistsInModelException(stepName);
 		}
@@ -88,11 +79,5 @@ public class UseCase extends UseCaseModelElement{
 		ArrayList<UseCaseStep> stepsList = new ArrayList<>();
 		stepsList.addAll(steps.values());
 		return Collections.unmodifiableList(stepsList);
-	}
-	
-	private <T extends UseCaseModelElement> Optional<T> findUseCaseElement(String useCaseElementName, Map<String, T> useCaseElements) {
-		Optional<T> optionalUseCaseModelElement = useCaseElements.containsKey(useCaseElementName)?
-			Optional.of(useCaseElements.get(useCaseElementName)) : Optional.empty();
-		return optionalUseCaseModelElement;
 	}
 }
