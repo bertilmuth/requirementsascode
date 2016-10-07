@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
-import org.requirementsascode.exception.NoSuchElementExistsInModelException;
 
 public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
@@ -27,66 +26,35 @@ public class UseCaseModel {
 		this.useCaseRunner = useCaseModelRun;
 	}
 
-	public boolean hasActor(String actorName) {
-		Objects.requireNonNull(actorName);
-		
-		return findActorByName(actorName)!=null;
-	}
-	
-	private Actor findActorByName(String actorName) {
-		return nameToActorMap.get(actorName);
+	public boolean hasActor(String actorName) {		
+		return hasModelElement(actorName, nameToActorMap);
 	}
 	
 	public Actor newActor(String actorName) {
 		Objects.requireNonNull(actorName);
-		
-		if(hasActor(actorName)){
-			throw new ElementAlreadyExistsInModelException(actorName);
-		}
 		Actor actor = new Actor(actorName, this);
-		nameToActorMap.put(actorName, actor);
+		saveModelElement(actor, nameToActorMap);
 		return actor;
 	}
 
-	public boolean hasUseCase(String useCaseName) {
-		Objects.requireNonNull(useCaseName);
-		
-		return findUseCaseByName(useCaseName)!=null;
-	}
-	
-	private UseCase findUseCaseByName(String useCaseName) {		
-		return nameToUseCaseMap.get(useCaseName);
+	public boolean hasUseCase(String useCaseName) {		
+		return hasModelElement(useCaseName, nameToUseCaseMap);
 	}
 
-	public UseCase newUseCase(String useCaseName) {
-		Objects.requireNonNull(useCaseName);
-		
-		if(hasUseCase(useCaseName)){
-			throw new ElementAlreadyExistsInModelException(useCaseName);
-		}
+	public UseCase newUseCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);
-		nameToUseCaseMap.put(useCaseName, useCase);
+		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
 	}
 	
-	public Actor findActor(String actorName) {
-		Objects.requireNonNull(actorName);
-		
-		if(!hasActor(actorName)){
-			throw new NoSuchElementExistsInModelException(actorName);
-		}
-		Actor existingActor = findActorByName(actorName);
-		return existingActor;
+	public Optional<Actor> findActor(String actorName) {
+		Optional<Actor> actor = findModelElement(actorName, nameToActorMap);
+		return actor;
 	}
 
-	public UseCase findUseCase(String useCaseName) {
-		Objects.requireNonNull(useCaseName);
-		
-		if(!hasUseCase(useCaseName)){
-			throw new NoSuchElementExistsInModelException(useCaseName);
-		}
-		UseCase existingUseCase = findUseCaseByName(useCaseName);
-		return existingUseCase;
+	public Optional<UseCase> findUseCase(String useCaseName) {
+		Optional<UseCase> useCase = findModelElement(useCaseName, nameToUseCaseMap);
+		return useCase;
 	}
 
 	public Collection<Actor> getActors() {

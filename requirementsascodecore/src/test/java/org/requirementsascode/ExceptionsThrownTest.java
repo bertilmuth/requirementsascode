@@ -7,10 +7,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
-import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
-import org.requirementsascode.exception.NoSuchElementExistsInModelException;
-import org.requirementsascode.exception.NoSuchElementExistsInUseCaseException;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
+import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
+import org.requirementsascode.exception.NoSuchElementExistsInUseCaseException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
@@ -21,26 +20,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
-	
-	@Test
-	public void shouldThrowExceptionIfActorNotExists() {
-		String name = "Unknown Actor";
-		
-		thrown.expect(NoSuchElementExistsInModelException.class);
-		thrown.expectMessage(name);
-		
-		useCaseModel.findActor(name);
-	}
-	
-	@Test
-	public void shouldThrowExceptionIfUseCaseNotExists() {
-		String name = "Unknown Use Case";
-		
-		thrown.expect(NoSuchElementExistsInModelException.class);
-		thrown.expectMessage(name);
-		
-		useCaseModel.findUseCase(name);
-	}
 	
 	@Test
 	public void shouldThrowExceptionIfAfterStepNotExistsInSameUseCase() {
@@ -113,7 +92,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.newFlow(name);
 			
-		useCaseModel.findUseCase(EXCEPTION_THROWING_USE_CASE)
+		useCaseModel.findUseCase(EXCEPTION_THROWING_USE_CASE).get()
 			.newFlow(name);
 	}
 	

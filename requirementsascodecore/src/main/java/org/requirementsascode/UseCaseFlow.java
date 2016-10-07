@@ -80,7 +80,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow after(String stepName, String useCaseName) {
 		Objects.requireNonNull(stepName);
 		Objects.requireNonNull(useCaseName);
-		UseCase useCase = getUseCaseModel().findUseCase(useCaseName);
+		UseCase useCase = getUseCaseModel().findUseCase(useCaseName).get();
 		return after(stepName, useCase);
 	}
 	private UseCaseFlow after(String stepName, UseCase useCase) {

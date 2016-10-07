@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class UseCase extends UseCaseModelElement{
-	private Map<String, UseCaseFlow> flows;
-	private Map<String, UseCaseStep> steps;
+	private Map<String, UseCaseFlow> nameToFlowMap;
+	private Map<String, UseCaseStep> nameToStepMap;
 	private UseCaseFlow basicFlow;
 
 	UseCase(String name, UseCaseModel useCaseModel) {
 		super(name, useCaseModel);
-		this.flows = new LinkedHashMap<>();
-		this.steps = new LinkedHashMap<>();
+		this.nameToFlowMap = new LinkedHashMap<>();
+		this.nameToStepMap = new LinkedHashMap<>();
 		this.basicFlow = newFlow("Basic Flow");
 	} 
 
@@ -24,7 +24,7 @@ public class UseCase extends UseCaseModelElement{
 	}
 	
 	public boolean hasFlow(String flowName) {		
-		boolean hasFlow = UseCaseModel.hasModelElement(flowName, flows);
+		boolean hasFlow = UseCaseModel.hasModelElement(flowName, nameToFlowMap);
 		return hasFlow;
 	}
 	
@@ -32,36 +32,36 @@ public class UseCase extends UseCaseModelElement{
 		Objects.requireNonNull(flowName);
  
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
-		UseCaseModel.saveModelElement(flow, flows);
+		UseCaseModel.saveModelElement(flow, nameToFlowMap);
 		return flow;
 	}
 	
 	public Optional<UseCaseFlow> findFlow(String flowName) {
-		Optional<UseCaseFlow> flow = UseCaseModel.findModelElement(flowName, flows);
+		Optional<UseCaseFlow> flow = UseCaseModel.findModelElement(flowName, nameToFlowMap);
 		return flow;
 	}
 	
 	public List<UseCaseFlow> getFlows() {
-		return UseCaseModel.getModelElements(flows);
+		return UseCaseModel.getModelElements(nameToFlowMap);
 	}
 	
 	public boolean hasStep(String stepName) {
-		boolean hasStep = UseCaseModel.hasModelElement(stepName, steps);		
+		boolean hasStep = UseCaseModel.hasModelElement(stepName, nameToStepMap);		
 		return hasStep;
 	}
 	
 	public Optional<UseCaseStep> findStep(String stepName) {
-		Optional<UseCaseStep> step = UseCaseModel.findModelElement(stepName, steps);
+		Optional<UseCaseStep> step = UseCaseModel.findModelElement(stepName, nameToStepMap);
 		return step;
 	}
 	
 	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Predicate<UseCaseRunner> predicate) {
 		UseCaseStep newStep = new UseCaseStep(stepName, flow, previousStep, predicate);
-		UseCaseModel.saveModelElement(newStep, steps);
+		UseCaseModel.saveModelElement(newStep, nameToStepMap);
 		return newStep;
 	}
 
 	public List<UseCaseStep> getSteps() {
-		return UseCaseModel.getModelElements(steps);
+		return UseCaseModel.getModelElements(nameToStepMap);
 	}
 }

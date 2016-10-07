@@ -155,9 +155,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactOnlyToEnabledStep() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText());
-			
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())			
 			.newFlow("Alternative Flow: Skipped").when(r -> false)
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException());
 		
@@ -170,9 +168,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactToEnabledStepEvenIfDisabledStepWouldBePerformedBySystem() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText());
-			
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())			
 			.newFlow("Alternative Flow: Skipped").when(r -> false)
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).system(() -> {System.out.println("You should not see this!");});
 		
@@ -197,9 +193,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactOnlyToEnabledStepWithRightActorInDifferentFlow() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(secondActor, EnterText.class).system(throwRuntimeException());
-			
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(secondActor, EnterText.class).system(throwRuntimeException())			
 			.newFlow(ALTERNATIVE_FLOW).when(textIsNotAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(rightActor, EnterText.class).system(displayEnteredText());
 		
@@ -213,9 +207,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterText.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).actor(rightActor, EnterText.class).system(displayEnteredText());
-			
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).actor(rightActor, EnterText.class).system(displayEnteredText())			
 			.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT)
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(secondActor, EnterText.class).system(throwRuntimeException());
 		
@@ -227,9 +219,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldNotReactToDisabledStepWithSpecificActor() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
-				
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterText.class).system(displayEnteredText())				
 			.newFlow(ALTERNATIVE_FLOW).when(r -> false)
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(actorWithDisabledStep, EnterText.class).system(displayEnteredText());
 				
@@ -244,9 +234,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException())		
 			.newFlow(ALTERNATIVE_FLOW).when(textIsNotAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText());
 		
@@ -260,9 +248,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())		
 			.newFlow(ALTERNATIVE_FLOW).when(r -> CUSTOMER_ENTERS_SOME_TEXT.equals(getLatestStepName()))
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText());
 		
@@ -276,9 +262,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException())		
 			.newFlow(ALTERNATIVE_FLOW).when(r -> true)
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
@@ -294,9 +278,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())		
 			.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT)
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText());
 		
@@ -310,9 +292,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterText.class).system(throwRuntimeException())
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterText.class).system(throwRuntimeException())		
 			.newFlow(ALTERNATIVE_FLOW).atFirst()
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText());
 		
@@ -370,10 +350,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE)
 				.basicFlow().when(r -> getRunStepNames().size()<4)
-					.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText());
-		
-		useCaseModel
-			.findUseCase(SAY_HELLO_USE_CASE) 
+					.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 					.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText())
 					.reset();
@@ -477,9 +454,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterText.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber())		
 			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
 		
@@ -494,9 +469,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterText.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber())		
 			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
@@ -513,14 +486,10 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterText.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber())		
 			.newFlow("AF1: Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterText.class).system(displayEnteredText())
-				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
-		
-		useCaseModel.findUseCase(SAY_HELLO_USE_CASE)
+				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT)		
 			.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
 				.newStep("Customer enters alterative number").handle(EnterNumber.class).system(displayEnteredNumber())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
