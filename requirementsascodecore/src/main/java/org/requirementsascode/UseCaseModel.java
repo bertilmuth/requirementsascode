@@ -1,8 +1,10 @@
 package org.requirementsascode;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -119,14 +121,25 @@ public class UseCaseModel {
 	}
 	
 	static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+		Objects.requireNonNull(modelElementName);
+		Objects.requireNonNull(modelElementNameToElementMap);
 		return findModelElement(modelElementName, modelElementNameToElementMap).isPresent();
 	}
 	
 	static <T extends UseCaseModelElement> void saveModelElement(T modelElement, Map<String, T> modelElementNameToElementMap) {
+		Objects.requireNonNull(modelElement);
+		Objects.requireNonNull(modelElementNameToElementMap);
 		String modelElementName = modelElement.getName();
 		if(hasModelElement(modelElementName, modelElementNameToElementMap)){
 			throw new ElementAlreadyExistsInModelException(modelElementName);
 		}
 		modelElementNameToElementMap.put(modelElementName, modelElement);
+	}
+	
+	static <T extends UseCaseModelElement> List<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
+		Objects.requireNonNull(modelElementNameToElementMap);
+		ArrayList<T> modelElementList = new ArrayList<>();
+		modelElementList.addAll(modelElementNameToElementMap.values());
+		return Collections.unmodifiableList(modelElementList);
 	}
 }

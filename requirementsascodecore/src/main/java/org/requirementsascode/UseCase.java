@@ -1,15 +1,11 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import org.requirementsascode.exception.ElementAlreadyExistsInModelException;
 
 public class UseCase extends UseCaseModelElement{
 	private Map<String, UseCaseFlow> flows;
@@ -46,9 +42,7 @@ public class UseCase extends UseCaseModelElement{
 	}
 	
 	public List<UseCaseFlow> getFlows() {
-		ArrayList<UseCaseFlow> flowsList = new ArrayList<>();
-		flowsList.addAll(flows.values());
-		return Collections.unmodifiableList(flowsList);
+		return UseCaseModel.getModelElements(flows);
 	}
 	
 	public boolean hasStep(String stepName) {
@@ -61,20 +55,13 @@ public class UseCase extends UseCaseModelElement{
 		return step;
 	}
 	
-	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
-		Objects.requireNonNull(stepName);
-		Objects.requireNonNull(flow);
-		if(hasStep(stepName)){
-			throw new ElementAlreadyExistsInModelException(stepName);
-		}
-		UseCaseStep newStep = new UseCaseStep(stepName, flow, optionalPreviousStep, predicate);
-		steps.put(stepName, newStep);
+	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Predicate<UseCaseRunner> predicate) {
+		UseCaseStep newStep = new UseCaseStep(stepName, flow, previousStep, predicate);
+		UseCaseModel.saveModelElement(newStep, steps);
 		return newStep;
 	}
 
 	public List<UseCaseStep> getSteps() {
-		ArrayList<UseCaseStep> stepsList = new ArrayList<>();
-		stepsList.addAll(steps.values());
-		return Collections.unmodifiableList(stepsList);
+		return UseCaseModel.getModelElements(steps);
 	}
 }
