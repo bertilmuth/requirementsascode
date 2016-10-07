@@ -1,7 +1,7 @@
 version = '0.1'
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
+apply plugin: "java"
+apply plugin: "jacoco"
 
 repositories {
 	mavenCentral()
@@ -16,4 +16,16 @@ jar {
 
 dependencies {
   	testCompile 'junit:junit:4.12'
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
 }
