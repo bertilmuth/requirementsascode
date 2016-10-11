@@ -102,8 +102,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 		Objects.requireNonNull(whenPredicate);
 
 		completePredicate = 
-		  Optional.of(stepPredicate
-			.orElse(alternativeFlowPredicate())
+		  Optional.of(
+			stepPredicate.orElse(alternativeFlowPredicate())
 			.and(whenPredicate));
 		return this;
 	}
