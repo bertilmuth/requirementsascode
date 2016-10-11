@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-import static org.requirementsascode.UseCaseModelElementContainer.*;
+import static org.requirementsascode.ModelElementContainer.*;
 
 public class UseCase extends UseCaseModelElement{
 	private Map<String, UseCaseFlow> nameToFlowMap;

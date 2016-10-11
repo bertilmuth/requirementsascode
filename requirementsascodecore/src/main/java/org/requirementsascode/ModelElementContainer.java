@@ -9,8 +9,8 @@ import java.util.Optional;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 
-class UseCaseModelElementContainer {
-	private UseCaseModelElementContainer() {}
+class ModelElementContainer {
+	private ModelElementContainer() {}
 	
 	public static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);

@@ -1,8 +1,8 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseModelElementContainer.findModelElement;
-import static org.requirementsascode.UseCaseModelElementContainer.hasModelElement;
-import static org.requirementsascode.UseCaseModelElementContainer.saveModelElement;
+import static org.requirementsascode.ModelElementContainer.findModelElement;
+import static org.requirementsascode.ModelElementContainer.hasModelElement;
+import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.util.Collection;
 import java.util.Collections;
