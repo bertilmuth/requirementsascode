@@ -139,9 +139,9 @@ public class CreateModelTest extends AbstractTestCase{
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
-		Optional<UseCaseStep> optionalPreviousStep = steps.get(0).getPreviousStep();
+		Optional<UseCaseStep> previousStep = steps.get(0).getPreviousStep();
 		
-		assertFalse(optionalPreviousStep.isPresent());
+		assertFalse(previousStep.isPresent());
 	}
 
 	@Test

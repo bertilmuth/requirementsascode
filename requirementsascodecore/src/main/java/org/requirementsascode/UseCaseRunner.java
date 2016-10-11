@@ -19,8 +19,8 @@ import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 public class UseCaseRunner {
 	private List<Actor> actorsToRunAs;
 	private UseCaseModel useCaseModel;
-	private Optional<UseCaseStep> optionalLatestStep;
-	private Optional<UseCaseFlow> optionalLatestFlow;
+	private Optional<UseCaseStep> latestStep;
+	private Optional<UseCaseFlow> latestFlow;
 	private boolean isRunning;
 
 	public UseCaseRunner() {
@@ -36,8 +36,8 @@ public class UseCaseRunner {
 	
 	
 	public void reset() {
-		this.optionalLatestFlow = Optional.empty();
-		this.optionalLatestStep = Optional.empty();
+		this.latestFlow = Optional.empty();
+		this.latestStep = Optional.empty();
 	}
 	
 	public UseCaseRunner run() {
@@ -177,18 +177,18 @@ public class UseCaseRunner {
 	}
 	
 	public Optional<UseCaseStep> getLatestStep() {
-		return optionalLatestStep;
+		return latestStep;
 	}
 	
-	public void setLatestStep(Optional<UseCaseStep> optionalLatestStep) {		
-		this.optionalLatestStep = optionalLatestStep;
+	public void setLatestStep(Optional<UseCaseStep> latestStep) {		
+		this.latestStep = latestStep;
 	}
 	
 	public Optional<UseCaseFlow> getLatestFlow() {
-		return optionalLatestFlow;
+		return latestFlow;
 	}
 	
-	public void setLatestFlow(Optional<UseCaseFlow> optionalLatestFlow) {
-		this.optionalLatestFlow = optionalLatestFlow;
+	public void setLatestFlow(Optional<UseCaseFlow> latestFlow) {
+		this.latestFlow = latestFlow;
 	}
 }

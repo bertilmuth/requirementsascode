@@ -15,9 +15,9 @@ class ModelElementContainer {
 	public static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
-		Optional<T> optionalUseCaseModelElement = modelElementNameToElementMap.containsKey(modelElementName)?
+		Optional<T> useCaseModelElement = modelElementNameToElementMap.containsKey(modelElementName)?
 			Optional.of(modelElementNameToElementMap.get(modelElementName)) : Optional.empty();
-		return optionalUseCaseModelElement;
+		return useCaseModelElement;
 	}
 	
 	public static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {

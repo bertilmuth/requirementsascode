@@ -11,20 +11,20 @@ import java.util.function.Predicate;
 
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
-	private Optional<UseCaseStep> optionalPreviousStep;
-	private Optional<Predicate<UseCaseRunner>> optionalPredicate;
+	private Optional<UseCaseStep> previousStep;
+	private Optional<Predicate<UseCaseRunner>> predicate;
 	
 	private ActorPart<?> actorPart;
 	private SystemPart<?> systemPart;
 		
-	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Optional<Predicate<UseCaseRunner>> optionalPredicate) {
+	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
 		super(stepName, useCaseFlow.getUseCaseModel());
-		Objects.requireNonNull(optionalPreviousStep);
-		Objects.requireNonNull(optionalPredicate);
+		Objects.requireNonNull(previousStep);
+		Objects.requireNonNull(predicate);
 		
 		this.useCaseFlow = useCaseFlow;
-		this.optionalPreviousStep = optionalPreviousStep;
-		this.optionalPredicate = optionalPredicate;		
+		this.previousStep = previousStep;
+		this.predicate = predicate;		
 	}
 	
 	public <U> UseCaseStep.ActorPart<U> actor(Actor actor, Class<U> eventClass) {
@@ -67,7 +67,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	public Optional<UseCaseStep> getPreviousStep() {
-		return optionalPreviousStep;
+		return previousStep;
 	}
 	
 	public ActorPart<?> getActorPart() {
@@ -79,12 +79,12 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	public Predicate<UseCaseRunner> getPredicate() {
-		return optionalPredicate.orElse(afterPreviousStepWhenNoOtherStepIsEnabled());
+		return predicate.orElse(afterPreviousStepWhenNoOtherStepIsEnabled());
 	} 
 	
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
 		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
-			optionalPreviousStep.map(s -> afterStep(optionalPreviousStep)).orElse(atFirstStep());
+			previousStep.map(s -> afterStep(previousStep)).orElse(atFirstStep());
 		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	
