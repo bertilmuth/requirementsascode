@@ -1,8 +1,8 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepCondition.afterStep;
-import static org.requirementsascode.UseCaseStepCondition.atFirstStep;
-import static org.requirementsascode.UseCaseStepCondition.noOtherStepIsEnabledThan;
+import static org.requirementsascode.UseCaseStepPredicate.afterStep;
+import static org.requirementsascode.UseCaseStepPredicate.atFirstStep;
+import static org.requirementsascode.UseCaseStepPredicate.noOtherStepIsEnabledThan;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -12,18 +12,20 @@ import java.util.function.Predicate;
 public class UseCaseStep extends UseCaseModelElement{
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> optionalPreviousStep;
-	private Predicate<UseCaseRunner> predicate;
+	private Optional<Predicate<UseCaseRunner>> optionalPredicate;
 	
 	private ActorPart<?> actorPart;
 	private SystemPart<?> systemPart;
 		
-	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
+	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Optional<Predicate<UseCaseRunner>> optionalPredicate) {
 		super(stepName, useCaseFlow.getUseCaseModel());
 		Objects.requireNonNull(useCaseFlow);
+		Objects.requireNonNull(optionalPreviousStep);
+		Objects.requireNonNull(optionalPredicate);
 		
 		this.useCaseFlow = useCaseFlow;
 		this.optionalPreviousStep = optionalPreviousStep;
-		this.predicate = predicate;		
+		this.optionalPredicate = optionalPredicate;		
 	}
 	
 	public <U> UseCaseStep.ActorPart<U> actor(Actor actor, Class<U> eventClass) {
@@ -78,11 +80,9 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	public Predicate<UseCaseRunner> getPredicate() {
-		if(predicate == null){
-			predicate = afterPreviousStepWhenNoOtherStepIsEnabled();
-		}
-		return predicate;
+		return optionalPredicate.orElse(afterPreviousStepWhenNoOtherStepIsEnabled());
 	} 
+	
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
 		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
 			optionalPreviousStep.map(s -> afterStep(optionalPreviousStep)).orElse(atFirstStep());
@@ -149,7 +149,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 
 			UseCaseStep newStep = 
-				getUseCase().newStep(stepName, getUseCaseFlow(), Optional.of(UseCaseStep.this), null);
+				getUseCase().newStep(stepName, getUseCaseFlow(), Optional.of(UseCaseStep.this), Optional.empty());
 			
 			return newStep; 
 		}

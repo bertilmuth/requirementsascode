@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class UseCaseStepCondition {
-	private UseCaseStepCondition(){};
+public class UseCaseStepPredicate {
+	private UseCaseStepPredicate(){};
 	
 	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
 		Objects.requireNonNull(useCaseFlow);

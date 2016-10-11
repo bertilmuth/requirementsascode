@@ -39,8 +39,8 @@ public class UseCase extends UseCaseModelElement{
 		return flow;
 	}
 	
-	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> optionalPreviousStep, Predicate<UseCaseRunner> predicate) {
-		UseCaseStep step = new UseCaseStep(stepName, flow, optionalPreviousStep, predicate);
+	UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> optionalPreviousStep, Optional<Predicate<UseCaseRunner>> optionalPredicate) {
+		UseCaseStep step = new UseCaseStep(stepName, flow, optionalPreviousStep, optionalPredicate);
 		saveModelElement(step, nameToStepMap);
 		return step;
 	}

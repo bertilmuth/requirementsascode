@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 
-public class UseCaseModelElementContainer {
+class UseCaseModelElementContainer {
 	private UseCaseModelElementContainer() {}
 	
 	public static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
