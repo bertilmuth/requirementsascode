@@ -164,7 +164,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			
 			makeRepeatStepBehaveLikeThisStep(newRepeatStep);
 			
-			getUseCaseFlow().continueAfter(thisStepName, newRepeatStep);
+			getUseCaseFlow().continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
 			
 			return this;
 		}
@@ -179,7 +179,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			getUseCaseFlow().continueAfter(stepName, UseCaseStep.this);
+			getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 			return getUseCase();
 		}
 

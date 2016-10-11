@@ -34,20 +34,13 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return getUseCase();
 	}
 
-	private void continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
+	void continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
 		Optional<UseCaseStep> continueAfterStep = getUseCase().findStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
 
 		continueAfterStep.map(step -> 
 			newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(continueAfterRunnable(step)))
 			.orElseThrow(() -> new NoSuchElementInUseCaseException(continueAfterStepName));
-	}
-	
-	void continueAfter(String continueAfterStepName, UseCaseStep stepBeforeJumpHappens) {
-		Objects.requireNonNull(continueAfterStepName);
-		Objects.requireNonNull(stepBeforeJumpHappens);
-
-		continueAfter(continueAfterStepName, Optional.of(stepBeforeJumpHappens), Optional.empty());
 	}
 	
 	private Runnable continueAfterRunnable(UseCaseStep stepToContinueAfter) {
