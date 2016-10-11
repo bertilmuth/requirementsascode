@@ -13,7 +13,8 @@ public class UseCaseStepPredicate {
 		Objects.requireNonNull(useCaseFlow);
 		
 		Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
-			useCaseRunner -> !useCaseFlow.equals(useCaseRunner.getLatestFlow());
+			useCaseRunner -> useCaseRunner.getLatestFlow().map(
+				runnerFlow -> !useCaseFlow.equals(runnerFlow)).orElse(true);
 		return isRunnerInDifferentFlow;
 	}
 	

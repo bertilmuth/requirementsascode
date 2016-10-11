@@ -20,18 +20,24 @@ public class UseCaseRunner {
 	private List<Actor> actorsToRunAs;
 	private UseCaseModel useCaseModel;
 	private Optional<UseCaseStep> optionalLatestStep;
-	private UseCaseFlow latestFlow;
+	private Optional<UseCaseFlow> optionalLatestFlow;
 	private boolean isRunning;
 
 	public UseCaseRunner() {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
 		this.actorsToRunAs = Arrays.asList(useCaseModel.getSystemActor());
-		this.optionalLatestStep = Optional.empty();
+		reset();
 	}
 	
 	public UseCaseModel getUseCaseModel() {
 		return useCaseModel;
+	}
+	
+	
+	public void reset() {
+		this.optionalLatestFlow = Optional.empty();
+		this.optionalLatestStep = Optional.empty();
 	}
 	
 	public UseCaseRunner run() {
@@ -115,7 +121,7 @@ public class UseCaseRunner {
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
-		setLatestFlow(useCaseStep.getUseCaseFlow());
+		setLatestFlow(Optional.of(useCaseStep.getUseCaseFlow()));
 		
 		try {
 			@SuppressWarnings("unchecked")
@@ -178,11 +184,11 @@ public class UseCaseRunner {
 		this.optionalLatestStep = optionalLatestStep;
 	}
 	
-	public UseCaseFlow getLatestFlow() {
-		return latestFlow;
+	public Optional<UseCaseFlow> getLatestFlow() {
+		return optionalLatestFlow;
 	}
 	
-	public void setLatestFlow(UseCaseFlow latestFlow) {
-		this.latestFlow = latestFlow;
+	public void setLatestFlow(Optional<UseCaseFlow> optionalLatestFlow) {
+		this.optionalLatestFlow = optionalLatestFlow;
 	}
 }

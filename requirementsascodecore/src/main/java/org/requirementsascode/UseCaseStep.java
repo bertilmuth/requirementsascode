@@ -185,10 +185,7 @@ public class UseCaseStep extends UseCaseModelElement{
 
 		public void reset() {
 			newStep(uniqueResetStepName()).system(
-				() -> {
-					getUseCaseModel().getUseCaseRunner().setLatestFlow(null);
-					getUseCaseFlow().jumpTo(Optional.empty());
-				});
+				() -> getUseCaseModel().getUseCaseRunner().reset());
 		}
 	}
 	
