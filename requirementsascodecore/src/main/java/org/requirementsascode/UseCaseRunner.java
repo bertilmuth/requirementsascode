@@ -114,7 +114,7 @@ public class UseCaseRunner {
 			throw new MissingUseCaseStepPartException(message);
 		}
 		
-		setLatestStep(useCaseStep);
+		setLatestStep(Optional.of(useCaseStep));
 		setLatestFlow(useCaseStep.getUseCaseFlow());
 		
 		try {
@@ -174,8 +174,8 @@ public class UseCaseRunner {
 		return optionalLatestStep;
 	}
 	
-	public void setLatestStep(UseCaseStep latestStep) {
-		this.optionalLatestStep = Optional.of(latestStep);
+	public void setLatestStep(Optional<UseCaseStep> optionalLatestStep) {		
+		this.optionalLatestStep = optionalLatestStep;
 	}
 	
 	public UseCaseFlow getLatestFlow() {

@@ -19,7 +19,6 @@ public class UseCaseStep extends UseCaseModelElement{
 		
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> optionalPreviousStep, Optional<Predicate<UseCaseRunner>> optionalPredicate) {
 		super(stepName, useCaseFlow.getUseCaseModel());
-		Objects.requireNonNull(useCaseFlow);
 		Objects.requireNonNull(optionalPreviousStep);
 		Objects.requireNonNull(optionalPredicate);
 		
@@ -188,7 +187,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			newStep(uniqueResetStepName()).system(
 				() -> {
 					getUseCaseModel().getUseCaseRunner().setLatestFlow(null);
-					getUseCaseFlow().jumpTo(null);
+					getUseCaseFlow().jumpTo(Optional.empty());
 				});
 		}
 	}
