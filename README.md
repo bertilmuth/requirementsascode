@@ -2,6 +2,7 @@
 Living specification of application requirements in code, for long term changeability.
 
 Note that as this is an experimental project, the API is likely to change.
+At least Java 8 is required.
 
 Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
