@@ -3,8 +3,9 @@ package helloworld;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld01_SystemPrintsHelloUser {
-	public static void main(String[] args) {
+public class HelloWorld01_SystemPrintsHelloUserExample {	
+	
+	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 				
@@ -14,5 +15,9 @@ public class HelloWorld01_SystemPrintsHelloUser {
 					.system(() -> System.out.println("Hello, User."));
 		
 		useCaseRunner.run();
+	}
+	
+	public static void main(String[] args){
+		new HelloWorld01_SystemPrintsHelloUserExample().start();
 	}
 }

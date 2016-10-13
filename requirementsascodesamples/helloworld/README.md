@@ -19,13 +19,12 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
 		.newStep("User enters first name. System greets user with first name.")
-			.handle(EnterFirstNameEvent.class)
-			.system(greetUser());
+			.handle(EnterTextEvent.class).system(greetUserWithFirstName());
 
 useCaseRunner.run();
 
-String firstName = enterFirstNameInConsole();
-useCaseRunner.reactTo(new EnterFirstNameEvent(firstName));
+String firstName = enterText("Please enter your first name: ");
+useCaseRunner.reactTo(new EnterTextEvent(firstName));
 
 // Implementations of the methods ...
 ```
