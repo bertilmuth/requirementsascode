@@ -64,7 +64,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-		flowPredicate.setStepPredicate(stepPredicate);
+		flowPredicate.step(stepPredicate);
 	}
 	
 	public UseCaseFlow after(String stepName, String useCaseName) {
@@ -91,12 +91,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
-		flowPredicate.setWhenPredicate(whenPredicate);
+		flowPredicate.when(whenPredicate);
 		return this;
-	}
-	
-	public Predicate<UseCaseRunner> alternativeFlowPredicate() {
-		return isRunnerInDifferentFlowThan(this);
 	}
 	
 	private class FlowPredicate{
@@ -106,11 +102,11 @@ public class UseCaseFlow extends UseCaseModelElement {
 			this.predicate = Optional.empty();
 		}
 		
-		public void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
+		public void step(Predicate<UseCaseRunner> stepPredicate){
 			predicate = Optional.of(stepPredicate);
 		}
 		
-		public void setWhenPredicate(Predicate<UseCaseRunner> whenPredicate){
+		public void when(Predicate<UseCaseRunner> whenPredicate){
 			predicate = Optional.of(
 				predicate.orElse(alternativeFlowPredicate()).and(whenPredicate));
 		}
@@ -118,6 +114,10 @@ public class UseCaseFlow extends UseCaseModelElement {
 		public Optional<Predicate<UseCaseRunner>> get(){
 			return predicate;
 		}
+	}
+	
+	protected Predicate<UseCaseRunner> alternativeFlowPredicate() {
+		return isRunnerInDifferentFlowThan(this);
 	}
 	
 	protected String uniqueStepWhereJumpHappensName(String stepName) {
