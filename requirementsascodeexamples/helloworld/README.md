@@ -1,4 +1,4 @@
-# Hello World Sample - System prints "Hello, User."
+# Hello World Example 01 - System prints "Hello, User."
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
@@ -12,7 +12,7 @@ useCaseRunner.run();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld01_SystemPrintsHelloUserExample.java).
 
-# Hello World Sample - User enters name, system prints it
+# Hello World Example 02 - User enters name, system prints it
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
@@ -30,8 +30,7 @@ useCaseRunner.reactTo(new EnterTextEvent(firstName));
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersNameExample.java).
 
-# Hello World Sample - User enters name and age, system prints them (no exception handling)
-Note: in this example, the exception that occurs when a non-numerical age is saved is ignored by the system.
+# Hello World Example 03 - User enters name and age, system prints them (exceptions are ignored)
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 

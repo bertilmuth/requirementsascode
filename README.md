@@ -6,9 +6,9 @@ At least Java 8 is required.
 
 Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
-* [requirementsascodesamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples): sample projects illustrating the use of requirementsascodecore.
+* [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
-A good place to start are the [helloworld samples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodesamples/helloworld)
+A good place to start are the [helloworld samples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 
 # Why bother?
 With requirementsascode, you can specify your application's functional requirements in the code itself,
