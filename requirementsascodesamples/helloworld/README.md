@@ -10,7 +10,7 @@ useCaseModel.newUseCase("Get greeted")
 
 useCaseRunner.run();
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld01_SystemPrintsHelloUser.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld01_SystemPrintsHelloUserExample.java).
 
 # Hello World Sample - User enters name, system prints it
 ``` java
@@ -28,4 +28,4 @@ useCaseRunner.reactTo(new EnterTextEvent(firstName));
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersName.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodesamples/helloworld/src/main/java/helloworld/HelloWorld02_UserEntersNameExample.java).
