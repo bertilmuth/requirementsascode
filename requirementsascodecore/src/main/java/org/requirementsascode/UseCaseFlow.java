@@ -59,12 +59,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 
 	public UseCaseFlow atFirst() {
-		setCompleteStepPredicate(alternativeFlowPredicate().and(atFirstStep()));
+		flowPredicate.step(atFirstStep());
 		return this;
-	}
-	
-	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-		flowPredicate.step(stepPredicate);
 	}
 	
 	public UseCaseFlow after(String stepName, String useCaseName) {
@@ -79,8 +75,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 	private UseCaseFlow after(String stepName, UseCase useCase) {
 		NoSuchElementInUseCaseException exception = new NoSuchElementInUseCaseException(stepName);
 		Optional<UseCaseStep> foundStep = useCase.findStep(stepName);
-		foundStep.orElseThrow(() -> exception);
-		setCompleteStepPredicate(alternativeFlowPredicate().and(afterStep(foundStep)));
+		flowPredicate.step(afterStep(foundStep
+			.orElseThrow(() -> exception)));
 		return this;
 	}
 
@@ -102,8 +98,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 			this.predicate = Optional.empty();
 		}
 		
-		public void step(Predicate<UseCaseRunner> stepPredicate){
-			predicate = Optional.of(stepPredicate);
+		void step(Predicate<UseCaseRunner> stepPredicate){
+			predicate = Optional.of(alternativeFlowPredicate().and(stepPredicate));
 		}
 		
 		public void when(Predicate<UseCaseRunner> whenPredicate){

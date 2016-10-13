@@ -22,7 +22,11 @@ public class UseCaseStepPredicate {
 		return afterStep(Optional.empty());
 	}
 	
-	public static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStep) {		
+	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
+		return afterStep(Optional.of(afterThatStep));
+	}
+	
+	private static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStep) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.getLatestStep();
 			boolean isSystemAtRightStep = 
