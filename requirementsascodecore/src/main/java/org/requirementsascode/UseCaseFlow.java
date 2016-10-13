@@ -73,10 +73,9 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	private UseCaseFlow after(String stepName, UseCase useCase) {
-		NoSuchElementInUseCaseException exception = new NoSuchElementInUseCaseException(stepName);
 		Optional<UseCaseStep> foundStep = useCase.findStep(stepName);
 		flowPredicate.step(afterStep(foundStep
-			.orElseThrow(() -> exception)));
+			.orElseThrow(() -> new NoSuchElementInUseCaseException(stepName))));
 		return this;
 	}
 

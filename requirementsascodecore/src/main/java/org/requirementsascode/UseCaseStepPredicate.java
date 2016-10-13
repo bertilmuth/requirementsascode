@@ -26,11 +26,11 @@ public class UseCaseStepPredicate {
 		return afterStep(Optional.of(afterThatStep));
 	}
 	
-	private static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStep) {		
+	private static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.getLatestStep();
 			boolean isSystemAtRightStep = 
-				Objects.equals(stepRunLastBySystem, afterThatStep);
+				Objects.equals(stepRunLastBySystem, afterThatStepOrElseAtFirst);
 			return isSystemAtRightStep;
 		};
 	}
