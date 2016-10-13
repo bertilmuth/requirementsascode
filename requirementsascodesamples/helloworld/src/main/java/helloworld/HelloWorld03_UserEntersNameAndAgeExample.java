@@ -16,7 +16,7 @@ public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorld
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
 				.newStep("User enters first name. System saves the first name.")
-					.handle(EnterTextEvent.class).system(saveName())
+					.handle(EnterTextEvent.class).system(saveFirstName())
 				.newStep("User enters age. System saves age.")
 					.handle(EnterTextEvent.class).system(saveAge())
 				.newStep("System greets user with first name and age.")
@@ -33,7 +33,7 @@ public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorld
 		theEnd();
 	}
 
-	private Consumer<EnterTextEvent> saveName() {
+	private Consumer<EnterTextEvent> saveFirstName() {
 		return enterTextEvent -> firstName = enterTextEvent.getText();
 	}
 	
