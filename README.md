@@ -8,7 +8,7 @@ Subprojects:
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
 * [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
-A good place to start are the [helloworld samples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+A good place to start are the [helloworld examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
 # Why bother?
 With requirementsascode, you can specify your application's functional requirements in the code itself,
