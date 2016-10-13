@@ -9,14 +9,15 @@ public class AbstractHelloWorldExample {
 		this.scanner = new Scanner(System.in);
 	}
 	
-	public String enterText(String prompt) {
-		System.out.print(prompt);
-		String firstName = scanner.next(); 
-		return firstName;
+	public EnterTextEvent enterTextEvent() {
+		String text = scanner.next(); 
+		return new EnterTextEvent(text);
 	}
 	
-	public void theEnd(){
-		scanner.close();
-		System.exit(0);
+	public Runnable terminateApplication(){
+		return () -> {
+			scanner.close();
+			System.exit(0);
+		};
 	}
 }

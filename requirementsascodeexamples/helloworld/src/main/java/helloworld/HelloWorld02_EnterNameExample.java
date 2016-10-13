@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld02_UserEntersNameExample extends AbstractHelloWorldExample{
+public class HelloWorld02_EnterNameExample extends AbstractHelloWorldExample{
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
@@ -13,15 +13,19 @@ public class HelloWorld02_UserEntersNameExample extends AbstractHelloWorldExampl
 				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
+				.newStep("System prompts user to enter first name")
+					.system(promptUserToEnterFirstName())
 				.newStep("User enters first name. System greets user with first name.")
-					.handle(EnterTextEvent.class).system(greetUserWithFirstName());
+					.handle(EnterTextEvent.class).system(greetUserWithFirstName())
+				.newStep("Application terminates")
+					.system(terminateApplication());
 		
 		useCaseRunner.run();
-		
-		String firstName = enterText("Please enter your first name: ");
-		useCaseRunner.reactTo(new EnterTextEvent(firstName));
-		
-		theEnd();
+		useCaseRunner.reactTo(enterTextEvent());
+	}
+	
+	private Runnable promptUserToEnterFirstName() {
+		return () -> System.out.print("Please enter your first name: ");
 	}
 	
 	private Consumer<EnterTextEvent> greetUserWithFirstName() {
@@ -30,6 +34,6 @@ public class HelloWorld02_UserEntersNameExample extends AbstractHelloWorldExampl
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld02_UserEntersNameExample().start();
+		new HelloWorld02_EnterNameExample().start();
 	}
 }

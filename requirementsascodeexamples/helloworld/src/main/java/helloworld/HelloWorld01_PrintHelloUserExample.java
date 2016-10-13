@@ -3,7 +3,7 @@ package helloworld;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld01_SystemPrintsHelloUserExample {	
+public class HelloWorld01_PrintHelloUserExample {	
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
@@ -18,6 +18,6 @@ public class HelloWorld01_SystemPrintsHelloUserExample {
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld01_SystemPrintsHelloUserExample().start();
+		new HelloWorld01_PrintHelloUserExample().start();
 	}
 }

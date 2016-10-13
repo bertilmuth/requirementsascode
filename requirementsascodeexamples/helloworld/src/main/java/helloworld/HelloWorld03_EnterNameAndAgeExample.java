@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorldExample{
+public class HelloWorld03_EnterNameAndAgeExample extends AbstractHelloWorldExample{
 	private String firstName;
 	private int age;
 	
@@ -15,22 +15,31 @@ public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorld
 				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
+				.newStep("System prompts user to enter first name")
+					.system(promptUserToEnterFirstName())
 				.newStep("User enters first name. System saves the first name.")
 					.handle(EnterTextEvent.class).system(saveFirstName())
+				.newStep("System prompts user to enter age")
+					.system(promptUserToEnterAge())
 				.newStep("User enters age. System saves age.")
 					.handle(EnterTextEvent.class).system(saveAge())
 				.newStep("System greets user with first name and age.")
-					.system(greetUserWithFirstNameAndAge());
+					.system(greetUserWithFirstNameAndAge())
+				.newStep("Application terminates")
+					.system(terminateApplication());
 		
 		useCaseRunner.run();
 		
-		String firstName = enterText("Please enter your first name: ");
-		useCaseRunner.reactTo(new EnterTextEvent(firstName));
-		
-		String age = enterText("Please enter your age: ");
-		useCaseRunner.reactTo(new EnterTextEvent(age));
-		
-		theEnd();
+		useCaseRunner.reactTo(enterTextEvent());
+		useCaseRunner.reactTo(enterTextEvent());
+	}
+	
+	private Runnable promptUserToEnterFirstName() {
+		return () -> System.out.print("Please enter your first name: ");
+	}
+	
+	private Runnable promptUserToEnterAge() {
+		return () -> System.out.print("Please enter your age: ");
 	}
 
 	private Consumer<EnterTextEvent> saveFirstName() {
@@ -47,6 +56,6 @@ public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorld
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld03_UserEntersNameAndAgeExample().start();
+		new HelloWorld03_EnterNameAndAgeExample().start();
 	}
 }
