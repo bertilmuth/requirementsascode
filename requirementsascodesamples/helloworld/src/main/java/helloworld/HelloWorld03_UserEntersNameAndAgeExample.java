@@ -7,7 +7,7 @@ import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorldExample{
 	private String firstName;
-	private String age;
+	private int age;
 	
 	public void start() {	
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
@@ -38,7 +38,7 @@ public class HelloWorld03_UserEntersNameAndAgeExample extends AbstractHelloWorld
 	}
 	
 	private Consumer<EnterTextEvent> saveAge() {
-		return enterTextEvent -> age = enterTextEvent.getText();
+		return enterTextEvent -> age = Integer.parseInt(enterTextEvent.getText());
 	}
 	
 	private Runnable greetUserWithFirstNameAndAge() {
