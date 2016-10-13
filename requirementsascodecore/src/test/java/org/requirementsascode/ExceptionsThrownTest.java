@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.event.EnterTextEvent;
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
@@ -165,7 +165,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(stepWithoutSystemReaction).actor(customer, EnterText.class);
+				.newStep(stepWithoutSystemReaction).actor(customer, EnterTextEvent.class);
 			
 		useCaseRunner.run().as(customer).reactTo(enterTextEvent());
 		

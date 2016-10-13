@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Test;
-import org.requirementsascode.event.EnterNumber;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.event.EnterNumberEvent;
+import org.requirementsascode.event.EnterTextEvent;
 
 public class CreateModelTest extends AbstractTestCase{	
 	private static final String USE_CASE = "Use Case";
@@ -76,7 +76,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText());
 				
 		List<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
@@ -92,7 +92,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText());
 
 		assertTrue(useCaseModel.hasActor(customer.getName()));
 	}
@@ -102,7 +102,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.findActor(customer.getName()).get();
 		
@@ -117,7 +117,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.findActor(customer.getName()).get();
 		List<UseCaseStep> steps = actorFromModel.getUseCaseSteps(useCase);
@@ -151,7 +151,7 @@ public class CreateModelTest extends AbstractTestCase{
 		namedUseCase
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText()) 
-				.newStep(SYSTEM_DISPLAYS_NUMBER).actor(customer, EnterNumber.class).system(displayEnteredNumber());
+				.newStep(SYSTEM_DISPLAYS_NUMBER).actor(customer, EnterNumberEvent.class).system(displayEnteredNumber());
 
 		assertTrue(useCaseModel.getActors().contains(useCaseModel.getSystemActor()));
 		assertTrue(useCaseModel.getActors().contains(customer));
@@ -257,8 +257,8 @@ public class CreateModelTest extends AbstractTestCase{
 	public void shouldUniquelyIdentifyActorsByNameInOneUseCase() {
 		useCaseModel.newUseCase(USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterText.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterTextEvent.class).system(displayEnteredText());
 		
 		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
@@ -276,10 +276,10 @@ public class CreateModelTest extends AbstractTestCase{
 		useCaseModel
 			.newUseCase("Use Case 1")
 				.basicFlow()
-					.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterText.class).system(displayEnteredText())
+					.newStep(CUSTOMER_ENTERS_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText())
 			.newUseCase("Use Case 2")
 				.basicFlow()
-					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterText.class).system(displayEnteredText());		
+					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN).actor(customer, EnterTextEvent.class).system(displayEnteredText());		
 				
 		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());

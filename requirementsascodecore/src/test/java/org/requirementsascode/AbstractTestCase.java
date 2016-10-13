@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.junit.Before;
-import org.requirementsascode.event.EnterNumber;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.event.EnterNumberEvent;
+import org.requirementsascode.event.EnterTextEvent;
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
@@ -35,16 +35,16 @@ public abstract class AbstractTestCase {
 		return r -> displayedText == null;
 	}
 	
-	protected EnterText enterTextEvent(){
-		return new EnterText("Hello, Basic Flow!");
+	protected EnterTextEvent enterTextEvent(){
+		return new EnterTextEvent("Hello, Basic Flow!");
 	}
 	
-	protected EnterText enterDifferentTextEvent(){
-		return new EnterText("Hello, I am an Alternative Flow!");
+	protected EnterTextEvent enterDifferentTextEvent(){
+		return new EnterTextEvent("Hello, I am an Alternative Flow!");
 	}
 	
-	protected EnterNumber enterNumberEvent(){
-		EnterNumber enterNumber = new EnterNumber();
+	protected EnterNumberEvent enterNumberEvent(){
+		EnterNumberEvent enterNumber = new EnterNumberEvent();
 		enterNumber.value = 42;
 		return enterNumber;
 	}
@@ -57,18 +57,18 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnterText> displayEnteredText() {
-		return (text) -> {
+	protected Consumer<EnterTextEvent> displayEnteredText() {
+		return (enterTextEvent) -> {
 			runStepNames.add(getLatestStepName());
-			displayedText = text.toString();
+			displayedText = enterTextEvent.toString();
 			System.out.println(displayedText);
 		};
 	}
 	
-	protected Consumer<EnterNumber> displayEnteredNumber() {
-		return (integerContainer) -> {
+	protected Consumer<EnterNumberEvent> displayEnteredNumber() {
+		return (enterNumberEvent) -> {
 			runStepNames.add(getLatestStepName());
-			displayedText = integerContainer.value.toString();
+			displayedText = enterNumberEvent.value.toString();
 			System.out.println(displayedText);
 		};
 	}
@@ -86,7 +86,7 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnterText> throwRuntimeException() {
+	protected Consumer<EnterTextEvent> throwRuntimeException() {
 		return (object) -> {throw new RuntimeException("Test failed!");};
 	}
 	

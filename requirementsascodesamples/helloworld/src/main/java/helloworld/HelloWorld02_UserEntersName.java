@@ -14,13 +14,13 @@ public class HelloWorld02_UserEntersName {
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
 				.newStep("User enters first name. System greets user with first name.")
-					.handle(EnterFirstName.class)
+					.handle(EnterFirstNameEvent.class)
 					.system(greetUser());
 		
 		useCaseRunner.run();
 		
 		String firstName = enterFirstNameInConsole();
-		useCaseRunner.reactTo(new EnterFirstName(firstName));
+		useCaseRunner.reactTo(new EnterFirstNameEvent(firstName));
 	}
 
 	private static String enterFirstNameInConsole() {
@@ -31,13 +31,14 @@ public class HelloWorld02_UserEntersName {
 		return firstName;
 	}
 	
-	private static Consumer<EnterFirstName> greetUser() {
-		return event -> System.out.println("Hello, " + event.getFirstName() + ".");
+	private static Consumer<EnterFirstNameEvent> greetUser() {
+		return enterFirstNameEvent -> System.out.println("Hello, " + 
+			enterFirstNameEvent.getFirstName() + ".");
 	}
 	
-	private static class EnterFirstName {
+	private static class EnterFirstNameEvent {
 		private String firstName;
-		public EnterFirstName(String firstName) {
+		public EnterFirstNameEvent(String firstName) {
 			this.firstName = firstName;
 		}
 		public String getFirstName() {

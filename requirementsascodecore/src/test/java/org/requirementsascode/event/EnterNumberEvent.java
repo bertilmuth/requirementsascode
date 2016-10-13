@@ -1,6 +1,6 @@
 package org.requirementsascode.event;
-public class EnterNumber{
-	public EnterNumber() {
+public class EnterNumberEvent{
+	public EnterNumberEvent() {
 	}
 	public Integer value;
 }
