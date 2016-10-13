@@ -1,12 +1,12 @@
 package org.requirementsascode;
 
 import static org.requirementsascode.ModelElementContainer.findModelElement;
+import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -57,12 +57,12 @@ public class UseCaseModel {
 		return useCase;
 	}
 
-	public Collection<Actor> getActors() {
-		return Collections.unmodifiableCollection(nameToActorMap.values());
+	public List<Actor> getActors() {
+		return getModelElements(nameToActorMap);
 	}
 
-	public Collection<UseCase> getUseCases() {
-		return Collections.unmodifiableCollection(nameToUseCaseMap.values());
+	public List<UseCase> getUseCases() {
+		return getModelElements(nameToUseCaseMap);
 	}
 	
 	public Set<UseCaseStep> getUseCaseSteps() {
