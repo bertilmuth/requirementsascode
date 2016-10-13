@@ -93,11 +93,11 @@ public class UseCaseFlow extends UseCaseModelElement {
 	private class FlowPredicate{
 		private Optional<Predicate<UseCaseRunner>> predicate;
 
-		public FlowPredicate() {
+		private FlowPredicate() {
 			this.predicate = Optional.empty();
 		}
 		
-		void step(Predicate<UseCaseRunner> stepPredicate){
+		private void step(Predicate<UseCaseRunner> stepPredicate){
 			predicate = Optional.of(alternativeFlowPredicate().and(stepPredicate));
 		}
 		
@@ -109,10 +109,10 @@ public class UseCaseFlow extends UseCaseModelElement {
 		public Optional<Predicate<UseCaseRunner>> get(){
 			return predicate;
 		}
-	}
-	
-	protected Predicate<UseCaseRunner> alternativeFlowPredicate() {
-		return isRunnerInDifferentFlowThan(this);
+		
+		private Predicate<UseCaseRunner> alternativeFlowPredicate() {
+			return isRunnerInDifferentFlowThan(UseCaseFlow.this);
+		}
 	}
 	
 	protected String uniqueStepWhereJumpHappensName(String stepName) {
