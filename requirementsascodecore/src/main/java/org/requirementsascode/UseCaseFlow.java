@@ -12,15 +12,13 @@ import org.requirementsascode.exception.NoSuchElementInUseCaseException;
 
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
-	private Optional<Predicate<UseCaseRunner>> stepPredicate;
-	private Optional<Predicate<UseCaseRunner>> completePredicate;
+	private FlowPredicate flowPredicate;
 
 	public UseCaseFlow(String name, UseCase useCase) {
 		super(name, useCase.getUseCaseModel());
 		
 		this.useCase = useCase;
-		this.stepPredicate = Optional.empty();
-		this.completePredicate = Optional.empty();
+		this.flowPredicate = new FlowPredicate();
 	}
 
 	public UseCase getUseCase() {
@@ -30,7 +28,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		continueAfter(stepName, Optional.empty(), completePredicate);
+		continueAfter(stepName, Optional.empty(), flowPredicate.get());
 		return getUseCase();
 	}
 
@@ -50,7 +48,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseStep newStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		UseCaseStep newStep = newStep(stepName, Optional.empty(), completePredicate);
+		UseCaseStep newStep = newStep(stepName, Optional.empty(), flowPredicate.get());
 
 		return newStep;
 	}
@@ -66,8 +64,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	private void setCompleteStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-		this.stepPredicate = Optional.of(stepPredicate);
-		this.completePredicate = Optional.of(stepPredicate);
+		flowPredicate.setStepPredicate(stepPredicate);
 	}
 	
 	public UseCaseFlow after(String stepName, String useCaseName) {
@@ -94,15 +91,33 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
-		completePredicate = 
-		  Optional.of(
-			stepPredicate.orElse(alternativeFlowPredicate())
-			.and(whenPredicate));
+		flowPredicate.setWhenPredicate(whenPredicate);
 		return this;
 	}
 	
 	public Predicate<UseCaseRunner> alternativeFlowPredicate() {
 		return isRunnerInDifferentFlowThan(this);
+	}
+	
+	private class FlowPredicate{
+		private Optional<Predicate<UseCaseRunner>> predicate;
+
+		public FlowPredicate() {
+			this.predicate = Optional.empty();
+		}
+		
+		public void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
+			predicate = Optional.of(stepPredicate);
+		}
+		
+		public void setWhenPredicate(Predicate<UseCaseRunner> whenPredicate){
+			predicate = Optional.of(
+				predicate.orElse(alternativeFlowPredicate()).and(whenPredicate));
+		}
+		
+		public Optional<Predicate<UseCaseRunner>> get(){
+			return predicate;
+		}
 	}
 	
 	protected String uniqueStepWhereJumpHappensName(String stepName) {
