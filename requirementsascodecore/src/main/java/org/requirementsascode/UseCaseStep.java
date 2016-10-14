@@ -50,8 +50,8 @@ public class UseCaseStep extends UseCaseModelElement{
 	public <T> EventPart<T> handle(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
 
-		Actor systemActor = getUseCaseModel().getSystemActor();
-		EventPart<T> newEventPart = actor(systemActor).handle(eventOrExceptionClass);
+		Actor userActor = getUseCaseModel().getUserActor();
+		EventPart<T> newEventPart = actor(userActor).handle(eventOrExceptionClass);
 		eventPart = newEventPart;
 		
 		return newEventPart;
@@ -198,9 +198,9 @@ public class UseCaseStep extends UseCaseModelElement{
 			return getUseCase();
 		}
 
-		public void reset() {
-			newStep(uniqueResetStepName()).system(
-				() -> getUseCaseModel().getUseCaseRunner().reset());
+		public void restart() {
+			newStep(uniqueRestartStepName()).system(
+				() -> getUseCaseModel().getUseCaseRunner().restart());
 		}
 	}
 	
@@ -208,7 +208,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		return uniqueStepName(getName(), "REPEAT");
 	}
 	
-	private String uniqueResetStepName() {
-		return uniqueStepName("Use Case Run resets");
+	private String uniqueRestartStepName() {
+		return uniqueStepName("RESTART");
 	}
 }

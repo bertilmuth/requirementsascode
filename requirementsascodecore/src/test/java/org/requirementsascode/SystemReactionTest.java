@@ -346,12 +346,12 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldResetUseCaseFromBasicFlow() {
+	public void shouldRestartUseCaseFromBasicFlow() {
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE)
 				.basicFlow().when(r -> getRunStepNames().size()<2)
 					.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-					.reset();
+					.restart();
 
 		useCaseRunner.run().reactTo(enterTextEvent(), enterTextEvent(), enterTextEvent());
 
@@ -359,14 +359,14 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldResetUseCaseFromAlternativeFlow() {
+	public void shouldRestartUseCaseFromAlternativeFlow() {
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE)
 				.basicFlow().when(r -> getRunStepNames().size()<4)
 					.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
 				.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 					.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-					.reset();
+					.restart();
 
 		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
 		

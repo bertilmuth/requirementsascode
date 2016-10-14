@@ -16,11 +16,13 @@ public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
 	private Map<String, UseCase> nameToUseCaseMap;
 	private UseCaseRunner useCaseRunner;
+	private Actor userActor;
 	private Actor systemActor;
 	
 	UseCaseModel(UseCaseRunner useCaseModelRun) {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
+		this.userActor = newActor("User");
 		this.systemActor = newActor("Autonomous System Reaction Actor");
 		this.useCaseRunner = useCaseModelRun;
 	}
@@ -74,6 +76,10 @@ public class UseCaseModel {
 	
 	public UseCaseRunner getUseCaseRunner() {
 		return useCaseRunner;
+	}
+	
+	public Actor getUserActor() {
+		return userActor;
 	}
 
 	public Actor getSystemActor() {

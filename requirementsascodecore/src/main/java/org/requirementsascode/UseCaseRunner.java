@@ -26,8 +26,7 @@ public class UseCaseRunner {
 	public UseCaseRunner() {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
-		this.actorsToRunAs = Arrays.asList(useCaseModel.getSystemActor());
-		reset();
+		as(useCaseModel.getUserActor()).restart();
 	}
 	
 	public UseCaseModel getUseCaseModel() {
@@ -35,7 +34,7 @@ public class UseCaseRunner {
 	}
 	
 	
-	public void reset() {
+	public void restart() {
 		this.latestFlow = Optional.empty();
 		this.latestStep = Optional.empty();
 	}

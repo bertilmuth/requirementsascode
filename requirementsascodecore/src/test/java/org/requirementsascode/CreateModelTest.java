@@ -72,7 +72,7 @@ public class CreateModelTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldCreateSingleStepWithoutActor() {		
+	public void shouldCreateSingleStepThatHandlesEvent() {		
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase
 			.basicFlow()
@@ -83,7 +83,24 @@ public class CreateModelTest extends AbstractTestCase{
 		
 		UseCaseStep step = steps.get(0);
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());		
+		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());	
+		assertEquals(useCaseModel.getUserActor(), step.getActorPart().getActor());
+	}
+	
+	@Test
+	public void shouldCreateSingleStepThatPerformsSystemReactionAutomatically() {		
+		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
+		useCase
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_TEXT).system(displayConstantText());
+				
+		List<UseCaseStep> steps = useCase.getSteps();
+		assertEquals(1, steps.size());
+		
+		UseCaseStep step = steps.get(0);
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
+		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());	
+		assertEquals(useCaseModel.getSystemActor(), step.getActorPart().getActor());
 	}
 
 	@Test
