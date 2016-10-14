@@ -52,7 +52,6 @@ public class UseCaseStep extends UseCaseModelElement{
 
 		Actor userActor = getUseCaseModel().getUserActor();
 		EventPart<T> newEventPart = actor(userActor).handle(eventOrExceptionClass);
-		eventPart = newEventPart;
 		
 		return newEventPart;
 	}
