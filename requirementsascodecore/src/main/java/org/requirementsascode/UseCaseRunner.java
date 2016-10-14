@@ -151,7 +151,7 @@ public class UseCaseRunner {
 	}
 
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
-		ActorPart<?> actorPart = useCaseStep.getActorPart();
+		ActorPart actorPart = useCaseStep.getActorPart();
 		if(actorPart == null){
 			String message = getMissingActorPartExceptionMessage(useCaseStep);
 			throw(new MissingUseCaseStepPartException(message));
@@ -166,7 +166,7 @@ public class UseCaseRunner {
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.getActorPart().getEventClass();
+		Class<?> stepEventClass = useCaseStep.getEventPart().getEventClass();
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	

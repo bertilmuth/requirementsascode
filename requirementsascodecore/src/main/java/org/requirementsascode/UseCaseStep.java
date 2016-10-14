@@ -14,7 +14,8 @@ public class UseCaseStep extends UseCaseModelElement{
 	private Optional<UseCaseStep> previousStep;
 	private Optional<Predicate<UseCaseRunner>> predicate;
 	
-	private ActorPart<?> actorPart;
+	private ActorPart actorPart;
+	private EventPart<?> eventPart;
 	private SystemPart<?> systemPart;
 		
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
@@ -27,13 +28,11 @@ public class UseCaseStep extends UseCaseModelElement{
 		this.predicate = predicate;		
 	}
 	
-	public <U> UseCaseStep.ActorPart<U> actor(Actor actor, Class<U> eventClass) {
+	public UseCaseStep.ActorPart actor(Actor actor) {
 		Objects.requireNonNull(actor);
-		Objects.requireNonNull(eventClass);
 		
-		ActorPart<U> newActorPart = new ActorPart<>(actor, eventClass);
-		this.actorPart = newActorPart;
-		return newActorPart;
+		actorPart = new ActorPart(actor);
+		return actorPart;
 	}
 	
 	public UseCaseStep.SystemPart<?> system(Runnable systemReaction) {
@@ -42,20 +41,20 @@ public class UseCaseStep extends UseCaseModelElement{
 		Actor systemActor = getUseCaseModel().getSystemActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
-			actor(systemActor, SystemEvent.class).
+			actor(systemActor).handle(SystemEvent.class).
 				system(systemEvent -> systemReaction.run());
 		
 		return systemPart;
 	}
 	
-	public <T> ActorPart<T> handle(Class<T> eventOrExceptionClass) {
+	public <T> EventPart<T> handle(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
 
 		Actor systemActor = getUseCaseModel().getSystemActor();
-		ActorPart<T> newActorPart = actor(systemActor, eventOrExceptionClass);
-		this.actorPart = newActorPart;
+		EventPart<T> newEventPart = actor(systemActor).handle(eventOrExceptionClass);
+		eventPart = newEventPart;
 		
-		return newActorPart;
+		return newEventPart;
 	}
 	
 	public UseCaseFlow getUseCaseFlow() {
@@ -70,8 +69,12 @@ public class UseCaseStep extends UseCaseModelElement{
 		return previousStep;
 	}
 	
-	public ActorPart<?> getActorPart() {
+	public ActorPart getActorPart() {
 		return actorPart;
+	}
+	
+	public EventPart<?> getEventPart() {
+		return eventPart;
 	}
 	
 	public SystemPart<?> getSystemPart() {
@@ -88,18 +91,34 @@ public class UseCaseStep extends UseCaseModelElement{
 		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	
-	public class ActorPart<T>{
+	public class ActorPart{
 		private Actor namedActor;
-		private Class<T> eventClass;
 		
-		private ActorPart(Actor actor, Class<T> eventClass) {
+		private ActorPart(Actor actor) {
 			this.namedActor = actor;
-			this.eventClass = eventClass;
 			connectActorToThisStep(namedActor);		
 		}
 
 		private void connectActorToThisStep(Actor actor) {
 			actor.newStep(getUseCase(), UseCaseStep.this);
+		}
+		
+		public <T> EventPart<T> handle(Class<T> eventOrExceptionClass) {
+			EventPart<T> newEventPart = new EventPart<>(eventOrExceptionClass);
+			UseCaseStep.this.eventPart = newEventPart;
+			return newEventPart;
+		}
+		
+		public Actor getActor() {
+			return namedActor;
+		}
+	}
+	
+	public class EventPart<T>{
+		private Class<T> eventClass;
+		
+		private EventPart(Class<T> eventClass) {
+			this.eventClass = eventClass;
 		}
 		
 		public SystemPart<T> system(Consumer<T> systemReaction) {
@@ -108,10 +127,6 @@ public class UseCaseStep extends UseCaseModelElement{
 			SystemPart<T> newSystemPart = new SystemPart<>(systemReaction);
 			UseCaseStep.this.systemPart = newSystemPart;
 			return newSystemPart;		
-		}
-		
-		public Actor getActor() {
-			return namedActor;
 		}
 		
 		public Class<T> getEventClass() {
@@ -172,7 +187,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private void makeRepeatStepBehaveLikeThisStep(UseCaseStep newRepeatStep) {
 			newRepeatStep
-				.actor(getActorPart().getActor(), getActorPart().getEventClass())
+				.actor(getActorPart().getActor()).handle(getEventPart().getEventClass())
 				.system((Consumer)getSystemPart().getSystemReaction());
 		}
 		

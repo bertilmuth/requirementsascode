@@ -116,8 +116,10 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactToTwoSequentialStepsOnlyForThoseStepsWhereActorIsRight() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(secondActor, EnterTextEvent.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.actor(secondActor).handle(EnterTextEvent.class).system(displayEnteredText());
 		
 		useCaseRunner.run().as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		
@@ -128,8 +130,10 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactToTwoSequentialStepsWhenRunningWithDifferentActors() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).actor(secondActor, EnterNumberEvent.class).system(displayEnteredNumber());
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_NUMBER)
+					.actor(secondActor).handle(EnterNumberEvent.class).system(displayEnteredNumber());
 		
 		useCaseRunner.run().as(customer);
 		
@@ -181,8 +185,10 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactOnlyToEnabledStepWithRightActorInSameFlowAtFirstStep() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(secondActor, EnterTextEvent.class).system(throwRuntimeException());
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.actor(secondActor).handle(EnterTextEvent.class).system(throwRuntimeException());
 		
 		useCaseRunner.run().as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		
@@ -193,9 +199,11 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldReactOnlyToEnabledStepWithRightActorInDifferentFlow() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(secondActor, EnterTextEvent.class).system(throwRuntimeException())			
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(secondActor).handle(EnterTextEvent.class).system(throwRuntimeException())			
 			.newFlow(ALTERNATIVE_FLOW).when(textIsNotAvailablePredicate())
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).actor(rightActor, EnterTextEvent.class).system(displayEnteredText());
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText());
 		
 		UseCaseStep lastStepRun = useCaseRunner.run().as(rightActor).reactTo(enterTextEvent());
 		
@@ -206,10 +214,13 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldNotReactToEnabledStepWithWrongActorInDifferentFlow() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(rightActor, EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).actor(rightActor, EnterTextEvent.class).system(displayEnteredText())			
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())			
 			.newFlow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_SOME_TEXT)
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(secondActor, EnterTextEvent.class).system(throwRuntimeException());
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED)
+					.actor(secondActor).handle(EnterTextEvent.class).system(throwRuntimeException());
 		
 		useCaseRunner.run().as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
 		assertEquals(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, getLatestStepName());
@@ -219,9 +230,11 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void shouldNotReactToDisabledStepWithSpecificActor() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).actor(customer, EnterTextEvent.class).system(displayEnteredText())				
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText())				
 			.newFlow(ALTERNATIVE_FLOW).when(r -> false)
-				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).actor(actorWithDisabledStep, EnterTextEvent.class).system(displayEnteredText());
+				.newStep(THIS_STEP_SHOULD_BE_SKIPPED)
+					.actor(actorWithDisabledStep).handle(EnterTextEvent.class).system(displayEnteredText());
 				
 		UseCaseStep lastStepRun = 
 			useCaseRunner.run().as(actorWithDisabledStep).reactTo(enterTextEvent());

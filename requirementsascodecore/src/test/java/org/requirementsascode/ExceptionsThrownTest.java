@@ -165,7 +165,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.newStep(stepWithoutSystemReaction).actor(customer, EnterTextEvent.class);
+				.newStep(stepWithoutSystemReaction)
+					.actor(customer).handle(EnterTextEvent.class);
 			
 		useCaseRunner.run().as(customer).reactTo(enterTextEvent());
 		
