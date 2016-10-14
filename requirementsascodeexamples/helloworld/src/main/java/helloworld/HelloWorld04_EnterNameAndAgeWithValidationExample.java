@@ -87,7 +87,7 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 	
 	private Consumer<NumberFormatException> informUserAboutNonNumericalAge() {
 		return exception -> 
-			System.out.println("You entered an invalid age.");
+			System.out.println("You entered a non-numerical age.");
 	}
 	
 	public static void main(String[] args){
