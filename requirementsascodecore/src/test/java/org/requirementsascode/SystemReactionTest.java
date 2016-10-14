@@ -26,7 +26,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	private static final String CUSTOMER_ENTERS_SOME_TEXT_AGAIN = "Customer enters some text again";
 	private static final String CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT = "Customer enters some different text";
 	private static final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
-	
+		
 	private static final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
 	private static final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
 	
@@ -468,8 +468,9 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
 				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
-			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
-				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
+			.newFlow("Alternative Flow that continues with Basic Flow")
+				.after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+					.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
 		
 		useCaseRunner.run().reactTo(enterTextEvent(), enterTextEvent(), enterNumberEvent());
 		 

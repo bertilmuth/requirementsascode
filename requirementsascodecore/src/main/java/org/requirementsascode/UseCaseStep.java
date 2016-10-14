@@ -189,17 +189,17 @@ public class UseCaseStep extends UseCaseModelElement{
 				.actor(getActorPart().getActor()).handle(getEventPart().getEventClass())
 				.system((Consumer)getSystemPart().getSystemReaction());
 		}
-		
+
+		public void restart() {
+			newStep(uniqueRestartStepName()).system(
+				() -> getUseCaseModel().getUseCaseRunner().restart());
+		}
+
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
 			getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 			return getUseCase();
-		}
-
-		public void restart() {
-			newStep(uniqueRestartStepName()).system(
-				() -> getUseCaseModel().getUseCaseRunner().restart());
 		}
 	}
 	

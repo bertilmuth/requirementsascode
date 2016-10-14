@@ -5,13 +5,13 @@ import java.util.function.Consumer;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld04_EnterNameAndAgeWithExceptionHandlingExample extends AbstractHelloWorldExample{
+public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME = "System prompts user to enter first name";
 	private static final String USER_ENTERS_FIRST_NAME = "User enters first name. System saves the first name.";
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_AGE = "System prompts user to enter age.";
 	private static final String USER_ENTERS_AGE = "User enters age. System saves age.";
 	private static final String SYSTEM_GREETS_USER = "System greets user with first name and age.";
-	private static final String SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE = "System informs user about invalid age";
+	private static final String SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE = "System informs user about non-numerical age";
 	private static final String APPLICATION_TERMINATES = "Application terminates";
 	
 	private String firstName;
@@ -35,8 +35,8 @@ public class HelloWorld04_EnterNameAndAgeWithExceptionHandlingExample extends Ab
 					.system(greetUserWithFirstNameAndAge())
 				.newStep(APPLICATION_TERMINATES)
 					.system(terminateApplication())
-			.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE)
-				.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
+			.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
+				.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
 					.handle(NumberFormatException.class).system(informUserAboutInvalidAge())
 				.continueAfter(USER_ENTERS_FIRST_NAME);
 		
@@ -74,6 +74,6 @@ public class HelloWorld04_EnterNameAndAgeWithExceptionHandlingExample extends Ab
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld04_EnterNameAndAgeWithExceptionHandlingExample().start();
+		new HelloWorld04_EnterNameAndAgeWithValidationExample().start();
 	}
 }

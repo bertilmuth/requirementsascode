@@ -60,7 +60,7 @@ useCaseRunner.reactTo(enterTextEvent());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03_EnterNameAndAgeExample.java).
 
-# Hello World Example 04 - User enters name and age, system prints them (exceptions are handled)
+# Hello World Example 04 - User enters name and age, system prints them (with validation)
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
@@ -78,8 +78,8 @@ useCaseModel.newUseCase("Get greeted")
 			.system(greetUserWithFirstNameAndAge())
 		.newStep(APPLICATION_TERMINATES)
 			.system(terminateApplication())
-	.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE)
-		.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
+	.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
+		.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
 			.handle(NumberFormatException.class).system(informUserAboutInvalidAge())
 		.continueAfter(USER_ENTERS_FIRST_NAME);
 
@@ -90,5 +90,5 @@ while(true)
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeWithExceptionHandlingExample.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeWithValidationExample.java).
 
