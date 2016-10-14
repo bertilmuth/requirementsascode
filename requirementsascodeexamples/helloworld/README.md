@@ -78,9 +78,13 @@ useCaseModel.newUseCase("Get greeted")
 			.system(greetUserWithFirstNameAndAge())
 		.newStep(APPLICATION_TERMINATES)
 			.system(terminateApplication())
+	.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
+		.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
+			.system(informUserAboutInvalidAge())
+		.continueAfter(USER_ENTERS_FIRST_NAME)
 	.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
 		.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
-			.handle(NumberFormatException.class).system(informUserAboutInvalidAge())
+			.handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
 		.continueAfter(USER_ENTERS_FIRST_NAME);
 
 useCaseRunner.run();

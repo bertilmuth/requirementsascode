@@ -1,6 +1,7 @@
 package helloworld;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
@@ -12,7 +13,11 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 	private static final String USER_ENTERS_AGE = "User enters age. System saves age.";
 	private static final String SYSTEM_GREETS_USER = "System greets user with first name and age.";
 	private static final String SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE = "System informs user about non-numerical age";
+	private static final String SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE = "System informs user about invalid age";
 	private static final String APPLICATION_TERMINATES = "Application terminates";
+	
+	private static final int MIN_AGE = 5;
+	private static final int MAX_AGE = 130;
 	
 	private String firstName;
 	private int age;
@@ -35,9 +40,13 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 					.system(greetUserWithFirstNameAndAge())
 				.newStep(APPLICATION_TERMINATES)
 					.system(terminateApplication())
+			.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
+				.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
+					.system(informUserAboutInvalidAge())
+				.continueAfter(USER_ENTERS_FIRST_NAME)
 			.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
-					.handle(NumberFormatException.class).system(informUserAboutInvalidAge())
+					.handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
 				.continueAfter(USER_ENTERS_FIRST_NAME);
 		
 		useCaseRunner.run();
@@ -67,10 +76,18 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 			firstName + " (" + age + ").");
 	}
 	
-	private Consumer<NumberFormatException> informUserAboutInvalidAge() {
-		return exception -> {
+	private Predicate<UseCaseRunner> ageIsInvalid() {
+		return r -> age < MIN_AGE || age > MAX_AGE;
+	}
+	
+	private Runnable informUserAboutInvalidAge() {
+		return () -> 
+			System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
+	}
+	
+	private Consumer<NumberFormatException> informUserAboutNonNumericalAge() {
+		return exception -> 
 			System.out.println("You entered an invalid age.");
-		};
 	}
 	
 	public static void main(String[] args){
