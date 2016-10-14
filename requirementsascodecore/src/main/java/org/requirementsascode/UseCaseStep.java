@@ -36,23 +36,23 @@ public class UseCaseStep extends UseCaseModelElement{
 		return newActorPart;
 	}
 	
-	public UseCaseStep.SystemPart<?> system(Runnable autonomousSystemReaction) {
-		Objects.requireNonNull(autonomousSystemReaction);
+	public UseCaseStep.SystemPart<?> system(Runnable systemReaction) {
+		Objects.requireNonNull(systemReaction);
 		
-		Actor autoReactionActor = getUseCaseModel().getSystemActor();
+		Actor systemActor = getUseCaseModel().getSystemActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
-			actor(autoReactionActor, SystemEvent.class).
-				system((o) -> autonomousSystemReaction.run());
+			actor(systemActor, SystemEvent.class).
+				system(systemEvent -> systemReaction.run());
 		
 		return systemPart;
 	}
 	
-	public <T> ActorPart<T> handle(Class<T> exceptionOrEventClass) {
-		Objects.requireNonNull(exceptionOrEventClass);
+	public <T> ActorPart<T> handle(Class<T> eventOrExceptionClass) {
+		Objects.requireNonNull(eventOrExceptionClass);
 
-		Actor autoReactionActor = getUseCaseModel().getSystemActor();
-		ActorPart<T> newActorPart = actor(autoReactionActor, exceptionOrEventClass);
+		Actor systemActor = getUseCaseModel().getSystemActor();
+		ActorPart<T> newActorPart = actor(systemActor, eventOrExceptionClass);
 		this.actorPart = newActorPart;
 		
 		return newActorPart;
