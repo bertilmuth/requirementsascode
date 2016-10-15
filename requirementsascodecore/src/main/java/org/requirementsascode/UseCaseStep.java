@@ -201,6 +201,10 @@ public class UseCaseStep extends UseCaseModelElement{
 			getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 			return getUseCase();
 		}
+
+		public void continueAtFirst() {
+			getUseCaseFlow().continueAtFirst(Optional.of(UseCaseStep.this), Optional.empty());
+		}
 	}
 	
 	private String uniqueRepeatStepName() {

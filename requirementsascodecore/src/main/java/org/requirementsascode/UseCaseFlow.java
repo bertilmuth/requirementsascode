@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.requirementsascode.UseCaseStep.SystemPart;
 import org.requirementsascode.exception.NoSuchElementInUseCaseException;
 
 public class UseCaseFlow extends UseCaseModelElement {
@@ -25,6 +26,20 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return useCase;
 	}
 	
+	public void continueAtFirst() {
+		continueAtFirst(Optional.empty(), flowPredicate.get());	
+	}
+
+	void continueAtFirst(Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
+		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAtFirst();
+		newStepWhereJumpHappens(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate, Optional.empty());
+	}
+
+	private SystemPart<?> newStepWhereJumpHappens(String stepWhereJumpHappensName, Optional<UseCaseStep> stepBeforeJumpHappens,
+			Optional<Predicate<UseCaseRunner>> predicate, Optional<UseCaseStep> continueAfterStep) {
+		return newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(jumpTo(continueAfterStep));
+	}
+	
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
@@ -34,15 +49,15 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 	void continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
 		Optional<UseCaseStep> continueAfterStep = getUseCase().findStep(continueAfterStepName);
-		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensName(continueAfterStepName);
+		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAfter(continueAfterStepName);
 
-		continueAfterStep.map(step -> 
-			newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(continueAfterRunnable(step)))
+		continueAfterStep.map(s -> 
+			newStepWhereJumpHappens(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate, continueAfterStep))
 			.orElseThrow(() -> new NoSuchElementInUseCaseException(continueAfterStepName));
 	}
 	
-	private Runnable continueAfterRunnable(UseCaseStep stepToContinueAfter) {
-		return () -> getUseCaseModel().getUseCaseRunner().setLatestStep(Optional.of(stepToContinueAfter));
+	private Runnable jumpTo(Optional<UseCaseStep> continueAfterStep) {
+		return () -> getUseCaseModel().getUseCaseRunner().setLatestStep(continueAfterStep);
 	}
 	
 	public UseCaseStep newStep(String stepName) {
@@ -115,7 +130,11 @@ public class UseCaseFlow extends UseCaseModelElement {
 		}
 	}
 	
-	protected String uniqueStepWhereJumpHappensName(String stepName) {
+	protected String uniqueStepWhereJumpHappensNameToContinueAtFirst() {
+		return uniqueStepName("Continue at first step");
+	}
+	
+	protected String uniqueStepWhereJumpHappensNameToContinueAfter(String stepName) {
 		return uniqueStepName("Continue after " + stepName);
 	}
 }

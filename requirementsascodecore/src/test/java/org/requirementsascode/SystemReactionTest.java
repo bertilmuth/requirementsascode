@@ -462,7 +462,40 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldContinueWithBasicFlowCalledFromFirstStepOfAlternativeFlow() {		
+	public void shouldContinueAtFirstStepCalledFromFirstStepOfAlternativeFlow() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+			.newFlow("Alternative Flow that continues with Basic Flow")
+				.after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+					.continueAtFirst();
+		
+		useCaseRunner.run().reactTo(enterTextEvent(), enterTextEvent(), enterTextEvent());
+		 
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAtFirstStepCalledFromSecondStepOfAlternativeFlow() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.continueAtFirst();
+		
+		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterTextEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
+				CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAfterFirstStepCalledFromFirstStepOfAlternativeFlow() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
@@ -478,7 +511,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldContinueWithBasicFlowCalledFromSecondStepOfAlternativeFlow() {		
+	public void shouldContinueAfterFirstStepCalledFromSecondStepOfAlternativeFlow() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
@@ -495,7 +528,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldContinueWithBasicFlowCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
+	public void shouldContinueAfterFirstStepCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
