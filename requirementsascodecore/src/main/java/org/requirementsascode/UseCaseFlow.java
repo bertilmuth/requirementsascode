@@ -30,33 +30,34 @@ public class UseCaseFlow extends UseCaseModelElement {
 		continueAtFirst(Optional.empty(), flowPredicate.get());	
 	}
 
-	void continueAtFirst(Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
+	UseCase continueAtFirst(Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAtFirst();
 		newStepWhereJumpHappens(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate, Optional.empty());
+		return getUseCase();
 	}
 
 	private SystemPart<?> newStepWhereJumpHappens(String stepWhereJumpHappensName, Optional<UseCaseStep> stepBeforeJumpHappens,
 			Optional<Predicate<UseCaseRunner>> predicate, Optional<UseCaseStep> continueAfterStep) {
-		return newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(jumpTo(continueAfterStep));
+		return newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(jumpAfter(continueAfterStep));
 	}
 	
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		continueAfter(stepName, Optional.empty(), flowPredicate.get());
-		return getUseCase();
+		return continueAfter(stepName, Optional.empty(), flowPredicate.get());
 	}
 
-	void continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
+	UseCase continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
 		Optional<UseCaseStep> continueAfterStep = getUseCase().findStep(continueAfterStepName);
 		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAfter(continueAfterStepName);
 
 		continueAfterStep.map(s -> 
 			newStepWhereJumpHappens(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate, continueAfterStep))
 			.orElseThrow(() -> new NoSuchElementInUseCaseException(continueAfterStepName));
+		return getUseCase();
 	}
 	
-	private Runnable jumpTo(Optional<UseCaseStep> continueAfterStep) {
+	private Runnable jumpAfter(Optional<UseCaseStep> continueAfterStep) {
 		return () -> getUseCaseModel().getUseCaseRunner().setLatestStep(continueAfterStep);
 	}
 	

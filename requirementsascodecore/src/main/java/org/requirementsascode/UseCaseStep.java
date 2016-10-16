@@ -198,12 +198,11 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
-			return getUseCase();
+			return getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
 
-		public void continueAtFirst() {
-			getUseCaseFlow().continueAtFirst(Optional.of(UseCaseStep.this), Optional.empty());
+		public UseCase continueAtFirst() {
+			return getUseCaseFlow().continueAtFirst(Optional.of(UseCaseStep.this), Optional.empty());
 		}
 	}
 	

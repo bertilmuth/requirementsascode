@@ -488,10 +488,30 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
 				.continueAtFirst();
 		
-		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterTextEvent());
+		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
 		
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
 				CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAtFirstStepCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+		.basicFlow()
+			.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+			.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+			.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+		.newFlow("AF1: Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+			.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+			.continueAtFirst()	
+		.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
+			.newStep("Customer enters alternative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
+			.continueAtFirst();
+	
+		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
+	
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
+			CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
 	}
 	
 	@Test
@@ -538,7 +558,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT)		
 			.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
-				.newStep("Customer enters alterative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
+				.newStep("Customer enters alternative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
 		
 		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterNumberEvent());
