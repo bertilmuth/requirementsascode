@@ -36,7 +36,7 @@ public class UseCase extends UseCaseModelElement{
 	} 
 
 	/**
-	 * The basic flow defines the 'happy day scenario" of the use case:
+	 * The basic flow defines the 'happy day scenario' of the use case:
 	 * no exceptions are handled in it, and no branches occur.
 	 * 
 	 * The basic flow is a sequence of use case steps that lead the
