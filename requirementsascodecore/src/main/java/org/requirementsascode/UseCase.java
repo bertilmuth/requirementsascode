@@ -78,7 +78,7 @@ public class UseCase extends UseCaseModelElement{
 	 * @param flowName the name of the flow to be created.
 	 * 
 	 * @return the newly created flow
-	 * @throws ElementAlreadyInModelException if a flow with the specified name already exists for the use case
+	 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
 	 */
 	public UseCaseFlow newFlow(String flowName) {
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
