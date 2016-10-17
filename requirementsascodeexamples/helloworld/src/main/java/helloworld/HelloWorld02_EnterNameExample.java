@@ -13,11 +13,11 @@ public class HelloWorld02_EnterNameExample extends AbstractHelloWorldExample{
 				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
-				.newStep("System prompts user to enter first name")
+				.newStep("System prompts user to enter first name.")
 					.system(promptUserToEnterFirstName())
 				.newStep("User enters first name. System greets user with first name.")
 					.handle(EnterTextEvent.class).system(greetUserWithFirstName())
-				.newStep("Application terminates")
+				.newStep("System terminates application.")
 					.system(terminateApplication());
 		
 		useCaseRunner.run();

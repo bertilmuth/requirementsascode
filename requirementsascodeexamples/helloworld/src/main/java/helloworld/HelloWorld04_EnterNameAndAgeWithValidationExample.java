@@ -7,14 +7,14 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
-	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME = "System prompts user to enter first name";
+	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME = "System prompts user to enter first name.";
 	private static final String USER_ENTERS_FIRST_NAME = "User enters first name. System saves the first name.";
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_AGE = "System prompts user to enter age.";
 	private static final String USER_ENTERS_AGE = "User enters age. System saves age.";
 	private static final String SYSTEM_GREETS_USER = "System greets user with first name and age.";
 	private static final String SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE = "System informs user about non-numerical age";
-	private static final String SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE = "System informs user about invalid age";
-	private static final String APPLICATION_TERMINATES = "Application terminates";
+	private static final String SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE = "System informs user about invalid age.";
+	private static final String SYSTEM_TERMINATES_APPLICATION = "System terminates application.";
 	
 	private static final int MIN_AGE = 5;
 	private static final int MAX_AGE = 130;
@@ -38,7 +38,7 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 					.handle(EnterTextEvent.class).system(saveAge())
 				.newStep(SYSTEM_GREETS_USER)
 					.system(greetUserWithFirstNameAndAge())
-				.newStep(APPLICATION_TERMINATES)
+				.newStep(SYSTEM_TERMINATES_APPLICATION)
 					.system(terminateApplication())
 			.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)

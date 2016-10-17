@@ -15,17 +15,17 @@ public class HelloWorld03_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
-				.newStep("System prompts user to enter first name")
+				.newStep("System prompts user to enter first name.")
 					.system(promptUserToEnterFirstName())
 				.newStep("User enters first name. System saves the first name.")
 					.handle(EnterTextEvent.class).system(saveFirstName())
-				.newStep("System prompts user to enter age")
+				.newStep("System prompts user to enter age.")
 					.system(promptUserToEnterAge())
 				.newStep("User enters age. System saves age.")
 					.handle(EnterTextEvent.class).system(saveAge())
 				.newStep("System greets user with first name and age.")
 					.system(greetUserWithFirstNameAndAge())
-				.newStep("Application terminates")
+				.newStep("System terminates application.")
 					.system(terminateApplication());
 		
 		useCaseRunner.run();
