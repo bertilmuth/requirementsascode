@@ -26,12 +26,9 @@ useCaseModel.newUseCase("Get greeted")
 
 useCaseRunner.run();
 
-useCaseRunner.run();
-useCaseRunner.reactTo(enterTextEvent());
-
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_EnterNameExample.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimes.java).
 
 
 # Hello World Example 03 - User enters name, system prints it
@@ -52,7 +49,7 @@ useCaseRunner.reactTo(enterTextEvent());
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_EnterNameExample.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03_EnterNameExample.java).
 
 # Hello World Example 04 - User enters name and age, system prints them (exceptions are ignored)
 ``` java
@@ -80,7 +77,7 @@ useCaseRunner.reactTo(enterTextEvent());
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03_EnterNameAndAgeExample.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeExample.java).
 
 # Hello World Example 05 - User enters name and age, system prints them (with validation)
 ``` java
@@ -116,5 +113,5 @@ while(true)
 
 // Implementations of the methods ...
 ```
-For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeWithValidationExample.java).
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05_EnterNameAndAgeWithValidationExample.java).
 
