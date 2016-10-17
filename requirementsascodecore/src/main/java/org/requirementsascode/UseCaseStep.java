@@ -207,7 +207,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	private String uniqueRepeatStepName() {
-		return uniqueStepName(getName(), "REPEAT");
+		return stepNameWithPostfix(getName(), "REPEAT");
 	}
 	
 	private String uniqueRestartStepName() {
