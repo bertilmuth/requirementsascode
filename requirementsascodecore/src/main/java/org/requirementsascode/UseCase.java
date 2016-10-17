@@ -17,7 +17,7 @@ import static org.requirementsascode.ModelElementContainer.*;
  * As another example, a use case for an online flight reservation system is "Book flight".
  * 
  * The use case itself defines no behavior. The use case steps that are part
- * of the use case define the behavior of the use. As steps are often performed one
+ * of the use case define the behavior of the use case. As steps are often performed one
  * after the other, in sequence, they are grouped in use case flows.
  * 
  * @author b_muth
