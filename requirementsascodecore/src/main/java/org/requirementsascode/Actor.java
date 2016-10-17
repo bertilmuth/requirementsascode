@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * An actor, as part of a use case model.
  * 
- * An actor is a role that a user plays. Actors in use case models represent different user groups.
+ * An actor is a role that a user plays. Actors represent different user groups.
  * They enable to distinguish user rights: only an actor that is connected to a particular use case step
  * is allowed to cause a system reaction for that step.
  * 
