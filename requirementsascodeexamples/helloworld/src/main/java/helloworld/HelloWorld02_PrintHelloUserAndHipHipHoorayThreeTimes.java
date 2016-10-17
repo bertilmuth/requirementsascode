@@ -3,7 +3,9 @@ package helloworld;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld01_PrintHelloUserExample {	
+public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimes {	
+	
+	int hoorayCount = 0;
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
@@ -12,12 +14,15 @@ public class HelloWorld01_PrintHelloUserExample {
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
 				.newStep("System greets user.")
-					.system(() -> System.out.println("Hello, User."));
+					.system(() -> System.out.println("Hello, User."))
+				.newStep("System prints 'Hip, hip, hooray!' three times.")
+					.system(() -> System.out.println("Hip, hip, hooray!"))
+						.repeatWhile(r -> ++hoorayCount < 3);
 		
 		useCaseRunner.run();
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld01_PrintHelloUserExample().start();
+		new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimes().start();
 	}
 }

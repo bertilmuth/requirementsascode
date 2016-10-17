@@ -1,4 +1,4 @@
-# Hello World Example 01 - System prints "Hello, User."
+# Hello World Example 01 - System prints 'Hello, User.'
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
@@ -12,17 +12,39 @@ useCaseRunner.run();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01_PrintHelloUserExample.java).
 
-# Hello World Example 02 - User enters name, system prints it
+# Hello World Example 02 - System prints 'Hello, User.' and 'Hip, hip, hooray!' three times
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
-		.newStep("System prompts user to enter first name")
+		.newStep("System greets user.")
+			.system(() -> System.out.println("Hello, User."))
+		.newStep("System prints 'Hip, hip, hooray!' three times.")
+			.system(() -> System.out.println("Hip, hip, hooray!"))
+				.repeatWhile(r -> ++hoorayCount < 3);
+
+useCaseRunner.run();
+
+useCaseRunner.run();
+useCaseRunner.reactTo(enterTextEvent());
+
+// Implementations of the methods ...
+```
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_EnterNameExample.java).
+
+
+# Hello World Example 03 - User enters name, system prints it
+``` java
+// Setup useCaseRunner and useCaseModel same as before 
+
+useCaseModel.newUseCase("Get greeted")
+	.basicFlow()
+		.newStep("System prompts user to enter first name.")
 			.system(promptUserToEnterFirstName())
 		.newStep("User enters first name. System greets user with first name.")
 			.handle(EnterTextEvent.class).system(greetUserWithFirstName())
-		.newStep("Application terminates")
+		.newStep("System terminates application.")
 			.system(terminateApplication());
 
 useCaseRunner.run();
@@ -32,23 +54,23 @@ useCaseRunner.reactTo(enterTextEvent());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_EnterNameExample.java).
 
-# Hello World Example 03 - User enters name and age, system prints them (exceptions are ignored)
+# Hello World Example 04 - User enters name and age, system prints them (exceptions are ignored)
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
 useCaseModel.newUseCase("Get greeted")
 	.basicFlow()
-		.newStep("System prompts user to enter first name")
+		.newStep("System prompts user to enter first name.")
 			.system(promptUserToEnterFirstName())
 		.newStep("User enters first name. System saves the first name.")
 			.handle(EnterTextEvent.class).system(saveFirstName())
-		.newStep("System prompts user to enter age")
+		.newStep("System prompts user to enter age.")
 			.system(promptUserToEnterAge())
 		.newStep("User enters age. System saves age.")
 			.handle(EnterTextEvent.class).system(saveAge())
 		.newStep("System greets user with first name and age.")
 			.system(greetUserWithFirstNameAndAge())
-		.newStep("Application terminates")
+		.newStep("System terminates application.")
 			.system(terminateApplication());
 
 useCaseRunner.run();
@@ -60,7 +82,7 @@ useCaseRunner.reactTo(enterTextEvent());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03_EnterNameAndAgeExample.java).
 
-# Hello World Example 04 - User enters name and age, system prints them (with validation)
+# Hello World Example 05 - User enters name and age, system prints them (with validation)
 ``` java
 // Setup useCaseRunner and useCaseModel same as before 
 
@@ -76,7 +98,7 @@ useCaseModel.newUseCase("Get greeted")
 			.handle(EnterTextEvent.class).system(saveAge())
 		.newStep(SYSTEM_GREETS_USER)
 			.system(greetUserWithFirstNameAndAge())
-		.newStep(APPLICATION_TERMINATES)
+		.newStep(SYSTEM_TERMINATES_APPLICATION)
 			.system(terminateApplication())
 	.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
 		.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
@@ -90,7 +112,7 @@ useCaseModel.newUseCase("Get greeted")
 useCaseRunner.run();
 
 while(true)
-	useCaseRunner.reactTo(enterTextEvent());
+	useCaseRunner.reactTo(enterTextEvent());	
 
 // Implementations of the methods ...
 ```

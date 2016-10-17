@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
+public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME = "System prompts user to enter first name.";
 	private static final String USER_ENTERS_FIRST_NAME = "User enters first name. System saves the first name.";
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_AGE = "System prompts user to enter age.";
@@ -91,6 +91,6 @@ public class HelloWorld04_EnterNameAndAgeWithValidationExample extends AbstractH
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld04_EnterNameAndAgeWithValidationExample().start();
+		new HelloWorld05_EnterNameAndAgeWithValidationExample().start();
 	}
 }

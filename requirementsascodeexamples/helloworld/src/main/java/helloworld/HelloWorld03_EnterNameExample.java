@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld02_EnterNameExample extends AbstractHelloWorldExample{
+public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
@@ -34,6 +34,6 @@ public class HelloWorld02_EnterNameExample extends AbstractHelloWorldExample{
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld02_EnterNameExample().start();
+		new HelloWorld03_EnterNameExample().start();
 	}
 }

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-public class HelloWorld03_EnterNameAndAgeExample extends AbstractHelloWorldExample{
+public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
 	private String firstName;
 	private int age;
 	
@@ -56,6 +56,6 @@ public class HelloWorld03_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld03_EnterNameAndAgeExample().start();
+		new HelloWorld04_EnterNameAndAgeExample().start();
 	}
 }
