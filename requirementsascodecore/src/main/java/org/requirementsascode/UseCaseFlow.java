@@ -14,7 +14,7 @@ import org.requirementsascode.exception.NoSuchElementInUseCaseException;
  * A use case flow defines a sequence of steps that lead the user through the use case.
  * 
  * A flow either ends with the user reaching her goal, or terminates before, usually
- * because of an error that occured.
+ * because of an exception that occured.
  * 
  * A flow has a predicate. The predicate defines which condition must be fulfilled in order 
  * for the system to enter the flow, and react to its first step.
