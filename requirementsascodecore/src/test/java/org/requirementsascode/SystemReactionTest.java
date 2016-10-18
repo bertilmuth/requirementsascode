@@ -306,7 +306,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterTextEvent.class).system(throwRuntimeException())
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).handle(EnterTextEvent.class).system(throwRuntimeException())		
-			.newFlow(ALTERNATIVE_FLOW).atFirst()
+			.newFlow(ALTERNATIVE_FLOW).atStart()
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText());
 		
 		UseCaseStep latestStep = 
@@ -371,6 +371,59 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
 		
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAtStartCalledFromFirstStepOfAlternativeFlow() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+			.newFlow("Alternative Flow that continues with Basic Flow")
+				.after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+					.continueAtStart();
+		
+		useCaseRunner.run().reactTo(enterTextEvent(), enterTextEvent(), enterTextEvent());
+		 
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAtStartCalledFromSecondStepOfAlternativeFlow() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+				.continueAtStart();
+		
+		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
+				CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldContinueAtStartCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+		.basicFlow()
+			.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+			.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
+			.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
+		.newFlow("AF1: Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
+			.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
+			.continueAtStart()	
+		.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
+			.newStep("Customer enters alternative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
+			.continueAtStart();
+	
+		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
+	
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
+			CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
 	}
 	
 	@Test
@@ -459,59 +512,6 @@ public class SystemReactionTest extends AbstractTestCase{
 		String repeatStepName = CUSTOMER_ENTERS_SOME_TEXT + REPEAT_STEP_POSTFIX;
 		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, repeatStepName, repeatStepName, CUSTOMER_ENTERS_NUMBER), 
 			getRunStepNames());
-	}
-	
-	@Test
-	public void shouldContinueAtFirstStepCalledFromFirstStepOfAlternativeFlow() {		
-		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
-			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
-			.newFlow("Alternative Flow that continues with Basic Flow")
-				.after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
-					.continueAtFirst();
-		
-		useCaseRunner.run().reactTo(enterTextEvent(), enterTextEvent(), enterTextEvent());
-		 
-		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
-	}
-	
-	@Test
-	public void shouldContinueAtFirstStepCalledFromSecondStepOfAlternativeFlow() {		
-		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
-			.basicFlow()
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
-				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
-			.newFlow("Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
-				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-				.continueAtFirst();
-		
-		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
-		
-		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
-				CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
-	}
-	
-	@Test
-	public void shouldContinueAtFirstStepCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
-		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
-		.basicFlow()
-			.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-			.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN).handle(EnterTextEvent.class).system(displayEnteredText())
-			.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber())		
-		.newFlow("AF1: Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
-			.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
-			.continueAtFirst()	
-		.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
-			.newStep("Customer enters alternative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
-			.continueAtFirst();
-	
-		useCaseRunner.run().reactTo(enterTextEvent(), enterDifferentTextEvent(), enterTextEvent(), enterDifferentTextEvent());
-	
-		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT,
-			CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT), getRunStepNames());
 	}
 	
 	@Test

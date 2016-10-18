@@ -1,7 +1,7 @@
 package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
-import static org.requirementsascode.UseCaseStepPredicate.atFirstStep;
+import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.noOtherStepIsEnabledThan;
 
 import java.util.Objects;
@@ -86,7 +86,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	
 	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
 		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
-			previousStep.map(s -> afterStep(s)).orElse(atFirstStep());
+			previousStep.map(s -> afterStep(s)).orElse(isRunnerAtStart());
 		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	
@@ -201,8 +201,8 @@ public class UseCaseStep extends UseCaseModelElement{
 			return getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
 
-		public UseCase continueAtFirst() {
-			return getUseCaseFlow().continueAtFirst(Optional.of(UseCaseStep.this), Optional.empty());
+		public UseCase continueAtStart() {
+			return getUseCaseFlow().continueAtStart(Optional.of(UseCaseStep.this), Optional.empty());
 		}
 	}
 	

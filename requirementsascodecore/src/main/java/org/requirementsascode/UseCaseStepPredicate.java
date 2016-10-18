@@ -18,7 +18,7 @@ public class UseCaseStepPredicate {
 		return isRunnerInDifferentFlow;
 	}
 	
-	public static Predicate<UseCaseRunner> atFirstStep() {
+	public static Predicate<UseCaseRunner> isRunnerAtStart() {
 		return afterStep(Optional.empty());
 	}
 	

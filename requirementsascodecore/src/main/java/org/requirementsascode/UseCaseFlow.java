@@ -1,7 +1,7 @@
 package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
-import static org.requirementsascode.UseCaseStepPredicate.atFirstStep;
+import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerInDifferentFlowThan;
 
 import java.util.Objects;
@@ -11,27 +11,51 @@ import java.util.function.Predicate;
 import org.requirementsascode.UseCaseStep.SystemPart;
 import org.requirementsascode.exception.NoSuchElementInUseCaseException;
 
+/**
+ * A use case flow defines a sequence of steps that lead the user through the use case.
+ * 
+ * A flow either ends with the user reaching her goal, or terminates before, usually
+ * because of an error that occured.
+ * 
+ * A flow has a predicate. The predicate defines which condition must be fulfilled in order 
+ * for the system to enter the flow, and react to its first step.
+ * 
+ * If the flow's condition is still fulfilled or fulfilled again while running through the
+ * flow's step, the flow is NOT reentered. Rather, the flow is exited if a condition of
+ * a different flow is fulfilled.
+ * 
+ * @author b_muth
+ *
+ */
 public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
 	private FlowPredicate flowPredicate;
 
-	public UseCaseFlow(String name, UseCase useCase) {
+	UseCaseFlow(String name, UseCase useCase) {
 		super(name, useCase.getUseCaseModel());
 		
 		this.useCase = useCase;
 		this.flowPredicate = new FlowPredicate();
 	}
 
+	/**
+	 * Returns the use case this flow is part of.
+	 * 
+	 * @return the containing use case
+	 */
 	public UseCase getUseCase() {
 		return useCase;
 	}
 	
-	public void continueAtFirst() {
-		continueAtFirst(Optional.empty(), flowPredicate.get());	
+	/**
+	 * Jump back to start, as if the {@link UseCaseRunner} had just been started or restarted.
+	 */
+	public void continueAtStart() {
+		continueAtStart(Optional.empty(), flowPredicate.get());	
 	}
 
-	UseCase continueAtFirst(Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
-		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAtFirst();
+	UseCase continueAtStart(Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
+		String stepWhereJumpHappensName = uniqueStepWhereJumpHappensNameToContinueAtStart();
 		newStepWhereJumpHappens(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate, Optional.empty());
 		return getUseCase();
 	}
@@ -74,8 +98,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return stepToLeave;
 	}
 
-	public UseCaseFlow atFirst() {
-		flowPredicate.step(atFirstStep());
+	public UseCaseFlow atStart() {
+		flowPredicate.step(isRunnerAtStart());
 		return this;
 	}
 	
@@ -131,7 +155,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 		}
 	}
 	
-	protected String uniqueStepWhereJumpHappensNameToContinueAtFirst() {
+	protected String uniqueStepWhereJumpHappensNameToContinueAtStart() {
 		return uniqueStepName("Continue at first step");
 	}
 	
