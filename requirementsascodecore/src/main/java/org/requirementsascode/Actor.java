@@ -44,7 +44,7 @@ public class Actor extends UseCaseModelElement{
 	 * for the specified use case.
 	 * 
 	 * @param useCase the use case to query for steps the actor is connected with
-	 * @return the set of use case steps the actor is connected with
+	 * @return the use case steps the actor is connected with
 	 */
 	public List<UseCaseStep> getUseCaseSteps(UseCase useCase) {
 		Objects.requireNonNull(useCase);
