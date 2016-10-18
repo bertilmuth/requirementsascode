@@ -109,7 +109,7 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the actors contained in this use case model.
-	 * Do not modify that list directly, use {@link #newActor(String)}.
+	 * Do not modify that collection directly, use {@link #newActor(String)}.
 	 * 
 	 * @return the actors
 	 */
@@ -119,7 +119,7 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the use cases contained in this use case model.
-	 * Do not modify that list directly, use {@link #newUseCase(String)}.
+	 * Do not modify that collection directly, use {@link #newUseCase(String)}.
 	 * 
 	 * @return the use cases
 	 */
@@ -129,7 +129,7 @@ public class UseCaseModel {
 	
 	/**
 	 * Returns the use case steps of use cases contained in this use case model.
-	 * Do not modify that list directly, use {@link UseCaseFlow#newStep(String)}
+	 * Do not modify that collection directly, use {@link UseCaseFlow#newStep(String)}
 	 * and {@link UseCaseStep.SystemPart#newStep(String)}.
 	 * 
 	 * @return the use steps
