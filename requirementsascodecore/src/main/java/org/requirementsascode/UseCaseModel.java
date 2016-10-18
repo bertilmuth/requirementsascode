@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
@@ -133,9 +132,9 @@ public class UseCaseModel {
 	 * Do not modify that list directly, use {@link UseCaseFlow#newStep(String)}
 	 * and {@link UseCaseStep.SystemPart#newStep(String)}.
 	 * 
-	 * @return a collection of the use steps
+	 * @return the use steps
 	 */
-	public Set<UseCaseStep> getUseCaseSteps() {
+	public Collection<UseCaseStep> getUseCaseSteps() {
 		return getUseCases().stream()
 			.map(useCase -> useCase.getSteps())
 			.flatMap(steps -> steps.stream())

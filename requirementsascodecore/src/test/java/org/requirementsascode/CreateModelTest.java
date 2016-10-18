@@ -213,7 +213,7 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
-		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
 
 		boolean firstUseCaseStepExists = namedUseCase.hasStep(SYSTEM_DISPLAYS_TEXT);
@@ -304,7 +304,7 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN)
 					.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText());
 		
-		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();
@@ -327,7 +327,7 @@ public class CreateModelTest extends AbstractTestCase{
 					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText());		
 				
-		Set<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();
