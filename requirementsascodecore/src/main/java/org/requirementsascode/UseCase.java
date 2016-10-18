@@ -1,14 +1,17 @@
 package org.requirementsascode;
 
+import static org.requirementsascode.ModelElementContainer.findModelElement;
+import static org.requirementsascode.ModelElementContainer.getModelElements;
+import static org.requirementsascode.ModelElementContainer.hasModelElement;
+import static org.requirementsascode.ModelElementContainer.saveModelElement;
+
+import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
-
-import static org.requirementsascode.ModelElementContainer.*;
 
 /**
  * A use case, as part of a use case model.
@@ -52,7 +55,6 @@ public class UseCase extends UseCaseModelElement{
 	 * Checks whether this use case contains the specified flow.
 	 * 
 	 * @param flowName name of the flow whose existence to check
-	 * 
 	 * @return true if this use case contains the specified flow, false otherwise
 	 */
 	public boolean hasFlow(String flowName) {		
@@ -64,7 +66,6 @@ public class UseCase extends UseCaseModelElement{
 	 * Checks whether this use case contains the specified step.
 	 * 
 	 * @param stepName name of the step whose existence to check
-	 * 
 	 * @return true if this use case contains the specified step, false otherwise 
 	 */
 	public boolean hasStep(String stepName) {
@@ -76,7 +77,6 @@ public class UseCase extends UseCaseModelElement{
 	 * Creates a new flow in this use case.
 	 * 
 	 * @param flowName the name of the flow to be created.
-	 * 
 	 * @return the newly created flow
 	 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
 	 */
@@ -96,7 +96,6 @@ public class UseCase extends UseCaseModelElement{
 	 * Finds the flow with the specified name, contained in this use case.
 	 * 
 	 * @param flowName the name of the flow to look for
-	 * 
 	 * @return the flow if found, or else an empty optional
 	 */
 	public Optional<UseCaseFlow> findFlow(String flowName) {
@@ -108,7 +107,6 @@ public class UseCase extends UseCaseModelElement{
 	 * Finds the step with the specified name, contained in this use case.
 	 * 
 	 * @param stepName the name of the step to look for
-	 * 
 	 * @return the step if found, or else an empty optional
 	 */
 	public Optional<UseCaseStep> findStep(String stepName) {
@@ -120,9 +118,9 @@ public class UseCase extends UseCaseModelElement{
 	 * Returns the flows contained in this use case.
 	 * Do not modify that list directly, use {@link #newFlow(String)}.
 	 * 
-	 * @return a list of the flows
+	 * @return a collection of the flows
 	 */
-	public List<UseCaseFlow> getFlows() {
+	public Collection<UseCaseFlow> getFlows() {
 		return getModelElements(nameToFlowMap);
 	}
 	
@@ -130,9 +128,9 @@ public class UseCase extends UseCaseModelElement{
 	 * Returns the steps contained in this use case.
 	 * Do not modify that list directly, use {@link UseCaseFlow#newStep(String)}
 	 * 
-	 * @return a list of the steps
+	 * @return a collection of the steps
 	 */
-	public List<UseCaseStep> getSteps() {
+	public Collection<UseCaseStep> getSteps() {
 		return getModelElements(nameToStepMap);
 	}
 }

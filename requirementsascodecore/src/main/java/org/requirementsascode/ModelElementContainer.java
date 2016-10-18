@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,11 +44,9 @@ class ModelElementContainer {
 		modelElementNameToElementMap.put(modelElementName, modelElement);
 	}
 	
-	public static <T extends UseCaseModelElement> List<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
+	public static <T extends UseCaseModelElement> Collection<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
-		ArrayList<T> modelElementList = new ArrayList<>();
-		modelElementList.addAll(modelElementNameToElementMap.values());
-		return modelElementList;
+		return modelElementNameToElementMap.values();
 	}
 }
