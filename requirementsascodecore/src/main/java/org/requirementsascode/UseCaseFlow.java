@@ -20,7 +20,7 @@ import org.requirementsascode.exception.NoSuchElementInUseCaseException;
  * for the system to enter the flow, and react to its first step.
  * 
  * If the flow's condition is still fulfilled or fulfilled again while running through the
- * flow's step, the flow is NOT reentered. Rather, the flow is exited if a condition of
+ * flow's steps, the flow is NOT reentered. Rather, the flow is exited if a condition of
  * a different flow is fulfilled.
  * 
  * @author b_muth
