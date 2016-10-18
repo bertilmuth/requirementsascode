@@ -18,9 +18,6 @@ import org.requirementsascode.exception.ElementAlreadyInModelException;
  * A use case model is a container for use cases and their associated actors.
  * It is used to configure a {@link UseCaseRunner}.
  * 
- * Through its use cases and actors, the use case model defines the runtime behavior of
- * the {@link UseCaseRunner}.
- * 
  * @author b_muth
  *
  */
