@@ -157,8 +157,8 @@ public class UseCaseModel {
 	/**
 	 * Returns the actor representing the system.
 	 * This actor is implicitly used if you define a use case step
-	 * without {@link UseCaseStep#actor(Actor)}, but with a 
-	 * {@link UseCaseStep#handle(Class)}.
+	 * without {@link UseCaseStep#actor(Actor)} and without a 
+	 * {@link UseCaseStep#handle(Class)}, but just a {@link UseCaseStep#system(Runnable)}.
 	 * 
 	 * @return the user actor.
 	 */
