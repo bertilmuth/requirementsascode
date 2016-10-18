@@ -32,7 +32,7 @@ public class Actor extends UseCaseModelElement{
 	 * The actor is associated to a use case if it is connected
 	 * to at least one of its use case steps.
 	 * 
-	 * @return the set of use cases the actor is associated with
+	 * @return the use cases the actor is associated with
 	 */
 	public Set<UseCase> getUseCases() {
 		Set<UseCase> useCases = useCaseToStepMap.keySet();

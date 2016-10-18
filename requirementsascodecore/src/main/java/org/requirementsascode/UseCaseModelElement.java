@@ -72,16 +72,17 @@ public abstract class UseCaseModelElement {
 	}
 	
 	/**
-	 * Returns a step name, based on the specified step name and the postfix.
+	 * Returns a step name, based on the specified step name and the specified postfix
+	 * (and brackets and a hashtag in between).
 	 * 
 	 * Overwrite this only if you are not happy with the "automatically created"
 	 * step names in the model.
 	 * 
 	 * @param stepName the step name the created step name is based upon
 	 * 
-	 * @param postfix the postfix to append to the original step name
+	 * @param postfix the postfix to append to the specified step name
 	 * 
-	 * @return the created step name
+	 * @return the step name with the postfix
 	 */
 	protected String stepNameWithPostfix(String stepName, String postfix) {
 		return stepName + " (#" + postfix.toString() + ")";

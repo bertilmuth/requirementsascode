@@ -31,8 +31,15 @@ public class UseCase extends UseCaseModelElement{
 	private Map<String, UseCaseStep> nameToStepMap;
 	private UseCaseFlow basicFlow;
 
-	UseCase(String name, UseCaseModel useCaseModel) {
-		super(name, useCaseModel);
+	/**
+	 * Creates a use case with the specified name that 
+	 * belongs to the specified use case model.
+	 * 
+	 * @param useCaseName the name of the use case to be created
+	 * @param useCaseModel the use case model that will contain the new use case
+	 */
+	UseCase(String useCaseName, UseCaseModel useCaseModel) {
+		super(useCaseName, useCaseModel);
 		this.nameToFlowMap = new LinkedHashMap<>();
 		this.nameToStepMap = new LinkedHashMap<>();
 		this.basicFlow = newFlow("Basic Flow");
@@ -54,7 +61,7 @@ public class UseCase extends UseCaseModelElement{
 	/**
 	 * Checks whether this use case contains the specified flow.
 	 * 
-	 * @param flowName name of the flow whose existence to check
+	 * @param flowName the name of the flow whose existence to check
 	 * @return true if this use case contains the specified flow, false otherwise
 	 */
 	public boolean hasFlow(String flowName) {		
@@ -65,7 +72,7 @@ public class UseCase extends UseCaseModelElement{
 	/**
 	 * Checks whether this use case contains the specified step.
 	 * 
-	 * @param stepName name of the step whose existence to check
+	 * @param stepName the name of the step whose existence to check
 	 * @return true if this use case contains the specified step, false otherwise 
 	 */
 	public boolean hasStep(String stepName) {
@@ -116,7 +123,7 @@ public class UseCase extends UseCaseModelElement{
 	
 	/**
 	 * Returns the flows contained in this use case.
-	 * Do not modify that list directly, use {@link #newFlow(String)}.
+	 * Do not modify the returned collection directly, use {@link #newFlow(String)}.
 	 * 
 	 * @return a collection of the flows
 	 */
@@ -126,7 +133,7 @@ public class UseCase extends UseCaseModelElement{
 	
 	/**
 	 * Returns the steps contained in this use case.
-	 * Do not modify that list directly, use {@link UseCaseFlow#newStep(String)}
+	 * Do not modify the returned collection directly, use {@link UseCaseFlow#newStep(String)}
 	 * 
 	 * @return a collection of the steps
 	 */

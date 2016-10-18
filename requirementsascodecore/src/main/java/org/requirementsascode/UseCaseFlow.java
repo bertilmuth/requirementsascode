@@ -8,13 +8,16 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.requirementsascode.exception.ElementAlreadyInModelException;
+import org.requirementsascode.exception.NoSuchElementInModelException;
 import org.requirementsascode.exception.NoSuchElementInUseCaseException;
 
 /**
+ * A use case flow, as part of a use case.
  * A use case flow defines a sequence of steps that lead the user through the use case.
  * 
- * A flow either ends with the user reaching her goal, or terminates before, usually
- * because of an exception that occured.
+ * A flow either ends with the user reaching her/his goal, or terminates before, usually
+ * because of an exception that occurred.
  * 
  * A flow has a predicate. The predicate defines which condition must be fulfilled in order 
  * for the system to enter the flow, and react to its first step.
@@ -23,6 +26,8 @@ import org.requirementsascode.exception.NoSuchElementInUseCaseException;
  * flow's steps, the flow is NOT reentered. Rather, the flow is exited if a condition of
  * a different flow is fulfilled.
  * 
+ * Under the hood, the predicate is not owned by the flow, but by the first use case step of the flow.
+ * 
  * @author b_muth
  *
  */
@@ -30,6 +35,13 @@ public class UseCaseFlow extends UseCaseModelElement {
 	private UseCase useCase;
 	private FlowPredicate flowPredicate;
 
+	/**
+	 * Creates a use case flow with the specified name that 
+	 * belongs to the specified use case.
+	 * 
+	 * @param name the name of the flow to be created
+	 * @param useCase the use case that will contain the new flow
+	 */
 	UseCaseFlow(String name, UseCase useCase) {
 		super(name, useCase.getUseCaseModel());
 		
@@ -46,6 +58,13 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return useCase;
 	}
 	
+	/**
+	 * Makes the use case runner start from the beginning, when no
+	 * flow and step has been run.
+	 * 
+	 * @see UseCaseRunner#restart()
+	 * @return the use case this flow belongs to, to ease creation of further flows
+	 */
 	public UseCase restart() {
 		return restart(Optional.empty(), flowPredicate.get());
 
@@ -56,6 +75,14 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return getUseCase();
 	}
 	
+	/**
+	 * Makes the use case runner continue after the specified step.
+	 * Only steps of the use case that this flow is contained in are taken into account.
+	 * 
+	 * @param stepName name of the step to continue after.
+	 * @return the use case this flow belongs to, to ease creation of further flows
+	 * @throws NoSuchElementInUseCaseException if no step with the specified stepName is found in the current use case
+	 */
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
@@ -68,7 +95,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 
 		continueAfterStep.map(s -> 
 			newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(setLastestStepRun(continueAfterStep)))
-				.orElseThrow(() -> new NoSuchElementInUseCaseException(continueAfterStepName));
+				.orElseThrow(() -> new NoSuchElementInUseCaseException(getUseCase(), continueAfterStepName));
 		return getUseCase();
 	}
 	
@@ -76,6 +103,13 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return () -> getUseCaseModel().getUseCaseRunner().setLatestStep(continueAfterStep);
 	}
 	
+	/**
+	 * Creates the first step of this flow, with the specified name.
+	 * 
+	 * @param stepName the name of the step to be created
+	 * @return the newly created step, to ease creation of further steps
+	 * @throws ElementAlreadyInModelException if a step with the specified name already exists in the use case
+	 */
 	public UseCaseStep newStep(String stepName) {
 		Objects.requireNonNull(stepName);
 
@@ -89,31 +123,62 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return stepToLeave;
 	}
 
+	/**
+	 * Sets the flow's predicate to start the flow at the beginning of the run, 
+	 * when no flow and step has been run.
+	 * 
+	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
+	 */
 	public UseCaseFlow atStart() {
 		flowPredicate.step(isRunnerAtStart());
 		return this;
 	}
 	
+	/**
+	 * Sets the flow's predicate to start the flow after the specified step, 
+	 * in this flow's use case.
+	 * 
+	 * @param stepName the name of the step to start the flow after
+	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
+	 * @throws NoSuchElementInUseCaseException if the specified step is not found in this flow's use case
+	 */
+	public UseCaseFlow after(String stepName) {
+		return after(stepName, useCase);
+	}
+	
+	/**
+	 * Sets the flow's predicate to start the flow after the specified step, 
+	 * which is contained in the specified use case.
+	 * 
+	 * @param stepName the name of the step to start the flow after
+	 * @param useCaseName the name of the use case containing the step named stepName
+	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
+	 * @throws NoSuchElementInModelException if the specified use case is not found in the use case model
+	 * @throws NoSuchElementInUseCaseException if the specified step is not found in the specified use case
+	 */
 	public UseCaseFlow after(String stepName, String useCaseName) {
 		Objects.requireNonNull(stepName);
 		Objects.requireNonNull(useCaseName);
 		
 		UseCase useCase = getUseCaseModel().findUseCase(useCaseName)
-			.orElseThrow(() -> new NoSuchElementInUseCaseException(stepName));
+			.orElseThrow(() -> new NoSuchElementInModelException(useCaseName));
 		return after(stepName, useCase);
 	}
 	
 	private UseCaseFlow after(String stepName, UseCase useCase) {
 		Optional<UseCaseStep> foundStep = useCase.findStep(stepName);
 		flowPredicate.step(afterStep(foundStep
-			.orElseThrow(() -> new NoSuchElementInUseCaseException(stepName))));
+			.orElseThrow(() -> new NoSuchElementInUseCaseException(useCase, stepName))));
 		return this;
 	}
 
-	public UseCaseFlow after(String stepName) {
-		return after(stepName, useCase);
-	}
-
+	/**
+	 * Constrains the flow's predicate: only if the specified predicate is
+	 * true as well (beside the step condition), the flow is started.
+	 * 
+	 * @param whenPredicate the condition that constrains when the flow is started
+	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
+	 */
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
@@ -146,10 +211,29 @@ public class UseCaseFlow extends UseCaseModelElement {
 		}
 	}
 	
+	/**
+	 * Returns a unique name for a "restart" step, to avoid name
+	 * collisions if multiple "restart" steps exist in the model.
+	 * 
+	 * Overwrite this only if you are not happy with the "automatically created"
+	 * step names in the model.
+	 * 
+	 * @return a unique step name
+	 */
 	protected String uniqueRestartStepName() {
 		return uniqueStepName("Restart");
 	}
 	
+	/**
+	 * Returns a unique name for a "Continue after" step, to avoid name
+	 * collisions if multiple "Continue after" steps exist in the model.
+	 * 
+	 * Overwrite this only if you are not happy with the "automatically created"
+	 * step names in the model.
+	 * 
+	 * @param stepName the name of the step to continue after
+	 * @return a unique step name
+	 */
 	protected String uniqueContinueAfterStepName(String stepName) {
 		return uniqueStepName("Continue after " + stepName);
 	}

@@ -38,7 +38,7 @@ public class UseCaseModel {
 	/**
 	 * Checks whether this model contains the specified actor.
 	 * 
-	 * @param actorName name of the actor whose existence to check
+	 * @param actorName the name of the actor whose existence to check
 	 * 
 	 * @return true if this model contains the specified actor, false otherwise 
 	 */
@@ -50,7 +50,7 @@ public class UseCaseModel {
 	/**
 	 * Checks whether this model contains the specified use case.
 	 * 
-	 * @param useCaseName name of the use case whose existence to check
+	 * @param useCaseName the name of the use case whose existence to check
 	 * 
 	 * @return true if this model contains the specified use case, false otherwise 
 	 */
@@ -147,7 +147,7 @@ public class UseCaseModel {
 	 * without {@link UseCaseStep#actor(Actor)}, but with a 
 	 * {@link UseCaseStep#handle(Class)}.
 	 * 
-	 * @return the user actor.
+	 * @return the user actor
 	 */
 	public Actor getUserActor() {
 		return userActor;
@@ -159,7 +159,7 @@ public class UseCaseModel {
 	 * without {@link UseCaseStep#actor(Actor)} and without a 
 	 * {@link UseCaseStep#handle(Class)}, but just a {@link UseCaseStep#system(Runnable)}.
 	 * 
-	 * @return the user actor.
+	 * @return the user actor
 	 */
 	public Actor getSystemActor() {
 		return systemActor;

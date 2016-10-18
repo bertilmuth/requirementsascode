@@ -174,7 +174,7 @@ public class CreateModelTest extends AbstractTestCase{
 		Collection<UseCaseStep> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
-		Optional<UseCaseStep> previousStep = steps.iterator().next().getPreviousStep();
+		Optional<UseCaseStep> previousStep = steps.iterator().next().getPreviousStepInFlow();
 		
 		assertFalse(previousStep.isPresent());
 	}
@@ -235,7 +235,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep firstUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT).get();
 		UseCaseStep secondUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
 		
-		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStep().get());
+		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
 	}
 	
 	@Test
@@ -250,8 +250,8 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT).get();
 		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
 		
-		assertFalse(firstUseCaseStep.getPreviousStep().isPresent());
-		assertFalse(secondUseCaseStep.getPreviousStep().isPresent());
+		assertFalse(firstUseCaseStep.getPreviousStepInFlow().isPresent());
+		assertFalse(secondUseCaseStep.getPreviousStepInFlow().isPresent());
 	}
 	
 	@Test

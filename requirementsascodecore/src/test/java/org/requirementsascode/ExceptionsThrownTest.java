@@ -9,6 +9,7 @@ import org.requirementsascode.event.EnterTextEvent;
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
+import org.requirementsascode.exception.NoSuchElementInModelException;
 import org.requirementsascode.exception.NoSuchElementInUseCaseException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
@@ -23,22 +24,24 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void shouldThrowExceptionIfAfterStepNotExistsInSameUseCase() {
-		String name = "Unknown Step";
+		String unknownStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCaseException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(SAY_HELLO_USE_CASE);
+		thrown.expectMessage(unknownStepName);
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
-			.basicFlow().after(name);
+			.basicFlow().after(unknownStepName);
 	}
 	
 	
 	@Test
-	public void shouldThrowExceptionIfAfterStepNotExistsInOtherExistingUseCase() {
-		String name = "Unknown Step";
+	public void shouldThrowExceptionIfAfterStepNotExistsInOtherUseCase() {
+		String unknwonStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCaseException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(SAY_HELLO_USE_CASE);
+		thrown.expectMessage(unknwonStepName);
 		
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE).basicFlow()
@@ -46,15 +49,15 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel
 			.newUseCase("Another Use Case").basicFlow()
-				.after("Unknown Step of other Use Case", SAY_HELLO_USE_CASE);
+				.after(unknwonStepName, SAY_HELLO_USE_CASE);
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfAfterStepNotExistsInOtherNonExistingUseCase() {
-		String name = "Unknown Step";
-		
-		thrown.expect(NoSuchElementInUseCaseException.class);
-		thrown.expectMessage(name);
+	public void shouldThrowExceptionIfAfterStepHasNonExistingUseCase() {
+		String unknownUseCaseName = "Unknown Use Case";
+		 
+		thrown.expect(NoSuchElementInModelException.class);
+		thrown.expectMessage(unknownUseCaseName);
 		
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE).basicFlow()
@@ -62,18 +65,20 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel
 			.newUseCase("Another Use Case").basicFlow()
-				.after("Unknown Step of other Use Case", "Unknown Use Case");
+				.after(BASIC_FLOW_STEP, unknownUseCaseName);
 	}
+	
 	
 	@Test
 	public void shouldThrowExceptionIfContinueAfterNotExists() {
-		String name = "Unknown Step";
+		String unknownStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCaseException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(SAY_HELLO_USE_CASE);
+		thrown.expectMessage(unknownStepName);
 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
-			.basicFlow().continueAfter(name);
+			.basicFlow().continueAfter(unknownStepName);
 	}
 	
 	@Test
@@ -89,40 +94,40 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void shouldThrowExceptionIfUseCaseIsCreatedTwice() {
-		String name = "Duplicate Use Case";
+		String duplicateUseCaseName = "Duplicate Use Case";
 		
 		thrown.expect(ElementAlreadyInModelException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(duplicateUseCaseName);
 		
-		useCaseModel.newUseCase(name);
-		useCaseModel.newUseCase(name);
+		useCaseModel.newUseCase(duplicateUseCaseName);
+		useCaseModel.newUseCase(duplicateUseCaseName);
 	}
 	
 	@Test
 	public void shouldThrowExceptionIfFlowIsCreatedTwice() {
-		String name = "Duplicate Flow";
+		String duplicateFlowName = "Duplicate Flow";
 		
 		thrown.expect(ElementAlreadyInModelException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(duplicateFlowName);
 		
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
-			.newFlow(name);
+			.newFlow(duplicateFlowName);
 			
 		useCaseModel.findUseCase(EXCEPTION_THROWING_USE_CASE).get()
-			.newFlow(name);
+			.newFlow(duplicateFlowName);
 	}
 	
 	@Test
 	public void shouldThrowExceptionIfStepIsCreatedTwice() {
-		String name = "Duplicate Step";
+		String duplicateStepName = "Duplicate Step";
 		
 		thrown.expect(ElementAlreadyInModelException.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(duplicateStepName);
 		
 		useCaseModel.newUseCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
-				.newStep(name).system(displayConstantText())			
-				.newStep(name).system(displayConstantText());
+				.newStep(duplicateStepName).system(displayConstantText())			
+				.newStep(duplicateStepName).system(displayConstantText());
 	}
 	
 	@Test
