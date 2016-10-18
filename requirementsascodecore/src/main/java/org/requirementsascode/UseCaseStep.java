@@ -190,9 +190,8 @@ public class UseCaseStep extends UseCaseModelElement{
 				.system((Consumer)getSystemPart().getSystemReaction());
 		}
 
-		public void restart() {
-			newStep(uniqueRestartStepName()).system(
-				() -> getUseCaseModel().getUseCaseRunner().restart());
+		public UseCase restart() {
+			return getUseCaseFlow().restart(Optional.of(UseCaseStep.this), Optional.empty());
 		}
 
 		public UseCase continueAfter(String stepName) {
@@ -200,17 +199,9 @@ public class UseCaseStep extends UseCaseModelElement{
 			
 			return getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
-
-		public UseCase continueAtStart() {
-			return getUseCaseFlow().continueAtStart(Optional.of(UseCaseStep.this), Optional.empty());
-		}
 	}
 	
 	private String uniqueRepeatStepName() {
 		return stepNameWithPostfix(getName(), "REPEAT");
-	}
-	
-	private String uniqueRestartStepName() {
-		return uniqueStepName("RESTART");
 	}
 }
