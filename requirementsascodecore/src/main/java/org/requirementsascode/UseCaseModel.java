@@ -111,7 +111,7 @@ public class UseCaseModel {
 	 * Returns the actors contained in this use case model.
 	 * Do not modify that list directly, use {@link #newActor(String)}.
 	 * 
-	 * @return a collection of the actors
+	 * @return the actors
 	 */
 	public Collection<Actor> getActors() {
 		return getModelElements(nameToActorMap);
@@ -121,7 +121,7 @@ public class UseCaseModel {
 	 * Returns the use cases contained in this use case model.
 	 * Do not modify that list directly, use {@link #newUseCase(String)}.
 	 * 
-	 * @return a collection of the use cases
+	 * @return the use cases
 	 */
 	public Collection<UseCase> getUseCases() {
 		return getModelElements(nameToUseCaseMap);
