@@ -127,7 +127,7 @@ public class UseCaseRunner {
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
 	 * @return the use case step whose system reaction was triggered, or null if none was triggered.
-	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step is enabled
+	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step could react
 	 */
 	public <T> UseCaseStep reactTo(T event) {
 		Objects.requireNonNull(event);
