@@ -115,17 +115,18 @@ public class UseCaseRunner {
 	/**
 	 * Needs to be called by the frontend to provide an event object to the use case runner.
 	 * 
-	 * The runner will then check which steps are enabled for the event. 
-	 * If a single step is enabled, it will trigger the system reaction for that step.
-	 * If no step is enabled, it will NOT trigger any system reaction.
-	 * If more than one step is enabled, it will throw an exception.
+	 * The runner will then check which steps could react to the event. 
+	 * If a single step could react, the runner will trigger the system reaction for that step.
+	 * If no step could react, the runner will NOT trigger any system reaction.
+	 * If more than one step could react, the runner will throw an exception.
 	 * 
 	 * After that, the runner will trigger "autonomous system reactions".
 	 * 
-	 * @see #getStepsEnabledFor(Class)
+	 * See {@link #getStepsThatCouldReactTo(Class)} for a description of what "could react" means.
+	 * 
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
-	 * @return the use case step that was enabled, or null if none was enabled.
+	 * @return the use case step whose system reaction was triggered, or null if none was triggered.
 	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step is enabled
 	 */
 	public <T> UseCaseStep reactTo(T event) {
@@ -134,32 +135,41 @@ public class UseCaseRunner {
 		UseCaseStep latestStepRun = null;
 		if(isRunning){
 			Class<? extends Object> currentEventClass = event.getClass();
-			Set<UseCaseStep> reactingUseCaseSteps = getStepsEnabledFor(currentEventClass);
+			Set<UseCaseStep> reactingUseCaseSteps = getStepsThatCouldReactTo(currentEventClass);
 			latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
 		}
 		return latestStepRun;
 	}
 
 	/**
-	 * Returns the use case steps that are enabled for the specified event class.
+	 * Returns the use case steps in the use case model that could react to the specified event class.
 	 * 
-	 * A step is enabled if all of the following conditions are met:
-	 * a) the step's actor matches the actor the runner is run an
+	 * A step "could react" if all of the following conditions are met:
+	 * a) the step's actor matches the actor the runner is run as
 	 * b) the step's event class is the same or a superclass of the specified event class 
 	 * c) the condition of the step is fulfilled, that is: its predicate is true
 	 * 
-	 * @param eventClass the class of events
-	 * @return the steps enabled for the class of events
+	 * @param eventClass the class of events 
+	 * @return the steps that could react to the class of events
 	 */
-	public Set<UseCaseStep> getStepsEnabledFor(Class<? extends Object> eventClass) {
+	public Set<UseCaseStep> getStepsThatCouldReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
 		
 		Stream<UseCaseStep> stepStream = useCaseModel.getUseCaseSteps().stream();
-		Set<UseCaseStep> enabledSteps = getEnabledStepSubset(eventClass, stepStream);
+		Set<UseCaseStep> enabledSteps = getSubsetOfStepsThatCouldReact(eventClass, stepStream);
 		return enabledSteps;
 	}
 	
-	Set<UseCaseStep> getEnabledStepSubset(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
+	/**
+	 * Gets the steps that could react from the specified stream, rather than from the whole
+	 * use case model.
+	 * 
+	 * @see #getStepsThatCouldReactTo(Class)
+	 * @param eventClass eventClass the class of events
+	 * @param stepStream the stream of steps
+	 * @return the subset of steps that could react to the class of events
+	 */
+	Set<UseCaseStep> getSubsetOfStepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> enabledSteps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
 			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
@@ -168,7 +178,7 @@ public class UseCaseRunner {
 		return enabledSteps;
 	}
 
-	protected <T> UseCaseStep triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
+	private <T> UseCaseStep triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
 		UseCaseStep useCaseStep = null;
 
 		if(useCaseSteps.size() == 1){
@@ -181,6 +191,13 @@ public class UseCaseRunner {
 		
 		return useCaseStep;
 	}
+	
+	/**
+	 * Overwrite this method only if you are not happy with message of the exception that is
+	 * thrown if more than one step could react.
+	 * 
+	 * @param useCaseSteps the use case steps that could react to a certain event
+	 */
 	protected <T> String getMoreThanOneStepCouldReactExceptionMessage(Collection<UseCaseStep> useCaseSteps) {
 		String message = "System could react to more than one step: ";
 		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
@@ -188,7 +205,7 @@ public class UseCaseRunner {
 		return useCaseStepsClassNames;
 	}
 	
-	protected <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
+	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
 		if(useCaseStep.getSystemPart() == null){
 			String message = getMissingSystemPartExceptionMessage(useCaseStep);
 			throw new MissingUseCaseStepPartException(message);
@@ -211,11 +228,27 @@ public class UseCaseRunner {
 
 		return useCaseStep;
 	}
+	
+	/**
+	 * Overwrite this method only if you are not happy with message of the exception that is
+	 * thrown if the system part of a use case step is missing.
+	 * 
+	 * @param useCaseStep the use case step that has no use case step
+	 */
 	protected String getMissingSystemPartExceptionMessage(UseCaseStep useCaseStep) {
 		String message = "Use Case Step \"" + useCaseStep + "\" has no defined system part! Please have a look and update your Use Case Model for this step!";
 		return message;
 	}
 	
+	
+	/**
+	 * Overwrite this method to control what happens exactly when a system reaction is triggered.
+	 * The behavior implemented here: the consumer that is the system reaction simply accepts the event.
+	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
+	 * 
+	 * @param event the event that is passed to the system reation
+	 * @param systemReaction the system reaction that accepts the event
+	 */
 	protected <T> void triggerSystemReaction(T event, Consumer<T> systemReaction) {
 		systemReaction.accept(event);
 	}

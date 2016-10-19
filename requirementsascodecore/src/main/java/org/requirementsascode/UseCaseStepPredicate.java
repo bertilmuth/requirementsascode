@@ -44,7 +44,7 @@ public class UseCaseStepPredicate {
 				useCaseModel.getUseCaseSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<UseCaseStep> enabledOtherSteps = useCaseRunner.getEnabledStepSubset(theStepsEventClass, otherStepsStream);
+			Set<UseCaseStep> enabledOtherSteps = useCaseRunner.getSubsetOfStepsThatCouldReact(theStepsEventClass, otherStepsStream);
 			return enabledOtherSteps.size() == 0;
 		};
 	}
