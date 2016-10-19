@@ -16,6 +16,17 @@ import org.requirementsascode.exception.MissingUseCaseStepPartException;
 import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
 
 
+/**
+ * A use case runner is a highly configurable use case controller that received events
+ * from the frontend and conditionally calls methods on the backend.
+ * 
+ * In requirementsascode, a use case runner is the only way the frontend communicates with the
+ * backend. The use case runner is configured by the use case model it owns.
+ * Each real user needs an instance of a use case runner, as the runner determines the journey
+ * of the user through the use cases.
+ * 
+ *  
+ */
 public class UseCaseRunner {
 	private List<Actor> actorsToRunAs;
 	private UseCaseModel useCaseModel;
@@ -23,22 +34,42 @@ public class UseCaseRunner {
 	private Optional<UseCaseFlow> latestFlow;
 	private boolean isRunning;
 
+	/**
+	 * Constructor for creating a use case runner.
+	 */
 	public UseCaseRunner() {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
 		as(useCaseModel.getUserActor()).restart();
 	}
 	
+	/**
+	 * Returns the use case model for the runner,
+	 * which configures the behavior of the runner.
+	 * 
+	 * @return the use case model
+	 */
 	public UseCaseModel getUseCaseModel() {
 		return useCaseModel;
 	}
 	
-	
+	/**
+	 * Restarts the runner, setting latest flow ans latest step 
+	 * to its original defaults ("no flow has been run, no step has been run").
+	 */
 	public void restart() {
 		this.latestFlow = Optional.empty();
 		this.latestStep = Optional.empty();
 	}
 	
+	/**
+	 * Runs the use case model. Calling this method triggers 
+	 * "autonomous system reactions", and activates reacting to events
+	 * via {@link #reactTo(Object)}.
+	 * 
+	 * @see UseCaseStep#system(Runnable)
+	 * @return the runner itself, for method chaining, e.g. with {@link #as(Actor)}
+	 */
 	public UseCaseRunner run() {
 		isRunning = true;
 		triggerAutonomousSystemReaction();
@@ -49,6 +80,17 @@ public class UseCaseRunner {
 		reactTo(new SystemEvent());
 	}
 
+	/**
+	 * Defines the actor the runner is run as.
+	 * 
+	 * After calling this method, the runner will only trigger system reactions
+	 * of steps that have explicitly set this actor, or that are "autonomous system reactions".
+	 * 
+	 * @see UseCaseStep#actor(Actor)
+	 * @see UseCaseStep#system(Runnable) 
+	 * @param actor the actor to run as
+	 * @return the use case runner
+	 */
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
@@ -56,6 +98,12 @@ public class UseCaseRunner {
 		return this;
 	}
 	
+	/**
+	 * Needs to be called by the frontend to provide several event objects to the use case runner.
+	 * For each event object, {@link #reactTo(Object)} is called.
+	 * 
+	 * @param events the events to react to
+	 */
 	public void reactTo(Object... events) {
 		Objects.requireNonNull(events);
 		
@@ -64,6 +112,22 @@ public class UseCaseRunner {
 		}		
 	}
 
+	/**
+	 * Needs to be called by the frontend to provide an event object to the use case runner.
+	 * 
+	 * The runner will then check which steps are enabled for the event. 
+	 * If a single step is enabled, it will trigger the system reaction for that step.
+	 * If no step is enabled, it will NOT trigger any system reaction.
+	 * If more than one step is enabled, it will throw an exception.
+	 * 
+	 * After that, the runner will trigger "autonomous system reactions".
+	 * 
+	 * @see #getStepsEnabledFor(Class)
+	 * @param <T> the type of the event object
+	 * @param event the event object provided by the frontend
+	 * @return the use case step that was enabled, or null if none was enabled.
+	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step is enabled
+	 */
 	public <T> UseCaseStep reactTo(T event) {
 		Objects.requireNonNull(event);
 		
@@ -76,6 +140,17 @@ public class UseCaseRunner {
 		return latestStepRun;
 	}
 
+	/**
+	 * Returns the use case steps that are enabled for the specified event class.
+	 * 
+	 * A step is enabled if all of the following conditions are met:
+	 * a) the step's actor matches the actor the runner is run an
+	 * b) the step's event class is the same or a superclass of the specified event class 
+	 * c) the condition of the step is fulfilled, that is: its predicate is true
+	 * 
+	 * @param eventClass the class of events
+	 * @return the steps enabled for the class of events
+	 */
 	public Set<UseCaseStep> getStepsEnabledFor(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
 		
