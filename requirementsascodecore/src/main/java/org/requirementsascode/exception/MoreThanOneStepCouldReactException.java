@@ -14,12 +14,6 @@ import org.requirementsascode.UseCaseStep;
 public class MoreThanOneStepCouldReactException  extends RuntimeException {	
 	private static final long serialVersionUID = 1773129287125843814L;
 
-	/**
-	 * Creates an exception because the specified steps could all react,
-	 * but only one step that could react is allowed.
-	 * 
-	 * @param useCaseSteps the steps that could react
-	 */
 	public MoreThanOneStepCouldReactException(Collection<UseCaseStep> useCaseSteps) {
 		super(exceptionMessage(useCaseSteps));
 	}
