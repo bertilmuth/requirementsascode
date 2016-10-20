@@ -1,7 +1,12 @@
 package org.requirementsascode.exception;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import org.requirementsascode.UseCaseStep;
+
 /**
- * Exception that is thrown when more than one step reacts to a certain event.
+ * Exception that is thrown when more than one step could react to a certain event.
  * 
  * @author b_muth
  *
@@ -9,7 +14,20 @@ package org.requirementsascode.exception;
 public class MoreThanOneStepCouldReactException  extends RuntimeException {	
 	private static final long serialVersionUID = 1773129287125843814L;
 
-	public MoreThanOneStepCouldReactException(String message) {
-		super(message);
+	/**
+	 * Creates an exception because the specified steps could all react,
+	 * but only one step that could react is allowed.
+	 * 
+	 * @param useCaseSteps the steps that could react
+	 */
+	public MoreThanOneStepCouldReactException(Collection<UseCaseStep> useCaseSteps) {
+		super(exceptionMessage(useCaseSteps));
+	}
+	
+	private static String exceptionMessage(Collection<UseCaseStep> useCaseSteps) {
+		String message = "System could react to more than one step: ";
+		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
+				.collect(Collectors.joining(",", message, ""));
+		return useCaseStepsClassNames;
 	}
 }

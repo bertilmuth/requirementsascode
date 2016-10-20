@@ -4,9 +4,11 @@ import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerInDifferentFlowThan;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 import org.requirementsascode.exception.NoSuchElementInModelException;
@@ -56,6 +58,18 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 */
 	public UseCase getUseCase() {
 		return useCase;
+	}
+	
+	/**
+	 * Returns the steps contained in this flow.
+	 * Do not modify the returned collection directly, use {@link #newStep(String)}
+	 * 
+	 * @return a collection of the steps
+	 */
+	public List<UseCaseStep> getSteps() {
+		return getUseCase().getSteps().stream()
+			.filter(step -> step.getFlow().equals(this))
+			.collect(Collectors.toList());
 	}
 	
 	/**

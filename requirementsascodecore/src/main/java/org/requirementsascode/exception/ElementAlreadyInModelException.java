@@ -1,9 +1,20 @@
 package org.requirementsascode.exception;
 
+/**
+ * Exception that is thrown when somebody tries to create a new model element,
+ * and a model element with the same name is already in the model.
+ * 
+ * @author b_muth
+ *
+ */
 public class ElementAlreadyInModelException extends RuntimeException {
 	private static final long serialVersionUID = -510216736346192818L;
 
 	public ElementAlreadyInModelException(String elementName) {		
-		super("Element already exists in the model: " + elementName);
+		super(exceptionMessage(elementName));
+	}
+
+	private static String exceptionMessage(String elementName) {
+		return "Element already exists in the model: " + elementName;
 	}
 }

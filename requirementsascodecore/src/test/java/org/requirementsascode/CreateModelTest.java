@@ -155,7 +155,7 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_TEXT).actor(customer).handle(EnterTextEvent.class).system(displayEnteredText());
 
 		Actor actorFromModel = useCaseModel.findActor(customer.getName()).get();
-		List<UseCaseStep> steps = actorFromModel.getUseCaseSteps(useCase);
+		List<UseCaseStep> steps = actorFromModel.getSteps(useCase);
 		
 		UseCaseStep step = steps.get(0);
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
@@ -206,14 +206,14 @@ public class CreateModelTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldCreateTwoStepsAndCheckIfTheyExistByName() {
+	public void shouldCreateTwoStepsAndCheckIfTheyExistInUseCaseByName() {
 		UseCase namedUseCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		namedUseCase
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
-		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = namedUseCase.getSteps();
 		assertEquals(2, steps.size());
 
 		boolean firstUseCaseStepExists = namedUseCase.hasStep(SYSTEM_DISPLAYS_TEXT);
@@ -221,6 +221,36 @@ public class CreateModelTest extends AbstractTestCase{
 		
 		assertTrue(firstUseCaseStepExists);
 		assertTrue(secondUseCaseStepExists);
+	}
+	
+	@Test
+	public void shouldCreateTwoStepsInBasicFlowAndCheckIfTheyExistByIndex() {
+		UseCase namedUseCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
+		namedUseCase
+			.basicFlow()
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
+		
+		List<UseCaseStep> steps = namedUseCase.basicFlow().getSteps();
+		assertEquals(2, steps.size());
+		
+		assertEquals(SYSTEM_DISPLAYS_TEXT, steps.get(0).getName());
+		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(1).getName());
+	}
+	
+	@Test
+	public void shouldCreateOneStepInAlternatvieFlowAndCheckIfItExistsByIndex() {
+		UseCase namedUseCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
+		namedUseCase
+			.basicFlow()
+				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+			.newFlow(ANOTHER_FLOW)
+				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
+			
+		List<UseCaseStep> steps = namedUseCase.findFlow(ANOTHER_FLOW).get().getSteps();
+		assertEquals(1, steps.size());
+		
+		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(0).getName());
 	}
 	
 	@Test
@@ -244,7 +274,7 @@ public class CreateModelTest extends AbstractTestCase{
 		useCaseInFirstFlow
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())	
-			.newFlow("Alternative Flow")
+			.newFlow(ANOTHER_FLOW)
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
 		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT).get();
@@ -259,7 +289,7 @@ public class CreateModelTest extends AbstractTestCase{
 		useCaseModel.newUseCase(USE_CASE)
 			.basicFlow()
 				.newStep(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
-			.newFlow("Alternative Flow")
+			.newFlow(ANOTHER_FLOW)
 				.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());		
 		
 		assertEquals(1, useCaseModel.getUseCases().size());
@@ -304,7 +334,7 @@ public class CreateModelTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_TEXT_AGAIN)
 					.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText());
 		
-		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = useCaseModel.getSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();
@@ -327,7 +357,7 @@ public class CreateModelTest extends AbstractTestCase{
 					.newStep(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.actor(customer).handle(EnterTextEvent.class).system(displayEnteredText());		
 				
-		Collection<UseCaseStep> steps = useCaseModel.getUseCaseSteps();
+		Collection<UseCaseStep> steps = useCaseModel.getSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();

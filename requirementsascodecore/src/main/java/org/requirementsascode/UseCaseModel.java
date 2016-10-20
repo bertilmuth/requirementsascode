@@ -129,12 +129,10 @@ public class UseCaseModel {
 	
 	/**
 	 * Returns the use case steps of use cases contained in this use case model.
-	 * Do not modify that collection directly, use {@link UseCaseFlow#newStep(String)}
-	 * and {@link UseCaseStep.SystemPart#newStep(String)}.
 	 * 
 	 * @return the use steps
 	 */
-	public Collection<UseCaseStep> getUseCaseSteps() {
+	Collection<UseCaseStep> getSteps() {
 		return getUseCases().stream()
 			.map(useCase -> useCase.getSteps())
 			.flatMap(steps -> steps.stream())

@@ -126,7 +126,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the containing use case flow
 	 */
-	public UseCaseFlow getUseCaseFlow() {
+	public UseCaseFlow getFlow() {
 		return useCaseFlow;
 	}
 	
@@ -136,7 +136,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @return the containing use case
 	 */
 	public UseCase getUseCase() {
-		return getUseCaseFlow().getUseCase();
+		return getFlow().getUseCase();
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 
 			UseCaseStep newStep = 
-				getUseCase().newStep(stepName, getUseCaseFlow(), Optional.of(UseCaseStep.this), Optional.empty());
+				getUseCase().newStep(stepName, getFlow(), Optional.of(UseCaseStep.this), Optional.empty());
 			
 			return newStep; 
 		}
@@ -362,7 +362,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			
 			makeRepeatStepBehaveLikeThisStep(newRepeatStep);
 			
-			getUseCaseFlow().continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
+			getFlow().continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
 			
 			return this;
 		}
@@ -382,7 +382,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the use case this step belongs to, to ease creation of further flows
 		 */
 		public UseCase restart() {
-			return getUseCaseFlow().restart(Optional.of(UseCaseStep.this), Optional.empty());
+			return getFlow().restart(Optional.of(UseCaseStep.this), Optional.empty());
 		}
 
 		/**
@@ -396,7 +396,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			return getUseCaseFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
+			return getFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
 	}
 	

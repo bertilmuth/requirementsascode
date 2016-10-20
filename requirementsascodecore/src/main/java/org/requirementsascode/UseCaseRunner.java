@@ -54,7 +54,7 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Restarts the runner, setting latest flow ans latest step 
+	 * Restarts the runner, setting latest flow and latest step 
 	 * to its original defaults ("no flow has been run, no step has been run").
 	 */
 	public void restart() {
@@ -155,7 +155,7 @@ public class UseCaseRunner {
 	public Set<UseCaseStep> getStepsThatCouldReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
 		
-		Stream<UseCaseStep> stepStream = useCaseModel.getUseCaseSteps().stream();
+		Stream<UseCaseStep> stepStream = useCaseModel.getSteps().stream();
 		Set<UseCaseStep> enabledSteps = getSubsetOfStepsThatCouldReact(eventClass, stepStream);
 		return enabledSteps;
 	}
@@ -185,34 +185,19 @@ public class UseCaseRunner {
 			useCaseStep = useCaseSteps.iterator().next();
 			triggerSystemReactionAndHandleException(event, useCaseStep);
 		} else if(useCaseSteps.size() > 1){
-			String message = getMoreThanOneStepCouldReactExceptionMessage(useCaseSteps);
-			throw new MoreThanOneStepCouldReactException(message);
+			throw new MoreThanOneStepCouldReactException(useCaseSteps);
 		}
 		
 		return useCaseStep;
 	}
 	
-	/**
-	 * Overwrite this method only if you are not happy with message of the exception that is
-	 * thrown if more than one step could react.
-	 * 
-	 * @param useCaseSteps the use case steps that could react to a certain event
-	 */
-	protected <T> String getMoreThanOneStepCouldReactExceptionMessage(Collection<UseCaseStep> useCaseSteps) {
-		String message = "System could react to more than one step: ";
-		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
-				.collect(Collectors.joining(",", message, ""));
-		return useCaseStepsClassNames;
-	}
-	
 	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
 		if(useCaseStep.getSystemPart() == null){
-			String message = getMissingSystemPartExceptionMessage(useCaseStep);
-			throw new MissingUseCaseStepPartException(message);
+			throw new MissingUseCaseStepPartException(useCaseStep, "system");
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
-		setLatestFlow(Optional.of(useCaseStep.getUseCaseFlow()));
+		setLatestFlow(Optional.of(useCaseStep.getFlow()));
 		
 		try {
 			@SuppressWarnings("unchecked")
@@ -230,22 +215,11 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Overwrite this method only if you are not happy with message of the exception that is
-	 * thrown if the system part of a use case step is missing.
-	 * 
-	 * @param useCaseStep the use case step that has no use case step
-	 */
-	protected String getMissingSystemPartExceptionMessage(UseCaseStep useCaseStep) {
-		String message = "Use Case Step \"" + useCaseStep + "\" has no defined system part! Please have a look and update your Use Case Model for this step!";
-		return message;
-	}
-	
-	
-	/**
 	 * Overwrite this method to control what happens exactly when a system reaction is triggered.
-	 * The behavior implemented here: the consumer that is the system reaction simply accepts the event.
+	 * The behavior implemented in UseCaseRunner: the consumer that is the system reaction simply accepts the event.
 	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
 	 * 
+	 * @param <T> the type of event the system reacts to
 	 * @param event the event that is passed to the system reation
 	 * @param systemReaction the system reaction that accepts the event
 	 */
@@ -253,6 +227,14 @@ public class UseCaseRunner {
 		systemReaction.accept(event);
 	}
 
+	/**
+	 * Overwrite this method to control what happens exactly when aa exception is thrown by a system reaction.
+	 * The behavior implemented in UseCaseRunner: the exception is provided as an event object
+	 * to the UseCaseRunner, by calling {@link #reactTo(Object)}.
+	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
+	 * 
+	 * @param e the exception that has been thrown by the system reaction
+	 */
 	protected void handleException(Exception e) {
 		reactTo(e);
 	}
@@ -260,16 +242,10 @@ public class UseCaseRunner {
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
 		ActorPart actorPart = useCaseStep.getActorPart();
 		if(actorPart == null){
-			String message = getMissingActorPartExceptionMessage(useCaseStep);
-			throw(new MissingUseCaseStepPartException(message));
+			throw(new MissingUseCaseStepPartException(useCaseStep, "actor"));
 		}
 		
 		return actorsToRunAs.contains(actorPart.getActor());
-	}
-	
-	protected String getMissingActorPartExceptionMessage(UseCaseStep useCaseStep) {
-		String message = "Use Case Step \"" + useCaseStep + "\" has no defined actor part! Please have a look and update your Use Case Model for this step!";
-		return message;
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
@@ -283,18 +259,45 @@ public class UseCaseRunner {
 		return result;
 	}
 	
+	/**
+	 * Returns the lastest step that has been run by this UseCaseRunner.
+	 * 
+	 * @return the latest step run
+	 */
 	public Optional<UseCaseStep> getLatestStep() {
 		return latestStep;
 	}
 	
+	/**
+	 * Sets the latest step run by the use case runner.
+	 * Use this method if you want to restore some previous state,
+	 * normally you should influence the behavior of the runner by
+	 * calling {@link #reactTo(Object)}.
+	 * 
+	 * @param latestStep the latest step run
+	 */
 	public void setLatestStep(Optional<UseCaseStep> latestStep) {		
 		this.latestStep = latestStep;
 	}
 	
+	/**
+	 * Returns the flow the lastest step that has been run by this UseCaseRunner
+	 * is contained in.
+	 * 
+	 * @return the latest flow run
+	 */
 	public Optional<UseCaseFlow> getLatestFlow() {
 		return latestFlow;
 	}
 	
+	/**
+	 * Sets the latest flow run by the use case runner.
+	 * Use this method if you want to restore some previous state,
+	 * normally you should influence the behavior of the runner by
+	 * calling {@link #reactTo(Object)}.
+	 * 
+	 * @param latestFlow the latest flow run
+	 */
 	public void setLatestFlow(Optional<UseCaseFlow> latestFlow) {
 		this.latestFlow = latestFlow;
 	}

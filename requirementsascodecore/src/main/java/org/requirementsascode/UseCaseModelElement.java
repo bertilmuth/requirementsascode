@@ -11,7 +11,7 @@ import java.util.UUID;
  * @author b_muth
  *
  */
-public abstract class UseCaseModelElement {
+abstract class UseCaseModelElement {
 	private String name;
 	private UseCaseModel useCaseModel;
 

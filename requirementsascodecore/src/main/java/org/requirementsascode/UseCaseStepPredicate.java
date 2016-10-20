@@ -6,7 +6,14 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class UseCaseStepPredicate {
+/**
+ * Class that defines several common predicates, especially for handling
+ * alternative flows and step conditions.
+ * 
+ * @author b_muth
+ *
+ */
+class UseCaseStepPredicate {
 	private UseCaseStepPredicate(){};
 	
 	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
@@ -41,7 +48,7 @@ public class UseCaseStepPredicate {
 			UseCaseModel useCaseModel = theStep.getUseCaseModel();
 			
 			Stream<UseCaseStep> otherStepsStream = 
-				useCaseModel.getUseCaseSteps().stream()
+				useCaseModel.getSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
 			Set<UseCaseStep> enabledOtherSteps = useCaseRunner.getSubsetOfStepsThatCouldReact(theStepsEventClass, otherStepsStream);

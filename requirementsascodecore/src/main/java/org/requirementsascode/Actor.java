@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,13 @@ import java.util.Set;
 public class Actor extends UseCaseModelElement{
 	private Map<UseCase, List<UseCaseStep>> useCaseToStepMap;
 
+	/**
+	 * Creates an actor with the specified name that is part
+	 * of the specified use case model.
+	 * 
+	 * @param name the name of the actor
+	 * @param useCaseModel the use case model
+	 */
 	Actor(String name, UseCaseModel useCaseModel) {
 		super(name, useCaseModel);
 		this.useCaseToStepMap = new HashMap<>();
@@ -32,36 +38,38 @@ public class Actor extends UseCaseModelElement{
 	 * The actor is associated to a use case if it is connected
 	 * to at least one of its use case steps.
 	 * 
+	 * Do not modify the returned collection directly.
+	 * 
 	 * @return the use cases the actor is associated with
 	 */
 	public Set<UseCase> getUseCases() {
-		Set<UseCase> useCases = useCaseToStepMap.keySet();
-		return Collections.unmodifiableSet(useCases);
+		return useCaseToStepMap.keySet();
 	}
 
 	/**
 	 * Returns the use case steps this actor is connected with,
 	 * for the specified use case.
 	 * 
+	 * Do not modify the returned collection directly.
+	 * 
 	 * @param useCase the use case to query for steps the actor is connected with
 	 * @return the use case steps the actor is connected with
 	 */
-	public List<UseCaseStep> getUseCaseSteps(UseCase useCase) {
+	public List<UseCaseStep> getSteps(UseCase useCase) {
 		Objects.requireNonNull(useCase);
 
-		List<UseCaseStep> steps = getModifiableUseCaseStepsList(useCase);
-		return Collections.unmodifiableList(steps);
+		return getUseCaseSteps(useCase);
 	}
 	
 	void newStep(UseCase namedUseCase, UseCaseStep namedUseCaseStep) {
 		Objects.requireNonNull(namedUseCase);
 		Objects.requireNonNull(namedUseCaseStep);
 		
-		List<UseCaseStep> steps = getModifiableUseCaseStepsList(namedUseCase);
+		List<UseCaseStep> steps = getUseCaseSteps(namedUseCase);
 		steps.add(namedUseCaseStep);
 	}
 
-	private List<UseCaseStep> getModifiableUseCaseStepsList(UseCase useCase) {		
+	private List<UseCaseStep> getUseCaseSteps(UseCase useCase) {		
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}
