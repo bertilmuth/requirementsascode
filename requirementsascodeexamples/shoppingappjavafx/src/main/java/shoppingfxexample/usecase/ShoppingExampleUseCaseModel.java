@@ -50,6 +50,7 @@ public class ShoppingExampleUseCaseModel{
 					.system(display::displayStockedProducts)
 			
 				.newStep("System displays purchase order.")
+					.actor(useCaseModel.getSystemActor())
 					.handle(DisplayPurchaseOrder.class)
 					.system(display::displayPurchaseOrder)
 					
