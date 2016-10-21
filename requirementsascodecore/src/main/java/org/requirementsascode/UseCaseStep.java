@@ -367,6 +367,9 @@ public class UseCaseStep extends UseCaseModelElement{
 		
 		/**
 		 * After triggering the system reaction, raise the specified event.
+		 * You may call this method several times during model creation, to raise
+		 * several events.
+		 * 
 		 * Internally calls {@link UseCaseRunner#reactTo(Object)} for the specified event.
 		 * 
 		 * @param <U> the type of event to be raised

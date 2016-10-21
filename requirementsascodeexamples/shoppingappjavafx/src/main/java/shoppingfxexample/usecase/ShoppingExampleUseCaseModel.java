@@ -1,11 +1,15 @@
 package shoppingfxexample.usecase;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
+import javafx.collections.ObservableList;
+import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
+import shoppingfxexample.domain.Stock;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
 import shoppingfxexample.usecase.event.BuyProduct;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
@@ -15,16 +19,19 @@ import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class ShoppingExampleUseCaseModel{
 	private UseCaseModel useCaseModel;
+	private Stock stock;
 	private ShoppingApplicationDisplay display;
 	private PurchaseOrder purchaseOrder;
+	private ObservableList<Product> productsInStock;
 
-	public ShoppingExampleUseCaseModel(UseCaseModel useCaseModel, ShoppingApplicationDisplay display) {
-		store(useCaseModel, display);
+	public ShoppingExampleUseCaseModel(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
+		store(useCaseModel, stock, display);
 		createModel();
 	}
 
-	public void store(UseCaseModel useCaseModel, ShoppingApplicationDisplay display) {
+	public void store(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
 		this.useCaseModel = useCaseModel;
+		this.stock = stock;
 		this.display = display;
 	}
 
@@ -34,7 +41,11 @@ public class ShoppingExampleUseCaseModel{
 				.newStep("System creates new purchase order.")
 					.system(newPurchaseOrder())
 					
+				.newStep("System gets products from stock and triggers display of products and purchase order.")
+					.system(findProductsInStock()).raise(displayStockedProductsEvent()).raise(displayPurchaseOrderEvent())
+					
 				.newStep("System displays stocked products.")
+					.actor(useCaseModel.getSystemActor())
 					.handle(DisplayStockedProducts.class)
 					.system(display::displayStockedProducts)
 			
@@ -67,6 +78,18 @@ public class ShoppingExampleUseCaseModel{
 
 	private Runnable newPurchaseOrder() {
 		return () -> purchaseOrder = new PurchaseOrder();
+	}
+	
+	private Runnable findProductsInStock() {
+		return () -> productsInStock = stock.findProducts();		
+	}
+	
+	private Supplier<DisplayStockedProducts> displayStockedProductsEvent() {
+		return () -> new DisplayStockedProducts(productsInStock);
+	}
+	
+	private Supplier<DisplayPurchaseOrder> displayPurchaseOrderEvent() {
+		return () -> new DisplayPurchaseOrder(purchaseOrder);
 	}
 
 	public Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar() {

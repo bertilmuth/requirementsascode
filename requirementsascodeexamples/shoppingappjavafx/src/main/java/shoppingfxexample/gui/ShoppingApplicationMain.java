@@ -5,15 +5,10 @@ import java.io.IOException;
 import org.requirementsascode.UseCaseRunner;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import shoppingfxexample.domain.Product;
-import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.domain.Stock;
 import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
-import shoppingfxexample.usecase.event.DisplayPurchaseOrder;
-import shoppingfxexample.usecase.event.DisplayStockedProducts;
 
 public class ShoppingApplicationMain extends Application {
 	private Stock stock;
@@ -45,17 +40,8 @@ public class ShoppingApplicationMain extends Application {
 	}
 	
 	public void createAndRunUseCaseModel(Stage primaryStage) {				
-		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel 
-			= new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), display);
-		
+		new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), stock, display);
 		useCaseModelRunner.run();
-		displayStockedProductsAndPurchaseOrder(stock.findProducts(), shoppingExampleUseCaseModel.getPurchaseOrder());
-	}
-
-	public void displayStockedProductsAndPurchaseOrder(ObservableList<Product> stockedProducts, PurchaseOrder purchaseOrder) {
-		DisplayStockedProducts displayStockedProducts = new DisplayStockedProducts(stockedProducts);
-		DisplayPurchaseOrder displayPurchaseOrder = new DisplayPurchaseOrder(purchaseOrder);
-		useCaseModelRunner.reactTo(displayStockedProducts, displayPurchaseOrder);
 	}
 	
 	public void setScene(Scene scene) {
