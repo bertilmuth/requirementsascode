@@ -23,7 +23,7 @@ public abstract class ProductContainer {
 		products.remove(product);
 	}
 
-	public ObservableList<Product> getProducts() {
+	public ObservableList<Product> findProducts() {
 		return products;
 	}
 	

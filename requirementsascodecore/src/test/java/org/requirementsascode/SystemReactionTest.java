@@ -113,6 +113,18 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void shouldReactToTwoSequentialStepsBasedOnEventRaisedByFirstStep() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText()).raise(raiseEnterNumber())
+				.newStep(CUSTOMER_ENTERS_NUMBER).handle(EnterNumberEvent.class).system(displayEnteredNumber());
+		
+		useCaseRunner.run().reactTo(enterTextEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_NUMBER), getRunStepNames());
+	}
+	
+	@Test
 	public void shouldReactToTwoSequentialStepsOnlyForThoseStepsWhereActorIsRight() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()

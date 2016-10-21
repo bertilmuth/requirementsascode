@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.junit.Before;
 import org.requirementsascode.event.EnterNumberEvent;
@@ -58,7 +59,7 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected Consumer<EnterTextEvent> displayEnteredText() {
-		return (enterTextEvent) -> {
+		return enterTextEvent -> {
 			runStepNames.add(getLatestStepName());
 			displayedText = enterTextEvent.toString();
 			System.out.println(displayedText);
@@ -66,10 +67,18 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected Consumer<EnterNumberEvent> displayEnteredNumber() {
-		return (enterNumberEvent) -> {
+		return enterNumberEvent -> {
 			runStepNames.add(getLatestStepName());
 			displayedText = enterNumberEvent.value.toString();
 			System.out.println(displayedText);
+		};
+	}
+	
+	protected Supplier<EnterNumberEvent> raiseEnterNumber() {
+		return () -> {
+			EnterNumberEvent enterNumberEvent = new EnterNumberEvent();
+			enterNumberEvent.value = 42;
+			return enterNumberEvent;
 		};
 	}
 	

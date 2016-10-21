@@ -9,12 +9,12 @@ import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
 import shoppingfxexample.usecase.event.BuyProduct;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayStockedProducts;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class ShoppingExampleUseCaseModel{
 	private UseCaseModel useCaseModel;
-
 	private ShoppingApplicationDisplay display;
 	private PurchaseOrder purchaseOrder;
 
@@ -32,11 +32,15 @@ public class ShoppingExampleUseCaseModel{
 		useCaseModel.newUseCase("Buy product")
 			.basicFlow()
 				.newStep("System creates new purchase order.")
-					.system(() -> purchaseOrder = new PurchaseOrder())
+					.system(newPurchaseOrder())
+					
+				.newStep("System displays stocked products.")
+					.handle(DisplayStockedProducts.class)
+					.system(display::displayStockedProducts)
 			
-				.newStep("System displays stocked products and purchase order.")
-					.handle(DisplayStockedProductsAndPurchaseOrder.class)
-					.system(display::displayStockedProductsAndPurchaseOrder)
+				.newStep("System displays purchase order.")
+					.handle(DisplayPurchaseOrder.class)
+					.system(display::displayPurchaseOrder)
 					
 				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
 					.handle(BuyProduct.class)
@@ -61,8 +65,12 @@ public class ShoppingExampleUseCaseModel{
 					.handle(Throwable.class).system(t -> t.printStackTrace());
 	}
 
+	private Runnable newPurchaseOrder() {
+		return () -> purchaseOrder = new PurchaseOrder();
+	}
+
 	public Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar() {
-		return r -> purchaseOrder.getProducts().size() < 10;
+		return r -> purchaseOrder.findProducts().size() < 10;
 	}
 
 	public PurchaseOrder getPurchaseOrder() {

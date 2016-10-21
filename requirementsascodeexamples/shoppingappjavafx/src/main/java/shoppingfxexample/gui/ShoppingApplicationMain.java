@@ -12,18 +12,19 @@ import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.domain.Stock;
 import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
-import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayStockedProducts;
 
-public class ShoppingApplication extends Application {
+public class ShoppingApplicationMain extends Application {
 	private Stock stock;
 	private Stage primaryStage;
-	private UseCaseRunner useCaseModelRun;
+	private UseCaseRunner useCaseModelRunner;
 	private ShoppingApplicationDisplay display;
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		accessStock();
-		createUseCaseModelRun();
+		createUseCaseModelRunner();
         createAndShowDisplay(primaryStage);
 		createAndRunUseCaseModel(primaryStage);
 	}
@@ -32,12 +33,12 @@ public class ShoppingApplication extends Application {
 		this.stock = new Stock();
 	}
 
-	private void createUseCaseModelRun() {
-		this.useCaseModelRun = new UseCaseRunner();
+	private void createUseCaseModelRunner() {
+		this.useCaseModelRunner = new UseCaseRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
-		this.display = new ShoppingApplicationDisplay(useCaseModelRun, primaryStage);
+		this.display = new ShoppingApplicationDisplay(useCaseModelRunner, primaryStage);
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Shopping Example JavaFX - Requirements as Code");
 		primaryStage.show();		
@@ -45,16 +46,16 @@ public class ShoppingApplication extends Application {
 	
 	public void createAndRunUseCaseModel(Stage primaryStage) {				
 		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel 
-			= new ShoppingExampleUseCaseModel(useCaseModelRun.getUseCaseModel(), display);
+			= new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), display);
 		
-		useCaseModelRun.run();
-		displayStockedProductsAndPurchaseOrder(stock.getProducts(), shoppingExampleUseCaseModel.getPurchaseOrder());
+		useCaseModelRunner.run();
+		displayStockedProductsAndPurchaseOrder(stock.findProducts(), shoppingExampleUseCaseModel.getPurchaseOrder());
 	}
 
 	public void displayStockedProductsAndPurchaseOrder(ObservableList<Product> stockedProducts, PurchaseOrder purchaseOrder) {
-		DisplayStockedProductsAndPurchaseOrder displayStockedProductsAndPurchaseOrder = 
-			new DisplayStockedProductsAndPurchaseOrder(stockedProducts, purchaseOrder);
-		useCaseModelRun.reactTo(displayStockedProductsAndPurchaseOrder);
+		DisplayStockedProducts displayStockedProducts = new DisplayStockedProducts(stockedProducts);
+		DisplayPurchaseOrder displayPurchaseOrder = new DisplayPurchaseOrder(purchaseOrder);
+		useCaseModelRunner.reactTo(displayStockedProducts, displayPurchaseOrder);
 	}
 	
 	public void setScene(Scene scene) {

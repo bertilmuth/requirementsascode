@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.requirementsascode.exception.ElementAlreadyInModelException;
 import org.requirementsascode.exception.NoSuchElementInUseCaseException;
@@ -200,6 +201,13 @@ public class UseCaseStep extends UseCaseModelElement{
 		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
 	}
 	
+	/**
+	 * The part of the step that contains a reference to the actor
+	 * that is allowed to trigger a system reaction for this step.
+	 * 
+	 * @author b_muth
+	 *
+	 */
 	public class ActorPart{
 		private Actor namedActor;
 		
@@ -243,6 +251,13 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 	}
 	
+	/**
+	 * The part of the step that contains a reference to the event
+	 * that is allowed to trigger a system reaction for this step.
+	 * 
+	 * @author b_muth
+	 *
+	 */
 	public class EventPart<T>{
 		private Class<T> eventClass;
 		
@@ -279,6 +294,14 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 	}
 	
+	/**
+	 * The part of the step that contains a reference to the system reaction
+	 * that can be triggered, given an approriate actor and event, and the 
+	 * step's predicate being true.
+	 * 
+	 * @author b_muth
+	 *
+	 */
 	public class SystemPart<T>{
 		private Consumer<T> systemReaction;
 
@@ -340,6 +363,19 @@ public class UseCaseStep extends UseCaseModelElement{
 				getUseCase().newStep(stepName, getFlow(), Optional.of(UseCaseStep.this), Optional.empty());
 			
 			return newStep; 
+		}
+		
+		/**
+		 * After triggering the system reaction, raise the specified event.
+		 * Internally calls {@link UseCaseRunner#reactTo(Object)} for the specified event.
+		 * 
+		 * @param <U> the type of event to be raised
+		 * @param eventSupplier the supplier proving the event
+		 * @return the system part
+		 */
+		public <U> SystemPart<T> raise(Supplier<U> eventSupplier) {
+			systemReaction = systemReaction.andThen(x -> getUseCaseModel().getUseCaseRunner().reactTo(eventSupplier.get()));
+			return this;
 		}
 		
 		/**

@@ -13,7 +13,8 @@ import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingfxexample.gui.controller.DisplayStockedProductsController;
 import shoppingfxexample.gui.controller.EnterShippingInformationController;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayPurchaseOrder;
+import shoppingfxexample.usecase.event.DisplayStockedProducts;
 
 public class ShoppingApplicationDisplay {
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
@@ -27,11 +28,16 @@ public class ShoppingApplicationDisplay {
 		this.primaryStage = primaryStage;
 }
 	
-	public void displayStockedProductsAndPurchaseOrder(DisplayStockedProductsAndPurchaseOrder stockedProductsAndPurchaseOrder){
+	public void displayStockedProducts(DisplayStockedProducts stockedProducts){
 		loadAndDisplay("DisplayStockedProducts.fxml");
 		DisplayStockedProductsController displayStockedProductsController = (DisplayStockedProductsController)controller;
 		displayStockedProductsController.setUseCaseModelRun(useCaseModelRun);
-		displayStockedProductsController.displayStockedProductsAndPurchaseOrder(stockedProductsAndPurchaseOrder);
+		displayStockedProductsController.displayStockedProducts(stockedProducts);
+	}
+	
+	public void displayPurchaseOrder(DisplayPurchaseOrder displayPurchaseOrder){
+		DisplayStockedProductsController displayStockedProductsController = (DisplayStockedProductsController)controller;
+		displayStockedProductsController.displayPurchaseOrder(displayPurchaseOrder);
 	}
 	
 	public void enterShippingInformation(CheckoutPurchase checkoutPurchase){
