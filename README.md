@@ -19,7 +19,7 @@ That is the reason why many agile teams do not maintain requirements after they 
 
 As long as ideas are exchanged between stakeholders, and the requirements are discussed, but not implemented, it makes sense to have a lightweight documentation of requirements outside the code. Maybe as part of a backlog or a lightweight specification.
 
-But for the long term maintenance of a requirement, once it has been implemented, the project proposes a way to document the requirement in the code itself. That means: to have a specific part of the code that BOTH controls the behavior of the application, and documents the requirements in a formal way. 
+But for the long term changeability of a requirement, once it has been implemented, the project proposes a way to document the requirement in the code itself. That means: to have a specific part of the code that BOTH controls the behavior of the application, and documents the requirements in a formal way. 
 
 Benefits of this approach include:
 * Perform impact analysis of changes: how does a change to a requirement affect the software components?
