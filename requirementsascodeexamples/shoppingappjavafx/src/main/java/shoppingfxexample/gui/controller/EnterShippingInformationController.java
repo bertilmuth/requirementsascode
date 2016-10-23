@@ -10,7 +10,7 @@ import shoppingfxexample.domain.ShippingInformation;
 import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
 import shoppingfxexample.usecase.event.EnterShippingInformationEvent;
 
-public class EnterShippingInformationController extends AbstractUseCaseRunnerController{
+public class EnterShippingInformationController extends AbstractController{
 	
     @FXML
     private VBox vBox;

@@ -3,6 +3,7 @@ package shoppingfxexample.usecase;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
@@ -23,6 +24,7 @@ public class ShoppingExampleUseCaseModel{
 	private ShoppingApplicationDisplay display;
 	private PurchaseOrder purchaseOrder;
 	private ObservableList<Product> productsInStock;
+	private Actor endCustomerActor;
 
 	public ShoppingExampleUseCaseModel(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
 		store(useCaseModel, stock, display);
@@ -33,9 +35,13 @@ public class ShoppingExampleUseCaseModel{
 		this.useCaseModel = useCaseModel;
 		this.stock = stock;
 		this.display = display;
+		this.endCustomerActor = useCaseModel.newActor("End Customer");
 	}
 
 	private void createModel() {
+		Actor endCustomer = getEndCustomerActor();
+		Actor systemActor = useCaseModel.getSystemActor();
+		
 		useCaseModel.newUseCase("Buy product")
 			.basicFlow()
 				.newStep("System creates new purchase order.")
@@ -45,21 +51,24 @@ public class ShoppingExampleUseCaseModel{
 					.system(findProductsInStock()).raise(displayStockedProductsAndPurchaseOrderEvent())
 					
 				.newStep("System displays stocked products and purchase order.")
-					.actor(useCaseModel.getSystemActor())
+					.actor(systemActor)
 					.handle(DisplayStockedProductsAndPurchaseOrderEvent.class)
 					.system(display::displayStockedProductsAndPurchaseOrder)
 					
 				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
+					.actor(endCustomer)
 					.handle(BuyProductEvent.class)
-					.system(buyProduct -> 
-						purchaseOrder.addProduct(buyProduct.getProduct()))
+					.system(buyProductEvent -> 
+						purchaseOrder.addProduct(buyProductEvent.getProduct()))
 					.repeatWhile(lessThenTenProductsBoughtSoFar())
 					
 				.newStep("End Customer checks out. System prompts End Customer to enter shipping information.")
+					.actor(endCustomer)
 					.handle(CheckoutPurchaseEvent.class)
 					.system(display::enterShippingInformation)
 					
-				.newStep("Customer enters shipping information. System adds shipping information to purchase order.")
+				.newStep("End Customer enters shipping information. System adds shipping information to purchase order.")
+					.actor(endCustomer)
 					.handle(EnterShippingInformationEvent.class)
 					.system(enterShippingInformation -> 
 						purchaseOrder.setShippingInformation(enterShippingInformation.getShippingInformation()))
@@ -68,6 +77,7 @@ public class ShoppingExampleUseCaseModel{
 					.system(() -> display.displayPurchaseOrderSummary(purchaseOrder))
 				
 				.newStep("System finishes purchase and restart.")
+					.actor(endCustomer)
 					.handle(FinishPurchaseEvent.class)
 					.system(fp -> {})
 					.restart()
@@ -75,6 +85,10 @@ public class ShoppingExampleUseCaseModel{
 			.newFlow("Exception Handling").when(r -> true)
 				.newStep("Handle any exception")
 					.handle(Throwable.class).system(t -> t.printStackTrace());
+	}
+
+	public Actor getEndCustomerActor() {
+		return endCustomerActor;
 	}
 
 	private Runnable newPurchaseOrder() {

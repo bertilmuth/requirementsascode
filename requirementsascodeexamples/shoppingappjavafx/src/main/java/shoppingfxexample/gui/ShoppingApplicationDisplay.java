@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import shoppingfxexample.domain.PurchaseOrder;
-import shoppingfxexample.gui.controller.AbstractUseCaseRunnerController;
+import shoppingfxexample.gui.controller.AbstractController;
 import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingfxexample.gui.controller.DisplayStockedProductsAndPurchaseOrderController;
 import shoppingfxexample.gui.controller.EnterShippingInformationController;
@@ -21,7 +21,7 @@ public class ShoppingApplicationDisplay {
 	private UseCaseRunner useCaseRunner;
 	private Stage primaryStage;
 	private VBox vBox;
-	private AbstractUseCaseRunnerController controller;
+	private AbstractController controller;
 	
 	public ShoppingApplicationDisplay(UseCaseRunner useCaseRunner, Stage primaryStage) {
 		this.useCaseRunner = useCaseRunner;
@@ -57,7 +57,7 @@ public class ShoppingApplicationDisplay {
 			 FXMLLoader loader = new FXMLLoader(getClass().getResource(RELATIVE_FXML_PACKAGE_NAME + "/" + fxmlFileName));
 			
 			vBox = loader.load(); 
-			controller = (AbstractUseCaseRunnerController)loader.getController();
+			controller = (AbstractController)loader.getController();
 			controller.setUseCaseRunner(useCaseRunner);
 		} catch (IOException e) {
 			e.printStackTrace();

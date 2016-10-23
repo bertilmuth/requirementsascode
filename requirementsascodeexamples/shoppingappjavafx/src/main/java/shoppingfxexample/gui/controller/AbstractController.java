@@ -2,7 +2,7 @@ package shoppingfxexample.gui.controller;
 
 import org.requirementsascode.UseCaseRunner;
 
-public abstract class AbstractUseCaseRunnerController {
+public abstract class AbstractController {
 	private UseCaseRunner useCaseRunner;
 
 	public UseCaseRunner getUseCaseRunner() {

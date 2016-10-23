@@ -12,7 +12,7 @@ import javafx.scene.control.ListView;
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.usecase.event.FinishPurchaseEvent;
 
-public class DisplayPurchaseOrderSummaryController extends AbstractUseCaseRunnerController{
+public class DisplayPurchaseOrderSummaryController extends AbstractController{
     @FXML
     private Button finishButton;
     

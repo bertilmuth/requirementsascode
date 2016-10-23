@@ -37,8 +37,9 @@ public class ShoppingApplicationMain extends Application {
 	}
 	
 	public void createAndRunUseCaseModel(Stage primaryStage) {				
-		new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), stock, display);
-		useCaseModelRunner.run();
+		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel = 
+			new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), stock, display);
+		useCaseModelRunner.run().as(shoppingExampleUseCaseModel.getEndCustomerActor());
 	}
 
 	public static void main(String[] args) {

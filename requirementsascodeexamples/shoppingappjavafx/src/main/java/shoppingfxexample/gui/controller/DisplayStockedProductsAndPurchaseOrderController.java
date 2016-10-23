@@ -18,7 +18,7 @@ import shoppingfxexample.usecase.event.BuyProductEvent;
 import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 
-public class DisplayStockedProductsAndPurchaseOrderController extends AbstractUseCaseRunnerController{
+public class DisplayStockedProductsAndPurchaseOrderController extends AbstractController{
     @FXML
     private Label shoppingCartItemCountLabel;
 
