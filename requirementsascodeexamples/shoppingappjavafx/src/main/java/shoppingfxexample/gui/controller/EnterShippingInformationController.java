@@ -1,7 +1,5 @@
 package shoppingfxexample.gui.controller;
 
-import org.requirementsascode.UseCaseRunner;
-
 import com.dooapp.fxform.FXForm;
 
 import javafx.event.ActionEvent;
@@ -9,10 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import shoppingfxexample.domain.ShippingInformation;
-import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.EnterShippingInformation;
+import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.EnterShippingInformationEvent;
 
-public class EnterShippingInformationController {
+public class EnterShippingInformationController extends AbstractUseCaseRunnerController{
 	
     @FXML
     private VBox vBox;
@@ -21,23 +19,18 @@ public class EnterShippingInformationController {
     private Button confirmButton;
 
 	private ShippingInformation shippingInformation;
-	private UseCaseRunner useCaseModelRun;
     
     @FXML
     void onConfirm(ActionEvent event) {
-    	EnterShippingInformation enterShippingInformation =  new EnterShippingInformation(shippingInformation);
-    	useCaseModelRun.reactTo(enterShippingInformation);
+    	EnterShippingInformationEvent enterShippingInformation =  new EnterShippingInformationEvent(shippingInformation);
+    	getUseCaseRunner().reactTo(enterShippingInformation);
     }
     
-	public void enterShippingInformation(CheckoutPurchase checkoutPurchase) {
+	public void enterShippingInformation(CheckoutPurchaseEvent checkoutPurchase) {
     	this.shippingInformation = new ShippingInformation();
     	
     	FXForm<ShippingInformation> shippingInformationForm = 
     			new FXForm<>(shippingInformation);
     	vBox.getChildren().add(shippingInformationForm);
-	}
-	
-	public void setUseCaseModelRun(UseCaseRunner useCaseModelRun) {
-		this.useCaseModelRun = useCaseModelRun;
 	}
 }

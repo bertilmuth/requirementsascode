@@ -2,10 +2,10 @@ package shoppingfxexample.usecase.event;
 
 import shoppingfxexample.domain.ShippingInformation;
 
-public class EnterShippingInformation {
+public class EnterShippingInformationEvent {
 	private ShippingInformation shippingInformation;
 
-	public EnterShippingInformation(ShippingInformation shippingInformation) {
+	public EnterShippingInformationEvent(ShippingInformation shippingInformation) {
 		this.shippingInformation = shippingInformation;
 	}
 

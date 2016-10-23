@@ -3,8 +3,6 @@ package shoppingfxexample.gui.controller;
 import static javafx.beans.binding.Bindings.convert;
 import static javafx.beans.binding.Bindings.size;
 
-import org.requirementsascode.UseCaseRunner;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,12 +14,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
-import shoppingfxexample.usecase.event.BuyProduct;
-import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.DisplayPurchaseOrder;
-import shoppingfxexample.usecase.event.DisplayStockedProducts;
+import shoppingfxexample.usecase.event.BuyProductEvent;
+import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 
-public class DisplayStockedProductsController {
+public class DisplayStockedProductsAndPurchaseOrderController extends AbstractUseCaseRunnerController{
     @FXML
     private Label shoppingCartItemCountLabel;
 
@@ -32,12 +29,11 @@ public class DisplayStockedProductsController {
     private ListView<Product> productsListView;
     
 	private PurchaseOrder purchaseOrder;
-	private UseCaseRunner useCaseModelRun;
     
     @FXML
     void onCheckout(ActionEvent event) {
-    	CheckoutPurchase checkoutPurchase =  new CheckoutPurchase(purchaseOrder);
-    	useCaseModelRun.reactTo(checkoutPurchase);
+    	CheckoutPurchaseEvent checkoutPurchase =  new CheckoutPurchaseEvent(purchaseOrder);
+    	getUseCaseRunner().reactTo(checkoutPurchase);
     }
 	
 	private class ProductListItem extends ListCell<Product> {
@@ -55,8 +51,8 @@ public class DisplayStockedProductsController {
         }
 
 		private void buyProduct() {
-			BuyProduct buyProduct = new BuyProduct(product);
-			useCaseModelRun.reactTo(buyProduct);
+			BuyProductEvent buyProduct = new BuyProductEvent(product);
+			getUseCaseRunner().reactTo(buyProduct);
 		}
 
 
@@ -75,19 +71,10 @@ public class DisplayStockedProductsController {
         }
     }
 
-	public void setUseCaseModelRun(UseCaseRunner useCaseModelRun) {
-		this.useCaseModelRun = useCaseModelRun;
-	}
-
-	public void displayStockedProducts(DisplayStockedProducts displayStockedProducts) {
+	public void displayStockedProductsAndPurchaseOrder(DisplayStockedProductsAndPurchaseOrderEvent displayStockedProductsAndPurchaseOrder) {
 		productsListView.setCellFactory(listView -> new ProductListItem());
-		productsListView.setItems(displayStockedProducts.getProducts());
-	}
-
-	public void displayPurchaseOrder(DisplayPurchaseOrder displayPurchaseOrder) {
-		purchaseOrder = displayPurchaseOrder.getPurchaseOrder();
+		productsListView.setItems(displayStockedProductsAndPurchaseOrder.getProductsInStock());
+		purchaseOrder = displayStockedProductsAndPurchaseOrder.getPurchaseOrder();
 		shoppingCartItemCountLabel.textProperty().bind(convert(size(purchaseOrder.findProducts())));
 	}
-
-
 }

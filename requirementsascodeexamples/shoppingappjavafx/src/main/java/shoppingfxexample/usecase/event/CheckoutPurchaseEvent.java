@@ -2,10 +2,11 @@ package shoppingfxexample.usecase.event;
 
 import shoppingfxexample.domain.PurchaseOrder;
 
-public class DisplayPurchaseOrder {
+public class CheckoutPurchaseEvent {
+	
 	private PurchaseOrder purchaseOrder;
 
-	public DisplayPurchaseOrder(PurchaseOrder purchaseOrder) {
+	public CheckoutPurchaseEvent(PurchaseOrder purchaseOrder) {
 		this.purchaseOrder = purchaseOrder;
 	}
 

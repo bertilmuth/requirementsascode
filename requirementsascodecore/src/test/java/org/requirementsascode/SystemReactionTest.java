@@ -527,7 +527,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldContinueAfterFirstStepCalledFromFirstStepOfAlternativeFlow() {		
+	public void shouldContinueAfterCalledFromFirstStepOfAlternativeFlowWithoutHandling() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
