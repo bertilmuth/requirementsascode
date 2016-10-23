@@ -86,7 +86,7 @@ public class UseCaseRunner {
 	 * After calling this method, the runner will only trigger system reactions
 	 * of steps that have explicitly set this actor, or that are "autonomous system reactions".
 	 * 
-	 * @see UseCaseStep#actor(Actor)
+	 * @see UseCaseStep#actor(Actor...)
 	 * @see UseCaseStep#system(Runnable) 
 	 * @param actor the actor to run as
 	 * @return the use case runner
@@ -245,7 +245,10 @@ public class UseCaseRunner {
 			throw(new MissingUseCaseStepPartException(useCaseStep, "actor"));
 		}
 		
-		return actorsToRunAs.contains(actorPart.getActor());
+		Actor[] stepActors = actorPart.getActors();
+		boolean stepActorIsRunActor = 
+			Stream.of(stepActors).anyMatch(stepActor -> actorsToRunAs.contains(stepActor));
+		return stepActorIsRunActor;
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {

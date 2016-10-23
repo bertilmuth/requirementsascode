@@ -139,6 +139,34 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void shouldReactToTwoSequentialStepsWhenSeveralActorsContainRightActorAtFirstPosition() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.actor(rightActor, secondActor).handle(EnterTextEvent.class).system(displayEnteredText());
+		
+		useCaseRunner.run().as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT_AGAIN), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldReactToTwoSequentialStepsWhenSeveralActorsContainRightActorAtSecondPosition() {		
+		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
+					.actor(rightActor).handle(EnterTextEvent.class).system(displayEnteredText())
+				.newStep(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.actor(secondActor, rightActor).handle(EnterTextEvent.class).system(displayEnteredText());
+		
+		useCaseRunner.run().as(rightActor).reactTo(enterTextEvent(), enterTextEvent());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT, CUSTOMER_ENTERS_SOME_TEXT_AGAIN), getRunStepNames());
+	}
+	
+	@Test
 	public void shouldReactToTwoSequentialStepsWhenRunningWithDifferentActors() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()

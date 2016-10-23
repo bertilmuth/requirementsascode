@@ -54,19 +54,19 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	/**
-	 * Defines which user group can cause the system to react to the event of this step.  
+	 * Defines which user groups can cause the system to react to the event of this step.  
 	 * 
-	 * Note: in order for the system to react to the specified actor,
+	 * Note: in order for the system to react to one the specified actors,
 	 * {@link UseCaseRunner#as(Actor)} needs to be called
 	 * before {@link UseCaseRunner#reactTo(Object)}.
 	 * 
-	 * @param actor the actor that defines the user group
+	 * @param actors the actors that defines the user groups
 	 * @return the created actor part of this step
 	 */
-	public UseCaseStep.ActorPart actor(Actor actor) {
-		Objects.requireNonNull(actor);
+	public UseCaseStep.ActorPart actor(Actor... actors) {
+		Objects.requireNonNull(actors);
 		
-		actorPart = new ActorPart(actor);
+		actorPart = new ActorPart(actors);
 		return actorPart;
 	}
 	
@@ -209,15 +209,17 @@ public class UseCaseStep extends UseCaseModelElement{
 	 *
 	 */
 	public class ActorPart{
-		private Actor namedActor;
+		private Actor[] actors;
 		
-		private ActorPart(Actor actor) {
-			this.namedActor = actor;
-			connectActorToThisStep(namedActor);		
+		private ActorPart(Actor... actor) {
+			this.actors = actor;
+			connectActorsToThisStep(actors);		
 		}
 
-		private void connectActorToThisStep(Actor actor) {
-			actor.newStep(getUseCase(), UseCaseStep.this);
+		private void connectActorsToThisStep(Actor[] actors) {
+			for (Actor actor : actors) {
+				actor.newStep(getUseCase(), UseCaseStep.this);
+			}
 		}
 		
 		/**
@@ -241,13 +243,13 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
-		 * Returns the actor that determines which user group can 
+		 * Returns the actors that determine which user groups can 
 		 * cause the system to react to the event of this step.  
 		 * 
-		 * @return the actor
+		 * @return the actors
 		 */
-		public Actor getActor() {
-			return namedActor;
+		public Actor[] getActors() {
+			return actors;
 		}
 	}
 	
@@ -409,7 +411,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private void makeRepeatStepBehaveLikeThisStep(UseCaseStep newRepeatStep) {
 			newRepeatStep
-				.actor(getActorPart().getActor()).handle(getEventPart().getEventClass())
+				.actor(getActorPart().getActors()).handle(getEventPart().getEventClass())
 				.system((Consumer)getSystemPart().getSystemReaction());
 		}
 
