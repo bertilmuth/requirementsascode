@@ -15,7 +15,7 @@ This project is about documenting requirements in programming language code, as 
 
 Documentation of requirements provides value, not only when a feature is created, but especially when requirements change later on. However, requirements documentation tends to get outdated very quickly, once code has been developed - "the truth is in the code" is an often quoted statement.
 
-That is the reason why many agile teams do not maintain requirements after they have been implemented, for example they throw away the user stories. The risk of that approach is that over time, it becomes unclear where in the code what changes need to be performed when a requirement changes. This is especially true if many teams and developers work on an application, with different approaches to fulfilling the requirements inside the code. 
+That is the reason why many agile teams do not maintain requirements after they have been implemented, for example they throw away the user stories. The risk of that approach is that over time, it becomes unclear *where* in the code *what changes* need to be performed when a requirement changes. This is especially true if many teams and developers work on an application, with different approaches to fulfilling the requirements inside the code. 
 
 As long as ideas are exchanged between stakeholders, and the requirements are discussed, but not implemented, it makes sense to have a lightweight documentation of requirements outside the code. Maybe as part of a backlog or a lightweight specification.
 
