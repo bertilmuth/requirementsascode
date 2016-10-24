@@ -57,7 +57,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * Defines which user groups can cause the system to react to the event of this step.  
 	 * 
 	 * Note: in order for the system to react to one the specified actors,
-	 * {@link UseCaseRunner#as(Actor)} needs to be called
+	 * {@link UseCaseRunner#runAs(Actor)} needs to be called
 	 * before {@link UseCaseRunner#reactTo(Object)}.
 	 * 
 	 * @param actors the actors that defines the user groups
@@ -90,10 +90,14 @@ public class UseCaseStep extends UseCaseModelElement{
 		Actor systemActor = getUseCaseModel().getSystemActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
-			actor(systemActor).handle(SystemEvent.class).
-				system(systemEvent -> systemReaction.run());
+			system(new Actor[]{systemActor}, systemReaction);
 		
 		return systemPart;
+	}
+
+	private SystemPart<SystemEvent> system(Actor[] actors, Runnable systemReaction) {
+		return actor(actors).handle(SystemEvent.class).
+			system(systemEvent -> systemReaction.run());
 	}
 	
 	/**
@@ -241,6 +245,25 @@ public class UseCaseStep extends UseCaseModelElement{
 			UseCaseStep.this.eventPart = newEventPart;
 			return newEventPart;
 		}
+
+		/**
+		 * Without triggering a system reaction, raise the specified event.
+		 * You may call this method several times during model creation, to raise
+		 * several events.
+		 * 
+		 * Internally calls {@link UseCaseRunner#reactTo(Object)} for the specified event.
+		 * 
+		 * @param <U> the type of event to be raised
+		 * @param eventSupplier the supplier proving the event
+		 * @return the system part
+		 */
+		public <U> SystemPart<SystemEvent> raise(Supplier<U> eventSupplier) {
+			Objects.requireNonNull(eventSupplier);
+			
+			SystemPart<SystemEvent> systemPartWithRaisedEvent 
+				= system(actors, () -> {}).raise(eventSupplier);
+			return systemPartWithRaisedEvent;
+		}
 		
 		/**
 		 * Makes the use case runner continue after the specified step,
@@ -254,7 +277,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			system(() -> {}).continueAfter(stepName);
+			system(actors, () -> {}).continueAfter(stepName);
 			return getUseCase();
 		}
 		

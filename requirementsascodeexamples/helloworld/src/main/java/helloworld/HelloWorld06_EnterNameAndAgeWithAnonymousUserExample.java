@@ -12,7 +12,8 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private static final String USER_ENTERS_FIRST_NAME = "User enters first name. System saves the first name.";
 	private static final String SYSTEM_PROMPTS_USER_TO_ENTER_AGE = "System prompts user to enter age.";
 	private static final String USER_ENTERS_AGE = "User enters age. System saves age.";
-	private static final String SYSTEM_GREETS_USER = "System greets user with first name and age.";
+	private static final String SYSTEM_GREETS_USER_WITH_FIRST_NAME = "System greets user with first name.";
+	private static final String SYSTEM_GREETS_USER_WITH_AGE = "System greets user with and age.";
 	private static final String SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE = "System informs user about non-numerical age";
 	private static final String SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE = "System informs user about invalid age.";
 	private static final String SYSTEM_TERMINATES_APPLICATION = "System terminates application.";
@@ -40,8 +41,10 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 					.system(promptUserToEnterAge())
 				.newStep(USER_ENTERS_AGE)
 					.actor(normalUser, anonymousUser).handle(EnterTextEvent.class).system(saveAge())
-				.newStep(SYSTEM_GREETS_USER)
-					.system(greetUserWithFirstNameAndAge())
+				.newStep(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
+					.system(greetUserWithFirstName())
+				.newStep(SYSTEM_GREETS_USER_WITH_AGE)
+					.system(greetUserWithAge())
 				.newStep(SYSTEM_TERMINATES_APPLICATION)
 					.system(terminateApplication())
 			.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
@@ -50,11 +53,16 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.continueAfter(USER_ENTERS_FIRST_NAME)
 			.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
-					.handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
+					.actor(normalUser, anonymousUser).handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
 				.continueAfter(USER_ENTERS_FIRST_NAME)
-			;/*.newFlow("AF3.1 Anonymous User does not enter name").atStart()*/
+			.newFlow("AF3.1 Anonymous User does not enter name").atStart()
+				.newStep("Skip step to enter first name")
+					.actor(anonymousUser).continueAfter(USER_ENTERS_FIRST_NAME)
+			.newFlow("AF3.2 Anonymous User is greeted with name only, not age").after(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
+				.newStep("Skip step to greet user with age")
+					.actor(anonymousUser).continueAfter(SYSTEM_GREETS_USER_WITH_AGE);
 		
-		useCaseRunner.run();
+		useCaseRunner.runAs(anonymousUser);
 		
 		while(true)
 			useCaseRunner.reactTo(enterTextEvent());					
@@ -76,9 +84,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		return enterTextEvent -> age = Integer.parseInt(enterTextEvent.getText());
 	}
 	
-	private Runnable greetUserWithFirstNameAndAge() {
-		return () -> System.out.println("Hello, " + 
-			firstName + " (" + age + ").");
+	private Runnable greetUserWithFirstName() {
+		return () -> System.out.println("Hello, " + firstName);
+	}
+	
+	private Runnable greetUserWithAge() {
+		return () -> System.out.println("You are " + age + " years old.");
 	}
 	
 	private Predicate<UseCaseRunner> ageIsInvalid() {

@@ -156,7 +156,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 			.basicFlow()
 				.newStep(stepWithoutActor);
 			
-		useCaseRunner.run().reactTo(enterTextEvent());
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterTextEvent());
 		
 		assertEquals(0, getRunStepNames().size());
 	}
@@ -173,7 +174,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 				.newStep(stepWithoutSystemReaction)
 					.actor(customer).handle(EnterTextEvent.class);
 			
-		useCaseRunner.run().as(customer).reactTo(enterTextEvent());
+		useCaseRunner.runAs(customer);
+		useCaseRunner.reactTo(enterTextEvent());
 		
 		assertEquals(0, getRunStepNames().size());
 	}

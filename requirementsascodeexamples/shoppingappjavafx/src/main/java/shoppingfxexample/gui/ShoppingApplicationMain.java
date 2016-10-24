@@ -39,7 +39,7 @@ public class ShoppingApplicationMain extends Application {
 	public void createAndRunUseCaseModel(Stage primaryStage) {				
 		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel = 
 			new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), stock, display);
-		useCaseModelRunner.run().as(shoppingExampleUseCaseModel.getEndCustomerActor());
+		useCaseModelRunner.runAs(shoppingExampleUseCaseModel.getEndCustomerActor());
 	}
 
 	public static void main(String[] args) {
