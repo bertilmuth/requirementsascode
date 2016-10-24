@@ -261,7 +261,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(eventSupplier);
 			
 			SystemPart<SystemEvent> systemPartWithRaisedEvent 
-				= system(actors, () -> {}).raise(eventSupplier);
+				= system(() -> {}).raise(eventSupplier);
 			return systemPartWithRaisedEvent;
 		}
 		
@@ -277,8 +277,27 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			system(actors, () -> {}).continueAfter(stepName);
+			system(() -> {}).continueAfter(stepName);
 			return getUseCase();
+		}
+		
+		/**
+		 * Defines an "autonomous system reaction",
+		 * meaning the system will react when the step's predicate is true, without
+		 * needing an event provided to the use case runner.
+		 * 
+		 * Instead of the model creator defining the event (via
+		 * {@link #handle(Class)}), the step implicitly handles the default
+		 * system event. Default system events are raised by the 
+		 * use case runner itself, causing "autonomous system reactions".
+		 * 
+		 * @param systemReaction the autonomous system reaction
+		 * @return the created system part of this step
+		 */
+		public SystemPart<SystemEvent> system(Runnable systemReaction) {
+			SystemPart<SystemEvent> systemPart = 
+				UseCaseStep.this.system(actors, systemReaction);
+			return systemPart;
 		}
 		
 		/**

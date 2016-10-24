@@ -80,7 +80,7 @@ public class ShoppingExampleUseCaseModel{
 					.actors(endCustomer)
 					.handle(FinishPurchaseEvent.class)
 					.system(fp -> {})
-					.restart()
+				.restart()
 					
 			.newFlow("Exception Handling").when(r -> true)
 				.newStep("Handle any exception")

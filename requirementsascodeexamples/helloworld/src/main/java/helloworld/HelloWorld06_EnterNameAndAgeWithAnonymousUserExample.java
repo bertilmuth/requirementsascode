@@ -31,22 +31,22 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		Actor normalUser = useCaseModel.newActor("Normal User");
 		Actor anonymousUser = useCaseModel.newActor("Anonymous User");
 				
-		useCaseModel.newUseCase("Get greeted")
+		useCaseModel.newUseCase("Get greeted (with name and age as normal user, or only with age as anonymous user")
 			.basicFlow()
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME)
-					.system(promptUserToEnterFirstName())
+					.actors(normalUser).system(promptUserToEnterFirstName())
 				.newStep(USER_ENTERS_FIRST_NAME)
 					.actors(normalUser).handle(EnterTextEvent.class).system(saveFirstName())
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_AGE)
-					.system(promptUserToEnterAge())
+					.actors(normalUser, anonymousUser).system(promptUserToEnterAge())
 				.newStep(USER_ENTERS_AGE)
 					.actors(normalUser, anonymousUser).handle(EnterTextEvent.class).system(saveAge())
 				.newStep(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
-					.system(greetUserWithFirstName())
+					.actors(normalUser).system(greetUserWithFirstName())
 				.newStep(SYSTEM_GREETS_USER_WITH_AGE)
-					.system(greetUserWithAge())
+					.actors(normalUser, anonymousUser).system(greetUserWithAge())
 				.newStep(SYSTEM_TERMINATES_APPLICATION)
-					.system(terminateApplication())
+					.actors(normalUser, anonymousUser).system(terminateApplication())
 			.newFlow("AF1. Handle invalid age").after(USER_ENTERS_AGE).when(ageIsInvalid())
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_INVALID_AGE)
 					.system(informUserAboutInvalidAge())
@@ -58,9 +58,10 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 			.newFlow("AF3.1 Anonymous User does not enter name").atStart()
 				.newStep("Skip step to enter first name")
 					.actors(anonymousUser).continueAfter(USER_ENTERS_FIRST_NAME)
-			.newFlow("AF3.2 Anonymous User is greeted with name only, not age").after(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
-				.newStep("Skip step to greet user with age")
-					.actors(anonymousUser).continueAfter(SYSTEM_GREETS_USER_WITH_AGE);
+			.newFlow("AF3.2 Anonymous User is greeted with age only, not name")
+				.after(USER_ENTERS_AGE).when(ageIsInvalid().negate())
+					.newStep("Skip step to greet user with first name")
+						.actors(anonymousUser).continueAfter(SYSTEM_GREETS_USER_WITH_FIRST_NAME);
 		
 		useCaseRunner.runAs(anonymousUser);
 		
@@ -85,7 +86,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	}
 	
 	private Runnable greetUserWithFirstName() {
-		return () -> System.out.println("Hello, " + firstName);
+		return () -> System.out.println("Hello, " + firstName + ".");
 	}
 	
 	private Runnable greetUserWithAge() {

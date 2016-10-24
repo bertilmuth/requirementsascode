@@ -104,6 +104,23 @@ public class CreateModelTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void shouldCreateSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
+		
+		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
+		useCase
+			.basicFlow()
+				.newStep(CUSTOMER_ENTERS_TEXT).actors(customer).system(displayConstantText());
+				
+		Collection<UseCaseStep> steps = useCase.getSteps();
+		assertEquals(1, steps.size());
+		
+		UseCaseStep step = steps.iterator().next();
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
+		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());	
+		assertEquals(customer, step.getActorPart().getActors()[0]);
+	}
+	
+	@Test
 	public void shouldCreateSingleActorWithSingleUseCase() {		
 		UseCase useCase = useCaseModel.newUseCase(SAY_HELLO_USE_CASE);
 		useCase

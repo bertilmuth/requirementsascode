@@ -41,7 +41,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldPrintText() {
+	public void shouldPrintTextAutonomously() {
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE)
 				.basicFlow()
@@ -53,7 +53,20 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldPrintTextTwice() {
+	public void shouldPrintTextAutonomouslyOnlyIfActorIsRight() {
+		useCaseModel
+			.newUseCase(SAY_HELLO_USE_CASE)
+				.basicFlow()
+					.newStep(SYSTEM_DISPLAYS_TEXT).actors(customer).system(displayConstantText())
+					.newStep(SYSTEM_DISPLAYS_TEXT_AGAIN).actors(secondActor).system(displayConstantText());
+		
+		useCaseRunner.runAs(customer);
+		
+		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void shouldPrintTextAutonomouslyTwice() {
 		useCaseModel
 			.newUseCase(SAY_HELLO_USE_CASE)
 				.basicFlow()
@@ -217,7 +230,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactOnlyToEnabledStep() { 		
+	public void shouldReactOnlyToStepThasHasConditionFulfilled() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())			
@@ -231,7 +244,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactToEnabledStepEvenIfDisabledStepWouldBePerformedBySystem() { 		
+	public void shouldReactToStepThasHasConditionFulfilledEvenIfOtherStepWouldBePerformedBySystem() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())			
@@ -245,7 +258,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactOnlyToEnabledStepWithRightActorInSameFlowAtFirstStep() { 		
+	public void shouldReactOnlyToStepWithRightActorInSameFlowAtFirstStep() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
@@ -260,7 +273,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactOnlyToEnabledStepWithRightActorInDifferentFlow() { 		
+	public void shouldReactOnlyToStepWithRightActorInDifferentFlow() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
@@ -276,7 +289,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotReactToEnabledStepWithWrongActorInDifferentFlow() { 		
+	public void shouldNotReactToStepWithWrongActorInDifferentFlow() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
@@ -293,7 +306,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotReactToDisabledStepWithSpecificActor() {		
+	public void shouldNotReactToStepThasHasConditionNotFulfilledAndSpecificActor() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
