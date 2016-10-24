@@ -63,7 +63,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @param actors the actors that defines the user groups
 	 * @return the created actor part of this step
 	 */
-	public UseCaseStep.ActorPart actor(Actor... actors) {
+	public UseCaseStep.ActorPart actors(Actor... actors) {
 		Objects.requireNonNull(actors);
 		
 		actorPart = new ActorPart(actors);
@@ -96,7 +96,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 
 	private SystemPart<SystemEvent> system(Actor[] actors, Runnable systemReaction) {
-		return actor(actors).handle(SystemEvent.class).
+		return actors(actors).handle(SystemEvent.class).
 			system(systemEvent -> systemReaction.run());
 	}
 	
@@ -121,7 +121,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		Objects.requireNonNull(eventOrExceptionClass);
 
 		Actor userActor = getUseCaseModel().getUserActor();
-		EventPart<T> newEventPart = actor(userActor).handle(eventOrExceptionClass);
+		EventPart<T> newEventPart = actors(userActor).handle(eventOrExceptionClass);
 		
 		return newEventPart;
 	}
@@ -450,7 +450,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private void makeRepeatStepBehaveLikeThisStep(UseCaseStep newRepeatStep) {
 			newRepeatStep
-				.actor(getActorPart().getActors()).handle(getEventPart().getEventClass())
+				.actors(getActorPart().getActors()).handle(getEventPart().getEventClass())
 				.system((Consumer)getSystemPart().getSystemReaction());
 		}
 

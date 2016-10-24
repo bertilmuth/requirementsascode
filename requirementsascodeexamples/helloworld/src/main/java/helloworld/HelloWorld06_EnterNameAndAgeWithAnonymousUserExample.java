@@ -36,11 +36,11 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME)
 					.system(promptUserToEnterFirstName())
 				.newStep(USER_ENTERS_FIRST_NAME)
-					.actor(normalUser).handle(EnterTextEvent.class).system(saveFirstName())
+					.actors(normalUser).handle(EnterTextEvent.class).system(saveFirstName())
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_AGE)
 					.system(promptUserToEnterAge())
 				.newStep(USER_ENTERS_AGE)
-					.actor(normalUser, anonymousUser).handle(EnterTextEvent.class).system(saveAge())
+					.actors(normalUser, anonymousUser).handle(EnterTextEvent.class).system(saveAge())
 				.newStep(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
 					.system(greetUserWithFirstName())
 				.newStep(SYSTEM_GREETS_USER_WITH_AGE)
@@ -53,14 +53,14 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.continueAfter(USER_ENTERS_FIRST_NAME)
 			.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
-					.actor(normalUser, anonymousUser).handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
+					.actors(normalUser, anonymousUser).handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
 				.continueAfter(USER_ENTERS_FIRST_NAME)
 			.newFlow("AF3.1 Anonymous User does not enter name").atStart()
 				.newStep("Skip step to enter first name")
-					.actor(anonymousUser).continueAfter(USER_ENTERS_FIRST_NAME)
+					.actors(anonymousUser).continueAfter(USER_ENTERS_FIRST_NAME)
 			.newFlow("AF3.2 Anonymous User is greeted with name only, not age").after(SYSTEM_GREETS_USER_WITH_FIRST_NAME)
 				.newStep("Skip step to greet user with age")
-					.actor(anonymousUser).continueAfter(SYSTEM_GREETS_USER_WITH_AGE);
+					.actors(anonymousUser).continueAfter(SYSTEM_GREETS_USER_WITH_AGE);
 		
 		useCaseRunner.runAs(anonymousUser);
 		

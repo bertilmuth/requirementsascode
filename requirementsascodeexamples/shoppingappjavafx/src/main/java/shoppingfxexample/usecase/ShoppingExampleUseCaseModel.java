@@ -51,24 +51,24 @@ public class ShoppingExampleUseCaseModel{
 					.system(findProductsInStock()).raise(displayStockedProductsAndPurchaseOrderEvent())
 					
 				.newStep("System displays stocked products and purchase order.")
-					.actor(systemActor)
+					.actors(systemActor)
 					.handle(DisplayStockedProductsAndPurchaseOrderEvent.class)
 					.system(display::displayStockedProductsAndPurchaseOrder)
 					
 				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
-					.actor(endCustomer)
+					.actors(endCustomer)
 					.handle(BuyProductEvent.class)
 					.system(buyProductEvent -> 
 						purchaseOrder.addProduct(buyProductEvent.getProduct()))
 					.repeatWhile(lessThenTenProductsBoughtSoFar())
 					
 				.newStep("End Customer checks out. System prompts End Customer to enter shipping information.")
-					.actor(endCustomer)
+					.actors(endCustomer)
 					.handle(CheckoutPurchaseEvent.class)
 					.system(display::enterShippingInformation)
 					
 				.newStep("End Customer enters shipping information. System adds shipping information to purchase order.")
-					.actor(endCustomer)
+					.actors(endCustomer)
 					.handle(EnterShippingInformationEvent.class)
 					.system(enterShippingInformation -> 
 						purchaseOrder.setShippingInformation(enterShippingInformation.getShippingInformation()))
@@ -77,7 +77,7 @@ public class ShoppingExampleUseCaseModel{
 					.system(() -> display.displayPurchaseOrderSummary(purchaseOrder))
 				
 				.newStep("System finishes purchase and restart.")
-					.actor(endCustomer)
+					.actors(endCustomer)
 					.handle(FinishPurchaseEvent.class)
 					.system(fp -> {})
 					.restart()
