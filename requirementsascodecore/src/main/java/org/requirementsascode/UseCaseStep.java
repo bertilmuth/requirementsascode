@@ -243,6 +243,22 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
+		 * Makes the use case runner continue after the specified step,
+		 * without triggering a system reaction.
+		 * Only steps of the use case that this step is contained in are taken into account.
+		 * 
+		 * @param stepName name of the step to continue after.
+		 * @return the use case this step belongs to, to ease creation of further flows
+		 * @throws NoSuchElementInUseCaseException if no step with the specified stepName is found in the current use case
+		 */
+		public UseCase continueAfter(String stepName) {
+			Objects.requireNonNull(stepName);
+			
+			system(() -> {}).continueAfter(stepName);
+			return getUseCase();
+		}
+		
+		/**
 		 * Returns the actors that determine which user groups can 
 		 * cause the system to react to the event of this step.  
 		 * 
@@ -437,7 +453,12 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			return getFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
+			continueAfterStep(stepName);
+			return getUseCase();
+		}
+
+		private void continueAfterStep(String stepName) {
+			getFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
 	}
 	

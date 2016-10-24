@@ -3,6 +3,7 @@ package helloworld;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
@@ -25,17 +26,20 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	public void start() {	
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
+		
+		Actor normalUser = useCaseModel.newActor("Normal User");
+		Actor anonymousUser = useCaseModel.newActor("Anonymous User");
 				
 		useCaseModel.newUseCase("Get greeted")
 			.basicFlow()
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_FIRST_NAME)
 					.system(promptUserToEnterFirstName())
 				.newStep(USER_ENTERS_FIRST_NAME)
-					.handle(EnterTextEvent.class).system(saveFirstName())
+					.actor(normalUser).handle(EnterTextEvent.class).system(saveFirstName())
 				.newStep(SYSTEM_PROMPTS_USER_TO_ENTER_AGE)
 					.system(promptUserToEnterAge())
 				.newStep(USER_ENTERS_AGE)
-					.handle(EnterTextEvent.class).system(saveAge())
+					.actor(normalUser, anonymousUser).handle(EnterTextEvent.class).system(saveAge())
 				.newStep(SYSTEM_GREETS_USER)
 					.system(greetUserWithFirstNameAndAge())
 				.newStep(SYSTEM_TERMINATES_APPLICATION)
@@ -47,7 +51,8 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 			.newFlow("AF2. Handle non-numerical age").after(USER_ENTERS_AGE)
 				.newStep(SYSTEM_INFORMS_USER_ABOUT_NON_NUMERICAL_AGE)
 					.handle(NumberFormatException.class).system(informUserAboutNonNumericalAge())
-				.continueAfter(USER_ENTERS_FIRST_NAME);
+				.continueAfter(USER_ENTERS_FIRST_NAME)
+			;/*.newFlow("AF3.1 Anonymous User does not enter name").atStart()*/
 		
 		useCaseRunner.run();
 		
