@@ -1,7 +1,7 @@
 # requirementsascode
 Living specification of application requirements in code, for long term changeability.
 
-Note that as this is an experimental project, the API is likely to change.
+Note that the API is likely to change.
 At least Java 8 is required.
 
 Subprojects:
