@@ -1,9 +1,10 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -85,9 +86,9 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText());
 				
 		useCaseRunner.run();
-		UseCaseStep latestStepRun = useCaseRunner.reactTo(enterTextEvent());
+		Optional<UseCaseStep> latestStepRun = useCaseRunner.reactTo(enterTextEvent());
 		
-		assertEquals(CUSTOMER_ENTERS_SOME_TEXT, latestStepRun.getName());
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT, latestStepRun.get().getName());
 	}
 	
 	@Test
@@ -283,9 +284,9 @@ public class SystemReactionTest extends AbstractTestCase{
 					.actors(rightActor).handle(EnterTextEvent.class).system(displayEnteredText());
 		
 		useCaseRunner.runAs(rightActor);
-		UseCaseStep lastStepRun =useCaseRunner.reactTo(enterTextEvent());
+		Optional<UseCaseStep> lastStepRun = useCaseRunner.reactTo(enterTextEvent());
 		
-		assertEquals(CUSTOMER_ENTERS_SOME_TEXT_AGAIN, lastStepRun.getName());
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT_AGAIN, lastStepRun.get().getName());
 	}
 	
 	@Test
@@ -316,9 +317,9 @@ public class SystemReactionTest extends AbstractTestCase{
 					.actors(actorWithDisabledStep).handle(EnterTextEvent.class).system(displayEnteredText());
 				
 		useCaseRunner.runAs(actorWithDisabledStep);
-		UseCaseStep lastStepRun = useCaseRunner.reactTo(enterTextEvent());
+		Optional<UseCaseStep> lastStepRun = useCaseRunner.reactTo(enterTextEvent());
 		
-		assertNull(lastStepRun);
+		assertFalse(lastStepRun.isPresent());
 	}
 	
 	@Test
@@ -393,9 +394,9 @@ public class SystemReactionTest extends AbstractTestCase{
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText());
 		
 		useCaseRunner.run();
-		UseCaseStep latestStep = useCaseRunner.reactTo(enterTextEvent());
+		Optional<UseCaseStep> latestStep = useCaseRunner.reactTo(enterTextEvent());
 		
-		assertEquals(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, latestStep.getName());
+		assertEquals(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT, latestStep.get().getName());
 	}
 	
 	@Test

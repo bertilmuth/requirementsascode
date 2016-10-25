@@ -129,13 +129,13 @@ public class UseCaseRunner {
 	 * 
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
-	 * @return the use case step whose system reaction was triggered, or null if none was triggered.
+	 * @return the use case step whose system reaction was triggered, or else an empty optional if none was triggered.
 	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step could react
 	 */
-	public <T> UseCaseStep reactTo(T event) {
+	public <T> Optional<UseCaseStep> reactTo(T event) {
 		Objects.requireNonNull(event);
 		
-		UseCaseStep latestStepRun = null;
+		Optional<UseCaseStep> latestStepRun = Optional.empty();
 		if(isRunning){
 			Class<? extends Object> currentEventClass = event.getClass();
 			Set<UseCaseStep> reactingUseCaseSteps = getStepsThatCouldReactTo(currentEventClass);
@@ -181,7 +181,7 @@ public class UseCaseRunner {
 		return enabledSteps;
 	}
 
-	private <T> UseCaseStep triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
+	private <T> Optional<UseCaseStep> triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
 		UseCaseStep useCaseStep = null;
 
 		if(useCaseSteps.size() == 1){
@@ -191,7 +191,7 @@ public class UseCaseRunner {
 			throw new MoreThanOneStepCouldReactException(useCaseSteps);
 		}
 		
-		return useCaseStep;
+		return useCaseStep != null? Optional.of(useCaseStep) : Optional.empty();
 	}
 	
 	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
