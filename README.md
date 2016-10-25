@@ -11,8 +11,6 @@ Subprojects:
 A good place to start are the [helloworld examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
 # Why bother?
-This project is about documenting requirements in programming language code.
-
 Documenting a requirement provides value, not only when it is implemented, but especially when it changes later on and the impact of the change can be analysed by traceability. However, the documentation needs to be updated with every change or it will get outdated very quickly, rendering it worthless - that's why people often say "the truth is in the code".
 
 To avoid the effort, many agile teams do not even maintain documentation of a requirement after it has been implemented, for example they throw away the user stories. The risk of that approach is that over time, without requirements and traceability, it becomes unclear *where* in the code *what changes* need to be performed when a requirement changes. This is especially true if many teams and developers with different programming styles work on an application. 
