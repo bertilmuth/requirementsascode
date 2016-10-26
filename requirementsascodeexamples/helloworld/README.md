@@ -25,8 +25,6 @@ useCaseModel.newUseCase("Get greeted")
 				.repeatWhile(r -> ++hoorayCount < 3);
 
 useCaseRunner.run();
-
-// Implementations of the methods ...
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample.java).
 
