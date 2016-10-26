@@ -17,7 +17,7 @@ To avoid the effort, many agile teams do not even maintain documentation of a re
 
 As long as ideas are exchanged between stakeholders and the requirements are discussed but not yet implemented, it makes sense to have a lightweight documentation of requirements outside the code, maybe as part of a backlog or a lightweight specification.
 
-For the long term changeability of a requirement once it has been implemented, requirementsascode proposes a different way to document the requirement: in the code itself. A specific part of the code controls both the behavior of the application and documents the requirements in a formal way. The requirement documentation is similar to goal-level use case specifications (inside the code).
+For the long term changeability of a requirement once it has been implemented, requirementsascode proposes a different way to document the requirement: in the code itself. A specific part of the code controls both the behavior of the application and documents the requirements in a formal way. The requirement documentation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) specifications (inside the code).
 
 Benefits of this approach include:
 * Perform impact analysis of changes: how does a change to a requirement affect the software components?
