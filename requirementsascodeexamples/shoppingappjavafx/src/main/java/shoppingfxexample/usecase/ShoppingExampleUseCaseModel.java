@@ -1,5 +1,6 @@
 package shoppingfxexample.usecase;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -7,39 +8,22 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
-import javafx.collections.ObservableList;
 import shoppingfxexample.domain.Product;
-import shoppingfxexample.domain.PurchaseOrder;
-import shoppingfxexample.domain.Stock;
-import shoppingfxexample.gui.ShoppingApplicationDisplay;
+import shoppingfxexample.domain.ShippingInformation;
 import shoppingfxexample.usecase.event.BuyProductEvent;
 import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 import shoppingfxexample.usecase.event.EnterShippingInformationEvent;
 import shoppingfxexample.usecase.event.FinishPurchaseEvent;
 
-public class ShoppingExampleUseCaseModel{
-	private UseCaseModel useCaseModel;
-	private Stock stock;
-	private ShoppingApplicationDisplay display;
-	private PurchaseOrder purchaseOrder;
-	private ObservableList<Product> productsInStock;
+public abstract class ShoppingExampleUseCaseModel{
 	private Actor endCustomerActor;
 
-	public ShoppingExampleUseCaseModel(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
-		store(useCaseModel, stock, display);
-		createModel();
+	protected ShoppingExampleUseCaseModel() {
 	}
 
-	public void store(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
-		this.useCaseModel = useCaseModel;
-		this.stock = stock;
-		this.display = display;
-		this.endCustomerActor = useCaseModel.newActor("End Customer");
-	}
-
-	private void createModel() {
-		Actor endCustomer = getEndCustomerActor();
+	protected void createModel(UseCaseModel useCaseModel) {
+		endCustomerActor = useCaseModel.newActor("End Customer");
 		Actor systemActor = useCaseModel.getSystemActor();
 		
 		useCaseModel.newUseCase("Buy product")
@@ -53,31 +37,30 @@ public class ShoppingExampleUseCaseModel{
 				.newStep("System displays stocked products and purchase order.")
 					.actors(systemActor)
 					.handle(DisplayStockedProductsAndPurchaseOrderEvent.class)
-					.system(display::displayStockedProductsAndPurchaseOrder)
+					.system(displayStockedProductsAndPurchaseOrder())
 					
 				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
-					.actors(endCustomer)
+					.actors(endCustomerActor)
 					.handle(BuyProductEvent.class)
-					.system(buyProductEvent -> 
-						purchaseOrder.addProduct(buyProductEvent.getProduct()))
+					.system(buyProductEvent -> addProduct(buyProductEvent.getProduct()))
 					.repeatWhile(lessThenTenProductsBoughtSoFar())
 					
 				.newStep("End Customer checks out. System prompts End Customer to enter shipping information.")
-					.actors(endCustomer)
+					.actors(endCustomerActor)
 					.handle(CheckoutPurchaseEvent.class)
-					.system(display::enterShippingInformation)
+					.system(enterShippingInformation())
 					
 				.newStep("End Customer enters shipping information. System adds shipping information to purchase order.")
-					.actors(endCustomer)
+					.actors(endCustomerActor)
 					.handle(EnterShippingInformationEvent.class)
 					.system(enterShippingInformation -> 
-						purchaseOrder.setShippingInformation(enterShippingInformation.getShippingInformation()))
+						setShippingInformation(enterShippingInformation.getShippingInformation()))
 					
 				.newStep("System displays purchase order summary.")
-					.system(() -> display.displayPurchaseOrderSummary(purchaseOrder))
+					.system(() -> displayPurchaseOrderSummary())
 				
 				.newStep("System finishes purchase and restart.")
-					.actors(endCustomer)
+					.actors(endCustomerActor)
 					.handle(FinishPurchaseEvent.class)
 					.system(fp -> {})
 				.restart()
@@ -87,27 +70,17 @@ public class ShoppingExampleUseCaseModel{
 					.handle(Throwable.class).system(t -> t.printStackTrace());
 	}
 
+	protected abstract Runnable newPurchaseOrder();
+	protected abstract Runnable findProductsInStock();
+	protected abstract Supplier<DisplayStockedProductsAndPurchaseOrderEvent> displayStockedProductsAndPurchaseOrderEvent();
+	protected abstract Consumer<DisplayStockedProductsAndPurchaseOrderEvent> displayStockedProductsAndPurchaseOrder();
+	protected abstract void addProduct(Product product);
+	protected abstract Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar();
+	protected abstract Consumer<CheckoutPurchaseEvent> enterShippingInformation();
+	protected abstract void setShippingInformation(ShippingInformation shippingInformation);
+	protected abstract void displayPurchaseOrderSummary();
+	
 	public Actor getEndCustomerActor() {
 		return endCustomerActor;
-	}
-
-	private Runnable newPurchaseOrder() {
-		return () -> purchaseOrder = new PurchaseOrder();
-	}
-	
-	private Runnable findProductsInStock() {
-		return () -> productsInStock = stock.findProducts();		
-	}
-	
-	private Supplier<DisplayStockedProductsAndPurchaseOrderEvent> displayStockedProductsAndPurchaseOrderEvent() {
-		return () -> new DisplayStockedProductsAndPurchaseOrderEvent(productsInStock, purchaseOrder);
-	}
-
-	public Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar() {
-		return r -> purchaseOrder.findProducts().size() < 10;
-	}
-
-	public PurchaseOrder getPurchaseOrder() {
-		return purchaseOrder;
 	}
 }

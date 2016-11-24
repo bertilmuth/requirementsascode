@@ -7,11 +7,11 @@ import org.requirementsascode.UseCaseRunner;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import shoppingfxexample.domain.Stock;
-import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
+import shoppingfxexample.usecaserealization.ShoppingExampleUseCaseRealization;
 
 public class ShoppingApplicationMain extends Application {
 	private Stock stock;
-	private UseCaseRunner useCaseModelRunner;
+	private UseCaseRunner useCaseRunner;
 	private ShoppingApplicationDisplay display;
 
 	@Override
@@ -19,7 +19,7 @@ public class ShoppingApplicationMain extends Application {
 		accessStock();
 		createUseCaseModelRunner();
         createAndShowDisplay(primaryStage);
-		createAndRunUseCaseModel(primaryStage);
+		createAndRunUseCaseRealization(primaryStage);
 	}
 	
 	private void accessStock() {
@@ -27,19 +27,19 @@ public class ShoppingApplicationMain extends Application {
 	}
 
 	private void createUseCaseModelRunner() {
-		this.useCaseModelRunner = new UseCaseRunner();
+		this.useCaseRunner = new UseCaseRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
-		this.display = new ShoppingApplicationDisplay(useCaseModelRunner, primaryStage);
+		this.display = new ShoppingApplicationDisplay(useCaseRunner, primaryStage);
 		primaryStage.setTitle("Shopping Example JavaFX - Requirements as Code");
 		primaryStage.show();		
 	}
 	
-	public void createAndRunUseCaseModel(Stage primaryStage) {				
-		ShoppingExampleUseCaseModel shoppingExampleUseCaseModel = 
-			new ShoppingExampleUseCaseModel(useCaseModelRunner.getUseCaseModel(), stock, display);
-		useCaseModelRunner.runAs(shoppingExampleUseCaseModel.getEndCustomerActor());
+	public void createAndRunUseCaseRealization(Stage primaryStage) {				
+		ShoppingExampleUseCaseRealization shoppingExampleUseCaseRealization = 
+			new ShoppingExampleUseCaseRealization(useCaseRunner.getUseCaseModel(),stock, display);
+		useCaseRunner.runAs(shoppingExampleUseCaseRealization.getEndCustomerActor());
 	}
 
 	public static void main(String[] args) {
