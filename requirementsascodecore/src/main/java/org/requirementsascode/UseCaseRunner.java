@@ -223,7 +223,7 @@ public class UseCaseRunner {
 	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
 	 * 
 	 * @param <T> the type of event the system reacts to
-	 * @param event the event that is passed to the system reation
+	 * @param event the event that is passed to the system reaction
 	 * @param systemReaction the system reaction that accepts the event
 	 */
 	protected <T> void triggerSystemReaction(T event, Consumer<T> systemReaction) {
