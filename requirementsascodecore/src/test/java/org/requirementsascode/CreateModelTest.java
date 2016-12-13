@@ -116,7 +116,8 @@ public class CreateModelTest extends AbstractTestCase{
 		
 		UseCaseStep step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());	
+		assertEquals(SAY_HELLO_USE_CASE, step.getUseCase().getName());
+		assertTrue(useCaseModel.hasActor(customer.getName()));
 		assertEquals(customer, step.getActorPart().getActors()[0]);
 	}
 	

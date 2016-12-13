@@ -58,8 +58,8 @@ public class UseCaseRunner {
 	 * to its original defaults ("no flow has been run, no step has been run").
 	 */
 	public void restart() {
-		this.latestFlow = Optional.empty();
-		this.latestStep = Optional.empty();
+		setLatestFlow(Optional.empty());
+		setLatestStep(Optional.empty());
 	}
 	
 	/**
@@ -220,7 +220,7 @@ public class UseCaseRunner {
 	/**
 	 * Overwrite this method to control what happens exactly when a system reaction is triggered.
 	 * The behavior implemented in UseCaseRunner: the consumer that is the system reaction simply accepts the event.
-	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
+	 * You may replace this with a more sophisticated behavior, for example some kind of event dispatching.
 	 * 
 	 * @param <T> the type of event the system reacts to
 	 * @param event the event that is passed to the system reaction
