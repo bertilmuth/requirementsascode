@@ -1,4 +1,4 @@
-version = '0.1.0'
+version = '0.1.1'
 
 apply plugin: "java"
 apply plugin: "jacoco"
@@ -7,6 +7,11 @@ repositories {
 	mavenCentral()
 }
 
+dependencies {
+  	testCompile 'junit:junit:4.12'
+}
+
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Requirements as Code - Core',
@@ -14,8 +19,13 @@ jar {
     }
 }
 
-dependencies {
-  	testCompile 'junit:junit:4.12'
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
 }
 
 test {
