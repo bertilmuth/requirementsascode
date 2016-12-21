@@ -148,9 +148,9 @@ public class UseCaseRunner {
 	 * Returns the use case steps in the use case model that could react to the specified event class.
 	 * 
 	 * A step "could react" if all of the following conditions are met:
-	 * a) the step's actor matches the actor the runner is run as
+	 * a) one of the step's actors matches the actor the runner is run as
 	 * b) the step's event class is the same or a superclass of the specified event class 
-	 * c) the condition of the step is fulfilled, that is: its predicate is true
+	 * c) the step has a predicate that is true
 	 * 
 	 * @param eventClass the class of events 
 	 * @return the steps that could react to the class of events
@@ -159,8 +159,8 @@ public class UseCaseRunner {
 		Objects.requireNonNull(eventClass);
 		
 		Stream<UseCaseStep> stepStream = useCaseModel.getSteps().stream();
-		Set<UseCaseStep> enabledSteps = getSubsetOfStepsThatCouldReact(eventClass, stepStream);
-		return enabledSteps;
+		Set<UseCaseStep> steps = getStepsThatCouldReact(eventClass, stepStream);
+		return steps;
 	}
 	
 	/**
@@ -172,13 +172,13 @@ public class UseCaseRunner {
 	 * @param stepStream the stream of steps
 	 * @return the subset of steps that could react to the class of events
 	 */
-	Set<UseCaseStep> getSubsetOfStepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
-		Set<UseCaseStep> enabledSteps = stepStream
+	Set<UseCaseStep> getStepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
+		Set<UseCaseStep> steps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
 			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-			.filter(step -> isConditionFulfilled(step))
+			.filter(step -> hasTruePredicate(step))
 			.collect(Collectors.toSet());
-		return enabledSteps;
+		return steps;
 	}
 
 	private <T> Optional<UseCaseStep> triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
@@ -259,7 +259,7 @@ public class UseCaseRunner {
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	
-	private boolean isConditionFulfilled(UseCaseStep useCaseStep) {
+	private boolean hasTruePredicate(UseCaseStep useCaseStep) {
 		Predicate<UseCaseRunner> predicate = useCaseStep.getPredicate();
 		boolean result = predicate.test(this);
 		return result;

@@ -42,7 +42,7 @@ class UseCaseStepPredicate {
 		};
 	}
 	
-	public static Predicate<UseCaseRunner> noOtherStepIsEnabledThan(UseCaseStep theStep) {
+	public static Predicate<UseCaseRunner> noOtherStepCouldReactLike(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventPart().getEventClass();
 			UseCaseModel useCaseModel = theStep.getUseCaseModel();
@@ -51,8 +51,8 @@ class UseCaseStepPredicate {
 				useCaseModel.getSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<UseCaseStep> enabledOtherSteps = useCaseRunner.getSubsetOfStepsThatCouldReact(theStepsEventClass, otherStepsStream);
-			return enabledOtherSteps.size() == 0;
+			Set<UseCaseStep> otherStepsThatCouldReact = useCaseRunner.getStepsThatCouldReact(theStepsEventClass, otherStepsStream);
+			return otherStepsThatCouldReact.size() == 0;
 		};
 	}
 }

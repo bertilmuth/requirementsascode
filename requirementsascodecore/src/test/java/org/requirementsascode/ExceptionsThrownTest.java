@@ -131,7 +131,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfMoreThanOneStepIsEnabled() { 	 
+	public void shouldThrowExceptionIfMoreThanOneStepCouldReact() { 	 
 		thrown.expect(MoreThanOneStepCouldReactException.class);
 		thrown.expectMessage(BASIC_FLOW_STEP);
 		thrown.expectMessage(ALTERNATIVE_FLOW_STEP);
@@ -139,7 +139,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow().when(run -> true)
 				.newStep(BASIC_FLOW_STEP).system(displayConstantText())
-			.newFlow("Alternative Flow: Enabled as well").when(run -> true)
+			.newFlow("Alternative Flow: Could react as well").when(run -> true)
 				.newStep(ALTERNATIVE_FLOW_STEP).system(displayConstantText());
 		
 		useCaseRunner.run();

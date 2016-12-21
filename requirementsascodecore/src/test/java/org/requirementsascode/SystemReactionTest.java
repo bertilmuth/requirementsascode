@@ -231,7 +231,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactOnlyToStepThasHasConditionFulfilled() { 		
+	public void shouldReactOnlyToStepThasHasTruePredicate() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())			
@@ -245,7 +245,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldReactToStepThasHasConditionFulfilledEvenIfOtherStepWouldBePerformedBySystem() { 		
+	public void shouldReactToStepThasHasTruePredicateEvenIfOtherStepWouldBePerformedBySystem() { 		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())			
@@ -307,7 +307,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotReactToStepThasHasConditionNotFulfilledAndSpecificActor() {		
+	public void shouldNotReactToStepThasHasFalsePredicateAndSpecificActor() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(CUSTOMER_ENTERS_SOME_TEXT)
@@ -353,7 +353,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotReenterAlternativeFlowEvenIfConditionsIsFulfilled() {		
+	public void shouldNotReenterAlternativeFlowEvenIfItHasTruePredicate() {		
 		useCaseModel.newUseCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.newStep(THIS_STEP_SHOULD_BE_SKIPPED).handle(EnterTextEvent.class).system(throwRuntimeException())
@@ -672,7 +672,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.newFlow("AF1: Alternative Flow that continues with Basic Flow").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsAvailablePredicate())
 				.newStep(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).handle(EnterTextEvent.class).system(displayEnteredText())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT)		
-			.newFlow("AF2: Alternative Flow that has a disabled condition").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
+			.newFlow("AF2: Alternative Flow that has false predicate").after(CUSTOMER_ENTERS_SOME_TEXT).when(textIsNotAvailablePredicate())
 				.newStep("Customer enters alternative number").handle(EnterNumberEvent.class).system(displayEnteredNumber())
 				.continueAfter(CUSTOMER_ENTERS_SOME_TEXT);
 		

@@ -2,7 +2,7 @@ package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
-import static org.requirementsascode.UseCaseStepPredicate.noOtherStepIsEnabledThan;
+import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactLike;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @param stepName the name of the step to be created
 	 * @param useCaseFlow the use case flow that will contain the new use case
 	 * @param previousStepInFlow the step created before the step in its flow, or else an empty optional if it is the first step in its flow
-	 * @param predicate the complete predicate of the step, or else an empty optional which implicitly means: {@link #afterPreviousStepWhenNoOtherStepIsEnabled()} 
+	 * @param predicate the complete predicate of the step, or else an empty optional which implicitly means: {@link #inSequenceUnlessInterrupted()} 
 	 */
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStepInFlow, Optional<Predicate<UseCaseRunner>> predicate) {
 		super(stepName, useCaseFlow.getUseCaseModel());
@@ -50,7 +50,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
-		this.predicate = predicate.orElse(afterPreviousStepWhenNoOtherStepIsEnabled());		
+		this.predicate = predicate.orElse(inSequenceUnlessInterrupted());		
 	}
 	
 	/**
@@ -192,20 +192,18 @@ public class UseCaseStep extends UseCaseModelElement{
 	
 	/**
 	 * This predicate makes sure that use case steps following the first step
-	 * in a flow are usually executed in sequence ("after previous step"),
-	 * unless the first step of an alternative flow is enabled ("when no other step is enabled").
-	 * This makes it possible to e.g. define the basic flow without knowing about
-	 * alternative flows, allowing it to be interrupted by alternative flows if necessary.
+	 * in a flow are executed in sequence, unless the first step of an 
+	 * alternative flow interrupts the flow.
 	 * 
 	 * @return the predicate for running steps in sequence
 	 */
-	private Predicate<UseCaseRunner> afterPreviousStepWhenNoOtherStepIsEnabled() {
-		Predicate<UseCaseRunner> afterPreviousStepPredicate = 
+	private Predicate<UseCaseRunner> inSequenceUnlessInterrupted() {
+		Predicate<UseCaseRunner> afterPreviousStep = 
 			previousStepInFlow.map(s -> afterStep(s)).orElse(isRunnerAtStart());
-		return afterPreviousStepPredicate.and(noOtherStepIsEnabledThan(this));
+		return afterPreviousStep.and(noOtherStepCouldReactLike(this));
 	}
 	
-	/**
+	/*
 	 * The part of the step that contains a reference to the actor
 	 * that is allowed to trigger a system reaction for this step.
 	 * 
