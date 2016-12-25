@@ -1,9 +1,10 @@
 # requirementsascode
 Executable specifications, for long term application changeability.
-As long as a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe as part of a backlog or a lightweight specification.
-As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirements and its realization.
 
-Thus, requirementsascode proposes to document requirements in the code itself. A specific part of the code controls both the behavior of the application and documents the requirements in a formal way. The requirement documentation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives (inside the code).
+As long as a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe as part of a backlog or a lightweight specification.
+As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization.
+
+Thus, requirementsascode proposes to document requirements in the code itself. A specific part of the code controls both the behavior of the application and documents the requirements in a formal way. The requirement documentation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives, inside the code.
 
 # prerequisites
 At least Java 8 is required.
