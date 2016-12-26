@@ -9,6 +9,8 @@ Thus, requirementsascode proposes to document requirements in the code itself. A
 # prerequisites
 At least Java 8 is required.
 
+Note that the API is likely to change.
+
 # getting started
 * To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.1.1/requirementsascodecore-0.1.1.jar) and save it in a local folder.
 * If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.1.1/helloworld-0.1.1.jar) and save it in the same folder.
