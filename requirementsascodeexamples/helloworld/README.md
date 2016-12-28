@@ -120,7 +120,7 @@ useCaseModel.useCase("Get greeted")
 		.step("S4c_1").as(anonymousUser).continueAfter(S5)
 		
 	.flow("Anonymous does not enter name").atStart()
-		.step("S0a").as(anonymousUser).continueAfter(S2);	
+		.step("S0a_1").as(anonymousUser).continueAfter(S2);	
 
 useCaseRunner.runAs(anonymousUser);
 
