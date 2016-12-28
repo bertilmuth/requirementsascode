@@ -1,8 +1,7 @@
-version = '0.1.0'
+version = '0.2.0'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
-apply plugin: 'eclipse'
 
 repositories {
 	mavenCentral()
@@ -18,8 +17,4 @@ jar {
 dependencies {
 	compile project(':requirementsascodecore')
   	testCompile 'junit:junit:4.12'
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.13'
 }

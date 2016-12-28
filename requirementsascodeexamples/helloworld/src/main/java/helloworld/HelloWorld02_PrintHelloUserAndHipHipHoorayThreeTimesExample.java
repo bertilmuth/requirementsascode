@@ -1,6 +1,7 @@
 package helloworld;
 
-import org.requirementsascode.UseCaseModel;
+import java.util.function.Predicate;
+
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
@@ -9,17 +10,26 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 				
-		useCaseModel.newUseCase("Get greeted")
+		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
-				.newStep("System greets user.")
-					.system(() -> System.out.println("Hello, User."))
-				.newStep("System prints 'Hip, hip, hooray!' three times.")
-					.system(() -> System.out.println("Hip, hip, hooray!"))
-						.repeatWhile(r -> ++hoorayCount < 3);
+				.step("S1").system(greetUser())
+				.step("S2").system(printHooray())
+					.repeatWhile(thereAreLessThanThreeHoorays());
 		
 		useCaseRunner.run();
+	}
+
+	private Runnable greetUser() {
+		return () -> System.out.println("Hello, User.");
+	}
+	
+	private Predicate<UseCaseRunner> thereAreLessThanThreeHoorays() {
+		return r -> ++hoorayCount < 3;
+	}
+	
+	private Runnable printHooray() {
+		return () -> System.out.println("Hip, hip, hooray!");
 	}
 	
 	public static void main(String[] args){

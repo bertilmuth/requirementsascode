@@ -6,30 +6,28 @@ As soon as a requirement is implemented, the code itself becomes the most reliab
 
 Thus, requirementsascode proposes to document requirements in the code itself. A specific part of the code controls both the behavior of the application and documents the requirements in a formal way. The requirement documentation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives, inside the code.
 
-# prerequisites
-At least Java 8 is required.
+# documentation
+* [Hello World examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [Javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.2.0/requirementsascodecore-0.2.0-javadoc.jar)
 
 Note that the API is likely to change.
 
 # getting started
-* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.1.1/requirementsascodecore-0.1.1.jar) and save it in a local folder.
-* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.1.1/helloworld-0.1.1.jar) and save it in the same folder.
+* At least Java 8 is required, download and install it if necessary.
+* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.2.0/requirementsascodecore-0.2.0.jar) and save it in a local folder.
+* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.2.0/helloworld-0.2.0.jar) and save it in the same folder.
 * To run the first Hello World example, switch to the folder in a console and enter: 
 
 Windows:
 ``` java
-java -cp "helloworld-0.1.1.jar;requirementsascodecore-0.1.1.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.2.0.jar;requirementsascodecore-0.2.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
 Unix:
 ``` java
-java -cp "helloworld-0.1.1.jar:requirementsascodecore-0.1.1.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.2.0.jar:requirementsascodecore-0.2.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
 
 Build tool support will be available in the future.
-
-# documentation
-* [Hello World examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [Javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.1.1/requirementsascodecore-0.1.1-javadoc.jar)
 
 # subprojects
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.

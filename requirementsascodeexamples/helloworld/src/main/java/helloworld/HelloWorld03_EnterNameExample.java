@@ -2,35 +2,31 @@ package helloworld;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 	
+	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
+
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 				
-		useCaseModel.newUseCase("Get greeted")
+		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
-				.newStep("System prompts user to enter first name.")
-					.system(promptUserToEnterFirstName())
-				.newStep("User enters first name. System greets user with first name.")
-					.handle(EnterTextEvent.class).system(greetUserWithFirstName())
-				.newStep("System terminates application.")
-					.system(terminateApplication());
+				.step("S1").system(promptUserToEnterFirstName())
+				.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName())
+				.step("S3").system(terminateApplication());
 		
 		useCaseRunner.run();
-		useCaseRunner.reactTo(enterTextEvent());
+		useCaseRunner.reactTo(enterText());
 	}
 	
 	private Runnable promptUserToEnterFirstName() {
 		return () -> System.out.print("Please enter your first name: ");
 	}
 	
-	private Consumer<EnterTextEvent> greetUserWithFirstName() {
-		return enterTextEvent -> System.out.println("Hello, " + 
-			enterTextEvent.getText() + ".");
+	private Consumer<EnterText> greetUserWithFirstName() {
+		return enterText -> System.out.println("Hello, " + enterText.text + ".");
 	}
 	
 	public static void main(String[] args){

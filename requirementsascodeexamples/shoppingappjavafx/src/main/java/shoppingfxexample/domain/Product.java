@@ -5,12 +5,10 @@ import java.math.BigDecimal;
 public class Product {
 	private String productName;
 	private BigDecimal priceEuro;
-	private String sku;
 	
-	public Product(String productName, BigDecimal priceEuro, String sku) {
+	public Product(String productName, BigDecimal priceEuro) {
 		this.productName = productName;
 		this.priceEuro = priceEuro;
-		this.sku = sku;
 	}
 
 	public String getProductName() {
@@ -19,10 +17,6 @@ public class Product {
 
 	public BigDecimal getPriceEuro() {
 		return priceEuro;
-	}
-
-	public String getSku() {
-		return sku;
 	}
 	
 	@Override

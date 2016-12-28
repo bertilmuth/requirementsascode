@@ -1,5 +1,5 @@
 package shoppingfxexample.usecase.event;
 
-public class FinishPurchaseEvent {
+public class FinishPurchase {
 
 }

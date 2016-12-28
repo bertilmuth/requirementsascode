@@ -7,8 +7,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.junit.Before;
-import org.requirementsascode.event.EnterNumberEvent;
-import org.requirementsascode.event.EnterTextEvent;
+import org.requirementsascode.event.EnterNumber;
+import org.requirementsascode.event.EnterText;
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
@@ -21,31 +21,31 @@ public abstract class AbstractTestCase {
 	@Before
 	public void setup(){
 		this.useCaseRunner = new UseCaseRunner();
-		this.useCaseModel = useCaseRunner.getUseCaseModel();
-		this.customer = useCaseModel.newActor("Customer");
+		this.useCaseModel = useCaseRunner.useCaseModel();
+		this.customer = useCaseModel.actor("Customer");
 		
 		runStepNames = new ArrayList<>();
 		displayedText = null;
 	}
 	
-	protected Predicate<UseCaseRunner> textIsAvailablePredicate() {
+	protected Predicate<UseCaseRunner> textIsAvailable() {
 		return r -> displayedText != null;
 	}
 	
-	protected Predicate<UseCaseRunner> textIsNotAvailablePredicate() {
+	protected Predicate<UseCaseRunner> textIsNotAvailable() {
 		return r -> displayedText == null;
 	}
 	
-	protected EnterTextEvent enterTextEvent(){
-		return new EnterTextEvent("Hello, Basic Flow!");
+	protected EnterText enterText(){
+		return new EnterText("Hello, Basic Flow!");
 	}
 	
-	protected EnterTextEvent enterDifferentTextEvent(){
-		return new EnterTextEvent("Hello, I am an Alternative Flow!");
+	protected EnterText enterDifferentText(){
+		return new EnterText("Hello, I am an Alternative Flow!");
 	}
 	
-	protected EnterNumberEvent enterNumberEvent(){
-		EnterNumberEvent enterNumber = new EnterNumberEvent();
+	protected EnterNumber enterNumber(){
+		EnterNumber enterNumber = new EnterNumber();
 		enterNumber.value = 42;
 		return enterNumber;
 	}
@@ -58,25 +58,25 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnterTextEvent> displayEnteredText() {
-		return enterTextEvent -> {
+	protected Consumer<EnterText> displayEnteredText() {
+		return enterText -> {
 			runStepNames.add(getLatestStepName());
-			displayedText = enterTextEvent.toString();
+			displayedText = enterText.toString();
 			System.out.println(displayedText);
 		};
 	}
 	
-	protected Consumer<EnterNumberEvent> displayEnteredNumber() {
-		return enterNumberEvent -> {
+	protected Consumer<EnterNumber> displayEnteredNumber() {
+		return enterNumber -> {
 			runStepNames.add(getLatestStepName());
-			displayedText = enterNumberEvent.value.toString();
+			displayedText = enterNumber.value.toString();
 			System.out.println(displayedText);
 		};
 	}
 	
-	protected Supplier<EnterNumberEvent> raiseEnterNumber() {
+	protected Supplier<EnterNumber> raiseEnterNumber() {
 		return () -> {
-			EnterNumberEvent enterNumberEvent = new EnterNumberEvent();
+			EnterNumber enterNumberEvent = new EnterNumber();
 			enterNumberEvent.value = 42;
 			return enterNumberEvent;
 		};
@@ -95,7 +95,7 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<EnterTextEvent> throwRuntimeException() {
+	protected Consumer<EnterText> throwRuntimeException() {
 		return (object) -> {throw new RuntimeException("Test failed!");};
 	}
 	
@@ -105,8 +105,8 @@ public abstract class AbstractTestCase {
 
 	protected String getLatestStepName() {
 		String latestStepName = 
-			useCaseRunner.getLatestStep()
-				.map(step -> step.getName()).orElse(null);
+			useCaseRunner.latestStep()
+				.map(step -> step.name()).orElse(null);
 		return latestStepName;
 	}
 }

@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingfxexample.domain.ShippingInformation;
-import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
-import shoppingfxexample.usecase.event.EnterShippingInformationEvent;
+import shoppingfxexample.usecase.event.CheckoutPurchase;
+import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class EnterShippingInformationController extends AbstractController{
 	
@@ -40,8 +40,8 @@ public class EnterShippingInformationController extends AbstractController{
     @FXML
     void onConfirm(ActionEvent event) {
     	initShippingInformationFromForm();
-    	EnterShippingInformationEvent enterShippingInformation =  new EnterShippingInformationEvent(shippingInformation);
-    	getUseCaseRunner().reactTo(enterShippingInformation);
+    	EnterShippingInformation enterShippingInformation =  new EnterShippingInformation(shippingInformation);
+    	useCaseRunner().reactTo(enterShippingInformation);
     }
 
 	private void initShippingInformationFromForm() {
@@ -53,7 +53,7 @@ public class EnterShippingInformationController extends AbstractController{
     	shippingInformation.setCountry(countryField.getText());
 	}
     
-	public void enterShippingInformation(CheckoutPurchaseEvent checkoutPurchaseEvent) {
+	public void enterShippingInformation(CheckoutPurchase checkoutPurchaseEvent) {
     	this.shippingInformation = new ShippingInformation();
 	}
 }

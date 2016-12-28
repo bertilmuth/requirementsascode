@@ -2,36 +2,31 @@ package helloworld;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
+	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
+	private static final Class<EnterText> ENTER_AGE = EnterText.class;
+	
 	private String firstName;
 	private int age;
 	
 	public void start() {	
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.getUseCaseModel();
 				
-		useCaseModel.newUseCase("Get greeted")
+		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
-				.newStep("System prompts user to enter first name.")
-					.system(promptUserToEnterFirstName())
-				.newStep("User enters first name. System saves the first name.")
-					.handle(EnterTextEvent.class).system(saveFirstName())
-				.newStep("System prompts user to enter age.")
-					.system(promptUserToEnterAge())
-				.newStep("User enters age. System saves age.")
-					.handle(EnterTextEvent.class).system(saveAge())
-				.newStep("System greets user with first name and age.")
-					.system(greetUserWithFirstNameAndAge())
-				.newStep("System terminates application.")
-					.system(terminateApplication());
+				.step("S1").system(promptUserToEnterFirstName())
+				.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
+				.step("S3").system(promptUserToEnterAge())
+				.step("S4").user(ENTER_AGE).system(saveAge())
+				.step("S5").system(greetUserWithFirstNameAndAge())
+				.step("S6").system(terminateApplication());
 		
 		useCaseRunner.run();
 		
-		useCaseRunner.reactTo(enterTextEvent());
-		useCaseRunner.reactTo(enterTextEvent());
+		useCaseRunner.reactTo(enterText());
+		useCaseRunner.reactTo(enterText());
 	}
 	
 	private Runnable promptUserToEnterFirstName() {
@@ -42,17 +37,16 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 		return () -> System.out.print("Please enter your age: ");
 	}
 
-	private Consumer<EnterTextEvent> saveFirstName() {
-		return enterTextEvent -> firstName = enterTextEvent.getText();
+	private Consumer<EnterText> saveFirstName() {
+		return enterTextEvent -> firstName = enterTextEvent.text;
 	}
 	
-	private Consumer<EnterTextEvent> saveAge() {
-		return enterTextEvent -> age = Integer.parseInt(enterTextEvent.getText());
+	private Consumer<EnterText> saveAge() {
+		return enterTextEvent -> age = Integer.parseInt(enterTextEvent.text);
 	}
 	
 	private Runnable greetUserWithFirstNameAndAge() {
-		return () -> System.out.println("Hello, " + 
-			firstName + " (" + age + ").");
+		return () -> System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
 	public static void main(String[] args){

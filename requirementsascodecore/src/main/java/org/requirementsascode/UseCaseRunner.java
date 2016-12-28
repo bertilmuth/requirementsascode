@@ -49,7 +49,7 @@ public class UseCaseRunner {
 	 * 
 	 * @return the use case model
 	 */
-	public UseCaseModel getUseCaseModel() {
+	public UseCaseModel useCaseModel() {
 		return useCaseModel;
 	}
 	
@@ -63,7 +63,7 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Runs the use case model with the default user, see {@link UseCaseModel#getUserActor()}.
+	 * Runs the use case model with the default user, see {@link UseCaseModel#userActor()}.
 	 * 
 	 * From now on (until called the next time), the runner will only trigger system reactions
 	 * of steps that have no explicit actor (just "handle"), which will implicitly connect them to the default user, 
@@ -75,7 +75,7 @@ public class UseCaseRunner {
 	 * 
 	 */
 	public void run() {
-		runAs(useCaseModel.getUserActor());
+		runAs(useCaseModel.userActor());
 	}
 	
 	private void triggerAutonomousSystemReaction() {
@@ -97,7 +97,7 @@ public class UseCaseRunner {
 		Objects.requireNonNull(actor);
 		
 		isRunning = true;
-		actorsToRunAs = Arrays.asList(actor, useCaseModel.getSystemActor());
+		actorsToRunAs = Arrays.asList(actor, useCaseModel.systemActor());
 		triggerAutonomousSystemReaction();
 	}
 	
@@ -125,7 +125,7 @@ public class UseCaseRunner {
 	 * 
 	 * After that, the runner will trigger "autonomous system reactions".
 	 * 
-	 * See {@link #getStepsThatCouldReactTo(Class)} for a description of what "could react" means.
+	 * See {@link #stepsThatCouldReactTo(Class)} for a description of what "could react" means.
 	 * 
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
@@ -138,7 +138,7 @@ public class UseCaseRunner {
 		Optional<UseCaseStep> latestStepRun = Optional.empty();
 		if(isRunning){
 			Class<? extends Object> currentEventClass = event.getClass();
-			Set<UseCaseStep> reactingUseCaseSteps = getStepsThatCouldReactTo(currentEventClass);
+			Set<UseCaseStep> reactingUseCaseSteps = stepsThatCouldReactTo(currentEventClass);
 			latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
 		}
 		return latestStepRun;
@@ -155,11 +155,11 @@ public class UseCaseRunner {
 	 * @param eventClass the class of events 
 	 * @return the steps that could react to the class of events
 	 */
-	public Set<UseCaseStep> getStepsThatCouldReactTo(Class<? extends Object> eventClass) {
+	public Set<UseCaseStep> stepsThatCouldReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
 		
-		Stream<UseCaseStep> stepStream = useCaseModel.getSteps().stream();
-		Set<UseCaseStep> steps = getStepsThatCouldReact(eventClass, stepStream);
+		Stream<UseCaseStep> stepStream = useCaseModel.steps().stream();
+		Set<UseCaseStep> steps = stepsThatCouldReact(eventClass, stepStream);
 		return steps;
 	}
 	
@@ -167,12 +167,12 @@ public class UseCaseRunner {
 	 * Gets the steps that could react from the specified stream, rather than from the whole
 	 * use case model.
 	 * 
-	 * @see #getStepsThatCouldReactTo(Class)
+	 * @see #stepsThatCouldReactTo(Class)
 	 * @param eventClass eventClass the class of events
 	 * @param stepStream the stream of steps
 	 * @return the subset of steps that could react to the class of events
 	 */
-	Set<UseCaseStep> getStepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
+	Set<UseCaseStep> stepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> steps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
 			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
@@ -195,17 +195,17 @@ public class UseCaseRunner {
 	}
 	
 	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
-		if(useCaseStep.getSystemPart() == null){
+		if(useCaseStep.systemPart() == null){
 			throw new MissingUseCaseStepPartException(useCaseStep, "system");
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
-		setLatestFlow(Optional.of(useCaseStep.getFlow()));
+		setLatestFlow(Optional.of(useCaseStep.flow()));
 		
 		try {
 			@SuppressWarnings("unchecked")
 			Consumer<T> systemReaction = 
-				(Consumer<T>) useCaseStep.getSystemPart().getSystemReaction();
+				(Consumer<T>) useCaseStep.systemPart().systemReaction();
 			triggerSystemReaction(event, systemReaction);
 		} 
 		catch (Exception e) { 
@@ -243,24 +243,24 @@ public class UseCaseRunner {
 	}
 
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
-		ActorPart actorPart = useCaseStep.getActorPart();
+		ActorPart actorPart = useCaseStep.actorPart();
 		if(actorPart == null){
 			throw(new MissingUseCaseStepPartException(useCaseStep, "actor"));
 		}
 		
-		Actor[] stepActors = actorPart.getActors();
+		Actor[] stepActors = actorPart.actors();
 		boolean stepActorIsRunActor = 
 			Stream.of(stepActors).anyMatch(stepActor -> actorsToRunAs.contains(stepActor));
 		return stepActorIsRunActor;
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.getEventPart().getEventClass();
+		Class<?> stepEventClass = useCaseStep.eventPart().eventClass();
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	
 	private boolean hasTruePredicate(UseCaseStep useCaseStep) {
-		Predicate<UseCaseRunner> predicate = useCaseStep.getPredicate();
+		Predicate<UseCaseRunner> predicate = useCaseStep.predicate();
 		boolean result = predicate.test(this);
 		return result;
 	}
@@ -270,7 +270,7 @@ public class UseCaseRunner {
 	 * 
 	 * @return the latest step run
 	 */
-	public Optional<UseCaseStep> getLatestStep() {
+	public Optional<UseCaseStep> latestStep() {
 		return latestStep;
 	}
 	
@@ -292,7 +292,7 @@ public class UseCaseRunner {
 	 * 
 	 * @return the latest flow run
 	 */
-	public Optional<UseCaseFlow> getLatestFlow() {
+	public Optional<UseCaseFlow> latestFlow() {
 		return latestFlow;
 	}
 	

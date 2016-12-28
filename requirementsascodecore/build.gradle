@@ -1,4 +1,4 @@
-version = '0.1.1'
+version = '0.2.0'
 
 apply plugin: "java"
 apply plugin: "jacoco"
@@ -7,16 +7,15 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-  	testCompile 'junit:junit:4.12'
-}
-
-
 jar {
     manifest {
         attributes 'Implementation-Title': 'Requirements as Code - Core',
                    'Implementation-Version': version
     }
+}
+
+dependencies {
+  	testCompile 'junit:junit:4.12'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

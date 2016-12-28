@@ -14,8 +14,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
-import shoppingfxexample.usecase.event.BuyProductEvent;
-import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.BuyProduct;
+import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 
 public class DisplayStockedProductsAndPurchaseOrderController extends AbstractController{
@@ -32,8 +32,8 @@ public class DisplayStockedProductsAndPurchaseOrderController extends AbstractCo
     
     @FXML
     void onCheckout(ActionEvent event) {
-    	CheckoutPurchaseEvent checkoutPurchase =  new CheckoutPurchaseEvent(purchaseOrder);
-    	getUseCaseRunner().reactTo(checkoutPurchase);
+    	CheckoutPurchase checkoutPurchase =  new CheckoutPurchase(purchaseOrder);
+    	useCaseRunner().reactTo(checkoutPurchase);
     }
 	
 	private class ProductListItem extends ListCell<Product> {
@@ -51,8 +51,8 @@ public class DisplayStockedProductsAndPurchaseOrderController extends AbstractCo
         }
 
 		private void buyProduct() {
-			BuyProductEvent buyProduct = new BuyProductEvent(product);
-			getUseCaseRunner().reactTo(buyProduct);
+			BuyProduct buyProduct = new BuyProduct(product);
+			useCaseRunner().reactTo(buyProduct);
 		}
 
 

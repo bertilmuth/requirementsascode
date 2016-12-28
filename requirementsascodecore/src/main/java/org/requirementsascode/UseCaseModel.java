@@ -30,8 +30,8 @@ public class UseCaseModel {
 	UseCaseModel(UseCaseRunner useCaseModelRun) {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
-		this.userActor = newActor("User");
-		this.systemActor = newActor("Autonomous System Reaction Actor");
+		this.userActor = actor("User");
+		this.systemActor = actor("Autonomous System Reaction Actor");
 		this.useCaseRunner = useCaseModelRun;
 	}
 
@@ -66,7 +66,7 @@ public class UseCaseModel {
 	 * @return the newly created actor
 	 * @throws ElementAlreadyInModelException if an actor with the specified name already exists in the model
 	 */
-	public Actor newActor(String actorName) {
+	public Actor actor(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
@@ -79,7 +79,7 @@ public class UseCaseModel {
 	 * @return the newly created use case
 	 * @throws ElementAlreadyInModelException if a use case with the specified name already exists in the model
 	 */
-	public UseCase newUseCase(String useCaseName) {		
+	public UseCase useCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
@@ -109,21 +109,21 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the actors contained in this use case model.
-	 * Do not modify that collection directly, use {@link #newActor(String)}.
+	 * Do not modify that collection directly, use {@link #actor(String)}.
 	 * 
 	 * @return the actors
 	 */
-	public Collection<Actor> getActors() {
+	public Collection<Actor> actors() {
 		return getModelElements(nameToActorMap);
 	}
 
 	/**
 	 * Returns the use cases contained in this use case model.
-	 * Do not modify that collection directly, use {@link #newUseCase(String)}.
+	 * Do not modify that collection directly, use {@link #useCase(String)}.
 	 * 
 	 * @return the use cases
 	 */
-	public Collection<UseCase> getUseCases() {
+	public Collection<UseCase> useCases() {
 		return getModelElements(nameToUseCaseMap);
 	}
 	
@@ -132,9 +132,9 @@ public class UseCaseModel {
 	 * 
 	 * @return the use steps
 	 */
-	Collection<UseCaseStep> getSteps() {
-		return getUseCases().stream()
-			.map(useCase -> useCase.getSteps())
+	Collection<UseCaseStep> steps() {
+		return useCases().stream()
+			.map(useCase -> useCase.steps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
 	}
@@ -142,28 +142,28 @@ public class UseCaseModel {
 	/**
 	 * Returns the actor representing the default user.
 	 * This actor is implicitly used if you define a use case step
-	 * without {@link UseCaseStep#actors(Actor...)}, but with a 
-	 * {@link UseCaseStep#handle(Class)}.
+	 * without {@link UseCaseStep#as(Actor...)}, but with a 
+	 * {@link UseCaseStep#user(Class)}.
 	 * 
 	 * @return the user actor
 	 */
-	public Actor getUserActor() {
+	public Actor userActor() {
 		return userActor;
 	}
 
 	/**
 	 * Returns the actor representing the system.
 	 * This actor is implicitly used if you define a use case step
-	 * without {@link UseCaseStep#actors(Actor...)} and without a 
-	 * {@link UseCaseStep#handle(Class)}, but just a {@link UseCaseStep#system(Runnable)}.
+	 * without {@link UseCaseStep#as(Actor...)} and without a 
+	 * {@link UseCaseStep#user(Class)}, but just a {@link UseCaseStep#system(Runnable)}.
 	 * 
 	 * @return the user actor
 	 */
-	public Actor getSystemActor() {
+	public Actor systemActor() {
 		return systemActor;
 	}
 	
-	UseCaseRunner getUseCaseRunner() {
+	UseCaseRunner useCaseRunner() {
 		return useCaseRunner;
 	}
 }

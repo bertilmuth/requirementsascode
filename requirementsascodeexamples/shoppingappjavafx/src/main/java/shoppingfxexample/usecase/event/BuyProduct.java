@@ -2,14 +2,14 @@ package shoppingfxexample.usecase.event;
 
 import shoppingfxexample.domain.Product;
 
-public class BuyProductEvent {
+public class BuyProduct {
 	private Product product;
 
-	public BuyProductEvent(Product product) {
+	public BuyProduct(Product product) {
 		this.product = product;
 	}
 
-	public Product getProduct() {
+	public Product get() {
 		return product;
 	}
 }

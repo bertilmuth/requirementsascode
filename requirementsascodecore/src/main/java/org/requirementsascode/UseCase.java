@@ -42,7 +42,7 @@ public class UseCase extends UseCaseModelElement{
 		super(useCaseName, useCaseModel);
 		this.nameToFlowMap = new LinkedHashMap<>();
 		this.nameToStepMap = new LinkedHashMap<>();
-		this.basicFlow = newFlow("Basic Flow");
+		this.basicFlow = flow("Basic Flow");
 	} 
 
 	/**
@@ -87,7 +87,7 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the newly created flow
 	 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
 	 */
-	public UseCaseFlow newFlow(String flowName) {
+	public UseCaseFlow flow(String flowName) {
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
 		saveModelElement(flow, nameToFlowMap);
 		return flow;
@@ -123,21 +123,21 @@ public class UseCase extends UseCaseModelElement{
 	
 	/**
 	 * Returns the flows contained in this use case.
-	 * Do not modify the returned collection directly, use {@link #newFlow(String)}.
+	 * Do not modify the returned collection directly, use {@link #flow(String)}.
 	 * 
 	 * @return a collection of the flows
 	 */
-	public Collection<UseCaseFlow> getFlows() {
+	public Collection<UseCaseFlow> flows() {
 		return getModelElements(nameToFlowMap);
 	}
 	
 	/**
 	 * Returns the steps contained in this use case.
-	 * Do not modify the returned collection directly, use {@link UseCaseFlow#newStep(String)}
+	 * Do not modify the returned collection directly, use {@link UseCaseFlow#step(String)}
 	 * 
 	 * @return a collection of the steps
 	 */
-	public Collection<UseCaseStep> getSteps() {
+	public Collection<UseCaseStep> steps() {
 		return getModelElements(nameToStepMap);
 	}
 }

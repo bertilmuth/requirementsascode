@@ -13,7 +13,7 @@ import shoppingfxexample.gui.controller.AbstractController;
 import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingfxexample.gui.controller.DisplayStockedProductsAndPurchaseOrderController;
 import shoppingfxexample.gui.controller.EnterShippingInformationController;
-import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 
 public class ShoppingApplicationDisplay {
@@ -34,7 +34,7 @@ public class ShoppingApplicationDisplay {
 		displayStockedProductsController.displayStockedProductsAndPurchaseOrder(displayStockedProductsAndPurchaseOrder);
 	}
 	
-	public void enterShippingInformation(CheckoutPurchaseEvent checkoutPurchase){
+	public void enterShippingInformation(CheckoutPurchase checkoutPurchase){
 		loadAndDisplay("EnterShippingInformation.fxml");
 		EnterShippingInformationController enterShippingInformationController = (EnterShippingInformationController)controller;
 		enterShippingInformationController.enterShippingInformation(checkoutPurchase);

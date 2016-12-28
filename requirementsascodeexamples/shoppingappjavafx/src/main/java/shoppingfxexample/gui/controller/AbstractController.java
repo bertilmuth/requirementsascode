@@ -5,7 +5,7 @@ import org.requirementsascode.UseCaseRunner;
 public abstract class AbstractController {
 	private UseCaseRunner useCaseRunner;
 
-	public UseCaseRunner getUseCaseRunner() {
+	public UseCaseRunner useCaseRunner() {
 		return useCaseRunner;
 	}
 

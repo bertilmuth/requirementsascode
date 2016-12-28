@@ -38,7 +38,7 @@ public class ShoppingApplicationMain extends Application {
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {				
 		ShoppingExampleUseCaseRealization shoppingExampleUseCaseRealization = 
-			new ShoppingExampleUseCaseRealization(useCaseRunner.getUseCaseModel(),stock, display);
+			new ShoppingExampleUseCaseRealization(useCaseRunner.useCaseModel(),stock, display);
 		useCaseRunner.runAs(shoppingExampleUseCaseRealization.getEndCustomerActor());
 	}
 

@@ -44,7 +44,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @param predicate the complete predicate of the step, or else an empty optional which implicitly means: {@link #inSequenceUnlessInterrupted()} 
 	 */
 	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStepInFlow, Optional<Predicate<UseCaseRunner>> predicate) {
-		super(stepName, useCaseFlow.getUseCaseModel());
+		super(stepName, useCaseFlow.useCaseModel());
 		Objects.requireNonNull(previousStepInFlow);
 		Objects.requireNonNull(predicate);
 		
@@ -54,7 +54,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	/**
-	 * Defines which user groups can cause the system to react to the event of this step.  
+	 * Defines which actors (i.e. user groups) can cause the system to react to the event of this step.  
 	 * 
 	 * Note: in order for the system to react to one the specified actors,
 	 * {@link UseCaseRunner#runAs(Actor)} needs to be called
@@ -63,7 +63,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @param actors the actors that defines the user groups
 	 * @return the created actor part of this step
 	 */
-	public UseCaseStep.ActorPart actors(Actor... actors) {
+	public UseCaseStep.ActorPart as(Actor... actors) {
 		Objects.requireNonNull(actors);
 		
 		actorPart = new ActorPart(actors);
@@ -76,7 +76,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * needing an event provided via {@link UseCaseRunner#reactTo(Object)}.
 	 * 
 	 * As an implicit side effect, the step is connected to the default system
-	 * actor (see {@link UseCaseModel#getSystemActor()}).
+	 * actor (see {@link UseCaseModel#systemActor()}).
 	 * As another side effect, the step handles the default
 	 * system event (see SystemEvent). Default system events are raised by the 
 	 * use case runner itself, causing "autonomous system reactions".
@@ -87,7 +87,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public UseCaseStep.SystemPart<?> system(Runnable systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		
-		Actor systemActor = getUseCaseModel().getSystemActor();
+		Actor systemActor = useCaseModel().systemActor();
 		
 		UseCaseStep.SystemPart<?> systemPart =
 			system(new Actor[]{systemActor}, systemReaction);
@@ -96,12 +96,12 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 
 	private SystemPart<SystemEvent> system(Actor[] actors, Runnable systemReaction) {
-		return actors(actors).handle(SystemEvent.class).
+		return as(actors).user(SystemEvent.class).
 			system(systemEvent -> systemReaction.run());
 	}
 	
 	/**
-	 * Defines the class of event objects or exception objects that this step accepts,
+	 * Defines the class of user event objects that this step accepts,
 	 * so that they can cause a system reaction when the step's predicate is true.
 	 * 
 	 * Given that the step's predicate is true, the system reacts to objects that are
@@ -109,9 +109,35 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * of the specified class.
 	 * 
 	 * As an implicit side effect, the step is connected to the default user
-	 * actor (see {@link UseCaseModel#getUserActor()}).
+	 * actor (see {@link UseCaseModel#userActor()}).
 	 * 
-	 * Note: the event objects are provided at runtime by calling {@link UseCaseRunner#reactTo(Object)}
+	 * Note: you must provide the event objects at runtime by calling {@link UseCaseRunner#reactTo(Object)}
+	 * 
+	 * @param eventClass the class of events the system reacts to in this step
+	 * @param <T> the type of the class
+	 * @return the created event part of this step
+	 */
+	public <T> EventPart<T> user(Class<T> eventClass) {
+		Objects.requireNonNull(eventClass);
+
+		Actor userActor = useCaseModel().userActor();
+		EventPart<T> newEventPart = as(userActor).user(eventClass);
+		
+		return newEventPart;
+	}
+	
+	/**
+	 * Defines the class of system event objects or exceptions that this step accepts,
+	 * so that they can cause a system reaction when the step's predicate is true.
+	 * 
+	 * Given that the step's predicate is true, the system reacts to objects that are
+	 * instances of the specified class or instances of any direct or indirect subclass
+	 * of the specified class.
+	 * 
+	 * As an implicit side effect, the step is connected to the default system
+	 * actor (see {@link UseCaseModel#systemActor()})..
+	 * 
+	 * Note: you must provide the event objects at runtime by calling {@link UseCaseRunner#reactTo(Object)}
 	 * 
 	 * @param eventOrExceptionClass the class of events the system reacts to in this step
 	 * @param <T> the type of the class
@@ -120,8 +146,8 @@ public class UseCaseStep extends UseCaseModelElement{
 	public <T> EventPart<T> handle(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
 
-		Actor userActor = getUseCaseModel().getUserActor();
-		EventPart<T> newEventPart = actors(userActor).handle(eventOrExceptionClass);
+		Actor systemActor = useCaseModel().systemActor();
+		EventPart<T> newEventPart = as(systemActor).user(eventOrExceptionClass);
 		
 		return newEventPart;
 	}
@@ -131,7 +157,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the containing use case flow
 	 */
-	public UseCaseFlow getFlow() {
+	public UseCaseFlow flow() {
 		return useCaseFlow;
 	}
 	
@@ -140,8 +166,8 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the containing use case
 	 */
-	public UseCase getUseCase() {
-		return getFlow().getUseCase();
+	public UseCase useCase() {
+		return flow().useCase();
 	}
 	
 	/**
@@ -150,7 +176,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the previous step in this step's flow
 	 */
-	public Optional<UseCaseStep> getPreviousStepInFlow() {
+	public Optional<UseCaseStep> previousStepInFlow() {
 		return previousStepInFlow;
 	}
 	
@@ -159,7 +185,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the actor part
 	 */
-	public ActorPart getActorPart() {
+	public ActorPart actorPart() {
 		return actorPart;
 	}
 	
@@ -168,7 +194,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the event part
 	 */
-	public EventPart<?> getEventPart() {
+	public EventPart<?> eventPart() {
 		return eventPart;
 	}
 	
@@ -177,7 +203,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the system part
 	 */
-	public SystemPart<?> getSystemPart() {
+	public SystemPart<?> systemPart() {
 		return systemPart;
 	}
 	
@@ -186,7 +212,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * 
 	 * @return the predicate of this step
 	 */
-	public Predicate<UseCaseRunner> getPredicate() {
+	public Predicate<UseCaseRunner> predicate() {
 		return predicate;
 	} 
 	
@@ -220,26 +246,26 @@ public class UseCaseStep extends UseCaseModelElement{
 
 		private void connectActorsToThisStep(Actor[] actors) {
 			for (Actor actor : actors) {
-				actor.newStep(getUseCase(), UseCaseStep.this);
+				actor.newStep(useCase(), UseCaseStep.this);
 			}
 		}
 		
 		/**
-		 * Defines the class of event objects or exception objects that this step accepts,
+		 * Defines the class of user event objects that this step accepts,
 		 * so that they can cause a system reaction when the step's predicate is true.
 		 * 
 		 * Given that the step's predicate is true, the system reacts to objects that are
 		 * instances of the specified class or instances of any direct or indirect subclass
 		 * of the specified class.
 		 * 
-		 * Note: the event objects are provided at runtime by calling {@link UseCaseRunner#reactTo(Object)}
+		 * Note: you must provide the event objects at runtime by calling {@link UseCaseRunner#reactTo(Object)}
 		 * 
-		 * @param eventOrExceptionClass the class of events the system reacts to in this step
+		 * @param eventClass the class of events the system reacts to in this step
 		 * @param <T> the type of the class
 		 * @return the created event part of this step
 		 */
-		public <T> EventPart<T> handle(Class<T> eventOrExceptionClass) {
-			EventPart<T> newEventPart = new EventPart<>(eventOrExceptionClass);
+		public <T> EventPart<T> user(Class<T> eventClass) {
+			EventPart<T> newEventPart = new EventPart<>(eventClass);
 			UseCaseStep.this.eventPart = newEventPart;
 			return newEventPart;
 		}
@@ -276,7 +302,7 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 			
 			system(() -> {}).continueAfter(stepName);
-			return getUseCase();
+			return useCase();
 		}
 		
 		/**
@@ -285,7 +311,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * needing an event provided to the use case runner.
 		 * 
 		 * Instead of the model creator defining the event (via
-		 * {@link #handle(Class)}), the step implicitly handles the default
+		 * {@link #user(Class)}), the step implicitly handles the default
 		 * system event. Default system events are raised by the 
 		 * use case runner itself, causing "autonomous system reactions".
 		 * 
@@ -304,7 +330,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @return the actors
 		 */
-		public Actor[] getActors() {
+		public Actor[] actors() {
 			return actors;
 		}
 	}
@@ -347,7 +373,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @return the class of events the system reacts to in this step
 		 */
-		public Class<T> getEventClass() {
+		public Class<T> eventClass() {
 			return eventClass;
 		}
 	}
@@ -375,7 +401,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @return the system reaction
 		 */
-		public Consumer<T> getSystemReaction() {
+		public Consumer<T> systemReaction() {
 			return systemReaction;
 		}
 		
@@ -386,10 +412,10 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the newly created use case
 		 * @throws ElementAlreadyInModelException if a use case with the specified name already exists in the model
 		 */
-		public UseCase newUseCase(String useCaseName) {
+		public UseCase useCase(String useCaseName) {
 			Objects.requireNonNull(useCaseName);
 
-			UseCase newUseCase = getUseCaseModel().newUseCase(useCaseName);
+			UseCase newUseCase = useCaseModel().useCase(useCaseName);
 			return newUseCase;
 		}
 		
@@ -400,10 +426,11 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the newly created flow
 		 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
 		 */
-		public UseCaseFlow newFlow(String flowName) {
+		public UseCaseFlow flow(String flowName) {
 			Objects.requireNonNull(flowName);
 
-			UseCaseFlow newFlow = getUseCase().newFlow(flowName);
+			UseCaseFlow newFlow = 
+				UseCaseStep.this.useCase().flow(flowName);
 			return newFlow;
 		}
 
@@ -414,11 +441,12 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the newly created step, to ease creation of further steps
 		 * @throws ElementAlreadyInModelException if a step with the specified name already exists in the use case
 		 */
-		public UseCaseStep newStep(String stepName) {			
+		public UseCaseStep step(String stepName) {			
 			Objects.requireNonNull(stepName);
 
 			UseCaseStep newStep = 
-				getUseCase().newStep(stepName, getFlow(), Optional.of(UseCaseStep.this), Optional.empty());
+				UseCaseStep.this.useCase().newStep(stepName, UseCaseStep.this.flow(), 
+					Optional.of(UseCaseStep.this), Optional.empty());
 			
 			return newStep; 
 		}
@@ -435,7 +463,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the system part
 		 */
 		public <U> SystemPart<T> raise(Supplier<U> eventSupplier) {
-			systemReaction = systemReaction.andThen(x -> getUseCaseModel().getUseCaseRunner().reactTo(eventSupplier.get()));
+			systemReaction = systemReaction.andThen(x -> useCaseModel().useCaseRunner().reactTo(eventSupplier.get()));
 			return this;
 		}
 		
@@ -451,15 +479,16 @@ public class UseCaseStep extends UseCaseModelElement{
 		public SystemPart<T> repeatWhile(Predicate<UseCaseRunner> condition) {
 			Objects.requireNonNull(condition);
 			
-			String thisStepName = getName();
+			String thisStepName = name();
 			String newRepeatStepName = uniqueRepeatStepName();
 			
-			UseCaseStep newRepeatStep = newFlow(newRepeatStepName)
-				.after(thisStepName).when(condition).newStep(newRepeatStepName);
+			UseCaseStep newRepeatStep = flow(newRepeatStepName)
+				.after(thisStepName).when(condition).step(newRepeatStepName);
 			
 			makeRepeatStepBehaveLikeThisStep(newRepeatStep);
 			
-			getFlow().continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
+			UseCaseStep.this.flow().
+				continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
 			
 			return this;
 		}
@@ -467,8 +496,8 @@ public class UseCaseStep extends UseCaseModelElement{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private void makeRepeatStepBehaveLikeThisStep(UseCaseStep newRepeatStep) {
 			newRepeatStep
-				.actors(getActorPart().getActors()).handle(getEventPart().getEventClass())
-				.system((Consumer)getSystemPart().getSystemReaction());
+				.as(actorPart().actors()).user(eventPart().eventClass())
+				.system((Consumer)systemPart().systemReaction());
 		}
 
 		/**
@@ -479,7 +508,8 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * @return the use case this step belongs to, to ease creation of further flows
 		 */
 		public UseCase restart() {
-			return getFlow().restart(Optional.of(UseCaseStep.this), Optional.empty());
+			return UseCaseStep.this.flow()
+				.restart(Optional.of(UseCaseStep.this), Optional.empty());
 		}
 
 		/**
@@ -494,11 +524,12 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(stepName);
 			
 			continueAfterStep(stepName);
-			return getUseCase();
+			return UseCaseStep.this.useCase();
 		}
 
 		private void continueAfterStep(String stepName) {
-			getFlow().continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
+			UseCaseStep.this.flow().
+				continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
 		}
 	}
 	
@@ -512,6 +543,6 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @return a unique step name
 	 */
 	protected String uniqueRepeatStepName() {
-		return stepNameWithPostfix(getName(), "REPEAT");
+		return stepNameWithPostfix(name(), "REPEAT");
 	}
 }

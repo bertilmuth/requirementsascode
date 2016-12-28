@@ -15,7 +15,7 @@ import shoppingfxexample.domain.ShippingInformation;
 import shoppingfxexample.domain.Stock;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
 import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
-import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
 
 public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseModel{
@@ -64,7 +64,7 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 	}
 
 	@Override
-	protected Consumer<CheckoutPurchaseEvent> enterShippingInformation() {
+	protected Consumer<CheckoutPurchase> enterShippingInformation() {
 		return display::enterShippingInformation;
 	}
 

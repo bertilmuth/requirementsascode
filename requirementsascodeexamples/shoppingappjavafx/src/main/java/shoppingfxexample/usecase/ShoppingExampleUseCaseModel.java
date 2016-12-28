@@ -10,64 +10,71 @@ import org.requirementsascode.UseCaseRunner;
 
 import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.ShippingInformation;
-import shoppingfxexample.usecase.event.BuyProductEvent;
-import shoppingfxexample.usecase.event.CheckoutPurchaseEvent;
+import shoppingfxexample.usecase.event.BuyProduct;
+import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
-import shoppingfxexample.usecase.event.EnterShippingInformationEvent;
-import shoppingfxexample.usecase.event.FinishPurchaseEvent;
+import shoppingfxexample.usecase.event.EnterShippingInformation;
+import shoppingfxexample.usecase.event.FinishPurchase;
 
 public abstract class ShoppingExampleUseCaseModel{
+	private static final Class<FinishPurchase> FINISH_PURCHASE = FinishPurchase.class;
+	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
+	private static final Class<DisplayStockedProductsAndPurchaseOrderEvent> DISPLAY_STOCKED_PRODUCTS_AND_PURCHASE_ORDER_EVENT 
+		= DisplayStockedProductsAndPurchaseOrderEvent.class;
+	private static final Class<BuyProduct> BUY_PRODUCT = BuyProduct.class;
+	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
+	private static final Class<Throwable> ANY_EXCEPTION = Throwable.class;
+
 	private Actor endCustomerActor;
 
 	protected ShoppingExampleUseCaseModel() {
 	}
 
 	protected void createModel(UseCaseModel useCaseModel) {
-		endCustomerActor = useCaseModel.newActor("End Customer");
-		Actor systemActor = useCaseModel.getSystemActor();
+		endCustomerActor = useCaseModel.actor("End Customer");
 		
-		useCaseModel.newUseCase("Buy product")
+		useCaseModel.useCase("Buy product")
 			.basicFlow()
-				.newStep("System creates new purchase order.")
+				.step("S1")
 					.system(newPurchaseOrder())
 					
-				.newStep("System gets products from stock and triggers display of products and purchase order.")
+				.step("S2")
 					.system(findProductsInStock()).raise(displayStockedProductsAndPurchaseOrderEvent())
 					
-				.newStep("System displays stocked products and purchase order.")
-					.actors(systemActor)
-					.handle(DisplayStockedProductsAndPurchaseOrderEvent.class)
+				.step("S3")
+					.handle(DISPLAY_STOCKED_PRODUCTS_AND_PURCHASE_ORDER_EVENT)
 					.system(displayStockedProductsAndPurchaseOrder())
 					
-				.newStep("End Customer decides to buy product. System adds product to end customer's purchase order. (Maximum 10 products.)")
-					.actors(endCustomerActor)
-					.handle(BuyProductEvent.class)
-					.system(buyProductEvent -> addProduct(buyProductEvent.getProduct()))
+				.step("S4")
+					.as(endCustomerActor)
+					.user(BUY_PRODUCT)
+					.system(buyProduct -> addProduct(buyProduct.get()))
 					.repeatWhile(lessThenTenProductsBoughtSoFar())
 					
-				.newStep("End Customer checks out. System prompts End Customer to enter shipping information.")
-					.actors(endCustomerActor)
-					.handle(CheckoutPurchaseEvent.class)
+				.step("S5")
+					.as(endCustomerActor)
+					.user(CHECKOUT_PURCHASE)
 					.system(enterShippingInformation())
 					
-				.newStep("End Customer enters shipping information. System adds shipping information to purchase order.")
-					.actors(endCustomerActor)
-					.handle(EnterShippingInformationEvent.class)
+				.step("S6")
+					.as(endCustomerActor)
+					.user(ENTER_SHIPPING_INFORMATION)
 					.system(enterShippingInformation -> 
-						setShippingInformation(enterShippingInformation.getShippingInformation()))
+						setShippingInformation(enterShippingInformation.get()))
 					
-				.newStep("System displays purchase order summary.")
+				.step("S7")
 					.system(() -> displayPurchaseOrderSummary())
 				
-				.newStep("System finishes purchase and restart.")
-					.actors(endCustomerActor)
-					.handle(FinishPurchaseEvent.class)
+				.step("S8")
+					.as(endCustomerActor)
+					.user(FINISH_PURCHASE)
 					.system(fp -> {})
+					
 				.restart()
 					
-			.newFlow("Exception Handling").when(r -> true)
-				.newStep("Handle any exception")
-					.handle(Throwable.class).system(t -> t.printStackTrace());
+			.flow("Exception Handling").when(r -> true)
+				.step("EX")
+					.handle(ANY_EXCEPTION).system(t -> t.printStackTrace());
 	}
 
 	protected abstract Runnable newPurchaseOrder();
@@ -76,7 +83,7 @@ public abstract class ShoppingExampleUseCaseModel{
 	protected abstract Consumer<DisplayStockedProductsAndPurchaseOrderEvent> displayStockedProductsAndPurchaseOrder();
 	protected abstract void addProduct(Product product);
 	protected abstract Predicate<UseCaseRunner> lessThenTenProductsBoughtSoFar();
-	protected abstract Consumer<CheckoutPurchaseEvent> enterShippingInformation();
+	protected abstract Consumer<CheckoutPurchase> enterShippingInformation();
 	protected abstract void setShippingInformation(ShippingInformation shippingInformation);
 	protected abstract void displayPurchaseOrderSummary();
 	

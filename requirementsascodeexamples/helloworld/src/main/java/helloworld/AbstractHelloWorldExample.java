@@ -9,9 +9,9 @@ public class AbstractHelloWorldExample {
 		this.scanner = new Scanner(System.in);
 	}
 	
-	public EnterTextEvent enterTextEvent() {
+	public EnterText enterText() {
 		String text = scanner.next(); 
-		return new EnterTextEvent(text);
+		return new EnterText(text);
 	}
 	
 	public Runnable terminateApplication(){
