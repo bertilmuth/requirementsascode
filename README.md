@@ -1,6 +1,4 @@
 # requirementsascode
-Executable specifications, for long term application changeability.
-
 As long as a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe as part of a backlog or a lightweight specification.
 As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization.
 
