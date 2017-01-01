@@ -38,11 +38,11 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	}
 
 	private Consumer<EnterText> saveFirstName() {
-		return enterTextEvent -> firstName = enterTextEvent.text;
+		return enterText -> firstName = enterText.text;
 	}
 	
 	private Consumer<EnterText> saveAge() {
-		return enterTextEvent -> age = Integer.parseInt(enterTextEvent.text);
+		return enterText -> age = Integer.parseInt(enterText.text);
 	}
 	
 	private Runnable greetUserWithFirstNameAndAge() {
