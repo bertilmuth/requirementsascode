@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ExceptionHandlingTest extends AbstractTestCase{
@@ -15,6 +16,11 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	private static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
 
+	@Before
+	public void setup() {
+		setupWith(new UseCaseRunner());
+	}
+	
 	@Test
 	public void shouldNotHandleExceptionIfNoExceptionOccurs() {		
 		useCaseModel.useCase(SAY_HELLO)

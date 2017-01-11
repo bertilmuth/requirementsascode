@@ -9,10 +9,10 @@ import org.requirementsascode.UseCaseStep;
  * @author b_muth
  *
  */
-public class MissingUseCaseStepPartException extends RuntimeException{
+public class MissingUseCaseStepPart extends RuntimeException{
 	private static final long serialVersionUID = 1154053717206525045L;
 	
-	public MissingUseCaseStepPartException(UseCaseStep useCaseStep, String partName) {
+	public MissingUseCaseStepPart(UseCaseStep useCaseStep, String partName) {
 		super(exceptionMessage(useCaseStep, partName));
 	}
 

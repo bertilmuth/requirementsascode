@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.requirementsascode.UseCaseStep.ActorPart;
-import org.requirementsascode.exception.MissingUseCaseStepPartException;
-import org.requirementsascode.exception.MoreThanOneStepCouldReactException;
+import org.requirementsascode.exception.MissingUseCaseStepPart;
+import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
 
 /**
@@ -33,13 +33,28 @@ public class UseCaseRunner {
 	private Optional<UseCaseStep> latestStep;
 	private Optional<UseCaseFlow> latestFlow;
 	private boolean isRunning;
+	private SystemReactionTrigger systemReactionTrigger;
+	private Consumer<SystemReactionTrigger> adaptedSystemReaction;
 
 	/**
-	 * Constructor for creating a use case runner.
+	 * Constructor for creating a use case runner with standard system reaction,
+	 * that is: the system reaction, as defined in the use case step, simply accepts
+	 * an event.
 	 */
 	public UseCaseRunner() {
+		this(systemReactionTrigger -> systemReactionTrigger.trigger());
+	}
+	
+	/**
+	 * Constructor for creating a use case runner with an adapted system reaction.
+	 * 
+	 * @param adaptedSystemReaction the adapted system reaction.
+	 */
+	public UseCaseRunner(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
 		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
+		this.systemReactionTrigger = new SystemReactionTrigger();
+		this.adaptedSystemReaction = adaptedSystemReaction;
 		restart();
 	}
 	
@@ -66,8 +81,7 @@ public class UseCaseRunner {
 	 * Runs the use case model with the default user, see {@link UseCaseModel#userActor()}.
 	 * 
 	 * From now on (until called the next time), the runner will only trigger system reactions
-	 * of steps that have no explicit actor (just "handle"), which will implicitly connect them to the default user, 
-	 * or that are explicitly connected to the default user, or that are "autonomous system reactions".
+	 * of steps that have no explicit actor or that are "autonomous system reactions".
 	 * 
 	 * Calling this method activates reacting to events via {@link #reactTo(Object)}.
 	 * 
@@ -118,19 +132,19 @@ public class UseCaseRunner {
 	/**
 	 * Needs to be called by the frontend to provide an event object to the use case runner.
 	 * 
-	 * The runner will then check which steps could react to the event. 
-	 * If a single step could react, the runner will trigger the system reaction for that step.
-	 * If no step could react, the runner will NOT trigger any system reaction.
-	 * If more than one step could react, the runner will throw an exception.
+	 * The runner will then check which steps can react to the event. 
+	 * If a single step can react, the runner will trigger the system reaction for that step.
+	 * If no step can react, the runner will NOT trigger any system reaction.
+	 * If more than one step can react, the runner will throw an exception.
 	 * 
 	 * After that, the runner will trigger "autonomous system reactions".
 	 * 
-	 * See {@link #stepsThatCouldReactTo(Class)} for a description of what "could react" means.
+	 * See {@link #stepsThatCanReactTo(Class)} for a description of what "can react" means.
 	 * 
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
 	 * @return the use case step whose system reaction was triggered, or else an empty optional if none was triggered.
-	 * @throws MoreThanOneStepCouldReactException the exception that occurs if more than one step could react
+	 * @throws MoreThanOneStepCanReact the exception that occurs if more than one step can react
 	 */
 	public <T> Optional<UseCaseStep> reactTo(T event) {
 		Objects.requireNonNull(event);
@@ -138,24 +152,24 @@ public class UseCaseRunner {
 		Optional<UseCaseStep> latestStepRun = Optional.empty();
 		if(isRunning){
 			Class<? extends Object> currentEventClass = event.getClass();
-			Set<UseCaseStep> reactingUseCaseSteps = stepsThatCouldReactTo(currentEventClass);
-			latestStepRun = triggerSystemReaction(event, reactingUseCaseSteps);
+			Set<UseCaseStep> reactingUseCaseSteps = stepsThatCanReactTo(currentEventClass);
+			latestStepRun = triggerSystemReactionForSteps(event, reactingUseCaseSteps);
 		}
 		return latestStepRun;
 	}
 
 	/**
-	 * Returns the use case steps in the use case model that could react to the specified event class.
+	 * Returns the use case steps in the use case model that can react to the specified event class.
 	 * 
-	 * A step "could react" if all of the following conditions are met:
+	 * A step "can react" if all of the following conditions are met:
 	 * a) one of the step's actors matches the actor the runner is run as
 	 * b) the step's event class is the same or a superclass of the specified event class 
 	 * c) the step has a predicate that is true
 	 * 
 	 * @param eventClass the class of events 
-	 * @return the steps that could react to the class of events
+	 * @return the steps that can react to the class of events
 	 */
-	public Set<UseCaseStep> stepsThatCouldReactTo(Class<? extends Object> eventClass) {
+	public Set<UseCaseStep> stepsThatCanReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
 		
 		Stream<UseCaseStep> stepStream = useCaseModel.steps().stream();
@@ -164,13 +178,13 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Gets the steps that could react from the specified stream, rather than from the whole
+	 * Gets the steps that can react from the specified stream, rather than from the whole
 	 * use case model.
 	 * 
-	 * @see #stepsThatCouldReactTo(Class)
+	 * @see #stepsThatCanReactTo(Class)
 	 * @param eventClass eventClass the class of events
 	 * @param stepStream the stream of steps
-	 * @return the subset of steps that could react to the class of events
+	 * @return the subset of steps that can react to the class of events
 	 */
 	Set<UseCaseStep> stepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> steps = stepStream
@@ -181,22 +195,22 @@ public class UseCaseRunner {
 		return steps;
 	}
 
-	private <T> Optional<UseCaseStep> triggerSystemReaction(T event, Collection<UseCaseStep> useCaseSteps) {
+	private <T> Optional<UseCaseStep> triggerSystemReactionForSteps(T event, Collection<UseCaseStep> useCaseSteps) {
 		UseCaseStep useCaseStep = null;
 
 		if(useCaseSteps.size() == 1){
 			useCaseStep = useCaseSteps.iterator().next();
-			triggerSystemReactionAndHandleException(event, useCaseStep);
+			triggerSystemReactionForStep(event, useCaseStep);
 		} else if(useCaseSteps.size() > 1){
-			throw new MoreThanOneStepCouldReactException(useCaseSteps);
+			throw new MoreThanOneStepCanReact(useCaseSteps);
 		}
 		
 		return useCaseStep != null? Optional.of(useCaseStep) : Optional.empty();
 	}
 	
-	private <T> UseCaseStep triggerSystemReactionAndHandleException(T event, UseCaseStep useCaseStep) {
+	private <T> UseCaseStep triggerSystemReactionForStep(T event, UseCaseStep useCaseStep) {
 		if(useCaseStep.systemPart() == null){
-			throw new MissingUseCaseStepPartException(useCaseStep, "system");
+			throw new MissingUseCaseStepPart(useCaseStep, "system");
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
@@ -206,7 +220,8 @@ public class UseCaseRunner {
 			@SuppressWarnings("unchecked")
 			Consumer<T> systemReaction = 
 				(Consumer<T>) useCaseStep.systemPart().systemReaction();
-			triggerSystemReaction(event, systemReaction);
+			systemReactionTrigger.setupWithEventAndSystemReaction(event, systemReaction);
+			adaptedSystemReaction.accept(systemReactionTrigger);
 		} 
 		catch (Exception e) { 
 			handleException(e);
@@ -215,19 +230,6 @@ public class UseCaseRunner {
 		triggerAutonomousSystemReaction();
 
 		return useCaseStep;
-	}
-	
-	/**
-	 * Overwrite this method to control what happens exactly when a system reaction is triggered.
-	 * The behavior implemented in UseCaseRunner: the consumer that is the system reaction simply accepts the event.
-	 * You may replace this with a more sophisticated behavior, for example some kind of event dispatching.
-	 * 
-	 * @param <T> the type of event the system reacts to
-	 * @param event the event that is passed to the system reaction
-	 * @param systemReaction the system reaction that accepts the event
-	 */
-	protected <T> void triggerSystemReaction(T event, Consumer<T> systemReaction) {
-		systemReaction.accept(event);
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class UseCaseRunner {
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
 		ActorPart actorPart = useCaseStep.actorPart();
 		if(actorPart == null){
-			throw(new MissingUseCaseStepPartException(useCaseStep, "actor"));
+			throw(new MissingUseCaseStepPart(useCaseStep, "actor"));
 		}
 		
 		Actor[] stepActors = actorPart.actors();

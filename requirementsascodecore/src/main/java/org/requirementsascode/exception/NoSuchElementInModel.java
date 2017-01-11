@@ -7,10 +7,10 @@ package org.requirementsascode.exception;
  * @author b_muth
  *
  */
-public class NoSuchElementInModelException extends RuntimeException{
+public class NoSuchElementInModel extends RuntimeException{
 	private static final long serialVersionUID = 8613549211925067343L;
 
-	public NoSuchElementInModelException(String elementName) {
+	public NoSuchElementInModel(String elementName) {
 		super(exceptionMessage(elementName));
 	}
 

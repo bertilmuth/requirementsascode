@@ -9,10 +9,10 @@ import org.requirementsascode.UseCase;
  * @author b_muth
  *
  */
-public class NoSuchElementInUseCaseException extends RuntimeException{
+public class NoSuchElementInUseCase extends RuntimeException{
 	private static final long serialVersionUID = -6636292150079241122L;
 
-	public NoSuchElementInUseCaseException(UseCase useCase, String elementName) {
+	public NoSuchElementInUseCase(UseCase useCase, String elementName) {
 		super(exceptionMessage(useCase, elementName));
 	}
 

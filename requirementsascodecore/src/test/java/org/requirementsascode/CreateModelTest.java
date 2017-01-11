@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.event.EnterNumber;
 import org.requirementsascode.event.EnterText;
@@ -27,6 +28,11 @@ public class CreateModelTest extends AbstractTestCase{
 	private static final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
 	private static final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
 
+	@Before
+	public void setup() {
+		setupWith(new UseCaseRunner());
+	}
+	
 	@Test
 	public void shouldCreateUseCaseModelWithNoUseCase() {
 		Collection<UseCase> useCases = useCaseModel.useCases();

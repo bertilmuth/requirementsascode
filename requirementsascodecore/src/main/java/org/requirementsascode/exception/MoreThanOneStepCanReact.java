@@ -11,10 +11,10 @@ import org.requirementsascode.UseCaseStep;
  * @author b_muth
  *
  */
-public class MoreThanOneStepCouldReactException  extends RuntimeException {	
+public class MoreThanOneStepCanReact  extends RuntimeException {	
 	private static final long serialVersionUID = 1773129287125843814L;
 
-	public MoreThanOneStepCouldReactException(Collection<UseCaseStep> useCaseSteps) {
+	public MoreThanOneStepCanReact(Collection<UseCaseStep> useCaseSteps) {
 		super(exceptionMessage(useCaseSteps));
 	}
 	

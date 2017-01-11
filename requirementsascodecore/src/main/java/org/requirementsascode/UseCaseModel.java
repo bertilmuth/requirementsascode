@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.exception.ElementAlreadyInModelException;
+import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
  * A use case model is a container for use cases and their associated actors.
@@ -64,7 +64,7 @@ public class UseCaseModel {
 	 * 
 	 * @param actorName the name of the actor to be created.
 	 * @return the newly created actor
-	 * @throws ElementAlreadyInModelException if an actor with the specified name already exists in the model
+	 * @throws ElementAlreadyInModel if an actor with the specified name already exists in the model
 	 */
 	public Actor actor(String actorName) {
 		Actor actor = new Actor(actorName, this);
@@ -77,7 +77,7 @@ public class UseCaseModel {
 	 * 
 	 * @param useCaseName the name of the use case to be created.
 	 * @return the newly created use case
-	 * @throws ElementAlreadyInModelException if a use case with the specified name already exists in the model
+	 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
 	 */
 	public UseCase useCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);

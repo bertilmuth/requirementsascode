@@ -35,7 +35,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	
 	@Before
 	public void setup() {
-		super.setup();
+		setupWith(new UseCaseRunner());
 		this.rightActor = useCaseModel.actor("Right Actor");
 		this.secondActor = useCaseModel.actor("Second Actor");
 		this.actorWithDisabledStep = useCaseModel.actor("Actor With Disabled Step");

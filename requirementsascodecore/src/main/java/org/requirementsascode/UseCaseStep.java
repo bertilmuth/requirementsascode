@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.requirementsascode.exception.ElementAlreadyInModelException;
-import org.requirementsascode.exception.NoSuchElementInUseCaseException;
+import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 /**
  * A use case step, as part of a use case.
@@ -78,7 +78,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * As an implicit side effect, the step is connected to the default system
 	 * actor (see {@link UseCaseModel#systemActor()}).
 	 * As another side effect, the step handles the default
-	 * system event (see SystemEvent). Default system events are raised by the 
+	 * system event. Default system events are raised by the 
 	 * use case runner itself, causing "autonomous system reactions".
 	 * 
 	 * @param systemReaction the autonomous system reaction
@@ -296,7 +296,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @param stepName name of the step to continue after.
 		 * @return the use case this step belongs to, to ease creation of further flows
-		 * @throws NoSuchElementInUseCaseException if no step with the specified stepName is found in the current use case
+		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
 		 */
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
@@ -410,7 +410,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @param useCaseName the name of the use case to be created.
 		 * @return the newly created use case
-		 * @throws ElementAlreadyInModelException if a use case with the specified name already exists in the model
+		 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
 		 */
 		public UseCase useCase(String useCaseName) {
 			Objects.requireNonNull(useCaseName);
@@ -424,7 +424,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @param flowName the name of the flow to be created.
 		 * @return the newly created flow
-		 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
+		 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 		 */
 		public UseCaseFlow flow(String flowName) {
 			Objects.requireNonNull(flowName);
@@ -439,7 +439,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @param stepName the name of the step to be created
 		 * @return the newly created step, to ease creation of further steps
-		 * @throws ElementAlreadyInModelException if a step with the specified name already exists in the use case
+		 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 		 */
 		public UseCaseStep step(String stepName) {			
 			Objects.requireNonNull(stepName);
@@ -518,7 +518,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 * 
 		 * @param stepName name of the step to continue after.
 		 * @return the use case this step belongs to, to ease creation of further flows
-		 * @throws NoSuchElementInUseCaseException if no step with the specified stepName is found in the current use case
+		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
 		 */
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.exception.ElementAlreadyInModelException;
+import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
  * A use case, as part of a use case model.
@@ -85,7 +85,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @param flowName the name of the flow to be created.
 	 * @return the newly created flow
-	 * @throws ElementAlreadyInModelException if a flow with the specified name already exists in the use case
+	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 	 */
 	public UseCaseFlow flow(String flowName) {
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);

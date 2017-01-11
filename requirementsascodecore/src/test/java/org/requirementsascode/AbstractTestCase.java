@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.junit.Before;
 import org.requirementsascode.event.EnterNumber;
 import org.requirementsascode.event.EnterText;
 
@@ -18,9 +17,8 @@ public abstract class AbstractTestCase {
 	private String displayedText;
 	private ArrayList<String> runStepNames;
 
-	@Before
-	public void setup(){
-		this.useCaseRunner = new UseCaseRunner();
+	protected void setupWith(UseCaseRunner useCaseRunner){
+		this.useCaseRunner = useCaseRunner;
 		this.useCaseModel = useCaseRunner.useCaseModel();
 		this.customer = useCaseModel.actor("Customer");
 		

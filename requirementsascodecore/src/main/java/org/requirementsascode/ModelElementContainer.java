@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.requirementsascode.exception.ElementAlreadyInModelException;
+import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
  * Contains static helper methods to ease the implementation of use case model creation 
@@ -39,7 +39,7 @@ class ModelElementContainer {
 		
 		String modelElementName = modelElement.name();
 		if(hasModelElement(modelElementName, modelElementNameToElementMap)){
-			throw new ElementAlreadyInModelException(modelElementName);
+			throw new ElementAlreadyInModel(modelElementName);
 		}
 		modelElementNameToElementMap.put(modelElementName, modelElement);
 	}

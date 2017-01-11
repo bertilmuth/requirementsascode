@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ CreateModelTest.class, ExceptionsThrownTest.class, 
-	ExceptionHandlingTest.class, SystemReactionTest.class })
+	ExceptionHandlingTest.class, SystemReactionTest.class, AdaptedSystemReactionTest.class })
 public class AllTests {
 
 }
