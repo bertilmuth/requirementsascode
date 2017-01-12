@@ -217,10 +217,7 @@ public class UseCaseRunner {
 		setLatestFlow(Optional.of(useCaseStep.flow()));
 		
 		try {
-			@SuppressWarnings("unchecked")
-			Consumer<T> systemReaction = 
-				(Consumer<T>) useCaseStep.systemPart().systemReaction();
-			systemReactionTrigger.setupWithEventAndSystemReaction(event, systemReaction);
+			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
 			adaptedSystemReaction.accept(systemReactionTrigger);
 		} 
 		catch (Exception e) { 

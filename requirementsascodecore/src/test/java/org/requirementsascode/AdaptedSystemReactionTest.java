@@ -1,28 +1,25 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class AdaptedSystemReactionTest extends AbstractTestCase{
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
 	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	
-	private boolean adaptedSystemReactionPerformed;
-	
-	@Before
-	public void setup() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner(withAdaptedSystemReaction());
-		setupWith(useCaseRunner);
-		adaptedSystemReactionPerformed = false;
-	}
+	private String stepForWhichAdaptedSystemReactionHasBeenPerformed;
+	private Object eventForWhichAdaptedSystemReactionHasBeenPerformed;
 	
 	@Test
-	public void shouldPrintTextAndPerformAdaptedSystemReaction() {		
+	public void shouldPrintTextAndPerformAdaptedSystemReaction() {	
+		UseCaseRunner useCaseRunner = new UseCaseRunner(withAdaptedSystemReaction());
+		setupWith(useCaseRunner);
+		stepForWhichAdaptedSystemReactionHasBeenPerformed = "";
+		
 		useCaseRunner.useCaseModel()
 			.useCase(SAY_HELLO_USE_CASE)
 				.basicFlow()
@@ -31,12 +28,16 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run();
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
-		assertTrue(adaptedSystemReactionPerformed);
+		assertEquals(SYSTEM_DISPLAYS_TEXT, stepForWhichAdaptedSystemReactionHasBeenPerformed);
+		assertEquals(SystemEvent.class, eventForWhichAdaptedSystemReactionHasBeenPerformed.getClass());
 	}
 
 	private Consumer<SystemReactionTrigger> withAdaptedSystemReaction() {
 		return systemReactionTrigger -> {
-			adaptedSystemReactionPerformed = true;
+			stepForWhichAdaptedSystemReactionHasBeenPerformed = 
+					systemReactionTrigger.useCaseStep().name();
+			eventForWhichAdaptedSystemReactionHasBeenPerformed = 
+					systemReactionTrigger.event();
 			systemReactionTrigger.trigger();
 		};
 	}

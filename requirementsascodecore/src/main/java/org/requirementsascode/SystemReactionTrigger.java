@@ -14,22 +14,44 @@ import java.util.function.Consumer;
  */
 public class SystemReactionTrigger {
 	private Object event;
-	private Consumer<Object> systemReaction;
+	private UseCaseStep useCaseStep;
 	
 	SystemReactionTrigger() {
 	}
 	
 	/**
-	 * The system reaction accepts the event (both passed in earlier).
-	 * @see #setupWithEventAndSystemReaction(Object, Consumer)
+	 * The system reaction of the step accepts the event 
+	 * (both event and step passed in earlier).
+	 * @see #setupWithEventAndUseCaseStep(Object, UseCaseStep)
 	 */
+	@SuppressWarnings("unchecked")
 	public void trigger(){
-		systemReaction.accept(event);
+		((Consumer<Object>)useCaseStep.systemPart().systemReaction())
+			.accept(event);
 	}
 	
-	@SuppressWarnings("unchecked")
-	<T> void setupWithEventAndSystemReaction(T event, Consumer<T> systemReaction) {
+	void setupWithEventAndUseCaseStep(Object event, UseCaseStep useCaseStep) {
 		this.event = event;
-		this.systemReaction = (Consumer<Object>) systemReaction;
+		this.useCaseStep = useCaseStep;
+	}
+	
+	/**
+	 * Returns the event object that will be passed to the system reaction when
+	 * {@link #trigger()} is called.
+	 * 
+	 * @return the event object.
+	 */
+	public Object event() {
+		return event;
+	}
+
+	/**
+	 * Returns the use case step whose system reaction is performed when
+	 * {@link #trigger()} is called.
+	 * 
+	 * @return the use case step.
+	 */
+	public UseCaseStep useCaseStep() {
+		return useCaseStep;
 	}
 }
