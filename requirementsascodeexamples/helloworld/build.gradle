@@ -8,7 +8,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Requirements as Code - Hello World',
+        attributes 'Implementation-Title': 'requirementsascode - hello world',
                    'Implementation-Version': version
     }
 }

@@ -9,7 +9,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Requirements as Code - Core',
+        attributes 'Implementation-Title': 'requirementsascode - core',
                    'Implementation-Version': version
     }
 }
