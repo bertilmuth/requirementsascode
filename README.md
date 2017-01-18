@@ -5,8 +5,9 @@ As soon as a requirement is implemented, the code itself becomes the most reliab
 With requirementsascode,  you can represent your user journeys as executable specifications in your application source code.  The form of the representation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives.
 
 # documentation
-* [Hello World examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [Javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.2.0/requirementsascodecore-0.2.0-javadoc.jar)
+* [hello world examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [cross-cutting concerns examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
+* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.2.0/requirementsascodecore-0.2.0-javadoc.jar)
 
 Note that the API is likely to change.
 

@@ -1,4 +1,4 @@
-# Hello World Example 01 - System prints 'Hello, User.'
+# hello world example 01 - system prints 'Hello, User.'
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
@@ -10,7 +10,7 @@ useCaseRunner.run();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01_PrintHelloUserExample.java).
 
-# Hello World Example 02 - System prints 'Hello, User.' and 'Hip, hip, hooray!' three times
+# hello world example 02 - system prints 'Hello, User.' and 'Hip, hip, hooray!' three times
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
@@ -25,7 +25,7 @@ useCaseRunner.run();
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample.java).
 
 
-# Hello World Example 03 - User enters first name, system prints it
+# hello world example 03 - user enters first name, system prints it
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
@@ -39,7 +39,7 @@ useCaseRunner.reactTo(example.enterText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03_EnterNameExample.java).
 
-# Hello World Example 04 - User enters name and age, system prints them (exceptions are ignored)
+# hello world example 04 - user enters name and age, system prints them (exceptions are ignored)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
@@ -57,7 +57,7 @@ useCaseRunner.reactTo(example.enterText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeExample.java).
 
-# Hello World Example 05 - User enters name and age, system prints them (with validation)
+# hello world example 05 - user enters name and age, system prints them (with validation)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
@@ -89,7 +89,7 @@ while(true){
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05_EnterNameAndAgeWithValidationExample.java).
 
-# Hello World Example 06 - User enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
+# hello world example 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...
