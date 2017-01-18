@@ -1,7 +1,7 @@
 # Hello World Example 01 - System prints 'Hello, User.'
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
-		
+...		
 useCaseRunner.useCaseModel().useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(greetUser());
