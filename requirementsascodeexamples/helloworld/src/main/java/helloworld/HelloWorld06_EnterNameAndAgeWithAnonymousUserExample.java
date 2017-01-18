@@ -22,12 +22,14 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private String firstName;
 	private int age;
 	
-	public void start() {	
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+	private Actor normalUser;
+	private Actor anonymousUser;
+	
+	public void createModelFor(UseCaseRunner useCaseRunner) {	
 		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 		
-		Actor normalUser = useCaseModel.actor("Normal User");
-		Actor anonymousUser = useCaseModel.actor("Anonymous User");
+		normalUser = useCaseModel.actor("Normal User");
+		anonymousUser = useCaseModel.actor("Anonymous User");
 				
 		useCaseModel.useCase("Get greeted")
 			.basicFlow()
@@ -37,7 +39,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.step(S4).as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
 				.step("S5").as(normalUser).system(greetUserWithFirstName())
 				.step("S6").as(normalUser, anonymousUser).system(greetUserWithAge())
-				.step("S7").as(normalUser, anonymousUser).system(terminateApplication())
+				.step("S7").as(normalUser, anonymousUser).system(stopSystem())
 					
 			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
 				.step("S4a_1").system(informUserAboutOutOfBoundsAge())
@@ -53,11 +55,6 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				
 			.flow("Anonymous does not enter name").atStart()
 				.step("S0a_1").as(anonymousUser).continueAfter(S2);	
-
-		useCaseRunner.runAs(anonymousUser);
-
-		while(true)
-			useCaseRunner.reactTo(enterText());						
 	}
 
 	private Runnable promptUserToEnterFirstName() {
@@ -103,6 +100,24 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample().start();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
+		example.createModelFor(useCaseRunner);
+		
+		useCaseRunner.runAs(example.anonymousUser());			
+		while(true){
+			useCaseRunner.reactTo(example.enterText());	
+			if(example.isSystemStopped()){
+				example.exitSystem();
+			}
+		}
+	}
+
+	public Actor normalUser() {
+		return normalUser;
+	}
+
+	public Actor anonymousUser() {
+		return anonymousUser;
 	}
 }

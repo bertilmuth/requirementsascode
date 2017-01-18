@@ -4,20 +4,30 @@ import java.util.Scanner;
 
 public class AbstractHelloWorldExample {
 	private Scanner scanner;
+	private boolean isSystemStopped;
 
 	public AbstractHelloWorldExample() {
 		this.scanner = new Scanner(System.in);
+		isSystemStopped = false;
+
 	}
 	
-	public EnterText enterText() {
+	protected EnterText enterText() {
 		String text = scanner.next(); 
 		return new EnterText(text);
 	}
 	
-	public Runnable terminateApplication(){
-		return () -> {
-			scanner.close();
-			System.exit(0);
-		};
+	protected Runnable stopSystem(){
+		return () -> isSystemStopped = true;
+	}
+	
+	protected boolean isSystemStopped() {
+		return isSystemStopped;
+	}
+	
+	protected void exitSystem(){
+		System.out.println("Exiting system!");
+		scanner.close();
+		System.exit(0);
 	}
 }

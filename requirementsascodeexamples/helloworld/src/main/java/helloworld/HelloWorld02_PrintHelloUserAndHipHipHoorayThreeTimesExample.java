@@ -8,16 +8,13 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	
 	int hoorayCount = 0;
 	
-	public void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-				
+	public void createModelFor(UseCaseRunner useCaseRunner) {				
 		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(greetUser())
 				.step("S2").system(printHooray())
 					.repeatWhile(thereAreLessThanThreeHoorays());
 		
-		useCaseRunner.run();
 	}
 
 	private Runnable greetUser() {
@@ -33,6 +30,10 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample().start();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
+		example.createModelFor(useCaseRunner);
+		
+		useCaseRunner.run();
 	}
 }

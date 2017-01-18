@@ -8,17 +8,11 @@ public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 	
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
 
-	public void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-				
+	public void createModelFor(UseCaseRunner useCaseRunner) {				
 		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(promptUserToEnterFirstName())
-				.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName())
-				.step("S3").system(terminateApplication());
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText());
+				.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName());
 	}
 	
 	private Runnable promptUserToEnterFirstName() {
@@ -30,6 +24,11 @@ public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld03_EnterNameExample().start();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		HelloWorld03_EnterNameExample example = new HelloWorld03_EnterNameExample();
+		example.createModelFor(useCaseRunner);
+		
+		useCaseRunner.run();
+		useCaseRunner.reactTo(example.enterText());
 	}
 }

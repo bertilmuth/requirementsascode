@@ -1,3 +1,4 @@
 include 'requirementsascodecore'
 include 'requirementsascodeexamples:helloworld'
 include 'requirementsascodeexamples:shoppingappjavafx'
+include 'requirementsascodeexamples:crosscuttingconcerns'

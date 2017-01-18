@@ -11,22 +11,14 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	private String firstName;
 	private int age;
 	
-	public void start() {	
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-				
+	public void createModelFor(UseCaseRunner useCaseRunner) {					
 		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(promptUserToEnterFirstName())
 				.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
 				.step("S3").system(promptUserToEnterAge())
 				.step("S4").user(ENTER_AGE).system(saveAge())
-				.step("S5").system(greetUserWithFirstNameAndAge())
-				.step("S6").system(terminateApplication());
-		
-		useCaseRunner.run();
-		
-		useCaseRunner.reactTo(enterText());
-		useCaseRunner.reactTo(enterText());
+				.step("S5").system(greetUserWithFirstNameAndAge());
 	}
 	
 	private Runnable promptUserToEnterFirstName() {
@@ -50,6 +42,12 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld04_EnterNameAndAgeExample().start();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
+		example.createModelFor(useCaseRunner);
+		
+		useCaseRunner.run();		
+		useCaseRunner.reactTo(example.enterText());
+		useCaseRunner.reactTo(example.enterText());
 	}
 }

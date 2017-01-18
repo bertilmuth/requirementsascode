@@ -19,9 +19,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	private String firstName;
 	private int age;
 	
-	public void start() {	
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-				
+	public void createModelFor(UseCaseRunner useCaseRunner) {					
 		useCaseRunner.useCaseModel().useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(promptUserToEnterFirstName())
@@ -29,7 +27,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 				.step("S3").system(promptUserToEnterAge())
 				.step(S4).user(ENTER_AGE).system(saveAge())
 				.step("S5").system(greetUserWithFirstNameAndAge())
-				.step("S6").system(terminateApplication())
+				.step("S6").system(stopSystem())
 					
 			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
 				.step("S4a_1").system(informUserAboutOutOfBoundsAge())
@@ -38,12 +36,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 			.flow("Handle non-numerical age").after(S4)
 				.step("S4b_1").handle(NON_NUMERICAL_AGE)
 					.system(informUserAboutNonNumericalAge())
-				.continueAfter(S2);
-		
-		useCaseRunner.run();
-		
-		while(true)
-			useCaseRunner.reactTo(enterText());					
+				.continueAfter(S2);		
 	}
 
 	private Runnable promptUserToEnterFirstName() {
@@ -81,6 +74,16 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	}
 	
 	public static void main(String[] args){
-		new HelloWorld05_EnterNameAndAgeWithValidationExample().start();
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
+		example.createModelFor(useCaseRunner);
+		
+		useCaseRunner.run();			
+		while(true){
+			useCaseRunner.reactTo(example.enterText());	
+			if(example.isSystemStopped()){
+				example.exitSystem();
+			}
+		}
 	}
 }
