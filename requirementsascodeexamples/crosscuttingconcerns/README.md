@@ -1,4 +1,4 @@
-# Cross-cutting Concerns Example 01 - Measure performance of system reactions
+# cross-cutting concerns example 01 - measure performance of system reactions
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner(withMeasuringPerformance());
 
