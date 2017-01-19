@@ -105,12 +105,9 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		example.createModelFor(useCaseRunner);
 		
 		useCaseRunner.runAs(example.anonymousUser());			
-		while(true){
+		while(!example.systemStopped())
 			useCaseRunner.reactTo(example.enterText());	
-			if(example.isSystemStopped()){
-				example.exitSystem();
-			}
-		}
+		example.exitSystem();
 	}
 
 	public Actor normalUser() {

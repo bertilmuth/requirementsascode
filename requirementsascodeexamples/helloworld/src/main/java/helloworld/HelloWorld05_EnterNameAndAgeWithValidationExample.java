@@ -79,11 +79,8 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 		example.createModelFor(useCaseRunner);
 		
 		useCaseRunner.run();			
-		while(true){
+		while(!example.systemStopped())
 			useCaseRunner.reactTo(example.enterText());	
-			if(example.isSystemStopped()){
-				example.exitSystem();
-			}
-		}
+		example.exitSystem();
 	}
 }

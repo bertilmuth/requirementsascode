@@ -21,7 +21,7 @@ public class AbstractHelloWorldExample {
 		return () -> isSystemStopped = true;
 	}
 	
-	protected boolean isSystemStopped() {
+	protected boolean systemStopped() {
 		return isSystemStopped;
 	}
 	

@@ -80,12 +80,9 @@ useCaseRunner.useCaseModel().useCase("Get greeted")
 		.continueAfter(S2);		
 ...
 useCaseRunner.run();
-while(true){
+while(!example.systemStopped())
 	useCaseRunner.reactTo(example.enterText());	
-	if(example.isSystemStopped()){
-		example.exitSystem();
-	}
-}
+example.exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05_EnterNameAndAgeWithValidationExample.java).
 
@@ -124,11 +121,8 @@ useCaseModel.useCase("Get greeted")
 		.step("S0a_1").as(anonymousUser).continueAfter(S2);	
 ...
 useCaseRunner.runAs(example.anonymousUser());			
-while(true){
+while(!example.systemStopped())
 	useCaseRunner.reactTo(example.enterText());	
-	if(example.isSystemStopped()){
-		example.exitSystem();
-	}
-}	
+example.exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld06_EnterNameAndAgeWithAnonymousUserExample.java).
