@@ -2,9 +2,11 @@ package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +82,85 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToOneStep() {		
+	public void doesNotReactIfRunIsNotCalled() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
+				
+		useCaseRunner.reactTo(enterText());
+		
+		assertEquals(0, getRunStepNames().size());
+	}
+	
+	@Test
+	public void doesNotReactToAlreadyRunStep() { 		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
+		
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterText(), enterText());
+		
+		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
+	}
+	
+	@Test
+	public void cannotReactIfRunIsNotCalled() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
+				
+		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		assertFalse(canReact);
+	}
+	
+	@Test
+	public void oneStepCannotReactIfEventIsWrong() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
+				
+		useCaseRunner.run();
+		
+		boolean canReact = useCaseRunner.canReactTo(enterNumber().getClass());
+		assertFalse(canReact);
+	}
+	
+	@Test
+	public void oneStepCanReactIfEventIsRight() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
+				
+		useCaseRunner.run();
+		
+		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		assertTrue(canReact);
+		
+		Set<UseCaseStep> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		assertEquals(1, stepsThatCanReact.size());
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT, stepsThatCanReact.iterator().next().name().toString());
+	}
+	
+	@Test
+	public void moreThanOneStepCanReact() { 	 
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow().when(run -> true)
+				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText())
+			.flow("Alternative Flow: Could react as well").when(run -> true)
+				.step(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT).user(EnterText.class).system(displayEnteredText());
+		
+		useCaseRunner.run();
+		
+		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		assertTrue(canReact);
+		
+		Set<UseCaseStep> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		assertEquals(2, stepsThatCanReact.size());
+	}
+	
+	@Test
+	public void oneStepReacts() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
@@ -92,18 +172,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToStepIfRunIsNotCalled() {		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
-				
-		useCaseRunner.reactTo(enterText());
-		
-		assertEquals(0, getRunStepNames().size());
-	}
-	
-	@Test
-	public void reactsToTwoSequentialStepsBasedOnSameType() {		
+	public void twoSequentialStepsReactToEventsOfSameType() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText())
@@ -116,7 +185,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToTwoSequentialStepsBasedOnDifferentType() {		
+	public void twoSequentialStepsReactToEventsOfDifferentType() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText())
@@ -129,11 +198,11 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void raisesAdditionalEventAfterFirstStep() {		
+	public void raisesEventAfterFirstStep() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
-				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText()).raise(raiseEnterNumber())
-				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber());
+				.step(CUSTOMER_ENTERS_SOME_TEXT).handle(EnterText.class).system(displayEnteredText()).raise(raiseEnterNumber())
+				.step(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText());
@@ -142,7 +211,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void raisesAdditionalEventBySpecificActor() {		
+	public void raisesEventForSpecificActor() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -156,7 +225,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToTwoSequentialStepsOnlyForThoseStepsWhereActorIsRight() {		
+	public void twoSequentialStepsReactOnlyWhenActorIsRight() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -171,7 +240,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToTwoSequentialStepsWhenSeveralActorsContainRightActorAtFirstPosition() {		
+	public void twoSequentialStepsReactWhenSeveralActorsContainRightActorAtFirstPosition() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -186,7 +255,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToTwoSequentialStepsWhenSeveralActorsContainRightActorAtSecondPosition() {		
+	public void twoSequentialStepsReactWhenSeveralActorsContainRightActorAtSecondPosition() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -201,7 +270,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToTwoSequentialStepsWhenRunningWithDifferentActors() { 		
+	public void twoSequentialStepsReactWhenRunningWithDifferentActors() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -219,19 +288,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToAlreadyRunStep() { 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText());
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText(), enterText());
-		
-		assertEquals(Arrays.asList(CUSTOMER_ENTERS_SOME_TEXT), getRunStepNames());
-	}
-	
-	@Test
-	public void reactsOnlyToStepThasHasTruePredicate() { 		
+	public void onlyStepWithTruePredicateReacts() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText())			
@@ -245,7 +302,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsToStepThasHasTruePredicateEvenIfOtherStepWouldBePerformedBySystem() { 		
+	public void stepThasHasTruePredicateReactsEvenIfOtherStepWouldBePerformedBySystem() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT).user(EnterText.class).system(displayEnteredText())			
@@ -259,7 +316,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsOnlyToStepWithRightActorInSameFlowAtFirstStep() { 		
+	public void onlyStepWithRightActorReacts() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -274,7 +331,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void reactsOnlyToStepWithRightActorInDifferentFlow() { 		
+	public void onlyStepWithRightActorInDifferentFlowReacts() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -290,7 +347,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToStepWithWrongActorInDifferentFlow() { 		
+	public void stepWithWrongActorInDifferentFlowDoesNotReact() { 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -307,7 +364,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToStepThasHasFalsePredicateAndSpecificActor() {		
+	public void stepThasHasRightActorButFalsePredicateDoesNotReact() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)

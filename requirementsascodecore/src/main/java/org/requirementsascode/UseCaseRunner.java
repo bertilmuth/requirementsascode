@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -133,7 +134,7 @@ public class UseCaseRunner {
 	/**
 	 * Needs to be called by the frontend to provide an event object to the use case runner.
 	 * 
-	 * The runner will then check which steps can react to the event. 
+	 * If it is running, the runner will then check which steps can react to the event. 
 	 * If a single step can react, the runner will trigger the system reaction for that step.
 	 * If no step can react, the runner will NOT trigger any system reaction.
 	 * If more than one step can react, the runner will throw an exception.
@@ -159,14 +160,27 @@ public class UseCaseRunner {
 		}
 		return latestStepRun;
 	}
+	
+	/**
+	 * Returns whether at least one step can react to an event of the specified class.
+	 * @see #stepsThatCanReactTo(Class)
+	 * 
+	 * @param eventClass the specified class
+	 * @return true if the runner is running and at least one step can react, false otherwise
+	 */
+	public boolean canReactTo(Class<? extends Object> eventClass) {
+		boolean canReact = stepsThatCanReactTo(eventClass).size() > 0;
+		return canReact;
+	}
 
 	/**
 	 * Returns the use case steps in the use case model that can react to the specified event class.
 	 * 
 	 * A step "can react" if all of the following conditions are met:
-	 * a) one of the step's actors matches the actor the runner is run as
-	 * b) the step's event class is the same or a superclass of the specified event class 
-	 * c) the step has a predicate that is true
+	 * a) the UseCaseRunner is running
+	 * b) one of the step's actors matches the actor the runner is run as
+	 * c) the step's event class is the same or a superclass of the specified event class 
+	 * d) the step has a predicate that is true
 	 * 
 	 * @param eventClass the class of events 
 	 * @return the steps that can react to the class of events
@@ -189,11 +203,17 @@ public class UseCaseRunner {
 	 * @return the subset of steps that can react to the class of events
 	 */
 	Set<UseCaseStep> stepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
-		Set<UseCaseStep> steps = stepStream
-			.filter(step -> stepActorIsRunActor(step))
-			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-			.filter(step -> hasTruePredicate(step))
-			.collect(Collectors.toSet());
+		Set<UseCaseStep> steps;
+		if(isRunning){
+			steps = stepStream
+				.filter(step -> stepActorIsRunActor(step))
+				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
+				.filter(step -> hasTruePredicate(step))
+				.collect(Collectors.toSet());
+		} else {
+			steps = new HashSet<>();
+		}
+
 		return steps;
 	}
 

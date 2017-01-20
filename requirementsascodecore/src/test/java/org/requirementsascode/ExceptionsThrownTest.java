@@ -1,12 +1,12 @@
 package org.requirementsascode;
 
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import static org.hamcrest.core.Is.*;
 import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
