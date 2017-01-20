@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import org.requirementsascode.UseCaseStep.ActorPart;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
+import org.requirementsascode.exception.UncaughtException;
 
 
 /**
@@ -145,6 +146,7 @@ public class UseCaseRunner {
 	 * @param event the event object provided by the frontend
 	 * @return the use case step whose system reaction was triggered, or else an empty optional if none was triggered.
 	 * @throws MoreThanOneStepCanReact the exception that occurs if more than one step can react
+	 * @throws UncaughtException if no step can react, and the event is an (in)direct subclass of Throwable.
 	 */
 	public <T> Optional<UseCaseStep> reactTo(T event) {
 		Objects.requireNonNull(event);
@@ -173,7 +175,7 @@ public class UseCaseRunner {
 		Objects.requireNonNull(eventClass);
 		
 		Stream<UseCaseStep> stepStream = useCaseModel.steps().stream();
-		Set<UseCaseStep> steps = stepsThatCouldReact(eventClass, stepStream);
+		Set<UseCaseStep> steps = stepsInStreamThatCanReactTo(eventClass, stepStream);
 		return steps;
 	}
 	
@@ -186,7 +188,7 @@ public class UseCaseRunner {
 	 * @param stepStream the stream of steps
 	 * @return the subset of steps that can react to the class of events
 	 */
-	Set<UseCaseStep> stepsThatCouldReact(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
+	Set<UseCaseStep> stepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> steps = stepStream
 			.filter(step -> stepActorIsRunActor(step))
 			.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
@@ -203,6 +205,8 @@ public class UseCaseRunner {
 			triggerSystemReactionForStep(event, useCaseStep);
 		} else if(useCaseSteps.size() > 1){
 			throw new MoreThanOneStepCanReact(useCaseSteps);
+		} else if(event instanceof Throwable){
+			throw new UncaughtException((Throwable)event);
 		}
 		
 		return useCaseStep != null? Optional.of(useCaseStep) : Optional.empty();

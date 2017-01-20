@@ -15,7 +15,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 	private Object eventForWhichAdaptedSystemReactionHasBeenPerformed;
 	
 	@Test
-	public void shouldPrintTextAndPerformAdaptedSystemReaction() {	
+	public void printsTextAndPerformsAdaptedSystemReaction() {	
 		UseCaseRunner useCaseRunner = new UseCaseRunner(withAdaptedSystemReaction());
 		setupWith(useCaseRunner);
 		stepForWhichAdaptedSystemReactionHasBeenPerformed = "";

@@ -51,7 +51,7 @@ class UseCaseStepPredicate {
 				useCaseModel.steps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<UseCaseStep> otherStepsThatCouldReact = useCaseRunner.stepsThatCouldReact(theStepsEventClass, otherStepsStream);
+			Set<UseCaseStep> otherStepsThatCouldReact = useCaseRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
 			return otherStepsThatCouldReact.size() == 0;
 		};
 	}

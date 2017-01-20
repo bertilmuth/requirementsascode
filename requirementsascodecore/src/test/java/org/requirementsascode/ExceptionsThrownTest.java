@@ -6,12 +6,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import static org.hamcrest.core.Is.*;
 import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
+import org.requirementsascode.exception.UncaughtException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
@@ -29,7 +31,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfAfterStepNotExistsInSameUseCase() {
+	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {
 		String unknownStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCase.class);
@@ -42,7 +44,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	
 	@Test
-	public void shouldThrowExceptionIfAfterStepNotExistsInOtherUseCase() {
+	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {
 		String unknwonStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCase.class);
@@ -59,7 +61,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfAfterStepHasNonExistingUseCase() {
+	public void throwsExceptionIfAfterStepHasNonExistingUseCase() {
 		String unknownUseCaseName = "Unknown Use Case";
 		 
 		thrown.expect(NoSuchElementInModel.class);
@@ -76,7 +78,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	
 	@Test
-	public void shouldThrowExceptionIfContinueAfterNotExists() {
+	public void throwsExceptionIfContinueAfterNotExists() {
 		String unknownStepName = "Unknown Step";
 		
 		thrown.expect(NoSuchElementInUseCase.class);
@@ -88,7 +90,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfActorIsCreatedTwice() {
+	public void throwsExceptionIfActorIsCreatedTwice() {
 		String name = "Duplicate Actor";
 		
 		thrown.expect(ElementAlreadyInModel.class);
@@ -99,7 +101,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfUseCaseIsCreatedTwice() {
+	public void throwsExceptionIfUseCaseIsCreatedTwice() {
 		String duplicateUseCaseName = "Duplicate Use Case";
 		
 		thrown.expect(ElementAlreadyInModel.class);
@@ -110,7 +112,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfFlowIsCreatedTwice() {
+	public void throwsExceptionIfFlowIsCreatedTwice() {
 		String duplicateFlowName = "Duplicate Flow";
 		
 		thrown.expect(ElementAlreadyInModel.class);
@@ -124,7 +126,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfStepIsCreatedTwice() {
+	public void throwsExceptionIfStepIsCreatedTwice() {
 		String duplicateStepName = "Duplicate Step";
 		
 		thrown.expect(ElementAlreadyInModel.class);
@@ -137,7 +139,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfMoreThanOneStepCouldReact() { 	 
+	public void throwsExceptionIfMoreThanOneStepCouldReact() { 	 
 		thrown.expect(MoreThanOneStepCanReact.class);
 		thrown.expectMessage(BASIC_FLOW_STEP);
 		thrown.expectMessage(ALTERNATIVE_FLOW_STEP);
@@ -152,7 +154,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfActorPartIsNotSpecified() {
+	public void throwsExceptionIfActorPartIsNotSpecified() {
 		String stepWithoutActor = "Step without actor";
 		
 		thrown.expect(MissingUseCaseStepPart.class);
@@ -169,7 +171,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfSystemPartIsNotSpecified() {
+	public void throwsExceptionIfSystemPartIsNotSpecified() {
 		String stepWithoutSystemReaction = "Step without system";
 		
 		thrown.expect(MissingUseCaseStepPart.class);
@@ -184,5 +186,20 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseRunner.reactTo(enterText());
 		
 		assertEquals(0, getRunStepNames().size());
+	}
+	
+	@Test
+	public void throwsUncaughtExceptionIfExceptionIsNotHandled() {
+		String stepThatThrowsException = "Step that throws exception";
+		
+		thrown.expect(UncaughtException.class);
+		thrown.expectCause(isA(IllegalStateException.class));
+		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+		.basicFlow()
+			.step(stepThatThrowsException)
+				.system(() -> {throw new IllegalStateException();});
+		
+		useCaseRunner.run();
 	}
 }

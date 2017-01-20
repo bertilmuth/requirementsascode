@@ -22,14 +22,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotHandleExceptionIfNoExceptionOccurs() {		
+	public void doesNotHandleExceptionIfNoExceptionOccurs() {		
 		useCaseModel.useCase(SAY_HELLO)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.flow("Exception Handling Flow - Should not be entered as no exception occurs")
 				.after(SYSTEM_DISPLAYS_TEXT).when(r -> true)
 					.step(SYSTEM_HANDLES_EXCEPTION)
-						.handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
+						.handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
 
 		useCaseRunner.run();
 
@@ -37,13 +37,13 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldNotHandleExceptionIfSystemReactionDoesNotThrowException() {		
+	public void doesNotHandleExceptionIfSystemReactionDoesNotThrowException() {		
 		useCaseModel.useCase(SAY_HELLO)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.flow("Exception Handling Flow - Should not be entered as no exception occurs")
 				.after(SYSTEM_DISPLAYS_TEXT).when(r -> true)
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
+					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
 		
 		useCaseRunner.run();
 		
@@ -51,12 +51,12 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldHandleExceptionAfterSpecificStep() {				
+	public void handlesExceptionAfterSpecificStep() {				
 		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())		
 			.flow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
+				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
 		
 		useCaseRunner.run();
 		
@@ -64,14 +64,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldHandleExceptionAtAnyTime() {			
+	public void handlesExceptionAtAnyTime() {			
 		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 				.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())
 			.flow(EXCEPTION_HANDLING_FLOW).when(r -> true)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
+				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
 		
 		useCaseRunner.run();
 		
@@ -79,7 +79,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void shouldHandleExceptionIfSystemReactionOfStepContinuedAfterThrowsException() {
+	public void handlesExceptionIfSystemReactionOfStepContinuedAfterThrowsException() {
 		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
@@ -87,7 +87,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 				.continueAfter(SYSTEM_DISPLAYS_TEXT)		
 			.flow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(reactToArrayIndexOutOfBoundsException());
+				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
 		
 		useCaseRunner.run();
 		
