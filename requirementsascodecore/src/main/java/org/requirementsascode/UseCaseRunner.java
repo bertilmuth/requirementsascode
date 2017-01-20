@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 import org.requirementsascode.UseCaseStep.ActorPart;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
-import org.requirementsascode.exception.UncaughtException;
+import org.requirementsascode.exception.UnhandledException;
 
 
 /**
@@ -147,7 +147,7 @@ public class UseCaseRunner {
 	 * @param event the event object provided by the frontend
 	 * @return the use case step whose system reaction was triggered, or else an empty optional if none was triggered.
 	 * @throws MoreThanOneStepCanReact if more than one step can react
-	 * @throws UncaughtException if no step can react, and the event is an (in)direct subclass of Throwable.
+	 * @throws UnhandledException if no step can react, and the event is an (in)direct subclass of Throwable.
 	 */
 	public <T> Optional<UseCaseStep> reactTo(T event) {
 		Objects.requireNonNull(event);
@@ -226,7 +226,7 @@ public class UseCaseRunner {
 		} else if(useCaseSteps.size() > 1){
 			throw new MoreThanOneStepCanReact(useCaseSteps);
 		} else if(event instanceof Throwable){
-			throw new UncaughtException((Throwable)event);
+			throw new UnhandledException((Throwable)event);
 		}
 		
 		return useCaseStep != null? Optional.of(useCaseStep) : Optional.empty();

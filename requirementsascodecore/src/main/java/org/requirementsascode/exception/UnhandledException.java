@@ -6,10 +6,10 @@ package org.requirementsascode.exception;
  * @author b_muth
  *
  */
-public class UncaughtException extends RuntimeException{
+public class UnhandledException extends RuntimeException{
 	private static final long serialVersionUID = 8510144283265242951L;
 	
-	public UncaughtException(Throwable uncaughtException) {
+	public UnhandledException(Throwable uncaughtException) {
 		super(uncaughtException);
 	}
 }

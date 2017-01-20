@@ -13,7 +13,7 @@ import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
-import org.requirementsascode.exception.UncaughtException;
+import org.requirementsascode.exception.UnhandledException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
@@ -192,7 +192,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void throwsUncaughtExceptionIfExceptionIsNotHandled() {
 		String stepThatThrowsException = "Step that throws exception";
 		
-		thrown.expect(UncaughtException.class);
+		thrown.expect(UnhandledException.class);
 		thrown.expectCause(isA(IllegalStateException.class));
 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
