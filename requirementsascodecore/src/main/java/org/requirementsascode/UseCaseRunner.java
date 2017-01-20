@@ -146,7 +146,7 @@ public class UseCaseRunner {
 	 * @param <T> the type of the event object
 	 * @param event the event object provided by the frontend
 	 * @return the use case step whose system reaction was triggered, or else an empty optional if none was triggered.
-	 * @throws MoreThanOneStepCanReact the exception that occurs if more than one step can react
+	 * @throws MoreThanOneStepCanReact if more than one step can react
 	 * @throws UncaughtException if no step can react, and the event is an (in)direct subclass of Throwable.
 	 */
 	public <T> Optional<UseCaseStep> reactTo(T event) {

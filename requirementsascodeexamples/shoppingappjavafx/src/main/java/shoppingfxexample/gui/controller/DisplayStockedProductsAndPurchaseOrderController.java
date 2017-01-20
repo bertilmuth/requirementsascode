@@ -53,9 +53,9 @@ public class DisplayStockedProductsAndPurchaseOrderController extends AbstractCo
 		private void buyProduct() {
 			BuyProduct buyProduct = new BuyProduct(product);
 			useCaseRunner().reactTo(buyProduct);
+			productsListView.refresh();
 		}
-
-
+	
         @Override
         protected void updateItem(Product item, boolean empty) {
             super.updateItem(item, empty);
@@ -67,8 +67,16 @@ public class DisplayStockedProductsAndPurchaseOrderController extends AbstractCo
                 product = item;
                 label.setText(item!=null ? item.getProductName() : "<null>");
                 setGraphic(hbox);
+                enableOrDisableBuyButton();
             }
         }
+        
+    	private void enableOrDisableBuyButton() {
+    		buyButton.setDisable(whenNoMoreProductsCanBeBought());
+    	}
+    	private boolean whenNoMoreProductsCanBeBought() {
+    		return !useCaseRunner().canReactTo(BuyProduct.class);
+    	}
     }
 
 	public void displayStockedProductsAndPurchaseOrder(DisplayStockedProductsAndPurchaseOrderEvent displayStockedProductsAndPurchaseOrder) {

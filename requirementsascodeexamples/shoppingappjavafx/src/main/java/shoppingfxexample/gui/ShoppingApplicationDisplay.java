@@ -40,10 +40,10 @@ public class ShoppingApplicationDisplay {
 		enterShippingInformationController.enterShippingInformation(checkoutPurchase);
 	}
 	
-	public void displayPurchaseOrderSummary(PurchaseOrder checkoutPurchase){
+	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder){
 		loadAndDisplay("DisplayPurchaseOrderSummary.fxml");
 		DisplayPurchaseOrderSummaryController displayPurchaseOrderSummaryController = (DisplayPurchaseOrderSummaryController)controller;
-		displayPurchaseOrderSummaryController.displayPurchaseOrderSummary(checkoutPurchase);
+		displayPurchaseOrderSummaryController.displayPurchaseOrderSummary(purchaseOrder);
 	}
 		
 	private void loadAndDisplay(String fxmlFileName){
