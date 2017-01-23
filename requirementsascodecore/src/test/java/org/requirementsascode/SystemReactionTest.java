@@ -44,6 +44,30 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void useCaseRunnerIsNotRunningAtFirst(){
+		assertFalse(useCaseRunner.isRunning());
+	}
+	
+	@Test
+	public void useCaseRunnerIsRunningAfterRunCall(){
+		useCaseRunner.run();
+		assertTrue(useCaseRunner.isRunning());
+	}
+	
+	@Test
+	public void useCaseRunnerIsNotRunningWhenBeingStoppedBeforeRunCall(){
+		useCaseRunner.stop();
+		assertFalse(useCaseRunner.isRunning());
+	}
+	
+	@Test
+	public void useCaseRunnerIsNotRunningWhenBeingStoppedAfterRunCall(){
+		useCaseRunner.run();
+		useCaseRunner.stop();
+		assertFalse(useCaseRunner.isRunning());
+	}
+	
+	@Test
 	public void printsTextAutonomously() {
 		useCaseModel
 			.useCase(SAY_HELLO_USE_CASE)

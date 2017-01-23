@@ -19,7 +19,7 @@ import org.requirementsascode.exception.UnhandledException;
 
 
 /**
- * A use case runner is a highly configurable use case controller that received events
+ * A use case runner is a highly configurable use case controller that receives events
  * from the frontend and conditionally calls methods on the backend.
  * 
  * In requirementsascode, a use case runner is the only way the frontend communicates with the
@@ -53,10 +53,11 @@ public class UseCaseRunner {
 	 * @param adaptedSystemReaction the adapted system reaction.
 	 */
 	public UseCaseRunner(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
-		this.isRunning = false;
 		this.useCaseModel = new UseCaseModel(this);
 		this.systemReactionTrigger = new SystemReactionTrigger();
 		this.adaptedSystemReaction = adaptedSystemReaction;
+		
+		stop();
 		restart();
 	}
 	
@@ -83,7 +84,8 @@ public class UseCaseRunner {
 	 * Runs the use case model with the default user, see {@link UseCaseModel#userActor()}.
 	 * 
 	 * From now on (until called the next time), the runner will only trigger system reactions
-	 * of steps that have no explicit actor or that are "autonomous system reactions".
+	 * of steps that have been defined with {@link UseCaseStep#user(Class)} or 
+	 * that are "autonomous system reactions".
 	 * 
 	 * Calling this method activates reacting to events via {@link #reactTo(Object)}.
 	 * 
@@ -118,7 +120,26 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Needs to be called by the frontend to provide several event objects to the use case runner.
+	 * Returns whether the runner is currently running.
+	 * @see #run()
+	 * @see #runAs(Actor)
+	 * 
+	 * @return true if the runner is running, false otherwise.
+	 */
+	public boolean isRunning() {
+		return isRunning;
+	}
+
+	/**
+	 * Stops the runner. It will not be reacting to events,
+	 * until {@link #run()} or {@link #runAs(Actor)} is called again.
+	 */
+	public void stop() {	
+		isRunning = false;
+	}
+	
+	/**
+	 * Call this method from the frontend to provide several event objects to the use case runner.
 	 * For each event object, {@link #reactTo(Object)} is called.
 	 * 
 	 * @param events the events to react to
@@ -132,7 +153,7 @@ public class UseCaseRunner {
 	}
 
 	/**
-	 * Needs to be called by the frontend to provide an event object to the use case runner.
+	 * Call this method from the frontend to provide an event object to the use case runner.
 	 * 
 	 * If it is running, the runner will then check which steps can react to the event. 
 	 * If a single step can react, the runner will trigger the system reaction for that step.
