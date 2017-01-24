@@ -57,7 +57,7 @@ useCaseRunner.reactTo(example.enterText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04_EnterNameAndAgeExample.java).
 
-# hello world example 05 - user enters name and age, system prints them (with validation)
+# hello world example 05 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
 ...		
