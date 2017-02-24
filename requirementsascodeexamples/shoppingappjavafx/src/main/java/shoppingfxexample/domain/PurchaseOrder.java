@@ -11,7 +11,7 @@ public class PurchaseOrder extends ProductContainer {
 		return shippingInformation;
 	}
 
-	public void setShippingInformation(ShippingInformation shippingInformation) {
+	public void saveShippingInformation(ShippingInformation shippingInformation) {
 		this.shippingInformation = shippingInformation;
 	}
 }

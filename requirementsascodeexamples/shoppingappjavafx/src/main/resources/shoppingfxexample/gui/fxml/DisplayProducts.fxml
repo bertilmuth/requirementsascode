@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoppingfxexample.gui.controller.DisplayStockedProductsAndPurchaseOrderController">
-   <children>
+<VBox minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoppingfxexample.gui.controller.DisplayProductsController">
+  <children>
       <ToolBar>
         <items>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
@@ -31,5 +31,5 @@
         </items>
       </ToolBar>
       <ListView fx:id="productsListView" VBox.vgrow="ALWAYS" />
-   </children>
+  </children>
 </VBox>

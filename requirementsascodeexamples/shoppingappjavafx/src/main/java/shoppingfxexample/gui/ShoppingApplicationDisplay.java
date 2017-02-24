@@ -11,10 +11,10 @@ import javafx.stage.Stage;
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.gui.controller.AbstractController;
 import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
-import shoppingfxexample.gui.controller.DisplayStockedProductsAndPurchaseOrderController;
-import shoppingfxexample.gui.controller.EnterShippingInformationController;
+import shoppingfxexample.gui.controller.DisplayProductsController;
+import shoppingfxexample.gui.controller.DisplayShippingInformationFormController;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
+import shoppingfxexample.usecase.event.Products;
 
 public class ShoppingApplicationDisplay {
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
@@ -28,16 +28,17 @@ public class ShoppingApplicationDisplay {
 		this.primaryStage = primaryStage;
 }
 	
-	public void displayStockedProductsAndPurchaseOrder(DisplayStockedProductsAndPurchaseOrderEvent displayStockedProductsAndPurchaseOrder){
-		loadAndDisplay("DisplayStockedProductsAndPurchaseOrder.fxml");
-		DisplayStockedProductsAndPurchaseOrderController displayStockedProductsController = (DisplayStockedProductsAndPurchaseOrderController)controller;
-		displayStockedProductsController.displayStockedProductsAndPurchaseOrder(displayStockedProductsAndPurchaseOrder);
+	public void displayProductsAndShoppingCartSize(Products products, PurchaseOrder purchaseOrder){
+		loadAndDisplay("DisplayProducts.fxml");
+		DisplayProductsController displayProductsController = (DisplayProductsController)controller;
+		displayProductsController.displayProducts(products);
+		displayProductsController.displayShoppingCartSize(purchaseOrder);
 	}
 	
-	public void enterShippingInformation(CheckoutPurchase checkoutPurchase){
-		loadAndDisplay("EnterShippingInformation.fxml");
-		EnterShippingInformationController enterShippingInformationController = (EnterShippingInformationController)controller;
-		enterShippingInformationController.enterShippingInformation(checkoutPurchase);
+	public void displayShippingInformationForm(CheckoutPurchase checkoutPurchase){
+		loadAndDisplay("DisplayShippingInformationForm.fxml");
+		DisplayShippingInformationFormController displayShippingInformationFormController = (DisplayShippingInformationFormController)controller;
+		displayShippingInformationFormController.displayShippingInformation(checkoutPurchase);
 	}
 	
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder){

@@ -9,7 +9,7 @@ import shoppingfxexample.domain.ShippingInformation;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 
-public class EnterShippingInformationController extends AbstractController{
+public class DisplayShippingInformationFormController extends AbstractController{
 	
     @FXML
     private VBox vBox;
@@ -53,7 +53,7 @@ public class EnterShippingInformationController extends AbstractController{
     	shippingInformation.setCountry(countryField.getText());
 	}
     
-	public void enterShippingInformation(CheckoutPurchase checkoutPurchaseEvent) {
+	public void displayShippingInformation(CheckoutPurchase checkoutPurchaseEvent) {
     	this.shippingInformation = new ShippingInformation();
 	}
 }

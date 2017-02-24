@@ -16,9 +16,9 @@ import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.usecase.event.BuyProduct;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
-import shoppingfxexample.usecase.event.DisplayStockedProductsAndPurchaseOrderEvent;
+import shoppingfxexample.usecase.event.Products;
 
-public class DisplayStockedProductsAndPurchaseOrderController extends AbstractController{
+public class DisplayProductsController extends AbstractController{
     @FXML
     private Label shoppingCartItemCountLabel;
 
@@ -79,10 +79,13 @@ public class DisplayStockedProductsAndPurchaseOrderController extends AbstractCo
     	}
     }
 
-	public void displayStockedProductsAndPurchaseOrder(DisplayStockedProductsAndPurchaseOrderEvent displayStockedProductsAndPurchaseOrder) {
+	public void displayProducts(Products products) {
 		productsListView.setCellFactory(listView -> new ProductListItem());
-		productsListView.setItems(displayStockedProductsAndPurchaseOrder.getProductsInStock());
-		purchaseOrder = displayStockedProductsAndPurchaseOrder.getPurchaseOrder();
+		productsListView.setItems(products.get());
+
+	}
+
+	public void displayShoppingCartSize(PurchaseOrder purchaseOrder) {
 		shoppingCartItemCountLabel.textProperty().bind(convert(size(purchaseOrder.findProducts())));
 	}
 }
