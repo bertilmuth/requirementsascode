@@ -11,14 +11,16 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
 	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	
-	private String stepForWhichAdaptedSystemReactionHasBeenPerformed;
-	private Object eventForWhichAdaptedSystemReactionHasBeenPerformed;
+	private String stepName;
+	private Object event;
 	
 	@Test
 	public void printsTextAndPerformsAdaptedSystemReaction() {	
-		UseCaseRunner useCaseRunner = new UseCaseRunner(withAdaptedSystemReaction());
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		useCaseRunner.adaptSystemReaction(withSavingStepNameAndEvent());
+		
 		setupWith(useCaseRunner);
-		stepForWhichAdaptedSystemReactionHasBeenPerformed = "";
+		stepName = "";
 		
 		useCaseRunner.useCaseModel()
 			.useCase(SAY_HELLO_USE_CASE)
@@ -28,16 +30,14 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run();
 		
 		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
-		assertEquals(SYSTEM_DISPLAYS_TEXT, stepForWhichAdaptedSystemReactionHasBeenPerformed);
-		assertEquals(SystemEvent.class, eventForWhichAdaptedSystemReactionHasBeenPerformed.getClass());
+		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
+		assertEquals(SystemEvent.class, event.getClass());
 	}
 
-	private Consumer<SystemReactionTrigger> withAdaptedSystemReaction() {
+	private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {
 		return systemReactionTrigger -> {
-			stepForWhichAdaptedSystemReactionHasBeenPerformed = 
-					systemReactionTrigger.useCaseStep().name();
-			eventForWhichAdaptedSystemReactionHasBeenPerformed = 
-					systemReactionTrigger.event();
+			stepName = systemReactionTrigger.useCaseStep().name();
+			event = systemReactionTrigger.event();
 			systemReactionTrigger.trigger();
 		};
 	}

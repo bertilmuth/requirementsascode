@@ -36,7 +36,7 @@ public class UseCaseRunner {
 	private Optional<UseCaseFlow> latestFlow;
 	private boolean isRunning;
 	private SystemReactionTrigger systemReactionTrigger;
-	private Consumer<SystemReactionTrigger> adaptedSystemReaction;
+	private Consumer<SystemReactionTrigger> systemReaction;
 
 	/**
 	 * Constructor for creating a use case runner with standard system reaction,
@@ -44,23 +44,32 @@ public class UseCaseRunner {
 	 * an event.
 	 */
 	public UseCaseRunner() {
-		this(systemReactionTrigger -> systemReactionTrigger.trigger());
-	}
-	
-	/**
-	 * Constructor for creating a use case runner with an adapted system reaction.
-	 * 
-	 * @param adaptedSystemReaction the adapted system reaction.
-	 */
-	public UseCaseRunner(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
 		this.useCaseModel = new UseCaseModel(this);
 		this.systemReactionTrigger = new SystemReactionTrigger();
-		this.adaptedSystemReaction = adaptedSystemReaction;
-		
+		adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
 		stop();
 		restart();
 	}
+
+	/**
+	 * Adapt the system reaction to perform tasks before and/or after triggering the
+	 * system reaction. This is useful for cross-cutting concerns, e.g. measuring performance.
+	 * 
+	 * @param adaptedSystemReaction the system reaction to replace the standard system reaction.
+	 */
+	public void adaptSystemReaction(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
+		this.systemReaction = adaptedSystemReaction;
+	}
 	
+	/**
+	 * Returns the (potentially adapted) system reaction.
+	 * 
+	 * @return the system reaction.
+	 */
+	public Consumer<SystemReactionTrigger> systemReaction() {
+		return systemReaction;
+	}
+
 	/**
 	 * Returns the use case model for the runner,
 	 * which configures the behavior of the runner.
@@ -263,7 +272,7 @@ public class UseCaseRunner {
 		
 		try {
 			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
-			adaptedSystemReaction.accept(systemReactionTrigger);
+			systemReaction.accept(systemReactionTrigger);
 		} 
 		catch (Exception e) { 
 			handleException(e);

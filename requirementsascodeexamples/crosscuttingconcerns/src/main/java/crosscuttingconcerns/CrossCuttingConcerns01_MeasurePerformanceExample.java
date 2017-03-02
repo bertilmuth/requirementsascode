@@ -10,7 +10,8 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private double resultOfPower;
 	
 	public void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner(withMeasuringPerformance());
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		useCaseRunner.adaptSystemReaction(withMeasuringPerformance());
 		
 		useCaseRunner.useCaseModel().useCase("Measure performance of simple mathematical operations")
 			.basicFlow()
