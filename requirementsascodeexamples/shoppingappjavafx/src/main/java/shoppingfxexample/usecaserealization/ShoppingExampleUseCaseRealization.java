@@ -13,6 +13,7 @@ import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
 import shoppingfxexample.usecase.event.AddProductToCart;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.ConfirmPurchase;
+import shoppingfxexample.usecase.event.EnterPaymentDetails;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 import shoppingfxexample.usecase.event.Products;
 
@@ -54,14 +55,23 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 
 	@Override
 	protected Consumer<CheckoutPurchase> displayShippingInformationForm() {
-		return display::displayShippingInformationForm;
+		return checkoutPurchase -> display.displayShippingInformationForm();
 	}
 
 	@Override
 	protected Consumer<EnterShippingInformation> saveShippingInformation() {
 		return enterShippingInformation -> purchaseOrder.saveShippingInformation(enterShippingInformation.get());
 	}
+	
+	@Override
+	protected Runnable displayPaymentDetailsForm() {
+		return display::displayPaymentDetailsForm;
+	}
 
+	@Override
+	protected Consumer<EnterPaymentDetails> savePaymentDetails() {
+		return enterPaymentDetails -> purchaseOrder.savePaymentDetails(enterPaymentDetails.get());
+	}
 	
 	@Override
 	protected Runnable displayPurchaseOrderSummary() {

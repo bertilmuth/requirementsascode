@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingfxexample.domain.ShippingInformation;
-import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class DisplayShippingInformationFormController extends AbstractController{
@@ -53,7 +52,7 @@ public class DisplayShippingInformationFormController extends AbstractController
     	shippingInformation.setCountry(countryField.getText());
 	}
     
-	public void displayShippingInformation(CheckoutPurchase checkoutPurchaseEvent) {
+	public void displayShippingInformationForm() {
     	this.shippingInformation = new ShippingInformation();
 	}
 }

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.test.TestUseCaseRunner;
 
+import shoppingfxexample.domain.PaymentDetails;
 import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.ShippingInformation;
 import shoppingfxexample.domain.Stock;
@@ -15,6 +16,7 @@ import shoppingfxexample.gui.ShoppingApplicationDisplayDouble;
 import shoppingfxexample.usecase.event.AddProductToCart;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.ConfirmPurchase;
+import shoppingfxexample.usecase.event.EnterPaymentDetails;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 
 public class ShoppingExampleUseCaseRealizationTest {
@@ -36,8 +38,9 @@ public class ShoppingExampleUseCaseRealizationTest {
 			new AddProductToCart(new Product("Hamster Wheel, Black", new BigDecimal(9.95))),
 			new CheckoutPurchase(),
 			new EnterShippingInformation(new ShippingInformation()),
+			new EnterPaymentDetails(new PaymentDetails()),
 			new ConfirmPurchase());
 		
-		assertEquals("S1;S2;S3;S4;S5;S6;S7;S1;S2;", runner.runStepNames());
+		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S1;S2;", runner.runStepNames());
 	}
 }

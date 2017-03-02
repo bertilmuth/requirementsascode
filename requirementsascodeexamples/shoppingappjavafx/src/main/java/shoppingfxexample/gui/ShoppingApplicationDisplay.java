@@ -10,10 +10,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.gui.controller.AbstractController;
-import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
+import shoppingfxexample.gui.controller.DisplayPaymentDetailsFormController;
 import shoppingfxexample.gui.controller.DisplayProductsController;
+import shoppingfxexample.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingfxexample.gui.controller.DisplayShippingInformationFormController;
-import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.Products;
 
 public class ShoppingApplicationDisplay {
@@ -35,10 +35,16 @@ public class ShoppingApplicationDisplay {
 		displayProductsController.displayShoppingCartSize(purchaseOrder);
 	}
 	
-	public void displayShippingInformationForm(CheckoutPurchase checkoutPurchase){
+	public void displayShippingInformationForm(){
 		loadAndDisplay("DisplayShippingInformationForm.fxml");
 		DisplayShippingInformationFormController displayShippingInformationFormController = (DisplayShippingInformationFormController)controller;
-		displayShippingInformationFormController.displayShippingInformation(checkoutPurchase);
+		displayShippingInformationFormController.displayShippingInformationForm();
+	}
+	
+	public void displayPaymentDetailsForm(){
+		loadAndDisplay("DisplayPaymentDetailsForm.fxml");
+		DisplayPaymentDetailsFormController displayPaymentDetailsFormController = (DisplayPaymentDetailsFormController)controller;
+		displayPaymentDetailsFormController.displayPaymentDetails();
 	}
 	
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder){

@@ -4,7 +4,6 @@ import org.requirementsascode.UseCaseRunner;
 
 import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
-import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.Products;
 
 public class ShoppingApplicationDisplayDouble extends ShoppingApplicationDisplay {
@@ -16,7 +15,10 @@ public class ShoppingApplicationDisplayDouble extends ShoppingApplicationDisplay
 	public void displayProductsAndShoppingCartSize(Products products, PurchaseOrder purchaseOrder){
 	}
 	
-	public void displayShippingInformationForm(CheckoutPurchase checkoutPurchase){
+	public void displayShippingInformationForm(){
+	}
+	
+	public void displayPaymentDetailsForm(){
 	}
 	
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder){

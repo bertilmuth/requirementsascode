@@ -10,12 +10,15 @@ import shoppingfxexample.usecase.event.AddProductToCart;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
 import shoppingfxexample.usecase.event.ConfirmPurchase;
+import shoppingfxexample.usecase.event.EnterPaymentDetails;
 
 public abstract class ShoppingExampleUseCaseModel{
-	private static final Class<ConfirmPurchase> CONFIRM_PURCHASE = ConfirmPurchase.class;
-	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
 	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
 	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
+	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
+	private static final Class<EnterPaymentDetails> ENTER_PAYMENT_DETAILS = EnterPaymentDetails.class;
+	private static final Class<ConfirmPurchase> CONFIRM_PURCHASE = ConfirmPurchase.class;
+
 	private static final Class<Throwable> ANY_EXCEPTION = Throwable.class;
 
 	protected ShoppingExampleUseCaseModel() {
@@ -29,8 +32,10 @@ public abstract class ShoppingExampleUseCaseModel{
 				.step("S3").user(ADD_PRODUCT_TO_CART).system(addProductToPurchaseOrder()).repeatWhile(lessThen10Products())
 				.step("S4").user(CHECKOUT_PURCHASE).system(displayShippingInformationForm())
 				.step("S5").user(ENTER_SHIPPING_INFORMATION).system(saveShippingInformation())
-				.step("S6").system(displayPurchaseOrderSummary())
-				.step("S7").user(CONFIRM_PURCHASE).system(initiateShipping())
+				.step("S6").system(displayPaymentDetailsForm())
+				.step("S7").user(ENTER_PAYMENT_DETAILS).system(savePaymentDetails())
+				.step("S8").system(displayPurchaseOrderSummary())
+				.step("S9").user(CONFIRM_PURCHASE).system(initiateShipping())
 				.restart()	
 			.flow("Exception Handling").when(anytime())
 				.step("EX").handle(ANY_EXCEPTION).system(logException());
@@ -46,6 +51,8 @@ public abstract class ShoppingExampleUseCaseModel{
 	protected abstract Predicate<UseCaseRunner> lessThen10Products();
 	protected abstract Consumer<CheckoutPurchase> displayShippingInformationForm();
 	protected abstract Consumer<EnterShippingInformation> saveShippingInformation();
+	protected abstract Runnable displayPaymentDetailsForm();
+	protected abstract Consumer<EnterPaymentDetails> savePaymentDetails();
 	protected abstract Runnable displayPurchaseOrderSummary();
 	protected abstract Consumer<ConfirmPurchase> initiateShipping(); 
 	protected abstract Consumer<Throwable> logException();
