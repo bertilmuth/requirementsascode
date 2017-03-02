@@ -1,6 +1,5 @@
 package shoppingfxexample.usecaserealization;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -11,45 +10,41 @@ import shoppingfxexample.domain.PurchaseOrder;
 import shoppingfxexample.domain.Stock;
 import shoppingfxexample.gui.ShoppingApplicationDisplay;
 import shoppingfxexample.usecase.ShoppingExampleUseCaseModel;
-import shoppingfxexample.usecase.event.BuyProduct;
+import shoppingfxexample.usecase.event.AddProductToCart;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
+import shoppingfxexample.usecase.event.ConfirmPurchase;
 import shoppingfxexample.usecase.event.EnterShippingInformation;
-import shoppingfxexample.usecase.event.FinishPurchase;
 import shoppingfxexample.usecase.event.Products;
 
 public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseModel{
 	private Stock stock;
 	private ShoppingApplicationDisplay display;
 	private PurchaseOrder purchaseOrder;
-	private Products products; 
 
 	public ShoppingExampleUseCaseRealization(UseCaseModel useCaseModel, Stock stock, ShoppingApplicationDisplay display) {
-		Objects.requireNonNull(useCaseModel);
-		Objects.requireNonNull(stock);
-		Objects.requireNonNull(display);
 		this.stock = stock;
 		this.display = display;
 		super.createModel(useCaseModel);
 	}
-
-	@Override
-	protected Runnable createPurchaseOrder() {
-		return () -> purchaseOrder = new PurchaseOrder();
-	}
 	
 	@Override
-	protected Runnable findProducts() {
-		return () -> products = new Products(stock.findProducts());		
+	protected Runnable startWithEmptyShoppingCart(){
+		return () -> {
+			purchaseOrder = new PurchaseOrder();
+		};
 	}
 	
 	@Override
 	protected Runnable displayProducts() {
-		return () -> display.displayProductsAndShoppingCartSize(products, purchaseOrder);
+		return () -> {
+			Products products = new Products(stock.findProducts());
+			display.displayProductsAndShoppingCartSize(products, purchaseOrder);
+		};
 	}
 	
 	@Override
-	protected Consumer<BuyProduct> addProductToPurchaseOrder() {
-		return buyProduct -> purchaseOrder.addProduct(buyProduct.get());
+	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {
+		return addProductToCart -> purchaseOrder.addProduct(addProductToCart.get());
 	}
 
 	@Override
@@ -73,12 +68,8 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 		return () -> display.displayPurchaseOrderSummary(purchaseOrder);
 	}
 	
-	public PurchaseOrder getPurchaseOrder() {
-		return purchaseOrder;
-	}
-	
 	@Override
-	protected Consumer<FinishPurchase> finishPurchase() {
+	protected Consumer<ConfirmPurchase> initiateShipping() {
 		return fp -> {};
 	}
 

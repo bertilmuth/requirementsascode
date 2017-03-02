@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import shoppingfxexample.domain.Product;
 import shoppingfxexample.domain.PurchaseOrder;
-import shoppingfxexample.usecase.event.BuyProduct;
+import shoppingfxexample.usecase.event.AddProductToCart;
 import shoppingfxexample.usecase.event.CheckoutPurchase;
 import shoppingfxexample.usecase.event.Products;
 
@@ -27,12 +27,10 @@ public class DisplayProductsController extends AbstractController{
     
     @FXML
     private ListView<Product> productsListView;
-    
-	private PurchaseOrder purchaseOrder;
-    
+        
     @FXML
     void onCheckout(ActionEvent event) {
-    	CheckoutPurchase checkoutPurchase =  new CheckoutPurchase(purchaseOrder);
+    	CheckoutPurchase checkoutPurchase =  new CheckoutPurchase();
     	useCaseRunner().reactTo(checkoutPurchase);
     }
 	
@@ -51,8 +49,8 @@ public class DisplayProductsController extends AbstractController{
         }
 
 		private void buyProduct() {
-			BuyProduct buyProduct = new BuyProduct(product);
-			useCaseRunner().reactTo(buyProduct);
+			AddProductToCart addProductToCart = new AddProductToCart(product);
+			useCaseRunner().reactTo(addProductToCart);
 			productsListView.refresh();
 		}
 	
@@ -75,7 +73,7 @@ public class DisplayProductsController extends AbstractController{
     		buyButton.setDisable(whenNoMoreProductsCanBeBought());
     	}
     	private boolean whenNoMoreProductsCanBeBought() {
-    		return !useCaseRunner().canReactTo(BuyProduct.class);
+    		return !useCaseRunner().canReactTo(AddProductToCart.class);
     	}
     }
 

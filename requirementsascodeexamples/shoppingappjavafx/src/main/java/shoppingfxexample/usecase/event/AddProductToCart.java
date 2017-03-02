@@ -2,10 +2,10 @@ package shoppingfxexample.usecase.event;
 
 import shoppingfxexample.domain.Product;
 
-public class BuyProduct {
+public class AddProductToCart {
 	private Product product;
 
-	public BuyProduct(Product product) {
+	public AddProductToCart(Product product) {
 		this.product = product;
 	}
 
