@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,7 +26,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Before
 	public void setup() {
-		setupWith(new UseCaseRunner());
+		setupWith(new TestUseCaseRunner());
 	}
 	
 	@Test
@@ -165,9 +164,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 				.step(stepWithoutActor);
 			
 		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText());
-		
-		assertEquals(0, runStepNames().size());
+		useCaseRunner.reactTo(enterText());		
 	}
 	
 	@Test
@@ -183,9 +180,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 					.as(customer).user(EnterText.class);
 			
 		useCaseRunner.runAs(customer);
-		useCaseRunner.reactTo(enterText());
-		
-		assertEquals(0, runStepNames().size());
+		useCaseRunner.reactTo(enterText());		
 	}
 	
 	@Test

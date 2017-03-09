@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -11,18 +9,16 @@ import org.requirementsascode.event.EnterText;
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
-	protected UseCaseRunner useCaseRunner;
+	protected TestUseCaseRunner useCaseRunner;
 	protected UseCaseModel useCaseModel;
 	
 	private String displayedText;
-	private ArrayList<String> runStepNames;
 
-	protected void setupWith(UseCaseRunner useCaseRunner){
+	protected void setupWith(TestUseCaseRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;
 		this.useCaseModel = useCaseRunner.useCaseModel();
 		this.customer = useCaseModel.actor("Customer");
 		
-		runStepNames = new ArrayList<>();
 		displayedText = null;
 	}
 	
@@ -50,7 +46,6 @@ public abstract class AbstractTestCase {
 	
 	protected Runnable displayConstantText() {
 		return () -> {
-			runStepNames.add(latestStepName());
 			displayedText = "Hello, Basic Flow!";
 			System.out.println(displayedText);
 		};
@@ -58,7 +53,6 @@ public abstract class AbstractTestCase {
 	
 	protected Consumer<EnterText> displayEnteredText() {
 		return enterText -> {
-			runStepNames.add(latestStepName());
 			displayedText = enterText.toString();
 			System.out.println(displayedText);
 		};
@@ -66,7 +60,6 @@ public abstract class AbstractTestCase {
 	
 	protected Consumer<EnterNumber> displayEnteredNumber() {
 		return enterNumber -> {
-			runStepNames.add(latestStepName());
 			displayedText = enterNumber.value.toString();
 			System.out.println(displayedText);
 		};
@@ -82,14 +75,7 @@ public abstract class AbstractTestCase {
 	
 	protected Runnable throwArrayIndexOutOfBoundsException() {
 		return () -> {
-			runStepNames.add(latestStepName());
 			throw new ArrayIndexOutOfBoundsException(42);
-		};
-	}
-	
-	protected Consumer<ArrayIndexOutOfBoundsException> trackArrayIndexOutOfBoundsException() {
-		return e -> {
-			runStepNames.add(latestStepName());
 		};
 	}
 	
@@ -97,8 +83,8 @@ public abstract class AbstractTestCase {
 		return (object) -> {throw new RuntimeException("Test failed!");};
 	}
 	
-	protected List<String> runStepNames() {
-		return runStepNames;
+	protected String runStepNames() {
+		return useCaseRunner.runStepNames();
 	}
 
 	protected String latestStepName() {

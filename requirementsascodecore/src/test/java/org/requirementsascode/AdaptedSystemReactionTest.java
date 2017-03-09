@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.junit.Test;
@@ -16,7 +15,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 	
 	@Test
 	public void printsTextAndPerformsAdaptedSystemReaction() {	
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		TestUseCaseRunner useCaseRunner = new TestUseCaseRunner();
 		useCaseRunner.adaptSystemReaction(withSavingStepNameAndEvent());
 		
 		setupWith(useCaseRunner);
@@ -29,7 +28,6 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), runStepNames());
 		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 		assertEquals(SystemEvent.class, event.getClass());
 	}

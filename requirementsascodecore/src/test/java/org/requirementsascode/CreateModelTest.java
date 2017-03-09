@@ -30,7 +30,7 @@ public class CreateModelTest extends AbstractTestCase{
 
 	@Before
 	public void setup() {
-		setupWith(new UseCaseRunner());
+		setupWith(new TestUseCaseRunner());
 	}
 	
 	@Test
