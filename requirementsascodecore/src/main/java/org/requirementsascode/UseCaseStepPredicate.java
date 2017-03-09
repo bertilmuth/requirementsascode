@@ -13,10 +13,8 @@ import java.util.stream.Stream;
  * @author b_muth
  *
  */
-class UseCaseStepPredicate {
-	private UseCaseStepPredicate(){};
-	
-	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
+class UseCaseStepPredicate {	
+	static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
 		Objects.requireNonNull(useCaseFlow);
 		
 		Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
@@ -25,15 +23,15 @@ class UseCaseStepPredicate {
 		return isRunnerInDifferentFlow;
 	}
 	
-	public static Predicate<UseCaseRunner> isRunnerAtStart() {
+	static Predicate<UseCaseRunner> isRunnerAtStart() {
 		return afterStep(Optional.empty());
 	}
 	
-	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
+	static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
 		return afterStep(Optional.of(afterThatStep));
 	}
 	
-	private static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
+	static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();
 			boolean isSystemAtRightStep = 
@@ -42,7 +40,7 @@ class UseCaseStepPredicate {
 		};
 	}
 	
-	public static Predicate<UseCaseRunner> noOtherStepCouldReactLike(UseCaseStep theStep) {
+	static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.eventPart().eventClass();
 			UseCaseModel useCaseModel = theStep.useCaseModel();

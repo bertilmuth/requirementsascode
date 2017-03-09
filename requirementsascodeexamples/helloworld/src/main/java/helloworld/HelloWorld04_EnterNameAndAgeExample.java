@@ -2,6 +2,7 @@ package helloworld;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
@@ -11,8 +12,8 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	private String firstName;
 	private int age;
 	
-	public void createModelFor(UseCaseRunner useCaseRunner) {					
-		useCaseRunner.useCaseModel().useCase("Get greeted")
+	public void create(UseCaseModel useCaseModel) {					
+		useCaseModel.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(promptUserToEnterFirstName())
 				.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -43,8 +44,10 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+
 		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
-		example.createModelFor(useCaseRunner);
+		example.create(useCaseModel);
 		
 		useCaseRunner.run();		
 		useCaseRunner.reactTo(example.enterText());

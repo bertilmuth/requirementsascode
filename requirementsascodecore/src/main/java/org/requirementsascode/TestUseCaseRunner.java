@@ -1,10 +1,6 @@
-package org.requirementsascode.test;
+package org.requirementsascode;
 
 import java.util.function.Consumer;
-
-import org.requirementsascode.SystemReactionTrigger;
-import org.requirementsascode.UseCaseRunner;
-import org.requirementsascode.UseCaseStep;
 
 /**
  * Simple use case runner for automated tests.
@@ -41,10 +37,21 @@ public class TestUseCaseRunner extends UseCaseRunner{
 		};
 	}
 	private String trackStepName(UseCaseStep useCaseStep) {
-		String trackedStepName = "";
-		if(useCaseStep.name().startsWith("S")){
-			trackedStepName = useCaseStep.name() + ";";
+		String trackedStepName = useCaseStep.name();
+		
+		if(useCaseStep.name().endsWith(UseCaseStep.REPEAT_STEP_POSTFIX)){
+			trackedStepName = repeatStepNameWithoutPostfix(trackedStepName);
+		} else if(useCaseStep.name().endsWith(UseCaseStep.NEXT_LOOP_ITERATION_STEP_POSTFIX)){
+			trackedStepName = "";
+		} else {
+			trackedStepName = trackedStepName + ";";
 		}
+		return trackedStepName;
+	}
+
+	private String repeatStepNameWithoutPostfix(String trackedStepName) {
+		int repeatIndex = trackedStepName.indexOf(UseCaseStep.REPEAT_STEP_POSTFIX);
+		trackedStepName = trackedStepName.substring(0, repeatIndex) + ";";
 		return trackedStepName;
 	}
 }

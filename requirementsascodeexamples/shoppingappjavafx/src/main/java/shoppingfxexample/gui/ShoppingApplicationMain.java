@@ -2,6 +2,7 @@ package shoppingfxexample.gui;
 
 import java.io.IOException;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 import javafx.application.Application;
@@ -36,8 +37,9 @@ public class ShoppingApplicationMain extends Application {
 		primaryStage.show();		
 	}
 	
-	public void createAndRunUseCaseRealization(Stage primaryStage) {				
-		new ShoppingExampleUseCaseRealization(useCaseRunner.useCaseModel(),stock, display);
+	public void createAndRunUseCaseRealization(Stage primaryStage) {		
+		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+		new ShoppingExampleUseCaseRealization(stock, display).create(useCaseModel);
 		useCaseRunner.run();
 	}
 

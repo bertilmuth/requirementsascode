@@ -33,7 +33,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 
 		useCaseRunner.run();
 
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
+		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), runStepNames());
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
+		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), runStepNames());
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(SYSTEM_HANDLES_EXCEPTION, getLatestStepName());
+		assertEquals(SYSTEM_HANDLES_EXCEPTION, latestStepName());
 	}
 	
 	@Test
@@ -75,22 +75,6 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
-	}
-	
-	@Test
-	public void handlesExceptionIfSystemReactionOfStepContinuedAfterThrowsException() {
-		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
-			.basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
-				.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())	
-			.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-				.continueAfter(SYSTEM_DISPLAYS_TEXT)		
-			.flow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(trackArrayIndexOutOfBoundsException());
-		
-		useCaseRunner.run();
-		
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), getRunStepNames());
+		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION), runStepNames());
 	}
 }

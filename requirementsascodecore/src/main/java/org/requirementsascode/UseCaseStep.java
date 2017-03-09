@@ -1,8 +1,10 @@
 package org.requirementsascode;
 
+import static org.requirementsascode.SystemReaction.continueAfterStepAndCurrentFlowCanBeReentered;
+import static org.requirementsascode.SystemReaction.continueAfterStepAndCurrentFlowCantBeReentered;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
-import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactLike;
+import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactThan;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +28,9 @@ import org.requirementsascode.exception.NoSuchElementInUseCase;
  *
  */
 public class UseCaseStep extends UseCaseModelElement{
+	static final String REPEAT_STEP_POSTFIX = " (#REPEAT)";
+	static final String NEXT_LOOP_ITERATION_STEP_POSTFIX = " (#NEXT)";
+	
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> previousStepInFlow;
 	private Predicate<UseCaseRunner> predicate;
@@ -87,17 +92,38 @@ public class UseCaseStep extends UseCaseModelElement{
 	public UseCaseStep.SystemPart<?> system(Runnable systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		
-		Actor systemActor = useCaseModel().systemActor();
-		
-		UseCaseStep.SystemPart<?> systemPart =
-			system(new Actor[]{systemActor}, systemReaction);
+		Actor systemActor = useCaseModel().systemActor(); 
+
+		UseCaseStep.SystemPart<?> systemPart = as(systemActor).system(systemReaction);
 		
 		return systemPart;
 	}
-
-	private SystemPart<SystemEvent> system(Actor[] actors, Runnable systemReaction) {
-		return as(actors).user(SystemEvent.class).
-			system(systemEvent -> systemReaction.run());
+	
+	/**
+	 * Makes the use case runner continue after the specified step.
+	 * Note that the current flow is NOT entered immediately, even if it's condition is true.
+	 * 
+	 * @param stepName name of the step to continue after, in this use case.
+	 * @return the use case this step belongs to, to ease creation of further flows
+	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+	 */
+	public UseCase continueAfter(String stepName) {
+		Objects.requireNonNull(stepName);
+		
+		system(continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName));
+		return useCase();
+	}
+	
+	/**
+	 * Makes the use case runner start from the beginning, when no
+	 * flow and step has been run.
+	 * 
+	 * @see UseCaseRunner#restart()
+	 * @return the use case this step belongs to, to ease creation of further flows
+	 */
+	public UseCase restart() {
+		system(() -> useCaseModel().useCaseRunner().restart());
+		return useCase();
 	}
 	
 	/**
@@ -121,9 +147,9 @@ public class UseCaseStep extends UseCaseModelElement{
 		Objects.requireNonNull(eventClass);
 
 		Actor userActor = useCaseModel().userActor();
-		EventPart<T> newEventPart = as(userActor).user(eventClass);
+		EventPart<T> eventPart = as(userActor).user(eventClass);
 		
-		return newEventPart;
+		return eventPart;
 	}
 	
 	/**
@@ -147,9 +173,9 @@ public class UseCaseStep extends UseCaseModelElement{
 		Objects.requireNonNull(eventOrExceptionClass);
 
 		Actor systemActor = useCaseModel().systemActor();
-		EventPart<T> newEventPart = as(systemActor).user(eventOrExceptionClass);
+		EventPart<T> eventPart = as(systemActor).user(eventOrExceptionClass);
 		
-		return newEventPart;
+		return eventPart;
 	}
 	
 	/**
@@ -226,7 +252,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	private Predicate<UseCaseRunner> inSequenceUnlessInterrupted() {
 		Predicate<UseCaseRunner> afterPreviousStep = 
 			previousStepInFlow.map(s -> afterStep(s)).orElse(isRunnerAtStart());
-		return afterPreviousStep.and(noOtherStepCouldReactLike(this));
+		return afterPreviousStep.and(noOtherStepCouldReactThan(this));
 	}
 	
 	/*
@@ -290,18 +316,16 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
-		 * Makes the use case runner continue after the specified step,
-		 * without triggering a system reaction.
-		 * Only steps of the use case that this step is contained in are taken into account.
+		 * Makes the use case runner continue after the specified step.
 		 * 
-		 * @param stepName name of the step to continue after.
+		 * @param stepName name of the step to continue after, in this use case.
 		 * @return the use case this step belongs to, to ease creation of further flows
 		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
 		 */
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			system(() -> {}).continueAfter(stepName);
+			system(SystemReaction.continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName));
 			return useCase();
 		}
 		
@@ -320,7 +344,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		 */
 		public SystemPart<SystemEvent> system(Runnable systemReaction) {
 			SystemPart<SystemEvent> systemPart = 
-				UseCaseStep.this.system(actors, systemReaction);
+				user(SystemEvent.class).system(systemEvent -> systemReaction.run());
 			return systemPart;
 		}
 		
@@ -480,56 +504,30 @@ public class UseCaseStep extends UseCaseModelElement{
 			Objects.requireNonNull(condition);
 			
 			String thisStepName = name();
-			String newRepeatStepName = uniqueRepeatStepName();
 			
-			UseCaseStep newRepeatStep = flow(newRepeatStepName)
-				.after(thisStepName).when(condition).step(newRepeatStepName);
-			
-			makeRepeatStepBehaveLikeThisStep(newRepeatStep);
-			
-			UseCaseStep.this.flow().
-				continueAfter(thisStepName, Optional.of(newRepeatStep), Optional.empty());
+			UseCaseStep conditionalClonedStep = 
+				createConditionalStepThatBehavesLike(thisStepName, condition);
+
+			createStepThatStartsNextLoopIteration(thisStepName, conditionalClonedStep);
 			
 			return this;
 		}
-		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		private void makeRepeatStepBehaveLikeThisStep(UseCaseStep newRepeatStep) {
-			newRepeatStep
-				.as(actorPart().actors()).user(eventPart().eventClass())
-				.system((Consumer)systemPart().systemReaction());
+
+		private void createStepThatStartsNextLoopIteration(String thisStepName, UseCaseStep newRepeatStep) {
+			String nextLoopIterationStepName = uniqueNextLoopIterationStepName();
+			newRepeatStep.systemPart()
+				.step(nextLoopIterationStepName)
+					.system(continueAfterStepAndCurrentFlowCanBeReentered(UseCaseStep.this.useCase(), thisStepName));
 		}
 
-		/**
-		 * Makes the use case runner start from the beginning, when no
-		 * flow and step has been run.
-		 * 
-		 * @see UseCaseRunner#restart()
-		 * @return the use case this step belongs to, to ease creation of further flows
-		 */
-		public UseCase restart() {
-			return UseCaseStep.this.flow()
-				.restart(Optional.of(UseCaseStep.this), Optional.empty());
-		}
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		private UseCaseStep createConditionalStepThatBehavesLike(String thisStepName, Predicate<UseCaseRunner> condition) {
+			String repeatStepName = uniqueRepeatStepName();
 
-		/**
-		 * Makes the use case runner continue after the specified step.
-		 * Only steps of the use case that this step is contained in are taken into account.
-		 * 
-		 * @param stepName name of the step to continue after.
-		 * @return the use case this step belongs to, to ease creation of further flows
-		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
-		 */
-		public UseCase continueAfter(String stepName) {
-			Objects.requireNonNull(stepName);
+			UseCaseStep newRepeatStep = flow(repeatStepName).after(thisStepName).when(condition).step(repeatStepName);
+			newRepeatStep.as(actorPart().actors()).user(eventPart().eventClass()).system((Consumer)systemPart().systemReaction());
 			
-			continueAfterStep(stepName);
-			return UseCaseStep.this.useCase();
-		}
-
-		private void continueAfterStep(String stepName) {
-			UseCaseStep.this.flow().
-				continueAfter(stepName, Optional.of(UseCaseStep.this), Optional.empty());
+			return newRepeatStep;
 		}
 	}
 	
@@ -543,6 +541,19 @@ public class UseCaseStep extends UseCaseModelElement{
 	 * @return a unique step name
 	 */
 	protected String uniqueRepeatStepName() {
-		return stepNameWithPostfix(name(), "REPEAT");
+		return name() + REPEAT_STEP_POSTFIX;
+	}
+	
+	/**
+	 * Returns a unique name for a "next loop iteration" step, to avoid name
+	 * collisions if multiple "next loop iteration" steps exist in the model.
+	 * 
+	 * Overwrite this only if you are not happy with the "automatically created"
+	 * step names in the model.
+	 * 
+	 * @return a unique step name
+	 */
+	protected String uniqueNextLoopIterationStepName() {
+		return name() + NEXT_LOOP_ITERATION_STEP_POSTFIX;
 	}
 }

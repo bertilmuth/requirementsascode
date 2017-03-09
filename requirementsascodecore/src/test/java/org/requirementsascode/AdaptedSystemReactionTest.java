@@ -29,7 +29,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		
 		useCaseRunner.run();
 		
-		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), getRunStepNames());
+		assertEquals(Arrays.asList(SYSTEM_DISPLAYS_TEXT), runStepNames());
 		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 		assertEquals(SystemEvent.class, event.getClass());
 	}

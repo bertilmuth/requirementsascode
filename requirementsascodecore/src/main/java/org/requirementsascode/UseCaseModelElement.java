@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Abstract base class for elements of a use case model.
@@ -50,41 +49,5 @@ abstract class UseCaseModelElement {
 	@Override
 	public String toString() {
 		return name();
-	}
-	
-	
-	/**
-	 * Returns a unique name, based on the specified step name.
-	 * 
-	 * Purpose of this method is to create unique names for steps
-	 * that are "automatically created" in the model, during the
-	 * creation of the model.
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @param stepName the step name the unique step name is based upon
-	 * 
-	 * @return a unique step name
-	 */
-	protected String uniqueStepName(String stepName) {
-		return stepNameWithPostfix(stepName, UUID.randomUUID().toString());
-	}
-	
-	/**
-	 * Returns a step name, based on the specified step name and the specified postfix
-	 * (and brackets and a hashtag in between).
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @param stepName the step name the created step name is based upon
-	 * 
-	 * @param postfix the postfix to append to the specified step name
-	 * 
-	 * @return the step name with the postfix
-	 */
-	protected String stepNameWithPostfix(String stepName, String postfix) {
-		return stepName + " (#" + postfix.toString() + ")";
 	}
 }

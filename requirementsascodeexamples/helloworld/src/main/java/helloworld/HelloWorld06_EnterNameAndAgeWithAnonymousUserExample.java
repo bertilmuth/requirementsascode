@@ -25,9 +25,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private Actor normalUser;
 	private Actor anonymousUser;
 	
-	public void createModelFor(UseCaseRunner useCaseRunner) {	
-		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
-		
+	public void create(UseCaseModel useCaseModel) {			
 		normalUser = useCaseModel.actor("Normal User");
 		anonymousUser = useCaseModel.actor("Anonymous User");
 				
@@ -42,13 +40,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.step("S7").as(normalUser, anonymousUser).system(stopSystem())
 					
 			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
-				.step("S4a_1").system(informUserAboutOutOfBoundsAge())
-				.continueAfter(S2)
+				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+				.step("S5a_2").continueAfter(S2)
 					
 			.flow("Handle non-numerical age").after(S4)
-				.step("S4b_1").handle(NON_NUMERICAL_AGE)
-					.system(informUserAboutNonNumericalAge())
-				.continueAfter(S2)
+				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+				.step("S5b_2").continueAfter(S2)
 				
 			.flow("Anonymous greeted with age only").after(S4).when(ageIsOk())
 				.step("S4c_1").as(anonymousUser).continueAfter(S5)
@@ -101,8 +98,10 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+
 		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
-		example.createModelFor(useCaseRunner);
+		example.create(useCaseModel);
 		
 		useCaseRunner.runAs(example.anonymousUser());			
 		while(!example.systemStopped())

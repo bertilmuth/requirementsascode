@@ -60,15 +60,6 @@ public class UseCaseRunner {
 	public void adaptSystemReaction(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
 		this.systemReaction = adaptedSystemReaction;
 	}
-	
-	/**
-	 * Returns the (potentially adapted) system reaction.
-	 * 
-	 * @return the system reaction.
-	 */
-	public Consumer<SystemReactionTrigger> systemReaction() {
-		return systemReaction;
-	}
 
 	/**
 	 * Returns the use case model for the runner,

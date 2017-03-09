@@ -3,6 +3,7 @@ package helloworld;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
@@ -19,8 +20,8 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	private String firstName;
 	private int age;
 	
-	public void createModelFor(UseCaseRunner useCaseRunner) {					
-		useCaseRunner.useCaseModel().useCase("Get greeted")
+	public void create(UseCaseModel useCaseModel) {					
+		useCaseModel.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(promptUserToEnterFirstName())
 				.step(S2).user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -30,13 +31,12 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 				.step("S6").system(stopSystem())
 					
 			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
-				.step("S4a_1").system(informUserAboutOutOfBoundsAge())
-				.continueAfter(S2)
+				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+				.step("S5a_2").continueAfter(S2)
 					
 			.flow("Handle non-numerical age").after(S4)
-				.step("S4b_1").handle(NON_NUMERICAL_AGE)
-					.system(informUserAboutNonNumericalAge())
-				.continueAfter(S2);		
+				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+				.step("S5b_2").continueAfter(S2);		
 	}
 
 	private Runnable promptUserToEnterFirstName() {
@@ -75,9 +75,11 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
-		example.createModelFor(useCaseRunner);
+		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 		
+		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
+		example.create(useCaseModel);
+
 		useCaseRunner.run();			
 		while(!example.systemStopped())
 			useCaseRunner.reactTo(example.enterText());	

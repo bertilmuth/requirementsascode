@@ -73,51 +73,6 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	/**
-	 * Makes the use case runner start from the beginning, when no
-	 * flow and step has been run.
-	 * 
-	 * @see UseCaseRunner#restart()
-	 * @return the use case this flow belongs to, to ease creation of further flows
-	 */
-	public UseCase restart() {
-		return restart(Optional.empty(), flowPredicate.get());
-
-	}
-	UseCase restart(Optional<UseCaseStep> stepBeforeRestartHappens, Optional<Predicate<UseCaseRunner>> predicate) {
-		newStep(uniqueRestartStepName(), stepBeforeRestartHappens, predicate)
-			.system(() -> useCaseModel().useCaseRunner().restart());
-		return useCase();
-	}
-	
-	/**
-	 * Makes the use case runner continue after the specified step.
-	 * Only steps of the use case that this flow is contained in are taken into account.
-	 * 
-	 * @param stepName name of the step to continue after.
-	 * @return the use case this flow belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
-	 */
-	public UseCase continueAfter(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		return continueAfter(stepName, Optional.empty(), flowPredicate.get());
-	}
-
-	UseCase continueAfter(String continueAfterStepName, Optional<UseCaseStep> stepBeforeJumpHappens, Optional<Predicate<UseCaseRunner>> predicate) {
-		Optional<UseCaseStep> continueAfterStep = useCase().findStep(continueAfterStepName);
-		String stepWhereJumpHappensName = uniqueContinueAfterStepName(continueAfterStepName);
-
-		continueAfterStep.map(s -> 
-			newStep(stepWhereJumpHappensName, stepBeforeJumpHappens, predicate).system(setLastestStepRun(continueAfterStep)))
-				.orElseThrow(() -> new NoSuchElementInUseCase(useCase(), continueAfterStepName));
-		return useCase();
-	}
-	
-	private Runnable setLastestStepRun(Optional<UseCaseStep> continueAfterStep) {
-		return () -> useCaseModel().useCaseRunner().setLatestStep(continueAfterStep);
-	}
-	
-	/**
 	 * Creates the first step of this flow, with the specified name.
 	 * 
 	 * @param stepName the name of the step to be created
@@ -223,32 +178,5 @@ public class UseCaseFlow extends UseCaseModelElement {
 		private Predicate<UseCaseRunner> alternativeFlowPredicate() {
 			return isRunnerInDifferentFlowThan(UseCaseFlow.this);
 		}
-	}
-	
-	/**
-	 * Returns a unique name for a "restart" step, to avoid name
-	 * collisions if multiple "restart" steps exist in the model.
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @return a unique step name
-	 */
-	protected String uniqueRestartStepName() {
-		return uniqueStepName("Restart");
-	}
-	
-	/**
-	 * Returns a unique name for a "Continue after" step, to avoid name
-	 * collisions if multiple "Continue after" steps exist in the model.
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @param stepName the name of the step to continue after
-	 * @return a unique step name
-	 */
-	protected String uniqueContinueAfterStepName(String stepName) {
-		return uniqueStepName("Continue after " + stepName);
 	}
 }

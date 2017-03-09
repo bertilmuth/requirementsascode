@@ -1,11 +1,12 @@
 package helloworld;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld01_PrintHelloUserExample {	
 	
-	public void createModelFor(UseCaseRunner useCaseRunner) {
-		useCaseRunner.useCaseModel().useCase("Get greeted")
+	public void create(UseCaseModel useCaseModel) {
+		useCaseModel.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(greetUser());
 	}
@@ -16,8 +17,10 @@ public class HelloWorld01_PrintHelloUserExample {
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+		
 		HelloWorld01_PrintHelloUserExample example = new HelloWorld01_PrintHelloUserExample();
-		example.createModelFor(useCaseRunner);
+		example.create(useCaseModel);
 		
 		useCaseRunner.run();
 	}

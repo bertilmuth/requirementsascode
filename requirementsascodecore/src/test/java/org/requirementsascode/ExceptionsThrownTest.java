@@ -86,7 +86,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(unknownStepName);
 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow().continueAfter(unknownStepName);
+			.basicFlow().step("S1").continueAfter(unknownStepName);
 	}
 	
 	@Test
@@ -167,7 +167,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText());
 		
-		assertEquals(0, getRunStepNames().size());
+		assertEquals(0, runStepNames().size());
 	}
 	
 	@Test
@@ -185,7 +185,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseRunner.runAs(customer);
 		useCaseRunner.reactTo(enterText());
 		
-		assertEquals(0, getRunStepNames().size());
+		assertEquals(0, runStepNames().size());
 	}
 	
 	@Test

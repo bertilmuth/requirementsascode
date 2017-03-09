@@ -14,10 +14,8 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
  * @author b_muth
  *
  */
-class ModelElementContainer {
-	private ModelElementContainer() {}
-	
-	public static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+class ModelElementContainer {	
+	static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
@@ -26,14 +24,14 @@ class ModelElementContainer {
 		return useCaseModelElement;
 	}
 	
-	public static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+	static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
 		return findModelElement(modelElementName, modelElementNameToElementMap).isPresent();
 	}
 	
-	public static <T extends UseCaseModelElement> void saveModelElement(T modelElement, Map<String, T> modelElementNameToElementMap) {
+	static <T extends UseCaseModelElement> void saveModelElement(T modelElement, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElement);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
@@ -44,7 +42,7 @@ class ModelElementContainer {
 		modelElementNameToElementMap.put(modelElementName, modelElement);
 	}
 	
-	public static <T extends UseCaseModelElement> Collection<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
+	static <T extends UseCaseModelElement> Collection<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
 		return modelElementNameToElementMap.values();
