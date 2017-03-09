@@ -391,6 +391,33 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
+		 * Makes the use case runner continue after the specified step.
+		 * Note that the current flow is NOT reentered immediately, even if it's condition is true.
+		 * 
+		 * @param stepName name of the step to continue after, in this use case.
+		 * @return the use case this step belongs to, to ease creation of further flows
+		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+		 */
+		public UseCase continueAfter(String stepName) {
+			Objects.requireNonNull(stepName);
+			
+			system(sr -> continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName).run());
+			return useCase();
+		}
+		
+		/**
+		 * Makes the use case runner start from the beginning, when no
+		 * flow and step has been run.
+		 * 
+		 * @see UseCaseRunner#restart()
+		 * @return the use case this step belongs to, to ease creation of further flows
+		 */
+		public UseCase restart() {
+			system(sr -> useCaseModel().useCaseRunner().restart());
+			return useCase();
+		}
+		
+		/**
 		 * Returns the class of event or exception objects that the system reacts to in this step.
 		 * The system reacts to objects that are instances of the returned class or 
 		 * instances of any direct or indirect subclass of the returned class.
