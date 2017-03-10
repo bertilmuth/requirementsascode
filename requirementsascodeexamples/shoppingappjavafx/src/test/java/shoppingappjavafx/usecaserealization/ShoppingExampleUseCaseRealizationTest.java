@@ -13,13 +13,14 @@ import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.gui.ShoppingApplicationDisplayDouble;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
 import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecaserealization.ShoppingExampleUseCaseRealization;
+import shoppingappjavafx.usecaserealization.interfaces.Display;
+import shoppingappjavafx.usecaserealization.stubs.ShoppingApplicationDisplayStub;
 
 public class ShoppingExampleUseCaseRealizationTest {
 	private TestUseCaseRunner useCaseRunner;
@@ -31,7 +32,7 @@ public class ShoppingExampleUseCaseRealizationTest {
 		useCaseModel = useCaseRunner.useCaseModel();
 		
 		Stock stock = new Stock();
-		ShoppingApplicationDisplayDouble shoppingApplicationDisplayDouble = new ShoppingApplicationDisplayDouble(useCaseRunner);
+		Display shoppingApplicationDisplayDouble = new ShoppingApplicationDisplayStub();
 		new ShoppingExampleUseCaseRealization(stock, shoppingApplicationDisplayDouble).create(useCaseModel);
 	}
 

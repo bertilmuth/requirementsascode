@@ -33,7 +33,7 @@ public class ShoppingApplicationMain extends Application {
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
 		this.display = new ShoppingApplicationDisplay(useCaseRunner, primaryStage);
-		primaryStage.setTitle("Shopping Example JavaFX - Requirements as Code");
+		primaryStage.setTitle("Shopping Application (JavaFX) - Requirements as Code");
 		primaryStage.show();		
 	}
 	

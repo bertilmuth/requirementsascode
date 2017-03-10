@@ -20,7 +20,7 @@ public abstract class ShoppingExampleUseCaseModel{
 	private static final Class<EnterPaymentDetails> ENTER_PAYMENT_DETAILS = EnterPaymentDetails.class;
 	private static final Class<ConfirmPurchase> CONFIRM_PURCHASE = ConfirmPurchase.class;
 	private static final Class<GoBack> GO_BACK = GoBack.class;
-	private static final Class<Throwable> ANY_EXCEPTION = Throwable.class;
+	private static final Class<Throwable> EXCEPTION = Throwable.class;
 
 	public void create(UseCaseModel useCaseModel) {		
 		useCaseModel.useCase("Buy product")
@@ -28,7 +28,7 @@ public abstract class ShoppingExampleUseCaseModel{
 				.step("S1").system(startWithEmptyShoppingCart())
 				.step("S2").system(displayProducts())
 				.step("S3").user(ADD_PRODUCT_TO_CART).system(addProductToPurchaseOrder()).repeatWhile(lessThen10Products())
-				.step("S4").user(CHECKOUT_PURCHASE).system(cp -> {;})
+				.step("S4").user(CHECKOUT_PURCHASE).system(checkoutPurchase())
 				.step("S5").system(displayShippingInformationForm())
 				.step("S6").user(ENTER_SHIPPING_INFORMATION).system(saveShippingInformation())
 				.step("S7").system(displayPaymentDetailsForm())
@@ -36,11 +36,10 @@ public abstract class ShoppingExampleUseCaseModel{
 				.step("S9").system(displayPurchaseOrderSummary())
 				.step("S10").user(CONFIRM_PURCHASE).system(initiateShipping())
 				.step("S11").restart()	
-			.flow("Go back from payment to shipping").after("S7")
-				.step("S8a_1").user(GO_BACK).system(cp -> {;})
-				.step("S8a_2").continueAfter("S4")
-			.flow("Exception Handling").when(anytime())
-				.step("EX").handle(ANY_EXCEPTION).system(logException());
+			.flow("Go back from shipping").after("S5").step("S6a_1").user(GO_BACK).continueAfter("S1")
+			.flow("Go back from payment").after("S7").step("S8a_1").user(GO_BACK).continueAfter("S4")
+			.flow("Checkout (after going back)").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")
+			.flow("Handle exceptions").when(anytime()).step("EX").handle(EXCEPTION).system(informUserAndLogException());
 	}
 
 	private Predicate<UseCaseRunner> anytime() {
@@ -51,11 +50,13 @@ public abstract class ShoppingExampleUseCaseModel{
 	protected abstract Runnable displayProducts();
 	protected abstract Consumer<AddProductToCart> addProductToPurchaseOrder();
 	protected abstract Predicate<UseCaseRunner> lessThen10Products();
+	protected abstract Consumer<CheckoutPurchase> checkoutPurchase();
 	protected abstract Runnable displayShippingInformationForm();
 	protected abstract Consumer<EnterShippingInformation> saveShippingInformation();
 	protected abstract Runnable displayPaymentDetailsForm();
 	protected abstract Consumer<EnterPaymentDetails> savePaymentDetails();
 	protected abstract Runnable displayPurchaseOrderSummary();
 	protected abstract Consumer<ConfirmPurchase> initiateShipping(); 
-	protected abstract Consumer<Throwable> logException();
+	protected abstract Predicate<UseCaseRunner> atLeastOneProductInCart();
+	protected abstract Consumer<Throwable> informUserAndLogException();
 }

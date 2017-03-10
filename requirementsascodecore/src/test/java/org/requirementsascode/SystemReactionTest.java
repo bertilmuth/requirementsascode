@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	private static final String CONTINUE_1 = "Continue 1";
 	private static final String CONTINUE_2 = "Continue 2";
 	
-	int loopIndex;
+	int timesDisplayed;
 		
 	@Before
 	public void setup() {
@@ -607,7 +608,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotRepeatStepWhenConditionNotFulfilled() {		
+	public void doesNotExecuteRepeatStepWhenConditionNotFulfilled() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -619,7 +620,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterNumber());
 		
-		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
+		assertEquals("", runStepNames());
 	}
 	
 	@Test
@@ -658,13 +659,13 @@ public class SystemReactionTest extends AbstractTestCase{
 	
 	@Test
 	public void repeatsStepThreeTimes() {		
-		loopIndex = 0;
+		timesDisplayed = 0;
 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
-					.user(EnterText.class).system(displayEnteredText())
-						.repeatWhile(r -> ++loopIndex <= 3)
+					.user(EnterText.class).system(displayEnteredTextAndIncrementCounter())
+						.repeatWhile(r -> timesDisplayed < 3)
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber());
 				
 		// Create way to many events to see if the repeat stops after three events
@@ -676,8 +677,13 @@ public class SystemReactionTest extends AbstractTestCase{
 					enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT + ";" +
-				CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT + ";" +
-				CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
+			CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
+	}
+	private Consumer<EnterText> displayEnteredTextAndIncrementCounter(){
+		return enteredText -> {
+			displayEnteredText().accept(enteredText);
+			timesDisplayed++;
+		};
 	}
 	
 	@Test

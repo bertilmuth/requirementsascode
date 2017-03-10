@@ -66,6 +66,7 @@ public class DisplayProductsController extends AbstractController{
                 label.setText(item!=null ? item.getProductName() : "<null>");
                 setGraphic(hbox);
                 enableOrDisableBuyButton();
+                enableOrDisableCheckoutButton();
             }
         }
         
@@ -80,10 +81,16 @@ public class DisplayProductsController extends AbstractController{
 	public void displayProducts(Products products) {
 		productsListView.setCellFactory(listView -> new ProductListItem());
 		productsListView.setItems(products.get());
-
 	}
 
 	public void displayShoppingCartSize(PurchaseOrder purchaseOrder) {
 		shoppingCartItemCountLabel.textProperty().bind(convert(size(purchaseOrder.findProducts())));
+	}
+	
+	private void enableOrDisableCheckoutButton() {
+		checkoutButton.setDisable(whenCheckoutIsNotPossible());
+	}
+	private boolean whenCheckoutIsNotPossible() {
+		return !useCaseRunner().canReactTo(CheckoutPurchase.class);
 	}
 }

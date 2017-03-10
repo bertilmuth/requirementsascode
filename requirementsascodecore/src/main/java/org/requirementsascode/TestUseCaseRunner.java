@@ -37,21 +37,7 @@ public class TestUseCaseRunner extends UseCaseRunner{
 		};
 	}
 	private String trackStepName(UseCaseStep useCaseStep) {
-		String trackedStepName = useCaseStep.name();
-		
-		if(useCaseStep.name().endsWith(UseCaseStep.REPEAT_STEP_POSTFIX)){
-			trackedStepName = repeatStepNameWithoutPostfix(trackedStepName);
-		} else if(useCaseStep.name().endsWith(UseCaseStep.NEXT_LOOP_ITERATION_STEP_POSTFIX)){
-			trackedStepName = "";
-		} else {
-			trackedStepName = trackedStepName + ";";
-		}
-		return trackedStepName;
-	}
-
-	private String repeatStepNameWithoutPostfix(String trackedStepName) {
-		int repeatIndex = trackedStepName.indexOf(UseCaseStep.REPEAT_STEP_POSTFIX);
-		trackedStepName = trackedStepName.substring(0, repeatIndex) + ";";
+		String trackedStepName = useCaseStep.name() + ";";
 		return trackedStepName;
 	}
 }

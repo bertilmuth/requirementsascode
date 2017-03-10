@@ -6,6 +6,8 @@ public class PurchaseOrder extends ProductContainer {
 	
 	public PurchaseOrder() {
 		super();
+		shippingInformation = new ShippingInformation();
+		paymentDetails = new PaymentDetails();
 	}
 
 	public ShippingInformation shippingInformation() {

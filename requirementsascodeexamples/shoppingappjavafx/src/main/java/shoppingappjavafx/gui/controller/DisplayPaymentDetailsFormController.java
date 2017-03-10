@@ -12,13 +12,14 @@ public class DisplayPaymentDetailsFormController extends AbstractController{
     private PaymentDetails paymentDetails;
     
     @FXML
+    private Button backButton;
+    
+    @FXML
     private VBox vBox;
 	
     @FXML
     private Button confirmButton;
-    
-    @FXML
-    private Button backButton;
+
 
 	@FXML
     void onConfirm(ActionEvent event) {

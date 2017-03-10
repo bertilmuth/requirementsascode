@@ -7,8 +7,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
+import shoppingappjavafx.usecase.event.GoBack;
 
 public class DisplayShippingInformationFormController extends AbstractController{
+	private ShippingInformation shippingInformation;
+	
+    @FXML
+    private Button backButton;
 	
     @FXML
     private VBox vBox;
@@ -33,26 +38,27 @@ public class DisplayShippingInformationFormController extends AbstractController
     
     @FXML
     private TextField countryField;
-
-	private ShippingInformation shippingInformation;
     
     @FXML
     void onConfirm(ActionEvent event) {
-    	initShippingInformationFromForm();
     	EnterShippingInformation enterShippingInformation =  new EnterShippingInformation(shippingInformation);
     	useCaseRunner().reactTo(enterShippingInformation);
     }
-
-	private void initShippingInformationFromForm() {
-		shippingInformation.setName(nameField.getText());
-    	shippingInformation.setStreet(streetField.getText());
-    	shippingInformation.setZip(zipField.getText());
-    	shippingInformation.setCity(cityField.getText());
-    	shippingInformation.setState(stateField.getText());
-    	shippingInformation.setCountry(countryField.getText());
-	}
     
-	public void displayShippingInformationForm() {
-    	this.shippingInformation = new ShippingInformation();
+	@FXML
+    void onBack(ActionEvent event) {
+		GoBack goBack = new GoBack();
+    	useCaseRunner().reactTo(goBack);
+    }
+    
+	public void displayShippingInformationForm(ShippingInformation shippingInformation) {
+    	this.shippingInformation = shippingInformation;
+    	
+    	nameField.textProperty().bindBidirectional(shippingInformation.nameProperty());
+    	streetField.textProperty().bindBidirectional(shippingInformation.streetProperty());
+    	zipField.textProperty().bindBidirectional(shippingInformation.zipProperty());
+    	cityField.textProperty().bindBidirectional(shippingInformation.cityProperty());
+    	stateField.textProperty().bindBidirectional(shippingInformation.stateProperty());
+    	countryField.textProperty().bindBidirectional(shippingInformation.countryProperty());
 	}
 }

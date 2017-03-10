@@ -7,14 +7,14 @@ import org.requirementsascode.UseCaseRunner;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
 	
-	int hoorayCount = 0;
+	int hoorayCounter = 0;
 	
 	public void create(UseCaseModel useCaseModel) {
 		useCaseModel.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(greetUser())
 				.step("S2").system(printHooray())
-					.repeatWhile(thereAreLessThanThreeHoorays());
+					.repeatWhile(lessThanThreeHooraysHaveBeenPrinted());
 		
 	}
 
@@ -22,12 +22,15 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		return () -> System.out.println("Hello, User.");
 	}
 	
-	private Predicate<UseCaseRunner> thereAreLessThanThreeHoorays() {
-		return r -> ++hoorayCount < 3;
+	private Predicate<UseCaseRunner> lessThanThreeHooraysHaveBeenPrinted() {
+		return r -> hoorayCounter < 3; 
 	}
 	
 	private Runnable printHooray() {
-		return () -> System.out.println("Hip, hip, hooray!");
+		return () -> {
+			System.out.println("Hip, hip, hooray!");
+			hoorayCounter++;
+		};
 	}
 	
 	public static void main(String[] args){

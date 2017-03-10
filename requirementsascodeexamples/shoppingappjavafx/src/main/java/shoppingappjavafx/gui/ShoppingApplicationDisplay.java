@@ -9,14 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import shoppingappjavafx.domain.PurchaseOrder;
+import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.gui.controller.AbstractController;
 import shoppingappjavafx.gui.controller.DisplayPaymentDetailsFormController;
 import shoppingappjavafx.gui.controller.DisplayProductsController;
 import shoppingappjavafx.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingappjavafx.gui.controller.DisplayShippingInformationFormController;
 import shoppingappjavafx.usecase.event.Products;
+import shoppingappjavafx.usecaserealization.interfaces.Display;
 
-public class ShoppingApplicationDisplay {
+public class ShoppingApplicationDisplay implements Display{
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
 	private UseCaseRunner useCaseRunner;
 	private Stage primaryStage;
@@ -35,10 +37,10 @@ public class ShoppingApplicationDisplay {
 		displayProductsController.displayShoppingCartSize(purchaseOrder);
 	}
 	
-	public void displayShippingInformationForm(){
+	public void displayShippingInformationForm(ShippingInformation shippingInformation){
 		loadAndDisplay("DisplayShippingInformationForm.fxml");
 		DisplayShippingInformationFormController displayShippingInformationFormController = (DisplayShippingInformationFormController)controller;
-		displayShippingInformationFormController.displayShippingInformationForm();
+		displayShippingInformationFormController.displayShippingInformationForm(shippingInformation);
 	}
 	
 	public void displayPaymentDetailsForm(){

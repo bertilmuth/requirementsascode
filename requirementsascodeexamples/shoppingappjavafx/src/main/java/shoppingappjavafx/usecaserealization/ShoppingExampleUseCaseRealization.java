@@ -7,20 +7,21 @@ import org.requirementsascode.UseCaseRunner;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.gui.ShoppingApplicationDisplay;
 import shoppingappjavafx.usecase.ShoppingExampleUseCaseModel;
 import shoppingappjavafx.usecase.event.AddProductToCart;
+import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
 import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.Products;
+import shoppingappjavafx.usecaserealization.interfaces.Display;
 
 public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseModel{
 	private Stock stock;
-	private ShoppingApplicationDisplay display;
+	private Display display;
 	private PurchaseOrder purchaseOrder;
 
-	public ShoppingExampleUseCaseRealization(Stock stock, ShoppingApplicationDisplay display) {
+	public ShoppingExampleUseCaseRealization(Stock stock, Display display) {
 		this.stock = stock;
 		this.display = display;
 	}
@@ -42,6 +43,11 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {
 		return addProductToCart -> purchaseOrder.addProduct(addProductToCart.get());
 	}
+	
+	@Override
+	protected Consumer<CheckoutPurchase> checkoutPurchase() {
+		return cp -> {;};
+	}
 
 	@Override
 	protected Predicate<UseCaseRunner> lessThen10Products() {
@@ -50,7 +56,7 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 
 	@Override
 	protected Runnable displayShippingInformationForm() {
-		return () -> display.displayShippingInformationForm();
+		return () -> display.displayShippingInformationForm(purchaseOrder.shippingInformation());
 	}
 
 	@Override
@@ -77,9 +83,14 @@ public class ShoppingExampleUseCaseRealization extends ShoppingExampleUseCaseMod
 	protected Consumer<ConfirmPurchase> initiateShipping() {
 		return fp -> {};
 	}
+	
+	@Override
+	protected Predicate<UseCaseRunner> atLeastOneProductInCart() {
+		return r -> purchaseOrder.findProducts().size() > 0;
+	}
 
 	@Override
-	protected Consumer<Throwable> logException() {
+	protected Consumer<Throwable> informUserAndLogException() {
 		return t -> t.printStackTrace();
 	}
 }

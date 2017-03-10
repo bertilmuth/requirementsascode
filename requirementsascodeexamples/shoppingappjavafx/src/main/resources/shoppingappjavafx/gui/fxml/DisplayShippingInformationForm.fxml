@@ -14,6 +14,7 @@
 			<items>
 				<HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
 					<children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBack" text="Back" />
 						<Button fx:id="confirmButton" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
 					</children>
 				</HBox>

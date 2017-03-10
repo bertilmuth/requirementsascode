@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.SystemReaction.continueAfterStepAndCurrentFlowCanBeReentered;
 import static org.requirementsascode.SystemReaction.continueAfterStepAndCurrentFlowCantBeReentered;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
@@ -28,9 +27,6 @@ import org.requirementsascode.exception.NoSuchElementInUseCase;
  *
  */
 public class UseCaseStep extends UseCaseModelElement{
-	static final String REPEAT_STEP_POSTFIX = " (#REPEAT)";
-	static final String NEXT_LOOP_ITERATION_STEP_POSTFIX = " (#NEXT)";
-	
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> previousStepInFlow;
 	private Predicate<UseCaseRunner> predicate;
@@ -520,67 +516,21 @@ public class UseCaseStep extends UseCaseModelElement{
 		
 		/**
 		 * Repeat this step while the condition is fulfilled.
-		 * 
-		 * Note that the specified condition is evaluated the first time after the
-		 * step, so the step is "run" at least one time before checking the repeat condition.
+
+		 * Note that if the condition is not fulfilled after the previous step has been performed,
+		 * the step will not be performed at all.
 		 * 
 		 * @param condition the condition to check
 		 * @return the system part
 		 */
 		public SystemPart<T> repeatWhile(Predicate<UseCaseRunner> condition) {
 			Objects.requireNonNull(condition);
-			
-			String thisStepName = name();
-			
-			UseCaseStep conditionalClonedStep = 
-				createConditionalStepThatBehavesLike(thisStepName, condition);
-
-			createStepThatStartsNextLoopIteration(thisStepName, conditionalClonedStep);
+						
+			Predicate<UseCaseRunner> performIfConditionIsTruePredicate = predicate().and(condition);
+			Predicate<UseCaseRunner> repeatIfConditionIsTruePredicate = afterStep(UseCaseStep.this).and(condition);
+			predicate = performIfConditionIsTruePredicate.or(repeatIfConditionIsTruePredicate);
 			
 			return this;
 		}
-
-		private void createStepThatStartsNextLoopIteration(String thisStepName, UseCaseStep newRepeatStep) {
-			String nextLoopIterationStepName = uniqueNextLoopIterationStepName();
-			newRepeatStep.systemPart()
-				.step(nextLoopIterationStepName)
-					.system(continueAfterStepAndCurrentFlowCanBeReentered(UseCaseStep.this.useCase(), thisStepName));
-		}
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		private UseCaseStep createConditionalStepThatBehavesLike(String thisStepName, Predicate<UseCaseRunner> condition) {
-			String repeatStepName = uniqueRepeatStepName();
-
-			UseCaseStep newRepeatStep = flow(repeatStepName).after(thisStepName).when(condition).step(repeatStepName);
-			newRepeatStep.as(actorPart().actors()).user(eventPart().eventClass()).system((Consumer)systemPart().systemReaction());
-			
-			return newRepeatStep;
-		}
-	}
-	
-	/**
-	 * Returns a unique name for a "repeat" step, to avoid name
-	 * collisions if multiple "repeat" steps exist in the model.
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @return a unique step name
-	 */
-	protected String uniqueRepeatStepName() {
-		return name() + REPEAT_STEP_POSTFIX;
-	}
-	
-	/**
-	 * Returns a unique name for a "next loop iteration" step, to avoid name
-	 * collisions if multiple "next loop iteration" steps exist in the model.
-	 * 
-	 * Overwrite this only if you are not happy with the "automatically created"
-	 * step names in the model.
-	 * 
-	 * @return a unique step name
-	 */
-	protected String uniqueNextLoopIterationStepName() {
-		return name() + NEXT_LOOP_ITERATION_STEP_POSTFIX;
 	}
 }
