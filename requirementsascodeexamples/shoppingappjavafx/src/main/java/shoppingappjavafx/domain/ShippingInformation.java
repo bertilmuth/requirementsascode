@@ -14,7 +14,15 @@ public class ShippingInformation {
 	private StringProperty state = new SimpleStringProperty();
 	private StringProperty country = new SimpleStringProperty();
 	
+	private static final String UNKNOWN = "";
+	
 	public ShippingInformation() {
+		setName(UNKNOWN);
+		setStreet(UNKNOWN);
+		setZip(UNKNOWN);
+		setCity(UNKNOWN);
+		setState(UNKNOWN);
+		setCountry(UNKNOWN);
 	}
 
 	public String getName() {
@@ -53,7 +61,30 @@ public class ShippingInformation {
 	}
 	
 	public StringProperty countryProperty() {return country;}
+	
+	public void setName(String value) {
+		name.set(value);
+	}
 
+	public void setStreet(String value) {
+		street.set(value);
+	}
+
+	public void setZip(String value) {
+		zip.set(value);
+	}
+
+	public void setCity(String value) {
+		city.set(value);
+	}
+
+	public void setState(String value) {
+		state.set(value);
+	}
+
+	public void setCountry(String value) {
+		country.set(value);
+	}
 
 	@Override
 	public String toString() {

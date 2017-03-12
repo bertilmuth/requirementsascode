@@ -1,11 +1,3 @@
-version = '0.2.3'
-
-apply plugin: 'java'
-
-repositories {
-	mavenCentral()
-}
-
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirementsascode - cross cutting concerns',

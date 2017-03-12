@@ -16,16 +16,16 @@ import shoppingappjavafx.gui.controller.DisplayProductsController;
 import shoppingappjavafx.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingappjavafx.gui.controller.DisplayShippingInformationFormController;
 import shoppingappjavafx.usecase.event.Products;
-import shoppingappjavafx.usecaserealization.interfaces.Display;
+import shoppingappjavafx.usecaserealization.IShoppingAppDisplay;
 
-public class ShoppingApplicationDisplay implements Display{
+public class ShoppingAppDisplay implements IShoppingAppDisplay{
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
 	private UseCaseRunner useCaseRunner;
 	private Stage primaryStage;
 	private VBox vBox;
 	private AbstractController controller;
 	
-	public ShoppingApplicationDisplay(UseCaseRunner useCaseRunner, Stage primaryStage) {
+	public ShoppingAppDisplay(UseCaseRunner useCaseRunner, Stage primaryStage) {
 		this.useCaseRunner = useCaseRunner;
 		this.primaryStage = primaryStage;
 }

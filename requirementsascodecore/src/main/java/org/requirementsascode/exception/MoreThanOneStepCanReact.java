@@ -19,7 +19,7 @@ public class MoreThanOneStepCanReact  extends RuntimeException {
 	}
 	
 	private static String exceptionMessage(Collection<UseCaseStep> useCaseSteps) {
-		String message = "System could react to more than one step: ";
+		String message = "System can react to more than one step: ";
 		String useCaseStepsClassNames = useCaseSteps.stream().map(useCaseStep -> useCaseStep.toString())
 				.collect(Collectors.joining(",", message, ""));
 		return useCaseStepsClassNames;

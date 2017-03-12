@@ -1,8 +1,9 @@
 # hello world example 01 - system prints 'Hello, User.'
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
+UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 ...		
-useCaseRunner.useCaseModel().useCase("Get greeted")
+useCaseModel().useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(greetUser());
 
@@ -13,12 +14,13 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world example 02 - system prints 'Hello, User.' and 'Hip, hip, hooray!' three times
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
+UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 ...		
-useCaseRunner.useCaseModel().useCase("Get greeted")
+useCaseModel.useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(greetUser())
 		.step("S2").system(printHooray())
-			.repeatWhile(thereAreLessThanThreeHoorays());
+			.reactWhile(lessThanThreeHooraysHaveBeenPrinted());
 ...
 useCaseRunner.run();
 ```
@@ -28,8 +30,9 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world example 03 - user enters first name, system prints it
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
+UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 ...		
-useCaseRunner.useCaseModel().useCase("Get greeted")
+useCaseModel().useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(promptUserToEnterFirstName())
 		.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName());
@@ -42,8 +45,9 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world example 04 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
+UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 ...		
-useCaseRunner.useCaseModel().useCase("Get greeted")
+useCaseModel().useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(promptUserToEnterFirstName())
 		.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -60,8 +64,9 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world example 05 - user enters name and age, system prints them (with validation)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
+UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 ...		
-useCaseRunner.useCaseModel().useCase("Get greeted")
+useCaseModel.useCase("Get greeted")
 	.basicFlow()
 		.step("S1").system(promptUserToEnterFirstName())
 		.step(S2).user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -71,13 +76,12 @@ useCaseRunner.useCaseModel().useCase("Get greeted")
 		.step("S6").system(stopSystem())
 			
 	.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
-		.step("S4a_1").system(informUserAboutOutOfBoundsAge())
-		.continueAfter(S2)
+		.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+		.step("S5a_2").continueAfter(S2)
 			
 	.flow("Handle non-numerical age").after(S4)
-		.step("S4b_1").handle(NON_NUMERICAL_AGE)
-			.system(informUserAboutNonNumericalAge())
-		.continueAfter(S2);		
+		.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+		.step("S5b_2").continueAfter(S2);		
 ...
 useCaseRunner.run();
 while(!example.systemStopped())
@@ -89,9 +93,8 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world example 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
 ``` java
 UseCaseRunner useCaseRunner = new UseCaseRunner();
-...
 UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
-
+...
 normalUser = useCaseModel.actor("Normal User");
 anonymousUser = useCaseModel.actor("Anonymous User");
 		
@@ -106,13 +109,12 @@ useCaseModel.useCase("Get greeted")
 		.step("S7").as(normalUser, anonymousUser).system(stopSystem())
 			
 	.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
-		.step("S4a_1").system(informUserAboutOutOfBoundsAge())
-		.continueAfter(S2)
+		.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+		.step("S5a_2").continueAfter(S2)
 			
 	.flow("Handle non-numerical age").after(S4)
-		.step("S4b_1").handle(NON_NUMERICAL_AGE)
-			.system(informUserAboutNonNumericalAge())
-		.continueAfter(S2)
+		.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+		.step("S5b_2").continueAfter(S2)
 		
 	.flow("Anonymous greeted with age only").after(S4).when(ageIsOk())
 		.step("S4c_1").as(anonymousUser).continueAfter(S5)

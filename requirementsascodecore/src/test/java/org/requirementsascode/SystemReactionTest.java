@@ -30,6 +30,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	private static final String CUSTOMER_ENTERS_SOME_TEXT_AGAIN = "Customer enters some text again";
 	private static final String CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT = "Customer enters some different text";
 	private static final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
+	private static final String CUSTOMER_ENTERS_SOME_DIFFERENT_NUMBER = "Customer enters some different number";
 		
 	private static final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
 	private static final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
@@ -394,7 +395,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void stepThasHasRightActorButFalsePredicateDoesNotReact() {		
+	public void doesNotReactIfStepHasRightActorButFalsePredicate() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
@@ -608,12 +609,12 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotExecuteRepeatStepWhenConditionNotFulfilled() {		
+	public void doesNotReactWhileConditionNotFulfilled() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
 					.user(EnterText.class).system(displayEnteredText())
-						.repeatWhile(r -> false)
+						.reactWhile(r -> false)
 				.step(CUSTOMER_ENTERS_NUMBER)
 					.user(EnterNumber.class).system(displayEnteredNumber());
 
@@ -624,48 +625,90 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void repeatsStepOnce() {		
+	public void doesNotReactWhileConditionIsFulfilledButInterruptedBefore() {		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
 					.user(EnterText.class).system(displayEnteredText())
-						.repeatWhile(r -> true)
+				.step(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.user(EnterText.class).system(displayEnteredText())
+						.reactWhile(r -> true)
+				.step(CUSTOMER_ENTERS_NUMBER)
+					.user(EnterNumber.class).system(displayEnteredNumber())
+			.flow("Interrupt before customer enters text again").after(CUSTOMER_ENTERS_SOME_TEXT)
+				.step(CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT)
+					.user(EnterText.class).system(displayEnteredText());					
+				
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_DIFFERENT_TEXT + ";", runStepNames());
+	}
+	
+	@Test
+	public void doesNotReactWhileConditionIsFulfilledButInterruptedAfter() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT)
+					.user(EnterText.class).system(displayEnteredText())
+				.step(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+					.user(EnterText.class).system(displayEnteredText())
+						.reactWhile(r -> true)
+				.step(CUSTOMER_ENTERS_NUMBER)
+					.user(EnterNumber.class).system(displayEnteredNumber())
+			.flow("Interrupt after customer enters text again").after(CUSTOMER_ENTERS_SOME_TEXT_AGAIN)
+				.step(CUSTOMER_ENTERS_SOME_DIFFERENT_NUMBER)
+					.user(EnterNumber.class).system(displayEnteredNumber());
+				
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT_AGAIN + ";" +
+			CUSTOMER_ENTERS_SOME_DIFFERENT_NUMBER +";", runStepNames());
+	}
+	
+	@Test
+	public void reactToStepOnce() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT)
+					.user(EnterText.class).system(displayEnteredText())
+						.reactWhile(r -> true)
+				.step(CUSTOMER_ENTERS_NUMBER)
+					.user(EnterNumber.class).system(displayEnteredNumber());
+				
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterText(), enterNumber());
+		
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
+	}
+	
+	@Test
+	public void reactToStepTwice() {		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_SOME_TEXT)
+					.user(EnterText.class).system(displayEnteredText())
+						.reactWhile(r -> true)
 				.step(CUSTOMER_ENTERS_NUMBER)
 					.user(EnterNumber.class).system(displayEnteredNumber());
 				
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
 		
-		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT + ";" + 
+		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT + ";" +
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
 	
 	@Test
-	public void repeatsStepTwice() {		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_SOME_TEXT)
-					.user(EnterText.class).system(displayEnteredText())
-						.repeatWhile(r -> true)
-				.step(CUSTOMER_ENTERS_NUMBER)
-					.user(EnterNumber.class).system(displayEnteredNumber());
-				
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText(), enterText(), enterText(),enterNumber());
-		
-		assertEquals(CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_SOME_TEXT + ";" +
-			CUSTOMER_ENTERS_SOME_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
-	}
-	
-	@Test
-	public void repeatsStepThreeTimes() {		
+	public void reactToStepThreeTimes() {		
 		timesDisplayed = 0;
 		
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_SOME_TEXT)
 					.user(EnterText.class).system(displayEnteredTextAndIncrementCounter())
-						.repeatWhile(r -> timesDisplayed < 3)
+						.reactWhile(r -> timesDisplayed < 3)
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber());
 				
 		// Create way to many events to see if the repeat stops after three events

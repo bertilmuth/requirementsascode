@@ -515,15 +515,18 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
-		 * Repeat this step while the condition is fulfilled.
-
+		 * React to this step's event as long as the condition is fulfilled.
+		 * 
+		 * Even when the condition is fulfilled, the flow can advance given
+		 * that the event of the next step is received.
+		 * 
 		 * Note that if the condition is not fulfilled after the previous step has been performed,
-		 * the step will not be performed at all.
+		 * the step will not react at all.
 		 * 
 		 * @param condition the condition to check
 		 * @return the system part
 		 */
-		public SystemPart<T> repeatWhile(Predicate<UseCaseRunner> condition) {
+		public SystemPart<T> reactWhile(Predicate<UseCaseRunner> condition) {
 			Objects.requireNonNull(condition);
 						
 			Predicate<UseCaseRunner> performIfConditionIsTruePredicate = predicate().and(condition);

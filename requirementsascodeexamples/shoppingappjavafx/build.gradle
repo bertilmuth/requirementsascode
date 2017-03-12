@@ -1,17 +1,12 @@
-version = '0.2.3'
+apply plugin: 'application'
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
-
-repositories {
-	mavenCentral()
-}
+mainClassName = 'shoppingappjavafx.gui.ShoppingAppMain'
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirementsascode - shopping application JavaFX',
                    'Implementation-Version': version
-    }
+	}
 }
 
 dependencies {

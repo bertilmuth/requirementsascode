@@ -14,7 +14,7 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 			.basicFlow()
 				.step("S1").system(greetUser())
 				.step("S2").system(printHooray())
-					.repeatWhile(lessThanThreeHooraysHaveBeenPrinted());
+					.reactWhile(lessThanThreeHooraysHaveBeenPrinted());
 		
 	}
 

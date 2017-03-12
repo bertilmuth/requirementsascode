@@ -1,6 +1,7 @@
 # cross-cutting concerns example 01 - measure performance of system reactions
 ``` java
-UseCaseRunner useCaseRunner = new UseCaseRunner(withMeasuringPerformance());
+UseCaseRunner useCaseRunner = new UseCaseRunner();
+useCaseRunner.adaptSystemReaction(withMeasuringPerformance());
 
 useCaseRunner.useCaseModel().useCase("Measure performance of simple mathematical operations")
 	.basicFlow()
