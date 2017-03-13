@@ -17,10 +17,10 @@ public class TestUseCaseRunner extends UseCaseRunner{
 	}
 	
 	/**
-	 * Returns the names of the use case steps, separated with a semicolon
+	 * Returns the names of the use case steps that have been run, separated with a semicolon
 	 * after each step, without spaces.
 	 * 
-	 * If no step has been run, an empty step is returned.
+	 * If no step has been run, an empty string is returned.
 	 * If one step S1 has been run, the string S1; is returned.
 	 * If two steps, S1 and S2 have been run, the string S1;S2; is returned.
 	 * 
