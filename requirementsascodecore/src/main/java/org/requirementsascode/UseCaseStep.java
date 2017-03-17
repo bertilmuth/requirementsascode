@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.SystemReaction.continueAfterStepAndCurrentFlowCantBeReentered;
+import static org.requirementsascode.SystemReaction.continueAfterStep;
+import static org.requirementsascode.SystemReaction.continueAtStep;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactThan;
@@ -96,8 +97,23 @@ public class UseCaseStep extends UseCaseModelElement{
 	}
 	
 	/**
+	 * Makes the use case runner continue at the specified step.
+	 * If there are alternatives to the specified step, one may be entered
+	 * if its condition is enabled.
+	 * 
+	 * @param stepName name of the step to continue at, in this use case.
+	 * @return the use case this step belongs to, to ease creation of further flows
+	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+	 */
+	public UseCase continueAt(String stepName) {
+		Objects.requireNonNull(stepName);
+		
+		system(continueAtStep(useCase(), stepName));
+		return useCase();
+	}
+	
+	/**
 	 * Makes the use case runner continue after the specified step.
-	 * Note that the current flow is NOT entered immediately, even if it's condition is true.
 	 * 
 	 * @param stepName name of the step to continue after, in this use case.
 	 * @return the use case this step belongs to, to ease creation of further flows
@@ -106,7 +122,7 @@ public class UseCaseStep extends UseCaseModelElement{
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 		
-		system(continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName));
+		system(continueAfterStep(useCase(), stepName));
 		return useCase();
 	}
 	
@@ -312,6 +328,22 @@ public class UseCaseStep extends UseCaseModelElement{
 		}
 		
 		/**
+		 * Makes the use case runner continue at the specified step.
+		 * If there are alternatives to the specified step, one may be entered
+		 * if its condition is enabled.
+		 * 
+		 * @param stepName name of the step to continue at, in this use case.
+		 * @return the use case this step belongs to, to ease creation of further flows
+		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+		 */
+		public UseCase continueAt(String stepName) {
+			Objects.requireNonNull(stepName);
+			
+			system(continueAtStep(useCase(), stepName));
+			return useCase();
+		}
+		
+		/**
 		 * Makes the use case runner continue after the specified step.
 		 * 
 		 * @param stepName name of the step to continue after, in this use case.
@@ -321,7 +353,7 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			system(SystemReaction.continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName));
+			system(continueAfterStep(useCase(), stepName));
 			return useCase();
 		}
 		
@@ -397,7 +429,23 @@ public class UseCaseStep extends UseCaseModelElement{
 		public UseCase continueAfter(String stepName) {
 			Objects.requireNonNull(stepName);
 			
-			system(sr -> continueAfterStepAndCurrentFlowCantBeReentered(useCase(), stepName).run());
+			system(sr -> continueAfterStep(useCase(), stepName).run());
+			return useCase();
+		}
+		
+		/**
+		 * Makes the use case runner continue at the specified step.
+		 * If there are alternatives to the specified step, one may be entered
+		 * if its condition is enabled.
+		 * 
+		 * @param stepName name of the step to continue at, in this use case.
+		 * @return the use case this step belongs to, to ease creation of further flows
+		 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+		 */
+		public UseCase continueAt(String stepName) {
+			Objects.requireNonNull(stepName);
+			
+			system(sr -> continueAtStep(useCase(), stepName).run());
 			return useCase();
 		}
 		

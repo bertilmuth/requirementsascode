@@ -11,13 +11,20 @@ import org.requirementsascode.exception.NoSuchElementInUseCase;
  *
  */
 class SystemReaction {
-	static Runnable continueAfterStepAndCurrentFlowCantBeReentered(UseCase useCase, String stepName) {
-		Optional<UseCaseStep> continueAfterStep = findStepOrThrow(useCase, stepName);
+	static Runnable continueAtStep(UseCase useCase, String stepName) {
+		UseCaseStep continueAtStep = findStepOrThrow(useCase, stepName).get();
+		Optional<UseCaseStep> continueAfterStep = continueAtStep.previousStepInFlow();
 		
-		return () -> {
-			UseCaseRunner useCaseRunner = useCase.useCaseModel().useCaseRunner();
-			useCaseRunner.setLatestStep(continueAfterStep);
-		};
+		return runnerContinueAfter(useCase, continueAfterStep);
+	}
+	
+	static Runnable continueAfterStep(UseCase useCase, String stepName) {
+		Optional<UseCaseStep> continueAfterStep = findStepOrThrow(useCase, stepName);
+		return runnerContinueAfter(useCase, continueAfterStep);
+	}
+	
+	private static Runnable runnerContinueAfter(UseCase useCase, Optional<UseCaseStep> continueAfterStep) {
+		return () -> useCase.useCaseModel().useCaseRunner().setLatestStep(continueAfterStep);
 	}
 
 	private static Optional<UseCaseStep> findStepOrThrow(UseCase useCase, String stepName) {
