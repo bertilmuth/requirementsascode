@@ -17,6 +17,6 @@ public class NoSuchElementInUseCase extends RuntimeException{
 	}
 
 	private static String exceptionMessage(UseCase useCase, String elementName) {
-		return "Element does not exist in use case + " + useCase + ": " + elementName;
+		return "Element does not exist in use case " + useCase + ": " + elementName;
 	}
 }

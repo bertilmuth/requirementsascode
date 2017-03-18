@@ -13,6 +13,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	
 	private static final String S2 = "S2";	
 	private static final String S4 = "S4";	
+	private static final String S5 = "S5";
 	
 	private static final int MIN_AGE = 5;
 	private static final int MAX_AGE = 130;
@@ -27,14 +28,14 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 				.step(S2).user(ENTER_FIRST_NAME).system(saveFirstName())
 				.step("S3").system(promptUserToEnterAge())
 				.step(S4).user(ENTER_AGE).system(saveAge())
-				.step("S5").system(greetUserWithFirstNameAndAge())
+				.step(S5).system(greetUserWithFirstNameAndAge())
 				.step("S6").system(stopSystem())
 					
-			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
+			.flow("Handle out-of-bounds age").at(S5).when(ageIsOutOfBounds())
 				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
 				.step("S5a_2").continueAfter(S2)
 					
-			.flow("Handle non-numerical age").after(S4)
+			.flow("Handle non-numerical age").at(S5)
 				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
 				.step("S5b_2").continueAfter(S2);		
 	}

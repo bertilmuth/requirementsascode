@@ -30,6 +30,18 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void throwsExceptionIfAtStepNotExistsInSameUseCase() {
+		String unknownStepName = "Unknown Step";
+		
+		thrown.expect(NoSuchElementInUseCase.class);
+		thrown.expectMessage(SAY_HELLO_USE_CASE);
+		thrown.expectMessage(unknownStepName);
+		
+		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+			.basicFlow().at(unknownStepName);
+	}
+	
+	@Test
 	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {
 		String unknownStepName = "Unknown Step";
 		
@@ -40,7 +52,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModel.useCase(SAY_HELLO_USE_CASE)
 			.basicFlow().after(unknownStepName);
 	}
-	
 	
 	@Test
 	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {

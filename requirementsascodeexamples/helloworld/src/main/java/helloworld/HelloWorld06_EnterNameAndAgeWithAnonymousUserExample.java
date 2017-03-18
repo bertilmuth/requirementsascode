@@ -12,9 +12,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private static final Class<EnterText> ENTER_AGE = EnterText.class;
 	private static final Class<NumberFormatException> NON_NUMERICAL_AGE = NumberFormatException.class;
 	
+	private static final String S1 = "S1";
 	private static final String S2 = "S2";
+	private static final String S3 = "S3";
 	private static final String S4 = "S4";
 	private static final String S5 = "S5";
+	private static final String S6 = "S6";
 	
 	private static final int MIN_AGE = 5;
 	private static final int MAX_AGE = 130;
@@ -31,27 +34,27 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				
 		useCaseModel.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").as(normalUser).system(promptUserToEnterFirstName())
+				.step(S1).as(normalUser).system(promptUserToEnterFirstName())
 				.step(S2).as(normalUser).user(ENTER_FIRST_NAME).system(saveFirstName())
-				.step("S3").as(normalUser, anonymousUser).system(promptUserToEnterAge())
+				.step(S3).as(normalUser, anonymousUser).system(promptUserToEnterAge())
 				.step(S4).as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
-				.step("S5").as(normalUser).system(greetUserWithFirstName())
-				.step("S6").as(normalUser, anonymousUser).system(greetUserWithAge())
+				.step(S5).as(normalUser).system(greetUserWithFirstName())
+				.step(S6).as(normalUser, anonymousUser).system(greetUserWithAge())
 				.step("S7").as(normalUser, anonymousUser).system(stopSystem())
 					
-			.flow("Handle out-of-bounds age").after(S4).when(ageIsOutOfBounds())
+			.flow("Handle out-of-bounds age").at(S5).when(ageIsOutOfBounds())
 				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
-				.step("S5a_2").continueAfter(S2)
+				.step("S5a_2").continueAt(S3)
 					
-			.flow("Handle non-numerical age").after(S4)
+			.flow("Handle non-numerical age").at(S5)
 				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
-				.step("S5b_2").continueAfter(S2)
+				.step("S5b_2").continueAt(S3)
 				
-			.flow("Anonymous greeted with age only").after(S4).when(ageIsOk())
-				.step("S4c_1").as(anonymousUser).continueAfter(S5)
+			.flow("Anonymous greeted with age only").at(S5).when(ageIsOk())
+				.step("S5c_1").as(anonymousUser).continueAt(S6)
 				
-			.flow("Anonymous does not enter name").atStart()
-				.step("S0a_1").as(anonymousUser).continueAfter(S2);	
+			.flow("Anonymous does not enter name").at(S1)
+				.step("S1a_1").as(anonymousUser).continueAt(S3);	
 	}
 
 	private Runnable promptUserToEnterFirstName() {

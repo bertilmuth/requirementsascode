@@ -31,7 +31,7 @@ class UseCaseStepPredicate {
 		return afterStep(Optional.of(afterThatStep));
 	}
 	
-	private static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
+	static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();
 			boolean isSystemAtRightStep = 

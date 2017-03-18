@@ -104,7 +104,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	/**
-	 * Sets the flow's predicate to start the flow after the specified step, 
+	 * Starts the flow after the specified step, 
 	 * in this flow's use case.
 	 * 
 	 * @param stepName the name of the step to start the flow after
@@ -116,7 +116,25 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	/**
-	 * Sets the flow's predicate to start the flow after the specified step, 
+	 * Starts the flow as an alternative to the specified step,
+	 * in this flow's use case.
+	 * 
+	 * @param stepName the name of the specified step
+	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
+	 * @throws NoSuchElementInUseCase if the specified step is not found in this flow's use case
+	 */
+	public UseCaseFlow at(String stepName) {
+		Optional<UseCaseStep> stepBeforeAtStep = 
+			useCase.findStep(stepName).map(atStep -> atStep.previousStepInFlow())
+				.orElseThrow(() -> new NoSuchElementInUseCase(useCase, stepName));
+
+		flowPredicate.setStepPredicate(afterStep(stepBeforeAtStep));
+	
+		return this;	
+	}
+	
+	/**
+	 * Starts the flow after the specified step, 
 	 * which is contained in the specified use case.
 	 * 
 	 * @param stepName the name of the step to start the flow after
