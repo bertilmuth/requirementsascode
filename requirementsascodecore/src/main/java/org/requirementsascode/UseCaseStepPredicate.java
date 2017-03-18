@@ -42,7 +42,7 @@ class UseCaseStepPredicate {
 	
 	static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
-			Class<?> theStepsEventClass = theStep.eventPart().eventClass();
+			Class<?> theStepsEventClass = theStep.user().eventClass();
 			UseCaseModel useCaseModel = theStep.useCaseModel();
 			
 			Stream<UseCaseStep> otherStepsStream = 

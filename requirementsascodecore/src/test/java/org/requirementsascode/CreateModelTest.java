@@ -90,7 +90,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());	
-		assertEquals(useCaseModel.userActor(), step.actorPart().actors()[0]);
+		assertEquals(useCaseModel.userActor(), step.as().actors()[0]);
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.name());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());	
-		assertEquals(useCaseModel.systemActor(), step.actorPart().actors()[0]);
+		assertEquals(useCaseModel.systemActor(), step.as().actors()[0]);
 	}
 	
 	@Test
@@ -122,7 +122,7 @@ public class CreateModelTest extends AbstractTestCase{
 		UseCaseStep step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.name());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());	
-		assertEquals(useCaseModel.systemActor(), step.actorPart().actors()[0]);
+		assertEquals(useCaseModel.systemActor(), step.as().actors()[0]);
 	}
 	
 	@Test
@@ -140,7 +140,7 @@ public class CreateModelTest extends AbstractTestCase{
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());
 		assertTrue(useCaseModel.hasActor(customer.name()));
-		assertEquals(customer, step.actorPart().actors()[0]);
+		assertEquals(customer, step.as().actors()[0]);
 	}
 	
 	@Test
@@ -174,7 +174,7 @@ public class CreateModelTest extends AbstractTestCase{
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());		
-		assertEquals(customer, step.actorPart().actors()[0]);
+		assertEquals(customer, step.as().actors()[0]);
 	}
 	
 	@Test
@@ -194,13 +194,13 @@ public class CreateModelTest extends AbstractTestCase{
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
 		assertEquals(SAY_HELLO_USE_CASE, step.useCase().name());		
-		assertEquals(customer, step.actorPart().actors()[0]);
+		assertEquals(customer, step.as().actors()[0]);
 		
 		steps = anotherActor.steps(useCase);
 		step = steps.get(0);
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
-		assertEquals(anotherActor, step.actorPart().actors()[1]);
+		assertEquals(anotherActor, step.as().actors()[1]);
 	}
 	
 	@Test
@@ -375,8 +375,8 @@ public class CreateModelTest extends AbstractTestCase{
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();
-		Actor actor1 = stepsIt.next().actorPart().actors()[0];
-		Actor actor2 = stepsIt.next().actorPart().actors()[0];
+		Actor actor1 = stepsIt.next().as().actors()[0];
+		Actor actor2 = stepsIt.next().as().actors()[0];
 		
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
@@ -399,8 +399,8 @@ public class CreateModelTest extends AbstractTestCase{
 		assertEquals(2, steps.size());
 		
 		Iterator<UseCaseStep> stepsIt = steps.iterator();
-		Actor actor1 = stepsIt.next().actorPart().actors()[0];
-		Actor actor2 = stepsIt.next().actorPart().actors()[0];
+		Actor actor1 = stepsIt.next().as().actors()[0];
+		Actor actor2 = stepsIt.next().as().actors()[0];
 		
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);

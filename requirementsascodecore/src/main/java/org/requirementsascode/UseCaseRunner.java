@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.requirementsascode.UseCaseStep.ActorPart;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.UnhandledException;
@@ -254,7 +253,7 @@ public class UseCaseRunner {
 	}
 	
 	private <T> UseCaseStep triggerSystemReactionForStep(T event, UseCaseStep useCaseStep) {
-		if(useCaseStep.systemPart() == null){
+		if(useCaseStep.system() == null){
 			throw new MissingUseCaseStepPart(useCaseStep, "system");
 		}
 		
@@ -287,7 +286,7 @@ public class UseCaseRunner {
 	}
 
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
-		ActorPart actorPart = useCaseStep.actorPart();
+		UseCaseStepAs actorPart = useCaseStep.as();
 		if(actorPart == null){
 			throw(new MissingUseCaseStepPart(useCaseStep, "actor"));
 		}
@@ -299,7 +298,7 @@ public class UseCaseRunner {
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.eventPart().eventClass();
+		Class<?> stepEventClass = useCaseStep.user().eventClass();
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	
