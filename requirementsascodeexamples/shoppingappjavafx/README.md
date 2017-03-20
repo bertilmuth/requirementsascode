@@ -1,4 +1,4 @@
-#Shopping Application (JavaFX)
+# Shopping Application (JavaFX)
 Small, simplistic application that demonstrates a "shopping-like" use case:
 * The customer can buy up to 10 items
 * The customer then enters shipping information
@@ -19,7 +19,7 @@ react to under which conditions because it is configured by the use case model, 
 each event to a single method in the backend. 
 All communication from frontend to backend is channeled through the use case runner.
 
-#Getting started
+# Getting started
 * Download the latest shoppingappjavafx zip file from the [Releases](https://github.com/bertilmuth/requirementsascode/releases) tab.
 * Extract it to a local folder, and run the batch file from the bin folder
 Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
