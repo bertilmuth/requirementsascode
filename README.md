@@ -27,6 +27,11 @@ Unix:
 ``` java
 java -cp "helloworld-0.3.0.jar:requirementsascodecore-0.3.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
+The same principle applys to all example projects: you need to put the example jar
+on the classpath, and the requirementsascodecore jar.
+
+Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
+the e(fx)clipse plugin.
 
 Build tool support will be available in the future.
 
@@ -38,7 +43,7 @@ Build tool support will be available in the future.
 * Perform impact analysis of changes: how does a change to a requirement affect the software components?
 * Always up-to-date traceability from requirements to code (inside the code)
 * Clear separation between requirements and realization, making technological changes easier
-* Clear separation between user interface and backend, making it easier to test the application without user interface, and vary or change the user interface.
+* Clear separation between user interface and backend, making it easier to test the application without user interface, and vary or change the user interface
 
 In the future it will also be possible to generate always up-to-date documentation from the code 
 that documents how the application really works.

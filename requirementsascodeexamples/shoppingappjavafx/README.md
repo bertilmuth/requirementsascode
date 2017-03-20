@@ -18,3 +18,9 @@ The frontend sends events to the use case runner. The runner, knowing which even
 react to under which conditions because it is configured by the use case model, forwards 
 each event to a single method in the backend. 
 All communication from frontend to backend is channeled through the use case runner.
+
+#Getting started
+* Download the latest shoppingappjavafx zip file from the [Releases](https://github.com/bertilmuth/requirementsascode/releases) tab.
+* Extract it to a local folder, and run the batch file from the bin folder
+Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
+the e(fx)clipse plugin.
