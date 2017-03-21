@@ -75,7 +75,6 @@ public class UseCaseRunner {
 	 * to its original defaults ("no flow has been run, no step has been run").
 	 */
 	public void restart() {
-		setLatestFlow(Optional.empty());
 		setLatestStep(Optional.empty());
 	}
 	
@@ -258,7 +257,6 @@ public class UseCaseRunner {
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
-		setLatestFlow(Optional.of(useCaseStep.flow()));
 		
 		try {
 			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
@@ -319,6 +317,9 @@ public class UseCaseRunner {
 	
 	/**
 	 * Sets the latest step run by the use case runner.
+	 * Implicitly, this also sets the latest flow to the flow 
+	 * that contains the step.
+	 * 
 	 * Use this method if you want to restore some previous state,
 	 * normally you should influence the behavior of the runner by
 	 * calling {@link #reactTo(Object)}.
@@ -327,6 +328,7 @@ public class UseCaseRunner {
 	 */
 	public void setLatestStep(Optional<UseCaseStep> latestStep) {		
 		this.latestStep = latestStep;
+		this.latestFlow = latestStep.map(s -> s.flow());
 	}
 	
 	/**
@@ -337,17 +339,5 @@ public class UseCaseRunner {
 	 */
 	public Optional<UseCaseFlow> latestFlow() {
 		return latestFlow;
-	}
-	
-	/**
-	 * Sets the latest flow run by the use case runner.
-	 * Use this method if you want to restore some previous state,
-	 * normally you should influence the behavior of the runner by
-	 * calling {@link #reactTo(Object)}.
-	 * 
-	 * @param latestFlow the latest flow run
-	 */
-	public void setLatestFlow(Optional<UseCaseFlow> latestFlow) {
-		this.latestFlow = latestFlow;
 	}
 }

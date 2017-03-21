@@ -23,8 +23,12 @@ class SystemReaction {
 		return runnerContinueAfter(useCase, continueAfterStep);
 	}
 	
-	private static Runnable runnerContinueAfter(UseCase useCase, Optional<UseCaseStep> continueAfterStep) {
-		return () -> useCase.useCaseModel().useCaseRunner().setLatestStep(continueAfterStep);
+	private static Runnable runnerContinueAfter(UseCase useCase, Optional<UseCaseStep> step) {
+		return () -> {
+			UseCaseRunner useCaseRunner = useCase.useCaseModel().useCaseRunner();
+			
+			useCaseRunner.setLatestStep(step);
+		};
 	}
 
 	private static Optional<UseCaseStep> findStepOrThrow(UseCase useCase, String stepName) {
