@@ -27,7 +27,7 @@ Unix:
 ``` java
 java -cp "helloworld-0.3.0.jar:requirementsascodecore-0.3.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
-The same principle applys to all example projects: you need to put the example jar
+The same principle applies to all example projects: you need to put the example jar
 on the classpath, and the requirementsascodecore jar.
 
 Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
