@@ -2,6 +2,7 @@
 Small, simplistic application that demonstrates a "shopping-like" use case:
 * The customer can buy up to 10 items
 * The customer then enters shipping information
+* The customer enters payment information (well, not really)
 * The system shows the customer a summary of the entered data, and the customer
 finishes and return to the main page.
 
