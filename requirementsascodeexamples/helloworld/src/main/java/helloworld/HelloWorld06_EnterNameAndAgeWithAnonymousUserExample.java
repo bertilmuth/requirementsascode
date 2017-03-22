@@ -42,18 +42,18 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.step(S6).as(normalUser, anonymousUser).system(greetUserWithAge())
 				.step("S7").as(normalUser, anonymousUser).system(stopSystem())
 					
-			.flow("Handle out-of-bounds age").at(S5).when(ageIsOutOfBounds())
+			.flow("Handle out-of-bounds age").insteadOf(S5).when(ageIsOutOfBounds())
 				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
 				.step("S5a_2").continueAt(S3)
 					
-			.flow("Handle non-numerical age").at(S5)
+			.flow("Handle non-numerical age").insteadOf(S5)
 				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
 				.step("S5b_2").continueAt(S3)
 				
-			.flow("Anonymous greeted with age only").at(S5).when(ageIsOk())
+			.flow("Anonymous greeted with age only").insteadOf(S5).when(ageIsOk())
 				.step("S5c_1").as(anonymousUser).continueAt(S6)
 				
-			.flow("Anonymous does not enter name").at(S1)
+			.flow("Anonymous does not enter name").insteadOf(S1)
 				.step("S1a_1").as(anonymousUser).continueAt(S3);	
 	}
 

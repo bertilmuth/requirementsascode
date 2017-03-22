@@ -104,8 +104,9 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	/**
-	 * Starts the flow after the specified step, 
-	 * in this flow's use case.
+	 * Starts the flow after the specified step has been run, 
+	 * in this flow's use case. You should use after to handle exceptions
+	 * that occured in the specified step.
 	 * 
 	 * @param stepName the name of the step to start the flow after
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
@@ -123,7 +124,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
 	 * @throws NoSuchElementInUseCase if the specified step is not found in this flow's use case
 	 */
-	public UseCaseFlow at(String stepName) {
+	public UseCaseFlow insteadOf(String stepName) {
 		Optional<UseCaseStep> stepBeforeAtStep = 
 			useCase.findStep(stepName).map(atStep -> atStep.previousStepInFlow())
 				.orElseThrow(() -> new NoSuchElementInUseCase(useCase, stepName));

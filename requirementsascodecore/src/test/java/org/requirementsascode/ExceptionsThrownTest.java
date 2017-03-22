@@ -31,13 +31,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfAtStepNotExistsInSameUseCase() {		
+	public void throwsExceptionIfInsteadOfStepNotExistsInSameUseCase() {		
 		thrown.expect(NoSuchElementInUseCase.class);
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModel.useCase(USE_CASE)
-			.basicFlow().at(CUSTOMER_ENTERS_TEXT);
+			.basicFlow().insteadOf(CUSTOMER_ENTERS_TEXT);
 	}
 	
 	@Test

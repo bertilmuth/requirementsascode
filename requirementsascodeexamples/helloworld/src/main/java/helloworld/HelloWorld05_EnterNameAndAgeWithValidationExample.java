@@ -31,11 +31,11 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 				.step(S5).system(greetUserWithFirstNameAndAge())
 				.step("S6").system(stopSystem())
 					
-			.flow("Handle out-of-bounds age").at(S5).when(ageIsOutOfBounds())
+			.flow("Handle out-of-bounds age").insteadOf(S5).when(ageIsOutOfBounds())
 				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
 				.step("S5a_2").continueAfter(S2)
 					
-			.flow("Handle non-numerical age").at(S5)
+			.flow("Handle non-numerical age").insteadOf(S5)
 				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
 				.step("S5b_2").continueAfter(S2);		
 	}
