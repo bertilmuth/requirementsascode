@@ -8,13 +8,14 @@ import org.requirementsascode.UseCaseRunner;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.ShoppingAppUseCaseModelCreator;
-import shoppingappjavafx.usecaserealization.ShoppingAppUseCaseRealization;
+import shoppingappjavafx.usecase.BuyProductRealization;
+import shoppingappjavafx.usecase.UseCaseModelCreator;
+import shoppingappjavafx.usecaserealization.ShoppingAppBuyProductRealization;
 
-public class ShoppingAppMain extends Application {
+public class JavafxMain extends Application {
 	private Stock stock;
 	private UseCaseRunner useCaseRunner;
-	private ShoppingAppDisplay display;
+	private JavafxDisplay display;
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
@@ -33,15 +34,15 @@ public class ShoppingAppMain extends Application {
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
-		this.display = new ShoppingAppDisplay(useCaseRunner, primaryStage);
+		this.display = new JavafxDisplay(useCaseRunner, primaryStage);
 		primaryStage.setTitle("Shopping Application (JavaFX) - Requirements as Code");
 		primaryStage.show();		
 	}
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {		
 		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
-		ShoppingAppUseCaseRealization shoppingAppUseCaseRealization = new ShoppingAppUseCaseRealization(stock, display);
-		new ShoppingAppUseCaseModelCreator(shoppingAppUseCaseRealization).create(useCaseModel);
+		BuyProductRealization buyProductRealization = new ShoppingAppBuyProductRealization(stock, display);
+		new UseCaseModelCreator(buyProductRealization).create(useCaseModel);
 		useCaseRunner.run();
 	}
 

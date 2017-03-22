@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = 'shoppingappjavafx.gui.ShoppingAppMain'
+mainClassName = 'shoppingappjavafx.gui.JavafxMain'
 
 jar {
     manifest {

@@ -13,7 +13,7 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.GoBack;
 
-public class ShoppingAppUseCaseModelCreator{
+public class UseCaseModelCreator{
 	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
 	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
 	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
@@ -22,10 +22,10 @@ public class ShoppingAppUseCaseModelCreator{
 	private static final Class<GoBack> GO_BACK = GoBack.class;
 	private static final Class<Throwable> EXCEPTION = Throwable.class;
 	
-	private IShoppingAppUseCaseRealization useCaseRealization;
+	private BuyProductRealization buyProductRealization;
 
-	public ShoppingAppUseCaseModelCreator(IShoppingAppUseCaseRealization shoppingAppUseCaseRealization){
-		this.useCaseRealization = shoppingAppUseCaseRealization;
+	public UseCaseModelCreator(BuyProductRealization buyProductRealization){
+		this.buyProductRealization = buyProductRealization;
 	}
 	
 	public void create(UseCaseModel useCaseModel) {		
@@ -52,17 +52,17 @@ public class ShoppingAppUseCaseModelCreator{
 		return r -> true;
 	}
 
-	protected Runnable startWithEmptyShoppingCart() {return useCaseRealization::startWithEmptyShoppingCart;}
-	protected Runnable displayProducts() {return useCaseRealization::displayProducts;}
-	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {return useCaseRealization::addProductToPurchaseOrder;}
-	protected Predicate<UseCaseRunner> lessThan10Products() {return useCaseRealization::lessThen10Products;}
-	protected Consumer<CheckoutPurchase> checkoutPurchase() {return useCaseRealization::checkoutPurchase;}
-	protected Runnable displayShippingInformationForm() {return useCaseRealization::displayShippingInformationForm;}
-	protected Consumer<EnterShippingInformation> saveShippingInformation() {return useCaseRealization::saveShippingInformation;}
-	protected Runnable displayPaymentDetailsForm() {return useCaseRealization::displayPaymentDetailsForm;}
-	protected Consumer<EnterPaymentDetails> savePaymentDetails() {return useCaseRealization::savePaymentDetails;}
-	protected Runnable displayPurchaseOrderSummary() {return useCaseRealization::displayPurchaseOrderSummary;}
-	protected Consumer<ConfirmPurchase> initiateShipping() {return useCaseRealization::initiateShipping;}
-	protected Predicate<UseCaseRunner> atLeastOneProductInCart() {return useCaseRealization::atLeastOneProductInCart;}
-	protected Consumer<Throwable> informUserAndLogException() {return useCaseRealization::informUserAndLogException;}
+	protected Runnable startWithEmptyShoppingCart() {return buyProductRealization::startWithEmptyShoppingCart;}
+	protected Runnable displayProducts() {return buyProductRealization::displayProducts;}
+	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {return buyProductRealization::addProductToPurchaseOrder;}
+	protected Predicate<UseCaseRunner> lessThan10Products() {return buyProductRealization::lessThen10Products;}
+	protected Consumer<CheckoutPurchase> checkoutPurchase() {return buyProductRealization::checkoutPurchase;}
+	protected Runnable displayShippingInformationForm() {return buyProductRealization::displayShippingInformationForm;}
+	protected Consumer<EnterShippingInformation> saveShippingInformation() {return buyProductRealization::saveShippingInformation;}
+	protected Runnable displayPaymentDetailsForm() {return buyProductRealization::displayPaymentDetailsForm;}
+	protected Consumer<EnterPaymentDetails> savePaymentDetails() {return buyProductRealization::savePaymentDetails;}
+	protected Runnable displayPurchaseOrderSummary() {return buyProductRealization::displayPurchaseOrderSummary;}
+	protected Consumer<ConfirmPurchase> initiateShipping() {return buyProductRealization::initiateShipping;}
+	protected Predicate<UseCaseRunner> atLeastOneProductInCart() {return buyProductRealization::atLeastOneProductInCart;}
+	protected Consumer<Throwable> informUserAndLogException() {return buyProductRealization::informUserAndLogException;}
 }

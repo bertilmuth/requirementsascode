@@ -8,7 +8,7 @@ import shoppingappjavafx.usecase.event.ConfirmPurchase;
 import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 
-public interface IShoppingAppUseCaseRealization {
+public interface BuyProductRealization {
 	void startWithEmptyShoppingCart();
 	void displayProducts();
 	void addProductToPurchaseOrder(AddProductToCart addProductToCart);

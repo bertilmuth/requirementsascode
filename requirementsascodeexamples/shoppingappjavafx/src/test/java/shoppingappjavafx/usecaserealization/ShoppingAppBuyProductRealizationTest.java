@@ -13,15 +13,15 @@ import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.ShoppingAppUseCaseModelCreator;
+import shoppingappjavafx.usecase.UseCaseModelCreator;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
 import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
-import shoppingappjavafx.usecaserealization.stubs.ShoppingApplicationDisplayStub;
+import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
-public class ShoppingExampleUseCaseRealizationTest {
+public class ShoppingAppBuyProductRealizationTest {
 	private TestUseCaseRunner useCaseRunner;
 	private UseCaseModel useCaseModel;
 
@@ -31,11 +31,11 @@ public class ShoppingExampleUseCaseRealizationTest {
 		useCaseModel = useCaseRunner.useCaseModel();
 		
 		Stock stock = new Stock();
-		IShoppingAppDisplay shoppingApplicationDisplayStub = new ShoppingApplicationDisplayStub();
+		Display displayStub = new DisplayStub();
 		
-		ShoppingAppUseCaseRealization shoppingAppUseCaseRealization =
-			new ShoppingAppUseCaseRealization(stock, shoppingApplicationDisplayStub);
-		new ShoppingAppUseCaseModelCreator(shoppingAppUseCaseRealization).create(useCaseModel);
+		ShoppingAppBuyProductRealization shoppingAppUseCaseRealization =
+			new ShoppingAppBuyProductRealization(stock, displayStub);
+		new UseCaseModelCreator(shoppingAppUseCaseRealization).create(useCaseModel);
 	}
 
 	@Test

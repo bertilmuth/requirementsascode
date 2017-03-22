@@ -4,7 +4,7 @@ import org.requirementsascode.UseCaseRunner;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.IShoppingAppUseCaseRealization;
+import shoppingappjavafx.usecase.BuyProductRealization;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
@@ -12,12 +12,12 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.Products;
 
-public class ShoppingAppUseCaseRealization implements IShoppingAppUseCaseRealization{
+public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	private Stock stock;
-	private IShoppingAppDisplay display;
+	private Display display;
 	private PurchaseOrder purchaseOrder;
 
-	public ShoppingAppUseCaseRealization(Stock stock, IShoppingAppDisplay display) {
+	public ShoppingAppBuyProductRealization(Stock stock, Display display) {
 		this.stock = stock;
 		this.display = display;
 	}

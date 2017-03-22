@@ -3,9 +3,9 @@ package shoppingappjavafx.usecaserealization.stubs;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.usecase.event.Products;
-import shoppingappjavafx.usecaserealization.IShoppingAppDisplay;
+import shoppingappjavafx.usecaserealization.Display;
 
-public class ShoppingApplicationDisplayStub implements IShoppingAppDisplay {
+public class DisplayStub implements Display {
 	public void displayProductsAndShoppingCartSize(Products products, PurchaseOrder purchaseOrder){
 	}
 	
