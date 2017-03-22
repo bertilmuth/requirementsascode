@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import static org.requirementsascode.SystemReaction.continueAfterStep;
 import static org.requirementsascode.SystemReaction.continueAtStep;
+import static org.requirementsascode.SystemReaction.continueExclusivelyAtStep;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactThan;
@@ -107,8 +108,11 @@ public class UseCaseStep extends UseCaseModelElement {
 
 	/**
 	 * Makes the use case runner continue at the specified step. If there are
-	 * alternatives to the specified step, one may be entered if its condition
-	 * is enabled.
+	 * alternative flows starting at the specified step, one may be entered if
+	 * its condition is enabled.
+	 * 
+	 * Note: the runner continues at the step only if its predicate is true, and
+	 * actor is right.
 	 * 
 	 * @param stepName
 	 *            name of the step to continue at, in this use case.
@@ -122,6 +126,29 @@ public class UseCaseStep extends UseCaseModelElement {
 		Objects.requireNonNull(stepName);
 
 		system(continueAtStep(useCase(), stepName));
+		return useCase();
+	}
+
+	/**
+	 * Makes the use case runner continue at the specified step. No alternative
+	 * flow starting at the specified step is entered, even if its condition is
+	 * enabled.
+	 * 
+	 * Note: the runner continues at the step only if its predicate is true, and
+	 * actor is right.
+	 * 
+	 * @param stepName
+	 *            name of the step to continue at, in this use case.
+	 * @return the use case this step belongs to, to ease creation of further
+	 *         flows
+	 * @throws NoSuchElementInUseCase
+	 *             if no step with the specified stepName is found in the
+	 *             current use case
+	 */
+	public UseCase continueExclusivelyAt(String stepName) {
+		Objects.requireNonNull(stepName);
+
+		system(continueExclusivelyAtStep(useCase(), stepName));
 		return useCase();
 	}
 

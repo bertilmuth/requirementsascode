@@ -15,12 +15,8 @@ import org.requirementsascode.exception.NoSuchElementInUseCase;
 import org.requirementsascode.exception.UnhandledException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{
-	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
 	private static final String EXCEPTION_THROWING_USE_CASE = "Exception Throwing Use Case";
-	
-	private static final String ALTERNATIVE_FLOW_STEP = "Alternative Flow Step";
-	private static final String BASIC_FLOW_STEP = "Basic Flow Step";
-	
+		
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 	
@@ -30,44 +26,38 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfAtStepNotExistsInSameUseCase() {
-		String unknownStepName = "Unknown Step";
-		
+	public void throwsExceptionIfAtStepNotExistsInSameUseCase() {		
 		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(SAY_HELLO_USE_CASE);
-		thrown.expectMessage(unknownStepName);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow().at(unknownStepName);
+		useCaseModel.useCase(USE_CASE)
+			.basicFlow().at(CUSTOMER_ENTERS_TEXT);
 	}
 	
 	@Test
-	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {
-		String unknownStepName = "Unknown Step";
-		
+	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {		
 		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(SAY_HELLO_USE_CASE);
-		thrown.expectMessage(unknownStepName);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow().after(unknownStepName);
+		useCaseModel.useCase(USE_CASE)
+			.basicFlow().after(CUSTOMER_ENTERS_TEXT);
 	}
 	
 	@Test
-	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {
-		String unknwonStepName = "Unknown Step";
-		
+	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {		
 		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(SAY_HELLO_USE_CASE);
-		thrown.expectMessage(unknwonStepName);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CUSTOMER_ENTERS_DIFFERENT_TEXT);
 		
 		useCaseModel
-			.useCase(SAY_HELLO_USE_CASE).basicFlow()
-				.step(BASIC_FLOW_STEP);
+			.useCase(USE_CASE).basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModel
-			.useCase("Another Use Case").basicFlow()
-				.after(unknwonStepName, SAY_HELLO_USE_CASE);
+			.useCase(ANOTHER_USE_CASE).basicFlow()
+				.after(CUSTOMER_ENTERS_DIFFERENT_TEXT, USE_CASE);
 	}
 	
 	@Test
@@ -78,116 +68,102 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(unknownUseCaseName);
 		
 		useCaseModel
-			.useCase(SAY_HELLO_USE_CASE).basicFlow()
-				.step(BASIC_FLOW_STEP);
+			.useCase(USE_CASE).basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModel
 			.useCase("Another Use Case").basicFlow()
-				.after(BASIC_FLOW_STEP, unknownUseCaseName);
+				.after(CUSTOMER_ENTERS_TEXT, unknownUseCaseName);
 	}
 	
 	
 	@Test
-	public void throwsExceptionIfContinueAfterNotExists() {
-		String unknownStepName = "Unknown Step";
-		
+	public void throwsExceptionIfContinueAfterNotExists() {		
 		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(SAY_HELLO_USE_CASE);
-		thrown.expectMessage(unknownStepName);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CONTINUE_1);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
-			.basicFlow().step("S1").continueAfter(unknownStepName);
+		useCaseModel.useCase(USE_CASE)
+			.basicFlow().step("S1").continueAfter(CONTINUE_1);
 	}
 	
 	@Test
-	public void throwsExceptionIfActorIsCreatedTwice() {
-		String name = "Duplicate Actor";
-		
+	public void throwsExceptionIfActorIsCreatedTwice() {		
 		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(name);
+		thrown.expectMessage(CUSTOMER);
 		
-		useCaseModel.actor(name);
-		useCaseModel.actor(name);
+		useCaseModel.actor(CUSTOMER);
+		useCaseModel.actor(CUSTOMER);
 	}
 	
 	@Test
-	public void throwsExceptionIfUseCaseIsCreatedTwice() {
-		String duplicateUseCaseName = "Duplicate Use Case";
-		
+	public void throwsExceptionIfUseCaseIsCreatedTwice() {		
 		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(duplicateUseCaseName);
+		thrown.expectMessage(USE_CASE);
 		
-		useCaseModel.useCase(duplicateUseCaseName);
-		useCaseModel.useCase(duplicateUseCaseName);
+		useCaseModel.useCase(USE_CASE);
+		useCaseModel.useCase(USE_CASE);
 	}
 	
 	@Test
-	public void throwsExceptionIfFlowIsCreatedTwice() {
-		String duplicateFlowName = "Duplicate Flow";
-		
+	public void throwsExceptionIfFlowIsCreatedTwice() {		
 		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(duplicateFlowName);
+		thrown.expectMessage(ALTERNATIVE_FLOW);
 		
-		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
-			.flow(duplicateFlowName);
+		useCaseModel.useCase(USE_CASE)
+			.flow(ALTERNATIVE_FLOW);
 			
-		useCaseModel.findUseCase(EXCEPTION_THROWING_USE_CASE).get()
-			.flow(duplicateFlowName);
+		useCaseModel.findUseCase(USE_CASE).get()
+			.flow(ALTERNATIVE_FLOW);
 	}
 	
 	@Test
-	public void throwsExceptionIfStepIsCreatedTwice() {
-		String duplicateStepName = "Duplicate Step";
-		
+	public void throwsExceptionIfStepIsCreatedTwice() {		
 		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(duplicateStepName);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
 			.basicFlow()
-				.step(duplicateStepName).system(displayConstantText())			
-				.step(duplicateStepName).system(displayConstantText());
+				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())			
+				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText());
 	}
 	
 	@Test
 	public void throwsExceptionIfMoreThanOneStepCouldReact() { 	 
 		thrown.expect(MoreThanOneStepCanReact.class);
-		thrown.expectMessage(BASIC_FLOW_STEP);
-		thrown.expectMessage(ALTERNATIVE_FLOW_STEP);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
+		thrown.expectMessage(CUSTOMER_ENTERS_DIFFERENT_TEXT);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow().when(run -> true)
-				.step(BASIC_FLOW_STEP).system(displayConstantText())
-			.flow("Alternative Flow: Could react as well").when(run -> true)
-				.step(ALTERNATIVE_FLOW_STEP).system(displayConstantText());
+				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())
+			.flow(ALTERNATIVE_FLOW).when(run -> true)
+				.step(CUSTOMER_ENTERS_DIFFERENT_TEXT).system(displayConstantText());
 		
 		useCaseRunner.run();
 	}
 	
 	@Test
-	public void throwsExceptionIfActorPartIsNotSpecified() {
-		String stepWithoutActor = "Step without actor";
-		
+	public void throwsExceptionIfActorPartIsNotSpecified() {		
 		thrown.expect(MissingUseCaseStepPart.class);
-		thrown.expectMessage(stepWithoutActor);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
-				.step(stepWithoutActor);
+				.step(CUSTOMER_ENTERS_TEXT);
 			
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText());		
 	}
 	
 	@Test
-	public void throwsExceptionIfSystemPartIsNotSpecified() {
-		String stepWithoutSystemReaction = "Step without system";
-		
+	public void throwsExceptionIfSystemPartIsNotSpecified() {		
 		thrown.expect(MissingUseCaseStepPart.class);
-		thrown.expectMessage(stepWithoutSystemReaction);
+		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
-				.step(stepWithoutSystemReaction)
+				.step(CUSTOMER_ENTERS_TEXT)
 					.as(customer).user(EnterText.class);
 			
 		useCaseRunner.runAs(customer);
@@ -195,15 +171,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsUncaughtExceptionIfExceptionIsNotHandled() {
-		String stepThatThrowsException = "Step that throws exception";
-		
+	public void throwsUncaughtExceptionIfExceptionIsNotHandled() {		
 		thrown.expect(UnhandledException.class);
 		thrown.expectCause(isA(IllegalStateException.class));
 		
-		useCaseModel.useCase(SAY_HELLO_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 		.basicFlow()
-			.step(stepThatThrowsException)
+			.step(CUSTOMER_ENTERS_TEXT)
 				.system(() -> {throw new IllegalStateException();});
 		
 		useCaseRunner.run();

@@ -8,6 +8,30 @@ import org.requirementsascode.event.EnterNumber;
 import org.requirementsascode.event.EnterText;
 
 public abstract class AbstractTestCase {
+	protected final String CUSTOMER = "Customer";
+	
+	protected final String USE_CASE = "Use Case";
+	protected final String ANOTHER_USE_CASE = "Another Use Case";
+
+	protected final String BASIC_FLOW = "Basic Flow";
+	protected final String ALTERNATIVE_FLOW = "Alternative Flow";
+	
+	protected final String SYSTEM_DISPLAYS_TEXT = "System displays text";
+	protected final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
+	protected final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
+
+	protected final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
+	protected final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
+	protected final String CUSTOMER_ENTERS_DIFFERENT_TEXT = "Customer enters different text";
+	protected final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
+	protected final String CUSTOMER_ENTERS_DIFFERENT_NUMBER = "Customer enters different number";
+		
+	protected final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
+	protected final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
+
+	protected final String CONTINUE_1 = "Continue 1";
+	protected final String CONTINUE_2 = "Continue 2";
+	
 	protected Actor customer;
 	protected TestUseCaseRunner useCaseRunner;
 	protected UseCaseModel useCaseModel;
@@ -17,7 +41,7 @@ public abstract class AbstractTestCase {
 	protected void setupWith(TestUseCaseRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;
 		this.useCaseModel = useCaseRunner.useCaseModel();
-		this.customer = useCaseModel.actor("Customer");
+		this.customer = useCaseModel.actor(CUSTOMER);
 		
 		displayedText = null;
 	}
@@ -47,21 +71,18 @@ public abstract class AbstractTestCase {
 	protected Runnable displayConstantText() {
 		return () -> {
 			displayedText = "Hello, Basic Flow!";
-			System.out.println(displayedText);
 		};
 	}
 	
 	protected Consumer<EnterText> displayEnteredText() {
 		return enterText -> {
 			displayedText = enterText.toString();
-			System.out.println(displayedText);
 		};
 	}
 	
 	protected Consumer<EnterNumber> displayEnteredNumber() {
 		return enterNumber -> {
 			displayedText = enterNumber.value.toString();
-			System.out.println(displayedText);
 		};
 	}
 	

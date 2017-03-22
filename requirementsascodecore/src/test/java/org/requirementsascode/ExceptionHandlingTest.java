@@ -6,10 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ExceptionHandlingTest extends AbstractTestCase{
-	private static final String EXCEPTION_THROWING_USE_CASE = "Exception Throwing Use Case";
-	private static final String ALTERNATIVE_FLOW = "Alternative Flow";
 	private static final String EXCEPTION_HANDLING_FLOW = "Exception Handling Flow";
-	private static final String SAY_HELLO = "Say Hello";
 	private static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
 	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	private static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
@@ -21,13 +18,13 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotHandleExceptionIfNoExceptionOccurs() {		
-		useCaseModel.useCase(SAY_HELLO)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
-			.flow("Exception Handling Flow - Should not be entered as no exception occurs")
+			.flow(EXCEPTION_HANDLING_FLOW)
 				.after(SYSTEM_DISPLAYS_TEXT)
 					.step(SYSTEM_HANDLES_EXCEPTION)
-						.handle(ArrayIndexOutOfBoundsException.class).system(e -> System.out.println(e));
+						.handle(ArrayIndexOutOfBoundsException.class).system(e -> {});
 
 		useCaseRunner.run();
 
@@ -36,12 +33,12 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotHandleExceptionIfSystemReactionDoesNotThrowException() {		
-		useCaseModel.useCase(SAY_HELLO)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
-			.flow("Exception Handling Flow - Should not be entered as no exception occurs")
+			.flow(EXCEPTION_HANDLING_FLOW)
 				.after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> System.out.println(e));
+					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {});
 		
 		useCaseRunner.run();
 		
@@ -50,11 +47,11 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void handlesExceptionAfterSpecificStep() {				
-		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())		
 			.flow(EXCEPTION_HANDLING_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> System.out.println(e));
+				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {});
 		
 		useCaseRunner.run();
 		
@@ -63,13 +60,13 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void handlesExceptionAtAnyTime() {			
-		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
 			.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 				.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())
 			.flow(EXCEPTION_HANDLING_FLOW).when(r -> true)
-				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> System.out.println(e));
+				.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {});
 		
 		useCaseRunner.run();
 		

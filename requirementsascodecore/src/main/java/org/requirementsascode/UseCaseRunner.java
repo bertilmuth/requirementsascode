@@ -36,6 +36,7 @@ public class UseCaseRunner {
 	private boolean isRunning;
 	private SystemReactionTrigger systemReactionTrigger;
 	private Consumer<SystemReactionTrigger> systemReaction;
+	private Optional<Predicate<UseCaseStep>> exclusiveStep;
 
 	/**
 	 * Constructor for creating a use case runner with standard system reaction,
@@ -45,6 +46,7 @@ public class UseCaseRunner {
 	public UseCaseRunner() {
 		this.useCaseModel = new UseCaseModel(this);
 		this.systemReactionTrigger = new SystemReactionTrigger();
+		this.exclusiveStep = Optional.empty();
 		adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
 		stop();
 		restart();
@@ -174,8 +176,8 @@ public class UseCaseRunner {
 		Optional<UseCaseStep> latestStepRun = Optional.empty();
 		if(isRunning){
 			Class<? extends Object> currentEventClass = event.getClass();
-			Set<UseCaseStep> reactingUseCaseSteps = stepsThatCanReactTo(currentEventClass);
-			latestStepRun = triggerSystemReactionForSteps(event, reactingUseCaseSteps);
+			Set<UseCaseStep> stepsThatCanReact = stepsThatCanReactTo(currentEventClass);
+			latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
 		}
 		return latestStepRun;
 	}
@@ -228,7 +230,10 @@ public class UseCaseRunner {
 				.filter(step -> stepActorIsRunActor(step))
 				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step))
+				.filter(exclusiveStep.orElse(s -> true))
 				.collect(Collectors.toSet());
+			
+			exclusiveStep = Optional.empty();
 		} else {
 			steps = new HashSet<>();
 		}
@@ -307,7 +312,7 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Returns the lastest step that has been run by this UseCaseRunner.
+	 * Returns the latest step that has been run by this UseCaseRunner.
 	 * 
 	 * @return the latest step run
 	 */
@@ -332,12 +337,16 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Returns the flow the lastest step that has been run by this UseCaseRunner
+	 * Returns the flow the latest step that has been run by this UseCaseRunner
 	 * is contained in.
 	 * 
 	 * @return the latest flow run
 	 */
 	public Optional<UseCaseFlow> latestFlow() {
 		return latestFlow;
+	}
+	
+	void setExclusiveStepFilter(Predicate<UseCaseStep> exclusiveStepFilter){
+		this.exclusiveStep = Optional.of(exclusiveStepFilter);
 	}
 }

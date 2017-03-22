@@ -7,9 +7,6 @@ import java.util.function.Consumer;
 import org.junit.Test;
 
 public class AdaptedSystemReactionTest extends AbstractTestCase{
-	private static final String SAY_HELLO_USE_CASE = "Say Hello Use Case";
-	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
-	
 	private String stepName;
 	private Object event;
 	
@@ -22,7 +19,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		stepName = "";
 		
 		useCaseRunner.useCaseModel()
-			.useCase(SAY_HELLO_USE_CASE)
+			.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
 		

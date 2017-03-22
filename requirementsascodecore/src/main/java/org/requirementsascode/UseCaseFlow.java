@@ -180,20 +180,20 @@ public class UseCaseFlow extends UseCaseModelElement {
 			this.predicate = Optional.empty();
 		}
 		
-		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-			predicate = Optional.of(alternativeFlowPredicate().and(stepPredicate));
-		}
-		
 		public void when(Predicate<UseCaseRunner> whenPredicate){
 			predicate = Optional.of(
-				predicate.orElse(alternativeFlowPredicate()).and(whenPredicate));
+				predicate.orElse(isRunnerInDifferentFlow()).and(whenPredicate));
 		}
 		
 		public Optional<Predicate<UseCaseRunner>> get(){
 			return predicate;
 		}
 		
-		private Predicate<UseCaseRunner> alternativeFlowPredicate() {
+		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
+			predicate = Optional.of(isRunnerInDifferentFlow().and(stepPredicate));
+		}
+		
+		private Predicate<UseCaseRunner> isRunnerInDifferentFlow() {
 			return isRunnerInDifferentFlowThan(UseCaseFlow.this);
 		}
 	}

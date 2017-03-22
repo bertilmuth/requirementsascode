@@ -35,7 +35,7 @@ class UseCaseStepPredicate {
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();
 			boolean isSystemAtRightStep = 
-				Objects.equals(stepRunLastBySystem, afterThatStepOrElseAtFirst);
+				Objects.equals(afterThatStepOrElseAtFirst, stepRunLastBySystem);
 			return isSystemAtRightStep;
 		};
 	}
