@@ -9,23 +9,23 @@ Additionally, you can specify cross-cutting concerns, e.g. for measuring perform
 # documentation
 * [hello world examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [cross-cutting concerns examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
-* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.0/requirementsascodecore-0.3.0-javadoc.jar)
+* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.1/requirementsascodecore-0.3.1-javadoc.jar)
 
 Note that the API is likely to change.
 
 # getting started
 * At least Java 8 is required, download and install it if necessary.
-* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.0/requirementsascodecore-0.3.0.jar) and save it in a local folder.
-* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.0/helloworld-0.3.0.jar) and save it in the same folder.
+* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.1/requirementsascodecore-0.3.1.jar) and save it in a local folder.
+* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.3.1/helloworld-0.3.1.jar) and save it in the same folder.
 * To run the first Hello World example, switch to the folder in a console and enter: 
 
 Windows:
 ``` java
-java -cp "helloworld-0.3.0.jar;requirementsascodecore-0.3.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.3.1.jar;requirementsascodecore-0.3.1.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
 Unix:
 ``` java
-java -cp "helloworld-0.3.0.jar:requirementsascodecore-0.3.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.3.1.jar:requirementsascodecore-0.3.1.jar" helloworld.HelloWorld01_PrintHelloUserExample
 ```
 The same principle applies to all example projects: you need to put the example project's jar
 on the classpath, and the requirementsascodecore jar.
