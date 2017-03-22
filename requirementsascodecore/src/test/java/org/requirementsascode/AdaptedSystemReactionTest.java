@@ -1,6 +1,8 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
+import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import java.util.function.Consumer;
 

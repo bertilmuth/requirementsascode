@@ -1,38 +1,16 @@
 package org.requirementsascode;
 
+import static org.requirementsascode.testutil.Names.CUSTOMER;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.requirementsascode.event.EnterNumber;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.testutil.EnterNumber;
+import org.requirementsascode.testutil.EnterText;
+
 
 public abstract class AbstractTestCase {
-	protected final String CUSTOMER = "Customer";
-	
-	protected final String USE_CASE = "Use Case";
-	protected final String ANOTHER_USE_CASE = "Another Use Case";
-
-	protected final String BASIC_FLOW = "Basic Flow";
-	protected final String ALTERNATIVE_FLOW = "Alternative Flow";
-	protected final String ALTERNATIVE_FLOW_2 = "Alternative Flow 2";
-	
-	protected final String SYSTEM_DISPLAYS_TEXT = "System displays text";
-	protected final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
-	protected final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
-
-	protected final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
-	protected final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
-	protected final String CUSTOMER_ENTERS_ALTERNATIVE_TEXT = "Customer enters alternative text";
-	protected final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
-	protected final String CUSTOMER_ENTERS_NUMBER_AGAIN = "Customer enters number again";
-		
-	protected final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
-	protected final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
-
-	protected final String CONTINUE = "Continue";
-	protected final String CONTINUE_2 = "Continue 2";
-	
 	protected Actor customer;
 	protected TestUseCaseRunner useCaseRunner;
 	protected UseCaseModel useCaseModel;

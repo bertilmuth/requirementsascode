@@ -3,6 +3,21 @@ package org.requirementsascode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
+import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW_2;
+import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.CONTINUE;
+import static org.requirementsascode.testutil.Names.CONTINUE_2;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_NUMBER;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_NUMBER_AGAIN;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT_AGAIN;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT_AGAIN;
+import static org.requirementsascode.testutil.Names.THIS_STEP_SHOULD_BE_SKIPPED;
+import static org.requirementsascode.testutil.Names.THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL;
+import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import java.util.Optional;
 import java.util.Set;
@@ -10,8 +25,8 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.event.EnterNumber;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.testutil.EnterNumber;
+import org.requirementsascode.testutil.EnterText;
 
 public class SystemReactionTest extends AbstractTestCase{
 	private Actor rightActor;

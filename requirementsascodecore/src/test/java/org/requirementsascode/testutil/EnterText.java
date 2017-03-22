@@ -1,4 +1,4 @@
-package org.requirementsascode.event;
+package org.requirementsascode.testutil;
 public class EnterText{
 	private String text;
 	

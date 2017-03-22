@@ -1,6 +1,17 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
+import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.BASIC_FLOW;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT_AGAIN;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_NUMBER;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT_AGAIN;
+import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,8 +21,8 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.event.EnterNumber;
-import org.requirementsascode.event.EnterText;
+import org.requirementsascode.testutil.EnterNumber;
+import org.requirementsascode.testutil.EnterText;
 
 public class CreateModelTest extends AbstractTestCase{			
 	@Before

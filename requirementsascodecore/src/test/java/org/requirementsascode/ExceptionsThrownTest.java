@@ -1,18 +1,25 @@
 package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
+import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
+import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.CONTINUE;
+import static org.requirementsascode.testutil.Names.CUSTOMER;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
+import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
+import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.event.EnterText;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 import org.requirementsascode.exception.UnhandledException;
+import org.requirementsascode.testutil.EnterText;
 
 public class ExceptionsThrownTest extends AbstractTestCase{		
 	@Rule
