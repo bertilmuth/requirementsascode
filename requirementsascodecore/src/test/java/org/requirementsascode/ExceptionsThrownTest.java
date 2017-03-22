@@ -47,7 +47,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {		
 		thrown.expect(NoSuchElementInUseCase.class);
 		thrown.expectMessage(USE_CASE);
-		thrown.expectMessage(CUSTOMER_ENTERS_DIFFERENT_TEXT);
+		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 		
 		useCaseModel
 			.useCase(USE_CASE).basicFlow()
@@ -55,7 +55,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModel
 			.useCase(ANOTHER_USE_CASE).basicFlow()
-				.after(CUSTOMER_ENTERS_DIFFERENT_TEXT, USE_CASE);
+				.after(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, USE_CASE);
 	}
 	
 	@Test
@@ -130,13 +130,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void throwsExceptionIfMoreThanOneStepCouldReact() { 	 
 		thrown.expect(MoreThanOneStepCanReact.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
-		thrown.expectMessage(CUSTOMER_ENTERS_DIFFERENT_TEXT);
+		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 		
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow().when(run -> true)
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())
 			.flow(ALTERNATIVE_FLOW).when(run -> true)
-				.step(CUSTOMER_ENTERS_DIFFERENT_TEXT).system(displayConstantText());
+				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText());
 		
 		useCaseRunner.run();
 	}

@@ -22,7 +22,7 @@ public abstract class AbstractTestCase {
 
 	protected final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
 	protected final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
-	protected final String CUSTOMER_ENTERS_DIFFERENT_TEXT = "Customer enters different text";
+	protected final String CUSTOMER_ENTERS_ALTERNATIVE_TEXT = "Customer enters alternative text";
 	protected final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
 	protected final String CUSTOMER_ENTERS_DIFFERENT_NUMBER = "Customer enters different number";
 		
@@ -58,7 +58,7 @@ public abstract class AbstractTestCase {
 		return new EnterText("Hello, Basic Flow!");
 	}
 	
-	protected EnterText enterDifferentText(){
+	protected EnterText enterAlternativeText(){
 		return new EnterText("Hello, I am an Alternative Flow!");
 	}
 	

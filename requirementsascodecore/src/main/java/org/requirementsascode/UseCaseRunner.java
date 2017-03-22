@@ -231,9 +231,7 @@ public class UseCaseRunner {
 				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step))
 				.filter(exclusiveStep.orElse(s -> true))
-				.collect(Collectors.toSet());
-			
-			exclusiveStep = Optional.empty();
+				.collect(Collectors.toSet());			
 		} else {
 			steps = new HashSet<>();
 		}
@@ -264,6 +262,7 @@ public class UseCaseRunner {
 		setLatestStep(Optional.of(useCaseStep));
 		
 		try {
+			exclusiveStep = Optional.empty();
 			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
 			systemReaction.accept(systemReactionTrigger);
 		} 
