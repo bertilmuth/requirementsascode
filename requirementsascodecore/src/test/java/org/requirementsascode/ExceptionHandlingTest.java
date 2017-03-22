@@ -8,7 +8,6 @@ import org.junit.Test;
 public class ExceptionHandlingTest extends AbstractTestCase{
 	private static final String EXCEPTION_HANDLING_FLOW = "Exception Handling Flow";
 	private static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
-	private static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	private static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
 
 	@Before

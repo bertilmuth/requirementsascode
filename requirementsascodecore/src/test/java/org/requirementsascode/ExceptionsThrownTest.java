@@ -14,9 +14,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 import org.requirementsascode.exception.UnhandledException;
 
-public class ExceptionsThrownTest extends AbstractTestCase{
-	private static final String EXCEPTION_THROWING_USE_CASE = "Exception Throwing Use Case";
-		
+public class ExceptionsThrownTest extends AbstractTestCase{		
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 	
@@ -122,7 +120,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(EXCEPTION_THROWING_USE_CASE)
+		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())			
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText());
