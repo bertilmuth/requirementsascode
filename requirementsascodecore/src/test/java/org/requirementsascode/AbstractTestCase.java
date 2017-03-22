@@ -15,6 +15,7 @@ public abstract class AbstractTestCase {
 
 	protected final String BASIC_FLOW = "Basic Flow";
 	protected final String ALTERNATIVE_FLOW = "Alternative Flow";
+	protected final String ALTERNATIVE_FLOW_2 = "Alternative Flow 2";
 	
 	protected final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	protected final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
@@ -24,12 +25,12 @@ public abstract class AbstractTestCase {
 	protected final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
 	protected final String CUSTOMER_ENTERS_ALTERNATIVE_TEXT = "Customer enters alternative text";
 	protected final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
-	protected final String CUSTOMER_ENTERS_DIFFERENT_NUMBER = "Customer enters different number";
+	protected final String CUSTOMER_ENTERS_NUMBER_AGAIN = "Customer enters number again";
 		
 	protected final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
 	protected final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
 
-	protected final String CONTINUE_1 = "Continue 1";
+	protected final String CONTINUE = "Continue";
 	protected final String CONTINUE_2 = "Continue 2";
 	
 	protected Actor customer;

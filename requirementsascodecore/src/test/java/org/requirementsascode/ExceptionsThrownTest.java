@@ -79,10 +79,10 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	public void throwsExceptionIfContinueAfterNotExists() {		
 		thrown.expect(NoSuchElementInUseCase.class);
 		thrown.expectMessage(USE_CASE);
-		thrown.expectMessage(CONTINUE_1);
+		thrown.expectMessage(CONTINUE);
 		
 		useCaseModel.useCase(USE_CASE)
-			.basicFlow().step("S1").continueAfter(CONTINUE_1);
+			.basicFlow().step("S1").continueAfter(CONTINUE);
 	}
 	
 	@Test

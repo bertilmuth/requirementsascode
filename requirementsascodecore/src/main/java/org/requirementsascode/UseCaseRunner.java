@@ -345,7 +345,7 @@ public class UseCaseRunner {
 		return latestFlow;
 	}
 	
-	void setExclusiveStepFilter(Predicate<UseCaseStep> exclusiveStepFilter){
-		this.exclusiveStep = Optional.of(exclusiveStepFilter);
+	void setExclusiveStepPredicate(Predicate<UseCaseStep> exclusiveStep){
+		this.exclusiveStep = Optional.of(exclusiveStep);
 	}
 }

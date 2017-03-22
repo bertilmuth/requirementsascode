@@ -15,7 +15,7 @@ class SystemReaction {
 	static Runnable continueExclusivelyAtStep(UseCase useCase, String stepName) {
 		return () -> {
 			UseCaseRunner useCaseRunner = useCase.useCaseModel().useCaseRunner();
-			useCaseRunner.setExclusiveStepFilter(includeOnly(stepName));
+			useCaseRunner.setExclusiveStepPredicate(includeOnly(stepName));
 			continueAtStep(useCase, stepName).run();
 		};
 	}
