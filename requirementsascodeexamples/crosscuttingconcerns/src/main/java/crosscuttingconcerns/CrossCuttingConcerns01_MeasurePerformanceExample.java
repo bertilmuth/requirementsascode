@@ -1,7 +1,5 @@
 package crosscuttingconcerns;
 
-import java.util.function.Consumer;
-
 import org.requirementsascode.SystemReactionTrigger;
 import org.requirementsascode.UseCaseRunner;
 
@@ -11,7 +9,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	
 	public void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		useCaseRunner.adaptSystemReaction(withMeasuringPerformance());
+		useCaseRunner.adaptSystemReaction(this::measurePerformance);
 		
 		useCaseRunner.useCaseModel().useCase("Measure performance of simple mathematical operations")
 			.basicFlow()
@@ -21,9 +19,8 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 		
 		useCaseRunner.run();
 	}
-
-	private Consumer<SystemReactionTrigger> withMeasuringPerformance() {
-		return systemReactionTrigger -> {
+	
+	private void measurePerformance(SystemReactionTrigger systemReactionTrigger) {
 			long timeBefore = System.nanoTime();
 			systemReactionTrigger.trigger();
 			long timeafter = System.nanoTime();
@@ -31,7 +28,6 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 			
 			System.out.println("Step " + systemReactionTrigger.useCaseStep() + 
 				" took " + timeElapsed + " nanoseconds.");
-		};
 	}
 
 	private Runnable addTwoNumbers() {
