@@ -626,9 +626,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow")
-				.at(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
-					.step(CONTINUE_1).continueAt(CUSTOMER_ENTERS_NUMBER);
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN)
+				.step(CONTINUE_1).continueAt(CUSTOMER_ENTERS_NUMBER);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterNumber());
@@ -644,9 +643,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow")
-				.at(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
-					.step(CONTINUE_1).user(EnterNumber.class).continueAt(CUSTOMER_ENTERS_NUMBER);
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN)
+				.step(CONTINUE_1).user(EnterNumber.class).continueAt(CUSTOMER_ENTERS_NUMBER);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterNumber(), enterNumber());
@@ -695,7 +693,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN)
 				.step(CUSTOMER_ENTERS_DIFFERENT_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CONTINUE_1).continueAt(CUSTOMER_ENTERS_NUMBER);
 		
@@ -734,9 +732,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow")
-				.at(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
-					.step(CONTINUE_1).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN);
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN)
+				.step(CONTINUE_1).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterNumber());
@@ -803,7 +800,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT_AGAIN)
 				.step(CUSTOMER_ENTERS_DIFFERENT_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CONTINUE_1).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN);
 		
@@ -842,13 +839,33 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT).when(textIsNotAvailable())
-					.step(CONTINUE_1).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+			.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT)
+				.step(CONTINUE_1).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterText());
 		 
 		assertEquals(CONTINUE_1 + ";" + CUSTOMER_ENTERS_TEXT + ";" +
 				CUSTOMER_ENTERS_TEXT_AGAIN + ";", runStepNames());
+	}
+	
+	@Test
+	public void continueExclusivelyAtCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
+		useCaseModel.useCase(USE_CASE)
+		.basicFlow()
+			.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
+			.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
+			.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
+		.flow("Alternative Flow that continues with Basic Flow").at(CUSTOMER_ENTERS_TEXT)
+			.step(CONTINUE_1).user(EnterNumber.class).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+		
+		useCaseRunner.run();
+		useCaseRunner.reactTo(enterNumber(), enterText(), enterText());
+		System.out.println(useCaseRunner.latestStep());
+
+				 
+		assertEquals(CONTINUE_1 + ";" + CUSTOMER_ENTERS_TEXT + ";" +
+				CUSTOMER_ENTERS_TEXT_AGAIN + ";", runStepNames());
+		
 	}
 }

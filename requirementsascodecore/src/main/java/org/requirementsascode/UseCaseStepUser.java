@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import static org.requirementsascode.SystemReaction.continueAfterStep;
 import static org.requirementsascode.SystemReaction.continueAtStep;
+import static org.requirementsascode.SystemReaction.continueExclusivelyAtStep;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -70,6 +71,29 @@ public class UseCaseStepUser<T>{
 		Objects.requireNonNull(stepName);
 		
 		system(sr -> continueAtStep(useCaseStep.useCase(), stepName).run());
+		return useCaseStep.useCase();
+	}
+	
+	/**
+	 * Makes the use case runner continue at the specified step. No alternative
+	 * flow starting at the specified step is entered, even if its condition is
+	 * enabled.
+	 * 
+	 * Note: the runner continues at the step only if its predicate is true, and
+	 * actor is right.
+	 * 
+	 * @param stepName
+	 *            name of the step to continue at, in this use case.
+	 * @return the use case this step belongs to, to ease creation of further
+	 *         flows
+	 * @throws NoSuchElementInUseCase
+	 *             if no step with the specified stepName is found in the
+	 *             current use case
+	 */
+	public UseCase continueExclusivelyAt(String stepName) {
+		Objects.requireNonNull(stepName);
+
+		system(sr -> continueExclusivelyAtStep(useCaseStep.useCase(), stepName).run());
 		return useCaseStep.useCase();
 	}
 	
