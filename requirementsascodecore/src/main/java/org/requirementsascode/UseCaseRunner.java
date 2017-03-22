@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -101,28 +102,30 @@ public class UseCaseRunner {
 	}
 
 	/**
-	 * Runs the use case model with the specified actor.
+	 * Runs the use case model with the specified actors.
 	 * 
 	 * From now on (until called the next time), the runner will only trigger system reactions
-	 * of steps that have explicitly set this actor, or that are "autonomous system reactions".
+	 * of steps that have explicitly set one of the specified actors, or that are "autonomous system reactions".
 	 * Calling this method activates reacting to events via {@link #reactTo(Object)}.
 	 * 
 	 * As a side effect, calling this method triggers immediately triggers "autonomous system reactions".
 	 * 
-	 * @param actor the actor to run as
+	 * @param actors the actors to run as
 	 */
-	public void runAs(Actor actor) {
-		Objects.requireNonNull(actor);
+	public void runAs(Actor... actors) {
+		Objects.requireNonNull(actors);
 		
 		isRunning = true;
-		actorsToRunAs = Arrays.asList(actor, useCaseModel.systemActor());
+		actorsToRunAs = new ArrayList<>(Arrays.asList(actors));
+		actorsToRunAs.add(useCaseModel.systemActor());
+		
 		triggerAutonomousSystemReaction();
 	}
 	
 	/**
 	 * Returns whether the runner is currently running.
 	 * @see #run()
-	 * @see #runAs(Actor)
+	 * @see #runAs(Actor...)
 	 * 
 	 * @return true if the runner is running, false otherwise.
 	 */
@@ -132,7 +135,7 @@ public class UseCaseRunner {
 
 	/**
 	 * Stops the runner. It will not be reacting to events,
-	 * until {@link #run()} or {@link #runAs(Actor)} is called again.
+	 * until {@link #run()} or {@link #runAs(Actor...)} is called again.
 	 */
 	public void stop() {	
 		isRunning = false;
