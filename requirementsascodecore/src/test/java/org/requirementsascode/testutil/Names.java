@@ -4,7 +4,7 @@ public interface Names {
 	String CUSTOMER = "Customer";
 	
 	String USE_CASE = "Use Case";
-	String ANOTHER_USE_CASE = "Another Use Case";
+	String USE_CASE_2 = "Use Case 2";
 
 	String BASIC_FLOW = "Basic Flow";
 	String ALTERNATIVE_FLOW = "Alternative Flow";

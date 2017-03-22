@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
 import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW_2;
-import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.USE_CASE_2;
 import static org.requirementsascode.testutil.Names.CONTINUE;
 import static org.requirementsascode.testutil.Names.CONTINUE_2;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
@@ -487,7 +487,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText());
 		
-		useCaseModel.useCase(ANOTHER_USE_CASE)
+		useCaseModel.useCase(USE_CASE_2)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber());
 		
@@ -503,7 +503,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText());
 		
-		useCaseModel.useCase(ANOTHER_USE_CASE)
+		useCaseModel.useCase(USE_CASE_2)
 			.basicFlow().after(CUSTOMER_ENTERS_TEXT, USE_CASE)
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber());
 		

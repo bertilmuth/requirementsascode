@@ -2,7 +2,7 @@ package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
 import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
-import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.USE_CASE_2;
 import static org.requirementsascode.testutil.Names.CONTINUE;
 import static org.requirementsascode.testutil.Names.CUSTOMER;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
@@ -61,7 +61,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModel
-			.useCase(ANOTHER_USE_CASE).basicFlow()
+			.useCase(USE_CASE_2).basicFlow()
 				.after(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, USE_CASE);
 	}
 	

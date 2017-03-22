@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
-import static org.requirementsascode.testutil.Names.ANOTHER_USE_CASE;
+import static org.requirementsascode.testutil.Names.USE_CASE_2;
 import static org.requirementsascode.testutil.Names.BASIC_FLOW;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT_AGAIN;
@@ -50,7 +50,7 @@ public class CreateModelTest extends AbstractTestCase{
 	@Test
 	public void createsTwoUseCases() {
 		useCaseModel.useCase(USE_CASE);
-		useCaseModel.useCase(ANOTHER_USE_CASE);
+		useCaseModel.useCase(USE_CASE_2);
 
 		Collection<UseCase> useCases = useCaseModel.useCases();
 		assertEquals(2, useCases.size());
@@ -382,12 +382,12 @@ public class CreateModelTest extends AbstractTestCase{
 	@Test
 	public void actorsCanBeReusedBetweenUseCases() {
 		useCaseModel
-			.useCase("Use Case 1")
+			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.as(customer).user(EnterText.class).system(displayEnteredText())
 						
-			.useCase("Use Case 2")
+			.useCase(USE_CASE_2)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.as(customer).user(EnterText.class).system(displayEnteredText());		
