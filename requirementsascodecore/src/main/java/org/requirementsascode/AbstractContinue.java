@@ -2,12 +2,12 @@ package org.requirementsascode;
 
 import java.util.Optional;
 
-public class Continue implements Runnable{
+public abstract class AbstractContinue implements Runnable{
 	private UseCase useCase;
 	private String stepName;
 	private Optional<UseCaseStep> latestStepOfRunner;
 	
-	public Continue(UseCase useCase, String stepName, Optional<UseCaseStep> latestStepOfRunner) {
+	public AbstractContinue(UseCase useCase, String stepName, Optional<UseCaseStep> latestStepOfRunner) {
 		this.useCase = useCase;
 		this.stepName = stepName;
 		this.latestStepOfRunner = latestStepOfRunner;
