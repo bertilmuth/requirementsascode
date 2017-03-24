@@ -12,8 +12,8 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
  * The part of the step that contains a reference to the system reaction
- * that can be triggered, given an approriate actor and event, and the 
- * step's predicate being true.
+ * that can be triggered (given an appropriate actor and event, and the 
+ * step's predicate being true).
  * 
  * @author b_muth
  *

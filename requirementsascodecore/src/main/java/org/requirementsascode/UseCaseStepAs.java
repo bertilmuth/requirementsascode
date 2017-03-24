@@ -127,7 +127,7 @@ public class UseCaseStepAs{
 	
 	/**
 	 * Defines an "autonomous system reaction",
-	 * meaning the system will react when the step's predicate is true, without
+	 * meaning the system will react without
 	 * needing an event provided to the use case runner.
 	 * 
 	 * Instead of the model creator defining the event (via

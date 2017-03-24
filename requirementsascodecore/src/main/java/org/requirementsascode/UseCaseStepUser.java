@@ -27,9 +27,8 @@ public class UseCaseStepUser<T>{
 	}
 	
 	/**
-	 * Defines the system reaction,
-	 * meaning the system will react as specified when the step's predicate
-	 * is true and an appropriate event object is received
+	 * Defines the system reaction. 
+	 * The system will react as specified to the current step's events,
 	 * via {@link UseCaseRunner#reactTo(Object)}.
 	 * 
 	 * @param systemReaction the specified system reaction
@@ -45,7 +44,6 @@ public class UseCaseStepUser<T>{
 	
 	/**
 	 * Makes the use case runner continue after the specified step.
-	 * Note that the current flow is NOT reentered immediately, even if it's condition is true.
 	 * 
 	 * @param stepName name of the step to continue after, in this use case.
 	 * @return the use case this step belongs to, to ease creation of further flows
@@ -75,12 +73,12 @@ public class UseCaseStepUser<T>{
 	}
 	
 	/**
-	 * Makes the use case runner continue at the specified step. No alternative
-	 * flow starting at the specified step is entered, even if its condition is
-	 * enabled.
+	 * Makes the use case runner continue directly at the specified step. No alternative
+	 * defined by {@link UseCaseFlow#insteadOf(String)} is entered, even if its predicate 
+	 * is true.
 	 * 
 	 * Note: the runner continues at the step only if its predicate is true, and
-	 * actor is right.
+	 * the step's actor is right.
 	 * 
 	 * @param stepName
 	 *            name of the step to continue at, in this use case.
