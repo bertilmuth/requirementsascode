@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 
@@ -47,25 +46,6 @@ public class UseCaseStepAs{
 		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
 		useCaseStep.setUser(user);
 		return user;
-	}
-
-	/**
-	 * Without triggering a system reaction, raise the specified event.
-	 * You may call this method several times during model creation, to raise
-	 * several events.
-	 * 
-	 * Internally calls {@link UseCaseRunner#reactTo(Object)} for the specified event.
-	 * 
-	 * @param <U> the type of event to be raised
-	 * @param eventSupplier the supplier proving the event
-	 * @return the system part
-	 */
-	public <U> UseCaseStepSystem<SystemEvent> raise(Supplier<U> eventSupplier) {
-		Objects.requireNonNull(eventSupplier);
-		
-		UseCaseStepSystem<SystemEvent> systemPartWithRaisedEvent 
-			= system(() -> {}).raise(eventSupplier);
-		return systemPartWithRaisedEvent;
 	}
 	
 	/**

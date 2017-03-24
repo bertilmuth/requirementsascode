@@ -222,33 +222,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void raisesEventAfterFirstStep() {		
-		useCaseModel.useCase(USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).handle(EnterText.class).system(displayEnteredText()).raise(raiseEnterNumber())
-				.step(CUSTOMER_ENTERS_NUMBER).handle(EnterNumber.class).system(displayEnteredNumber());
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText());
-		
-		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER +";", runStepNames());
-	}
-	
-	@Test
-	public void raisesEventForSpecificActor() {		
-		useCaseModel.useCase(USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT)
-					.as(rightActor).raise(() -> enterText())
-				.step(CUSTOMER_ENTERS_TEXT_AGAIN)
-					.as(rightActor).user(EnterText.class).system(displayEnteredText());
-		
-		useCaseRunner.runAs(rightActor);
-		
-		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
-	}
-	
-	@Test
 	public void twoSequentialStepsReactOnlyWhenActorIsRight() {		
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()

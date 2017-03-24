@@ -41,7 +41,7 @@ public class UseCaseModelCreator{
 				.step("S8").user(ENTER_PAYMENT_DETAILS).system(savePaymentDetails())
 				.step("S9").system(displayPurchaseOrderSummary())
 				.step("S10").user(CONFIRM_PURCHASE).system(initiateShipping())
-				.step("S11").restart()	
+				.step("S11").continueAt("S1")	
 			.flow("Go back from shipping").after("S5").step("S6a_1").user(GO_BACK).continueAfter("S1")
 			.flow("Go back from payment").after("S7").step("S8a_1").user(GO_BACK).continueAfter("S4")
 			.flow("Checkout after going back").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")

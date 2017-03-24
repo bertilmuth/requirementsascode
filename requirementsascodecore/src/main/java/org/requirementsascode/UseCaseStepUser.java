@@ -92,18 +92,6 @@ public class UseCaseStepUser<T>{
 	}
 	
 	/**
-	 * Makes the use case runner start from the beginning, when no
-	 * flow and step has been run.
-	 * 
-	 * @see UseCaseRunner#restart()
-	 * @return the use case this step belongs to, to ease creation of further flows
-	 */
-	public UseCase restart() {
-		system(sr -> useCaseStep.useCaseModel().useCaseRunner().restart());
-		return useCaseStep.useCase();
-	}
-	
-	/**
 	 * Returns the class of event or exception objects that the system reacts to in this step.
 	 * The system reacts to objects that are instances of the returned class or 
 	 * instances of any direct or indirect subclass of the returned class.

@@ -168,19 +168,6 @@ public class UseCaseStep extends UseCaseModelElement {
 	}
 
 	/**
-	 * Makes the use case runner start from the beginning, when no flow and step
-	 * has been run.
-	 * 
-	 * @see UseCaseRunner#restart()
-	 * @return the use case this step belongs to, to ease creation of further
-	 *         flows
-	 */
-	public UseCase restart() {
-		system(() -> useCaseModel().useCaseRunner().restart());
-		return useCase();
-	}
-
-	/**
 	 * Defines the class of user event objects that this step accepts, so that
 	 * they can cause a system reaction when the step's predicate is true.
 	 * 

@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
@@ -82,23 +81,6 @@ public class UseCaseStepSystem<T>{
 				Optional.of(useCaseStep), Optional.empty());
 		
 		return newStep; 
-	}
-	
-	/**
-	 * After triggering the system reaction, raise the specified event.
-	 * You may call this method several times during model creation, to raise
-	 * several events.
-	 * 
-	 * Internally calls {@link UseCaseRunner#reactTo(Object)} for the specified event.
-	 * 
-	 * @param <U> the type of event to be raised
-	 * @param eventSupplier the supplier proving the event
-	 * @return the system part
-	 */
-	public <U> UseCaseStepSystem<T> raise(Supplier<U> eventSupplier) {
-		systemReaction = 
-			systemReaction.andThen(x -> useCaseStep.useCaseModel().useCaseRunner().reactTo(eventSupplier.get()));
-		return this;
 	}
 	
 	/**
