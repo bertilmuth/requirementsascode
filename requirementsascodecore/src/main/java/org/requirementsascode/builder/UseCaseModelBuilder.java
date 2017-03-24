@@ -1,11 +1,16 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.Actor;
+import org.requirementsascode.UseCase;
+import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseRunner;
 
 public class UseCaseModelBuilder {
 	
 	private UseCaseModel useCaseModel;
 
 	public UseCaseModelBuilder(UseCaseRunner useCaseRunner) {
-		this.useCaseModel = new UseCaseModel(useCaseRunner);
+		this.useCaseModel = useCaseRunner.useCaseModel();
 	}
 
 	public UseCaseModel build() {

@@ -1,4 +1,7 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseStepSystem;
 
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepSystem<T> useCaseStepSystem;

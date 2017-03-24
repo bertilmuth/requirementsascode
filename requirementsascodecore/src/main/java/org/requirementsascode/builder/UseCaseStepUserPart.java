@@ -1,6 +1,9 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.function.Consumer;
+
+import org.requirementsascode.UseCaseStepSystem;
+import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepUser<T> useCaseStepUser;

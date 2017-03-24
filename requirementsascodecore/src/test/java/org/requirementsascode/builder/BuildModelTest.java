@@ -1,4 +1,4 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,6 +23,15 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.requirementsascode.AbstractTestCase;
+import org.requirementsascode.Actor;
+import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.UseCase;
+import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.builder.UseCaseModelBuilder;
+import org.requirementsascode.builder.UseCasePart;
 import org.requirementsascode.testutil.EnterNumber;
 import org.requirementsascode.testutil.EnterText;
 
@@ -155,7 +164,6 @@ public class BuildModelTest extends AbstractTestCase{
 	@Test
 	public void createsSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
 		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
-		Actor customer = useCaseModelBuilder.actor(CUSTOMER);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 		UseCaseModel useCaseModel = 
@@ -177,7 +185,6 @@ public class BuildModelTest extends AbstractTestCase{
 	@Test
 	public void createsSingleActorWithSingleUseCase() {	
 		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
-		Actor customer = useCaseModelBuilder.actor(CUSTOMER);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -197,7 +204,6 @@ public class BuildModelTest extends AbstractTestCase{
 	@Test
 	public void createsSingleActorWithSingleUseCaseStep() {
 		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
-		Actor customer = useCaseModelBuilder.actor(CUSTOMER);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 

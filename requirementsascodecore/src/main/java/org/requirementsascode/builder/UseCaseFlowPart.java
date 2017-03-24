@@ -1,4 +1,7 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.UseCaseStep;
 
 public class UseCaseFlowPart {
 	private UseCaseFlow useCaseFlow;

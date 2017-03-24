@@ -1,4 +1,10 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.Actor;
+import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.UseCaseStepAs;
+import org.requirementsascode.UseCaseStepSystem;
+import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;

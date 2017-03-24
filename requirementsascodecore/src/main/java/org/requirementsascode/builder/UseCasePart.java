@@ -1,4 +1,7 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.UseCase;
+import org.requirementsascode.UseCaseFlow;
 
 public class UseCasePart {
 	private UseCase useCase;
@@ -10,7 +13,7 @@ public class UseCasePart {
 	}
 
 	public UseCaseFlowPart basicFlow() {
-		UseCaseFlow useCaseFlow = new UseCaseFlow("Basic Flow", useCase());
+		UseCaseFlow useCaseFlow = useCase().basicFlow();
 		return new UseCaseFlowPart(useCaseFlow, useCaseModelBuilder);
 	}
 

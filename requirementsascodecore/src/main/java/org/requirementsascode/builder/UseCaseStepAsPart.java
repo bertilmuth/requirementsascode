@@ -1,4 +1,7 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.UseCaseStepAs;
+import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepAsPart{
 	private UseCaseStepAs useCaseStepAs;
