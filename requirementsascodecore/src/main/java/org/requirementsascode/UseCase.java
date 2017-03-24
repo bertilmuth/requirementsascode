@@ -8,6 +8,7 @@ import static org.requirementsascode.ModelElementContainer.saveModelElement;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -89,6 +90,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 	 */
 	public UseCaseFlow flow(String flowName) {
+		Objects.requireNonNull(flowName);
+		
 		UseCaseFlow flow = new UseCaseFlow(flowName, this);
 		saveModelElement(flow, nameToFlowMap);
 		return flow;
