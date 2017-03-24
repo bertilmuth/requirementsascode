@@ -93,6 +93,26 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void throwsExceptionIfContinueAtNotExists() {		
+		thrown.expect(NoSuchElementInUseCase.class);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CONTINUE);
+		
+		useCaseModel.useCase(USE_CASE)
+			.basicFlow().step("S1").continueAt(CONTINUE);
+	}
+	
+	@Test
+	public void throwsExceptionIfContinueExclusivelyAtNotExists() {		
+		thrown.expect(NoSuchElementInUseCase.class);
+		thrown.expectMessage(USE_CASE);
+		thrown.expectMessage(CONTINUE);
+		
+		useCaseModel.useCase(USE_CASE)
+			.basicFlow().step("S1").continueExclusivelyAt(CONTINUE);
+	}
+	
+	@Test
 	public void throwsExceptionIfActorIsCreatedTwice() {		
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(CUSTOMER);

@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 /**
  * A use case, as part of a use case model.
@@ -104,9 +105,11 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @param flowName the name of the flow to look for
 	 * @return the flow if found, or else an empty optional
+	 * @throws NoSuchElementInUseCase if no flow with the specified flowName is found in the current use case
 	 */
-	public Optional<UseCaseFlow> findFlow(String flowName) {
-		Optional<UseCaseFlow> flow = findModelElement(flowName, nameToFlowMap);
+	public UseCaseFlow findFlow(String flowName) {
+		UseCaseFlow flow = findModelElement(flowName, nameToFlowMap)
+			.orElseThrow(() -> new NoSuchElementInUseCase(this, flowName));
 		return flow;
 	}
 	
@@ -115,9 +118,11 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @param stepName the name of the step to look for
 	 * @return the step if found, or else an empty optional
+	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
 	 */
-	public Optional<UseCaseStep> findStep(String stepName) {
-		Optional<UseCaseStep> step = findModelElement(stepName, nameToStepMap);
+	public UseCaseStep findStep(String stepName) {
+		UseCaseStep step = findModelElement(stepName, nameToStepMap)
+			.orElseThrow(() -> new NoSuchElementInUseCase(this, stepName));
 		return step;
 	}
 	

@@ -283,7 +283,7 @@ public class CreateModelTest extends AbstractTestCase{
 			.flow(ALTERNATIVE_FLOW)
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 			
-		List<UseCaseStep> steps = namedUseCase.findFlow(ALTERNATIVE_FLOW).get().steps();
+		List<UseCaseStep> steps = namedUseCase.findFlow(ALTERNATIVE_FLOW).steps();
 		assertEquals(1, steps.size());
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(0).name());
@@ -298,8 +298,8 @@ public class CreateModelTest extends AbstractTestCase{
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
-		UseCaseStep firstUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT).get();
-		UseCaseStep secondUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
+		UseCaseStep firstUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT);
+		UseCaseStep secondUseCaseStep = useCase.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
 		assertEquals(firstUseCaseStep, secondUseCaseStep.previousStepInFlow().get());
 	}
@@ -313,8 +313,8 @@ public class CreateModelTest extends AbstractTestCase{
 			.flow(ALTERNATIVE_FLOW)
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 
-		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT).get();
-		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN).get();
+		UseCaseStep firstUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT);
+		UseCaseStep secondUseCaseStep = useCaseInFirstFlow.findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
 		assertFalse(firstUseCaseStep.previousStepInFlow().isPresent());
 		assertFalse(secondUseCaseStep.previousStepInFlow().isPresent());
@@ -337,14 +337,14 @@ public class CreateModelTest extends AbstractTestCase{
 		useCaseModel.useCase(USE_CASE).flow(ALTERNATIVE_FLOW);
 		
 		UseCase useCase = useCaseModel.findUseCase(USE_CASE).get();
-		Optional<UseCaseFlow> existingFlow = useCase.findFlow(ALTERNATIVE_FLOW);
+		UseCaseFlow existingFlow = useCase.findFlow(ALTERNATIVE_FLOW);
 		
 		UseCase uc = useCase;
 		assertEquals(2, uc.flows().size()); // This is 2 because the basic flow always exists
 		
 		Iterator<UseCaseFlow> flowIt = uc.flows().iterator();
 		assertEquals(useCase.basicFlow(), flowIt.next());
-		assertEquals(existingFlow.get(), flowIt.next());
+		assertEquals(existingFlow, flowIt.next());
 	}
 	
 	@Test

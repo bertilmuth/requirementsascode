@@ -1,8 +1,5 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.SystemReaction.continueAfterStep;
-import static org.requirementsascode.SystemReaction.continueAtStep;
-import static org.requirementsascode.SystemReaction.continueExclusivelyAtStep;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactThan;
@@ -125,7 +122,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	public UseCase continueAt(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(continueAtStep(useCase(), stepName));
+		system(new ContinueAt(useCase(), stepName));
 		return useCase();
 	}
 
@@ -148,7 +145,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	public UseCase continueExclusivelyAt(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(continueExclusivelyAtStep(useCase(), stepName));
+		system(new ContinueExclusivelyAt(useCase(), stepName));
 		return useCase();
 	}
 
@@ -166,7 +163,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(continueAfterStep(useCase(), stepName));
+		system(new ContinueAfter(useCase(), stepName));
 		return useCase();
 	}
 

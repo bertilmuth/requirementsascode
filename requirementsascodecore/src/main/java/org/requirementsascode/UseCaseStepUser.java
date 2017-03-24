@@ -1,9 +1,5 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.SystemReaction.continueAfterStep;
-import static org.requirementsascode.SystemReaction.continueAtStep;
-import static org.requirementsascode.SystemReaction.continueExclusivelyAtStep;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -52,7 +48,7 @@ public class UseCaseStepUser<T>{
 	public UseCase continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
 		
-		system(sr -> continueAfterStep(useCaseStep.useCase(), stepName).run());
+		system(sr -> new ContinueAfter(useCaseStep.useCase(), stepName).run());
 		return useCaseStep.useCase();
 	}
 	
@@ -68,7 +64,7 @@ public class UseCaseStepUser<T>{
 	public UseCase continueAt(String stepName) {
 		Objects.requireNonNull(stepName);
 		
-		system(sr -> continueAtStep(useCaseStep.useCase(), stepName).run());
+		system(sr -> new ContinueAt(useCaseStep.useCase(), stepName).run());
 		return useCaseStep.useCase();
 	}
 	
@@ -91,7 +87,7 @@ public class UseCaseStepUser<T>{
 	public UseCase continueExclusivelyAt(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(sr -> continueExclusivelyAtStep(useCaseStep.useCase(), stepName).run());
+		system(sr -> new ContinueExclusivelyAt(useCaseStep.useCase(), stepName).run());
 		return useCaseStep.useCase();
 	}
 	

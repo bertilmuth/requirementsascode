@@ -126,8 +126,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 */
 	public UseCaseFlow insteadOf(String stepName) {
 		Optional<UseCaseStep> stepBeforeAtStep = 
-			useCase.findStep(stepName).map(atStep -> atStep.previousStepInFlow())
-				.orElseThrow(() -> new NoSuchElementInUseCase(useCase, stepName));
+			useCase.findStep(stepName).previousStepInFlow();
 
 		flowPredicate.setStepPredicate(afterStep(stepBeforeAtStep));
 	
@@ -154,9 +153,8 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	private UseCaseFlow after(String stepName, UseCase useCase) {
-		Optional<UseCaseStep> foundStep = useCase.findStep(stepName);
-		flowPredicate.setStepPredicate(afterStep(foundStep
-			.orElseThrow(() -> new NoSuchElementInUseCase(useCase, stepName))));
+		UseCaseStep foundStep = useCase.findStep(stepName);
+		flowPredicate.setStepPredicate(afterStep(foundStep));
 		return this;
 	}
 
