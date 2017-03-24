@@ -142,10 +142,10 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *             if no step with the specified stepName is found in the
 	 *             current use case
 	 */
-	public UseCase continueExclusivelyAt(String stepName) {
+	public UseCase continueWithoutAlternativeAt(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(new ContinueExclusivelyAt(useCase(), stepName));
+		system(new ContinueWithoutAlternativeAt(useCase(), stepName));
 		return useCase();
 	}
 

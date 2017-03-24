@@ -103,13 +103,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfContinueExclusivelyAtNotExists() {		
+	public void throwsExceptionIfContinueWithoutAlternativeAtNotExists() {		
 		thrown.expect(NoSuchElementInUseCase.class);
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModel.useCase(USE_CASE)
-			.basicFlow().step("S1").continueExclusivelyAt(CONTINUE);
+			.basicFlow().step("S1").continueWithoutAlternativeAt(CONTINUE);
 	}
 	
 	@Test

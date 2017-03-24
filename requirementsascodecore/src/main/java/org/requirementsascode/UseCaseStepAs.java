@@ -100,10 +100,10 @@ public class UseCaseStepAs{
 	 *             if no step with the specified stepName is found in the
 	 *             current use case
 	 */
-	public UseCase continueExclusivelyAt(String stepName) {
+	public UseCase continueWithoutAlternativeAt(String stepName) {
 		Objects.requireNonNull(stepName);
 
-		system(new ContinueExclusivelyAt(useCaseStep.useCase(), stepName));
+		system(new ContinueWithoutAlternativeAt(useCaseStep.useCase(), stepName));
 		return useCaseStep.useCase();
 	}
 	

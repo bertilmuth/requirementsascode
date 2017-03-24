@@ -862,14 +862,14 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtFirstStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
+	public void continueWithoutAlternativeAtFirstStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
 			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
-				.step(CONTINUE).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+				.step(CONTINUE).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterText());
@@ -879,14 +879,14 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
+	public void continueWithoutAlternativeAtCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
 		useCaseModel.useCase(USE_CASE)
 		.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 			.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
 		.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
-			.step(CONTINUE).user(EnterNumber.class).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+			.step(CONTINUE).user(EnterNumber.class).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterNumber(), enterText(), enterText());
@@ -896,14 +896,14 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
+	public void continueWithoutAlternativeAtCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).as(rightActor).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).as(secondActor, rightActor).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).as(secondActor, rightActor).user(EnterNumber.class).system(displayEnteredNumber())		
 			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
-				.step(CONTINUE).as(rightActor).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+				.step(CONTINUE).as(rightActor).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseRunner.runAs(rightActor);
 		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
@@ -913,14 +913,14 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtNotCalledWhenActorIsWrong() {	
+	public void continueWithoutAlternativeAtNotCalledWhenActorIsWrong() {	
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).as(secondActor, rightActor).user(EnterText.class).system(displayEnteredText())
 				.step(CUSTOMER_ENTERS_NUMBER).as(secondActor, rightActor).user(EnterNumber.class).system(displayEnteredNumber())		
 			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
-				.step(CONTINUE).as(rightActor).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT);
+				.step(CONTINUE).as(rightActor).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseRunner.runAs(secondActor);
 		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
@@ -929,7 +929,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtCalledFromSecondStepOfAlternativeFlow() {		
+	public void continueWithoutAlternativeAtCalledFromSecondStepOfAlternativeFlow() {		
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
@@ -937,7 +937,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
 			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
-				.step(CONTINUE).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT_AGAIN);
+				.step(CONTINUE).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
@@ -947,7 +947,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueExclusivelyAtCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
+	public void continueWithoutAlternativeAtCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
@@ -955,10 +955,10 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
 			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
-				.step(CONTINUE).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT_AGAIN)		
+				.step(CONTINUE).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)		
 			.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsNotAvailable())
 				.step(CUSTOMER_ENTERS_NUMBER_AGAIN).user(EnterNumber.class).system(displayEnteredNumber())
-				.step(CONTINUE_2).continueExclusivelyAt(CUSTOMER_ENTERS_TEXT_AGAIN);
+				.step(CONTINUE_2).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN);
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());

@@ -37,7 +37,7 @@ public class UseCaseRunner {
 	private boolean isRunning;
 	private SystemReactionTrigger systemReactionTrigger;
 	private Consumer<SystemReactionTrigger> systemReaction;
-	private Optional<Predicate<UseCaseStep>> exclusiveStep;
+	private Optional<Predicate<UseCaseStep>> stepWithoutAlternativePredicate;
 
 	/**
 	 * Constructor for creating a use case runner with standard system reaction,
@@ -47,7 +47,7 @@ public class UseCaseRunner {
 	public UseCaseRunner() {
 		this.useCaseModel = new UseCaseModel(this);
 		this.systemReactionTrigger = new SystemReactionTrigger();
-		this.exclusiveStep = Optional.empty();
+		this.stepWithoutAlternativePredicate = Optional.empty();
 		adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
 		stop();
 		restart();
@@ -233,7 +233,7 @@ public class UseCaseRunner {
 				.filter(step -> stepActorIsRunActor(step))
 				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step))
-				.filter(exclusiveStep.orElse(s -> true))
+				.filter(stepWithoutAlternativePredicate.orElse(s -> true))
 				.collect(Collectors.toSet());			
 		} else {
 			steps = new HashSet<>();
@@ -265,7 +265,7 @@ public class UseCaseRunner {
 		setLatestStep(Optional.of(useCaseStep));
 		
 		try {
-			exclusiveStep = Optional.empty();
+			stepWithoutAlternativePredicate = Optional.empty();
 			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
 			systemReaction.accept(systemReactionTrigger);
 		} 
@@ -348,7 +348,7 @@ public class UseCaseRunner {
 		return latestFlow;
 	}
 	
-	void setExclusiveStepPredicate(Predicate<UseCaseStep> exclusiveStep){
-		this.exclusiveStep = Optional.of(exclusiveStep);
+	void setStepWithoutAlternativePredicate(Predicate<UseCaseStep> stepWithoutAlternativePredicate){
+		this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
 	}
 }
