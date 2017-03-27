@@ -75,8 +75,8 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Runnable throwArrayIndexOutOfBoundsException() {
-		return () -> {
+	protected Consumer<UseCaseRunner> throwArrayIndexOutOfBoundsException() {
+		return r -> {
 			throw new ArrayIndexOutOfBoundsException(42);
 		};
 	}

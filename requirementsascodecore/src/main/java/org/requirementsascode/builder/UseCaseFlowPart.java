@@ -20,12 +20,14 @@ public class UseCaseFlowPart {
 		return new UseCaseStepPart(useCaseStep, useCasePart);
 	}
 
-	public UseCaseFlow insteadOf(String stepName) {
-		return useCaseFlow.insteadOf(stepName);
+	public UseCaseFlowPart insteadOf(String stepName) {
+		useCaseFlow.insteadOf(stepName);
+		return this;
 	}
 
-	public UseCaseFlow after(String stepName) {
-		return useCaseFlow.after(stepName);		
+	public UseCaseFlowPart after(String stepName) {
+		useCaseFlow.after(stepName);	
+		return this;
 	}
 
 	public UseCaseFlowPart when(Predicate<UseCaseRunner> whenPredicate) {
