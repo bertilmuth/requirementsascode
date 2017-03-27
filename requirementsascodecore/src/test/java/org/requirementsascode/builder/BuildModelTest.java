@@ -40,7 +40,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsNoUseCase() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
 		Collection<UseCase> useCases = useCaseModel.useCases();
@@ -49,7 +49,7 @@ public class BuildModelTest extends AbstractTestCase{
 
 	@Test
 	public void createsSingleUseCase() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		useCaseModelBuilder.useCase(USE_CASE);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
@@ -62,7 +62,7 @@ public class BuildModelTest extends AbstractTestCase{
 
 	@Test
 	public void createsTwoUseCases() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		useCaseModelBuilder.useCase(USE_CASE);
 		useCaseModelBuilder.useCase(USE_CASE_2);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
@@ -73,7 +73,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void implicitlyCreatesBasicFlow() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		useCaseModelBuilder.useCase(USE_CASE);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
@@ -87,7 +87,7 @@ public class BuildModelTest extends AbstractTestCase{
 
 	@Test
 	public void createsNoSteps() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		useCaseModelBuilder.useCase(USE_CASE);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
@@ -98,7 +98,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleStepThatHandlesUserEvent() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel =
@@ -119,7 +119,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleStepThatHandlesSystemEvent() {		
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -140,7 +140,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleStepThatPerformsSystemReactionAutomatically() {	
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -160,8 +160,9 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+		customer = useCaseModelBuilder.actor(CUSTOMER);
 
 		UseCaseModel useCaseModel = 
 			useCasePart
@@ -181,7 +182,8 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleActorWithSingleUseCase() {	
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
+		customer = useCaseModelBuilder.actor(CUSTOMER);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -200,8 +202,9 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleActorWithSingleUseCaseStep() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+		customer = useCaseModelBuilder.actor(CUSTOMER);
 		
 		UseCaseModel useCaseModel = 
 			useCasePart
@@ -221,7 +224,8 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsTwoActorsWithSingleUseCaseStep() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
+		customer = useCaseModelBuilder.actor(CUSTOMER);
 		Actor anotherActor = useCaseModelBuilder.actor("Another Actor");
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 				
@@ -249,7 +253,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsSingleStepWithNoPreviousStep() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -266,7 +270,8 @@ public class BuildModelTest extends AbstractTestCase{
 
 	@Test
 	public void createsTwoSteps() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
+		customer = useCaseModelBuilder.actor(CUSTOMER);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);		
 		
 		UseCaseModel useCaseModel = 
@@ -295,7 +300,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsTwoStepsAndCheckIfTheyExistInUseCaseByName() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);	
 		
 		useCasePart
@@ -315,7 +320,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsTwoStepsInBasicFlowAndCheckIfTheyExistByIndex() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -332,7 +337,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsOneStepInAlternatvieFlowAndCheckIfItExistsByIndex() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -349,7 +354,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsTwoStepsAndPreviousStepOfSecondOneIsFirstOne() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -365,7 +370,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void createsTwoStepsInDifferentFlowsThatBothHaveNoPreviousSteps() { 
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -383,7 +388,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void useCasesAreUniquelyIdentifiedByName() {	
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -400,7 +405,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void flowsAreUniquelyIdentifiedByName() {		
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 				
 		UseCase useCase = useCasePart.useCase();
@@ -416,16 +421,18 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void thereIsOnlyOneBasicFlowPerUseCase() {		
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
+		
 		useCaseModelBuilder.useCase(USE_CASE);
 		
+		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		UseCase uc = useCaseModel.findUseCase(USE_CASE).get();
 		assertEquals(1, uc.flows().size());
 	}
 	
 	@Test
 	public void actorsCanBeReusedInUseCase() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 
@@ -450,7 +457,7 @@ public class BuildModelTest extends AbstractTestCase{
 	
 	@Test
 	public void actorsCanBeReusedBetweenUseCases() {
-		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder(useCaseRunner);
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = 

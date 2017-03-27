@@ -27,12 +27,12 @@ public class UseCaseModel {
 	private Actor userActor;
 	private Actor systemActor;
 	
-	UseCaseModel(UseCaseRunner useCaseModelRun) {
+	public UseCaseModel(UseCaseRunner useCaseRunner) {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
 		this.userActor = actor("User");
 		this.systemActor = actor("Autonomous System Reaction Actor");
-		this.useCaseRunner = useCaseModelRun;
+		this.useCaseRunner = useCaseRunner;
 	}
 
 	/**

@@ -3,14 +3,13 @@ package org.requirementsascode.builder;
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
 
 public class UseCaseModelBuilder {
 	
 	private UseCaseModel useCaseModel;
 
-	public UseCaseModelBuilder(UseCaseRunner useCaseRunner) {
-		this.useCaseModel = useCaseRunner.useCaseModel();
+	public UseCaseModelBuilder() {
+		this.useCaseModel = new UseCaseModel(null);
 	}
 
 	public UseCaseModel build() {
