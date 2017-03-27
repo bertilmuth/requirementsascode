@@ -26,10 +26,8 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
-				.flow(ALTERNATIVE_FLOW)
-					.after(SYSTEM_DISPLAYS_TEXT)
-						.step(SYSTEM_HANDLES_EXCEPTION)
-							.handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
+				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
+					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 
 		useCaseRunner.run(useCaseModel);
