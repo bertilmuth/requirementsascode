@@ -17,7 +17,7 @@ public class UseCaseFlowPart {
 
 	public UseCaseStepPart step(String stepName) {
 		UseCaseStep useCaseStep = useCaseFlow.step(stepName);
-		return new UseCaseStepPart(useCaseStep, useCasePart);
+		return new UseCaseStepPart(useCaseStep, this);
 	}
 
 	public UseCaseFlowPart insteadOf(String stepName) {
@@ -34,5 +34,12 @@ public class UseCaseFlowPart {
 		useCaseFlow.when(whenPredicate);
 		return this;
 	}
+	
+	public UseCasePart useCasePart(){
+		return useCasePart;
+	}
 
+	public UseCaseModelBuilder useCaseModelBuilder(){
+		return useCasePart.useCaseModelBuilder();
+	}
 }

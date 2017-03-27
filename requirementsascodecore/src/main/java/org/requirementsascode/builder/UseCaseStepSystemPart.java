@@ -1,8 +1,11 @@
 package org.requirementsascode.builder;
 
+import java.util.function.Predicate;
+
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepSystem;
 
@@ -23,7 +26,7 @@ public class UseCaseStepSystemPart<T>{
 
 	public UseCaseStepPart step(String stepName) {
 		UseCaseStep useCaseStep = useCaseStepSystem.step(stepName);
-		return new UseCaseStepPart(useCaseStep, useCaseStepPart.useCasePart());
+		return new UseCaseStepPart(useCaseStep, useCaseStepPart.useCaseFlowPart());
 	}
 
 	public UseCaseFlowPart flow(String flowName) {
@@ -34,5 +37,10 @@ public class UseCaseStepSystemPart<T>{
 	public UseCasePart useCase(String useCaseName) {
 		UseCase useCase = useCaseStepSystem.useCase(useCaseName);
 		return new UseCasePart(useCase, useCaseModelBuilder);
+	}
+
+	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseRunner> condition) {
+		useCaseStepSystem.reactWhile(condition);
+		return this;
 	}
 }

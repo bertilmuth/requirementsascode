@@ -2,6 +2,7 @@ package org.requirementsascode.builder;
 
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.UseCaseModel;
 
 public class UseCasePart {
 	private UseCase useCase;
@@ -28,5 +29,9 @@ public class UseCasePart {
 
 	public UseCaseModelBuilder useCaseModelBuilder() {
 		return useCaseModelBuilder;
+	}
+
+	public UseCaseModel build() {
+		return useCaseModelBuilder.build();
 	}
 }

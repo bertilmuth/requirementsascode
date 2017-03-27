@@ -11,13 +11,13 @@ import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;
-	private UseCasePart useCasePart;
+	private UseCaseFlowPart useCaseFlowPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 
-	public UseCaseStepPart(UseCaseStep useCaseStep, UseCasePart useCasePart) {
+	public UseCaseStepPart(UseCaseStep useCaseStep, UseCaseFlowPart useCaseFlowPart) {
 		this.useCaseStep = useCaseStep;
-		this.useCasePart = useCasePart;
-		this.useCaseModelBuilder = useCasePart.useCaseModelBuilder();
+		this.useCaseFlowPart = useCaseFlowPart;
+		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
 	}
 	
 	public UseCaseStepAsPart as(Actor... actors) {
@@ -42,21 +42,25 @@ public class UseCaseStepPart {
 
 	public UseCasePart continueAfter(String stepName) {
 		useCaseStep.continueAfter(stepName);
-		return useCasePart;
+		return useCasePart();
 	} 
 	
 	public UseCasePart continueAt(String stepName) {
 		useCaseStep.continueAt(stepName);
-		return useCasePart;
+		return useCasePart();
 	}
 	
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
 		useCaseStep.continueWithoutAlternativeAt(stepName);
-		return useCasePart;
+		return useCasePart();
+	}
+	
+	public UseCaseFlowPart useCaseFlowPart(){
+		return useCaseFlowPart;
 	}
 	
 	public UseCasePart useCasePart(){
-		return useCasePart;
+		return useCaseFlowPart().useCasePart();
 	}
 	
 	public UseCaseModelBuilder useCaseModelBuilder(){
