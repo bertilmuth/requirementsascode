@@ -7,16 +7,16 @@ import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepUser<T> useCaseStepUser;
-	private UseCaseModelBuilder useCaseModelBuilder;
+	private UseCaseStepPart useCaseStepPart;
 
-	public UseCaseStepUserPart(UseCaseStepUser<T> useCaseStepUser, UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseStepUserPart(UseCaseStepUser<T> useCaseStepUser, UseCaseStepPart useCaseStepPart) {
 		this.useCaseStepUser = useCaseStepUser;
-		this.useCaseModelBuilder = useCaseModelBuilder;
+		this.useCaseStepPart = useCaseStepPart;
 	}
 
 	public UseCaseStepSystemPart<T> system(Consumer<T> systemReaction) {
 		UseCaseStepSystem<T> useCaseStepSystem = useCaseStepUser.system(systemReaction);
-		return new UseCaseStepSystemPart<>(useCaseStepSystem, useCaseModelBuilder);
+		return new UseCaseStepSystemPart<>(useCaseStepSystem, useCaseStepPart);
 	}
 
 }

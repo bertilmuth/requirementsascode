@@ -8,11 +8,13 @@ import org.requirementsascode.UseCaseStepSystem;
 
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepSystem<T> useCaseStepSystem;
+	private UseCaseStepPart useCaseStepPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 
-	public UseCaseStepSystemPart(UseCaseStepSystem<T> useCaseStepSystem, UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseStepSystemPart(UseCaseStepSystem<T> useCaseStepSystem, UseCaseStepPart useCaseStepPart) {
 		this.useCaseStepSystem = useCaseStepSystem;
-		this.useCaseModelBuilder = useCaseModelBuilder;
+		this.useCaseStepPart = useCaseStepPart;
+		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
 	}
 
 	public UseCaseModel build() {
@@ -21,12 +23,12 @@ public class UseCaseStepSystemPart<T>{
 
 	public UseCaseStepPart step(String stepName) {
 		UseCaseStep useCaseStep = useCaseStepSystem.step(stepName);
-		return new UseCaseStepPart(useCaseStep, useCaseModelBuilder);
+		return new UseCaseStepPart(useCaseStep, useCaseStepPart.useCasePart());
 	}
 
 	public UseCaseFlowPart flow(String flowName) {
 		UseCaseFlow useCaseFlow = useCaseStepSystem.flow(flowName);
-		return new UseCaseFlowPart(useCaseFlow, useCaseModelBuilder);
+		return new UseCaseFlowPart(useCaseFlow, useCaseStepPart.useCasePart());
 	}
 
 	public UseCasePart useCase(String useCaseName) {

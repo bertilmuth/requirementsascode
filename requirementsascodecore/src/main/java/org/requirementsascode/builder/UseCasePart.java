@@ -14,11 +14,19 @@ public class UseCasePart {
 
 	public UseCaseFlowPart basicFlow() {
 		UseCaseFlow useCaseFlow = useCase().basicFlow();
-		return new UseCaseFlowPart(useCaseFlow, useCaseModelBuilder);
+		return new UseCaseFlowPart(useCaseFlow, this);
+	}
+	
+	public UseCaseFlowPart flow(String flowName) {
+		UseCaseFlow useCaseFlow = useCase().flow(flowName);
+		return new UseCaseFlowPart(useCaseFlow, this);
 	}
 
 	public UseCase useCase() {
 		return useCase;
 	}
 
+	public UseCaseModelBuilder useCaseModelBuilder() {
+		return useCaseModelBuilder;
+	}
 }

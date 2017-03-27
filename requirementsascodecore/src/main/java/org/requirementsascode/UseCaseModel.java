@@ -23,16 +23,14 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 public class UseCaseModel {
 	private Map<String, Actor> nameToActorMap;
 	private Map<String, UseCase> nameToUseCaseMap;
-	private UseCaseRunner useCaseRunner;
 	private Actor userActor;
 	private Actor systemActor;
 	
-	public UseCaseModel(UseCaseRunner useCaseRunner) {
+	public UseCaseModel() {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
 		this.userActor = actor("User");
 		this.systemActor = actor("Autonomous System Reaction Actor");
-		this.useCaseRunner = useCaseRunner;
 	}
 
 	/**
@@ -155,15 +153,11 @@ public class UseCaseModel {
 	 * Returns the actor representing the system.
 	 * This actor is implicitly used if you define a use case step
 	 * without {@link UseCaseStep#as(Actor...)} and without a 
-	 * {@link UseCaseStep#user(Class)}, but just a {@link UseCaseStep#system(Runnable)}.
+	 * {@link UseCaseStep#user(Class)}, but just a {@link UseCaseStep#system(java.util.function.Consumer)}.
 	 * 
 	 * @return the user actor
 	 */
 	public Actor systemActor() {
 		return systemActor;
-	}
-	
-	UseCaseRunner useCaseRunner() {
-		return useCaseRunner;
 	}
 }

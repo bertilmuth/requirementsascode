@@ -6,19 +6,18 @@ import static org.requirementsascode.testutil.Names.CONTINUE;
 import static org.requirementsascode.testutil.Names.CUSTOMER;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
 import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
+import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
 import static org.requirementsascode.testutil.Names.USE_CASE;
-import static org.requirementsascode.testutil.Names.USE_CASE_2;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.AbstractTestCase;
 import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
-import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 import org.requirementsascode.exception.UnhandledException;
 import org.requirementsascode.testutil.EnterText;
@@ -34,13 +33,11 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfInsteadOfStepNotExistsInSameUseCase() {	
-		
-		
 		thrown.expect(NoSuchElementInUseCase.class);
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().insteadOf(CUSTOMER_ENTERS_TEXT);
 	}
 	
@@ -50,41 +47,9 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().after(CUSTOMER_ENTERS_TEXT);
 	}
-	
-	@Test
-	public void throwsExceptionIfAfterStepNotExistsInOtherUseCase() {		
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
-		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
-		
-		useCaseModel
-			.useCase(USE_CASE).basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT);
-		
-		useCaseModel
-			.useCase(USE_CASE_2).basicFlow()
-				.after(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, USE_CASE);
-	}
-	
-	@Test
-	public void throwsExceptionIfAfterStepHasNonExistingUseCase() {
-		String unknownUseCaseName = "Unknown Use Case";
-		 
-		thrown.expect(NoSuchElementInModel.class);
-		thrown.expectMessage(unknownUseCaseName);
-		
-		useCaseModel
-			.useCase(USE_CASE).basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT);
-		
-		useCaseModel
-			.useCase("Another Use Case").basicFlow()
-				.after(CUSTOMER_ENTERS_TEXT, unknownUseCaseName);
-	}
-	
 	
 	@Test
 	public void throwsExceptionIfContinueAfterNotExists() {		
@@ -92,7 +57,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CONTINUE);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().step("S1").continueAfter(CONTINUE);
 	}
 	
@@ -102,7 +67,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CONTINUE);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().step("S1").continueAt(CONTINUE);
 	}
 	
@@ -112,7 +77,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(USE_CASE);
 		thrown.expectMessage(CONTINUE);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().step("S1").continueWithoutAlternativeAt(CONTINUE);
 	}
 	
@@ -121,8 +86,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(CUSTOMER);
 		
-		useCaseModel.actor(CUSTOMER);
-		useCaseModel.actor(CUSTOMER);
+		useCaseModelBuilder.actor(CUSTOMER);
+		useCaseModelBuilder.actor(CUSTOMER);
 	}
 	
 	@Test
@@ -130,8 +95,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(USE_CASE);
 		
-		useCaseModel.useCase(USE_CASE);
-		useCaseModel.useCase(USE_CASE);
+		useCaseModelBuilder.useCase(USE_CASE);
+		useCaseModelBuilder.useCase(USE_CASE);
 	}
 	
 	@Test
@@ -139,10 +104,9 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(ALTERNATIVE_FLOW);
 		
-		useCaseModel.useCase(USE_CASE)
-			.flow(ALTERNATIVE_FLOW);
-			
-		useCaseModel.findUseCase(USE_CASE).get()
+		useCaseModelBuilder.useCase(USE_CASE)
+			.flow(ALTERNATIVE_FLOW)
+				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.flow(ALTERNATIVE_FLOW);
 	}
 	
@@ -151,7 +115,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())			
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText());
@@ -163,13 +127,14 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().when(run -> true)
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())
 			.flow(ALTERNATIVE_FLOW).when(run -> true)
-				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText());
+				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText())
+			.build();
 		
-		useCaseRunner.run();
+		useCaseRunner.run(useCaseModel);
 	}
 	
 	@Test
@@ -177,12 +142,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(MissingUseCaseStepPart.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT);
+		
+		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 			
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText());		
+		useCaseRunner.run(useCaseModel);
 	}
 	
 	@Test
@@ -190,12 +156,14 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(MissingUseCaseStepPart.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
-		useCaseModel.useCase(USE_CASE)
+		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT)
 					.as(customer).user(EnterText.class);
+		
+		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 			
-		useCaseRunner.runAs(customer);
+		useCaseRunner.as(customer).run(useCaseModel);
 		useCaseRunner.reactTo(enterText());		
 	}
 	
@@ -204,11 +172,13 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expect(UnhandledException.class);
 		thrown.expectCause(isA(IllegalStateException.class));
 		
-		useCaseModel.useCase(USE_CASE)
-		.basicFlow()
-			.step(CUSTOMER_ENTERS_TEXT)
-				.system(() -> {throw new IllegalStateException();});
+		useCaseModelBuilder.useCase(USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT)
+					.system(r -> {System.out.println("Exception");throw new IllegalStateException();});
 		
-		useCaseRunner.run();
+		UseCaseModel useCaseModel = useCaseModelBuilder.build();
+		
+		useCaseRunner.run(useCaseModel);
 	}
 }

@@ -9,7 +9,7 @@ public class UseCaseModelBuilder {
 	private UseCaseModel useCaseModel;
 
 	public UseCaseModelBuilder() {
-		this.useCaseModel = new UseCaseModel(null);
+		this.useCaseModel = new UseCaseModel();
 	}
 
 	public UseCaseModel build() {

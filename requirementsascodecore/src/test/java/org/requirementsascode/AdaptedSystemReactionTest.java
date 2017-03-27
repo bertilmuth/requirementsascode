@@ -28,7 +28,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run();
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
-		assertEquals(SystemEvent.class, event.getClass());
+		assertEquals(TestUseCaseRunner.class, event.getClass());
 	}
 
 	private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {

@@ -47,8 +47,8 @@ public abstract class AbstractTestCase {
 		return enterNumber;
 	}
 	
-	protected Runnable displayConstantText() {
-		return () -> {
+	protected Consumer<UseCaseRunner> displayConstantText() {
+		return r -> {
 			displayedText = "Hello, Basic Flow!";
 		};
 	}
@@ -73,8 +73,8 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Runnable throwArrayIndexOutOfBoundsException() {
-		return () -> {
+	protected Consumer<UseCaseRunner> throwArrayIndexOutOfBoundsException() {
+		return r -> {
 			throw new ArrayIndexOutOfBoundsException(42);
 		};
 	}

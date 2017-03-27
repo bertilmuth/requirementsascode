@@ -22,7 +22,7 @@ public class SystemReactionTrigger {
 	/**
 	 * The system reaction of the step accepts the event 
 	 * (both event and step passed in earlier).
-	 * @see #setupWithEventAndUseCaseStep(Object, UseCaseStep)
+	 * @see #setupWith(Object, UseCaseStep)
 	 */
 	@SuppressWarnings("unchecked")
 	public void trigger(){
@@ -30,7 +30,7 @@ public class SystemReactionTrigger {
 			.accept(event);
 	}
 	
-	void setupWithEventAndUseCaseStep(Object event, UseCaseStep useCaseStep) {
+	void setupWith(Object event, UseCaseStep useCaseStep) {
 		this.event = event;
 		this.useCaseStep = useCaseStep;
 	}

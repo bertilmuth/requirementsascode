@@ -16,8 +16,8 @@ public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 				.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName());
 	}
 	
-	private Runnable promptUserToEnterFirstName() {
-		return () -> System.out.print("Please enter your first name: ");
+	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
+		return r -> System.out.print("Please enter your first name: ");
 	}
 	
 	private Consumer<EnterText> greetUserWithFirstName() {

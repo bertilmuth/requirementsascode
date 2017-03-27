@@ -1,5 +1,7 @@
 package crosscuttingconcerns;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.SystemReactionTrigger;
 import org.requirementsascode.UseCaseRunner;
 
@@ -30,20 +32,20 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
-	private Runnable addTwoNumbers() {
-		return () -> {
+	private Consumer<UseCaseRunner> addTwoNumbers() {
+		return r -> {
 			resultOfAddition = 123456789 + 123456789;
 		};
 	}
 	
-	private Runnable calculateTwoToThePowerOfAThousand() {
-		return () -> {
+	private Consumer<UseCaseRunner> calculateTwoToThePowerOfAThousand() {
+		return r -> {
 			resultOfPower = Math.pow(2, 1000);
 		};
 	}
 	
-	private Runnable displayResults() {
-		return () ->{
+	private Consumer<UseCaseRunner> displayResults() {
+		return r -> {
 			System.out.println("Result of addition: " + resultOfAddition);	
 			System.out.println("Result of 2 to the power of a thousand = " + resultOfPower);	
 		};

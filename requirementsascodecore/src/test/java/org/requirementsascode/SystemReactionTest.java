@@ -319,7 +319,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())			
 			.flow("Alternative Flow: Skipped").when(r -> false)
-				.step(THIS_STEP_SHOULD_BE_SKIPPED).system(() -> {System.out.println("You should not see this!");});
+				.step(THIS_STEP_SHOULD_BE_SKIPPED).system(r -> {System.out.println("You should not see this!");});
 		
 		useCaseRunner.run();
 		useCaseRunner.reactTo(enterText(), enterText());
@@ -640,24 +640,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueAtCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
-		useCaseModel.useCase(USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
-				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
-				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
-				.step(CONTINUE).user(EnterNumber.class).continueAt(CUSTOMER_ENTERS_NUMBER);
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText(), enterNumber(), enterNumber());
-				 
-		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CONTINUE + ";" +
-			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
-		
-	}
-	
-	@Test
 	public void continueAtCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
@@ -746,24 +728,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void continueAfterCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
-		useCaseModel.useCase(USE_CASE)
-			.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
-				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
-				.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-			.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
-				.step(CONTINUE).user(EnterNumber.class).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN);
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterText(), enterNumber(), enterNumber());
-				 
-		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CONTINUE + ";" +
-			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
-		
-	}
-	
-	@Test
 	public void continueAfterCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
 		useCaseModel.useCase(USE_CASE)
 			.basicFlow()
@@ -849,23 +813,6 @@ public class SystemReactionTest extends AbstractTestCase{
 		 
 		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT + ";" +
 				CUSTOMER_ENTERS_TEXT_AGAIN + ";", runStepNames());
-	}
-	
-	@Test
-	public void continueWithoutAlternativeAtCalledFromFirstStepOfAlternativeFlowWithUserEvent() {		
-		useCaseModel.useCase(USE_CASE)
-		.basicFlow()
-			.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
-			.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
-			.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())		
-		.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
-			.step(CONTINUE).user(EnterNumber.class).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT);
-		
-		useCaseRunner.run();
-		useCaseRunner.reactTo(enterNumber(), enterText(), enterText());
-				 
-		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT + ";" +
-				CUSTOMER_ENTERS_TEXT_AGAIN + ";", runStepNames());	
 	}
 	
 	@Test

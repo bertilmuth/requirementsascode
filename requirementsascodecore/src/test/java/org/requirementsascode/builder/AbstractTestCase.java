@@ -16,7 +16,7 @@ import org.requirementsascode.testutil.EnterText;
 public abstract class AbstractTestCase {
 	protected Actor customer;
 	protected UseCaseModelBuilder useCaseModelBuilder;
-	private TestUseCaseRunner useCaseRunner;
+	protected TestUseCaseRunner useCaseRunner;
 	private String displayedText;
 
 
@@ -49,8 +49,8 @@ public abstract class AbstractTestCase {
 		return enterNumber;
 	}
 	
-	protected Runnable displayConstantText() {
-		return () -> {
+	protected Consumer<UseCaseRunner> displayConstantText() {
+		return r -> {
 			displayedText = "Hello, Basic Flow!";
 		};
 	}

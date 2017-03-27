@@ -57,12 +57,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 				.step("S1a_1").as(anonymousUser).continueAt(S3);	
 	}
 
-	private Runnable promptUserToEnterFirstName() {
-		return () -> System.out.print("Please enter your first name: ");
+	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
+		return r -> System.out.print("Please enter your first name: ");
 	}
 	
-	private Runnable promptUserToEnterAge() {
-		return () -> System.out.print("Please enter your age: ");
+	private Consumer<UseCaseRunner> promptUserToEnterAge() {
+		return r -> System.out.print("Please enter your age: ");
 	}
 
 	private Consumer<EnterText> saveFirstName() {
@@ -73,12 +73,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		return enterText -> age = Integer.parseInt(enterText.text);
 	}
 	
-	private Runnable greetUserWithFirstName() {
-		return () -> System.out.println("Hello, " + firstName + ".");
+	private Consumer<UseCaseRunner> greetUserWithFirstName() {
+		return r -> System.out.println("Hello, " + firstName + ".");
 	}
 	
-	private Runnable greetUserWithAge() {
-		return () -> System.out.println("You are " + age + " years old.");
+	private Consumer<UseCaseRunner> greetUserWithAge() {
+		return r -> System.out.println("You are " + age + " years old.");
 	}
 	
 	private Predicate<UseCaseRunner> ageIsOk() {
@@ -89,8 +89,8 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		return r -> age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private Runnable informUserAboutOutOfBoundsAge() {
-		return () -> 
+	private Consumer<UseCaseRunner> informUserAboutOutOfBoundsAge() {
+		return r -> 
 			System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	

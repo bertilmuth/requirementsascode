@@ -22,12 +22,12 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 				.step("S5").system(greetUserWithFirstNameAndAge());
 	}
 	
-	private Runnable promptUserToEnterFirstName() {
-		return () -> System.out.print("Please enter your first name: ");
+	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
+		return r -> System.out.print("Please enter your first name: ");
 	}
 	
-	private Runnable promptUserToEnterAge() {
-		return () -> System.out.print("Please enter your age: ");
+	private Consumer<UseCaseRunner> promptUserToEnterAge() {
+		return r -> System.out.print("Please enter your age: ");
 	}
 
 	private Consumer<EnterText> saveFirstName() {
@@ -38,8 +38,8 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 		return enterText -> age = Integer.parseInt(enterText.text);
 	}
 	
-	private Runnable greetUserWithFirstNameAndAge() {
-		return () -> System.out.println("Hello, " + firstName + " (" + age + ").");
+	private Consumer<UseCaseRunner> greetUserWithFirstNameAndAge() {
+		return r -> System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
 	public static void main(String[] args){

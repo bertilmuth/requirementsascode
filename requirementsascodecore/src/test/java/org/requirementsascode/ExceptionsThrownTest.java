@@ -203,7 +203,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModel.useCase(USE_CASE)
 		.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT)
-				.system(() -> {throw new IllegalStateException();});
+				.system(r -> {throw new IllegalStateException();});
 		
 		useCaseRunner.run();
 	}

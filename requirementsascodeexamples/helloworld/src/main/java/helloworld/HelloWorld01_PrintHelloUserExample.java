@@ -1,5 +1,7 @@
 package helloworld;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 
@@ -11,8 +13,8 @@ public class HelloWorld01_PrintHelloUserExample {
 				.step("S1").system(greetUser());
 	}
 
-	private Runnable greetUser() {
-		return () -> System.out.println("Hello, User.");
+	private Consumer<UseCaseRunner> greetUser() {
+		return r -> System.out.println("Hello, User.");
 	}
 	
 	public static void main(String[] args){

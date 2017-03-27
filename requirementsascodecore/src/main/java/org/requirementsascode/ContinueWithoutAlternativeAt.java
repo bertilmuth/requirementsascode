@@ -7,10 +7,9 @@ class ContinueWithoutAlternativeAt extends ContinueAt{
 	}
 	
 	@Override
-	public void run() {
-		UseCaseRunner useCaseRunner = useCase().useCaseModel().useCaseRunner();
-		useCaseRunner.setStepWithoutAlternativePredicate(includeOnly(stepName()));
-		super.run();		
+	public void accept(UseCaseRunner runner) {
+		runner.setStepWithoutAlternativePredicate(includeOnly(stepName()));
+		super.accept(runner);		
 	}
 	
 	private Predicate<UseCaseStep> includeOnly(String stepName) {

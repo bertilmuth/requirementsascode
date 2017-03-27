@@ -9,16 +9,16 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 
 public interface BuyProductRealization {
-	void startWithEmptyShoppingCart();
-	void displayProducts();
+	void startWithEmptyShoppingCart(UseCaseRunner runner);
+	void displayProducts(UseCaseRunner runner);
 	void addProductToPurchaseOrder(AddProductToCart addProductToCart);
 	boolean lessThen10Products(UseCaseRunner useCaseRunner);
 	void checkoutPurchase(CheckoutPurchase checkoutPurchase);
-	void displayShippingInformationForm();
+	void displayShippingInformationForm(UseCaseRunner runner);
 	void saveShippingInformation(EnterShippingInformation enterShippingInformation);
-	void displayPaymentDetailsForm();
+	void displayPaymentDetailsForm(UseCaseRunner runner);
 	void savePaymentDetails(EnterPaymentDetails enterPaymentDetails);
-	void displayPurchaseOrderSummary();
+	void displayPurchaseOrderSummary(UseCaseRunner runner);
 	void initiateShipping(ConfirmPurchase confirmPurchase); 
 	boolean atLeastOneProductInCart(UseCaseRunner useCaseRunner);
 	void informUserAndLogException(Throwable t);

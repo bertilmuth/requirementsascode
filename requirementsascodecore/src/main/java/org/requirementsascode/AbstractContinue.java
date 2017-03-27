@@ -1,8 +1,9 @@
 package org.requirementsascode;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public abstract class AbstractContinue implements Runnable{
+public abstract class AbstractContinue implements Consumer<UseCaseRunner>{
 	private UseCase useCase;
 	private String stepName;
 	private Optional<UseCaseStep> latestStepOfRunner;
@@ -13,8 +14,9 @@ public abstract class AbstractContinue implements Runnable{
 		this.latestStepOfRunner = latestStepOfRunner;
 	}
 	
-	public void run() {
-		useCase.useCaseModel().useCaseRunner().setLatestStep(latestStepOfRunner);
+	@Override
+	public void accept(UseCaseRunner runner) {
+		runner.setLatestStep(latestStepOfRunner);
 	}
 	
 	public UseCase useCase() {

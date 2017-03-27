@@ -45,11 +45,11 @@ public class UseCaseRunner {
 	 * an event.
 	 */
 	public UseCaseRunner() {
-		this.useCaseModel = new UseCaseModel(this);
+		this.useCaseModel = new UseCaseModel();
 		this.systemReactionTrigger = new SystemReactionTrigger();
 		this.stepWithoutAlternativePredicate = Optional.empty();
+		
 		adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
-		stop();
 		restart();
 	}
 
@@ -97,8 +97,13 @@ public class UseCaseRunner {
 		runAs(useCaseModel.userActor());
 	}
 	
-	private void triggerAutonomousSystemReaction() {
-		reactTo(new SystemEvent());
+	public void run(UseCaseModel useCaseModel) {
+		this.useCaseModel = useCaseModel;
+		if(actorsToRunAs == null){
+			as(useCaseModel().userActor());
+		}
+		this.isRunning = true;
+		triggerAutonomousSystemReaction();
 	}
 
 	/**
@@ -120,6 +125,19 @@ public class UseCaseRunner {
 		actorsToRunAs.add(useCaseModel.systemActor());
 		
 		triggerAutonomousSystemReaction();
+	}
+	
+	public UseCaseRunner as(Actor... actors) {
+		Objects.requireNonNull(actors);
+		
+		actorsToRunAs = new ArrayList<>(Arrays.asList(actors));
+		actorsToRunAs.add(useCaseModel.systemActor());
+		
+		return this;
+	}
+	
+	private void triggerAutonomousSystemReaction() {
+		reactTo(this);
 	}
 	
 	/**
@@ -266,7 +284,7 @@ public class UseCaseRunner {
 		
 		try {
 			stepWithoutAlternativePredicate = Optional.empty();
-			systemReactionTrigger.setupWithEventAndUseCaseStep(event, useCaseStep);
+			systemReactionTrigger.setupWith(event, useCaseStep);
 			systemReaction.accept(systemReactionTrigger);
 		} 
 		catch (Exception e) { 

@@ -40,12 +40,12 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 				.step("S5b_2").continueAfter(S2);		
 	}
 
-	private Runnable promptUserToEnterFirstName() {
-		return () -> System.out.print("Please enter your first name: ");
+	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
+		return r -> System.out.print("Please enter your first name: ");
 	}
 	
-	private Runnable promptUserToEnterAge() {
-		return () -> System.out.print("Please enter your age: ");
+	private Consumer<UseCaseRunner> promptUserToEnterAge() {
+		return r -> System.out.print("Please enter your age: ");
 	}
 
 	private Consumer<EnterText> saveFirstName() {
@@ -56,16 +56,16 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 		return enterText -> age = Integer.parseInt(enterText.text);
 	}
 	
-	private Runnable greetUserWithFirstNameAndAge() {
-		return () -> System.out.println("Hello, " + firstName + " (" + age + ").");
+	private Consumer<UseCaseRunner> greetUserWithFirstNameAndAge() {
+		return r -> System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
 	private Predicate<UseCaseRunner> ageIsOutOfBounds() {
 		return r -> age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private Runnable informUserAboutOutOfBoundsAge() {
-		return () -> 
+	private Consumer<UseCaseRunner> informUserAboutOutOfBoundsAge() {
+		return r -> 
 			System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	

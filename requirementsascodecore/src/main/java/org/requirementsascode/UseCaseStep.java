@@ -6,6 +6,7 @@ import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactT
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.NoSuchElementInUseCase;
@@ -93,12 +94,12 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *            the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystem<?> system(Runnable systemReaction) {
+	public UseCaseStepSystem<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
 
 		Actor systemActor = useCaseModel().systemActor();
 
-		UseCaseStepSystem<?> systemPart = as(systemActor).system(systemReaction);
+		UseCaseStepSystem<UseCaseRunner> systemPart = as(systemActor).system(systemReaction);
 
 		return systemPart;
 	}

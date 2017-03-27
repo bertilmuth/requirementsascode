@@ -23,12 +23,12 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void startWithEmptyShoppingCart(){
+	public void startWithEmptyShoppingCart(UseCaseRunner runner){
 		purchaseOrder = new PurchaseOrder();
 	}
 	
 	@Override
-	public void displayProducts() {
+	public void displayProducts(UseCaseRunner runner) {
 		Products products = new Products(stock.findProducts());
 		display.displayProductsAndShoppingCartSize(products, purchaseOrder);
 	}
@@ -48,7 +48,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 
 	@Override
-	public void displayShippingInformationForm() {
+	public void displayShippingInformationForm(UseCaseRunner runner) {
 		display.displayShippingInformationForm(purchaseOrder.shippingInformation());
 	}
 
@@ -58,7 +58,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void displayPaymentDetailsForm() {
+	public void displayPaymentDetailsForm(UseCaseRunner runner) {
 		display.displayPaymentDetailsForm();
 	}
 
@@ -68,7 +68,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void displayPurchaseOrderSummary() {
+	public void displayPurchaseOrderSummary(UseCaseRunner runner) {
 		display.displayPurchaseOrderSummary(purchaseOrder);
 	}
 	

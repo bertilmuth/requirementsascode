@@ -1,5 +1,6 @@
 package helloworld;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
@@ -18,16 +19,16 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		
 	}
 
-	private Runnable greetUser() {
-		return () -> System.out.println("Hello, User.");
+	private Consumer<UseCaseRunner> greetUser() {
+		return r -> System.out.println("Hello, User.");
 	}
 	
 	private Predicate<UseCaseRunner> lessThanThreeHooraysHaveBeenPrinted() {
 		return r -> hoorayCounter < 3; 
 	}
 	
-	private Runnable printHooray() {
-		return () -> {
+	private Consumer<UseCaseRunner> printHooray() {
+		return r -> {
 			System.out.println("Hip, hip, hooray!");
 			hoorayCounter++;
 		};

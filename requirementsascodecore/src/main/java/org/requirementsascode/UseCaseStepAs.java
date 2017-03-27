@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 
@@ -114,9 +115,9 @@ public class UseCaseStepAs{
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystem<SystemEvent> system(Runnable systemReaction) {
-		UseCaseStepSystem<SystemEvent> system = 
-			user(SystemEvent.class).system(se -> systemReaction.run());
+	public UseCaseStepSystem<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
+		UseCaseStepSystem<UseCaseRunner> system = 
+			user(UseCaseRunner.class).system(systemReaction);
 		return system;
 	}
 	
