@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.AbstractTestCase;
 import org.requirementsascode.Actor;
 import org.requirementsascode.TestUseCaseRunner;
 import org.requirementsascode.UseCase;
