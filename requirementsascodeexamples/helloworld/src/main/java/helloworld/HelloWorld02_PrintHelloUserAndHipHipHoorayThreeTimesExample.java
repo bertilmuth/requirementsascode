@@ -5,18 +5,22 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
 	
 	int hoorayCounter = 0;
 	
-	public void create(UseCaseModel useCaseModel) {
-		useCaseModel.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(greetUser())
-				.step("S2").system(printHooray())
-					.reactWhile(lessThanThreeHooraysHaveBeenPrinted());
+	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+		UseCaseModel useCaseModel = 
+			useCaseModelBuilder.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").system(greetUser())
+					.step("S2").system(printHooray())
+						.reactWhile(lessThanThreeHooraysHaveBeenPrinted())
+			.build();
 		
+		return useCaseModel;
 	}
 
 	private Consumer<UseCaseRunner> greetUser() {
@@ -36,11 +40,10 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 
 		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
-		example.create(useCaseModel);
+		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
 		
-		useCaseRunner.run();
+		useCaseRunner.run(useCaseModel);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends AbstractHelloWorldExample{
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
@@ -28,33 +29,36 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private Actor normalUser;
 	private Actor anonymousUser;
 	
-	public void create(UseCaseModel useCaseModel) {			
-		normalUser = useCaseModel.actor("Normal User");
-		anonymousUser = useCaseModel.actor("Anonymous User");
+	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+		normalUser = useCaseModelBuilder.actor("Normal User");
+		anonymousUser = useCaseModelBuilder.actor("Anonymous User");
 				
-		useCaseModel.useCase("Get greeted")
-			.basicFlow()
-				.step(S1).as(normalUser).system(promptUserToEnterFirstName())
-				.step(S2).as(normalUser).user(ENTER_FIRST_NAME).system(saveFirstName())
-				.step(S3).as(normalUser, anonymousUser).system(promptUserToEnterAge())
-				.step(S4).as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
-				.step(S5).as(normalUser).system(greetUserWithFirstName())
-				.step(S6).as(normalUser, anonymousUser).system(greetUserWithAge())
-				.step("S7").as(normalUser, anonymousUser).system(stopSystem())
+		UseCaseModel useCaseModel = 
+			useCaseModelBuilder.useCase("Get greeted")
+				.basicFlow()
+					.step(S1).as(normalUser).system(promptUserToEnterFirstName())
+					.step(S2).as(normalUser).user(ENTER_FIRST_NAME).system(saveFirstName())
+					.step(S3).as(normalUser, anonymousUser).system(promptUserToEnterAge())
+					.step(S4).as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
+					.step(S5).as(normalUser).system(greetUserWithFirstName())
+					.step(S6).as(normalUser, anonymousUser).system(greetUserWithAge())
+					.step("S7").as(normalUser, anonymousUser).system(stopSystem())
+						
+				.flow("Handle out-of-bounds age").insteadOf(S5).when(ageIsOutOfBounds())
+					.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+					.step("S5a_2").continueAt(S3)
+						
+				.flow("Handle non-numerical age").insteadOf(S5)
+					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+					.step("S5b_2").continueAt(S3)
 					
-			.flow("Handle out-of-bounds age").insteadOf(S5).when(ageIsOutOfBounds())
-				.step("S5a_1").system(informUserAboutOutOfBoundsAge())
-				.step("S5a_2").continueAt(S3)
+				.flow("Anonymous greeted with age only").insteadOf(S5).when(ageIsOk())
+					.step("S5c_1").as(anonymousUser).continueAt(S6)
 					
-			.flow("Handle non-numerical age").insteadOf(S5)
-				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
-				.step("S5b_2").continueAt(S3)
-				
-			.flow("Anonymous greeted with age only").insteadOf(S5).when(ageIsOk())
-				.step("S5c_1").as(anonymousUser).continueAt(S6)
-				
-			.flow("Anonymous does not enter name").insteadOf(S1)
-				.step("S1a_1").as(anonymousUser).continueAt(S3);	
+				.flow("Anonymous does not enter name").insteadOf(S1)
+					.step("S1a_1").as(anonymousUser).continueAt(S3)
+			.build();
+		return useCaseModel;
 	}
 
 	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
@@ -101,12 +105,11 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 
 		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
-		example.create(useCaseModel);
+		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
 		
-		useCaseRunner.runAs(example.anonymousUser());			
+		useCaseRunner.as(example.anonymousUser()).run(useCaseModel);			
 		while(!example.systemStopped())
 			useCaseRunner.reactTo(example.enterText());	
 		example.exitSystem();

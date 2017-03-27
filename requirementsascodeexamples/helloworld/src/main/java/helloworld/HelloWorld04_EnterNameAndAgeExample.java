@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
@@ -12,14 +13,17 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	private String firstName;
 	private int age;
 	
-	public void create(UseCaseModel useCaseModel) {					
-		useCaseModel.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(promptUserToEnterFirstName())
-				.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
-				.step("S3").system(promptUserToEnterAge())
-				.step("S4").user(ENTER_AGE).system(saveAge())
-				.step("S5").system(greetUserWithFirstNameAndAge());
+	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+		UseCaseModel useCaseModel = 
+			useCaseModelBuilder.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").system(promptUserToEnterFirstName())
+					.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
+					.step("S3").system(promptUserToEnterAge())
+					.step("S4").user(ENTER_AGE).system(saveAge())
+					.step("S5").system(greetUserWithFirstNameAndAge())
+			.build();
+		return useCaseModel;
 	}
 	
 	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
@@ -44,12 +48,11 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	
 	public static void main(String[] args){
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
 
 		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
-		example.create(useCaseModel);
+		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
 		
-		useCaseRunner.run();		
+		useCaseRunner.run(useCaseModel);		
 		useCaseRunner.reactTo(example.enterText());
 		useCaseRunner.reactTo(example.enterText());
 	}

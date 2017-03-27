@@ -3,7 +3,9 @@ package crosscuttingconcerns;
 import java.util.function.Consumer;
 
 import org.requirementsascode.SystemReactionTrigger;
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private int resultOfAddition;
@@ -13,13 +15,16 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		useCaseRunner.adaptSystemReaction(this::measurePerformance);
 		
-		useCaseRunner.useCaseModel().useCase("Measure performance of simple mathematical operations")
-			.basicFlow()
-				.step("S1").system(addTwoNumbers())
-				.step("S2").system(calculateTwoToThePowerOfAThousand())
-				.step("S3").system(displayResults());
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
+		UseCaseModel useCaseModel = 
+			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
+				.basicFlow()
+					.step("S1").system(addTwoNumbers())
+					.step("S2").system(calculateTwoToThePowerOfAThousand())
+					.step("S3").system(displayResults())
+				.build();
 		
-		useCaseRunner.run();
+		useCaseRunner.run(useCaseModel);
 	}
 	
 	private void measurePerformance(SystemReactionTrigger systemReactionTrigger) {
