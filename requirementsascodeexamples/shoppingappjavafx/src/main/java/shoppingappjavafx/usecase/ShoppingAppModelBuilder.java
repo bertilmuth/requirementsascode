@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
@@ -13,7 +14,7 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.GoBack;
 
-public class UseCaseModelCreator{
+public class ShoppingAppModelBuilder{
 	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
 	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
 	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
@@ -24,12 +25,12 @@ public class UseCaseModelCreator{
 	
 	private BuyProductRealization buyProductRealization;
 
-	public UseCaseModelCreator(BuyProductRealization buyProductRealization){
+	public ShoppingAppModelBuilder(BuyProductRealization buyProductRealization){
 		this.buyProductRealization = buyProductRealization;
 	}
 	
-	public void create(UseCaseModel useCaseModel) {		
-		useCaseModel.useCase("Buy product")
+	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {		
+		UseCaseModel useCaseModel = useCaseModelBuilder.useCase("Buy product")
 			.basicFlow()
 				.step("S1").system(startWithEmptyShoppingCart())
 				.step("S2").system(displayProducts())
@@ -49,7 +50,9 @@ public class UseCaseModelCreator{
 				.step("S8a_1").user(GO_BACK).system(r -> {})
 				.step("S8a_2").continueAfter("S4")
 			.flow("Checkout after going back").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")
-			.flow("Handle exceptions").when(anytime()).step("EX").handle(EXCEPTION).system(informUserAndLogException());
+			.flow("Handle exceptions").when(anytime()).step("EX").handle(EXCEPTION).system(informUserAndLogException())
+		.build();
+		return useCaseModel;
 	}
 
 	private Predicate<UseCaseRunner> anytime() {

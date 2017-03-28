@@ -4,17 +4,19 @@ import java.io.IOException;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecase.BuyProductRealization;
-import shoppingappjavafx.usecase.UseCaseModelCreator;
+import shoppingappjavafx.usecase.ShoppingAppModelBuilder;
 import shoppingappjavafx.usecaserealization.ShoppingAppBuyProductRealization;
 
 public class JavafxMain extends Application {
-	private Stock stock;
+	private UseCaseModelBuilder useCaseModelBuilder;
 	private UseCaseRunner useCaseRunner;
+	private Stock stock;
 	private JavafxDisplay display;
 
 	@Override
@@ -30,6 +32,7 @@ public class JavafxMain extends Application {
 	}
 
 	private void createUseCaseModelRunner() {
+		this.useCaseModelBuilder = new UseCaseModelBuilder();
 		this.useCaseRunner = new UseCaseRunner();
 	}
 
@@ -39,11 +42,10 @@ public class JavafxMain extends Application {
 		primaryStage.show();		
 	}
 	
-	public void createAndRunUseCaseRealization(Stage primaryStage) {		
-		UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+	public void createAndRunUseCaseRealization(Stage primaryStage) {	
 		BuyProductRealization buyProductRealization = new ShoppingAppBuyProductRealization(stock, display);
-		new UseCaseModelCreator(buyProductRealization).create(useCaseModel);
-		useCaseRunner.run();
+		UseCaseModel useCaseModel = new ShoppingAppModelBuilder(buyProductRealization).buildWith(useCaseModelBuilder);
+		useCaseRunner.run(useCaseModel);
 	}
 
 	public static void main(String[] args) {

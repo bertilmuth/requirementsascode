@@ -28,7 +28,8 @@ public class SystemReactionTest extends AbstractTestCase{
 	
 	@Test
 	public void useCaseRunnerIsRunningAfterRunCall(){
-		useCaseRunner.run();
+		UseCaseModel model = useCaseModelBuilder.build();
+		useCaseRunner.run(model);
 		assertTrue(useCaseRunner.isRunning());
 	}
 	
@@ -40,7 +41,8 @@ public class SystemReactionTest extends AbstractTestCase{
 	
 	@Test
 	public void useCaseRunnerIsNotRunningWhenBeingStoppedAfterRunCall(){
-		useCaseRunner.run();
+		UseCaseModel model = useCaseModelBuilder.build();
+		useCaseRunner.run(model);
 		useCaseRunner.stop();
 		assertFalse(useCaseRunner.isRunning());
 	}

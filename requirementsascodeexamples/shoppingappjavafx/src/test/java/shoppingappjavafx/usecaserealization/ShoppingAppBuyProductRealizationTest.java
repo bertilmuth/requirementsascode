@@ -8,12 +8,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.TestUseCaseRunner;
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.UseCaseModelCreator;
+import shoppingappjavafx.usecase.ShoppingAppModelBuilder;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
@@ -28,19 +29,20 @@ public class ShoppingAppBuyProductRealizationTest {
 	@Before
 	public void setUp() throws Exception {
 		useCaseRunner = new TestUseCaseRunner();
-		useCaseModel = useCaseRunner.useCaseModel();
+		UseCaseModelBuilder useCaseModelBuilder = new UseCaseModelBuilder();
 		
 		Stock stock = new Stock();
 		Display displayStub = new DisplayStub();
 		
 		ShoppingAppBuyProductRealization shoppingAppUseCaseRealization =
 			new ShoppingAppBuyProductRealization(stock, displayStub);
-		new UseCaseModelCreator(shoppingAppUseCaseRealization).create(useCaseModel);
+		useCaseModel = 
+			new ShoppingAppModelBuilder(shoppingAppUseCaseRealization).buildWith(useCaseModelBuilder);
 	}
 
 	@Test
 	public void runsBasicFlow() {
-		useCaseRunner.run();
+		useCaseRunner.run(useCaseModel);
 		useCaseRunner.reactTo(
 			new AddProductToCart(new Product("Hamster Wheel, Black", new BigDecimal(9.95))),
 			new CheckoutPurchase(),

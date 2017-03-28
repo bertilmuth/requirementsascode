@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -47,7 +46,6 @@ public class UseCaseRunner {
 	 * an event.
 	 */
 	public UseCaseRunner() {
-		this.useCaseModel = new UseCaseModel();
 		this.user = Optional.empty();
 		this.systemReactionTrigger = new SystemReactionTrigger();
 		this.stepWithoutAlternativePredicate = Optional.empty();
@@ -65,16 +63,6 @@ public class UseCaseRunner {
 	public void adaptSystemReaction(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
 		this.systemReaction = adaptedSystemReaction;
 	}
-
-	/**
-	 * Returns the use case model for the runner,
-	 * which configures the behavior of the runner.
-	 * 
-	 * @return the use case model
-	 */
-	public UseCaseModel useCaseModel() {
-		return useCaseModel;
-	}
 	
 	/**
 	 * Restarts the runner, setting latest flow and latest step 
@@ -85,21 +73,13 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Runs the use case model with the default user, see {@link UseCaseModel#userActor()}.
+	 * Configures the runner to use the specified use case model.
+	 * After you called this method, the runner will accept events via {@link #reactTo(Object)}.
 	 * 
-	 * From now on (until called the next time), the runner will only trigger system reactions
-	 * of steps that have been defined with {@link UseCaseStep#user(Class)} or 
-	 * that are "autonomous system reactions".
+	 * As a side effect, this method immediately triggers "autonomous system reactions".
 	 * 
-	 * Calling this method activates reacting to events via {@link #reactTo(Object)}.
-	 * 
-	 * As a side effect, calling this method triggers immediately triggers "autonomous system reactions".
-	 * 
+	 * @param useCaseModel the model that defines the runner's behavior
 	 */
-	public void run() {
-		runAs(useCaseModel.userActor());
-	}
-	
 	public void run(UseCaseModel useCaseModel) {
 		this.useCaseModel = useCaseModel;
 		
@@ -109,28 +89,16 @@ public class UseCaseRunner {
 		this.isRunning = true;
 		triggerAutonomousSystemReaction();
 	}
-
+	
 	/**
-	 * Runs the use case model with the specified actors.
+	 * After you called this method, the runner will only react to steps 
+	 * that have explicitly set the specified actor (via  {@link UseCaseStep#as(Actor...))}, 
+	 * or that are declared as "autonomous system reactions".
 	 * 
-	 * From now on (until called the next time), the runner will only trigger system reactions
-	 * of steps that have explicitly set one of the specified actors, or that are "autonomous system reactions".
-	 * Calling this method activates reacting to events via {@link #reactTo(Object)}.
 	 * 
 	 * As a side effect, calling this method triggers immediately triggers "autonomous system reactions".
 	 * 
-	 * @param actors the actors to run as
 	 */
-	public void runAs(Actor... actors) {
-		Objects.requireNonNull(actors);
-		
-		isRunning = true;
-		userAndSystem = new ArrayList<>(Arrays.asList(actors));
-		userAndSystem.add(useCaseModel.systemActor());
-		
-		triggerAutonomousSystemReaction();
-	}
-	
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		
