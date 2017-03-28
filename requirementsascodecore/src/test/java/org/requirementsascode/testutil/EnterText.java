@@ -1,24 +1,17 @@
 package org.requirementsascode.testutil;
 public class EnterText{
-	private String text;
-	
-	public EnterText() {
-	}
+	private String value;
 	
 	public EnterText(String text) {
-		set(text);
+		this.value = text;
 	}
 	
-	public String get(){
-		return text;
-	}
-
-	public void set(String text) {
-		this.text = text;
+	public String value(){
+		return value;
 	}
 	
 	@Override
 	public String toString() {
-		return text;
+		return value;
 	}
 }

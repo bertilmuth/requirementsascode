@@ -45,8 +45,7 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected EnterNumber enterNumber(){
-		EnterNumber enterNumber = new EnterNumber();
-		enterNumber.value = 42;
+		EnterNumber enterNumber = new EnterNumber(42);
 		return enterNumber;
 	}
 	
@@ -64,14 +63,13 @@ public abstract class AbstractTestCase {
 	
 	protected Consumer<EnterNumber> displayEnteredNumber() {
 		return enterNumber -> {
-			displayedText = enterNumber.value.toString();
+			displayedText = enterNumber.toString();
 		};
 	}
 	
 	protected Supplier<EnterNumber> raiseEnterNumber() {
 		return () -> {
-			EnterNumber enterNumberEvent = new EnterNumber();
-			enterNumberEvent.value = 42;
+			EnterNumber enterNumberEvent = new EnterNumber(42);
 			return enterNumberEvent;
 		};
 	}
