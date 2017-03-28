@@ -38,6 +38,10 @@ public class UseCaseFlowPart {
 		return this;
 	}
 	
+	public UseCaseFlow useCaseFlow(){
+		return useCaseFlow;
+	}
+	
 	public UseCasePart useCasePart(){
 		return useCasePart;
 	}

@@ -55,6 +55,10 @@ public class UseCaseStepPart {
 		return useCasePart();
 	}
 	
+	public UseCaseStep useCaseStep(){
+		return useCaseStep;
+	}
+	
 	public UseCaseFlowPart useCaseFlowPart(){
 		return useCaseFlowPart;
 	}
