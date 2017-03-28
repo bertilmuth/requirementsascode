@@ -122,6 +122,6 @@ public class HelloWorldTest {
 		useCaseRunner.as(example.anonymousUser()).run(useCaseModel);
 		useCaseRunner.reactTo(new EnterText("NotANumber"));
 
-		assertEquals("S1a_1;S3;S4;S5b_1;S5b_2;S3", useCaseRunner.runStepNames());
+		assertEquals("S1a_1;S3;S4;S5b_1;S5b_2;S3;", useCaseRunner.runStepNames());
 	}
 }
