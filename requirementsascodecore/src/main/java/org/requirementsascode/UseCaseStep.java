@@ -65,7 +65,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	 * the event of this step.
 	 * 
 	 * Note: in order for the system to react to one the specified actors,
-	 * {@link UseCaseRunner#runAs(Actor...)} needs to be called before
+	 * {@link UseCaseRunner#as(Actor)} needs to be called before
 	 * {@link UseCaseRunner#reactTo(Object)}.
 	 * 
 	 * @param actors

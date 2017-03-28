@@ -92,12 +92,13 @@ public class UseCaseRunner {
 	
 	/**
 	 * After you called this method, the runner will only react to steps 
-	 * that have explicitly set the specified actor (via  {@link UseCaseStep#as(Actor...))}, 
+	 * that have explicitly set the specified actor (via {@link UseCaseStep#as(Actor...)}), 
 	 * or that are declared as "autonomous system reactions".
-	 * 
 	 * 
 	 * As a side effect, calling this method triggers immediately triggers "autonomous system reactions".
 	 * 
+	 * @param actor the actor to run as 
+	 * @return this runner, for method chaining with {@link #run(UseCaseModel)}
 	 */
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
@@ -112,8 +113,7 @@ public class UseCaseRunner {
 	
 	/**
 	 * Returns whether the runner is currently running.
-	 * @see #run()
-	 * @see #runAs(Actor...)
+	 * @see #run(UseCaseModel)
 	 * 
 	 * @return true if the runner is running, false otherwise.
 	 */
@@ -123,7 +123,7 @@ public class UseCaseRunner {
 
 	/**
 	 * Stops the runner. It will not be reacting to events,
-	 * until {@link #run()} or {@link #runAs(Actor...)} is called again.
+	 * until {@link #run(UseCaseModel)} is called again.
 	 */
 	public void stop() {	
 		isRunning = false;

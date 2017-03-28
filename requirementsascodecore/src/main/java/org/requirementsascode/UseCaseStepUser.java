@@ -28,7 +28,7 @@ public class UseCaseStepUser<T>{
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step 
 	 */
-	public <U> UseCaseStepSystem<T> system(Consumer<T> systemReaction) {
+	public UseCaseStepSystem<T> system(Consumer<T> systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		
 		UseCaseStepSystem<T> newSystemPart = 
