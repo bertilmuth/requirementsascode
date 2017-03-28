@@ -263,6 +263,16 @@ public class UseCaseStep extends UseCaseModelElement {
 	public UseCaseStepAs as() {
 		return as;
 	}
+	
+	/**
+	 * Sets the as part of this step.
+	 * 
+	 * @param as the as part
+	 * 
+	 */
+	public void setAs(UseCaseStepAs as) {
+		this.as = as;
+	}
 
 	/**
 	 * Returns the user part of this step.

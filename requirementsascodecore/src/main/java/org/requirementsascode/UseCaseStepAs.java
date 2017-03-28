@@ -17,7 +17,7 @@ public class UseCaseStepAs{
 	private Actor[] actors;
 	private UseCaseStep useCaseStep;
 	
-	UseCaseStepAs(UseCaseStep useCaseStep, Actor... actor) {
+	public UseCaseStepAs(UseCaseStep useCaseStep, Actor... actor) {
 		this.useCaseStep = useCaseStep;
 		this.actors = actor;
 		connectActorsToThisStep(actors);		

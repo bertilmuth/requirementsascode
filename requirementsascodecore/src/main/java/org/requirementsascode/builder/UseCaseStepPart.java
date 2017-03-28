@@ -20,9 +20,17 @@ public class UseCaseStepPart {
 		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
 	}
 	
+	/**
+	 * Defines which actors (i.e. user groups) can cause the system to react to
+	 * the event of this step.
+	 * 
+	 * @param actors the actors that define the user groups
+	 * @return the created as part of this step
+	 */
 	public UseCaseStepAsPart as(Actor... actors) {
-		UseCaseStepAs useCaseStepAs = useCaseStep.as(actors);
-		return new UseCaseStepAsPart(useCaseStepAs, this);
+		UseCaseStepAs as = new UseCaseStepAs(useCaseStep, actors);
+		useCaseStep.setAs(as);
+		return new UseCaseStepAsPart(as, this);
 	}
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventOrExceptionClass) {
