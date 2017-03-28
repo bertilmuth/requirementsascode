@@ -6,26 +6,33 @@ import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import java.util.function.Consumer;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.SystemReactionTrigger;
+import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.UseCaseModel;
 
 public class AdaptedSystemReactionTest extends AbstractTestCase{
 	private String stepName;
 	private Object event;
 	
+	@Before
+	public void setup() {
+		setupWith(new TestUseCaseRunner());
+	}
+	
 	@Test
 	public void printsTextAndPerformsAdaptedSystemReaction() {	
-		TestUseCaseRunner useCaseRunner = new TestUseCaseRunner();
 		useCaseRunner.adaptSystemReaction(withSavingStepNameAndEvent());
-		
-		setupWith(useCaseRunner);
 		stepName = "";
 		
-		useCaseRunner.useCaseModel()
+		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
+					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+			.build();
 		
-		useCaseRunner.run();
+		useCaseRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 		assertEquals(TestUseCaseRunner.class, event.getClass());

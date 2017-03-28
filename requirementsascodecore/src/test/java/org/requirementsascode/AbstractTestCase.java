@@ -6,23 +6,26 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Actor;
+import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 import org.requirementsascode.testutil.EnterNumber;
 import org.requirementsascode.testutil.EnterText;
 
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
+	protected UseCaseModelBuilder useCaseModelBuilder;
 	protected TestUseCaseRunner useCaseRunner;
-	protected UseCaseModel useCaseModel;
-	
 	private String displayedText;
+
 
 	protected void setupWith(TestUseCaseRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;
-		this.useCaseModel = useCaseRunner.useCaseModel();
-		this.customer = useCaseModel.actor(CUSTOMER);
-		
-		displayedText = null;
+		this.useCaseModelBuilder = new UseCaseModelBuilder();
+		this.customer = useCaseModelBuilder.build().actor(CUSTOMER);
+		this.displayedText = null;
 	}
 	
 	protected Predicate<UseCaseRunner> textIsAvailable() {
