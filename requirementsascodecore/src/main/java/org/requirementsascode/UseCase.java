@@ -97,6 +97,15 @@ public class UseCase extends UseCaseModelElement{
 		return flow;
 	}
 	
+	/**
+	 * Creates a new step with the specified parameters.
+	 * 
+	 * @param stepName the name of the step
+	 * @param flow the flow the step shall belong to
+	 * @param previousStep the previous step in the flow, if there is one
+	 * @param predicate the complete predicate of the step
+	 * @return the newly created step
+	 */
 	public UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
 		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep, predicate);
 		saveModelElement(step, nameToStepMap);
