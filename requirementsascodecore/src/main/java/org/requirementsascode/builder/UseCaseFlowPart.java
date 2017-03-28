@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.exception.ElementAlreadyInModel;
 
 public class UseCaseFlowPart {
 	private UseCaseFlow useCaseFlow;
@@ -16,6 +17,13 @@ public class UseCaseFlowPart {
 		this.useCasePart = useCasePart;
 	}
 
+	/**
+	 * Creates the first step of this flow, with the specified name.
+	 * 
+	 * @param stepName the name of the step to be created
+	 * @return the newly created step, to ease creation of further steps
+	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
+	 */
 	public UseCaseStepPart step(String stepName) {
 		UseCaseStep useCaseStep = 
 			useCasePart.useCase().newStep(stepName, useCaseFlow, 

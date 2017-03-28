@@ -3,7 +3,6 @@ package org.requirementsascode;
 import static org.requirementsascode.UseCaseStepPredicate.afterStep;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -64,23 +63,6 @@ public class UseCaseStepSystem<T>{
 
 		UseCaseFlow newFlow = useCaseStep.useCase().flow(flowName);
 		return newFlow;
-	}
-
-	/**
-	 * Creates a new step in this flow, with the specified name, that follows this step in sequence.
-	 * 
-	 * @param stepName the name of the step to be created
-	 * @return the newly created step, to ease creation of further steps
-	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
-	 */
-	public UseCaseStep step(String stepName) {			
-		Objects.requireNonNull(stepName);
-
-		UseCaseStep newStep = 
-			useCaseStep.useCase().newStep(stepName, useCaseStep.flow(), 
-				Optional.of(useCaseStep), Optional.empty());
-		
-		return newStep; 
 	}
 	
 	/**

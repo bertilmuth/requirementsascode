@@ -141,7 +141,7 @@ public class UseCase extends UseCaseModelElement{
 	
 	/**
 	 * Returns the steps contained in this use case.
-	 * Do not modify the returned collection directly, use {@link UseCaseFlow#step(String)}
+	 * Do not modify the returned collection directly.
 	 * 
 	 * @return a collection of the steps
 	 */

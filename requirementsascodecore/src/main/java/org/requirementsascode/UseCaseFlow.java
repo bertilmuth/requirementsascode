@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 
@@ -72,7 +71,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	
 	/**
 	 * Returns the steps contained in this flow.
-	 * Do not modify the returned collection directly, use {@link #step(String)}
+	 * Do not modify the returned collection directly.
 	 * 
 	 * @return a collection of the steps
 	 */
@@ -80,26 +79,6 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return useCase().steps().stream()
 			.filter(step -> step.flow().equals(this))
 			.collect(Collectors.toList());
-	}
-	
-	/**
-	 * Creates the first step of this flow, with the specified name.
-	 * 
-	 * @param stepName the name of the step to be created
-	 * @return the newly created step, to ease creation of further steps
-	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
-	 */
-	public UseCaseStep step(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		UseCaseStep newStep = newStep(stepName, Optional.empty(), flowPredicate.get());
-
-		return newStep;
-	}
-
-	private UseCaseStep newStep(String stepName, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
-		UseCaseStep stepToLeave = useCase().newStep(stepName, this, previousStep, predicate);
-		return stepToLeave;
 	}
 
 	/**

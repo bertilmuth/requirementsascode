@@ -9,6 +9,7 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepSystem;
+import org.requirementsascode.exception.ElementAlreadyInModel;
 
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepSystem<T> useCaseStepSystem;
@@ -25,6 +26,13 @@ public class UseCaseStepSystemPart<T>{
 		return useCaseModelBuilder.build();
 	}
 
+	/**
+	 * Creates a new step in this flow, with the specified name, that follows this step in sequence.
+	 * 
+	 * @param stepName the name of the step to be created
+	 * @return the newly created step, to ease creation of further steps
+	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
+	 */
 	public UseCaseStepPart step(String stepName) {
 		UseCaseFlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
 		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
