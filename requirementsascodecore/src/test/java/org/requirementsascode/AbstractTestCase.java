@@ -6,13 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.requirementsascode.Actor;
-import org.requirementsascode.TestUseCaseRunner;
-import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
-import org.requirementsascode.testutil.EnterNumber;
-import org.requirementsascode.testutil.EnterText;
-
 
 public abstract class AbstractTestCase {
 	protected Actor customer;
@@ -93,5 +87,39 @@ public abstract class AbstractTestCase {
 			useCaseRunner.latestStep()
 				.map(step -> step.name()).orElse(null);
 		return latestStepName;
+	}
+	
+	public class EnterText{
+		private String value;
+		
+		public EnterText(String text) {
+			this.value = text;
+		}
+		
+		public String value(){
+			return value;
+		}
+		
+		@Override
+		public String toString() {
+			return value;
+		}
+	}
+	
+	protected class EnterNumber{
+		private Integer value;
+		
+		public EnterNumber(int value) {
+			this.value = value;
+		}
+		
+		public Integer value(){
+			return value;
+		}
+		
+		@Override
+		public String toString() {
+			return value.toString();
+		}
 	}
 }

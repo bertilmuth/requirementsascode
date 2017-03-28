@@ -13,14 +13,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.TestUseCaseRunner;
-import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInUseCase;
 import org.requirementsascode.exception.UnhandledException;
-import org.requirementsascode.testutil.EnterText;
 
 public class ExceptionsThrownTest extends AbstractTestCase{		
 	@Rule

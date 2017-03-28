@@ -25,12 +25,6 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.Actor;
-import org.requirementsascode.TestUseCaseRunner;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.testutil.EnterNumber;
-import org.requirementsascode.testutil.EnterText;
 
 public class SystemReactionTest extends AbstractTestCase{
 	private Actor rightActor;
