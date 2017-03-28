@@ -3,16 +3,6 @@ package org.requirementsascode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
-import static org.requirementsascode.testutil.Names.BASIC_FLOW;
-import static org.requirementsascode.testutil.Names.CUSTOMER;
-import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
-import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT_AGAIN;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_NUMBER;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT_AGAIN;
-import static org.requirementsascode.testutil.Names.USE_CASE;
-import static org.requirementsascode.testutil.Names.USE_CASE_2;
 
 import java.util.Collection;
 import java.util.Iterator;

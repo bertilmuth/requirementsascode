@@ -1,19 +1,11 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
-import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
-import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW_2;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
-import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseRunner;
-import org.requirementsascode.UseCaseModel;
 
 public class ExceptionHandlingTest extends AbstractTestCase{
-	private static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
-	private static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
 
 	@Before
 	public void setup() {

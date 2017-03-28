@@ -1,16 +1,11 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
-import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.SystemReactionTrigger;
-import org.requirementsascode.TestUseCaseRunner;
-import org.requirementsascode.UseCaseModel;
 
 public class AdaptedSystemReactionTest extends AbstractTestCase{
 	private String stepName;

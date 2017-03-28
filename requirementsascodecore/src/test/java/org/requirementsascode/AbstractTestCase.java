@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.testutil.Names.CUSTOMER;
-
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -9,11 +7,38 @@ import java.util.function.Supplier;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public abstract class AbstractTestCase {
+	
+	protected static final String CUSTOMER = "Customer";
+	
+	protected static final String USE_CASE = "Use Case";
+	protected static final String USE_CASE_2 = "Use Case 2";
+
+	protected static final String BASIC_FLOW = "Basic Flow";
+	protected static final String ALTERNATIVE_FLOW = "Alternative Flow";
+	protected static final String ALTERNATIVE_FLOW_2 = "Alternative Flow 2";
+	
+	protected static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
+	protected static final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
+	protected static final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
+	protected static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
+	protected static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
+
+	protected static final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
+	protected static final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
+	protected static final String CUSTOMER_ENTERS_ALTERNATIVE_TEXT = "Customer enters alternative text";
+	protected static final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
+	protected static final String CUSTOMER_ENTERS_NUMBER_AGAIN = "Customer enters number again";
+		
+	protected static final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
+	protected static final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";
+
+	protected static final String CONTINUE = "Continue";
+	protected static final String CONTINUE_2 = "Continue 2";
+	
 	protected Actor customer;
 	protected UseCaseModelBuilder useCaseModelBuilder;
 	protected TestUseCaseRunner useCaseRunner;
-	private String displayedText;
-
+	protected String displayedText;
 
 	protected void setupWith(TestUseCaseRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;

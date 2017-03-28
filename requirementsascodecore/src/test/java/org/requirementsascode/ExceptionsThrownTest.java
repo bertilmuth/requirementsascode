@@ -1,13 +1,6 @@
 package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
-import static org.requirementsascode.testutil.Names.ALTERNATIVE_FLOW;
-import static org.requirementsascode.testutil.Names.CONTINUE;
-import static org.requirementsascode.testutil.Names.CUSTOMER;
-import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_ALTERNATIVE_TEXT;
-import static org.requirementsascode.testutil.Names.CUSTOMER_ENTERS_TEXT;
-import static org.requirementsascode.testutil.Names.SYSTEM_DISPLAYS_TEXT;
-import static org.requirementsascode.testutil.Names.USE_CASE;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -172,7 +165,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT)
-					.system(r -> {System.out.println("Exception");throw new IllegalStateException();});
+					.system(r -> {throw new IllegalStateException();});
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
