@@ -104,7 +104,7 @@ public class HelloWorldTest {
 	}
 	
 	@Test
-	public void testHelloWorld06_AsAnonymousUser() {
+	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
 		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
 		useCaseModel = example.buildWith(new UseCaseModelBuilder());
 		
@@ -112,5 +112,16 @@ public class HelloWorldTest {
 		useCaseRunner.reactTo(new EnterText("39"));
 
 		assertEquals("S1a_1;S3;S4;S5c_1;S6;S7;", useCaseRunner.runStepNames());
+	}
+	
+	@Test
+	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
+		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
+		useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		
+		useCaseRunner.as(example.anonymousUser()).run(useCaseModel);
+		useCaseRunner.reactTo(new EnterText("NotANumber"));
+
+		assertEquals("S1a_1;S3;S4;S5b_1;S5b_2;S3", useCaseRunner.runStepNames());
 	}
 }

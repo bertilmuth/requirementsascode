@@ -85,7 +85,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void printsTextAutonomouslyOnlyIfActorIsRight() {
+	public void printsTextAutonomouslyOnlyIfActorIsRightInFirstStep() {
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -96,6 +96,20 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.as(customer).run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";", runStepNames());
+	}
+	
+	@Test
+	public void printsTextAutonomouslyOnlyIfActorIsRightInSecondStep() {
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).as(customer).system(displayConstantText())
+			.build();
+		
+		useCaseRunner.as(customer).run(useCaseModel);
+		
+		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_DISPLAYS_TEXT_AGAIN + ";", runStepNames());
 	}
 	
 	@Test
@@ -239,7 +253,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void twoSequentialStepsReactWhenOneOfTheActorsIsRight() {		
+	public void twoSequentialStepsReactWhenActorIsChanged() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			
 				.basicFlow()
@@ -249,7 +263,10 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.as(rightActor, secondActor).run(useCaseModel);
+		useCaseRunner.as(rightActor).run(useCaseModel);
+		useCaseRunner.reactTo(enterText(), enterText());
+		
+		useCaseRunner.as(secondActor).run(useCaseModel);
 		useCaseRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());

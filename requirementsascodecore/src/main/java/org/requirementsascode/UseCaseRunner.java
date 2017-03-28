@@ -30,7 +30,9 @@ import org.requirementsascode.exception.UnhandledException;
  *  
  */
 public class UseCaseRunner {
-	private List<Actor> actorsToRunAs;
+	private Optional<Actor> user;
+	private List<Actor> userAndSystem;
+	
 	private UseCaseModel useCaseModel;
 	private Optional<UseCaseStep> latestStep;
 	private Optional<UseCaseFlow> latestFlow;
@@ -46,6 +48,7 @@ public class UseCaseRunner {
 	 */
 	public UseCaseRunner() {
 		this.useCaseModel = new UseCaseModel();
+		this.user = Optional.empty();
 		this.systemReactionTrigger = new SystemReactionTrigger();
 		this.stepWithoutAlternativePredicate = Optional.empty();
 		
@@ -99,9 +102,10 @@ public class UseCaseRunner {
 	
 	public void run(UseCaseModel useCaseModel) {
 		this.useCaseModel = useCaseModel;
-		if(actorsToRunAs == null){
-			as(useCaseModel().userActor());
-		}
+		
+		Actor userActor = user.orElse(useCaseModel.userActor());
+		userAndSystem = Arrays.asList(userActor, useCaseModel.systemActor());
+
 		this.isRunning = true;
 		triggerAutonomousSystemReaction();
 	}
@@ -121,18 +125,16 @@ public class UseCaseRunner {
 		Objects.requireNonNull(actors);
 		
 		isRunning = true;
-		actorsToRunAs = new ArrayList<>(Arrays.asList(actors));
-		actorsToRunAs.add(useCaseModel.systemActor());
+		userAndSystem = new ArrayList<>(Arrays.asList(actors));
+		userAndSystem.add(useCaseModel.systemActor());
 		
 		triggerAutonomousSystemReaction();
 	}
 	
-	public UseCaseRunner as(Actor... actors) {
-		Objects.requireNonNull(actors);
+	public UseCaseRunner as(Actor actor) {
+		Objects.requireNonNull(actor);
 		
-		actorsToRunAs = new ArrayList<>(Arrays.asList(actors));
-		actorsToRunAs.add(useCaseModel.systemActor());
-		
+		user = Optional.of(actor);
 		return this;
 	}
 	
@@ -316,7 +318,7 @@ public class UseCaseRunner {
 		
 		Actor[] stepActors = actorPart.actors();
 		boolean stepActorIsRunActor = 
-			Stream.of(stepActors).anyMatch(stepActor -> actorsToRunAs.contains(stepActor));
+			Stream.of(stepActors).anyMatch(stepActor -> userAndSystem.contains(stepActor));
 		return stepActorIsRunActor;
 	}
 	
