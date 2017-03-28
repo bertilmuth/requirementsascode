@@ -19,7 +19,7 @@ public class UseCasePart {
 	}
 	
 	public UseCaseFlowPart flow(String flowName) {
-		UseCaseFlow useCaseFlow = useCase().flow(flowName);
+		UseCaseFlow useCaseFlow = useCase().newFlow(flowName);
 		return new UseCaseFlowPart(useCaseFlow, this);
 	}
 

@@ -61,7 +61,7 @@ public class UseCaseStepSystem<T>{
 	public UseCaseFlow flow(String flowName) {
 		Objects.requireNonNull(flowName);
 
-		UseCaseFlow newFlow = useCaseStep.useCase().flow(flowName);
+		UseCaseFlow newFlow = useCaseStep.useCase().newFlow(flowName);
 		return newFlow;
 	}
 	
