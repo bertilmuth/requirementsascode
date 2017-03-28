@@ -61,6 +61,16 @@ public class UseCaseFlow extends UseCaseModelElement {
 	}
 	
 	/**
+	 * Returns the predicate for this flow
+	 * (that will become the predicate of its first step).
+	 * 
+	 * @return the flow's predicate
+	 */
+	public Optional<Predicate<UseCaseRunner>> flowPredicate() {
+		return flowPredicate.get();
+	}
+	
+	/**
 	 * Returns the steps contained in this flow.
 	 * Do not modify the returned collection directly, use {@link #step(String)}
 	 * 

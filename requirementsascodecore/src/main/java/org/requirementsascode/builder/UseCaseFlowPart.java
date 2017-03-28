@@ -1,5 +1,6 @@
 package org.requirementsascode.builder;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseFlow;
@@ -16,7 +17,9 @@ public class UseCaseFlowPart {
 	}
 
 	public UseCaseStepPart step(String stepName) {
-		UseCaseStep useCaseStep = useCaseFlow.step(stepName);
+		UseCaseStep useCaseStep = 
+			useCasePart.useCase().newStep(stepName, useCaseFlow, 
+				Optional.empty(), useCaseFlow.flowPredicate());
 		return new UseCaseStepPart(useCaseStep, this);
 	}
 
