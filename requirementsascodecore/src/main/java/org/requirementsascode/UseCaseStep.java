@@ -6,10 +6,7 @@ import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactT
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
-
-import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 /**
  * A use case step, as part of a use case. The use case steps define the
@@ -77,95 +74,6 @@ public class UseCaseStep extends UseCaseModelElement {
 
 		as = new UseCaseStepAs(this, actors);
 		return as;
-	}
-
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * when the step's predicate is true, without needing an event provided via
-	 * {@link UseCaseRunner#reactTo(Object)}.
-	 * 
-	 * As an implicit side effect, the step is connected to the default system
-	 * actor (see {@link UseCaseModel#systemActor()}). As another side effect,
-	 * the step handles the default system event. Default system events are
-	 * raised by the use case runner itself, causing "autonomous system
-	 * reactions".
-	 * 
-	 * @param systemReaction
-	 *            the autonomous system reaction
-	 * @return the created system part of this step
-	 */
-	public UseCaseStepSystem<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
-		Objects.requireNonNull(systemReaction);
-
-		Actor systemActor = useCaseModel().systemActor();
-
-		UseCaseStepSystem<UseCaseRunner> systemPart = as(systemActor).system(systemReaction);
-
-		return systemPart;
-	}
-
-	/**
-	 * Makes the use case runner continue at the specified step. If there are
-	 * alternative flows starting at the specified step, one may be entered if
-	 * its condition is enabled.
-	 * 
-	 * Note: the runner continues at the step only if its predicate is true, and
-	 * actor is right.
-	 * 
-	 * @param stepName
-	 *            name of the step to continue at, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInUseCase
-	 *             if no step with the specified stepName is found in the
-	 *             current use case
-	 */
-	public UseCase continueAt(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		system(new ContinueAt(useCase(), stepName));
-		return useCase();
-	}
-
-	/**
-	 * Makes the use case runner continue at the specified step. No alternative
-	 * flow starting at the specified step is entered, even if its condition is
-	 * enabled.
-	 * 
-	 * Note: the runner continues at the step only if its predicate is true, and
-	 * actor is right.
-	 * 
-	 * @param stepName
-	 *            name of the step to continue at, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInUseCase
-	 *             if no step with the specified stepName is found in the
-	 *             current use case
-	 */
-	public UseCase continueWithoutAlternativeAt(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		system(new ContinueWithoutAlternativeAt(useCase(), stepName));
-		return useCase();
-	}
-
-	/**
-	 * Makes the use case runner continue after the specified step.
-	 * 
-	 * @param stepName
-	 *            name of the step to continue after, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInUseCase
-	 *             if no step with the specified stepName is found in the
-	 *             current use case
-	 */
-	public UseCase continueAfter(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		system(new ContinueAfter(useCase(), stepName));
-		return useCase();
 	}
 
 	/**
