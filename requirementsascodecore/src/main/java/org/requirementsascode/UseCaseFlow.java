@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import static org.requirementsascode.UseCaseStepPredicates.afterStep;
-import static org.requirementsascode.UseCaseStepPredicates.isRunnerAtStart;
 import static org.requirementsascode.UseCaseStepPredicates.isRunnerInDifferentFlowThan;
 
 import java.util.List;
@@ -78,17 +77,6 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return useCase().steps().stream()
 			.filter(step -> step.flow().equals(this))
 			.collect(Collectors.toList());
-	}
-
-	/**
-	 * Sets the flow's predicate to start the flow at the beginning of the run, 
-	 * when no flow and step has been run.
-	 * 
-	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
-	 */
-	public UseCaseFlow atStart() {
-		flowPredicate.setStepPredicate(isRunnerAtStart());
-		return this;
 	}
 	
 	/**
