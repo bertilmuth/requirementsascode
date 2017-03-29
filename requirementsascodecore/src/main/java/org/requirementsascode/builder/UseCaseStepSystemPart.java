@@ -3,7 +3,6 @@ package org.requirementsascode.builder;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
@@ -15,10 +14,12 @@ public class UseCaseStepSystemPart<T>{
 	private UseCaseStepSystem<T> useCaseStepSystem;
 	private UseCaseStepPart useCaseStepPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
+	private UseCasePart useCasePart;
 
 	public UseCaseStepSystemPart(UseCaseStepSystem<T> useCaseStepSystem, UseCaseStepPart useCaseStepPart) {
 		this.useCaseStepSystem = useCaseStepSystem;
 		this.useCaseStepPart = useCaseStepPart;
+		this.useCasePart = useCaseStepPart.useCaseFlowPart().useCasePart();
 		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
 		useCaseStepPart.useCaseStep().setSystem(useCaseStepSystem);
 	}
@@ -39,20 +40,20 @@ public class UseCaseStepSystemPart<T>{
 		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
 		UseCaseStep useCaseStep = 
-			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
+			useCasePart.useCase().newStep(stepName, useCaseFlow, 
 				Optional.of(useCaseStepPart.useCaseStep()), Optional.empty());
 		
 		return new UseCaseStepPart(useCaseStep, useCaseFlowPart);
 	}
 
 	public UseCaseFlowPart flow(String flowName) {
-		UseCaseFlow useCaseFlow = useCaseStepSystem.flow(flowName);
-		return new UseCaseFlowPart(useCaseFlow, useCaseStepPart.useCasePart());
+		UseCaseFlowPart useCaseFlowPart = useCasePart.flow(flowName);
+		return useCaseFlowPart;
 	}
 
 	public UseCasePart useCase(String useCaseName) {
-		UseCase useCase = useCaseStepSystem.useCase(useCaseName);
-		return new UseCasePart(useCase, useCaseModelBuilder);
+		UseCasePart useCasePart = useCaseModelBuilder.useCase(useCaseName);
+		return useCasePart;
 	}
 
 	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseRunner> condition) {
