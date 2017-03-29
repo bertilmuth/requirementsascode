@@ -11,11 +11,11 @@ import org.requirementsascode.UseCaseStepAs;
 import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepAsPart{
-	private UseCaseStepAs useCaseStepAs;
+	private UseCaseStep useCaseStep;
 	private UseCaseStepPart useCaseStepPart;
 
 	public UseCaseStepAsPart(UseCaseStepAs useCaseStepAs, UseCaseStepPart useCaseStepPart) {
-		this.useCaseStepAs = useCaseStepAs;
+		this.useCaseStep = useCaseStepPart.useCaseStep();
 		this.useCaseStepPart = useCaseStepPart;
 	}
 
@@ -26,26 +26,21 @@ public class UseCaseStepAsPart{
 	} 
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
-		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
 		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
 		useCaseStep.setUser(user);
 		return new UseCaseStepUserPart<>(user, useCaseStepPart);
 	}
 
 	public UseCasePart continueAt(String stepName) {
-		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
 		system(new ContinueAt(useCaseStep.useCase(), stepName)); 
 		return useCaseStepPart.useCasePart();
 	}
 
-	public UseCasePart continueAfter(String stepName) {
-		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
-		system(new ContinueAfter(useCaseStep.useCase(), stepName));
+	public UseCasePart continueAfter(String stepName) {		system(new ContinueAfter(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
 
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
-		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
 		system(new ContinueWithoutAlternativeAt(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
