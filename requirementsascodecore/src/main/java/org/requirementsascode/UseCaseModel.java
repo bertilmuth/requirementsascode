@@ -1,6 +1,6 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.ModelElementContainer.findModelElementOrThrow;
+import static org.requirementsascode.ModelElementContainer.findModelElement;
 import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
@@ -90,8 +90,8 @@ public class UseCaseModel {
 	 * @return the actor if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no actor with the specified actorName is found in the model
 	 */
-	public Actor findActorOrThrow(String actorName) {
-		Actor actor = findModelElementOrThrow(actorName, nameToActorMap);
+	public Actor findActor(String actorName) {
+		Actor actor = findModelElement(actorName, nameToActorMap);
 		return actor;
 	}
 
@@ -102,8 +102,8 @@ public class UseCaseModel {
 	 * @return the use case if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no use case with the specified useCaseName is found in the model
 	 */
-	public UseCase findUseCaseOrThrow(String useCaseName) {
-		UseCase useCase = findModelElementOrThrow(useCaseName, nameToUseCaseMap);
+	public UseCase findUseCase(String useCaseName) {
+		UseCase useCase = findModelElement(useCaseName, nameToUseCaseMap);
 		return useCase;
 	}
 

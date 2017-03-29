@@ -15,7 +15,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  *
  */ 
 class ModelElementContainer {	
-	static <T extends UseCaseModelElement> T findModelElementOrThrow(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+	static <T extends UseCaseModelElement> T findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
