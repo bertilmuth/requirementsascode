@@ -2,6 +2,7 @@ package org.requirementsascode.builder;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.ContinueAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
@@ -18,7 +19,7 @@ public class UseCaseStepAsPart{
 
 	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
 		UseCaseStepSystemPart<UseCaseRunner> systemPart = 
-				user(UseCaseRunner.class).system(systemReaction);
+			user(UseCaseRunner.class).system(systemReaction);
 		return systemPart;
 	} 
 
@@ -30,7 +31,8 @@ public class UseCaseStepAsPart{
 	}
 
 	public UseCasePart continueAt(String stepName) {
-		useCaseStepAs.continueAt(stepName);
+		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		system(new ContinueAt(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
 
