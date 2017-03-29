@@ -29,7 +29,7 @@ public class UseCaseStepSystemPart<T>{
 	}
 
 	/**
-	 * Creates a new step in this flow, with the specified name, that follows this step in sequence.
+	 * Creates a new step in this flow, with the specified name, that follows the current step in sequence.
 	 * 
 	 * @param stepName the name of the step to be created
 	 * @return the newly created step, to ease creation of further steps
@@ -38,12 +38,14 @@ public class UseCaseStepSystemPart<T>{
 	public UseCaseStepPart step(String stepName) {
 		UseCaseFlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
 		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
+		UseCaseStep currentUseCaseStep = useCaseStepPart.useCaseStep();
 		
-		UseCaseStep useCaseStep = 
+		UseCaseStep nextUseCaseStepInFlow = 
 			useCasePart.useCase().newStep(stepName, useCaseFlow, 
-				Optional.of(useCaseStepPart.useCaseStep()), Optional.empty());
+				Optional.of(currentUseCaseStep), 
+					Optional.empty());
 		
-		return new UseCaseStepPart(useCaseStep, useCaseFlowPart);
+		return new UseCaseStepPart(nextUseCaseStepInFlow, useCaseFlowPart);
 	}
 
 	/**
