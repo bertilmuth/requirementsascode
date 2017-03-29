@@ -29,8 +29,8 @@ public class UseCaseModel {
 	public UseCaseModel() {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
-		this.userActor = actor("User");
-		this.systemActor = actor("Autonomous System Reaction Actor");
+		this.userActor = newActor("User");
+		this.systemActor = newActor("Autonomous System Reaction Actor");
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class UseCaseModel {
 	 * @return the newly created actor
 	 * @throws ElementAlreadyInModel if an actor with the specified name already exists in the model
 	 */
-	public Actor actor(String actorName) {
+	public Actor newActor(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
@@ -77,7 +77,7 @@ public class UseCaseModel {
 	 * @return the newly created use case
 	 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
 	 */
-	public UseCase useCase(String useCaseName) {		
+	public UseCase newUseCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
@@ -107,7 +107,7 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the actors contained in this use case model.
-	 * Do not modify that collection directly, use {@link #actor(String)}.
+	 * Do not modify that collection directly, use {@link #newActor(String)}.
 	 * 
 	 * @return the actors
 	 */
@@ -117,7 +117,7 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the use cases contained in this use case model.
-	 * Do not modify that collection directly, use {@link #useCase(String)}.
+	 * Do not modify that collection directly, use {@link #newUseCase(String)}.
 	 * 
 	 * @return the use cases
 	 */

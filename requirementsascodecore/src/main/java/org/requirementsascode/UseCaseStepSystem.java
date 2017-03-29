@@ -48,7 +48,7 @@ public class UseCaseStepSystem<T>{
 	public UseCase useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 
-		UseCase newUseCase = useCaseStep.useCaseModel().useCase(useCaseName);
+		UseCase newUseCase = useCaseStep.useCaseModel().newUseCase(useCaseName);
 		return newUseCase;
 	}
 	

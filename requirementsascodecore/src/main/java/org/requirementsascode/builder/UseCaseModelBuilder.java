@@ -17,12 +17,12 @@ public class UseCaseModelBuilder {
 	}
 
 	public UseCasePart useCase(String useCaseName) {
-		UseCase useCase = useCaseModel.useCase(useCaseName);
+		UseCase useCase = useCaseModel.newUseCase(useCaseName);
 		return new UseCasePart(useCase, this);
 	}
 
 	public Actor actor(String actorName) {
-		return useCaseModel.actor(actorName);
+		return useCaseModel.newActor(actorName);
 	}
 
 }

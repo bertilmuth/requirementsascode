@@ -43,7 +43,7 @@ public abstract class AbstractTestCase {
 	protected void setupWith(TestUseCaseRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;
 		this.useCaseModelBuilder = new UseCaseModelBuilder();
-		this.customer = useCaseModelBuilder.build().actor(CUSTOMER);
+		this.customer = useCaseModelBuilder.build().newActor(CUSTOMER);
 		this.displayedText = null;
 	}
 	
