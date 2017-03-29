@@ -20,7 +20,7 @@ public class UseCaseStepSystem<T>{
 	private UseCaseStep useCaseStep;
 	private Consumer<T> systemReaction;
 
-	UseCaseStepSystem(UseCaseStep useCaseStep, Consumer<T> systemReaction) {
+	public UseCaseStepSystem(UseCaseStep useCaseStep, Consumer<T> systemReaction) {
 		this.useCaseStep = useCaseStep;
 		this.systemReaction = systemReaction;
 	}
