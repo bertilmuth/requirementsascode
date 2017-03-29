@@ -6,17 +6,17 @@ import java.util.function.Consumer;
 public abstract class AbstractContinue implements Consumer<UseCaseRunner>{
 	private UseCase useCase;
 	private String stepName;
-	private Optional<UseCaseStep> latestStepOfRunner;
+	private Optional<UseCaseStep> previousStep;
 	
-	public AbstractContinue(UseCase useCase, String stepName, Optional<UseCaseStep> latestStepOfRunner) {
+	public AbstractContinue(UseCase useCase, String stepName, Optional<UseCaseStep> previousStep) {
 		this.useCase = useCase;
 		this.stepName = stepName;
-		this.latestStepOfRunner = latestStepOfRunner;
+		this.previousStep = previousStep;
 	}
 	
 	@Override
 	public void accept(UseCaseRunner runner) {
-		runner.setLatestStep(latestStepOfRunner);
+		runner.setLatestStep(previousStep);
 	}
 	
 	public UseCase useCase() {
@@ -25,7 +25,7 @@ public abstract class AbstractContinue implements Consumer<UseCaseRunner>{
 	public String stepName() {
 		return stepName;
 	}
-	public Optional<UseCaseStep> latestStepOfRunner() {
-		return latestStepOfRunner;
+	public Optional<UseCaseStep> previousStep() {
+		return previousStep;
 	}
 }
