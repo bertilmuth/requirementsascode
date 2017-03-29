@@ -290,7 +290,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *            the user part
 	 * 
 	 */
-	void setUser(UseCaseStepUser<?> user) {
+	public void setUser(UseCaseStepUser<?> user) {
 		this.user = user;
 	}
 

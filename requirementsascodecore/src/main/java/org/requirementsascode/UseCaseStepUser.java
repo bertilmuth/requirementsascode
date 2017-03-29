@@ -15,7 +15,7 @@ public class UseCaseStepUser<T>{
 	private UseCaseStep useCaseStep;
 	private Class<T> eventClass;
 	
-	UseCaseStepUser(UseCaseStep useCaseStep, Class<T> eventClass) {
+	public UseCaseStepUser(UseCaseStep useCaseStep, Class<T> eventClass) {
 		this.useCaseStep = useCaseStep;
 		this.eventClass = eventClass;
 	}

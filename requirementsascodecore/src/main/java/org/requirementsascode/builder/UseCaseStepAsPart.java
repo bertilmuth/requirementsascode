@@ -3,6 +3,7 @@ package org.requirementsascode.builder;
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
 import org.requirementsascode.UseCaseStepUser;
 
@@ -22,8 +23,10 @@ public class UseCaseStepAsPart{
 	} 
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
-		UseCaseStepUser<T> useCaseStepUser = useCaseStepAs.user(eventClass);
-		return new UseCaseStepUserPart<>(useCaseStepUser, useCaseStepPart);
+		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
+		useCaseStep.setUser(user);
+		return new UseCaseStepUserPart<>(user, useCaseStepPart);
 	}
 
 	public UseCasePart continueAt(String stepName) {
