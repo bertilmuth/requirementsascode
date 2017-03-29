@@ -77,36 +77,6 @@ public class UseCaseStep extends UseCaseModelElement {
 	}
 
 	/**
-	 * Defines the class of system event objects or exceptions that this step
-	 * accepts, so that they can cause a system reaction when the step's
-	 * predicate is true.
-	 * 
-	 * Given that the step's predicate is true, the system reacts to objects
-	 * that are instances of the specified class or instances of any direct or
-	 * indirect subclass of the specified class.
-	 * 
-	 * As an implicit side effect, the step is connected to the default system
-	 * actor (see {@link UseCaseModel#systemActor()})..
-	 * 
-	 * Note: you must provide the event objects at runtime by calling
-	 * {@link UseCaseRunner#reactTo(Object)}
-	 * 
-	 * @param eventOrExceptionClass
-	 *            the class of events the system reacts to in this step
-	 * @param <T>
-	 *            the type of the class
-	 * @return the created event part of this step
-	 */
-	public <T> UseCaseStepUser<T> handle(Class<T> eventOrExceptionClass) {
-		Objects.requireNonNull(eventOrExceptionClass);
-
-		Actor systemActor = useCaseModel().systemActor();
-		UseCaseStepUser<T> user = as(systemActor).user(eventOrExceptionClass);
-
-		return user;
-	}
-
-	/**
 	 * Returns the use case flow this step is part of.
 	 * 
 	 * @return the containing use case flow

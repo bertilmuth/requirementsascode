@@ -35,15 +35,15 @@ public class UseCaseStepPart {
 	}
 
 	/**
-	 * Defines the class of user event objects that this step accepts, so that
-	 * they can cause a system reaction.
+	 * Defines the type of user event objects that this step accepts. 
+	 * Events of this type can cause a system reaction.
 	 * 
 	 * Given that the step's predicate is true, and the actor is right, the system reacts 
 	 * to objects that are instances of the specified class or instances of any direct or
 	 * indirect subclass of the specified class.
 	 * 
 	 * @param eventClass the class of events the system reacts to in this step
-	 * @param <T> the type of the event class
+	 * @param <T> the type of the class
 	 * @return the created user part of this step
 	 */
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
@@ -53,7 +53,20 @@ public class UseCaseStepPart {
 		return userPart;
 	}
 
+	/**
+	 * Defines the type of system event objects or exceptions that this step handles.
+	 * Events of this type can cause a system reaction.
+	 * 
+	 * Given that the step's predicate is true, and the actor is right, the system reacts 
+	 * to objects that are instances of the specified class or instances of any direct or
+	 * indirect subclass of the specified class.
+	 * 
+	 * @param eventOrExceptionClass the class of events the system reacts to in this step
+	 * @param <T> the type of the class
+	 * @return the created user part of this step
+	 */
 	public <T> UseCaseStepUserPart<T> handle(Class<T> eventOrExceptionClass) {
+		Objects.requireNonNull(eventOrExceptionClass);
 		Actor systemActor = useCaseModelBuilder.build().systemActor();
 		UseCaseStepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
 		return userPart;
