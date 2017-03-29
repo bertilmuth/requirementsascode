@@ -20,7 +20,7 @@ public class UseCaseStepAs{
 	public UseCaseStepAs(UseCaseStep useCaseStep, Actor... actor) {
 		this.useCaseStep = useCaseStep;
 		this.actors = actor;
-		connectActorsToThisStep(actors);		
+		connectActorsToThisStep(actors);	
 	}
 
 	private void connectActorsToThisStep(Actor[] actors) {

@@ -29,7 +29,6 @@ public class UseCaseStepPart {
 	 */
 	public UseCaseStepAsPart as(Actor... actors) {
 		UseCaseStepAs as = new UseCaseStepAs(useCaseStep, actors);
-		useCaseStep.setAs(as);
 		return new UseCaseStepAsPart(as, this);
 	}
 
