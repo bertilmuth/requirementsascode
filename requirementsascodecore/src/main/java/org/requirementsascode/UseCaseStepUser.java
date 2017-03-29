@@ -1,9 +1,5 @@
 package org.requirementsascode;
 
-import java.util.Objects;
-import java.util.function.Consumer;
-
-
 /**
  * The part of the step that contains a reference to the event
  * that is allowed to trigger a system reaction for this step.
@@ -12,30 +8,11 @@ import java.util.function.Consumer;
  *
  */
 public class UseCaseStepUser<T>{
-	private UseCaseStep useCaseStep;
 	private Class<T> eventClass;
 	
 	public UseCaseStepUser(UseCaseStep useCaseStep, Class<T> eventClass) {
-		this.useCaseStep = useCaseStep;
 		this.eventClass = eventClass;
 		useCaseStep.setUser(this);
-	}
-	
-	/**
-	 * Defines the system reaction. 
-	 * The system will react as specified to the current step's events,
-	 * via {@link UseCaseRunner#reactTo(Object)}.
-	 * 
-	 * @param systemReaction the specified system reaction
-	 * @return the created system part of this step 
-	 */
-	public UseCaseStepSystem<T> system(Consumer<T> systemReaction) {
-		Objects.requireNonNull(systemReaction);
-		
-		UseCaseStepSystem<T> newSystemPart = 
-			new UseCaseStepSystem<>(useCaseStep, systemReaction);
-		useCaseStep.setSystem(newSystemPart);
-		return newSystemPart;		
 	}
 	
 	/**
