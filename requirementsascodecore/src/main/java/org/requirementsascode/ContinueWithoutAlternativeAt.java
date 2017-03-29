@@ -1,8 +1,8 @@
 package org.requirementsascode;
 import java.util.function.Predicate; 
 
-class ContinueWithoutAlternativeAt extends ContinueAt{
-	ContinueWithoutAlternativeAt(UseCase useCase, String stepName) {
+public class ContinueWithoutAlternativeAt extends ContinueAt{
+	public ContinueWithoutAlternativeAt(UseCase useCase, String stepName) {
 		super(useCase, stepName);
 	}
 	

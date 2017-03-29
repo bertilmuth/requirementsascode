@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.ContinueAfter;
 import org.requirementsascode.ContinueAt;
+import org.requirementsascode.ContinueWithoutAlternativeAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
@@ -44,7 +45,8 @@ public class UseCaseStepAsPart{
 	}
 
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
-		useCaseStepAs.continueWithoutAlternativeAt(stepName);
+		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		system(new ContinueWithoutAlternativeAt(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
 }
