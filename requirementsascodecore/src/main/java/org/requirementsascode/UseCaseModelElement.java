@@ -23,7 +23,6 @@ abstract class UseCaseModelElement {
 	public UseCaseModelElement(String name, UseCaseModel useCaseModel) {
 		Objects.requireNonNull(name);
 		Objects.requireNonNull(useCaseModel);
-		
 		this.name = name;
 		this.useCaseModel = useCaseModel;
 	}

@@ -51,7 +51,6 @@ public class UseCaseStep extends UseCaseModelElement {
 		super(stepName, useCaseFlow.useCaseModel());
 		Objects.requireNonNull(previousStepInFlow);
 		Objects.requireNonNull(predicate);
-
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
 		this.predicate = predicate.orElse(afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow());
