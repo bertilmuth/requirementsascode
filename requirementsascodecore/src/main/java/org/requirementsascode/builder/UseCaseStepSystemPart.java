@@ -1,5 +1,6 @@
 package org.requirementsascode.builder;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -45,12 +46,28 @@ public class UseCaseStepSystemPart<T>{
 		return new UseCaseStepPart(useCaseStep, useCaseFlowPart);
 	}
 
+	/**
+	 * Creates a new flow in the current use case.
+	 * 
+	 * @param flowName the name of the flow to be created.
+	 * @return the newly created flow part
+	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
+	 */
 	public UseCaseFlowPart flow(String flowName) {
+		Objects.requireNonNull(flowName);
 		UseCaseFlowPart useCaseFlowPart = useCasePart.flow(flowName);
 		return useCaseFlowPart;
 	}
-
+	
+	/**
+	 * Creates a new use case in the current model.
+	 * 
+	 * @param useCaseName the name of the use case to be created.
+	 * @return the newly created use case part
+	 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
+	 */
 	public UseCasePart useCase(String useCaseName) {
+		Objects.requireNonNull(useCaseName);
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(useCaseName);
 		return useCasePart;
 	}

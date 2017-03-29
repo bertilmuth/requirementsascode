@@ -6,8 +6,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.exception.ElementAlreadyInModel;
-
 /**
  * The part of the step that contains a reference to the system reaction
  * that can be triggered (given an appropriate actor and event, and the 
@@ -36,34 +34,6 @@ public class UseCaseStepSystem<T>{
 	 */
 	public Consumer<T> systemReaction() {
 		return systemReaction;
-	}
-	
-	/**
-	 * Creates a new use case in this model.
-	 * 
-	 * @param useCaseName the name of the use case to be created.
-	 * @return the newly created use case
-	 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
-	 */
-	public UseCase useCase(String useCaseName) {
-		Objects.requireNonNull(useCaseName);
-
-		UseCase newUseCase = useCaseStep.useCaseModel().newUseCase(useCaseName);
-		return newUseCase;
-	}
-	
-	/**
-	 * Creates a new flow in the use case that contains this step.
-	 * 
-	 * @param flowName the name of the flow to be created.
-	 * @return the newly created flow
-	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
-	 */
-	public UseCaseFlow flow(String flowName) {
-		Objects.requireNonNull(flowName);
-
-		UseCaseFlow newFlow = useCaseStep.useCase().newFlow(flowName);
-		return newFlow;
 	}
 	
 	/**

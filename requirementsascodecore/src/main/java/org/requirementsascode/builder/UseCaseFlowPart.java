@@ -7,6 +7,7 @@ import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 public class UseCaseFlowPart {
 	private UseCaseFlow useCaseFlow;
@@ -36,6 +37,13 @@ public class UseCaseFlowPart {
 		return this;
 	}
 
+	/**
+	 * Starts the flow after the specified step has been run.
+	 * 
+	 * @param stepName the name of the step to start the flow after
+	 * @return this use case flow part, to ease creation of the predicate and the first step of the flow
+	 * @throws NoSuchElementInUseCase if the specified step is not found in this flow's use case
+	 */
 	public UseCaseFlowPart after(String stepName) {
 		useCaseFlow.after(stepName);	
 		return this;
