@@ -1,8 +1,6 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicates.afterStep;
-import static org.requirementsascode.UseCaseStepPredicates.isRunnerAtStart;
-import static org.requirementsascode.UseCaseStepPredicates.noOtherStepCouldReactThan;
+import static org.requirementsascode.UseCaseStepPredicates.afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -54,7 +52,7 @@ public class UseCaseStep extends UseCaseModelElement {
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
 		this.predicate = 
-			predicate.orElse(afterPreviousStepUnlessInterruptedByAlternativeFlow(this));
+			predicate.orElse(afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow(this));
 	}
 
 	/**
@@ -162,20 +160,5 @@ public class UseCaseStep extends UseCaseModelElement {
 	 */
 	void setPredicate(Predicate<UseCaseRunner> predicate) {
 		this.predicate = predicate;
-	}
-
-	/**
-	 * This predicate makes sure that use case steps following the first step in
-	 * a flow are executed in sequence, unless the first step of an alternative
-	 * flow interrupts the flow.
-	 * 
-	 * @param previousStepInFlow the previous step in the flow that contains the step
-	 * @return the predicate for running steps in sequence
-	 */
-	private Predicate<UseCaseRunner> afterPreviousStepUnlessInterruptedByAlternativeFlow(UseCaseStep currentStep) {
-		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
-		Predicate<UseCaseRunner> afterPreviousStep = previousStepInFlow.map(s -> afterStep(s))
-				.orElse(isRunnerAtStart());
-		return afterPreviousStep.and(noOtherStepCouldReactThan(this));
 	}
 }

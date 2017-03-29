@@ -40,7 +40,14 @@ class UseCaseStepPredicates {
 		};
 	}
 	
-	static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
+	static Predicate<UseCaseRunner> afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow(UseCaseStep currentStep) {
+		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
+		Predicate<UseCaseRunner> afterPreviousStep = previousStepInFlow.map(s -> afterStep(s))
+				.orElse(isRunnerAtStart());
+		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
+	}
+	
+	private static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.user().eventClass();
 			UseCaseModel useCaseModel = theStep.useCaseModel();
