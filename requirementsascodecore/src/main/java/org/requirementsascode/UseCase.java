@@ -1,6 +1,6 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.ModelElementContainer.findModelElement;
+import static org.requirementsascode.ModelElementContainer.findModelElementOrThrow;
 import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
@@ -116,8 +116,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the flow if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no flow with the specified flowName is found in the current use case
 	 */
-	public UseCaseFlow findFlow(String flowName) {
-		UseCaseFlow flow = findModelElement(flowName, nameToFlowMap);
+	public UseCaseFlow findFlowOrThrow(String flowName) {
+		UseCaseFlow flow = findModelElementOrThrow(flowName, nameToFlowMap);
 		return flow;
 	}
 	
@@ -128,8 +128,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the step if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use case
 	 */
-	public UseCaseStep findStep(String stepName) {
-		UseCaseStep step = findModelElement(stepName, nameToStepMap);
+	public UseCaseStep findStepOrThrow(String stepName) {
+		UseCaseStep step = findModelElementOrThrow(stepName, nameToStepMap);
 		return step;
 	}
 	

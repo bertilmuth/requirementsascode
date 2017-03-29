@@ -89,7 +89,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public UseCaseFlow after(String stepName) {
-		UseCaseStep foundStep = useCase.findStep(stepName);
+		UseCaseStep foundStep = useCase.findStepOrThrow(stepName);
 		flowPredicate.setStepPredicate(afterStep(foundStep));
 		return this;
 	}
@@ -104,7 +104,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 */
 	public UseCaseFlow insteadOf(String stepName) {
 		Optional<UseCaseStep> stepBeforeAtStep = 
-			useCase.findStep(stepName).previousStepInFlow();
+			useCase.findStepOrThrow(stepName).previousStepInFlow();
 
 		flowPredicate.setStepPredicate(afterStep(stepBeforeAtStep));
 	
