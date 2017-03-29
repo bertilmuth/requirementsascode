@@ -53,7 +53,8 @@ public class UseCaseStep extends UseCaseModelElement {
 		Objects.requireNonNull(predicate);
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
-		this.predicate = predicate.orElse(afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow());
+		this.predicate = 
+			predicate.orElse(afterPreviousStepUnlessInterruptedByAlternativeFlow(this));
 	}
 
 	/**
@@ -168,9 +169,11 @@ public class UseCaseStep extends UseCaseModelElement {
 	 * a flow are executed in sequence, unless the first step of an alternative
 	 * flow interrupts the flow.
 	 * 
+	 * @param previousStepInFlow the previous step in the flow that contains the step
 	 * @return the predicate for running steps in sequence
 	 */
-	private Predicate<UseCaseRunner> afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow() {
+	private Predicate<UseCaseRunner> afterPreviousStepUnlessInterruptedByAlternativeFlow(UseCaseStep currentStep) {
+		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
 		Predicate<UseCaseRunner> afterPreviousStep = previousStepInFlow.map(s -> afterStep(s))
 				.orElse(isRunnerAtStart());
 		return afterPreviousStep.and(noOtherStepCouldReactThan(this));
