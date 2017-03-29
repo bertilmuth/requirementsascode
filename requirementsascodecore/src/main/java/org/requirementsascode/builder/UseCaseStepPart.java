@@ -30,6 +30,7 @@ public class UseCaseStepPart {
 	 * @return the created as part of this step
 	 */
 	public UseCaseStepAsPart as(Actor... actors) {
+		Objects.requireNonNull(actors);
 		UseCaseStepAs as = new UseCaseStepAs(useCaseStep, actors);
 		return new UseCaseStepAsPart(as, this);
 	}

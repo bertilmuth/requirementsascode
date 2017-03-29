@@ -58,25 +58,6 @@ public class UseCaseStep extends UseCaseModelElement {
 	}
 
 	/**
-	 * Defines which actors (i.e. user groups) can cause the system to react to
-	 * the event of this step.
-	 * 
-	 * Note: in order for the system to react to one the specified actors,
-	 * {@link UseCaseRunner#as(Actor)} needs to be called before
-	 * {@link UseCaseRunner#reactTo(Object)}.
-	 * 
-	 * @param actors
-	 *            the actors that defines the user groups
-	 * @return the created actor part of this step
-	 */
-	public UseCaseStepAs as(Actor... actors) {
-		Objects.requireNonNull(actors);
-
-		as = new UseCaseStepAs(this, actors);
-		return as;
-	}
-
-	/**
 	 * Returns the use case flow this step is part of.
 	 * 
 	 * @return the containing use case flow

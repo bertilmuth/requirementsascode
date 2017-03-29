@@ -92,7 +92,7 @@ public class UseCaseRunner {
 	
 	/**
 	 * After you called this method, the runner will only react to steps 
-	 * that have explicitly set the specified actor (via {@link UseCaseStep#as(Actor...)}), 
+	 * that have explicitly set the specified actor as one of its actors, 
 	 * or that are declared as "autonomous system reactions".
 	 * 
 	 * As a side effect, calling this method triggers immediately triggers "autonomous system reactions".
