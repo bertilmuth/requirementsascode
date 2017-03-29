@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStepAs;
-import org.requirementsascode.UseCaseStepSystem;
 import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepAsPart{
@@ -17,8 +16,9 @@ public class UseCaseStepAsPart{
 	}
 
 	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
-		UseCaseStepSystem<UseCaseRunner> useCaseStepSystem = useCaseStepAs.system(systemReaction);
-		return new UseCaseStepSystemPart<UseCaseRunner>(useCaseStepSystem, useCaseStepPart);
+		UseCaseStepSystemPart<UseCaseRunner> systemPart = 
+				user(UseCaseRunner.class).system(systemReaction);
+		return systemPart;
 	} 
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
