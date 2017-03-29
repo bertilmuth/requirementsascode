@@ -121,28 +121,33 @@ public class UseCaseFlow extends UseCaseModelElement {
 	public UseCaseFlow when(Predicate<UseCaseRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 
-		flowPredicate.when(whenPredicate);
+		flowPredicate.setWhenPredicate(whenPredicate);
 		return this;
 	}
 	
 	private class FlowPredicate{
+		private Optional<Predicate<UseCaseRunner>> optionalStepPredicate;
+		private Optional<Predicate<UseCaseRunner>> optionalWhenPredicate;
 		private Optional<Predicate<UseCaseRunner>> predicate;
 
 		private FlowPredicate() {
+			this.optionalStepPredicate = Optional.empty();
+			this.optionalWhenPredicate = Optional.empty();
 			this.predicate = Optional.empty();
 		}
 		
-		public void when(Predicate<UseCaseRunner> whenPredicate){
-			predicate = Optional.of(
-				predicate.orElse(isRunnerInDifferentFlow()).and(whenPredicate));
+		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
+			optionalStepPredicate = Optional.of(stepPredicate);
+			predicate = optionalStepPredicate;
+		}
+		
+		public void setWhenPredicate(Predicate<UseCaseRunner> whenPredicate){
+			this.optionalWhenPredicate = Optional.of(whenPredicate);
+			predicate = Optional.of(optionalStepPredicate.orElse(r -> true).and(whenPredicate));
 		}
 		
 		public Optional<Predicate<UseCaseRunner>> get(){
-			return predicate;
-		}
-		
-		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-			predicate = Optional.of(isRunnerInDifferentFlow().and(stepPredicate));
+			return predicate.map(pred -> isRunnerInDifferentFlow().and(pred));
 		}
 		
 		private Predicate<UseCaseRunner> isRunnerInDifferentFlow() {
