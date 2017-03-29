@@ -75,8 +75,8 @@ public class UseCaseStepPart {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * when the step's predicate is true, without needing an event provided via
-	 * {@link UseCaseRunner#reactTo(Object)}. Instead, the use case runner provides
+	 * without needing an event provided via {@link UseCaseRunner#reactTo(Object)}. 
+	 * Instead, the use case runner provides
 	 * itself as an event to the system reaction.
 	 * 
 	 * @param systemReaction the autonomous system reaction
