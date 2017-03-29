@@ -21,7 +21,6 @@ public class UseCaseStepSystemPart<T>{
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCasePart = useCaseStepPart.useCaseFlowPart().useCasePart();
 		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
-		useCaseStepPart.useCaseStep().setSystem(useCaseStepSystem);
 	}
 
 	public UseCaseModel build() {

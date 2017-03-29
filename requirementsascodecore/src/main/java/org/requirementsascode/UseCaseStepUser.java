@@ -18,6 +18,7 @@ public class UseCaseStepUser<T>{
 	public UseCaseStepUser(UseCaseStep useCaseStep, Class<T> eventClass) {
 		this.useCaseStep = useCaseStep;
 		this.eventClass = eventClass;
+		useCaseStep.setUser(this);
 	}
 	
 	/**

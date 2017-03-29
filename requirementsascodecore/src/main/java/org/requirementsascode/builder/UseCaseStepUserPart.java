@@ -13,7 +13,6 @@ public class UseCaseStepUserPart<T>{
 	public UseCaseStepUserPart(UseCaseStepUser<T> useCaseStepUser, UseCaseStepPart useCaseStepPart) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
-		useCaseStep.setUser(useCaseStepUser);
 	}
 
 	public UseCaseStepSystemPart<T> system(Consumer<T> systemReaction) {
