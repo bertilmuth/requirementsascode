@@ -1,9 +1,6 @@
 package org.requirementsascode;
 
-import java.util.Objects;
 import java.util.function.Consumer;
-
-import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 
 /**
@@ -48,59 +45,6 @@ public class UseCaseStepAs{
 		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
 		useCaseStep.setUser(user);
 		return user;
-	}
-	
-	/**
-	 * Makes the use case runner continue at the specified step.
-	 * If there are alternatives to the specified step, one may be entered
-	 * if its condition is enabled.
-	 * 
-	 * @param stepName name of the step to continue at, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
-	 */
-	public UseCase continueAt(String stepName) {
-		Objects.requireNonNull(stepName);
-		
-		system(new ContinueAt(useCaseStep.useCase(), stepName));
-		return useCaseStep.useCase();
-	}
-	
-	/**
-	 * Makes the use case runner continue at the specified step. No alternative
-	 * flow starting at the specified step is entered, even if its condition is
-	 * enabled.
-	 * 
-	 * Note: the runner continues at the step only if its predicate is true, and
-	 * actor is right.
-	 * 
-	 * @param stepName
-	 *            name of the step to continue at, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInUseCase
-	 *             if no step with the specified stepName is found in the
-	 *             current use case
-	 */
-	public UseCase continueWithoutAlternativeAt(String stepName) {
-		Objects.requireNonNull(stepName);
-
-		system(new ContinueWithoutAlternativeAt(useCaseStep.useCase(), stepName));
-		return useCaseStep.useCase();
-	}
-	
-	/**
-	 * Makes the use case runner continue after the specified step.
-	 * 
-	 * @param stepName name of the step to continue after, in this use case.
-	 * @return the use case this step belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
-	 */
-	public UseCase continueAfter(String stepName) {
-		Objects.requireNonNull(stepName);
-		
-		system(new ContinueAfter(useCaseStep.useCase(), stepName));
-		return useCaseStep.useCase();
 	}
 	
 	/**

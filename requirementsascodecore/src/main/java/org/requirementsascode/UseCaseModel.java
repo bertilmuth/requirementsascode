@@ -139,9 +139,6 @@ public class UseCaseModel {
 	
 	/**
 	 * Returns the actor representing the default user.
-	 * This actor is implicitly used if you define a use case step
-	 * without {@link UseCaseStep#as(Actor...)}, but with a 
-	 * {@link UseCaseStep#user(Class)}.
 	 * 
 	 * @return the user actor
 	 */
@@ -151,9 +148,6 @@ public class UseCaseModel {
 
 	/**
 	 * Returns the actor representing the system.
-	 * This actor is implicitly used if you define a use case step
-	 * without {@link UseCaseStep#as(Actor...)} and without a 
-	 * {@link UseCaseStep#user(Class)}, but just a {@link UseCaseStep#system(java.util.function.Consumer)}.
 	 * 
 	 * @return the user actor
 	 */
