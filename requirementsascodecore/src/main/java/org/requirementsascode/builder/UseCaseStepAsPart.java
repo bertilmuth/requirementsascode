@@ -15,8 +15,8 @@ public class UseCaseStepAsPart{
 	private UseCaseStepPart useCaseStepPart;
 
 	public UseCaseStepAsPart(UseCaseStepAs useCaseStepAs, UseCaseStepPart useCaseStepPart) {
-		this.useCaseStep = useCaseStepPart.useCaseStep();
 		this.useCaseStepPart = useCaseStepPart;
+		this.useCaseStep = useCaseStepPart.useCaseStep();
 	}
 
 	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
@@ -27,7 +27,6 @@ public class UseCaseStepAsPart{
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
 		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
-		useCaseStep.setUser(user);
 		return new UseCaseStepUserPart<>(user, useCaseStepPart);
 	}
 

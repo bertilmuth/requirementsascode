@@ -20,6 +20,7 @@ public class UseCaseStepSystemPart<T>{
 		this.useCaseStepSystem = useCaseStepSystem;
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
+		useCaseStepPart.useCaseStep().setSystem(useCaseStepSystem);
 	}
 
 	public UseCaseModel build() {

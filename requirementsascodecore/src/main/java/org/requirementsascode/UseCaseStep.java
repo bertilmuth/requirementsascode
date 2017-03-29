@@ -310,7 +310,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *            the system part
 	 *
 	 */
-	void setSystem(UseCaseStepSystem<?> system) {
+	public void setSystem(UseCaseStepSystem<?> system) {
 		this.system = system;
 	}
 
