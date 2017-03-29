@@ -6,18 +6,18 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
-import org.requirementsascode.UseCaseStepSystem;
-import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;
 	private UseCaseFlowPart useCaseFlowPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
+	private Actor systemActor;
 
 	public UseCaseStepPart(UseCaseStep useCaseStep, UseCaseFlowPart useCaseFlowPart) {
 		this.useCaseStep = useCaseStep;
 		this.useCaseFlowPart = useCaseFlowPart;
 		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
+		this.systemActor = useCaseModelBuilder.build().systemActor();
 	}
 	
 	/**
@@ -33,33 +33,35 @@ public class UseCaseStepPart {
 	}
 
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventOrExceptionClass) {
-		UseCaseStepUser<T> useCaseStepUser = useCaseStep.user(eventOrExceptionClass);
-		return new UseCaseStepUserPart<T>(useCaseStepUser, this);
+		Actor userActor = useCaseModelBuilder.build().userActor();
+		UseCaseStepUserPart<T> userPart = as(userActor).user(eventOrExceptionClass);
+		return userPart;
 	}
 
 	public <T> UseCaseStepUserPart<T> handle(Class<T> eventOrExceptionClass) {
-		UseCaseStepUser<T> useCaseStepUser = useCaseStep.handle(eventOrExceptionClass);
-		return new UseCaseStepUserPart<>(useCaseStepUser, this);
+		Actor systemActor = useCaseModelBuilder.build().systemActor();
+		UseCaseStepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
+		return userPart;
 	}
 
 	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
-		UseCaseStepSystem<UseCaseRunner> useCaseStepSystem = useCaseStep.system(systemReaction);
-		return new UseCaseStepSystemPart<UseCaseRunner>(useCaseStepSystem, this);
+		UseCaseStepSystemPart<UseCaseRunner> systemPart = as(systemActor).system(systemReaction);		
+		return systemPart;
 	}
 
 	public UseCasePart continueAfter(String stepName) {
-		useCaseStep.continueAfter(stepName);
-		return useCasePart();
+		UseCasePart useCasePart = as(systemActor).continueAfter(stepName);		
+		return useCasePart;
 	} 
 	
 	public UseCasePart continueAt(String stepName) {
-		useCaseStep.continueAt(stepName);
-		return useCasePart();
+		UseCasePart useCasePart = as(systemActor).continueAt(stepName);		
+		return useCasePart;
 	}
 	
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
-		useCaseStep.continueWithoutAlternativeAt(stepName);
-		return useCasePart();
+		UseCasePart useCasePart = as(systemActor).continueWithoutAlternativeAt(stepName);		
+		return useCasePart;
 	}
 	
 	public UseCaseStep useCaseStep(){

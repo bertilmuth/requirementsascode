@@ -35,7 +35,8 @@ public class UseCaseStepAsPart{
 		return useCaseStepPart.useCasePart();
 	}
 
-	public UseCasePart continueAfter(String stepName) {		system(new ContinueAfter(useCaseStep.useCase(), stepName));
+	public UseCasePart continueAfter(String stepName) {		
+		system(new ContinueAfter(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
 
