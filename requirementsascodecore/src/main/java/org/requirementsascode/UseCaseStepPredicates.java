@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  *
  */
 public class UseCaseStepPredicates {	
-	static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
+	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
 		Objects.requireNonNull(useCaseFlow);
 		
 		Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
@@ -23,15 +23,15 @@ public class UseCaseStepPredicates {
 		return isRunnerInDifferentFlow;
 	}
 	
-	static Predicate<UseCaseRunner> isRunnerAtStart() {
+	public static Predicate<UseCaseRunner> isRunnerAtStart() {
 		return afterStep(Optional.empty());
 	}
 	
-	static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
+	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
 		return afterStep(Optional.of(afterThatStep));
 	}
 	
-	static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
+	public static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();
 			boolean isSystemAtRightStep = 
