@@ -1,8 +1,8 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicate.afterStep;
-import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
-import static org.requirementsascode.UseCaseStepPredicate.isRunnerInDifferentFlowThan;
+import static org.requirementsascode.UseCaseStepPredicates.afterStep;
+import static org.requirementsascode.UseCaseStepPredicates.isRunnerAtStart;
+import static org.requirementsascode.UseCaseStepPredicates.isRunnerInDifferentFlowThan;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.exception.NoSuchElementInUseCase;
 
 /**
  * A use case flow, as part of a use case.
@@ -99,10 +98,12 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 * 
 	 * @param stepName the name of the step to start the flow after
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
-	 * @throws NoSuchElementInUseCase if the specified step is not found in this flow's use case
+	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public UseCaseFlow after(String stepName) {
-		return after(stepName, useCase);
+		UseCaseStep foundStep = useCase.findStep(stepName);
+		flowPredicate.setStepPredicate(afterStep(foundStep));
+		return this;
 	}
 	
 	/**
@@ -111,7 +112,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 * 
 	 * @param stepName the name of the specified step
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
-	 * @throws NoSuchElementInUseCase if the specified step is not found in this flow's use case
+	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public UseCaseFlow insteadOf(String stepName) {
 		Optional<UseCaseStep> stepBeforeAtStep = 
@@ -122,31 +123,6 @@ public class UseCaseFlow extends UseCaseModelElement {
 		return this;	
 	}
 	
-	/**
-	 * Starts the flow after the specified step, 
-	 * which is contained in the specified use case.
-	 * 
-	 * @param stepName the name of the step to start the flow after
-	 * @param useCaseName the name of the use case containing the step named stepName
-	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
-	 * @throws NoSuchElementInModel if the specified use case is not found in the use case model
-	 * @throws NoSuchElementInUseCase if the specified step is not found in the specified use case
-	 */
-	public UseCaseFlow after(String stepName, String useCaseName) {
-		Objects.requireNonNull(stepName);
-		Objects.requireNonNull(useCaseName);
-		
-		UseCase useCase = useCaseModel().findUseCase(useCaseName)
-			.orElseThrow(() -> new NoSuchElementInModel(useCaseName));
-		return after(stepName, useCase);
-	}
-	
-	private UseCaseFlow after(String stepName, UseCase useCase) {
-		UseCaseStep foundStep = useCase.findStep(stepName);
-		flowPredicate.setStepPredicate(afterStep(foundStep));
-		return this;
-	}
-
 	/**
 	 * Constrains the flow's predicate: only if the specified predicate is
 	 * true as well (beside the step condition), the flow is started.

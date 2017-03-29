@@ -1,8 +1,8 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicate.afterStep;
-import static org.requirementsascode.UseCaseStepPredicate.isRunnerAtStart;
-import static org.requirementsascode.UseCaseStepPredicate.noOtherStepCouldReactThan;
+import static org.requirementsascode.UseCaseStepPredicates.afterStep;
+import static org.requirementsascode.UseCaseStepPredicates.isRunnerAtStart;
+import static org.requirementsascode.UseCaseStepPredicates.noOtherStepCouldReactThan;
 
 import java.util.Objects;
 import java.util.Optional;

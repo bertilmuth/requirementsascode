@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * @author b_muth
  *
  */
-class UseCaseStepPredicate {	
+class UseCaseStepPredicates {	
 	static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
 		Objects.requireNonNull(useCaseFlow);
 		

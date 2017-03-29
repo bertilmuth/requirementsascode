@@ -7,7 +7,7 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
-import org.requirementsascode.exception.NoSuchElementInUseCase;
+import org.requirementsascode.exception.NoSuchElementInModel;
 
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;
@@ -93,7 +93,7 @@ public class UseCaseStepPart {
 	 * 
 	 * @param stepName name of the step to continue after, in this use case.
 	 * @return the use case part this step belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use case
 	 */
 	public UseCasePart continueAfter(String stepName) {
 		Objects.requireNonNull(stepName);
@@ -108,7 +108,7 @@ public class UseCaseStepPart {
 	 * 
 	 * @param stepName name of the step to continue at, in this use case.
 	 * @return the use case part this step belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use case
 	 */
 	public UseCasePart continueAt(String stepName) {
 		Objects.requireNonNull(stepName);
@@ -123,7 +123,7 @@ public class UseCaseStepPart {
 	 * 
 	 * @param stepName name of the step to continue at, in this use case.
 	 * @return the use case part this step belongs to, to ease creation of further flows
-	 * @throws NoSuchElementInUseCase if no step with the specified stepName is found in the current use case
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use case
 	 */
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
 		Objects.requireNonNull(stepName);

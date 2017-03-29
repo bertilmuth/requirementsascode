@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
-import org.requirementsascode.exception.NoSuchElementInUseCase;
+import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.exception.UnhandledException;
 
 public class ExceptionsThrownTest extends AbstractTestCase{		
@@ -23,8 +23,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfInsteadOfStepNotExistsInSameUseCase() {	
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
+		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
@@ -33,8 +32,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {		
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
+		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
@@ -43,8 +41,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfContinueAfterNotExists() {		
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
+		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
@@ -53,8 +50,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfContinueAtNotExists() {		
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
+		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
@@ -63,8 +59,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Test
 	public void throwsExceptionIfContinueWithoutAlternativeAtNotExists() {		
-		thrown.expect(NoSuchElementInUseCase.class);
-		thrown.expectMessage(USE_CASE);
+		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)

@@ -15,6 +15,6 @@ public class ElementAlreadyInModel extends RuntimeException {
 	}
 
 	private static String exceptionMessage(String elementName) {
-		return "Element already exists in the model: " + elementName;
+		return "Element already exists in model: " + elementName;
 	}
 }

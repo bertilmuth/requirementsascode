@@ -3,9 +3,9 @@ package org.requirementsascode;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
  * Contains static helper methods to ease the implementation of use case model creation 
@@ -13,22 +13,24 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
  * 
  * @author b_muth
  *
- */
+ */ 
 class ModelElementContainer {	
-	static <T extends UseCaseModelElement> Optional<T> findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
+	static <T extends UseCaseModelElement> T findModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
-		Optional<T> useCaseModelElement = modelElementNameToElementMap.containsKey(modelElementName)?
-			Optional.of(modelElementNameToElementMap.get(modelElementName)) : Optional.empty();
+		if(!hasModelElement(modelElementName, modelElementNameToElementMap)){
+			throw new NoSuchElementInModel(modelElementName);
+		}
+		T useCaseModelElement = modelElementNameToElementMap.get(modelElementName);
 		return useCaseModelElement;
 	}
 	
 	static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName, Map<String, T> modelElementNameToElementMap) {
 		Objects.requireNonNull(modelElementName);
 		Objects.requireNonNull(modelElementNameToElementMap);
-		
-		return findModelElement(modelElementName, modelElementNameToElementMap).isPresent();
+		boolean hasModelElement = modelElementNameToElementMap.containsKey(modelElementName);
+		return hasModelElement;
 	}
 	
 	static <T extends UseCaseModelElement> void saveModelElement(T modelElement, Map<String, T> modelElementNameToElementMap) {

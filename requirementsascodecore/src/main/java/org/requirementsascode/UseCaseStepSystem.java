@@ -1,6 +1,6 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicate.afterStep;
+import static org.requirementsascode.UseCaseStepPredicates.afterStep;
 
 import java.util.Objects;
 import java.util.function.Consumer;

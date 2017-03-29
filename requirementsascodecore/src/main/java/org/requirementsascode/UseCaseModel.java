@@ -8,10 +8,10 @@ import static org.requirementsascode.ModelElementContainer.saveModelElement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
  * A use case model is a container for use cases and their associated actors.
@@ -88,9 +88,10 @@ public class UseCaseModel {
 	 * 
 	 * @param actorName the name of the actor to look for
 	 * @return the actor if found, or else an empty optional
+	 * @throws NoSuchElementInModel if no actor with the specified actorName is found in the model
 	 */
-	public Optional<Actor> findActor(String actorName) {
-		Optional<Actor> actor = findModelElement(actorName, nameToActorMap);
+	public Actor findActor(String actorName) {
+		Actor actor = findModelElement(actorName, nameToActorMap);
 		return actor;
 	}
 
@@ -99,9 +100,10 @@ public class UseCaseModel {
 	 * 
 	 * @param useCaseName the name of the use case to look for
 	 * @return the use case if found, or else an empty optional
+	 * @throws NoSuchElementInModel if no use case with the specified useCaseName is found in the model
 	 */
-	public Optional<UseCase> findUseCase(String useCaseName) {
-		Optional<UseCase> useCase = findModelElement(useCaseName, nameToUseCaseMap);
+	public UseCase findUseCase(String useCaseName) {
+		UseCase useCase = findModelElement(useCaseName, nameToUseCaseMap);
 		return useCase;
 	}
 

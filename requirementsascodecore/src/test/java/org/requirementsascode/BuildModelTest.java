@@ -55,7 +55,7 @@ public class BuildModelTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
-		UseCase useCase = useCaseModel.findUseCase(USE_CASE).get();
+		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
 		Collection<UseCaseFlow> flows = useCase.flows();
 		
 		assertEquals(1, flows.size());
@@ -68,7 +68,7 @@ public class BuildModelTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
-		UseCase useCase = useCaseModel.findUseCase(USE_CASE).get();
+		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
 		Collection<UseCaseStep> steps = useCase.steps();
 		assertEquals(0, steps.size());
 	}
@@ -103,7 +103,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).handle(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		UseCase useCase = useCaseModel.findUseCase(USE_CASE).get();
+		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
 		Collection<UseCaseStep> steps = useCase.steps();
 		assertEquals(1, steps.size());
 		
@@ -162,7 +162,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		Actor customerActor = useCaseModel.findActor(CUSTOMER).get();
+		Actor customerActor = useCaseModel.findActor(CUSTOMER);
 		Set<UseCase> useCases = customerActor.useCases();
 		assertEquals(1, useCases.size());
 		
@@ -180,7 +180,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 
-		Actor customerActor = useCaseModel.findActor(customer.name()).get();
+		Actor customerActor = useCaseModel.findActor(customer.name());
 		List<UseCaseStep> steps = customerActor.stepsOf(useCasePart.useCase());
 		UseCaseStep step = steps.get(0);
 		
@@ -201,7 +201,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).as(customer, anotherActor).user(EnterText.class).system(displayEnteredText())
 			.build();
 
-		Actor customerActor = useCaseModel.findActor(customer.name()).get();		
+		Actor customerActor = useCaseModel.findActor(customer.name());		
 		List<UseCaseStep> steps = customerActor.stepsOf(useCasePart.useCase());
 		UseCaseStep step = steps.get(0);
 		
@@ -357,7 +357,7 @@ public class BuildModelTest extends AbstractTestCase{
 				.build();
 		
 		assertEquals(1, useCaseModel.useCases().size());
-		assertEquals(useCaseModel.findUseCase(USE_CASE).get(), useCaseModel.useCases().iterator().next());
+		assertEquals(useCaseModel.findUseCase(USE_CASE), useCaseModel.useCases().iterator().next());
 	}
 	
 	@Test
@@ -380,7 +380,7 @@ public class BuildModelTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE);
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
-		UseCase uc = useCaseModel.findUseCase(USE_CASE).get();
+		UseCase uc = useCaseModel.findUseCase(USE_CASE);
 		assertEquals(1, uc.flows().size());
 	}
 	
