@@ -2,6 +2,7 @@ package org.requirementsascode.builder;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.ContinueAfter;
 import org.requirementsascode.ContinueAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
@@ -32,12 +33,13 @@ public class UseCaseStepAsPart{
 
 	public UseCasePart continueAt(String stepName) {
 		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
-		system(new ContinueAt(useCaseStep.useCase(), stepName));
+		system(new ContinueAt(useCaseStep.useCase(), stepName)); 
 		return useCaseStepPart.useCasePart();
 	}
 
 	public UseCasePart continueAfter(String stepName) {
-		useCaseStepAs.continueAfter(stepName);
+		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		system(new ContinueAfter(useCaseStep.useCase(), stepName));
 		return useCaseStepPart.useCasePart();
 	}
 
