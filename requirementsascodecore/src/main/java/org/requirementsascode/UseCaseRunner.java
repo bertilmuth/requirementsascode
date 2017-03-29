@@ -199,10 +199,17 @@ public class UseCaseRunner {
 	 */
 	public Set<UseCaseStep> stepsThatCanReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
+		Set<UseCaseStep> stepsThatCanReact;
 		
-		Stream<UseCaseStep> stepStream = useCaseModel.steps().stream();
-		Set<UseCaseStep> steps = stepsInStreamThatCanReactTo(eventClass, stepStream);
-		return steps;
+		if(isRunning){
+			Stream<UseCaseStep> stepStream = useCaseModel.steps().stream();
+			stepsThatCanReact = stepsInStreamThatCanReactTo(eventClass, stepStream);
+		}
+		else {
+			stepsThatCanReact = new HashSet<>();
+		}
+		
+		return stepsThatCanReact;
 	}
 	
 	/**
@@ -216,17 +223,12 @@ public class UseCaseRunner {
 	 */
 	Set<UseCaseStep> stepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<UseCaseStep> stepStream) {
 		Set<UseCaseStep> steps;
-		if(isRunning){
 			steps = stepStream
 				.filter(step -> stepActorIsRunActor(step))
 				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step))
 				.filter(stepWithoutAlternativePredicate.orElse(s -> true))
 				.collect(Collectors.toSet());			
-		} else {
-			steps = new HashSet<>();
-		}
-
 		return steps;
 	}
 

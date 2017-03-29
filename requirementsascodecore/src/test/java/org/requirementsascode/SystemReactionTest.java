@@ -117,7 +117,19 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void oneStepCannotReactIfEventIsWrong() {	
+	public void cantReactIfNotRunning() {	
+		useCaseModelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
+			.build();
+						
+		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		assertFalse(canReact);
+	}
+	
+	@Test
+	public void cantReactIfEventIsWrong() {	
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
