@@ -158,7 +158,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *            the predicate
 	 * 
 	 */
-	void setPredicate(Predicate<UseCaseRunner> predicate) {
+	public void setPredicate(Predicate<UseCaseRunner> predicate) {
 		this.predicate = predicate;
 	}
 }

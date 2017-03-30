@@ -9,16 +9,14 @@ package org.requirementsascode;
  **/
 public class UseCaseStepAs{
 	private Actor[] actors;
-	private UseCaseStep useCaseStep;
 	
 	public UseCaseStepAs(UseCaseStep useCaseStep, Actor... actor) {
-		this.useCaseStep = useCaseStep;
 		this.actors = actor;
-		connectActorsToThisStep(actors);
+		connectActorsToThisStep(useCaseStep, actors);
 		useCaseStep.setAs(this);
 	}
 
-	private void connectActorsToThisStep(Actor[] actors) {
+	private void connectActorsToThisStep(UseCaseStep useCaseStep, Actor[] actors) {
 		for (Actor actor : actors) {
 			actor.newStep(useCaseStep);
 		}

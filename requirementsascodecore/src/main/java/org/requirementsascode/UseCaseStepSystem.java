@@ -1,10 +1,6 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicates.afterStep;
-
-import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * The part of the step that contains a reference to the system reaction
@@ -15,11 +11,9 @@ import java.util.function.Predicate;
  *
  */
 public class UseCaseStepSystem<T>{
-	private UseCaseStep useCaseStep;
 	private Consumer<T> systemReaction;
 
 	public UseCaseStepSystem(UseCaseStep useCaseStep, Consumer<T> systemReaction) {
-		this.useCaseStep = useCaseStep;
 		this.systemReaction = systemReaction;
 		useCaseStep.setSystem(this);
 	}
@@ -34,27 +28,5 @@ public class UseCaseStepSystem<T>{
 	 */
 	public Consumer<T> systemReaction() {
 		return systemReaction;
-	}
-	
-	/**
-	 * React to this step's event as long as the condition is fulfilled.
-	 * 
-	 * Even when the condition is fulfilled, the flow can advance given
-	 * that the event of the next step is received.
-	 * 
-	 * Note that if the condition is not fulfilled after the previous step has been performed,
-	 * the step will not react at all.
-	 * 
-	 * @param condition the condition to check
-	 * @return the system part
-	 */
-	public UseCaseStepSystem<T> reactWhile(Predicate<UseCaseRunner> condition) {
-		Objects.requireNonNull(condition);
-					
-		Predicate<UseCaseRunner> performIfConditionIsTruePredicate = useCaseStep.predicate().and(condition);
-		Predicate<UseCaseRunner> repeatIfConditionIsTruePredicate = afterStep(useCaseStep).and(condition);
-		useCaseStep.setPredicate(performIfConditionIsTruePredicate.or(repeatIfConditionIsTruePredicate));
-		
-		return this;
 	}
 }

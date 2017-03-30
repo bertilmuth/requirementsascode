@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.UseCaseStepPredicates.afterStep;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -73,9 +75,27 @@ public class UseCaseStepSystemPart<T>{
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(useCaseName);
 		return useCasePart;
 	}
-
+	
+	/**
+	 * React to this step's event as long as the condition is fulfilled.
+	 * 
+	 * Even when the condition is fulfilled, the flow can advance given
+	 * that the event of the next step is received.
+	 * 
+	 * Note that if the condition is not fulfilled after the previous step has been performed,
+	 * the step will not react at all.
+	 * 
+	 * @param condition the condition to check
+	 * @return the system part
+	 */
 	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseRunner> condition) {
-		useCaseStepSystem.reactWhile(condition);
+		Objects.requireNonNull(condition);
+		
+		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		Predicate<UseCaseRunner> performIfConditionIsTruePredicate = useCaseStep.predicate().and(condition);
+		Predicate<UseCaseRunner> repeatIfConditionIsTruePredicate = afterStep(useCaseStep).and(condition);
+		useCaseStep.setPredicate(performIfConditionIsTruePredicate.or(repeatIfConditionIsTruePredicate));
+		
 		return this;
 	}
 }
