@@ -15,7 +15,6 @@ public class UseCaseStepSystem<T>{
 
 	public UseCaseStepSystem(UseCaseStep useCaseStep, Consumer<T> systemReaction) {
 		this.systemReaction = systemReaction;
-		useCaseStep.setSystem(this);
 	}
 	
 	/**

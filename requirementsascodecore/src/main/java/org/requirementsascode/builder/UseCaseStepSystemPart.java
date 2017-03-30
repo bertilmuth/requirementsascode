@@ -16,14 +16,16 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepPart useCaseStepPart;
+	private UseCaseStep useCaseStep;
 	private UseCaseModelBuilder useCaseModelBuilder;
 	private UseCasePart useCasePart;
 
 	public UseCaseStepSystemPart(UseCaseStepPart useCaseStepPart, Consumer<T> systemReaction) {
-		new UseCaseStepSystem<>(useCaseStepPart.useCaseStep(), systemReaction);
 		this.useCaseStepPart = useCaseStepPart;
+		this.useCaseStep = useCaseStepPart.useCaseStep();
 		this.useCasePart = useCaseStepPart.useCasePart();
 		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
+		useCaseStep.setSystem(new UseCaseStepSystem<>(useCaseStepPart.useCaseStep(), systemReaction));
 	}
 
 	public UseCaseModel build() {
@@ -40,11 +42,10 @@ public class UseCaseStepSystemPart<T>{
 	public UseCaseStepPart step(String stepName) {
 		UseCaseFlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
 		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
-		UseCaseStep currentUseCaseStep = useCaseStepPart.useCaseStep();
 		
 		UseCaseStep nextUseCaseStepInFlow = 
 			useCasePart.useCase().newStep(stepName, useCaseFlow, 
-				Optional.of(currentUseCaseStep), 
+				Optional.of(useCaseStep), 
 					Optional.empty());
 		
 		return new UseCaseStepPart(nextUseCaseStepInFlow, useCaseFlowPart);
