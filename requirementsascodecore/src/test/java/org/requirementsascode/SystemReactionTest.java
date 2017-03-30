@@ -103,6 +103,21 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void doesNotReactToEventIfNotRunning() { 	
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
+			.build();
+		
+		useCaseRunner.run(useCaseModel);
+		useCaseRunner.stop();
+		useCaseRunner.reactTo(enterText());
+		
+		assertEquals("", runStepNames());
+	}
+	
+	@Test
 	public void doesNotReactToAlreadyRunStep() { 	
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
