@@ -4,6 +4,7 @@ import static org.requirementsascode.UseCaseStepPredicates.afterPreviousStepInFl
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -26,7 +27,7 @@ public class UseCaseStep extends UseCaseModelElement {
 
 	private Actor[] actors;
 	private Class<?> eventClass;
-	private UseCaseStepSystem<?> system;
+	private Consumer<?> systemReaction;
 
 	/**
 	 * Creates a use case step with the specified name that belongs to the
@@ -98,25 +99,12 @@ public class UseCaseStep extends UseCaseModelElement {
 	public void setEventClass(Class<?> eventClass) {
 		this.eventClass = eventClass;
 	}
-
-	/**
-	 * Returns the system part of this step.
-	 * 
-	 * @return the system part
-	 */
-	public UseCaseStepSystem<?> system() {
-		return system;
+	public Consumer<?> getSystemReaction() {
+		return systemReaction;
 	}
 
-	/**
-	 * Sets the system part of this step.
-	 * 
-	 * @param system
-	 *            the system part
-	 *
-	 */
-	public void setSystem(UseCaseStepSystem<?> system) {
-		this.system = system;
+	public void setSystemReaction(Consumer<?> systemReaction) {
+		this.systemReaction = systemReaction;
 	}
 
 	/**

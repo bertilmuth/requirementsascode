@@ -11,7 +11,6 @@ import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.UseCaseStepSystem;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 public class UseCaseStepSystemPart<T>{
@@ -21,7 +20,7 @@ public class UseCaseStepSystemPart<T>{
 	public UseCaseStepSystemPart(UseCaseStepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
-		useCaseStep.setSystem(new UseCaseStepSystem<>(useCaseStepPart.useCaseStep(), systemReaction));
+		useCaseStep.setSystemReaction(systemReaction);
 	}
 
 	public UseCaseModel build() {

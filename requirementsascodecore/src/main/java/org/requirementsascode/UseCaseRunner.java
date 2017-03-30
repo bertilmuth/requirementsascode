@@ -248,7 +248,7 @@ public class UseCaseRunner {
 	}
 	
 	private <T> UseCaseStep triggerSystemReactionForStep(T event, UseCaseStep useCaseStep) {
-		if(useCaseStep.system() == null){
+		if(useCaseStep.getSystemReaction() == null){
 			throw new MissingUseCaseStepPart(useCaseStep, "system");
 		}
 		

@@ -26,8 +26,7 @@ public class SystemReactionTrigger {
 	 */
 	@SuppressWarnings("unchecked")
 	public void trigger(){
-		((Consumer<Object>)useCaseStep.system().systemReaction())
-			.accept(event);
+		((Consumer<Object>)useCaseStep.getSystemReaction()).accept(event);
 	}
 	
 	void setupWith(Object event, UseCaseStep useCaseStep) {
