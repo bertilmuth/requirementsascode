@@ -281,12 +281,11 @@ public class UseCaseRunner {
 	}
 
 	private boolean stepActorIsRunActor(UseCaseStep useCaseStep) {
-		UseCaseStepAs actorPart = useCaseStep.as();
-		if(actorPart == null){
+		Actor[] stepActors = useCaseStep.getActors();
+		if(stepActors == null){
 			throw(new MissingUseCaseStepPart(useCaseStep, "actor"));
 		}
 		
-		Actor[] stepActors = actorPart.actors();
 		boolean stepActorIsRunActor = 
 			Stream.of(stepActors).anyMatch(stepActor -> userAndSystem.contains(stepActor));
 		return stepActorIsRunActor;

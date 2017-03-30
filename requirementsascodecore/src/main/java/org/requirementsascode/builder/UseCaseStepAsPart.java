@@ -9,7 +9,6 @@ import org.requirementsascode.ContinueAt;
 import org.requirementsascode.ContinueWithoutAlternativeAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.UseCaseStepAs;
 
 public class UseCaseStepAsPart{
 	private UseCaseStep useCaseStep;
@@ -19,7 +18,7 @@ public class UseCaseStepAsPart{
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
 		
-		useCaseStep.setAs(new UseCaseStepAs(useCaseStep, actors));
+		useCaseStep.setActors(actors);
 		connectActorsToThisStep(useCaseStep, actors);
 	}
 	

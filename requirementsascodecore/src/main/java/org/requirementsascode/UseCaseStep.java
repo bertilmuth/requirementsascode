@@ -24,7 +24,7 @@ public class UseCaseStep extends UseCaseModelElement {
 	private Optional<UseCaseStep> previousStepInFlow;
 	private Predicate<UseCaseRunner> predicate;
 
-	private UseCaseStepAs as;
+	private Actor[] actors;
 	private UseCaseStepUser<?> user;
 	private UseCaseStepSystem<?> system;
 
@@ -83,23 +83,12 @@ public class UseCaseStep extends UseCaseModelElement {
 		return previousStepInFlow;
 	}
 
-	/**
-	 * Returns the as part of this step.
-	 * 
-	 * @return the as part
-	 */
-	public UseCaseStepAs as() {
-		return as;
+	public Actor[] getActors() {
+		return actors;
 	}
 	
-	/**
-	 * Sets the as part of this step.
-	 * 
-	 * @param as the as part
-	 * 
-	 */
-	public void setAs(UseCaseStepAs as) {
-		this.as = as;
+	public void setActors(Actor[] actors) {
+		this.actors = actors;
 	}
 
 	/**
