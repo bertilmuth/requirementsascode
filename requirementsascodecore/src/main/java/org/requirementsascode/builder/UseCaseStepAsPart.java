@@ -18,7 +18,15 @@ public class UseCaseStepAsPart{
 	public UseCaseStepAsPart(UseCaseStepPart useCaseStepPart, Actor[] actors) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
+		
 		useCaseStep.setAs(new UseCaseStepAs(useCaseStep, actors));
+		connectActorsToThisStep(useCaseStep, actors);
+	}
+	
+	private void connectActorsToThisStep(UseCaseStep useCaseStep, Actor[] actors) {
+		for (Actor actor : actors) {
+			actor.newStep(useCaseStep);
+		}
 	}
 
 	/**
