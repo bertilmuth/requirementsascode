@@ -13,7 +13,6 @@ public class UseCaseStepAs{
 	public UseCaseStepAs(UseCaseStep useCaseStep, Actor... actors) {
 		this.actors = actors;
 		connectActorsToThisStep(useCaseStep, actors);
-		useCaseStep.setAs(this);
 	}
 
 	private void connectActorsToThisStep(UseCaseStep useCaseStep, Actor[] actors) {
