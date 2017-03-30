@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepPart useCaseStepPart;
@@ -15,8 +14,7 @@ public class UseCaseStepUserPart<T>{
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
 
-		useCaseStep.
-			setUser(new UseCaseStepUser<>(useCaseStepPart.useCaseStep(), eventClass));
+		useCaseStep.setEventClass(eventClass);
 	}
 
 	/**

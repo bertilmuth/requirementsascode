@@ -19,13 +19,13 @@ import java.util.function.Predicate;
  * @author b_muth
  *
  */
-public class UseCaseStep extends UseCaseModelElement {
+public class UseCaseStep extends UseCaseModelElement { 
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> previousStepInFlow;
 	private Predicate<UseCaseRunner> predicate;
 
 	private Actor[] actors;
-	private UseCaseStepUser<?> user;
+	private Class<?> eventClass;
 	private UseCaseStepSystem<?> system;
 
 	/**
@@ -90,25 +90,13 @@ public class UseCaseStep extends UseCaseModelElement {
 	public void setActors(Actor[] actors) {
 		this.actors = actors;
 	}
-
-	/**
-	 * Returns the user part of this step.
-	 * 
-	 * @return the event part
-	 */
-	public UseCaseStepUser<?> user() {
-		return user;
+	
+	public Class<?> getEventClass() {
+		return eventClass;
 	}
 
-	/**
-	 * Sets the user part of this step.
-	 * 
-	 * @param user
-	 *            the user part
-	 * 
-	 */
-	public void setUser(UseCaseStepUser<?> user) {
-		this.user = user;
+	public void setEventClass(Class<?> eventClass) {
+		this.eventClass = eventClass;
 	}
 
 	/**

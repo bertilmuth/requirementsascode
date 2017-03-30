@@ -292,7 +292,7 @@ public class UseCaseRunner {
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(UseCaseStep useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.user().eventClass();
+		Class<?> stepEventClass = useCaseStep.getEventClass();
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	
