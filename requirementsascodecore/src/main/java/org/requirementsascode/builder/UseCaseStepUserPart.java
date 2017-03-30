@@ -4,14 +4,18 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepPart useCaseStepPart;
+	private UseCaseStep useCaseStep;
 
 	public UseCaseStepUserPart(UseCaseStepPart useCaseStepPart, Class<T> eventClass) {
 		this.useCaseStepPart = useCaseStepPart;
-		useCaseStepPart.useCaseStep().
+		this.useCaseStep = useCaseStepPart.useCaseStep();
+
+		useCaseStep.
 			setUser(new UseCaseStepUser<>(useCaseStepPart.useCaseStep(), eventClass));
 	}
 

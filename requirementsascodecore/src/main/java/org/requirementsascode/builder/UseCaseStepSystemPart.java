@@ -17,19 +17,15 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepPart useCaseStepPart;
 	private UseCaseStep useCaseStep;
-	private UseCaseModelBuilder useCaseModelBuilder;
-	private UseCasePart useCasePart;
 
 	public UseCaseStepSystemPart(UseCaseStepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
-		this.useCasePart = useCaseStepPart.useCasePart();
-		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();
 		useCaseStep.setSystem(new UseCaseStepSystem<>(useCaseStepPart.useCaseStep(), systemReaction));
 	}
 
 	public UseCaseModel build() {
-		return useCaseModelBuilder.build();
+		return useCaseStepPart.useCaseModelBuilder().build();
 	}
 
 	/**
@@ -44,7 +40,7 @@ public class UseCaseStepSystemPart<T>{
 		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
 		UseCaseStep nextUseCaseStepInFlow = 
-			useCasePart.useCase().newStep(stepName, useCaseFlow, 
+			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
 				Optional.of(useCaseStep), 
 					Optional.empty());
 		
@@ -60,7 +56,8 @@ public class UseCaseStepSystemPart<T>{
 	 */
 	public UseCaseFlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
-		UseCaseFlowPart useCaseFlowPart = useCasePart.flow(flowName);
+		UseCaseFlowPart useCaseFlowPart = 
+			useCaseStepPart.useCasePart().flow(flowName);
 		return useCaseFlowPart;
 	}
 	
@@ -73,7 +70,8 @@ public class UseCaseStepSystemPart<T>{
 	 */
 	public UseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
-		UseCasePart useCasePart = useCaseModelBuilder.useCase(useCaseName);
+		UseCasePart useCasePart = 
+			useCaseStepPart.useCaseModelBuilder().useCase(useCaseName);
 		return useCasePart;
 	}
 	
