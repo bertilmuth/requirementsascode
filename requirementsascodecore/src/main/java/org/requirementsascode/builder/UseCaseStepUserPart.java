@@ -4,17 +4,14 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseRunner;
-import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.UseCaseStepSystem;
 import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepPart useCaseStepPart;
-	private UseCaseStep useCaseStep;
 
-	public UseCaseStepUserPart(UseCaseStepUser<T> useCaseStepUser, UseCaseStepPart useCaseStepPart) {
+	public UseCaseStepUserPart(UseCaseStepPart useCaseStepPart, Class<T> eventClass) {
 		this.useCaseStepPart = useCaseStepPart;
-		this.useCaseStep = useCaseStepPart.useCaseStep();
+		new UseCaseStepUser<>(useCaseStepPart.useCaseStep(), eventClass);
 	}
 
 	/**
@@ -27,9 +24,7 @@ public class UseCaseStepUserPart<T>{
 	 */
 	public UseCaseStepSystemPart<T> system(Consumer<T> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		UseCaseStepSystem<T> useCaseStepSystem = 
-			new UseCaseStepSystem<>(useCaseStep, systemReaction);
-		return new UseCaseStepSystemPart<>(useCaseStepSystem, useCaseStepPart);
+		return new UseCaseStepSystemPart<>(useCaseStepPart, systemReaction);
 	}
 
 }

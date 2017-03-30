@@ -4,6 +4,7 @@ import static org.requirementsascode.UseCaseStepPredicates.afterStep;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseFlow;
@@ -14,13 +15,12 @@ import org.requirementsascode.UseCaseStepSystem;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 public class UseCaseStepSystemPart<T>{
-	private UseCaseStepSystem<T> useCaseStepSystem;
 	private UseCaseStepPart useCaseStepPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 	private UseCasePart useCasePart;
 
-	public UseCaseStepSystemPart(UseCaseStepSystem<T> useCaseStepSystem, UseCaseStepPart useCaseStepPart) {
-		this.useCaseStepSystem = useCaseStepSystem;
+	public UseCaseStepSystemPart(UseCaseStepPart useCaseStepPart, Consumer<T> systemReaction) {
+		new UseCaseStepSystem<>(useCaseStepPart.useCaseStep(), systemReaction);
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCasePart = useCaseStepPart.useCasePart();
 		this.useCaseModelBuilder = useCaseStepPart.useCaseModelBuilder();

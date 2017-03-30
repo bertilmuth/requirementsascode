@@ -3,21 +3,22 @@ package org.requirementsascode.builder;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import org.requirementsascode.Actor;
 import org.requirementsascode.ContinueAfter;
 import org.requirementsascode.ContinueAt;
 import org.requirementsascode.ContinueWithoutAlternativeAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.UseCaseStepAs;
-import org.requirementsascode.UseCaseStepUser;
 
 public class UseCaseStepAsPart{
 	private UseCaseStep useCaseStep;
 	private UseCaseStepPart useCaseStepPart;
 
-	public UseCaseStepAsPart(UseCaseStepAs useCaseStepAs, UseCaseStepPart useCaseStepPart) {
+	public UseCaseStepAsPart(UseCaseStepPart useCaseStepPart, Actor[] actors) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
+		new UseCaseStepAs(useCaseStep, actors);
 	}
 
 	/**
@@ -34,8 +35,7 @@ public class UseCaseStepAsPart{
 	 */
 	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
 		Objects.requireNonNull(eventClass);
-		UseCaseStepUser<T> user = new UseCaseStepUser<>(useCaseStep, eventClass);
-		return new UseCaseStepUserPart<>(user, useCaseStepPart);
+		return new UseCaseStepUserPart<>(useCaseStepPart, eventClass);
 	}
 	
 	/**

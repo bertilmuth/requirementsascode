@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
-import org.requirementsascode.UseCaseStepAs;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 public class UseCaseStepPart {
@@ -31,8 +30,7 @@ public class UseCaseStepPart {
 	 */
 	public UseCaseStepAsPart as(Actor... actors) {
 		Objects.requireNonNull(actors);
-		UseCaseStepAs as = new UseCaseStepAs(useCaseStep, actors);
-		return new UseCaseStepAsPart(as, this);
+		return new UseCaseStepAsPart(this, actors);
 	}
 
 	/**
