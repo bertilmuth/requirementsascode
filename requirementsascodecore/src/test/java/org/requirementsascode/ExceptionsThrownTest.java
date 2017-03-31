@@ -2,10 +2,15 @@ package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
 
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
@@ -76,12 +81,24 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfUseCaseIsCreatedTwice() {		
+	public void throwsExceptionIfUseCaseIsCreatedTwiceInOneGo() {		
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(USE_CASE);
 		
 		useCaseModelBuilder.useCase(USE_CASE);
 		useCaseModelBuilder.useCase(USE_CASE);
+	}
+	
+	@Test
+	public void throwsExceptionIfUseCaseIsCreatedTwiceByBuildingOnExistingModel() {
+		thrown.expect(ElementAlreadyInModel.class);
+		thrown.expectMessage(USE_CASE);
+		
+		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
+		UseCaseModelBuilder.of(useCaseModel).useCase(USE_CASE);
+
+		Collection<UseCase> useCases = useCaseModel.useCases();
+		assertEquals(2, useCases.size());
 	}
 	
 	@Test

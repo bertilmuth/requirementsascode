@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.builder.UseCaseModelBuilder;
 import org.requirementsascode.builder.UseCasePart;
 
 public class BuildModelTest extends AbstractTestCase{			
@@ -41,10 +42,19 @@ public class BuildModelTest extends AbstractTestCase{
 	}
 
 	@Test
-	public void createsTwoUseCases() {
+	public void createsTwoUseCasesInOneGo() {
 		useCaseModelBuilder.useCase(USE_CASE);
 		useCaseModelBuilder.useCase(USE_CASE_2);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
+
+		Collection<UseCase> useCases = useCaseModel.useCases();
+		assertEquals(2, useCases.size());
+	}
+	
+	@Test
+	public void createsTwoUseCasesByBuildingOnExistingModel() {
+		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
+		UseCaseModelBuilder.of(useCaseModel).useCase(USE_CASE_2);
 
 		Collection<UseCase> useCases = useCaseModel.useCases();
 		assertEquals(2, useCases.size());

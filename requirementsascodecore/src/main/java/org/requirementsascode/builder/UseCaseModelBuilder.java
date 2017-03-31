@@ -13,7 +13,11 @@ public class UseCaseModelBuilder {
 	}
 	
 	public static UseCaseModelBuilder ofNewModel() {
-		return new UseCaseModelBuilder(new UseCaseModel());
+		return of(new UseCaseModel());
+	}
+	
+	public static UseCaseModelBuilder of(UseCaseModel useCaseModel) {
+		return new UseCaseModelBuilder(useCaseModel);
 	}
 
 	public UseCaseModel build() {
@@ -28,4 +32,6 @@ public class UseCaseModelBuilder {
 	public Actor actor(String actorName) {
 		return useCaseModel.newActor(actorName);
 	}
+
+
 }
