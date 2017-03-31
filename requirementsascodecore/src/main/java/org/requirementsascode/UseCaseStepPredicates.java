@@ -23,10 +23,6 @@ public class UseCaseStepPredicates {
 		return isRunnerInDifferentFlow;
 	}
 	
-	public static Predicate<UseCaseRunner> isRunnerAtStart() {
-		return afterStep(Optional.empty());
-	}
-	
 	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
 		return afterStep(Optional.of(afterThatStep));
 	}
@@ -46,7 +42,9 @@ public class UseCaseStepPredicates {
 				.orElse(isRunnerAtStart());
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}
-	
+	private static Predicate<UseCaseRunner> isRunnerAtStart() {
+		return afterStep(Optional.empty());
+	}
 	private static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventClass();
