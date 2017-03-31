@@ -82,7 +82,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		
 		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 
 		useCaseRunner.run(useCaseModel);			
 		while(!example.systemStopped())

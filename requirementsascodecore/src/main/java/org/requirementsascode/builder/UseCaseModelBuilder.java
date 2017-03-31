@@ -8,8 +8,12 @@ public class UseCaseModelBuilder {
 	
 	private UseCaseModel useCaseModel;
 
-	public UseCaseModelBuilder() {
-		this.useCaseModel = new UseCaseModel();
+	private UseCaseModelBuilder(UseCaseModel useCaseModel) {
+		this.useCaseModel = useCaseModel;
+	}
+	
+	public static UseCaseModelBuilder ofNewModel() {
+		return new UseCaseModelBuilder(new UseCaseModel());
 	}
 
 	public UseCaseModel build() {
@@ -24,5 +28,4 @@ public class UseCaseModelBuilder {
 	public Actor actor(String actorName) {
 		return useCaseModel.newActor(actorName);
 	}
-
 }

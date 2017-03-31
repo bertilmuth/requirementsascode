@@ -32,7 +32,7 @@ public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 
 		HelloWorld03_EnterNameExample example = new HelloWorld03_EnterNameExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 		
 		useCaseRunner.run(useCaseModel);
 		useCaseRunner.reactTo(example.enterText());

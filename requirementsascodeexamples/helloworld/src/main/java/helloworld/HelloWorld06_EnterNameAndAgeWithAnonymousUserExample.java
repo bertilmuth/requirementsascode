@@ -107,7 +107,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 
 		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 		
 		useCaseRunner.as(example.anonymousUser()).run(useCaseModel);			
 		while(!example.systemStopped())

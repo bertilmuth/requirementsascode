@@ -50,7 +50,7 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 
 		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 		
 		useCaseRunner.run(useCaseModel);		
 		useCaseRunner.reactTo(example.enterText());

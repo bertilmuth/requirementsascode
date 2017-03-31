@@ -25,7 +25,7 @@ public class HelloWorld01_PrintHelloUserExample {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		
 		HelloWorld01_PrintHelloUserExample example = new HelloWorld01_PrintHelloUserExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 		
 		useCaseRunner.run(useCaseModel);
 	}

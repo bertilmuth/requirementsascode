@@ -42,7 +42,7 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 
 		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
-		UseCaseModel useCaseModel = example.buildWith(new UseCaseModelBuilder());
+		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
 		
 		useCaseRunner.run(useCaseModel);
 	}
