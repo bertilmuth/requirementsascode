@@ -29,8 +29,8 @@ public class ShoppingAppModelBuilder{
 		this.buyProductRealization = buyProductRealization;
 	}
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {		
-		UseCaseModel useCaseModel = useCaseModelBuilder.useCase("Buy product")
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {		
+		UseCaseModel useCaseModel = modelBuilder.useCase("Buy product")
 			.basicFlow()
 				.step("S1").system(startWithEmptyShoppingCart())
 				.step("S2").system(displayProducts())

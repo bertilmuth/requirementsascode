@@ -14,15 +14,15 @@ import shoppingappjavafx.usecase.ShoppingAppModelBuilder;
 import shoppingappjavafx.usecaserealization.ShoppingAppBuyProductRealization;
 
 public class JavafxMain extends Application {
-	private UseCaseModelBuilder useCaseModelBuilder;
-	private UseCaseRunner useCaseRunner;
+	private UseCaseModelBuilder modelBuilder;
+	private UseCaseRunner modelRunner;
 	private Stock stock;
 	private JavafxDisplay display;
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		accessStock();
-		createUseCaseModelRunner();
+		createModelBuilderAndRunner();
         createAndShowDisplay(primaryStage);
 		createAndRunUseCaseRealization(primaryStage);
 	}
@@ -31,21 +31,21 @@ public class JavafxMain extends Application {
 		this.stock = new Stock();
 	}
 
-	private void createUseCaseModelRunner() {
-		this.useCaseModelBuilder = new UseCaseModelBuilder();
-		this.useCaseRunner = new UseCaseRunner();
+	private void createModelBuilderAndRunner() {
+		this.modelBuilder = UseCaseModelBuilder.ofNewModel();
+		this.modelRunner = new UseCaseRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
-		this.display = new JavafxDisplay(useCaseRunner, primaryStage);
+		this.display = new JavafxDisplay(modelRunner, primaryStage);
 		primaryStage.setTitle("Shopping Application (JavaFX) - Requirements as Code");
 		primaryStage.show();		
 	}
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {	
 		BuyProductRealization buyProductRealization = new ShoppingAppBuyProductRealization(stock, display);
-		UseCaseModel useCaseModel = new ShoppingAppModelBuilder(buyProductRealization).buildWith(useCaseModelBuilder);
-		useCaseRunner.run(useCaseModel);
+		UseCaseModel useCaseModel = new ShoppingAppModelBuilder(buyProductRealization).buildWith(modelBuilder);
+		modelRunner.run(useCaseModel);
 	}
 
 	public static void main(String[] args) {
