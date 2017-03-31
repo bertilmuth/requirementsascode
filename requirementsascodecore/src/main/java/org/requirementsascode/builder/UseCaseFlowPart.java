@@ -108,24 +108,18 @@ public class UseCaseFlowPart {
 	}
 	
 	private class FlowPredicate{
-		private Optional<Predicate<UseCaseRunner>> optionalStepPredicate;
-		private Optional<Predicate<UseCaseRunner>> optionalWhenPredicate;
 		private Optional<Predicate<UseCaseRunner>> predicate;
 
 		private FlowPredicate() {
-			this.optionalStepPredicate = Optional.empty();
-			this.optionalWhenPredicate = Optional.empty();
 			this.predicate = Optional.empty();
 		}
 		
 		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
-			optionalStepPredicate = Optional.of(stepPredicate);
-			predicate = optionalStepPredicate;
+			predicate = Optional.of(stepPredicate);
 		}
 		
 		public void setWhenPredicate(Predicate<UseCaseRunner> whenPredicate){
-			this.optionalWhenPredicate = Optional.of(whenPredicate);
-			predicate = Optional.of(optionalStepPredicate.orElse(r -> true).and(whenPredicate));
+			predicate = Optional.of(predicate.orElse(r -> true).and(whenPredicate));
 		}
 		
 		public Optional<Predicate<UseCaseRunner>> get(){
