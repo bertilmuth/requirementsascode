@@ -1,7 +1,10 @@
-package org.requirementsascode;
+package org.requirementsascode.systemreaction;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseStep;
 
 public abstract class AbstractContinue implements Consumer<UseCaseRunner>{
 	private String stepName;

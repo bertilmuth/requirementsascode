@@ -337,7 +337,7 @@ public class UseCaseRunner {
 		return latestFlow;
 	}
 	
-	void setStepWithoutAlternativePredicate(Predicate<UseCaseStep> stepWithoutAlternativePredicate){
+	public void setStepWithoutAlternativePredicate(Predicate<UseCaseStep> stepWithoutAlternativePredicate){
 		this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
 	}
 }

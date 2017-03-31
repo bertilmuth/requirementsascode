@@ -1,4 +1,6 @@
-package org.requirementsascode;
+package org.requirementsascode.systemreaction;
+
+import org.requirementsascode.UseCase;
 
 public class ContinueAt extends AbstractContinue{
 	public ContinueAt(UseCase useCase, String stepName) {

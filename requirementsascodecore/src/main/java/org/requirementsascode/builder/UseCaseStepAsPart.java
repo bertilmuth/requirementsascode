@@ -4,11 +4,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
-import org.requirementsascode.ContinueAfter;
-import org.requirementsascode.ContinueAt;
-import org.requirementsascode.ContinueWithoutAlternativeAt;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.systemreaction.ContinueAfter;
+import org.requirementsascode.systemreaction.ContinueAt;
+import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
 
 public class UseCaseStepAsPart{
 	private UseCaseStep useCaseStep;
