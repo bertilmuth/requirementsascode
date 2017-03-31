@@ -4,6 +4,7 @@ import static org.requirementsascode.ModelElementContainer.findModelElement;
 import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
+import static org.requirementsascode.UseCaseStepPredicates.afterPreviousStepInFlowUnlessInterruptedByAlternativeTo;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -104,7 +105,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the newly created step
 	 */
 	public UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
-		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep, predicate);
+		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep);
+		step.setPredicate(predicate.orElse(afterPreviousStepInFlowUnlessInterruptedByAlternativeTo(step)));
 		saveModelElement(step, nameToStepMap);
 		return step;
 	}

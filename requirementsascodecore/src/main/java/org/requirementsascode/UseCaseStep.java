@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import static org.requirementsascode.UseCaseStepPredicates.afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -40,48 +38,32 @@ public class UseCaseStep extends UseCaseModelElement {
 	 * @param previousStepInFlow
 	 *            the step created before the step in its flow, or else an empty
 	 *            optional if it is the first step in its flow
-	 * @param predicate
-	 *            the complete predicate of the step, or else an empty optional
-	 *            which implicitly means:
-	 *            {@link #afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow()}
 	 */
-	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStepInFlow,
-			Optional<Predicate<UseCaseRunner>> predicate) {
+	UseCaseStep(String stepName, UseCaseFlow useCaseFlow, Optional<UseCaseStep> previousStepInFlow) {
 		super(stepName, useCaseFlow.useCaseModel());
 		Objects.requireNonNull(previousStepInFlow);
-		Objects.requireNonNull(predicate);
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
-		this.predicate = 
-			predicate.orElse(afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow(this));
+	}
+	
+	public Optional<UseCaseStep> previousStepInFlow() {
+		return previousStepInFlow;
 	}
 
-	/**
-	 * Returns the use case flow this step is part of.
-	 * 
-	 * @return the containing use case flow
-	 */
 	public UseCaseFlow flow() {
 		return useCaseFlow;
 	}
 
-	/**
-	 * Returns the use case this step is part of.
-	 * 
-	 * @return the containing use case
-	 */
 	public UseCase useCase() {
 		return flow().useCase();
 	}
+	
+	public Predicate<UseCaseRunner> predicate() {
+		return predicate;
+	}
 
-	/**
-	 * Returns the step created before this step in its flow, or else an empty
-	 * optional if this step is the first step in its flow.
-	 * 
-	 * @return the previous step in this step's flow
-	 */
-	public Optional<UseCaseStep> previousStepInFlow() {
-		return previousStepInFlow;
+	public void setPredicate(Predicate<UseCaseRunner> predicate) {
+		this.predicate = predicate;
 	}
 
 	public Actor[] getActors() {
@@ -105,25 +87,5 @@ public class UseCaseStep extends UseCaseModelElement {
 
 	public void setSystemReaction(Consumer<?> systemReaction) {
 		this.systemReaction = systemReaction;
-	}
-
-	/**
-	 * Returns the predicate of this step
-	 * 
-	 * @return the predicate of this step
-	 */
-	public Predicate<UseCaseRunner> predicate() {
-		return predicate;
-	}
-
-	/**
-	 * Sets the predicate of this step
-	 * 
-	 * @param predicate
-	 *            the predicate
-	 * 
-	 */
-	public void setPredicate(Predicate<UseCaseRunner> predicate) {
-		this.predicate = predicate;
 	}
 }

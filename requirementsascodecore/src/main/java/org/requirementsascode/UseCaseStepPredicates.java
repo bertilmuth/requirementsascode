@@ -40,7 +40,7 @@ public class UseCaseStepPredicates {
 		};
 	}
 	
-	public static Predicate<UseCaseRunner> afterPreviousStepInFlowUnlessInterruptedByAlternativeFlow(UseCaseStep currentStep) {
+	public static Predicate<UseCaseRunner> afterPreviousStepInFlowUnlessInterruptedByAlternativeTo(UseCaseStep currentStep) {
 		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
 		Predicate<UseCaseRunner> afterPreviousStep = previousStepInFlow.map(s -> afterStep(s))
 				.orElse(isRunnerAtStart());
