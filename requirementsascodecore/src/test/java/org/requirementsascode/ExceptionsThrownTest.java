@@ -95,7 +95,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(USE_CASE);
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
-		UseCaseModelBuilder.of(useCaseModel).useCase(USE_CASE);
+		UseCaseModelBuilder.modelBuilderOf(useCaseModel).useCase(USE_CASE);
 
 		Collection<UseCase> useCases = useCaseModel.useCases();
 		assertEquals(2, useCases.size());

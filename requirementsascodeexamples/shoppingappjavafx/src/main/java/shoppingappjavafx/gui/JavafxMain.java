@@ -32,7 +32,7 @@ public class JavafxMain extends Application {
 	}
 
 	private void createModelBuilderAndRunner() {
-		this.modelBuilder = UseCaseModelBuilder.ofNewModel();
+		this.modelBuilder = UseCaseModelBuilder.newModelBuilder();
 		this.modelRunner = new UseCaseRunner();
 	}
 

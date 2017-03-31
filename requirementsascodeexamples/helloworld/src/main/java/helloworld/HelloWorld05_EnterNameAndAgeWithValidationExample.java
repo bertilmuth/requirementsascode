@@ -1,5 +1,7 @@
 package helloworld;
 
+import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -22,9 +24,9 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	private String firstName;
 	private int age;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
-			useCaseModelBuilder.useCase("Get greeted")
+			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(promptUserToEnterFirstName())
 					.step(S2).user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -78,15 +80,18 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 			System.out.println("You entered a non-numerical age.");
 	}
 	
-	public static void main(String[] args){
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		
+	public static void main(String[] args){		
 		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
-		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
+		example.start(); 
+	}
 
+	private void start() {
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = buildWith(newModelBuilder());
+		
 		useCaseRunner.run(useCaseModel);			
-		while(!example.systemStopped())
-			useCaseRunner.reactTo(example.enterText());	
-		example.exitSystem();
+		while(!systemStopped())
+			useCaseRunner.reactTo(enterText());	
+		exitSystem();	
 	}
 }

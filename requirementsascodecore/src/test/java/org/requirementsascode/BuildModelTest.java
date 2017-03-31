@@ -54,7 +54,7 @@ public class BuildModelTest extends AbstractTestCase{
 	@Test
 	public void createsTwoUseCasesByBuildingOnExistingModel() {
 		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
-		UseCaseModelBuilder.of(useCaseModel).useCase(USE_CASE_2);
+		UseCaseModelBuilder.modelBuilderOf(useCaseModel).useCase(USE_CASE_2);
 
 		Collection<UseCase> useCases = useCaseModel.useCases();
 		assertEquals(2, useCases.size());

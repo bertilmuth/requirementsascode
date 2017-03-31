@@ -1,5 +1,7 @@
 package helloworld;
 
+import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
@@ -8,9 +10,9 @@ import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld01_PrintHelloUserExample {	
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
-			useCaseModelBuilder.useCase("Get greeted")
+			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(greetUser())
 				.build();
@@ -21,12 +23,14 @@ public class HelloWorld01_PrintHelloUserExample {
 		return r -> System.out.println("Hello, User.");
 	}
 	
-	public static void main(String[] args){
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		
+	public static void main(String[] args){		
 		HelloWorld01_PrintHelloUserExample example = new HelloWorld01_PrintHelloUserExample();
-		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
-		
+		example.start();
+	}
+
+	private void start() {
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = buildWith(newModelBuilder());
 		useCaseRunner.run(useCaseModel);
 	}
 }

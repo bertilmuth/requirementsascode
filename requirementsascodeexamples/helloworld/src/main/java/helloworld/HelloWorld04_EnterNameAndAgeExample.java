@@ -1,5 +1,7 @@
 package helloworld;
 
+import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
@@ -13,9 +15,9 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	private String firstName;
 	private int age;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
-			useCaseModelBuilder.useCase("Get greeted")
+			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(promptUserToEnterFirstName())
 					.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -46,14 +48,16 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 		return r -> System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
-	public static void main(String[] args){
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-
+	public static void main(String[] args){		
 		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
-		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
-		
-		useCaseRunner.run(useCaseModel);		
-		useCaseRunner.reactTo(example.enterText());
-		useCaseRunner.reactTo(example.enterText());
+		example.start();
+	}
+
+	private void start() {
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = buildWith(newModelBuilder());
+		useCaseRunner.run(useCaseModel);
+		useCaseRunner.reactTo(enterText());
+		useCaseRunner.reactTo(enterText());	
 	}
 }

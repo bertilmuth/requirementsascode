@@ -1,5 +1,7 @@
 package helloworld;
 
+import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -29,12 +31,12 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	private Actor normalUser;
 	private Actor anonymousUser;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
-		normalUser = useCaseModelBuilder.actor("Normal User");
-		anonymousUser = useCaseModelBuilder.actor("Anonymous User");
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
+		normalUser = modelBuilder.actor("Normal User");
+		anonymousUser = modelBuilder.actor("Anonymous User");
 				
 		UseCaseModel useCaseModel = 
-			useCaseModelBuilder.useCase("Get greeted")
+			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step(S1).as(normalUser).system(promptUserToEnterFirstName())
 					.step(S2).as(normalUser).user(ENTER_FIRST_NAME).system(saveFirstName())
@@ -103,16 +105,19 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 			System.out.println("You entered a non-numerical age.");
 	}
 	
-	public static void main(String[] args){
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-
+	public static void main(String[] args){		
 		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
-		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
+		example.start(); 
+	}
+
+	private void start() {
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = buildWith(newModelBuilder());
 		
-		useCaseRunner.as(example.anonymousUser()).run(useCaseModel);			
-		while(!example.systemStopped())
-			useCaseRunner.reactTo(example.enterText());	
-		example.exitSystem();
+		useCaseRunner.as(anonymousUser()).run(useCaseModel);			
+		while(!systemStopped())
+			useCaseRunner.reactTo(enterText());	
+		exitSystem();	
 	}
 
 	public Actor normalUser() {

@@ -12,11 +12,11 @@ public class UseCaseModelBuilder {
 		this.useCaseModel = useCaseModel;
 	}
 	
-	public static UseCaseModelBuilder ofNewModel() {
-		return of(new UseCaseModel());
+	public static UseCaseModelBuilder newModelBuilder() {
+		return modelBuilderOf(new UseCaseModel());
 	}
 	
-	public static UseCaseModelBuilder of(UseCaseModel useCaseModel) {
+	public static UseCaseModelBuilder modelBuilderOf(UseCaseModel useCaseModel) {
 		return new UseCaseModelBuilder(useCaseModel);
 	}
 

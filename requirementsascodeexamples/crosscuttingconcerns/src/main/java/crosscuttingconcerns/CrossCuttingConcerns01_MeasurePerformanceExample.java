@@ -15,7 +15,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
 		useCaseRunner.adaptSystemReaction(this::measurePerformance);
 		
-		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.ofNewModel();
+		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.newModelBuilder();
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
 				.basicFlow()

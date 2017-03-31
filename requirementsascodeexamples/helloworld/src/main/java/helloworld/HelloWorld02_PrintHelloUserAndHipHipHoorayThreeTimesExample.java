@@ -1,5 +1,7 @@
 package helloworld;
 
+import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -11,9 +13,9 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	
 	int hoorayCounter = 0;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder useCaseModelBuilder) {
+	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
-			useCaseModelBuilder.useCase("Get greeted")
+			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(greetUser())
 					.step("S2").system(printHooray())
@@ -38,12 +40,14 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		};
 	}
 	
-	public static void main(String[] args){
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
-
+	public static void main(String[] args){		
 		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
-		UseCaseModel useCaseModel = example.buildWith(UseCaseModelBuilder.ofNewModel());
-		
+		example.start();
+	}
+
+	private void start() {
+		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModel useCaseModel = buildWith(newModelBuilder());
 		useCaseRunner.run(useCaseModel);
 	}
 }
