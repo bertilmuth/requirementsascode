@@ -90,9 +90,9 @@ public class UseCaseStepSystemPart<T>{
 		Objects.requireNonNull(condition);
 		
 		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
-		Predicate<UseCaseRunner> performIfConditionIsTruePredicate = useCaseStep.predicate().and(condition);
-		Predicate<UseCaseRunner> repeatIfConditionIsTruePredicate = afterStep(useCaseStep).and(condition);
-		useCaseStep.setPredicate(performIfConditionIsTruePredicate.or(repeatIfConditionIsTruePredicate));
+		Predicate<UseCaseRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
+		Predicate<UseCaseRunner> repeatIfConditionIsTrue = afterStep(useCaseStep).and(condition);
+		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
 		
 		return this;
 	}
