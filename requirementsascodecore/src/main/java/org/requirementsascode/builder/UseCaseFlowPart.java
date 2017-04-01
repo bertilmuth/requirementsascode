@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.After;
+import org.requirementsascode.InsteadOf;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseRunner;
@@ -59,8 +60,8 @@ public class UseCaseFlowPart {
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public UseCaseFlowPart after(String stepName) {
-		UseCaseStep foundStep = useCase.findStep(stepName);
-		flowPredicate.setStepPredicate(new After(Optional.of(foundStep)));
+		UseCaseStep step = useCase.findStep(stepName);
+		flowPredicate.setStepPredicate(new After(Optional.of(step)));
 		return this;
 	}
 	
@@ -73,9 +74,8 @@ public class UseCaseFlowPart {
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public UseCaseFlowPart insteadOf(String stepName) {
-		Optional<UseCaseStep> stepBeforeAtStep = 
-			useCase.findStep(stepName).previousStepInFlow();
-		flowPredicate.setStepPredicate(new After(stepBeforeAtStep));
+		UseCaseStep step = useCase.findStep(stepName);
+		flowPredicate.setStepPredicate(new InsteadOf(step));
 	
 		return this;	
 	}
