@@ -1,6 +1,6 @@
 package helloworld;
 
-import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+import static org.requirementsascode.builder.UseCaseModelBuilder.newBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -112,7 +112,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 
 	private void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = buildWith(newModelBuilder());
+		UseCaseModel useCaseModel = buildWith(newBuilder());
 		
 		useCaseRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())

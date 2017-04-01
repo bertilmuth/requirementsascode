@@ -29,7 +29,7 @@ public class ShoppingAppBuyProductRealizationTest {
 	@Before
 	public void setUp() throws Exception {
 		useCaseRunner = new TestUseCaseRunner();
-		UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newModelBuilder();
+		UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
 		
 		Stock stock = new Stock();
 		Display displayStub = new DisplayStub();

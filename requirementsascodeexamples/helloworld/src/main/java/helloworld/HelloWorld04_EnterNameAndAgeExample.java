@@ -1,6 +1,6 @@
 package helloworld;
 
-import static org.requirementsascode.builder.UseCaseModelBuilder.newModelBuilder;
+import static org.requirementsascode.builder.UseCaseModelBuilder.newBuilder;
 
 import java.util.function.Consumer;
 
@@ -55,7 +55,7 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 
 	private void start() {
 		UseCaseRunner useCaseRunner = new UseCaseRunner();
-		UseCaseModel useCaseModel = buildWith(newModelBuilder());
+		UseCaseModel useCaseModel = buildWith(newBuilder());
 		useCaseRunner.run(useCaseModel);
 		useCaseRunner.reactTo(enterText());
 		useCaseRunner.reactTo(enterText());	
