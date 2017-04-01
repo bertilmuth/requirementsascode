@@ -1,12 +1,12 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.UseCaseStepPredicates.afterStep;
 import static org.requirementsascode.UseCaseStepPredicates.isRunnerInDifferentFlowThan;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.requirementsascode.After;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseRunner;
@@ -62,7 +62,7 @@ public class UseCaseFlowPart {
 	 */
 	public UseCaseFlowPart after(String stepName) {
 		UseCaseStep foundStep = useCase.findStep(stepName);
-		flowPredicate.setStepPredicate(afterStep(Optional.of(foundStep)));
+		flowPredicate.setStepPredicate(new After(Optional.of(foundStep)));
 		return this;
 	}
 	
@@ -77,7 +77,7 @@ public class UseCaseFlowPart {
 	public UseCaseFlowPart insteadOf(String stepName) {
 		Optional<UseCaseStep> stepBeforeAtStep = 
 			useCase.findStep(stepName).previousStepInFlow();
-		flowPredicate.setStepPredicate(afterStep(stepBeforeAtStep));
+		flowPredicate.setStepPredicate(new After(stepBeforeAtStep));
 	
 		return this;	
 	}

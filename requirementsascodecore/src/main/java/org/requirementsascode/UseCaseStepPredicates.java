@@ -23,18 +23,9 @@ public class UseCaseStepPredicates {
 		return isRunnerInDifferentFlow;
 	}
 	
-	public static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
-		return useCaseRunner -> {
-			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();
-			boolean isSystemAtRightStep = 
-				Objects.equals(afterThatStepOrElseAtFirst, stepRunLastBySystem);
-			return isSystemAtRightStep;
-		};
-	}
-	
 	public static Predicate<UseCaseRunner> afterPreviousStepUnlessOtherStepCouldReact(UseCaseStep currentStep) {
 		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
-		Predicate<UseCaseRunner> afterPreviousStep = afterStep(previousStepInFlow);
+		Predicate<UseCaseRunner> afterPreviousStep = new After(previousStepInFlow);
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}
 	private static Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {

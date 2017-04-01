@@ -1,12 +1,11 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.UseCaseStepPredicates.afterStep;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.After;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
@@ -91,7 +90,7 @@ public class UseCaseStepSystemPart<T>{
 		
 		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
 		Predicate<UseCaseRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
-		Predicate<UseCaseRunner> repeatIfConditionIsTrue = afterStep(Optional.of(useCaseStep)).and(condition);
+		Predicate<UseCaseRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
 		
 		return this;
