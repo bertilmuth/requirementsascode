@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -14,15 +13,6 @@ import java.util.stream.Stream;
  *
  */
 public class UseCaseStepPredicates {	
-	public static Predicate<UseCaseRunner> isRunnerInDifferentFlowThan(UseCaseFlow useCaseFlow) {
-		Objects.requireNonNull(useCaseFlow);
-		
-		Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
-			useCaseRunner -> useCaseRunner.latestFlow().map(
-				runnerFlow -> !useCaseFlow.equals(runnerFlow)).orElse(true);
-		return isRunnerInDifferentFlow;
-	}
-	
 	public static Predicate<UseCaseRunner> afterPreviousStepUnlessOtherStepCouldReact(UseCaseStep currentStep) {
 		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
 		Predicate<UseCaseRunner> afterPreviousStep = new After(previousStepInFlow);

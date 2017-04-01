@@ -1,7 +1,5 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.UseCaseStepPredicates.isRunnerInDifferentFlowThan;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -126,8 +124,11 @@ public class UseCaseFlowPart {
 			return predicate.map(pred -> isRunnerInDifferentFlow().and(pred));
 		}
 		
-		private Predicate<UseCaseRunner> isRunnerInDifferentFlow() {
-			return isRunnerInDifferentFlowThan(useCaseFlow);
+		private Predicate<UseCaseRunner> isRunnerInDifferentFlow() {			
+			Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
+				runner -> runner.latestFlow().map(
+					runnerFlow -> !useCaseFlow.equals(runnerFlow)).orElse(true);
+			return isRunnerInDifferentFlow;
 		}
 	}
 }
