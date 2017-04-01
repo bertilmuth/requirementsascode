@@ -253,10 +253,10 @@ public class UseCaseRunner {
 		}
 		
 		setLatestStep(Optional.of(useCaseStep));
+		stepWithoutAlternativePredicate = Optional.empty();
+		systemReactionTrigger.setupWith(event, useCaseStep);
 		
 		try {
-			stepWithoutAlternativePredicate = Optional.empty();
-			systemReactionTrigger.setupWith(event, useCaseStep);
 			systemReaction.accept(systemReactionTrigger);
 		} 
 		catch (Exception e) { 
