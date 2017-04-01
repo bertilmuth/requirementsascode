@@ -62,7 +62,7 @@ public class UseCaseFlowPart {
 	 */
 	public UseCaseFlowPart after(String stepName) {
 		UseCaseStep foundStep = useCase.findStep(stepName);
-		flowPredicate.setStepPredicate(afterStep(foundStep));
+		flowPredicate.setStepPredicate(afterStep(Optional.of(foundStep)));
 		return this;
 	}
 	

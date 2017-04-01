@@ -23,10 +23,6 @@ public class UseCaseStepPredicates {
 		return isRunnerInDifferentFlow;
 	}
 	
-	public static Predicate<UseCaseRunner> afterStep(UseCaseStep afterThatStep) {
-		return afterStep(Optional.of(afterThatStep));
-	}
-	
 	public static Predicate<UseCaseRunner> afterStep(Optional<UseCaseStep> afterThatStepOrElseAtFirst) {		
 		return useCaseRunner -> {
 			Optional<UseCaseStep> stepRunLastBySystem = useCaseRunner.latestStep();

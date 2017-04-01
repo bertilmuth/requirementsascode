@@ -91,7 +91,7 @@ public class UseCaseStepSystemPart<T>{
 		
 		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
 		Predicate<UseCaseRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
-		Predicate<UseCaseRunner> repeatIfConditionIsTrue = afterStep(useCaseStep).and(condition);
+		Predicate<UseCaseRunner> repeatIfConditionIsTrue = afterStep(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
 		
 		return this;
