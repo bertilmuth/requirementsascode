@@ -22,7 +22,7 @@ public class FlowPart {
 	private UseCasePart useCasePart;
 	private FlowPredicate flowPredicate;
 
-	public FlowPart(Flow useCaseFlow, UseCasePart useCasePart) {
+	FlowPart(Flow useCaseFlow, UseCasePart useCasePart) {
 		this.useCaseFlow = useCaseFlow;
 		this.useCasePart = useCasePart;
 		this.useCase = useCasePart.useCase();
