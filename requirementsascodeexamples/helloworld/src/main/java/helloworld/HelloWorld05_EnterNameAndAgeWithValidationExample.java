@@ -77,9 +77,8 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	}
 
 	private void start() {
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
-		
+		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.run(useCaseModel);			
 		while(!systemStopped())
 			useCaseModelRunner.reactTo(enterText());	

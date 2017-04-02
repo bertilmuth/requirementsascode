@@ -99,9 +99,8 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 	}
 
 	private void start() {
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
-		
+		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())
 			useCaseModelRunner.reactTo(enterText());	
