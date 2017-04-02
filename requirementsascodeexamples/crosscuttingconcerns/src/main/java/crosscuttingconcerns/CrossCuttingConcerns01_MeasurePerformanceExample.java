@@ -11,10 +11,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private int resultOfAddition;
 	private double resultOfPower;
 	
-	public void start() {
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-		useCaseModelRunner.adaptSystemReaction(this::measurePerformance);
-		
+	public void start() {		
 		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
@@ -22,8 +19,10 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 					.step("S1").system(addTwoNumbers())
 					.step("S2").system(calculateTwoToThePowerOfAThousand())
 					.step("S3").system(displayResults())
-				.build();
+			.build();
 		
+		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+		useCaseModelRunner.adaptSystemReaction(this::measurePerformance);
 		useCaseModelRunner.run(useCaseModel);
 	}
 	
