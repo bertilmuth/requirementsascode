@@ -12,7 +12,7 @@ import java.util.function.Predicate;
  * A use case step is the core class of requirementsascode, providing all the
  * necessary configuration information to the {@link UseCaseRunner} to cause the
  * system to react to events. A use case step has a predicate, which defines the
- * complete condition that needs to be fulfilled to enable the step, given a
+ * complete condition that needs to be fulfilled to cause the system reaction, given a
  * matching event occurs.
  * 
  * @author b_muth
