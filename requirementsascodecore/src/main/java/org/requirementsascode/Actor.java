@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,38 +39,35 @@ public class Actor extends UseCaseModelElement{
 	 * The actor is associated to a use case if it is connected
 	 * to at least one of its use case steps.
 	 * 
-	 * Do not modify the returned collection directly.
-	 * 
 	 * @return the use cases the actor is associated with
 	 */
-	public Set<UseCase> useCases() {
-		return useCaseToStepMap.keySet();
+	public Set<UseCase> getUseCases() {
+		Set<UseCase> useCases = useCaseToStepMap.keySet();
+		return Collections.unmodifiableSet(useCases);
 	}
 
 	/**
 	 * Returns the use case steps this actor is connected with,
 	 * for the specified use case.
 	 * 
-	 * Do not modify the returned collection directly.
-	 * 
 	 * @param useCase the use case to query for steps the actor is connected with
 	 * @return the use case steps the actor is connected with
 	 */
-	public List<Step> stepsOf(UseCase useCase) {
+	public List<Step> getStepsOf(UseCase useCase) {
 		Objects.requireNonNull(useCase);
-
-		return useCaseSteps(useCase);
+		List<Step> steps = getModifiableStepsOf(useCase);
+		return Collections.unmodifiableList(steps);
 	}
 	
 	void newStep(Step useCaseStep) {
 		Objects.requireNonNull(useCaseStep.useCase());
 		Objects.requireNonNull(useCaseStep);
 		
-		List<Step> steps = useCaseSteps(useCaseStep.useCase());
+		List<Step> steps = getModifiableStepsOf(useCaseStep.useCase());
 		steps.add(useCaseStep);
 	}
 
-	private List<Step> useCaseSteps(UseCase useCase) {		
+	private List<Step> getModifiableStepsOf(UseCase useCase) {		
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}
