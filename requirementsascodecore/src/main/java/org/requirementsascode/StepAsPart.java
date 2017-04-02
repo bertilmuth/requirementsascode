@@ -18,7 +18,7 @@ public class StepAsPart{
 	private Step step;
 	private StepPart stepPart;
 
-	public StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
+	StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
 		this.stepPart = useCaseStepPart;
 		this.step = useCaseStepPart.useCaseStep();
 		
