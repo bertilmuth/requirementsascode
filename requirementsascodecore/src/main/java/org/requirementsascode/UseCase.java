@@ -91,7 +91,7 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the newly created flow
 	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 	 */
-	public Flow newFlow(String flowName) {
+	Flow newFlow(String flowName) {
 		Flow flow = new Flow(flowName, this);
 		saveModelElement(flow, nameToFlowMap);
 		return flow;
@@ -107,7 +107,7 @@ public class UseCase extends UseCaseModelElement{
 	 * after previous step, unless interrupted by other step (e.g "insteadOf").
 	 * @return the newly created step
 	 */
-	public Step newStep(String stepName, Flow flow, Optional<Step> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
+	Step newStep(String stepName, Flow flow, Optional<Step> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
 		Step step = new Step(stepName, flow, previousStep);
 		step.setPredicate(predicate.orElse(afterPreviousStepUnlessOtherStepCouldReact(step)));
 		saveModelElement(step, nameToStepMap);
