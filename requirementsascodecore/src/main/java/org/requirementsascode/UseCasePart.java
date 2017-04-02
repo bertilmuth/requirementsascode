@@ -11,7 +11,7 @@ public class UseCasePart {
 	private UseCase useCase;
 	private UseCaseModelBuilder useCaseModelBuilder;
 
-	public UseCasePart(UseCase useCase, UseCaseModelBuilder useCaseModelBuilder) {
+	UseCasePart(UseCase useCase, UseCaseModelBuilder useCaseModelBuilder) {
 		this.useCase = useCase;
 		this.useCaseModelBuilder = useCaseModelBuilder;
 	}
@@ -26,11 +26,11 @@ public class UseCasePart {
 		return new FlowPart(useCaseFlow, this);
 	}
 
-	public UseCase useCase() {
+	UseCase useCase() {
 		return useCase;
 	}
 
-	public UseCaseModelBuilder useCaseModelBuilder() {
+	UseCaseModelBuilder useCaseModelBuilder() {
 		return useCaseModelBuilder;
 	}
 
