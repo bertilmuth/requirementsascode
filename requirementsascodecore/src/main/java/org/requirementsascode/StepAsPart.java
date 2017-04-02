@@ -66,17 +66,17 @@ public class StepAsPart{
 	} 
 
 	public UseCasePart continueAt(String stepName) {
-		system(new ContinueAt(step.useCase(), stepName)); 
+		system(new ContinueAt(step.getUseCase(), stepName)); 
 		return stepPart.useCasePart();
 	}
 
 	public UseCasePart continueAfter(String stepName) {		
-		system(new ContinueAfter(step.useCase(), stepName));
+		system(new ContinueAfter(step.getUseCase(), stepName));
 		return stepPart.useCasePart();
 	}
 
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
-		system(new ContinueWithoutAlternativeAt(step.useCase(), stepName));
+		system(new ContinueWithoutAlternativeAt(step.getUseCase(), stepName));
 		return stepPart.useCasePart();
 	}
 }

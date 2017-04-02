@@ -97,7 +97,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		Step step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
-		assertEquals(USE_CASE, step.useCase().name());	
+		assertEquals(USE_CASE, step.getUseCase().name());	
 		assertEquals(useCaseModel.userActor(), step.getActors()[0]);
 	}
 	
@@ -117,7 +117,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		Step step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.name());
-		assertEquals(USE_CASE, step.useCase().name());	
+		assertEquals(USE_CASE, step.getUseCase().name());	
 		assertEquals(useCaseModel.systemActor(), step.getActors()[0]);
 	}
 	
@@ -136,7 +136,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		Step step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.name());
-		assertEquals(USE_CASE, step.useCase().name());	
+		assertEquals(USE_CASE, step.getUseCase().name());	
 		assertEquals(useCaseModel.systemActor(), step.getActors()[0]);
 	}
 	
@@ -155,7 +155,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		Step step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
-		assertEquals(USE_CASE, step.useCase().name());
+		assertEquals(USE_CASE, step.getUseCase().name());
 		assertTrue(useCaseModel.hasActor(customer.name()));
 		assertEquals(customer, step.getActors()[0]);
 	}
@@ -194,7 +194,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
-		assertEquals(USE_CASE, step.useCase().name());		
+		assertEquals(USE_CASE, step.getUseCase().name());		
 		assertEquals(customer, step.getActors()[0]);
 	}
 	
@@ -215,7 +215,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.name());
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
-		assertEquals(USE_CASE, step.useCase().name());		
+		assertEquals(USE_CASE, step.getUseCase().name());		
 		assertEquals(customer, step.getActors()[0]);
 		
 		steps = anotherActor.getStepsOf(useCasePart.useCase());
@@ -236,7 +236,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Collection<Step> steps = useCasePart.useCase().steps();
 		assertEquals(1, steps.size());
 		
-		Optional<Step> previousStep = steps.iterator().next().previousStepInFlow();
+		Optional<Step> previousStep = steps.iterator().next().getPreviousStepInFlow();
 		
 		assertFalse(previousStep.isPresent());
 	}
@@ -262,11 +262,11 @@ public class BuildModelTest extends AbstractTestCase{
 		Iterator<Step> stepIt = steps.iterator();
 		Step step = stepIt.next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.name());
-		assertEquals(USE_CASE, step.useCase().name());
+		assertEquals(USE_CASE, step.getUseCase().name());
 
 		step = stepIt.next();
 		assertEquals(SYSTEM_DISPLAYS_NUMBER, step.name());
-		assertEquals(USE_CASE, step.useCase().name());
+		assertEquals(USE_CASE, step.getUseCase().name());
 	}
 	
 	@Test
@@ -332,7 +332,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
 		Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertEquals(firstUseCaseStep, secondUseCaseStep.previousStepInFlow().get());
+		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
 	}
 	
 	@Test
@@ -348,8 +348,8 @@ public class BuildModelTest extends AbstractTestCase{
 		Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
 		Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertFalse(firstUseCaseStep.previousStepInFlow().isPresent());
-		assertFalse(secondUseCaseStep.previousStepInFlow().isPresent());
+		assertFalse(firstUseCaseStep.getPreviousStepInFlow().isPresent());
+		assertFalse(secondUseCaseStep.getPreviousStepInFlow().isPresent());
 	}
 	
 	@Test

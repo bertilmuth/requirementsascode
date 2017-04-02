@@ -298,7 +298,7 @@ public class UseCaseModelRunner {
 	}
 	
 	private boolean hasTruePredicate(Step useCaseStep) {
-		Predicate<UseCaseModelRunner> predicate = useCaseStep.predicate();
+		Predicate<UseCaseModelRunner> predicate = useCaseStep.getPredicate();
 		boolean result = predicate.test(this);
 		return result;
 	}
@@ -325,7 +325,7 @@ public class UseCaseModelRunner {
 	 */
 	public void setLatestStep(Optional<Step> latestStep) {		
 		this.latestStep = latestStep;
-		this.latestFlow = latestStep.map(s -> s.flow());
+		this.latestFlow = latestStep.map(s -> s.getFlow());
 	}
 	
 	/**

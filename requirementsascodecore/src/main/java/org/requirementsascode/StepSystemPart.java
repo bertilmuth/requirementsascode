@@ -92,7 +92,7 @@ public class StepSystemPart<T>{
 		Objects.requireNonNull(condition);
 		
 		Step useCaseStep = stepPart.useCaseStep();
-		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
+		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.getPredicate().and(condition);
 		Predicate<UseCaseModelRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
 		

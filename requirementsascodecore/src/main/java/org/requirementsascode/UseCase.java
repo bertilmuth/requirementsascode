@@ -114,7 +114,7 @@ public class UseCase extends UseCaseModelElement{
 		return step;
 	}
 	private Predicate<UseCaseModelRunner> afterPreviousStepUnlessOtherStepCouldReact(Step currentStep) {
-		Optional<Step> previousStepInFlow = currentStep.previousStepInFlow();
+		Optional<Step> previousStepInFlow = currentStep.getPreviousStepInFlow();
 		Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStepInFlow);
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}

@@ -10,7 +10,7 @@ public class InsteadOf implements Predicate<UseCaseModelRunner>{
 	private After after;
 
 	public InsteadOf(Step step) {
-		Optional<Step> previousStep = step.previousStepInFlow();
+		Optional<Step> previousStep = step.getPreviousStepInFlow();
 		this.after = new After(previousStep);
 	}
 	
