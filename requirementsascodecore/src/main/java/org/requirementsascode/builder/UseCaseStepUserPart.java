@@ -3,11 +3,19 @@ package org.requirementsascode.builder;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoreIt;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCaseStep#setEventClass(Class)
+ * @author b_muth
+ *
+ */
 public class UseCaseStepUserPart<T>{
 	private UseCaseStepPart useCaseStepPart;
 	private UseCaseStep useCaseStep;

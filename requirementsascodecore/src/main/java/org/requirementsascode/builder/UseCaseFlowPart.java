@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
@@ -13,6 +14,13 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.predicate.After;
 import org.requirementsascode.predicate.InsteadOf;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCaseFlow
+ * @author b_muth
+ *
+ */
 public class UseCaseFlowPart {
 	private UseCaseFlow useCaseFlow;
 	private UseCase useCase;

@@ -4,10 +4,18 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCaseStep
+ * @author b_muth
+ *
+ */
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;
 	private UseCaseFlowPart useCaseFlowPart;

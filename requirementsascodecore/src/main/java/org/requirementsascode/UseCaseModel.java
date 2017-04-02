@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
@@ -57,26 +56,12 @@ public class UseCaseModel {
 		return hasUseCase;
 	}
 	
-	/**
-	 * Creates a new actor in this model.
-	 * 
-	 * @param actorName the name of the actor to be created.
-	 * @return the newly created actor
-	 * @throws ElementAlreadyInModel if an actor with the specified name already exists in the model
-	 */
 	public Actor newActor(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
 	}
 
-	/**
-	 * Creates a new use case in this model.
-	 * 
-	 * @param useCaseName the name of the use case to be created.
-	 * @return the newly created use case
-	 * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
-	 */
 	public UseCase newUseCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);

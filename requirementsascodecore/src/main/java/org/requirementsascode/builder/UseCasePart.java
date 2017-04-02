@@ -4,6 +4,13 @@ import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCase
+ * @author b_muth
+ *
+ */
 public class UseCasePart {
 	private UseCase useCase;
 	private UseCaseModelBuilder useCaseModelBuilder;

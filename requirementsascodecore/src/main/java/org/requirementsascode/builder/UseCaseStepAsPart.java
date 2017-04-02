@@ -4,12 +4,20 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.systemreaction.ContinueAfter;
 import org.requirementsascode.systemreaction.ContinueAt;
 import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCaseStep#setActors(Actor[])
+ * @author b_muth
+ *
+ */
 public class UseCaseStepAsPart{
 	private UseCaseStep useCaseStep;
 	private UseCaseStepPart useCaseStepPart;

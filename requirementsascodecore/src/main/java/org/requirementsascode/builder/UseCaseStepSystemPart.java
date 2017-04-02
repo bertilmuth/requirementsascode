@@ -12,6 +12,13 @@ import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.predicate.After;
 
+/**
+ * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * 
+ * @see UseCaseStep#setSystemReaction(Consumer)
+ * @author b_muth
+ *
+ */
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepPart useCaseStepPart;
 	private UseCaseStep useCaseStep;

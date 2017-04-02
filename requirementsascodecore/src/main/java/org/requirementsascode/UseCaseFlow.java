@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A use case flow, as part of a use case.
  * A use case flow defines a sequence of steps that lead the user through the use case.
  * 
  * A flow either ends with the user reaching her/his goal, or terminates before, usually
