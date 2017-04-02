@@ -49,7 +49,7 @@ public class FlowPart {
 	 * 
 	 * @return the flow's predicate
 	 */
-	public Optional<Predicate<UseCaseModelRunner>> flowPredicate() {
+	Optional<Predicate<UseCaseModelRunner>> flowPredicate() {
 		return flowPredicate.get();
 	}
 	
@@ -96,15 +96,15 @@ public class FlowPart {
 		return this;
 	}
 	
-	public Flow useCaseFlow(){
+	Flow useCaseFlow(){
 		return useCaseFlow;
 	}
 	
-	public UseCasePart useCasePart(){
+	UseCasePart useCasePart(){
 		return useCasePart;
 	}
 
-	public UseCaseModelBuilder useCaseModelBuilder(){
+	UseCaseModelBuilder useCaseModelBuilder(){
 		return useCasePart.useCaseModelBuilder();
 	}
 	
@@ -115,7 +115,7 @@ public class FlowPart {
 			this.predicate = Optional.empty();
 		}
 		
-		private void setStepPredicate(Predicate<UseCaseModelRunner> stepPredicate){
+		public void setStepPredicate(Predicate<UseCaseModelRunner> stepPredicate){
 			predicate = Optional.of(stepPredicate);
 		}
 		
