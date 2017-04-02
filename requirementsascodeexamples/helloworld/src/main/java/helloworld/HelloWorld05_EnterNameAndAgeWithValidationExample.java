@@ -10,11 +10,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
 	private static final Class<EnterText> ENTER_AGE = EnterText.class;
 	private static final Class<NumberFormatException> NON_NUMERICAL_AGE = NumberFormatException.class;
-	
-	private static final String S2 = "S2";	
-	private static final String S4 = "S4";	
-	private static final String S5 = "S5";
-	
+		
 	private static final int MIN_AGE = 5;
 	private static final int MAX_AGE = 130;
 	
@@ -26,19 +22,19 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::promptUserToEnterFirstName)
-					.step(S2).user(ENTER_FIRST_NAME).system(this::saveFirstName)
+					.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
 					.step("S3").system(this::promptUserToEnterAge)
-					.step(S4).user(ENTER_AGE).system(this::saveAge)
-					.step(S5).system(this::greetUserWithFirstNameAndAge)
+					.step("S4").user(ENTER_AGE).system(this::saveAge)
+					.step("S5").system(this::greetUserWithFirstNameAndAge)
 					.step("S6").system(this::stopSystem)
 						
-				.flow("Handle out-of-bounds age").insteadOf(S5).when(this::ageIsOutOfBounds)
+				.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
 					.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
-					.step("S5a_2").continueAfter(S2)
+					.step("S5a_2").continueAfter("S2")
 						
-				.flow("Handle non-numerical age").insteadOf(S5)
+				.flow("Handle non-numerical age").insteadOf("S5")
 					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
-					.step("S5b_2").continueAfter(S2)
+					.step("S5b_2").continueAfter("S2")
 			.build();
 		return useCaseModel;
 	}
