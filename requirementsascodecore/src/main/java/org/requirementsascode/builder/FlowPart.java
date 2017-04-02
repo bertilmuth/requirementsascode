@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCase;
-import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.Flow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
@@ -17,17 +17,17 @@ import org.requirementsascode.predicate.InsteadOf;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  * 
- * @see UseCaseFlow
+ * @see Flow
  * @author b_muth
  *
  */
-public class UseCaseFlowPart {
-	private UseCaseFlow useCaseFlow;
+public class FlowPart {
+	private Flow useCaseFlow;
 	private UseCase useCase;
 	private UseCasePart useCasePart;
 	private FlowPredicate flowPredicate;
 
-	public UseCaseFlowPart(UseCaseFlow useCaseFlow, UseCasePart useCasePart) {
+	public FlowPart(Flow useCaseFlow, UseCasePart useCasePart) {
 		this.useCaseFlow = useCaseFlow;
 		this.useCasePart = useCasePart;
 		this.useCase = useCasePart.useCase();
@@ -67,7 +67,7 @@ public class UseCaseFlowPart {
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
-	public UseCaseFlowPart after(String stepName) {
+	public FlowPart after(String stepName) {
 		UseCaseStep step = useCase.findStep(stepName);
 		flowPredicate.setStepPredicate(new After(Optional.of(step)));
 		return this;
@@ -81,7 +81,7 @@ public class UseCaseFlowPart {
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
-	public UseCaseFlowPart insteadOf(String stepName) {
+	public FlowPart insteadOf(String stepName) {
 		UseCaseStep step = useCase.findStep(stepName);
 		flowPredicate.setStepPredicate(new InsteadOf(step));
 	
@@ -95,13 +95,13 @@ public class UseCaseFlowPart {
 	 * @param whenPredicate the condition that constrains when the flow is started
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
 	 */
-	public UseCaseFlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
+	public FlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 		flowPredicate.setWhenPredicate(whenPredicate);
 		return this;
 	}
 	
-	public UseCaseFlow useCaseFlow(){
+	public Flow useCaseFlow(){
 		return useCaseFlow;
 	}
 	

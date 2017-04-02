@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.UseCaseFlow;
+import org.requirementsascode.Flow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
@@ -41,8 +41,8 @@ public class UseCaseStepSystemPart<T>{
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
 	public UseCaseStepPart step(String stepName) {
-		UseCaseFlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
-		UseCaseFlow useCaseFlow = useCaseFlowPart.useCaseFlow();
+		FlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
+		Flow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
 		UseCaseStep nextUseCaseStepInFlow = 
 			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
@@ -59,9 +59,9 @@ public class UseCaseStepSystemPart<T>{
 	 * @return the newly created flow part
 	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 	 */
-	public UseCaseFlowPart flow(String flowName) {
+	public FlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
-		UseCaseFlowPart useCaseFlowPart = 
+		FlowPart useCaseFlowPart = 
 			useCaseStepPart.useCasePart().flow(flowName);
 		return useCaseFlowPart;
 	}

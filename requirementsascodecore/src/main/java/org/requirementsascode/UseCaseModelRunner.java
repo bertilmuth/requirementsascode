@@ -34,7 +34,7 @@ public class UseCaseModelRunner {
 	
 	private UseCaseModel useCaseModel;
 	private Optional<UseCaseStep> latestStep;
-	private Optional<UseCaseFlow> latestFlow;
+	private Optional<Flow> latestFlow;
 	private boolean isRunning;
 	private SystemReactionTrigger systemReactionTrigger;
 	private Consumer<SystemReactionTrigger> systemReaction;
@@ -334,7 +334,7 @@ public class UseCaseModelRunner {
 	 * 
 	 * @return the latest flow run
 	 */
-	public Optional<UseCaseFlow> latestFlow() {
+	public Optional<Flow> latestFlow() {
 		return latestFlow;
 	}
 	

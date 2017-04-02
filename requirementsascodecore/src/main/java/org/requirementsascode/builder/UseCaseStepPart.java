@@ -18,11 +18,11 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  */
 public class UseCaseStepPart {
 	private UseCaseStep useCaseStep;
-	private UseCaseFlowPart useCaseFlowPart;
+	private FlowPart useCaseFlowPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 	private Actor systemActor;
 
-	public UseCaseStepPart(UseCaseStep useCaseStep, UseCaseFlowPart useCaseFlowPart) {
+	public UseCaseStepPart(UseCaseStep useCaseStep, FlowPart useCaseFlowPart) {
 		this.useCaseStep = useCaseStep;
 		this.useCaseFlowPart = useCaseFlowPart;
 		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
@@ -141,7 +141,7 @@ public class UseCaseStepPart {
 		return useCaseStep;
 	}
 	
-	public UseCaseFlowPart useCaseFlowPart(){
+	public FlowPart useCaseFlowPart(){
 		return useCaseFlowPart;
 	}
 	

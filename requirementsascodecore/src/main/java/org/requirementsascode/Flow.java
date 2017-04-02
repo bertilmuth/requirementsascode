@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author b_muth
  *
  */
-public class UseCaseFlow extends UseCaseModelElement {
+public class Flow extends UseCaseModelElement {
 	private UseCase useCase;
 
 	/**
@@ -22,7 +22,7 @@ public class UseCaseFlow extends UseCaseModelElement {
 	 * @param name the name of the flow to be created
 	 * @param useCase the use case that will contain the new flow
 	 */
-	UseCaseFlow(String name, UseCase useCase) {
+	Flow(String name, UseCase useCase) {
 		super(name, useCase.useCaseModel());
 		this.useCase = useCase;
 	}

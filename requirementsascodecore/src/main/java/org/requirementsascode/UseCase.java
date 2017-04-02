@@ -31,9 +31,9 @@ import org.requirementsascode.predicate.After;
  *
  */
 public class UseCase extends UseCaseModelElement{
-	private Map<String, UseCaseFlow> nameToFlowMap;
+	private Map<String, Flow> nameToFlowMap;
 	private Map<String, UseCaseStep> nameToStepMap;
-	private UseCaseFlow basicFlow;
+	private Flow basicFlow;
 
 	/**
 	 * Creates a use case with the specified name that 
@@ -58,7 +58,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return the basic flow of the use case
 	 */
-	public UseCaseFlow basicFlow() {
+	public Flow basicFlow() {
 		return basicFlow;
 	}
 	
@@ -91,8 +91,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the newly created flow
 	 * @throws ElementAlreadyInModel if a flow with the specified name already exists in the use case
 	 */
-	public UseCaseFlow newFlow(String flowName) {
-		UseCaseFlow flow = new UseCaseFlow(flowName, this);
+	public Flow newFlow(String flowName) {
+		Flow flow = new Flow(flowName, this);
 		saveModelElement(flow, nameToFlowMap);
 		return flow;
 	}
@@ -107,7 +107,7 @@ public class UseCase extends UseCaseModelElement{
 	 * after previous step, unless interrupted by other step (e.g "insteadOf").
 	 * @return the newly created step
 	 */
-	public UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
+	public UseCaseStep newStep(String stepName, Flow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
 		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep);
 		step.setPredicate(predicate.orElse(afterPreviousStepUnlessOtherStepCouldReact(step)));
 		saveModelElement(step, nameToStepMap);
@@ -139,8 +139,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the flow if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no flow with the specified flowName is found in the current use case
 	 */
-	public UseCaseFlow findFlow(String flowName) {
-		UseCaseFlow flow = findModelElement(flowName, nameToFlowMap);
+	public Flow findFlow(String flowName) {
+		Flow flow = findModelElement(flowName, nameToFlowMap);
 		return flow;
 	}
 	
@@ -162,7 +162,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return a collection of the flows
 	 */
-	public Collection<UseCaseFlow> flows() {
+	public Collection<Flow> flows() {
 		return getModelElements(nameToFlowMap);
 	}
 	
