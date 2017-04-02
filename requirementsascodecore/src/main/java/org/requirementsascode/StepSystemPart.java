@@ -19,7 +19,7 @@ public class StepSystemPart<T>{
 	private StepPart stepPart;
 	private Step step;
 
-	public StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
+	StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.stepPart = useCaseStepPart;
 		this.step = useCaseStepPart.useCaseStep();
 		step.setSystemReaction(systemReaction);
