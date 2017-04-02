@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.predicate.After;
 
 /**
  * A use case, as part of a use case model.

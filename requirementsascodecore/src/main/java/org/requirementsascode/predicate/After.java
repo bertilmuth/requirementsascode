@@ -1,8 +1,11 @@
-package org.requirementsascode;
+package org.requirementsascode.predicate;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseStep;
 
 public class After implements Predicate<UseCaseRunner>{
 	private Optional<UseCaseStep> previousStep;

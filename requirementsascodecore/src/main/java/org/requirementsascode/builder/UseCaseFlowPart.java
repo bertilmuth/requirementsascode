@@ -4,14 +4,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.After;
-import org.requirementsascode.InsteadOf;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.predicate.After;
+import org.requirementsascode.predicate.InsteadOf;
 
 public class UseCaseFlowPart {
 	private UseCaseFlow useCaseFlow;

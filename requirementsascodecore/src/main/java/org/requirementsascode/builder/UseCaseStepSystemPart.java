@@ -5,12 +5,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.After;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.predicate.After;
 
 public class UseCaseStepSystemPart<T>{
 	private UseCaseStepPart useCaseStepPart;
