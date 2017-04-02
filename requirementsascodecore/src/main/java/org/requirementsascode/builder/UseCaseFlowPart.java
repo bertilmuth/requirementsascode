@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -54,7 +54,7 @@ public class UseCaseFlowPart {
 	 * 
 	 * @return the flow's predicate
 	 */
-	public Optional<Predicate<UseCaseRunner>> flowPredicate() {
+	public Optional<Predicate<UseCaseModelRunner>> flowPredicate() {
 		return flowPredicate.get();
 	}
 	
@@ -95,7 +95,7 @@ public class UseCaseFlowPart {
 	 * @param whenPredicate the condition that constrains when the flow is started
 	 * @return this use case flow, to ease creation of the predicate and the first step of the flow
 	 */
-	public UseCaseFlowPart when(Predicate<UseCaseRunner> whenPredicate) {
+	public UseCaseFlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
 		Objects.requireNonNull(whenPredicate);
 		flowPredicate.setWhenPredicate(whenPredicate);
 		return this;
@@ -114,26 +114,26 @@ public class UseCaseFlowPart {
 	}
 	
 	private class FlowPredicate{
-		private Optional<Predicate<UseCaseRunner>> predicate;
+		private Optional<Predicate<UseCaseModelRunner>> predicate;
 
 		private FlowPredicate() {
 			this.predicate = Optional.empty();
 		}
 		
-		private void setStepPredicate(Predicate<UseCaseRunner> stepPredicate){
+		private void setStepPredicate(Predicate<UseCaseModelRunner> stepPredicate){
 			predicate = Optional.of(stepPredicate);
 		}
 		
-		public void setWhenPredicate(Predicate<UseCaseRunner> whenPredicate){
+		public void setWhenPredicate(Predicate<UseCaseModelRunner> whenPredicate){
 			predicate = Optional.of(predicate.orElse(r -> true).and(whenPredicate));
 		}
 		
-		public Optional<Predicate<UseCaseRunner>> get(){
+		public Optional<Predicate<UseCaseModelRunner>> get(){
 			return predicate.map(pred -> isRunnerInDifferentFlow().and(pred));
 		}
 		
-		private Predicate<UseCaseRunner> isRunnerInDifferentFlow() {			
-			Predicate<UseCaseRunner> isRunnerInDifferentFlow = 
+		private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {			
+			Predicate<UseCaseModelRunner> isRunnerInDifferentFlow = 
 				runner -> runner.latestFlow().map(
 					runnerFlow -> !useCaseFlow.equals(runnerFlow)).orElse(true);
 			return isRunnerInDifferentFlow;

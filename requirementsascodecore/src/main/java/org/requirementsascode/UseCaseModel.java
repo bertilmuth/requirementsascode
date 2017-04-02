@@ -14,7 +14,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
  * A use case model is a container for use cases and their associated actors.
- * It is used to configure a {@link UseCaseRunner}.
+ * It is used to configure a {@link UseCaseModelRunner}.
  * 
  * @author b_muth
  *

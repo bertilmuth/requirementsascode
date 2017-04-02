@@ -3,7 +3,7 @@ package shoppingappjavafx.gui;
 import java.io.IOException;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import javafx.application.Application;
@@ -15,7 +15,7 @@ import shoppingappjavafx.usecaserealization.ShoppingAppBuyProductRealization;
 
 public class JavafxMain extends Application {
 	private UseCaseModelBuilder modelBuilder;
-	private UseCaseRunner modelRunner;
+	private UseCaseModelRunner modelRunner;
 	private Stock stock;
 	private JavafxDisplay display;
 
@@ -33,7 +33,7 @@ public class JavafxMain extends Application {
 
 	private void createModelBuilderAndRunner() {
 		this.modelBuilder = UseCaseModelBuilder.newBuilder();
-		this.modelRunner = new UseCaseRunner();
+		this.modelRunner = new UseCaseModelRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {

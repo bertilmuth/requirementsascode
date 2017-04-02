@@ -1,6 +1,6 @@
 package shoppingappjavafx.usecaserealization;
 
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.Stock;
@@ -23,12 +23,12 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void startWithEmptyShoppingCart(UseCaseRunner runner){
+	public void startWithEmptyShoppingCart(UseCaseModelRunner runner){
 		purchaseOrder = new PurchaseOrder();
 	}
 	
 	@Override
-	public void displayProducts(UseCaseRunner runner) {
+	public void displayProducts(UseCaseModelRunner runner) {
 		Products products = new Products(stock.findProducts());
 		display.displayProductsAndShoppingCartSize(products, purchaseOrder);
 	}
@@ -43,12 +43,12 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 
 	@Override
-	public boolean lessThen10Products(UseCaseRunner r) {
+	public boolean lessThen10Products(UseCaseModelRunner r) {
 		return purchaseOrder.findProducts().size() < 10;
 	}
 
 	@Override
-	public void displayShippingInformationForm(UseCaseRunner runner) {
+	public void displayShippingInformationForm(UseCaseModelRunner runner) {
 		display.displayShippingInformationForm(purchaseOrder.shippingInformation());
 	}
 
@@ -58,7 +58,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void displayPaymentDetailsForm(UseCaseRunner runner) {
+	public void displayPaymentDetailsForm(UseCaseModelRunner runner) {
 		display.displayPaymentDetailsForm();
 	}
 
@@ -68,7 +68,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public void displayPurchaseOrderSummary(UseCaseRunner runner) {
+	public void displayPurchaseOrderSummary(UseCaseModelRunner runner) {
 		display.displayPurchaseOrderSummary(purchaseOrder);
 	}
 	
@@ -77,7 +77,7 @@ public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	}
 	
 	@Override
-	public boolean atLeastOneProductInCart(UseCaseRunner r) {
+	public boolean atLeastOneProductInCart(UseCaseModelRunner r) {
 		return purchaseOrder.findProducts().size() > 0;
 	}
 

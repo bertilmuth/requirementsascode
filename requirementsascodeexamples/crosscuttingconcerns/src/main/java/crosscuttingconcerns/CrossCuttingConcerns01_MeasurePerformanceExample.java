@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.SystemReactionTrigger;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class CrossCuttingConcerns01_MeasurePerformanceExample {
@@ -12,7 +12,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private double resultOfPower;
 	
 	public void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
 		useCaseRunner.adaptSystemReaction(this::measurePerformance);
 		
 		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
@@ -37,19 +37,19 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
-	private Consumer<UseCaseRunner> addTwoNumbers() {
+	private Consumer<UseCaseModelRunner> addTwoNumbers() {
 		return r -> {
 			resultOfAddition = 123456789 + 123456789;
 		};
 	}
 	
-	private Consumer<UseCaseRunner> calculateTwoToThePowerOfAThousand() {
+	private Consumer<UseCaseModelRunner> calculateTwoToThePowerOfAThousand() {
 		return r -> {
 			resultOfPower = Math.pow(2, 1000);
 		};
 	}
 	
-	private Consumer<UseCaseRunner> displayResults() {
+	private Consumer<UseCaseModelRunner> displayResults() {
 		return r -> {
 			System.out.println("Result of addition: " + resultOfAddition);	
 			System.out.println("Result of 2 to the power of a thousand = " + resultOfPower);	

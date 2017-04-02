@@ -1,6 +1,6 @@
 package shoppingappjavafx.usecase;
 
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
@@ -9,17 +9,17 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 
 public interface BuyProductRealization {
-	void startWithEmptyShoppingCart(UseCaseRunner runner);
-	void displayProducts(UseCaseRunner runner);
+	void startWithEmptyShoppingCart(UseCaseModelRunner runner);
+	void displayProducts(UseCaseModelRunner runner);
 	void addProductToPurchaseOrder(AddProductToCart addProductToCart);
-	boolean lessThen10Products(UseCaseRunner useCaseRunner);
+	boolean lessThen10Products(UseCaseModelRunner useCaseRunner);
 	void checkoutPurchase(CheckoutPurchase checkoutPurchase);
-	void displayShippingInformationForm(UseCaseRunner runner);
+	void displayShippingInformationForm(UseCaseModelRunner runner);
 	void saveShippingInformation(EnterShippingInformation enterShippingInformation);
-	void displayPaymentDetailsForm(UseCaseRunner runner);
+	void displayPaymentDetailsForm(UseCaseModelRunner runner);
 	void savePaymentDetails(EnterPaymentDetails enterPaymentDetails);
-	void displayPurchaseOrderSummary(UseCaseRunner runner);
+	void displayPurchaseOrderSummary(UseCaseModelRunner runner);
 	void initiateShipping(ConfirmPurchase confirmPurchase); 
-	boolean atLeastOneProductInCart(UseCaseRunner useCaseRunner);
+	boolean atLeastOneProductInCart(UseCaseModelRunner useCaseRunner);
 	void informUserAndLogException(Throwable t);
 }

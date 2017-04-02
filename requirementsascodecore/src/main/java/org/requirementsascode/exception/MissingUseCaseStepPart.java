@@ -3,7 +3,7 @@ package org.requirementsascode.exception;
 import org.requirementsascode.UseCaseStep;
 
 /**
- * Exception that is thrown when the use case runner tries to to access a certain part
+ * Exception that is thrown when the use case model runner tries to to access a certain part
  * of a use case step, but that part does not exist.
  * 
  * @author b_muth

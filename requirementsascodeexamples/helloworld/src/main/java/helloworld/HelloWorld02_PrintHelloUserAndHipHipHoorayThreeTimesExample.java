@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
@@ -25,15 +25,15 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		return useCaseModel;
 	}
 
-	private Consumer<UseCaseRunner> greetUser() {
+	private Consumer<UseCaseModelRunner> greetUser() {
 		return r -> System.out.println("Hello, User.");
 	}
 	
-	private Predicate<UseCaseRunner> lessThanThreeHooraysHaveBeenPrinted() {
+	private Predicate<UseCaseModelRunner> lessThanThreeHooraysHaveBeenPrinted() {
 		return r -> hoorayCounter < 3; 
 	}
 	
-	private Consumer<UseCaseRunner> printHooray() {
+	private Consumer<UseCaseModelRunner> printHooray() {
 		return r -> {
 			System.out.println("Hip, hip, hooray!");
 			hoorayCounter++;
@@ -46,7 +46,7 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 	}
 
 	private void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
 		useCaseRunner.run(useCaseModel);
 	}

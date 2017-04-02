@@ -4,10 +4,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 
-public class After implements Predicate<UseCaseRunner>{
+public class After implements Predicate<UseCaseModelRunner>{
 	private Optional<UseCaseStep> previousStep;
 
 	public After(Optional<UseCaseStep> previousStep) {
@@ -15,7 +15,7 @@ public class After implements Predicate<UseCaseRunner>{
 	}
 	
 	@Override
-	public boolean test(UseCaseRunner useCaseRunner) {
+	public boolean test(UseCaseModelRunner useCaseRunner) {
 		Optional<UseCaseStep> latestStep = useCaseRunner.latestStep();
 		boolean isSystemAtRightStep = 
 			Objects.equals(previousStep, latestStep);

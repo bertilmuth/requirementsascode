@@ -3,15 +3,15 @@ package org.requirementsascode;
 import java.util.function.Consumer;
 
 /**
- * Simple use case runner for automated tests.
+ * Simple use case model runner for automated tests.
  * 
  * @author b_muth
  *
  */
-public class TestUseCaseRunner extends UseCaseRunner{
+public class TestUseCaseModelRunner extends UseCaseModelRunner{
 	private String runStepNames;
 
-	public TestUseCaseRunner() {
+	public TestUseCaseModelRunner() {
 		runStepNames = "";
 		adaptSystemReaction(withStepNameTracking());
 	}

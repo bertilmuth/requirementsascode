@@ -23,7 +23,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseRunner());
+		setupWith(new TestUseCaseModelRunner());
 	}
 	
 	@Test

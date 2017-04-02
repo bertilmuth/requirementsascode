@@ -17,7 +17,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseRunner());
+		setupWith(new TestUseCaseModelRunner());
 		this.secondActor = useCaseModelBuilder.actor("Second Actor");
 	}
 	

@@ -13,7 +13,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 	
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseRunner());
+		setupWith(new TestUseCaseModelRunner());
 	}
 	
 	@Test
@@ -30,7 +30,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
-		assertEquals(TestUseCaseRunner.class, event.getClass());
+		assertEquals(TestUseCaseModelRunner.class, event.getClass());
 	}
 
 	private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {

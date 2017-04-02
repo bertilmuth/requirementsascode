@@ -37,21 +37,21 @@ public abstract class AbstractTestCase {
 	
 	protected Actor customer;
 	protected UseCaseModelBuilder useCaseModelBuilder;
-	protected TestUseCaseRunner useCaseRunner;
+	protected TestUseCaseModelRunner useCaseRunner;
 	protected String displayedText;
 
-	protected void setupWith(TestUseCaseRunner useCaseRunner){
+	protected void setupWith(TestUseCaseModelRunner useCaseRunner){
 		this.useCaseRunner = useCaseRunner;
 		this.useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
 		this.customer = useCaseModelBuilder.actor(CUSTOMER);
 		this.displayedText = null;
 	}
 	
-	protected Predicate<UseCaseRunner> textIsAvailable() {
+	protected Predicate<UseCaseModelRunner> textIsAvailable() {
 		return r -> displayedText != null;
 	}
 	
-	protected Predicate<UseCaseRunner> textIsNotAvailable() {
+	protected Predicate<UseCaseModelRunner> textIsNotAvailable() {
 		return r -> displayedText == null;
 	}
 	
@@ -68,7 +68,7 @@ public abstract class AbstractTestCase {
 		return enterNumber;
 	}
 	
-	protected Consumer<UseCaseRunner> displayConstantText() {
+	protected Consumer<UseCaseModelRunner> displayConstantText() {
 		return r -> {
 			displayedText = "Hello, Basic Flow!";
 		};
@@ -93,7 +93,7 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Consumer<UseCaseRunner> throwArrayIndexOutOfBoundsException() {
+	protected Consumer<UseCaseModelRunner> throwArrayIndexOutOfBoundsException() {
 		return r -> {
 			throw new ArrayIndexOutOfBoundsException(42);
 		};

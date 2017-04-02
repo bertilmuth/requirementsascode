@@ -9,7 +9,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseRunner());
+		setupWith(new TestUseCaseModelRunner());
 	}
 	
 	@Test

@@ -10,7 +10,7 @@ import java.util.function.Predicate;
  * behavior of the use case.
  * 
  * A use case step is the core class of requirementsascode, providing all the
- * necessary configuration information to the {@link UseCaseRunner} to cause the
+ * necessary configuration information to the {@link UseCaseModelRunner} to cause the
  * system to react to events. A use case step has a predicate, which defines the
  * complete condition that needs to be fulfilled to cause the system reaction, given a
  * matching event occurs.
@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 public class UseCaseStep extends UseCaseModelElement { 
 	private UseCaseFlow useCaseFlow;
 	private Optional<UseCaseStep> previousStepInFlow;
-	private Predicate<UseCaseRunner> predicate;
+	private Predicate<UseCaseModelRunner> predicate;
 
 	private Actor[] actors;
 	private Class<?> eventClass;
@@ -58,11 +58,11 @@ public class UseCaseStep extends UseCaseModelElement {
 		return flow().useCase();
 	}
 	
-	public Predicate<UseCaseRunner> predicate() {
+	public Predicate<UseCaseModelRunner> predicate() {
 		return predicate;
 	}
 
-	public void setPredicate(Predicate<UseCaseRunner> predicate) {
+	public void setPredicate(Predicate<UseCaseModelRunner> predicate) {
 		this.predicate = predicate;
 	}
 

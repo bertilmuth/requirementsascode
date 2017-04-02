@@ -18,17 +18,17 @@ import org.requirementsascode.exception.UnhandledException;
 
 
 /**
- * A use case runner is a highly configurable use case controller that receives events
+ * A use case model runner is a highly configurable use case controller that receives events
  * from the frontend and conditionally calls methods on the backend.
  * 
- * In requirementsascode, a use case runner is the only way the frontend communicates with the
- * backend. The use case runner is configured by the use case model it owns.
- * Each real user needs an instance of a use case runner, as the runner determines the journey
+ * In requirementsascode, a use case model runner is the only way the frontend communicates with the
+ * backend. It is configured by the use case model it owns.
+ * Each real user needs an instance of a runner, as the runner determines the journey
  * of the user through the use cases.
  * 
  *  
  */
-public class UseCaseRunner {
+public class UseCaseModelRunner {
 	private Optional<Actor> user;
 	private List<Actor> userAndSystem;
 	
@@ -41,11 +41,11 @@ public class UseCaseRunner {
 	private Optional<Predicate<UseCaseStep>> stepWithoutAlternativePredicate;
 
 	/**
-	 * Constructor for creating a use case runner with standard system reaction,
+	 * Constructor for creating a runner with standard system reaction,
 	 * that is: the system reaction, as defined in the use case step, simply accepts
 	 * an event.
 	 */
-	public UseCaseRunner() {
+	public UseCaseModelRunner() {
 		this.user = Optional.empty();
 		this.systemReactionTrigger = new SystemReactionTrigger();
 		this.stepWithoutAlternativePredicate = Optional.empty();
@@ -101,7 +101,7 @@ public class UseCaseRunner {
 	 * @param actor the actor to run as 
 	 * @return this runner, for method chaining with {@link #run(UseCaseModel)}
 	 */
-	public UseCaseRunner as(Actor actor) {
+	public UseCaseModelRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
 		this.user = Optional.of(actor);
 		this.userAndSystem = userAndSystem(user.get());
@@ -131,7 +131,7 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Call this method from the frontend to provide several event objects to the use case runner.
+	 * Call this method from the frontend to provide several event objects to the runner.
 	 * For each event object, {@link #reactTo(Object)} is called.
 	 * 
 	 * @param events the events to react to
@@ -145,7 +145,7 @@ public class UseCaseRunner {
 	}
 
 	/**
-	 * Call this method from the frontend to provide an event object to the use case runner.
+	 * Call this method from the frontend to provide an event object to the runner.
 	 * 
 	 * If it is running, the runner will then check which steps can react to the event. 
 	 * If a single step can react, the runner will trigger the system reaction for that step.
@@ -190,7 +190,7 @@ public class UseCaseRunner {
 	 * Returns the use case steps in the use case model that can react to the specified event class.
 	 * 
 	 * A step "can react" if all of the following conditions are met:
-	 * a) the UseCaseRunner is running
+	 * a) the runner is running
 	 * b) one of the step's actors matches the actor the runner is run as
 	 * c) the step's event class is the same or a superclass of the specified event class 
 	 * d) the step has a predicate that is true
@@ -270,9 +270,9 @@ public class UseCaseRunner {
 	}
 
 	/**
-	 * Overwrite this method to control what happens exactly when aa exception is thrown by a system reaction.
-	 * The behavior implemented in UseCaseRunner: the exception is provided as an event object
-	 * to the UseCaseRunner, by calling {@link #reactTo(Object)}.
+	 * Overwrite this method to control what happens exactly when an exception is thrown by a system reaction.
+	 * The behavior implemented in runner: the exception is provided as an event object
+	 * to the runner, by calling {@link #reactTo(Object)}.
 	 * You may replace this with a more sophisticated behavior, that for example involves some kind of logging.
 	 * 
 	 * @param e the exception that has been thrown by the system reaction
@@ -298,13 +298,13 @@ public class UseCaseRunner {
 	}
 	
 	private boolean hasTruePredicate(UseCaseStep useCaseStep) {
-		Predicate<UseCaseRunner> predicate = useCaseStep.predicate();
+		Predicate<UseCaseModelRunner> predicate = useCaseStep.predicate();
 		boolean result = predicate.test(this);
 		return result;
 	}
 	
 	/**
-	 * Returns the latest step that has been run by this UseCaseRunner.
+	 * Returns the latest step that has been run by this runner.
 	 * 
 	 * @return the latest step run
 	 */
@@ -313,7 +313,7 @@ public class UseCaseRunner {
 	}
 	
 	/**
-	 * Sets the latest step run by the use case runner.
+	 * Sets the latest step run by the runner.
 	 * Implicitly, this also sets the latest flow to the flow 
 	 * that contains the step.
 	 * 

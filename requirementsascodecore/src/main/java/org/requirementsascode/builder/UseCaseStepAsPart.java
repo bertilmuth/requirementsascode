@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.systemreaction.ContinueAfter;
 import org.requirementsascode.systemreaction.ContinueAt;
@@ -55,17 +55,17 @@ public class UseCaseStepAsPart{
 	
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link UseCaseRunner#reactTo(Object)}. 
-	 * Instead, the use case runner provides
+	 * without needing an event provided via {@link UseCaseModelRunner#reactTo(Object)}. 
+	 * Instead, the use case model runner provides
 	 * itself as an event to the system reaction.
 	 * 
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
+	public UseCaseStepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		UseCaseStepSystemPart<UseCaseRunner> systemPart = 
-			user(UseCaseRunner.class).system(systemReaction);
+		UseCaseStepSystemPart<UseCaseModelRunner> systemPart = 
+			user(UseCaseModelRunner.class).system(systemReaction);
 		return systemPart;
 	} 
 

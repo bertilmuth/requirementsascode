@@ -5,7 +5,7 @@ import static org.requirementsascode.builder.UseCaseModelBuilder.newBuilder;
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld01_PrintHelloUserExample {	
@@ -19,7 +19,7 @@ public class HelloWorld01_PrintHelloUserExample {
 		return useCaseModel;
 	}
 
-	private Consumer<UseCaseRunner> greetUser() {
+	private Consumer<UseCaseModelRunner> greetUser() {
 		return r -> System.out.println("Hello, User.");
 	}
 	
@@ -29,7 +29,7 @@ public class HelloWorld01_PrintHelloUserExample {
 	}
 
 	private void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
 		useCaseRunner.run(useCaseModel);
 	}

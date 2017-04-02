@@ -3,7 +3,7 @@ package helloworld;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 
 public class AbstractHelloWorldExample {
 	private Scanner scanner;
@@ -20,7 +20,7 @@ public class AbstractHelloWorldExample {
 		return new EnterText(text);
 	}
 	
-	protected Consumer<UseCaseRunner> stopSystem(){
+	protected Consumer<UseCaseModelRunner> stopSystem(){
 		return r -> isSystemStopped = true;
 	}
 	

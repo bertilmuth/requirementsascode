@@ -2,7 +2,7 @@ package org.requirementsascode.systemreaction;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCase;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep; 
 
 public class ContinueWithoutAlternativeAt extends ContinueAt{
@@ -11,7 +11,7 @@ public class ContinueWithoutAlternativeAt extends ContinueAt{
 	}
 	
 	@Override
-	public void accept(UseCaseRunner runner) {
+	public void accept(UseCaseModelRunner runner) {
 		runner.setStepWithoutAlternativePredicate(includeOnly(stepName()));
 		super.accept(runner);		
 	}

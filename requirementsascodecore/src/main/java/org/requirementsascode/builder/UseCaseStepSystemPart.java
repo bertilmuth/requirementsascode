@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseFlow;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.predicate.After;
@@ -92,12 +92,12 @@ public class UseCaseStepSystemPart<T>{
 	 * @param condition the condition to check
 	 * @return the system part
 	 */
-	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseRunner> condition) {
+	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
 		Objects.requireNonNull(condition);
 		
 		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
-		Predicate<UseCaseRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
-		Predicate<UseCaseRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
+		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
+		Predicate<UseCaseModelRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
 		
 		return this;

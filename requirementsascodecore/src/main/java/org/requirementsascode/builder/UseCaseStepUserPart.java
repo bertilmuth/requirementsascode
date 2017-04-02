@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoreIt;
@@ -30,7 +30,7 @@ public class UseCaseStepUserPart<T>{
 	/**
 	 * Defines the system reaction. 
 	 * The system will react as specified to the current step's events,
-	 * when you call {@link UseCaseRunner#reactTo(Object)}.
+	 * when you call {@link UseCaseModelRunner#reactTo(Object)}.
 	 * 
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step 

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
@@ -46,11 +46,11 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 		return useCaseModel;
 	}
 
-	private Consumer<UseCaseRunner> promptUserToEnterFirstName() {
+	private Consumer<UseCaseModelRunner> promptUserToEnterFirstName() {
 		return r -> System.out.print("Please enter your first name: ");
 	}
 	
-	private Consumer<UseCaseRunner> promptUserToEnterAge() {
+	private Consumer<UseCaseModelRunner> promptUserToEnterAge() {
 		return r -> System.out.print("Please enter your age: ");
 	}
 
@@ -62,15 +62,15 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 		return enterText -> age = Integer.parseInt(enterText.text);
 	}
 	
-	private Consumer<UseCaseRunner> greetUserWithFirstNameAndAge() {
+	private Consumer<UseCaseModelRunner> greetUserWithFirstNameAndAge() {
 		return r -> System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
-	private Predicate<UseCaseRunner> ageIsOutOfBounds() {
+	private Predicate<UseCaseModelRunner> ageIsOutOfBounds() {
 		return r -> age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private Consumer<UseCaseRunner> informUserAboutOutOfBoundsAge() {
+	private Consumer<UseCaseModelRunner> informUserAboutOutOfBoundsAge() {
 		return r -> 
 			System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
@@ -86,7 +86,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	}
 
 	private void start() {
-		UseCaseRunner useCaseRunner = new UseCaseRunner();
+		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
 		
 		useCaseRunner.run(useCaseModel);			

@@ -107,18 +107,18 @@ public class UseCase extends UseCaseModelElement{
 	 * after previous step, unless interrupted by other step (e.g "insteadOf").
 	 * @return the newly created step
 	 */
-	public UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseRunner>> predicate) {
+	public UseCaseStep newStep(String stepName, UseCaseFlow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
 		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep);
 		step.setPredicate(predicate.orElse(afterPreviousStepUnlessOtherStepCouldReact(step)));
 		saveModelElement(step, nameToStepMap);
 		return step;
 	}
-	private Predicate<UseCaseRunner> afterPreviousStepUnlessOtherStepCouldReact(UseCaseStep currentStep) {
+	private Predicate<UseCaseModelRunner> afterPreviousStepUnlessOtherStepCouldReact(UseCaseStep currentStep) {
 		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
-		Predicate<UseCaseRunner> afterPreviousStep = new After(previousStepInFlow);
+		Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStepInFlow);
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}
-	private Predicate<UseCaseRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
+	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventClass();
 			UseCaseModel useCaseModel = theStep.useCaseModel();

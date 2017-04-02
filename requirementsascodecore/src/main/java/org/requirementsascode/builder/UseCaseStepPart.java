@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseRunner;
+import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.UseCaseStep;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
@@ -81,21 +81,21 @@ public class UseCaseStepPart {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link UseCaseRunner#reactTo(Object)}. 
-	 * Instead, the use case runner provides
+	 * without needing an event provided via {@link UseCaseModelRunner#reactTo(Object)}. 
+	 * Instead, the use case model runner provides
 	 * itself as an event to the system reaction.
 	 * 
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystemPart<UseCaseRunner> system(Consumer<UseCaseRunner> systemReaction) {
+	public UseCaseStepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		UseCaseStepSystemPart<UseCaseRunner> systemPart = as(systemActor).system(systemReaction);		
+		UseCaseStepSystemPart<UseCaseModelRunner> systemPart = as(systemActor).system(systemReaction);		
 		return systemPart;
 	}
 
 	/**
-	 * Makes the use case runner continue after the specified step.
+	 * Makes the use case model runner continue after the specified step.
 	 * 
 	 * @param stepName name of the step to continue after, in this use case.
 	 * @return the use case part this step belongs to, to ease creation of further flows
@@ -108,7 +108,7 @@ public class UseCaseStepPart {
 	} 
 	
 	/**
-	 * Makes the use case runner continue at the specified step. If there are
+	 * Makes the use case model runner continue at the specified step. If there are
 	 * alternative flows starting at the specified step, one may be entered if
 	 * its condition is enabled.
 	 * 
@@ -123,7 +123,7 @@ public class UseCaseStepPart {
 	}
 	
 	/**
-	 * Makes the use case runner continue at the specified step. No alternative
+	 * Makes the use case model runner continue at the specified step. No alternative
 	 * flow starting at the specified step is entered, even if its condition is
 	 * enabled.
 	 * 

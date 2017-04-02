@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
@@ -23,12 +23,12 @@ import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
 public class ShoppingAppBuyProductRealizationTest {
-	private TestUseCaseRunner useCaseRunner;
+	private TestUseCaseModelRunner useCaseRunner;
 	private UseCaseModel useCaseModel;
 
 	@Before
 	public void setUp() throws Exception {
-		useCaseRunner = new TestUseCaseRunner();
+		useCaseRunner = new TestUseCaseModelRunner();
 		UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
 		
 		Stock stock = new Stock();

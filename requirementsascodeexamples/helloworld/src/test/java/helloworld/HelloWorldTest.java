@@ -4,18 +4,18 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseRunner;
+import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorldTest {
-	private TestUseCaseRunner modelRunner;
+	private TestUseCaseModelRunner modelRunner;
 	private UseCaseModel useCaseModel;
 	private UseCaseModelBuilder modelBuilder;
 	
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new TestUseCaseRunner();
+		modelRunner = new TestUseCaseModelRunner();
 		modelBuilder = UseCaseModelBuilder.newBuilder();
 	}
 
