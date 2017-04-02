@@ -159,17 +159,16 @@ public class UseCase extends UseCaseModelElement{
 	
 	/**
 	 * Returns the flows contained in this use case.
-	 * Do not modify the returned collection directly, use {@link #newFlow(String)}.
 	 * 
 	 * @return a collection of the flows
 	 */
 	public Collection<Flow> getFlows() {
-		return getModelElements(nameToFlowMap);
+		Collection<Flow> modifiableFlows = getModelElements(nameToFlowMap);
+		return Collections.unmodifiableCollection(modifiableFlows);
 	}
 	
 	/**
 	 * Returns the steps contained in this use case.
-	 * Do not modify the returned collection directly.
 	 * 
 	 * @return a collection of the steps
 	 */
