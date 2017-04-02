@@ -20,7 +20,7 @@ abstract class UseCaseModelElement {
 	 * @param name the name of the element to be created
 	 * @param useCaseModel the use case model that will contain the element
 	 */
-	public UseCaseModelElement(String name, UseCaseModel useCaseModel) {
+	UseCaseModelElement(String name, UseCaseModel useCaseModel) {
 		Objects.requireNonNull(name);
 		Objects.requireNonNull(useCaseModel);
 		this.name = name;

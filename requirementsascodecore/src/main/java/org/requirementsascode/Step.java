@@ -62,7 +62,7 @@ public class Step extends UseCaseModelElement {
 		return predicate;
 	}
 
-	public void setPredicate(Predicate<UseCaseModelRunner> predicate) {
+	void setPredicate(Predicate<UseCaseModelRunner> predicate) {
 		this.predicate = predicate;
 	}
 
@@ -70,7 +70,7 @@ public class Step extends UseCaseModelElement {
 		return actors;
 	}
 	
-	public void setActors(Actor[] actors) {
+	void setActors(Actor[] actors) {
 		this.actors = actors;
 	}
 	
@@ -78,14 +78,14 @@ public class Step extends UseCaseModelElement {
 		return eventClass;
 	}
 
-	public void setEventClass(Class<?> eventClass) {
+	void setEventClass(Class<?> eventClass) {
 		this.eventClass = eventClass;
 	}
 	public Consumer<?> getSystemReaction() {
 		return systemReaction;
 	}
 
-	public void setSystemReaction(Consumer<?> systemReaction) {
+	void setSystemReaction(Consumer<?> systemReaction) {
 		this.systemReaction = systemReaction;
 	}
 }
