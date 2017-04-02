@@ -6,8 +6,10 @@ import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -117,9 +119,14 @@ public class UseCaseModel {
 	 * 
 	 * @return the use steps
 	 */
-	public Collection<Step> steps() {
+	public Collection<Step> getSteps() {
+		Set<Step> modifiableSteps = getModifiableSteps();
+		return Collections.unmodifiableCollection(modifiableSteps);
+	}
+
+	Set<Step> getModifiableSteps() {
 		return useCases().stream()
-			.map(useCase -> useCase.getSteps())
+			.map(useCase -> useCase.getModifiableSteps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
 	}

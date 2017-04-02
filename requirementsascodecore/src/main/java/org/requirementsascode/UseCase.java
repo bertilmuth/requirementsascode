@@ -6,6 +6,7 @@ import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -124,7 +125,7 @@ public class UseCase extends UseCaseModelElement{
 			UseCaseModel useCaseModel = theStep.useCaseModel();
 			
 			Stream<Step> otherStepsStream = 
-				useCaseModel.steps().stream()
+				useCaseModel.getModifiableSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
 			Set<Step> otherStepsThatCouldReact = useCaseRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
@@ -173,6 +174,10 @@ public class UseCase extends UseCaseModelElement{
 	 * @return a collection of the steps
 	 */
 	public Collection<Step> getSteps() {
+		Collection<Step> modifiableSteps = getModifiableSteps();
+		return Collections.unmodifiableCollection(modifiableSteps);
+	}
+	Collection<Step> getModifiableSteps() {
 		return getModelElements(nameToStepMap);
 	}
 }

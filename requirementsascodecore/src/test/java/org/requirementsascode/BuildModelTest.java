@@ -405,7 +405,7 @@ public class BuildModelTest extends AbstractTestCase{
 						.as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		Collection<Step> steps = useCaseModel.steps();
+		Collection<Step> steps = useCaseModel.getSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<Step> stepsIt = steps.iterator();
@@ -431,7 +431,7 @@ public class BuildModelTest extends AbstractTestCase{
 						.as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		Collection<Step> steps = useCaseModel.steps();
+		Collection<Step> steps = useCaseModel.getSteps();
 		assertEquals(2, steps.size());
 		
 		Iterator<Step> stepsIt = steps.iterator();

@@ -203,7 +203,7 @@ public class UseCaseModelRunner {
 		Set<Step> stepsThatCanReact;
 		
 		if(isRunning){
-			Stream<Step> stepStream = useCaseModel.steps().stream();
+			Stream<Step> stepStream = useCaseModel.getModifiableSteps().stream();
 			stepsThatCanReact = stepsInStreamThatCanReactTo(eventClass, stepStream);
 		}
 		else {
