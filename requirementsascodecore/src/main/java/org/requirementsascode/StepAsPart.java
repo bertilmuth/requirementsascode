@@ -20,7 +20,7 @@ public class StepAsPart{
 
 	StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
 		this.stepPart = useCaseStepPart;
-		this.step = useCaseStepPart.useCaseStep();
+		this.step = useCaseStepPart.getStep();
 		
 		step.setActors(actors);
 		connectActorsToThisStep(step, actors);
@@ -67,16 +67,16 @@ public class StepAsPart{
 
 	public UseCasePart continueAt(String stepName) {
 		system(new ContinueAt(step.getUseCase(), stepName)); 
-		return stepPart.useCasePart();
+		return stepPart.getUseCasePart();
 	}
 
 	public UseCasePart continueAfter(String stepName) {		
 		system(new ContinueAfter(step.getUseCase(), stepName));
-		return stepPart.useCasePart();
+		return stepPart.getUseCasePart();
 	}
 
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
 		system(new ContinueWithoutAlternativeAt(step.getUseCase(), stepName));
-		return stepPart.useCasePart();
+		return stepPart.getUseCasePart();
 	}
 }

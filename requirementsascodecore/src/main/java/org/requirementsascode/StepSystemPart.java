@@ -21,12 +21,12 @@ public class StepSystemPart<T>{
 
 	StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.stepPart = useCaseStepPart;
-		this.step = useCaseStepPart.useCaseStep();
+		this.step = useCaseStepPart.getStep();
 		step.setSystemReaction(systemReaction);
 	}
 
 	public UseCaseModel build() {
-		return stepPart.useCaseModelBuilder().build();
+		return stepPart.getUseCaseModelBuilder().build();
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class StepSystemPart<T>{
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		FlowPart useCaseFlowPart = stepPart.useCaseFlowPart();
+		FlowPart useCaseFlowPart = stepPart.getFlowPart();
 		Flow useCaseFlow = useCaseFlowPart.getUseCaseFlow();
 		
 		Step nextUseCaseStepInFlow = 
@@ -58,7 +58,7 @@ public class StepSystemPart<T>{
 	public FlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
 		FlowPart useCaseFlowPart = 
-			stepPart.useCasePart().flow(flowName);
+			stepPart.getUseCasePart().flow(flowName);
 		return useCaseFlowPart;
 	}
 	
@@ -72,7 +72,7 @@ public class StepSystemPart<T>{
 	public UseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart useCasePart = 
-			stepPart.useCaseModelBuilder().useCase(useCaseName);
+			stepPart.getUseCaseModelBuilder().useCase(useCaseName);
 		return useCasePart;
 	}
 	
@@ -91,7 +91,7 @@ public class StepSystemPart<T>{
 	public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
 		Objects.requireNonNull(condition);
 		
-		Step useCaseStep = stepPart.useCaseStep();
+		Step useCaseStep = stepPart.getStep();
 		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.getPredicate().and(condition);
 		Predicate<UseCaseModelRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));

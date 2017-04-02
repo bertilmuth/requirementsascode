@@ -19,7 +19,7 @@ public class StepUserPart<T>{
 
 	StepUserPart(StepPart useCaseStepPart, Class<T> eventClass) {
 		this.stepPart = useCaseStepPart;
-		this.step = useCaseStepPart.useCaseStep();
+		this.step = useCaseStepPart.getStep();
 
 		step.setEventClass(eventClass);
 	}

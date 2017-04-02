@@ -13,14 +13,14 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  *
  */
 public class StepPart {
-	private Step useCaseStep;
-	private FlowPart useCaseFlowPart;
+	private Step step;
+	private FlowPart flowPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 	private Actor systemActor;
 
 	StepPart(Step useCaseStep, FlowPart useCaseFlowPart) {
-		this.useCaseStep = useCaseStep;
-		this.useCaseFlowPart = useCaseFlowPart;
+		this.step = useCaseStep;
+		this.flowPart = useCaseFlowPart;
 		this.useCaseModelBuilder = useCaseFlowPart.getUseCaseModelBuilder();
 		this.systemActor = useCaseModelBuilder.build().systemActor();
 	}
@@ -133,19 +133,19 @@ public class StepPart {
 		return useCasePart;
 	}
 	
-	Step useCaseStep(){
-		return useCaseStep;
+	Step getStep(){
+		return step;
 	}
 	
-	FlowPart useCaseFlowPart(){
-		return useCaseFlowPart;
+	FlowPart getFlowPart(){
+		return flowPart;
 	}
 	
-	UseCasePart useCasePart(){
-		return useCaseFlowPart().getUseCasePart();
+	UseCasePart getUseCasePart(){
+		return getFlowPart().getUseCasePart();
 	}
 	
-	UseCaseModelBuilder useCaseModelBuilder(){
+	UseCaseModelBuilder getUseCaseModelBuilder(){
 		return useCaseModelBuilder;
 	}
 }
