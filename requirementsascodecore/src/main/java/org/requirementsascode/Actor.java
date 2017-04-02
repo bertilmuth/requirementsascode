@@ -61,7 +61,7 @@ public class Actor extends UseCaseModelElement{
 		return useCaseSteps(useCase);
 	}
 	
-	public void newStep(Step useCaseStep) {
+	void newStep(Step useCaseStep) {
 		Objects.requireNonNull(useCaseStep.useCase());
 		Objects.requireNonNull(useCaseStep);
 		
