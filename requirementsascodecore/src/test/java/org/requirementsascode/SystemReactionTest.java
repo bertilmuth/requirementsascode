@@ -199,7 +199,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
+					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
 		useCaseRunner.run(useCaseModel);
@@ -267,10 +267,10 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 		
 		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseRunner.reactTo(enterText());
 		
 		useCaseRunner.as(secondActor).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
