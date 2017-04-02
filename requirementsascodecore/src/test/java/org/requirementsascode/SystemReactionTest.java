@@ -170,7 +170,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<UseCaseStep> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
 		assertEquals(1, stepsThatCanReact.size());
 		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().name().toString());
 	}
@@ -190,7 +190,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<UseCaseStep> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
 		assertEquals(2, stepsThatCanReact.size());
 	}
 	
@@ -203,7 +203,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 				
 		useCaseRunner.run(useCaseModel);
-		Optional<UseCaseStep> latestStepRun = useCaseRunner.reactTo(enterText());
+		Optional<Step> latestStepRun = useCaseRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().name());
 	}
@@ -406,7 +406,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 		
 		useCaseRunner.as(customer).run(useCaseModel);
-		Optional<UseCaseStep> lastStepRun = useCaseRunner.reactTo(enterText());
+		Optional<Step> lastStepRun = useCaseRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().name());
 	}
@@ -443,7 +443,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 				
 		useCaseRunner.as(customer).run(useCaseModel);
-		Optional<UseCaseStep> lastStepRun = useCaseRunner.reactTo(enterText());
+		Optional<Step> lastStepRun = useCaseRunner.reactTo(enterText());
 		
 		assertFalse(lastStepRun.isPresent());
 	}
@@ -530,7 +530,7 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 		
 		useCaseRunner.run(useCaseModel);
-		Optional<UseCaseStep> latestStep = useCaseRunner.reactTo(enterText());
+		Optional<Step> latestStep = useCaseRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStep.get().name());
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());

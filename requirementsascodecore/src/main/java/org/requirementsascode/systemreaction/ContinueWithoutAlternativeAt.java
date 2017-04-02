@@ -3,7 +3,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep; 
+import org.requirementsascode.Step; 
 
 public class ContinueWithoutAlternativeAt extends ContinueAt{
 	public ContinueWithoutAlternativeAt(UseCase useCase, String stepName) {
@@ -16,7 +16,7 @@ public class ContinueWithoutAlternativeAt extends ContinueAt{
 		super.accept(runner);		
 	}
 	
-	private Predicate<UseCaseStep> includeOnly(String stepName) {
+	private Predicate<Step> includeOnly(String stepName) {
 		return step -> stepName.equals(step.name());
 	}
 }

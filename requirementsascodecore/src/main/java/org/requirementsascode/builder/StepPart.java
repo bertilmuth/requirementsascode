@@ -6,23 +6,23 @@ import java.util.function.Consumer;
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  * 
- * @see UseCaseStep
+ * @see Step
  * @author b_muth
  *
  */
-public class UseCaseStepPart {
-	private UseCaseStep useCaseStep;
+public class StepPart {
+	private Step useCaseStep;
 	private FlowPart useCaseFlowPart;
 	private UseCaseModelBuilder useCaseModelBuilder;
 	private Actor systemActor;
 
-	public UseCaseStepPart(UseCaseStep useCaseStep, FlowPart useCaseFlowPart) {
+	public StepPart(Step useCaseStep, FlowPart useCaseFlowPart) {
 		this.useCaseStep = useCaseStep;
 		this.useCaseFlowPart = useCaseFlowPart;
 		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
@@ -137,7 +137,7 @@ public class UseCaseStepPart {
 		return useCasePart;
 	}
 	
-	public UseCaseStep useCaseStep(){
+	public Step useCaseStep(){
 		return useCaseStep;
 	}
 	

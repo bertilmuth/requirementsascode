@@ -18,7 +18,7 @@ import java.util.Set;
  *
  */
 public class Actor extends UseCaseModelElement{
-	private Map<UseCase, List<UseCaseStep>> useCaseToStepMap;
+	private Map<UseCase, List<Step>> useCaseToStepMap;
 
 	/**
 	 * Creates an actor with the specified name that is part
@@ -55,21 +55,21 @@ public class Actor extends UseCaseModelElement{
 	 * @param useCase the use case to query for steps the actor is connected with
 	 * @return the use case steps the actor is connected with
 	 */
-	public List<UseCaseStep> stepsOf(UseCase useCase) {
+	public List<Step> stepsOf(UseCase useCase) {
 		Objects.requireNonNull(useCase);
 
 		return useCaseSteps(useCase);
 	}
 	
-	public void newStep(UseCaseStep useCaseStep) {
+	public void newStep(Step useCaseStep) {
 		Objects.requireNonNull(useCaseStep.useCase());
 		Objects.requireNonNull(useCaseStep);
 		
-		List<UseCaseStep> steps = useCaseSteps(useCaseStep.useCase());
+		List<Step> steps = useCaseSteps(useCaseStep.useCase());
 		steps.add(useCaseStep);
 	}
 
-	private List<UseCaseStep> useCaseSteps(UseCase useCase) {		
+	private List<Step> useCaseSteps(UseCase useCase) {		
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}

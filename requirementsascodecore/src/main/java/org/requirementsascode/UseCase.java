@@ -32,7 +32,7 @@ import org.requirementsascode.predicate.After;
  */
 public class UseCase extends UseCaseModelElement{
 	private Map<String, Flow> nameToFlowMap;
-	private Map<String, UseCaseStep> nameToStepMap;
+	private Map<String, Step> nameToStepMap;
 	private Flow basicFlow;
 
 	/**
@@ -107,27 +107,27 @@ public class UseCase extends UseCaseModelElement{
 	 * after previous step, unless interrupted by other step (e.g "insteadOf").
 	 * @return the newly created step
 	 */
-	public UseCaseStep newStep(String stepName, Flow flow, Optional<UseCaseStep> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
-		UseCaseStep step = new UseCaseStep(stepName, flow, previousStep);
+	public Step newStep(String stepName, Flow flow, Optional<Step> previousStep, Optional<Predicate<UseCaseModelRunner>> predicate) {
+		Step step = new Step(stepName, flow, previousStep);
 		step.setPredicate(predicate.orElse(afterPreviousStepUnlessOtherStepCouldReact(step)));
 		saveModelElement(step, nameToStepMap);
 		return step;
 	}
-	private Predicate<UseCaseModelRunner> afterPreviousStepUnlessOtherStepCouldReact(UseCaseStep currentStep) {
-		Optional<UseCaseStep> previousStepInFlow = currentStep.previousStepInFlow();
+	private Predicate<UseCaseModelRunner> afterPreviousStepUnlessOtherStepCouldReact(Step currentStep) {
+		Optional<Step> previousStepInFlow = currentStep.previousStepInFlow();
 		Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStepInFlow);
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}
-	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(UseCaseStep theStep) {
+	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(Step theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventClass();
 			UseCaseModel useCaseModel = theStep.useCaseModel();
 			
-			Stream<UseCaseStep> otherStepsStream = 
+			Stream<Step> otherStepsStream = 
 				useCaseModel.steps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<UseCaseStep> otherStepsThatCouldReact = useCaseRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
+			Set<Step> otherStepsThatCouldReact = useCaseRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
 			return otherStepsThatCouldReact.size() == 0;
 		};
 	}
@@ -151,8 +151,8 @@ public class UseCase extends UseCaseModelElement{
 	 * @return the step if found, or else an empty optional
 	 * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use case
 	 */
-	public UseCaseStep findStep(String stepName) {
-		UseCaseStep step = findModelElement(stepName, nameToStepMap);
+	public Step findStep(String stepName) {
+		Step step = findModelElement(stepName, nameToStepMap);
 		return step;
 	}
 	
@@ -172,7 +172,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return a collection of the steps
 	 */
-	public Collection<UseCaseStep> steps() {
+	public Collection<Step> steps() {
 		return getModelElements(nameToStepMap);
 	}
 }

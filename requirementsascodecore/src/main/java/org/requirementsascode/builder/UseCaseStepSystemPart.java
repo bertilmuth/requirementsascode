@@ -8,22 +8,22 @@ import java.util.function.Predicate;
 import org.requirementsascode.Flow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.predicate.After;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  * 
- * @see UseCaseStep#setSystemReaction(Consumer)
+ * @see Step#setSystemReaction(Consumer)
  * @author b_muth
  *
  */
 public class UseCaseStepSystemPart<T>{
-	private UseCaseStepPart useCaseStepPart;
-	private UseCaseStep useCaseStep;
+	private StepPart useCaseStepPart;
+	private Step useCaseStep;
 
-	public UseCaseStepSystemPart(UseCaseStepPart useCaseStepPart, Consumer<T> systemReaction) {
+	public UseCaseStepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
 		useCaseStep.setSystemReaction(systemReaction);
@@ -40,16 +40,16 @@ public class UseCaseStepSystemPart<T>{
 	 * @return the newly created step
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
-	public UseCaseStepPart step(String stepName) {
+	public StepPart step(String stepName) {
 		FlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
 		Flow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
-		UseCaseStep nextUseCaseStepInFlow = 
+		Step nextUseCaseStepInFlow = 
 			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
 				Optional.of(useCaseStep), 
 					Optional.empty());
 		
-		return new UseCaseStepPart(nextUseCaseStepInFlow, useCaseFlowPart);
+		return new StepPart(nextUseCaseStepInFlow, useCaseFlowPart);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class UseCaseStepSystemPart<T>{
 	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
 		Objects.requireNonNull(condition);
 		
-		UseCaseStep useCaseStep = useCaseStepPart.useCaseStep();
+		Step useCaseStep = useCaseStepPart.useCaseStep();
 		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
 		Predicate<UseCaseModelRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));

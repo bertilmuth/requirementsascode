@@ -18,9 +18,9 @@ import java.util.function.Predicate;
  * @author b_muth
  *
  */
-public class UseCaseStep extends UseCaseModelElement { 
+public class Step extends UseCaseModelElement { 
 	private Flow useCaseFlow;
-	private Optional<UseCaseStep> previousStepInFlow;
+	private Optional<Step> previousStepInFlow;
 	private Predicate<UseCaseModelRunner> predicate;
 
 	private Actor[] actors;
@@ -39,14 +39,14 @@ public class UseCaseStep extends UseCaseModelElement {
 	 *            the step created before the step in its flow, or else an empty
 	 *            optional if it is the first step in its flow
 	 */
-	UseCaseStep(String stepName, Flow useCaseFlow, Optional<UseCaseStep> previousStepInFlow) {
+	Step(String stepName, Flow useCaseFlow, Optional<Step> previousStepInFlow) {
 		super(stepName, useCaseFlow.useCaseModel());
 		Objects.requireNonNull(previousStepInFlow);
 		this.useCaseFlow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;
 	}
 	
-	public Optional<UseCaseStep> previousStepInFlow() {
+	public Optional<Step> previousStepInFlow() {
 		return previousStepInFlow;
 	}
 

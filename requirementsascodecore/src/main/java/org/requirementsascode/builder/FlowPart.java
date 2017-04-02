@@ -8,7 +8,7 @@ import org.requirementsascode.UseCase;
 import org.requirementsascode.Flow;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.predicate.After;
@@ -41,11 +41,11 @@ public class FlowPart {
 	 * @return the newly created step, to ease creation of further steps
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
-	public UseCaseStepPart step(String stepName) {
-		UseCaseStep useCaseStep = 
+	public StepPart step(String stepName) {
+		Step useCaseStep = 
 			useCasePart.useCase().newStep(stepName, useCaseFlow, 
 				Optional.empty(), flowPredicate());
-		return new UseCaseStepPart(useCaseStep, this);
+		return new StepPart(useCaseStep, this);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class FlowPart {
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public FlowPart after(String stepName) {
-		UseCaseStep step = useCase.findStep(stepName);
+		Step step = useCase.findStep(stepName);
 		flowPredicate.setStepPredicate(new After(Optional.of(step)));
 		return this;
 	}
@@ -82,7 +82,7 @@ public class FlowPart {
 	 * @throws NoSuchElementInModel if the specified step is not found in this flow's use case
 	 */
 	public FlowPart insteadOf(String stepName) {
-		UseCaseStep step = useCase.findStep(stepName);
+		Step step = useCase.findStep(stepName);
 		flowPredicate.setStepPredicate(new InsteadOf(step));
 	
 		return this;	

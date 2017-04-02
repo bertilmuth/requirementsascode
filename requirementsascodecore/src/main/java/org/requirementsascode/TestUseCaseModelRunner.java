@@ -36,7 +36,7 @@ public class TestUseCaseModelRunner extends UseCaseModelRunner{
 			systemReactionTrigger.trigger();
 		};
 	}
-	private String trackStepName(UseCaseStep useCaseStep) {
+	private String trackStepName(Step useCaseStep) {
 		String trackedStepName = useCaseStep.name() + ";";
 		return trackedStepName;
 	}

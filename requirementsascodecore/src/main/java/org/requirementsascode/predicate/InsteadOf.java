@@ -4,13 +4,13 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.Step;
 
 public class InsteadOf implements Predicate<UseCaseModelRunner>{
 	private After after;
 
-	public InsteadOf(UseCaseStep step) {
-		Optional<UseCaseStep> previousStep = step.previousStepInFlow();
+	public InsteadOf(Step step) {
+		Optional<Step> previousStep = step.previousStepInFlow();
 		this.after = new After(previousStep);
 	}
 	

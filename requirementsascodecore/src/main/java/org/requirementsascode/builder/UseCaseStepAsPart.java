@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.UseCaseStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.ContinueAfter;
 import org.requirementsascode.systemreaction.ContinueAt;
 import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
@@ -14,15 +14,15 @@ import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  * 
- * @see UseCaseStep#setActors(Actor[])
+ * @see Step#setActors(Actor[])
  * @author b_muth
  *
  */
 public class UseCaseStepAsPart{
-	private UseCaseStep useCaseStep;
-	private UseCaseStepPart useCaseStepPart;
+	private Step useCaseStep;
+	private StepPart useCaseStepPart;
 
-	public UseCaseStepAsPart(UseCaseStepPart useCaseStepPart, Actor[] actors) {
+	public UseCaseStepAsPart(StepPart useCaseStepPart, Actor[] actors) {
 		this.useCaseStepPart = useCaseStepPart;
 		this.useCaseStep = useCaseStepPart.useCaseStep();
 		
@@ -30,7 +30,7 @@ public class UseCaseStepAsPart{
 		connectActorsToThisStep(useCaseStep, actors);
 	}
 	
-	private void connectActorsToThisStep(UseCaseStep useCaseStep, Actor[] actors) {
+	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
 		for (Actor actor : actors) {
 			actor.newStep(useCaseStep);
 		}

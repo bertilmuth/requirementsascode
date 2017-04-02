@@ -117,7 +117,7 @@ public class UseCaseModel {
 	 * 
 	 * @return the use steps
 	 */
-	public Collection<UseCaseStep> steps() {
+	public Collection<Step> steps() {
 		return useCases().stream()
 			.map(useCase -> useCase.steps())
 			.flatMap(steps -> steps.stream())

@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  */
 public class SystemReactionTrigger {
 	private Object event;
-	private UseCaseStep useCaseStep;
+	private Step useCaseStep;
 	
 	SystemReactionTrigger() {
 	}
@@ -22,14 +22,14 @@ public class SystemReactionTrigger {
 	/**
 	 * The system reaction of the step accepts the event 
 	 * (both event and step passed in earlier).
-	 * @see #setupWith(Object, UseCaseStep)
+	 * @see #setupWith(Object, Step)
 	 */
 	@SuppressWarnings("unchecked")
 	public void trigger(){
 		((Consumer<Object>)useCaseStep.getSystemReaction()).accept(event);
 	}
 	
-	void setupWith(Object event, UseCaseStep useCaseStep) {
+	void setupWith(Object event, Step useCaseStep) {
 		this.event = event;
 		this.useCaseStep = useCaseStep;
 	}
@@ -50,7 +50,7 @@ public class SystemReactionTrigger {
 	 * 
 	 * @return the use case step.
 	 */
-	public UseCaseStep useCaseStep() {
+	public Step useCaseStep() {
 		return useCaseStep;
 	}
 }
