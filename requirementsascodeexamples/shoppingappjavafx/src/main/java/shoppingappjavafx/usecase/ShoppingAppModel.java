@@ -14,7 +14,7 @@ import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.GoBack;
 
-public class ShoppingAppModelBuilder{
+public class ShoppingAppModel{
 	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
 	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
 	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
@@ -25,7 +25,7 @@ public class ShoppingAppModelBuilder{
 	
 	private BuyProductRealization buyProductRealization;
 
-	public ShoppingAppModelBuilder(BuyProductRealization buyProductRealization){
+	public ShoppingAppModel(BuyProductRealization buyProductRealization){
 		this.buyProductRealization = buyProductRealization;
 	}
 	
@@ -44,10 +44,10 @@ public class ShoppingAppModelBuilder{
 				.step("S10").user(CONFIRM_PURCHASE).system(initiateShipping())
 				.step("S11").continueAt("S1")	
 			.flow("Go back from shipping").after("S5")
-				.step("S6a_1").user(GO_BACK).system(r -> {})
+				.step("S6a_1").user(GO_BACK)
 				.step("S6a_2").continueAfter("S1")
 			.flow("Go back from payment").after("S7")
-				.step("S8a_1").user(GO_BACK).system(r -> {})
+				.step("S8a_1").user(GO_BACK)
 				.step("S8a_2").continueAfter("S4")
 			.flow("Checkout after going back").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")
 			.flow("Handle exceptions").when(anytime()).step("EX").handle(EXCEPTION).system(informUserAndLogException())

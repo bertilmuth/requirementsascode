@@ -14,7 +14,7 @@ import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.ShoppingAppModelBuilder;
+import shoppingappjavafx.usecase.ShoppingAppModel;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
 import shoppingappjavafx.usecase.event.ConfirmPurchase;
@@ -37,7 +37,7 @@ public class ShoppingAppBuyProductRealizationTest {
 		ShoppingAppBuyProductRealization shoppingAppUseCaseRealization =
 			new ShoppingAppBuyProductRealization(stock, displayStub);
 		useCaseModel = 
-			new ShoppingAppModelBuilder(shoppingAppUseCaseRealization).buildWith(modelBuilder);
+			new ShoppingAppModel(shoppingAppUseCaseRealization).buildWith(modelBuilder);
 	}
 
 	@Test
