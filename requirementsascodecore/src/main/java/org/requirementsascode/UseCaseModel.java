@@ -101,16 +101,20 @@ public class UseCaseModel {
 	 * @return the actors
 	 */
 	public Collection<Actor> getActors() {
-		return getModelElements(nameToActorMap);
+		Collection<Actor> modifiableActors = getModelElements(nameToActorMap);
+		return Collections.unmodifiableCollection(modifiableActors);
 	}
 
 	/**
 	 * Returns the use cases contained in this use case model.
-	 * Do not modify that collection directly, use {@link #newUseCase(String)}.
 	 * 
 	 * @return the use cases
 	 */
 	public Collection<UseCase> getUseCases() {
+		Collection<UseCase> modifiableUseCases = getModifiableUseCases();
+		return Collections.unmodifiableCollection(modifiableUseCases);
+	}
+	Collection<UseCase> getModifiableUseCases() {
 		return getModelElements(nameToUseCaseMap);
 	}
 	
@@ -123,9 +127,8 @@ public class UseCaseModel {
 		Set<Step> modifiableSteps = getModifiableSteps();
 		return Collections.unmodifiableCollection(modifiableSteps);
 	}
-
 	Set<Step> getModifiableSteps() {
-		return getUseCases().stream()
+		return getModifiableUseCases().stream()
 			.map(useCase -> useCase.getModifiableSteps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
