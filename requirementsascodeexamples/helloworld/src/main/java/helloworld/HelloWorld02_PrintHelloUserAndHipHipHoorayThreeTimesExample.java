@@ -2,9 +2,6 @@ package helloworld;
 
 import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
@@ -17,27 +14,25 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(greetUser())
-					.step("S2").system(printHooray())
-						.reactWhile(lessThanThreeHooraysHaveBeenPrinted())
+					.step("S1").system(this::greetUser)
+					.step("S2").system(this::printHooray)
+						.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
 			.build();
 		
 		return useCaseModel;
 	}
 
-	private Consumer<UseCaseModelRunner> greetUser() {
-		return r -> System.out.println("Hello, User.");
+	private void greetUser(UseCaseModelRunner runner) {
+		System.out.println("Hello, User.");
 	}
 	
-	private Predicate<UseCaseModelRunner> lessThanThreeHooraysHaveBeenPrinted() {
-		return r -> hoorayCounter < 3; 
+	private boolean lessThanThreeHooraysHaveBeenPrinted(UseCaseModelRunner runner) {
+		return hoorayCounter < 3; 
 	}
 	
-	private Consumer<UseCaseModelRunner> printHooray() {
-		return r -> {
-			System.out.println("Hip, hip, hooray!");
-			hoorayCounter++;
-		};
+	private void printHooray(UseCaseModelRunner runner) {
+		System.out.println("Hip, hip, hooray!");
+		hoorayCounter++;
 	}
 	
 	public static void main(String[] args){		
