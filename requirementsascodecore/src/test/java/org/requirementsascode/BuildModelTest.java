@@ -23,7 +23,7 @@ public class BuildModelTest extends AbstractTestCase{
 	public void createsNoUseCase() {
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
-		Collection<UseCase> useCases = useCaseModel.useCases();
+		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(0, useCases.size());
 	}
 
@@ -34,7 +34,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		assertTrue(useCaseModel.hasUseCase(USE_CASE));
 
-		Collection<UseCase> useCases = useCaseModel.useCases();
+		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(1, useCases.size());
 		assertEquals(USE_CASE, useCases.iterator().next().name());
 	}
@@ -45,7 +45,7 @@ public class BuildModelTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE_2);
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
-		Collection<UseCase> useCases = useCaseModel.useCases();
+		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(2, useCases.size());
 	}
 	
@@ -54,7 +54,7 @@ public class BuildModelTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
 		UseCaseModelBuilder.builderOf(useCaseModel).useCase(USE_CASE_2);
 
-		Collection<UseCase> useCases = useCaseModel.useCases();
+		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(2, useCases.size());
 	}
 	
@@ -253,8 +253,8 @@ public class BuildModelTest extends AbstractTestCase{
 						.as(customer).user(EnterNumber.class).system(displayEnteredNumber())
 				.build();
 
-		assertTrue(useCaseModel.actors().contains(useCaseModel.systemActor()));
-		assertTrue(useCaseModel.actors().contains(customer));
+		assertTrue(useCaseModel.getActors().contains(useCaseModel.systemActor()));
+		assertTrue(useCaseModel.getActors().contains(customer));
 		
 		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(2, steps.size());
@@ -364,8 +364,8 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
 				.build();
 		
-		assertEquals(1, useCaseModel.useCases().size());
-		assertEquals(useCaseModel.findUseCase(USE_CASE), useCaseModel.useCases().iterator().next());
+		assertEquals(1, useCaseModel.getUseCases().size());
+		assertEquals(useCaseModel.findUseCase(USE_CASE), useCaseModel.getUseCases().iterator().next());
 	}
 	
 	@Test

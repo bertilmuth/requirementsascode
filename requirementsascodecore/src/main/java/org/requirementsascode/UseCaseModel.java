@@ -100,7 +100,7 @@ public class UseCaseModel {
 	 * 
 	 * @return the actors
 	 */
-	public Collection<Actor> actors() {
+	public Collection<Actor> getActors() {
 		return getModelElements(nameToActorMap);
 	}
 
@@ -110,7 +110,7 @@ public class UseCaseModel {
 	 * 
 	 * @return the use cases
 	 */
-	public Collection<UseCase> useCases() {
+	public Collection<UseCase> getUseCases() {
 		return getModelElements(nameToUseCaseMap);
 	}
 	
@@ -125,7 +125,7 @@ public class UseCaseModel {
 	}
 
 	Set<Step> getModifiableSteps() {
-		return useCases().stream()
+		return getUseCases().stream()
 			.map(useCase -> useCase.getModifiableSteps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
