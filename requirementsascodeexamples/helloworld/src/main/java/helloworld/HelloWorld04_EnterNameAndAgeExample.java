@@ -2,8 +2,6 @@ package helloworld;
 
 import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
-import java.util.function.Consumer;
-
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
@@ -19,33 +17,33 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(promptUserToEnterFirstName())
-					.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
-					.step("S3").system(promptUserToEnterAge())
-					.step("S4").user(ENTER_AGE).system(saveAge())
-					.step("S5").system(greetUserWithFirstNameAndAge())
+					.step("S1").system(this::promptUserToEnterFirstName)
+					.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
+					.step("S3").system(this::promptUserToEnterAge)
+					.step("S4").user(ENTER_AGE).system(this::saveAge)
+					.step("S5").system(this::greetUserWithFirstNameAndAge)
 			.build();
 		return useCaseModel;
 	}
 	
-	private Consumer<UseCaseModelRunner> promptUserToEnterFirstName() {
-		return r -> System.out.print("Please enter your first name: ");
+	private void promptUserToEnterFirstName(UseCaseModelRunner runner) {
+		System.out.print("Please enter your first name: ");
 	}
 	
-	private Consumer<UseCaseModelRunner> promptUserToEnterAge() {
-		return r -> System.out.print("Please enter your age: ");
+	private void promptUserToEnterAge(UseCaseModelRunner runner) {
+		System.out.print("Please enter your age: ");
 	}
 
-	private Consumer<EnterText> saveFirstName() {
-		return enterText -> firstName = enterText.text;
+	private void saveFirstName(EnterText enterText) {
+		firstName = enterText.text;
 	}
 	
-	private Consumer<EnterText> saveAge() {
-		return enterText -> age = Integer.parseInt(enterText.text);
+	private void saveAge(EnterText enterText) {
+		age = Integer.parseInt(enterText.text);
 	}
 	
-	private Consumer<UseCaseModelRunner> greetUserWithFirstNameAndAge() {
-		return r -> System.out.println("Hello, " + firstName + " (" + age + ").");
+	private void greetUserWithFirstNameAndAge(UseCaseModelRunner runner) {
+		System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
 	public static void main(String[] args){		
