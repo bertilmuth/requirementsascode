@@ -2,9 +2,6 @@ package helloworld;
 
 import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
@@ -31,23 +28,23 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").as(normalUser).system(promptUserToEnterFirstName())
-					.step("S2").as(normalUser).user(ENTER_FIRST_NAME).system(saveFirstName())
-					.step("S3").as(normalUser, anonymousUser).system(promptUserToEnterAge())
-					.step("S4").as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
-					.step("S5").as(normalUser).system(greetUserWithFirstName())
-					.step("S6").as(normalUser, anonymousUser).system(greetUserWithAge())
+					.step("S1").as(normalUser).system(this::promptUserToEnterFirstName)
+					.step("S2").as(normalUser).user(ENTER_FIRST_NAME).system(this::saveFirstName)
+					.step("S3").as(normalUser, anonymousUser).system(this::promptUserToEnterAge)
+					.step("S4").as(normalUser, anonymousUser).user(ENTER_AGE).system(this::saveAge)
+					.step("S5").as(normalUser).system(this::greetUserWithFirstName)
+					.step("S6").as(normalUser, anonymousUser).system(this::greetUserWithAge)
 					.step("S7").as(normalUser, anonymousUser).system(this::stopSystem)
 						
-				.flow("Handle out-of-bounds age").insteadOf("S5").when(ageIsOutOfBounds())
-					.step("S5a_1").system(informUserAboutOutOfBoundsAge())
+				.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
+					.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
 					.step("S5a_2").continueAt("S3")
 						
 				.flow("Handle non-numerical age").insteadOf("S5")
-					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(informUserAboutNonNumericalAge())
+					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
 					.step("S5b_2").continueAt("S3")
 					
-				.flow("Anonymous greeted with age only").insteadOf("S5").when(ageIsOk())
+				.flow("Anonymous greeted with age only").insteadOf("S5").when(this::ageIsOk)
 					.step("S5c_1").as(anonymousUser).continueAt("S6")
 					
 				.flow("Anonymous does not enter name").insteadOf("S1")
@@ -56,46 +53,44 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 		return useCaseModel;
 	}
 
-	private Consumer<UseCaseModelRunner> promptUserToEnterFirstName() {
-		return r -> System.out.print("Please enter your first name: ");
+	private void promptUserToEnterFirstName(UseCaseModelRunner runner) {
+		System.out.print("Please enter your first name: ");
 	}
 	
-	private Consumer<UseCaseModelRunner> promptUserToEnterAge() {
-		return r -> System.out.print("Please enter your age: ");
+	private void promptUserToEnterAge(UseCaseModelRunner runner) {
+		System.out.print("Please enter your age: ");
 	}
 
-	private Consumer<EnterText> saveFirstName() {
-		return enterText -> firstName = enterText.text;
+	private void saveFirstName(EnterText enterText) {
+		firstName = enterText.text;
 	}
 	
-	private Consumer<EnterText> saveAge() {
-		return enterText -> age = Integer.parseInt(enterText.text);
+	private void saveAge(EnterText enterText) {
+		age = Integer.parseInt(enterText.text);
 	}
 	
-	private Consumer<UseCaseModelRunner> greetUserWithFirstName() {
-		return r -> System.out.println("Hello, " + firstName + ".");
+	private void greetUserWithFirstName(UseCaseModelRunner runner) {
+		System.out.println("Hello, " + firstName + ".");
 	}
 	
-	private Consumer<UseCaseModelRunner> greetUserWithAge() {
-		return r -> System.out.println("You are " + age + " years old.");
+	private void greetUserWithAge(UseCaseModelRunner runner) {
+		System.out.println("You are " + age + " years old.");
 	}
 	
-	private Predicate<UseCaseModelRunner> ageIsOk() {
-		return ageIsOutOfBounds().negate();
+	private boolean ageIsOk(UseCaseModelRunner runner) {
+		return !ageIsOutOfBounds(runner);
 	}
 	
-	private Predicate<UseCaseModelRunner> ageIsOutOfBounds() {
-		return r -> age < MIN_AGE || age > MAX_AGE;
+	private boolean ageIsOutOfBounds(UseCaseModelRunner runner) {
+		return age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private Consumer<UseCaseModelRunner> informUserAboutOutOfBoundsAge() {
-		return r -> 
-			System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
+	private void informUserAboutOutOfBoundsAge(UseCaseModelRunner runner) {
+		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	
-	private Consumer<NumberFormatException> informUserAboutNonNumericalAge() {
-		return exception -> 
-			System.out.println("You entered a non-numerical age.");
+	private void informUserAboutNonNumericalAge(NumberFormatException exception) {
+		System.out.println("You entered a non-numerical age.");
 	}
 	
 	public static void main(String[] args){		
