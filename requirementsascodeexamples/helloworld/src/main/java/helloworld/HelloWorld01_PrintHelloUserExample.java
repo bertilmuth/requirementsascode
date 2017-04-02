@@ -13,7 +13,7 @@ public class HelloWorld01_PrintHelloUserExample {
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::greetUser)
-				.build();
+			.build();
 		return useCaseModel;
 	}
 
