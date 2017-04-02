@@ -1,7 +1,6 @@
 package helloworld;
 
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModelRunner;
 
@@ -20,8 +19,8 @@ public class AbstractHelloWorldExample {
 		return new EnterText(text);
 	}
 	
-	protected Consumer<UseCaseModelRunner> stopSystem(){
-		return r -> isSystemStopped = true;
+	protected void stopSystem(UseCaseModelRunner runner){
+		isSystemStopped = true;
 	}
 	
 	protected boolean systemStopped() {

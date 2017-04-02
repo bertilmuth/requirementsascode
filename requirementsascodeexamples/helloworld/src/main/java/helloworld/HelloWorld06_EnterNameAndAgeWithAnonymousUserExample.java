@@ -44,7 +44,7 @@ public class HelloWorld06_EnterNameAndAgeWithAnonymousUserExample extends Abstra
 					.step(S4).as(normalUser, anonymousUser).user(ENTER_AGE).system(saveAge())
 					.step(S5).as(normalUser).system(greetUserWithFirstName())
 					.step(S6).as(normalUser, anonymousUser).system(greetUserWithAge())
-					.step("S7").as(normalUser, anonymousUser).system(stopSystem())
+					.step("S7").as(normalUser, anonymousUser).system(this::stopSystem)
 						
 				.flow("Handle out-of-bounds age").insteadOf(S5).when(ageIsOutOfBounds())
 					.step("S5a_1").system(informUserAboutOutOfBoundsAge())
