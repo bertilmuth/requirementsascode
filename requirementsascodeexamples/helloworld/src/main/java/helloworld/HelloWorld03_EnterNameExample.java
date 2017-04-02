@@ -2,8 +2,6 @@ package helloworld;
 
 import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
-import java.util.function.Consumer;
-
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
@@ -16,18 +14,18 @@ public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(promptUserToEnterFirstName())
-					.step("S2").user(ENTER_FIRST_NAME).system(greetUserWithFirstName())
+					.step("S1").system(this::promptUserToEnterFirstName)
+					.step("S2").user(ENTER_FIRST_NAME).system(this::greetUserWithFirstName)
 			.build();
 		return useCaseModel;
 	}
 	
-	private Consumer<UseCaseModelRunner> promptUserToEnterFirstName() {
-		return r -> System.out.print("Please enter your first name: ");
+	private void promptUserToEnterFirstName(UseCaseModelRunner runner) {
+		System.out.print("Please enter your first name: ");
 	}
 	
-	private Consumer<EnterText> greetUserWithFirstName() {
-		return enterText -> System.out.println("Hello, " + enterText.text + ".");
+	private void greetUserWithFirstName(EnterText enterText) {
+		System.out.println("Hello, " + enterText.text + ".");
 	}
 	
 	public static void main(String[] args){		
