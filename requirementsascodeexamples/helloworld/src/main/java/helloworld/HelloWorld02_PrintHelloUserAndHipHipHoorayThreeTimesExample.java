@@ -8,7 +8,7 @@ import org.requirementsascode.UseCaseModelRunner;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
 	
-	int hoorayCounter = 0;
+	private int hoorayCounter = 0;
 	
 	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
