@@ -82,12 +82,13 @@ public class UseCaseRunner {
 	 */
 	public void run(UseCaseModel useCaseModel) {
 		this.useCaseModel = useCaseModel;
-		
-		Actor userActor = user.orElse(useCaseModel.userActor());
-		userAndSystem = Arrays.asList(userActor, useCaseModel.systemActor());
-
+		this.userAndSystem = userAndSystem(user.orElse(useCaseModel.userActor()));
 		this.isRunning = true;
 		triggerAutonomousSystemReaction();
+	}
+
+	private List<Actor> userAndSystem(Actor userActor) {
+		return Arrays.asList(userActor, userActor.useCaseModel().systemActor());
 	}
 	
 	/**
@@ -102,8 +103,8 @@ public class UseCaseRunner {
 	 */
 	public UseCaseRunner as(Actor actor) {
 		Objects.requireNonNull(actor);
-		
-		user = Optional.of(actor);
+		this.user = Optional.of(actor);
+		this.userAndSystem = userAndSystem(user.get());
 		return this;
 	}
 	

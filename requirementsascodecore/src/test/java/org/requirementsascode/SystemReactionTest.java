@@ -323,7 +323,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.as(customer).run(useCaseModel);
 		useCaseRunner.reactTo(enterText());
 		
-		useCaseRunner.as(secondActor).run(useCaseModel);
+		useCaseRunner.as(secondActor);
 		useCaseRunner.reactTo(enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
