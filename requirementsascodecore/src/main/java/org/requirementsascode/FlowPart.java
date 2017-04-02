@@ -39,7 +39,7 @@ public class FlowPart {
 	public StepPart step(String stepName) {
 		Step useCaseStep = 
 			useCasePart.useCase().newStep(stepName, useCaseFlow, 
-				Optional.empty(), flowPredicate());
+				Optional.empty(), getFlowPredicate());
 		return new StepPart(useCaseStep, this);
 	}
 
@@ -49,7 +49,7 @@ public class FlowPart {
 	 * 
 	 * @return the flow's predicate
 	 */
-	Optional<Predicate<UseCaseModelRunner>> flowPredicate() {
+	Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
 		return flowPredicate.get();
 	}
 	
@@ -96,15 +96,15 @@ public class FlowPart {
 		return this;
 	}
 	
-	Flow useCaseFlow(){
+	Flow getUseCaseFlow(){
 		return useCaseFlow;
 	}
 	
-	UseCasePart useCasePart(){
+	UseCasePart getUseCasePart(){
 		return useCasePart;
 	}
 
-	UseCaseModelBuilder useCaseModelBuilder(){
+	UseCaseModelBuilder getUseCaseModelBuilder(){
 		return useCasePart.useCaseModelBuilder();
 	}
 	

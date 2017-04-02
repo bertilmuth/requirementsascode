@@ -21,7 +21,7 @@ public class StepPart {
 	StepPart(Step useCaseStep, FlowPart useCaseFlowPart) {
 		this.useCaseStep = useCaseStep;
 		this.useCaseFlowPart = useCaseFlowPart;
-		this.useCaseModelBuilder = useCaseFlowPart.useCaseModelBuilder();
+		this.useCaseModelBuilder = useCaseFlowPart.getUseCaseModelBuilder();
 		this.systemActor = useCaseModelBuilder.build().systemActor();
 	}
 	
@@ -142,7 +142,7 @@ public class StepPart {
 	}
 	
 	UseCasePart useCasePart(){
-		return useCaseFlowPart().useCasePart();
+		return useCaseFlowPart().getUseCasePart();
 	}
 	
 	UseCaseModelBuilder useCaseModelBuilder(){

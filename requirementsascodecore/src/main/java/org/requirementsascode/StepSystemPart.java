@@ -38,7 +38,7 @@ public class StepSystemPart<T>{
 	 */
 	public StepPart step(String stepName) {
 		FlowPart useCaseFlowPart = stepPart.useCaseFlowPart();
-		Flow useCaseFlow = useCaseFlowPart.useCaseFlow();
+		Flow useCaseFlow = useCaseFlowPart.getUseCaseFlow();
 		
 		Step nextUseCaseStepInFlow = 
 			useCaseFlow.getUseCase().newStep(stepName, useCaseFlow, 
