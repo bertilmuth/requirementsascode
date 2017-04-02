@@ -122,7 +122,7 @@ public class UseCase extends UseCaseModelElement{
 	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(Step theStep) {
 		return useCaseRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventClass();
-			UseCaseModel useCaseModel = theStep.useCaseModel();
+			UseCaseModel useCaseModel = theStep.getUseCaseModel();
 			
 			Stream<Step> otherStepsStream = 
 				useCaseModel.getModifiableSteps().stream()

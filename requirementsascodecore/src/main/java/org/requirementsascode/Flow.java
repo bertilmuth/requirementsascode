@@ -24,7 +24,7 @@ public class Flow extends UseCaseModelElement {
 	 * @param useCase the use case that will contain the new flow
 	 */
 	Flow(String name, UseCase useCase) {
-		super(name, useCase.useCaseModel());
+		super(name, useCase.getUseCaseModel());
 		this.useCase = useCase;
 	}
 

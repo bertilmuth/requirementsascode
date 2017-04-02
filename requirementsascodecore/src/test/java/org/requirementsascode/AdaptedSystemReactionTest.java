@@ -35,7 +35,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 
 	private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {
 		return systemReactionTrigger -> {
-			stepName = systemReactionTrigger.getUseCaseStep().name();
+			stepName = systemReactionTrigger.getUseCaseStep().getName();
 			event = systemReactionTrigger.getEvent();
 			systemReactionTrigger.trigger();
 		};

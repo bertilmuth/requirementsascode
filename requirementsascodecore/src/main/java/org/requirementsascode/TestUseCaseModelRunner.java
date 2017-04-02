@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import java.util.function.Consumer;
-
 /**
  * Simple use case model runner for automated tests.
  * 
@@ -9,11 +7,11 @@ import java.util.function.Consumer;
  *
  */
 public class TestUseCaseModelRunner extends UseCaseModelRunner{
-	private String runStepNames;
+	private StringBuilder runStepNames;
 
 	public TestUseCaseModelRunner() {
-		runStepNames = "";
-		adaptSystemReaction(withStepNameTracking());
+		runStepNames = new StringBuilder();
+		adaptSystemReaction(this::withStepNameTracking);
 	}
 	
 	/**
@@ -27,17 +25,13 @@ public class TestUseCaseModelRunner extends UseCaseModelRunner{
 	 * @return the step names
 	 */
 	public String getRunStepNames() {
-		return runStepNames;
+		return runStepNames.toString();
 	}
 	
-	private Consumer<SystemReactionTrigger> withStepNameTracking() {
-		return systemReactionTrigger -> {
-			runStepNames += trackStepName(systemReactionTrigger.getUseCaseStep());
-			systemReactionTrigger.trigger();
-		};
-	}
-	private String trackStepName(Step useCaseStep) {
-		String trackedStepName = useCaseStep.name() + ";";
-		return trackedStepName;
+	private void withStepNameTracking(SystemReactionTrigger systemReactionTrigger) {
+		String stepName = systemReactionTrigger.getUseCaseStep().getName();
+		runStepNames.append(stepName);
+		runStepNames.append(";");
+		systemReactionTrigger.trigger();
 	}
 }

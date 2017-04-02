@@ -32,7 +32,7 @@ abstract class UseCaseModelElement {
 	 * 
 	 * @return the name
 	 */
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
@@ -41,12 +41,12 @@ abstract class UseCaseModelElement {
 	 * 
 	 * @return the use case model
 	 */
-	public UseCaseModel useCaseModel() {
+	public UseCaseModel getUseCaseModel() {
 		return useCaseModel;
 	}
 
 	@Override
 	public String toString() {
-		return name();
+		return getName();
 	}
 }

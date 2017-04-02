@@ -40,7 +40,7 @@ public class Step extends UseCaseModelElement {
 	 *            optional if it is the first step in its flow
 	 */
 	Step(String stepName, Flow useCaseFlow, Optional<Step> previousStepInFlow) {
-		super(stepName, useCaseFlow.useCaseModel());
+		super(stepName, useCaseFlow.getUseCaseModel());
 		Objects.requireNonNull(previousStepInFlow);
 		this.flow = useCaseFlow;
 		this.previousStepInFlow = previousStepInFlow;

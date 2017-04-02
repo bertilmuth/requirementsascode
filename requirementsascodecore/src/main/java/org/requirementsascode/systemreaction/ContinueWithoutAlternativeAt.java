@@ -17,6 +17,6 @@ public class ContinueWithoutAlternativeAt extends ContinueAt{
 	}
 	
 	private Predicate<Step> includeOnly(String stepName) {
-		return step -> stepName.equals(step.name());
+		return step -> stepName.equals(step.getName());
 	}
 }

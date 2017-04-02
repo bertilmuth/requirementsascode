@@ -88,7 +88,7 @@ public class UseCaseModelRunner {
 	}
 
 	private List<Actor> userAndSystem(Actor userActor) {
-		return Arrays.asList(userActor, userActor.useCaseModel().systemActor());
+		return Arrays.asList(userActor, userActor.getUseCaseModel().systemActor());
 	}
 	
 	/**

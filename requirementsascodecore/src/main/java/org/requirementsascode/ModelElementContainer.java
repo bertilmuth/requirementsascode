@@ -37,7 +37,7 @@ class ModelElementContainer {
 		Objects.requireNonNull(modelElement);
 		Objects.requireNonNull(modelElementNameToElementMap);
 		
-		String modelElementName = modelElement.name();
+		String modelElementName = modelElement.getName();
 		if(hasModelElement(modelElementName, modelElementNameToElementMap)){
 			throw new ElementAlreadyInModel(modelElementName);
 		}

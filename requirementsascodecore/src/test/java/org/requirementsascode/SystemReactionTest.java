@@ -172,7 +172,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		
 		Set<Step> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
 		assertEquals(1, stepsThatCanReact.size());
-		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().name().toString());
+		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
 	}
 	
 	@Test
@@ -205,7 +205,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run(useCaseModel);
 		Optional<Step> latestStepRun = useCaseRunner.reactTo(enterText());
 		
-		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().name());
+		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().getName());
 	}
 	
 	@Test
@@ -408,7 +408,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.as(customer).run(useCaseModel);
 		Optional<Step> lastStepRun = useCaseRunner.reactTo(enterText());
 		
-		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().name());
+		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().getName());
 	}
 	
 	@Test
@@ -532,7 +532,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseRunner.run(useCaseModel);
 		Optional<Step> latestStep = useCaseRunner.reactTo(enterText());
 		
-		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStep.get().name());
+		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStep.get().getName());
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
 	}
 	
