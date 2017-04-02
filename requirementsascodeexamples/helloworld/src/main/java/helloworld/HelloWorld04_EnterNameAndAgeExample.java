@@ -1,12 +1,12 @@
 package helloworld;
 
-import static org.requirementsascode.builder.UseCaseModelBuilder.newBuilder;
+import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
 import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;

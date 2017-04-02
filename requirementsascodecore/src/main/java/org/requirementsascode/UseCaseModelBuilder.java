@@ -1,8 +1,5 @@
-package org.requirementsascode.builder;
+package org.requirementsascode;
 
-import org.requirementsascode.Actor;
-import org.requirementsascode.UseCase;
-import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**

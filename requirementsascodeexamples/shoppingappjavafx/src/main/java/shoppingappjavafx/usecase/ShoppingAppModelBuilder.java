@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;

@@ -1,8 +1,4 @@
-package org.requirementsascode.builder;
-
-import org.requirementsascode.UseCase;
-import org.requirementsascode.Flow;
-import org.requirementsascode.UseCaseModel;
+package org.requirementsascode;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.

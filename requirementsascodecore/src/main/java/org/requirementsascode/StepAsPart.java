@@ -1,12 +1,8 @@
-package org.requirementsascode.builder;
+package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.requirementsascode.Actor;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.ContinueAfter;
 import org.requirementsascode.systemreaction.ContinueAt;
 import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;

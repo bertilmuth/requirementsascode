@@ -12,8 +12,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.builder.UseCaseModelBuilder;
-import org.requirementsascode.builder.UseCasePart;
 
 public class BuildModelTest extends AbstractTestCase{			
 	@Before

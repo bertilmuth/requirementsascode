@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.builder.UseCaseModelBuilder;
+import org.requirementsascode.UseCaseModelBuilder;
 
 import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;

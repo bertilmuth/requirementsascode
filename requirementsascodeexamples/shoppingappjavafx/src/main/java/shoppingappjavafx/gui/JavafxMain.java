@@ -3,8 +3,8 @@ package shoppingappjavafx.gui;
 import java.io.IOException;
 
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.builder.UseCaseModelBuilder;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

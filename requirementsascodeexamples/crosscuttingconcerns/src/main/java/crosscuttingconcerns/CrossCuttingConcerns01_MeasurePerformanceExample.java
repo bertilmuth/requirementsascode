@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.SystemReactionTrigger;
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private int resultOfAddition;

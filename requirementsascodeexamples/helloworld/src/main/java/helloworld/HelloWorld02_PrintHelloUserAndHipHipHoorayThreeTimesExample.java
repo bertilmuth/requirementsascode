@@ -1,13 +1,13 @@
 package helloworld;
 
-import static org.requirementsascode.builder.UseCaseModelBuilder.newBuilder;
+import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.builder.UseCaseModelBuilder;
 
 public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
 	

@@ -1,14 +1,10 @@
-package org.requirementsascode.builder;
+package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.Flow;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRunner;
-import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.predicate.After;
 
