@@ -239,6 +239,21 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void twoSequentialStepsReactWhenOneIsUserStepAndOtherIsSystemStep() {		
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class)
+					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+			.build();
+		
+		useCaseRunner.run(useCaseModel);
+		useCaseRunner.reactTo(enterText());
+		
+		assertEquals(CUSTOMER_ENTERS_TEXT +";" + SYSTEM_DISPLAYS_TEXT +";", runStepNames());
+	}
+	
+	@Test
 	public void twoSequentialStepsReactOnlyWhenActorIsRight() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			

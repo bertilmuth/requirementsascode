@@ -30,7 +30,7 @@ public class UseCaseStepSystemPart<T>{
 	 * Creates a new step in this flow, with the specified name, that follows the current step in sequence.
 	 * 
 	 * @param stepName the name of the step to be created
-	 * @return the newly created step, to ease creation of further steps
+	 * @return the newly created step
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
 	public UseCaseStepPart step(String stepName) {
