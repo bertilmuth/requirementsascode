@@ -18,16 +18,16 @@ import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
  * @author b_muth
  *
  */
-public class UseCaseStepAsPart{
-	private Step useCaseStep;
-	private StepPart useCaseStepPart;
+public class StepAsPart{
+	private Step step;
+	private StepPart stepPart;
 
-	public UseCaseStepAsPart(StepPart useCaseStepPart, Actor[] actors) {
-		this.useCaseStepPart = useCaseStepPart;
-		this.useCaseStep = useCaseStepPart.useCaseStep();
+	public StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
+		this.stepPart = useCaseStepPart;
+		this.step = useCaseStepPart.useCaseStep();
 		
-		useCaseStep.setActors(actors);
-		connectActorsToThisStep(useCaseStep, actors);
+		step.setActors(actors);
+		connectActorsToThisStep(step, actors);
 	}
 	
 	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
@@ -48,9 +48,9 @@ public class UseCaseStepAsPart{
 	 * @param <T> the type of the class
 	 * @return the created user part of this step
 	 */
-	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
+	public <T> StepUserPart<T> user(Class<T> eventClass) {
 		Objects.requireNonNull(eventClass);
-		return new UseCaseStepUserPart<>(useCaseStepPart, eventClass);
+		return new StepUserPart<>(stepPart, eventClass);
 	}
 	
 	/**
@@ -62,25 +62,25 @@ public class UseCaseStepAsPart{
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
+	public StepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		UseCaseStepSystemPart<UseCaseModelRunner> systemPart = 
+		StepSystemPart<UseCaseModelRunner> systemPart = 
 			user(UseCaseModelRunner.class).system(systemReaction);
 		return systemPart;
 	} 
 
 	public UseCasePart continueAt(String stepName) {
-		system(new ContinueAt(useCaseStep.useCase(), stepName)); 
-		return useCaseStepPart.useCasePart();
+		system(new ContinueAt(step.useCase(), stepName)); 
+		return stepPart.useCasePart();
 	}
 
 	public UseCasePart continueAfter(String stepName) {		
-		system(new ContinueAfter(useCaseStep.useCase(), stepName));
-		return useCaseStepPart.useCasePart();
+		system(new ContinueAfter(step.useCase(), stepName));
+		return stepPart.useCasePart();
 	}
 
 	public UseCasePart continueWithoutAlternativeAt(String stepName) {
-		system(new ContinueWithoutAlternativeAt(useCaseStep.useCase(), stepName));
-		return useCaseStepPart.useCasePart();
+		system(new ContinueWithoutAlternativeAt(step.useCase(), stepName));
+		return stepPart.useCasePart();
 	}
 }

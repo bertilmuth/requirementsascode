@@ -16,15 +16,15 @@ import org.requirementsascode.systemreaction.IgnoreIt;
  * @author b_muth
  *
  */
-public class UseCaseStepUserPart<T>{
-	private StepPart useCaseStepPart;
-	private Step useCaseStep;
+public class StepUserPart<T>{
+	private StepPart stepPart;
+	private Step step;
 
-	public UseCaseStepUserPart(StepPart useCaseStepPart, Class<T> eventClass) {
-		this.useCaseStepPart = useCaseStepPart;
-		this.useCaseStep = useCaseStepPart.useCaseStep();
+	public StepUserPart(StepPart useCaseStepPart, Class<T> eventClass) {
+		this.stepPart = useCaseStepPart;
+		this.step = useCaseStepPart.useCaseStep();
 
-		useCaseStep.setEventClass(eventClass);
+		step.setEventClass(eventClass);
 	}
 
 	/**
@@ -35,9 +35,9 @@ public class UseCaseStepUserPart<T>{
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step 
 	 */
-	public UseCaseStepSystemPart<T> system(Consumer<T> systemReaction) {
+	public StepSystemPart<T> system(Consumer<T> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		return new UseCaseStepSystemPart<>(useCaseStepPart, systemReaction);
+		return new StepSystemPart<>(stepPart, systemReaction);
 	}
 	
 	/**

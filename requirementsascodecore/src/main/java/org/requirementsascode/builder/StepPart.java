@@ -36,9 +36,9 @@ public class StepPart {
 	 * @param actors the actors that define the user groups
 	 * @return the created as part of this step
 	 */
-	public UseCaseStepAsPart as(Actor... actors) {
+	public StepAsPart as(Actor... actors) {
 		Objects.requireNonNull(actors);
-		return new UseCaseStepAsPart(this, actors);
+		return new StepAsPart(this, actors);
 	}
 
 	/**
@@ -53,10 +53,10 @@ public class StepPart {
 	 * @param <T> the type of the class
 	 * @return the created user part of this step
 	 */
-	public <T> UseCaseStepUserPart<T> user(Class<T> eventClass) {
+	public <T> StepUserPart<T> user(Class<T> eventClass) {
 		Objects.requireNonNull(eventClass);
 		Actor userActor = useCaseModelBuilder.build().userActor();
-		UseCaseStepUserPart<T> userPart = as(userActor).user(eventClass);
+		StepUserPart<T> userPart = as(userActor).user(eventClass);
 		return userPart;
 	}
 
@@ -72,10 +72,10 @@ public class StepPart {
 	 * @param <T> the type of the class
 	 * @return the created user part of this step
 	 */
-	public <T> UseCaseStepUserPart<T> handle(Class<T> eventOrExceptionClass) {
+	public <T> StepUserPart<T> handle(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
 		Actor systemActor = useCaseModelBuilder.build().systemActor();
-		UseCaseStepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
+		StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
 		return userPart;
 	}
 
@@ -88,9 +88,9 @@ public class StepPart {
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
 	 */
-	public UseCaseStepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
+	public StepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		UseCaseStepSystemPart<UseCaseModelRunner> systemPart = as(systemActor).system(systemReaction);		
+		StepSystemPart<UseCaseModelRunner> systemPart = as(systemActor).system(systemReaction);		
 		return systemPart;
 	}
 

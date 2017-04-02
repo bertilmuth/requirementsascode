@@ -19,18 +19,18 @@ import org.requirementsascode.predicate.After;
  * @author b_muth
  *
  */
-public class UseCaseStepSystemPart<T>{
-	private StepPart useCaseStepPart;
-	private Step useCaseStep;
+public class StepSystemPart<T>{
+	private StepPart stepPart;
+	private Step step;
 
-	public UseCaseStepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
-		this.useCaseStepPart = useCaseStepPart;
-		this.useCaseStep = useCaseStepPart.useCaseStep();
-		useCaseStep.setSystemReaction(systemReaction);
+	public StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
+		this.stepPart = useCaseStepPart;
+		this.step = useCaseStepPart.useCaseStep();
+		step.setSystemReaction(systemReaction);
 	}
 
 	public UseCaseModel build() {
-		return useCaseStepPart.useCaseModelBuilder().build();
+		return stepPart.useCaseModelBuilder().build();
 	}
 
 	/**
@@ -41,12 +41,12 @@ public class UseCaseStepSystemPart<T>{
 	 * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		FlowPart useCaseFlowPart = useCaseStepPart.useCaseFlowPart();
+		FlowPart useCaseFlowPart = stepPart.useCaseFlowPart();
 		Flow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
 		Step nextUseCaseStepInFlow = 
 			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
-				Optional.of(useCaseStep), 
+				Optional.of(step), 
 					Optional.empty());
 		
 		return new StepPart(nextUseCaseStepInFlow, useCaseFlowPart);
@@ -62,7 +62,7 @@ public class UseCaseStepSystemPart<T>{
 	public FlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
 		FlowPart useCaseFlowPart = 
-			useCaseStepPart.useCasePart().flow(flowName);
+			stepPart.useCasePart().flow(flowName);
 		return useCaseFlowPart;
 	}
 	
@@ -76,7 +76,7 @@ public class UseCaseStepSystemPart<T>{
 	public UseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart useCasePart = 
-			useCaseStepPart.useCaseModelBuilder().useCase(useCaseName);
+			stepPart.useCaseModelBuilder().useCase(useCaseName);
 		return useCasePart;
 	}
 	
@@ -92,10 +92,10 @@ public class UseCaseStepSystemPart<T>{
 	 * @param condition the condition to check
 	 * @return the system part
 	 */
-	public UseCaseStepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
+	public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
 		Objects.requireNonNull(condition);
 		
-		Step useCaseStep = useCaseStepPart.useCaseStep();
+		Step useCaseStep = stepPart.useCaseStep();
 		Predicate<UseCaseModelRunner> performIfConditionIsTrue = useCaseStep.predicate().and(condition);
 		Predicate<UseCaseModelRunner> repeatIfConditionIsTrue = new After(Optional.of(useCaseStep)).and(condition);
 		useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
