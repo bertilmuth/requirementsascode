@@ -8,7 +8,7 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
- * Contains static helper methods to ease the implementation of use case model creation 
+ * Contains static helper methods to ease the implementation of model creation 
  * and finding elements in it, using maps.
  * 
  * @author b_muth
