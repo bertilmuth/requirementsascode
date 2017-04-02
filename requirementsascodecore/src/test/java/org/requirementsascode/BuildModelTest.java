@@ -64,7 +64,7 @@ public class BuildModelTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
 		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
-		Collection<Flow> flows = useCase.flows();
+		Collection<Flow> flows = useCase.getFlows();
 		
 		assertEquals(1, flows.size());
 		assertTrue(useCase.hasFlow(BASIC_FLOW));
@@ -77,7 +77,7 @@ public class BuildModelTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 
 		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
-		Collection<Step> steps = useCase.steps();
+		Collection<Step> steps = useCase.getSteps();
 		assertEquals(0, steps.size());
 	}
 	
@@ -92,7 +92,7 @@ public class BuildModelTest extends AbstractTestCase{
 			.build();
 		
 		UseCase useCase = useCasePart.useCase();
-		Collection<Step> steps = useCase.steps();
+		Collection<Step> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
 		Step step = steps.iterator().next();
@@ -112,7 +112,7 @@ public class BuildModelTest extends AbstractTestCase{
 			.build();
 		
 		UseCase useCase = useCaseModel.findUseCase(USE_CASE);
-		Collection<Step> steps = useCase.steps();
+		Collection<Step> steps = useCase.getSteps();
 		assertEquals(1, steps.size());
 		
 		Step step = steps.iterator().next();
@@ -131,7 +131,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.build();
 						
-		Collection<Step> steps = useCasePart.useCase().steps();
+		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(1, steps.size());
 		
 		Step step = steps.iterator().next();
@@ -150,7 +150,7 @@ public class BuildModelTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).as(customer).system(displayConstantText())
 			.build();
 				
-		Collection<Step> steps = useCasePart.useCase().steps();
+		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(1, steps.size());
 		
 		Step step = steps.iterator().next();
@@ -233,7 +233,7 @@ public class BuildModelTest extends AbstractTestCase{
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText());
 
-		Collection<Step> steps = useCasePart.useCase().steps();
+		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(1, steps.size());
 		
 		Optional<Step> previousStep = steps.iterator().next().getPreviousStepInFlow();
@@ -256,7 +256,7 @@ public class BuildModelTest extends AbstractTestCase{
 		assertTrue(useCaseModel.actors().contains(useCaseModel.systemActor()));
 		assertTrue(useCaseModel.actors().contains(customer));
 		
-		Collection<Step> steps = useCasePart.useCase().steps();
+		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(2, steps.size());
 
 		Iterator<Step> stepIt = steps.iterator();
@@ -278,7 +278,7 @@ public class BuildModelTest extends AbstractTestCase{
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
-		Collection<Step> steps = useCasePart.useCase().steps();
+		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(2, steps.size());
 
 		boolean firstUseCaseStepExists = useCasePart.useCase().hasStep(SYSTEM_DISPLAYS_TEXT);
@@ -297,7 +297,7 @@ public class BuildModelTest extends AbstractTestCase{
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
-		List<Step> steps = useCasePart.useCase().basicFlow().getSteps();
+		List<Step> steps = useCasePart.useCase().getBasicFlow().getSteps();
 		assertEquals(2, steps.size());
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT, steps.get(0).name());
@@ -376,10 +376,10 @@ public class BuildModelTest extends AbstractTestCase{
 		useCase.newFlow(ALTERNATIVE_FLOW);
 		Flow existingFlow = useCase.findFlow(ALTERNATIVE_FLOW);
 		
-		assertEquals(2, useCase.flows().size()); // This is 2 because the basic flow always exists
+		assertEquals(2, useCase.getFlows().size()); // This is 2 because the basic flow always exists
 		
-		Iterator<Flow> flowIt = useCase.flows().iterator();
-		assertEquals(useCase.basicFlow(), flowIt.next());
+		Iterator<Flow> flowIt = useCase.getFlows().iterator();
+		assertEquals(useCase.getBasicFlow(), flowIt.next());
 		assertEquals(existingFlow, flowIt.next());
 	}
 	
@@ -389,7 +389,7 @@ public class BuildModelTest extends AbstractTestCase{
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		UseCase uc = useCaseModel.findUseCase(USE_CASE);
-		assertEquals(1, uc.flows().size());
+		assertEquals(1, uc.getFlows().size());
 	}
 	
 	@Test

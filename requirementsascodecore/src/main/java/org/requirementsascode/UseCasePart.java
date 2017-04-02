@@ -17,7 +17,7 @@ public class UseCasePart {
 	}
 
 	public FlowPart basicFlow() {
-		Flow useCaseFlow = useCase().basicFlow();
+		Flow useCaseFlow = useCase().getBasicFlow();
 		return new FlowPart(useCaseFlow, this);
 	}
 	

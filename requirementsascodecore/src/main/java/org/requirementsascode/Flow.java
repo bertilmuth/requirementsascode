@@ -44,7 +44,7 @@ public class Flow extends UseCaseModelElement {
 	 * @return a collection of the steps
 	 */
 	public List<Step> getSteps() {
-		List<Step> steps = getUseCase().steps().stream()
+		List<Step> steps = getUseCase().getSteps().stream()
 			.filter(step -> step.getFlow().equals(this))
 			.collect(Collectors.toList());
 		return Collections.unmodifiableList(steps);

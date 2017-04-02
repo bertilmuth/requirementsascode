@@ -119,7 +119,7 @@ public class UseCaseModel {
 	 */
 	public Collection<Step> steps() {
 		return useCases().stream()
-			.map(useCase -> useCase.steps())
+			.map(useCase -> useCase.getSteps())
 			.flatMap(steps -> steps.stream())
 			.collect(Collectors.toSet());
 	}

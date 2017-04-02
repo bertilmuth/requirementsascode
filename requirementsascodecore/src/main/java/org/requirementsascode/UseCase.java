@@ -58,7 +58,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return the basic flow of the use case
 	 */
-	public Flow basicFlow() {
+	public Flow getBasicFlow() {
 		return basicFlow;
 	}
 	
@@ -162,7 +162,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return a collection of the flows
 	 */
-	public Collection<Flow> flows() {
+	public Collection<Flow> getFlows() {
 		return getModelElements(nameToFlowMap);
 	}
 	
@@ -172,7 +172,7 @@ public class UseCase extends UseCaseModelElement{
 	 * 
 	 * @return a collection of the steps
 	 */
-	public Collection<Step> steps() {
+	public Collection<Step> getSteps() {
 		return getModelElements(nameToStepMap);
 	}
 }
