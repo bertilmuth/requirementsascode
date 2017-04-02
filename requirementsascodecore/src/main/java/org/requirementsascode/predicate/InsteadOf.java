@@ -15,7 +15,7 @@ public class InsteadOf implements Predicate<UseCaseModelRunner>{
 	}
 	
 	@Override
-	public boolean test(UseCaseModelRunner useCaseRunner) {
-		return after.test(useCaseRunner);
+	public boolean test(UseCaseModelRunner useCaseModelRunner) {
+		return after.test(useCaseModelRunner);
 	}
 }

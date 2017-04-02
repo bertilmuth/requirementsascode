@@ -22,7 +22,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 
 		assertEquals(SYSTEM_DISPLAYS_TEXT + ";", runStepNames());
 	}
@@ -37,7 +37,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";", runStepNames());
 	}
@@ -52,7 +52,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_HANDLES_EXCEPTION, latestStepName());
 	}
@@ -69,7 +69,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_THROWS_EXCEPTION + ";" + SYSTEM_HANDLES_EXCEPTION +";", runStepNames());
 	}

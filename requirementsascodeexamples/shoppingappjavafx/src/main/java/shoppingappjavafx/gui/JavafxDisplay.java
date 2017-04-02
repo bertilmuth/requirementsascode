@@ -20,13 +20,13 @@ import shoppingappjavafx.usecaserealization.Display;
 
 public class JavafxDisplay implements Display{
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
-	private UseCaseModelRunner useCaseRunner;
+	private UseCaseModelRunner useCaseModelRunner;
 	private Stage primaryStage;
 	private VBox vBox;
 	private AbstractController controller;
 	
-	public JavafxDisplay(UseCaseModelRunner useCaseRunner, Stage primaryStage) {
-		this.useCaseRunner = useCaseRunner;
+	public JavafxDisplay(UseCaseModelRunner useCaseModelRunner, Stage primaryStage) {
+		this.useCaseModelRunner = useCaseModelRunner;
 		this.primaryStage = primaryStage;
 }
 	
@@ -67,7 +67,7 @@ public class JavafxDisplay implements Display{
 			
 			vBox = loader.load(); 
 			controller = (AbstractController)loader.getController();
-			controller.setUseCaseRunner(useCaseRunner);
+			controller.setUseCaseModelRunner(useCaseModelRunner);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

@@ -23,12 +23,12 @@ import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
 public class ShoppingAppBuyProductRealizationTest {
-	private TestUseCaseModelRunner useCaseRunner;
+	private TestUseCaseModelRunner useCaseModelRunner;
 	private UseCaseModel useCaseModel;
 
 	@Before
 	public void setUp() throws Exception {
-		useCaseRunner = new TestUseCaseModelRunner();
+		useCaseModelRunner = new TestUseCaseModelRunner();
 		UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
 		
 		Stock stock = new Stock();
@@ -42,14 +42,14 @@ public class ShoppingAppBuyProductRealizationTest {
 
 	@Test
 	public void runsBasicFlow() {
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(
 			new AddProductToCart(new Product("Hamster Wheel, Black", new BigDecimal(9.95))),
 			new CheckoutPurchase(),
 			new EnterShippingInformation(new ShippingInformation()),
 			new EnterPaymentDetails(new PaymentDetails()),
 			new ConfirmPurchase());
 		
-		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", useCaseRunner.getRunStepNames());
+		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", useCaseModelRunner.getRunStepNames());
 	}
 }

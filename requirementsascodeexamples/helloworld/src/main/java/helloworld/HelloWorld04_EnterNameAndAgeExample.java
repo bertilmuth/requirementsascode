@@ -54,10 +54,10 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	}
 
 	private void start() {
-		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
+		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		UseCaseModel useCaseModel = buildWith(newBuilder());
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
-		useCaseRunner.reactTo(enterText());	
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
+		useCaseModelRunner.reactTo(enterText());	
 	}
 }

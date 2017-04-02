@@ -15,8 +15,8 @@ public class After implements Predicate<UseCaseModelRunner>{
 	}
 	
 	@Override
-	public boolean test(UseCaseModelRunner useCaseRunner) {
-		Optional<Step> latestStep = useCaseRunner.latestStep();
+	public boolean test(UseCaseModelRunner useCaseModelRunner) {
+		Optional<Step> latestStep = useCaseModelRunner.latestStep();
 		boolean isSystemAtRightStep = 
 			Objects.equals(previousStep, latestStep);
 		return isSystemAtRightStep;	

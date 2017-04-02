@@ -135,7 +135,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 	}
 	
 	@Test
@@ -149,7 +149,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 			
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 	}
 	
 	@Test
@@ -164,8 +164,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 			
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText());		
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());		
 	}
 	
 	@Test
@@ -180,6 +180,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 	}
 }

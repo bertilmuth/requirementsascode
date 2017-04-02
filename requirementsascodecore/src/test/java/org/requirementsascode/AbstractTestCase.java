@@ -35,11 +35,11 @@ public abstract class AbstractTestCase {
 	
 	protected Actor customer;
 	protected UseCaseModelBuilder useCaseModelBuilder;
-	protected TestUseCaseModelRunner useCaseRunner;
+	protected TestUseCaseModelRunner useCaseModelRunner;
 	protected String displayedText;
 
-	protected void setupWith(TestUseCaseModelRunner useCaseRunner){
-		this.useCaseRunner = useCaseRunner;
+	protected void setupWith(TestUseCaseModelRunner useCaseModelRunner){
+		this.useCaseModelRunner = useCaseModelRunner;
 		this.useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
 		this.customer = useCaseModelBuilder.actor(CUSTOMER);
 		this.displayedText = null;
@@ -102,12 +102,12 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected String runStepNames() {
-		return useCaseRunner.getRunStepNames();
+		return useCaseModelRunner.getRunStepNames();
 	}
 
 	protected String latestStepName() {
 		String latestStepName = 
-			useCaseRunner.latestStep()
+			useCaseModelRunner.latestStep()
 				.map(step -> step.getName()).orElse(null);
 		return latestStepName;
 	}

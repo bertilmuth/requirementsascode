@@ -21,7 +21,7 @@ public class DisplayPurchaseOrderSummaryController extends AbstractController{
 	
     @FXML
     void onFinish(ActionEvent event) {
-    	useCaseRunner().reactTo(new ConfirmPurchase());
+    	useCaseModelRunner().reactTo(new ConfirmPurchase());
     }
     
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder) {

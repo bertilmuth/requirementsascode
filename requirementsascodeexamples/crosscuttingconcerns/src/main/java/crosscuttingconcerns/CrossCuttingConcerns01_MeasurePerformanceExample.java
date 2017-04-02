@@ -12,8 +12,8 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	private double resultOfPower;
 	
 	public void start() {
-		UseCaseModelRunner useCaseRunner = new UseCaseModelRunner();
-		useCaseRunner.adaptSystemReaction(this::measurePerformance);
+		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+		useCaseModelRunner.adaptSystemReaction(this::measurePerformance);
 		
 		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
 		UseCaseModel useCaseModel = 
@@ -24,7 +24,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 					.step("S3").system(displayResults())
 				.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 	}
 	
 	private void measurePerformance(SystemReactionTrigger systemReactionTrigger) {

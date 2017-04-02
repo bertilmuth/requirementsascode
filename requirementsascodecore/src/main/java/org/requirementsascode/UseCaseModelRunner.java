@@ -329,8 +329,7 @@ public class UseCaseModelRunner {
 	}
 	
 	/**
-	 * Returns the flow the latest step that has been run by this UseCaseRunner
-	 * is contained in.
+	 * Returns the flow the latest step that has been run is contained in.
 	 * 
 	 * @return the latest flow run
 	 */

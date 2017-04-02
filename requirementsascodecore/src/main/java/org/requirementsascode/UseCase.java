@@ -120,7 +120,7 @@ public class UseCase extends UseCaseModelElement{
 		return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
 	}
 	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(Step theStep) {
-		return useCaseRunner -> {
+		return useCaseModelRunner -> {
 			Class<?> theStepsEventClass = theStep.getEventClass();
 			UseCaseModel useCaseModel = theStep.getUseCaseModel();
 			
@@ -128,7 +128,7 @@ public class UseCase extends UseCaseModelElement{
 				useCaseModel.getModifiableSteps().stream()
 					.filter(step -> !step.equals(theStep));
 			
-			Set<Step> otherStepsThatCouldReact = useCaseRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
+			Set<Step> otherStepsThatCouldReact = useCaseModelRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
 			return otherStepsThatCouldReact.size() == 0;
 		};
 	}

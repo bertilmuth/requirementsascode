@@ -22,29 +22,29 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void useCaseRunnerIsNotRunningAtFirst(){
-		assertFalse(useCaseRunner.isRunning());
+	public void useCaseModelRunnerIsNotRunningAtFirst(){
+		assertFalse(useCaseModelRunner.isRunning());
 	}
 	
 	@Test
-	public void useCaseRunnerIsRunningAfterRunCall(){
+	public void useCaseModelRunnerIsRunningAfterRunCall(){
 		UseCaseModel model = useCaseModelBuilder.build();
-		useCaseRunner.run(model);
-		assertTrue(useCaseRunner.isRunning());
+		useCaseModelRunner.run(model);
+		assertTrue(useCaseModelRunner.isRunning());
 	}
 	
 	@Test
-	public void useCaseRunnerIsNotRunningWhenBeingStoppedBeforeRunCall(){
-		useCaseRunner.stop();
-		assertFalse(useCaseRunner.isRunning());
+	public void useCaseModelRunnerIsNotRunningWhenBeingStoppedBeforeRunCall(){
+		useCaseModelRunner.stop();
+		assertFalse(useCaseModelRunner.isRunning());
 	}
 	
 	@Test
-	public void useCaseRunnerIsNotRunningWhenBeingStoppedAfterRunCall(){
+	public void useCaseModelRunnerIsNotRunningWhenBeingStoppedAfterRunCall(){
 		UseCaseModel model = useCaseModelBuilder.build();
-		useCaseRunner.run(model);
-		useCaseRunner.stop();
-		assertFalse(useCaseRunner.isRunning());
+		useCaseModelRunner.run(model);
+		useCaseModelRunner.stop();
+		assertFalse(useCaseModelRunner.isRunning());
 	}
 	
 	@Test
@@ -55,7 +55,7 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT + ";", runStepNames());
 	}
@@ -69,7 +69,7 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).as(secondActor).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.as(customer).run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";", runStepNames());
 	}
@@ -83,7 +83,7 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).as(customer).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.as(customer).run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_DISPLAYS_TEXT_AGAIN + ";", runStepNames());
 	}
@@ -97,7 +97,7 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_DISPLAYS_TEXT_AGAIN + ";", runStepNames());
 	}
@@ -110,9 +110,9 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.stop();
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.stop();
+		useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals("", runStepNames());
 	}
@@ -125,8 +125,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";", runStepNames());
 	}
@@ -139,7 +139,7 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 						
-		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		boolean canReact = useCaseModelRunner.canReactTo(enterText().getClass());
 		assertFalse(canReact);
 	}
 	
@@ -151,9 +151,9 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
-		boolean canReact = useCaseRunner.canReactTo(enterNumber().getClass());
+		boolean canReact = useCaseModelRunner.canReactTo(enterNumber().getClass());
 		assertFalse(canReact);
 	}
 	
@@ -165,12 +165,12 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
-		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		boolean canReact = useCaseModelRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<Step> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseModelRunner.stepsThatCanReactTo(enterText().getClass());
 		assertEquals(1, stepsThatCanReact.size());
 		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
 	}
@@ -185,12 +185,12 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
+		useCaseModelRunner.run(useCaseModel);
 		
-		boolean canReact = useCaseRunner.canReactTo(enterText().getClass());
+		boolean canReact = useCaseModelRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<Step> stepsThatCanReact = useCaseRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseModelRunner.stepsThatCanReactTo(enterText().getClass());
 		assertEquals(2, stepsThatCanReact.size());
 	}
 	
@@ -202,8 +202,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
-		Optional<Step> latestStepRun = useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.run(useCaseModel);
+		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().getName());
 	}
@@ -217,8 +217,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
@@ -232,8 +232,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER +";", runStepNames());
 	}
@@ -247,8 +247,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + SYSTEM_DISPLAYS_TEXT +";", runStepNames());
 	}
@@ -264,8 +264,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";", runStepNames());
 	}
@@ -281,11 +281,11 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
 		
-		useCaseRunner.as(secondActor).run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.as(secondActor).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
@@ -301,8 +301,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(customer, secondActor).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
@@ -318,8 +318,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor, customer).user(EnterText.class).system(displayEnteredText())
 				.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
@@ -335,11 +335,11 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterNumber.class).system(displayEnteredNumber())
 				.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
 		
-		useCaseRunner.as(secondActor);
-		useCaseRunner.reactTo(enterNumber());
+		useCaseModelRunner.as(secondActor);
+		useCaseModelRunner.reactTo(enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -354,8 +354,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EnterText.class).system(throwRuntimeException())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";", runStepNames());
 	}
@@ -370,8 +370,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).system(r -> {System.out.println("You should not see this!");})
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";", runStepNames());
 	}
@@ -387,8 +387,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterText.class).system(throwRuntimeException())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";", runStepNames());
 	}
@@ -405,8 +405,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		Optional<Step> lastStepRun = useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		Optional<Step> lastStepRun = useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().getName());
 	}
@@ -425,8 +425,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(secondActor).user(EnterText.class).system(throwRuntimeException())
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStepName());
 	}
 	
@@ -442,8 +442,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.as(customer).user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		useCaseRunner.as(customer).run(useCaseModel);
-		Optional<Step> lastStepRun = useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		Optional<Step> lastStepRun = useCaseModelRunner.reactTo(enterText());
 		
 		assertFalse(lastStepRun.isPresent());
 	}
@@ -459,8 +459,8 @@ public class SystemReactionTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 		.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
 	}
@@ -476,8 +476,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
 	}
@@ -494,8 +494,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner
 			.reactTo(enterAlternativeText(), enterNumber(), enterAlternativeText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -512,8 +512,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
 	}
@@ -529,8 +529,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		Optional<Step> latestStep = useCaseRunner.reactTo(enterText());
+		useCaseModelRunner.run(useCaseModel);
+		Optional<Step> latestStep = useCaseModelRunner.reactTo(enterText());
 		
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStep.get().getName());
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
@@ -547,8 +547,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -564,8 +564,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -582,8 +582,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		
 		assertEquals("", runStepNames());
 	}
@@ -605,8 +605,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterText.class).system(displayEnteredText())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";", runStepNames());
 	}
@@ -628,8 +628,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" +
 			CUSTOMER_ENTERS_NUMBER_AGAIN +";", runStepNames());
@@ -647,8 +647,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -665,8 +665,8 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
 				
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT + ";" +
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -686,8 +686,8 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 				
 		// Create way to many events to see if the repeat stops after three events
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner
 			.reactTo(enterText(), enterText(), enterText(),
 					enterText(), enterText(), enterText(),
 					enterText(), enterText(), enterText(),
@@ -715,8 +715,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		 
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CONTINUE + ";" +
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -734,8 +734,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		 
 		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -752,8 +752,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.as(secondActor).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.as(secondActor).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		 
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" +  CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -771,8 +771,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" +
 			 CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -794,8 +794,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE_2).continueAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" + 
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -813,8 +813,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		 
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CONTINUE + ";" +
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -832,8 +832,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueAfter(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterNumber());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterNumber());
 		 
 		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -850,8 +850,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueAfter(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		useCaseRunner.as(secondActor).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.as(secondActor).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		 
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" +  CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -869,8 +869,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" +
 			 CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -892,8 +892,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE_2).continueAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" + 
 			CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -911,8 +911,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText());
 		 
 		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT + ";" +
 				CUSTOMER_ENTERS_TEXT_AGAIN + ";", runStepNames());
@@ -930,8 +930,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		useCaseRunner.as(customer).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.as(customer).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 				 
 		assertEquals(CONTINUE + ";" + CUSTOMER_ENTERS_TEXT + ";" +
 			CUSTOMER_ENTERS_TEXT_AGAIN + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -949,8 +949,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		useCaseRunner.as(secondActor).run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterText(), enterNumber());
+		useCaseModelRunner.as(secondActor).run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber());
 		 
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_TEXT_AGAIN + ";" +  CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
 	}
@@ -968,8 +968,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 				
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" +
 			CUSTOMER_ENTERS_TEXT_AGAIN + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -991,8 +991,8 @@ public class SystemReactionTest extends AbstractTestCase{
 					.step(CONTINUE_2).continueWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		useCaseRunner.run(useCaseModel);
-		useCaseRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(enterText(), enterAlternativeText(), enterText(), enterNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT + ";" + CUSTOMER_ENTERS_ALTERNATIVE_TEXT + ";" + CONTINUE + ";" + 
 			CUSTOMER_ENTERS_TEXT_AGAIN + ";" + CUSTOMER_ENTERS_NUMBER + ";", runStepNames());

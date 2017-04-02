@@ -12,7 +12,7 @@ public interface BuyProductRealization {
 	void startWithEmptyShoppingCart(UseCaseModelRunner runner);
 	void displayProducts(UseCaseModelRunner runner);
 	void addProductToPurchaseOrder(AddProductToCart addProductToCart);
-	boolean lessThen10Products(UseCaseModelRunner useCaseRunner);
+	boolean lessThen10Products(UseCaseModelRunner useCaseModelRunner);
 	void checkoutPurchase(CheckoutPurchase checkoutPurchase);
 	void displayShippingInformationForm(UseCaseModelRunner runner);
 	void saveShippingInformation(EnterShippingInformation enterShippingInformation);
@@ -20,6 +20,6 @@ public interface BuyProductRealization {
 	void savePaymentDetails(EnterPaymentDetails enterPaymentDetails);
 	void displayPurchaseOrderSummary(UseCaseModelRunner runner);
 	void initiateShipping(ConfirmPurchase confirmPurchase); 
-	boolean atLeastOneProductInCart(UseCaseModelRunner useCaseRunner);
+	boolean atLeastOneProductInCart(UseCaseModelRunner useCaseModelRunner);
 	void informUserAndLogException(Throwable t);
 }
