@@ -40,7 +40,7 @@ public class SystemReactionTrigger {
 	 * 
 	 * @return the event object.
 	 */
-	public Object event() {
+	public Object getEvent() {
 		return event;
 	}
 
@@ -50,7 +50,7 @@ public class SystemReactionTrigger {
 	 * 
 	 * @return the use case step.
 	 */
-	public Step useCaseStep() {
+	public Step getUseCaseStep() {
 		return useCaseStep;
 	}
 }

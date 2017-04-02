@@ -32,7 +32,7 @@ public class TestUseCaseModelRunner extends UseCaseModelRunner{
 	
 	private Consumer<SystemReactionTrigger> withStepNameTracking() {
 		return systemReactionTrigger -> {
-			runStepNames += trackStepName(systemReactionTrigger.useCaseStep());
+			runStepNames += trackStepName(systemReactionTrigger.getUseCaseStep());
 			systemReactionTrigger.trigger();
 		};
 	}

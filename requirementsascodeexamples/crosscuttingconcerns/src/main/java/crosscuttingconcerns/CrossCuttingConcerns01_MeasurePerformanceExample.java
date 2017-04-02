@@ -33,7 +33,7 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 			long timeafter = System.nanoTime();
 			long timeElapsed = timeafter - timeBefore;
 			
-			System.out.println("Step " + systemReactionTrigger.useCaseStep() + 
+			System.out.println("Step " + systemReactionTrigger.getUseCaseStep() + 
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
