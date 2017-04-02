@@ -25,7 +25,7 @@ public class UseCaseModel {
 	private Actor userActor;
 	private Actor systemActor;
 	
-	public UseCaseModel() {
+	UseCaseModel() {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
 		this.userActor = newActor("User");
@@ -56,13 +56,13 @@ public class UseCaseModel {
 		return hasUseCase;
 	}
 	
-	public Actor newActor(String actorName) {
+	Actor newActor(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
 	}
 
-	public UseCase newUseCase(String useCaseName) {		
+	UseCase newUseCase(String useCaseName) {		
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
