@@ -50,6 +50,6 @@ public class ShoppingAppBuyProductRealizationTest {
 			new EnterPaymentDetails(new PaymentDetails()),
 			new ConfirmPurchase());
 		
-		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", useCaseRunner.runStepNames());
+		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", useCaseRunner.getRunStepNames());
 	}
 }

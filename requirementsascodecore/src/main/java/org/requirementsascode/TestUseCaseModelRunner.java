@@ -26,7 +26,7 @@ public class TestUseCaseModelRunner extends UseCaseModelRunner{
 	 * 
 	 * @return the step names
 	 */
-	public String runStepNames() {
+	public String getRunStepNames() {
 		return runStepNames;
 	}
 	

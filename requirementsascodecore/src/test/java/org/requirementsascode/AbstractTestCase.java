@@ -102,7 +102,7 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected String runStepNames() {
-		return useCaseRunner.runStepNames();
+		return useCaseRunner.getRunStepNames();
 	}
 
 	protected String latestStepName() {
