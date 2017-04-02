@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class Flow extends UseCaseModelElement {
 	 * 
 	 * @return the containing use case
 	 */
-	public UseCase useCase() {
+	public UseCase getUseCase() {
 		return useCase;
 	}
 	
@@ -42,9 +43,10 @@ public class Flow extends UseCaseModelElement {
 	 * 
 	 * @return a collection of the steps
 	 */
-	public List<Step> steps() {
-		return useCase().steps().stream()
+	public List<Step> getSteps() {
+		List<Step> steps = getUseCase().steps().stream()
 			.filter(step -> step.flow().equals(this))
 			.collect(Collectors.toList());
+		return Collections.unmodifiableList(steps);
 	}
 }

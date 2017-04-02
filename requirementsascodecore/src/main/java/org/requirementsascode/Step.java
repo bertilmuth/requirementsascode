@@ -55,7 +55,7 @@ public class Step extends UseCaseModelElement {
 	}
 
 	public UseCase useCase() {
-		return flow().useCase();
+		return flow().getUseCase();
 	}
 	
 	public Predicate<UseCaseModelRunner> predicate() {

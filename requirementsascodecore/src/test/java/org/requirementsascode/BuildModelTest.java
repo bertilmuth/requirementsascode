@@ -297,7 +297,7 @@ public class BuildModelTest extends AbstractTestCase{
 				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 		
-		List<Step> steps = useCasePart.useCase().basicFlow().steps();
+		List<Step> steps = useCasePart.useCase().basicFlow().getSteps();
 		assertEquals(2, steps.size());
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT, steps.get(0).name());
@@ -305,7 +305,7 @@ public class BuildModelTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void createsOneStepInAlternatvieFlowAndCheckIfItExistsByIndex() {
+	public void createsOneStepInAlternativeFlowAndCheckIfItExistsByIndex() {
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 		
 		useCasePart
@@ -314,7 +314,7 @@ public class BuildModelTest extends AbstractTestCase{
 			.flow(ALTERNATIVE_FLOW)
 				.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText());
 			
-		List<Step> steps = useCasePart.useCase().findFlow(ALTERNATIVE_FLOW).steps();
+		List<Step> steps = useCasePart.useCase().findFlow(ALTERNATIVE_FLOW).getSteps();
 		assertEquals(1, steps.size());
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(0).name());

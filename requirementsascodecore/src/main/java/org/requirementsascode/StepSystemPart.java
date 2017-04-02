@@ -41,7 +41,7 @@ public class StepSystemPart<T>{
 		Flow useCaseFlow = useCaseFlowPart.useCaseFlow();
 		
 		Step nextUseCaseStepInFlow = 
-			useCaseFlow.useCase().newStep(stepName, useCaseFlow, 
+			useCaseFlow.getUseCase().newStep(stepName, useCaseFlow, 
 				Optional.of(step), 
 					Optional.empty());
 		
