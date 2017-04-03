@@ -36,13 +36,13 @@ public class ShoppingAppModel{
 				.step("S9").system(displayPurchaseOrderSummary())
 				.step("S10").user(confirmPurchase()).system(initiateShipping())
 				.step("S11").continueAt("S1")	
-			.flow("Go back from shipping").after("S5")
+			.flow("Go back from shipping").insteadOf("S6")
 				.step("S6a_1").user(goBack())
-				.step("S6a_2").continueAfter("S1")
-			.flow("Go back from payment").after("S7")
+				.step("S6a_2").continueAt("S2")
+			.flow("Go back from payment").insteadOf("S8")
 				.step("S8a_1").user(goBack())
-				.step("S8a_2").continueAfter("S4")
-			.flow("Checkout after going back").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")
+				.step("S8a_2").continueAt("S5")
+			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductInCart()).step("S3a_1").continueAt("S4")
 			.flow("Handle exceptions").when(anytime()).step("EX").handle(anyException()).system(informUserAndLogException())
 		.build();
 		
