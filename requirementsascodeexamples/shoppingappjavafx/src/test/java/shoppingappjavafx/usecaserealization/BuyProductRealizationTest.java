@@ -23,7 +23,7 @@ import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
-public class ShoppingAppBuyProductRealizationTest {
+public class BuyProductRealizationTest {
 	private TestUseCaseModelRunner useCaseModelRunner;
 	private UseCaseModel useCaseModel;
 
@@ -35,8 +35,8 @@ public class ShoppingAppBuyProductRealizationTest {
 		Stock stock = new Stock();
 		Display displayStub = new DisplayStub();
 		
-		ShoppingAppBuyProductRealization shoppingAppUseCaseRealization =
-			new ShoppingAppBuyProductRealization(stock, displayStub);
+		BuyProductRealization shoppingAppUseCaseRealization =
+			new BuyProductRealization(stock, displayStub);
 		useCaseModel = 
 			new ShoppingAppModel(shoppingAppUseCaseRealization).buildWith(modelBuilder);
 	}

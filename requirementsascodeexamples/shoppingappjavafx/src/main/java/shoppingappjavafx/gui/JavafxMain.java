@@ -9,9 +9,8 @@ import org.requirementsascode.UseCaseModelRunner;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import shoppingappjavafx.domain.Stock;
-import shoppingappjavafx.usecase.BuyProductRealization;
 import shoppingappjavafx.usecase.ShoppingAppModel;
-import shoppingappjavafx.usecaserealization.ShoppingAppBuyProductRealization;
+import shoppingappjavafx.usecaserealization.BuyProductRealization;
 
 public class JavafxMain extends Application {
 	private UseCaseModelBuilder modelBuilder;
@@ -43,7 +42,7 @@ public class JavafxMain extends Application {
 	}
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {	
-		BuyProductRealization buyProductRealization = new ShoppingAppBuyProductRealization(stock, display);
+		BuyProductRealization buyProductRealization = new BuyProductRealization(stock, display);
 		UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(modelBuilder);
 		modelRunner.run(useCaseModel);
 	}

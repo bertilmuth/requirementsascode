@@ -13,6 +13,7 @@ import shoppingappjavafx.usecase.event.ConfirmPurchase;
 import shoppingappjavafx.usecase.event.EnterPaymentDetails;
 import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.GoBack;
+import shoppingappjavafx.usecaserealization.BuyProductRealization;
 
 public class ShoppingAppModel{
 	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
