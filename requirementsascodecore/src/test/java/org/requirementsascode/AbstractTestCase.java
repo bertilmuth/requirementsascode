@@ -11,7 +11,7 @@ public abstract class AbstractTestCase {
 	protected static final String USE_CASE = "Use Case";
 	protected static final String USE_CASE_2 = "Use Case 2";
 
-	protected static final String BASIC_FLOW = "Basic Flow";
+	protected static final String BASIC_FLOW = "basic flow";
 	protected static final String ALTERNATIVE_FLOW = "Alternative Flow";
 	protected static final String ALTERNATIVE_FLOW_2 = "Alternative Flow 2";
 	
