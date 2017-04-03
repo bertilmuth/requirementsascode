@@ -4,8 +4,9 @@
 </head>
 <body>
 
-<#macro wordsLowerCase camelCase>
-<#assign sentence = camelCase?replace('(\\p{Upper})', ' $1', 'r')?lower_case/><#assign words = sentence?word_list/><#list words as word> ${word}<#if word?index == 0>s</#if></#list></#macro> 
+<#function wordsLowerCase camelCase><#return camelCase?replace('(\\p{Upper})', ' $1', 'r')?lower_case?word_list/></#function> 
+<#macro inLowerCase str><#assign words = wordsLowerCase(str)/><#list words as word> ${word}</#list></#macro> 
+<#macro inThirdPersonLowerCase str><#assign words = wordsLowerCase(str)/><#list words as word> ${word}<#if word?index == 0>s</#if></#list></#macro> 
 
  	<#list useCaseModel.useCases as useCase>
   		<h1>Use Case: ${useCase}</h1>
@@ -13,7 +14,7 @@
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
 			<#list flow.steps as step>
-				<li>${step}: ${step.as?join(", ")?capitalize}<@wordsLowerCase camelCase=step.system.class.simpleName/></li>
+				<li>${step}: ${step.as?join(", ")?capitalize}<@inThirdPersonLowerCase str=step.system.class.simpleName/>.</li>
 			</#list>
 			</ul>	
 		</#list>
