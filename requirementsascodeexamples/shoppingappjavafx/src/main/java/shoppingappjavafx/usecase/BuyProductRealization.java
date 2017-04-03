@@ -1,25 +1,28 @@
 package shoppingappjavafx.usecase;
 
-import org.requirementsascode.UseCaseModelRunner;
-
-import shoppingappjavafx.usecase.event.AddProductToCart;
-import shoppingappjavafx.usecase.event.CheckoutPurchase;
-import shoppingappjavafx.usecase.event.ConfirmPurchase;
-import shoppingappjavafx.usecase.event.EnterPaymentDetails;
-import shoppingappjavafx.usecase.event.EnterShippingInformation;
+import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductInCart;
+import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
+import shoppingappjavafx.usecaserealization.systemreaction.AddProductToPurchaseOrder;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayPaymentDetailsForm;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayProducts;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayPurchaseOrderSummary;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayShippingInformationForm;
+import shoppingappjavafx.usecaserealization.systemreaction.InitiateShipping;
+import shoppingappjavafx.usecaserealization.systemreaction.SavePaymentDetails;
+import shoppingappjavafx.usecaserealization.systemreaction.SaveShippingInformation;
+import shoppingappjavafx.usecaserealization.systemreaction.StartWithEmptyShoppingCart;
 
 public interface BuyProductRealization {
-	void startWithEmptyShoppingCart(UseCaseModelRunner runner);
-	void displayProducts(UseCaseModelRunner runner);
-	void addProductToPurchaseOrder(AddProductToCart addProductToCart);
-	boolean lessThen10Products(UseCaseModelRunner useCaseModelRunner);
-	void checkoutPurchase(CheckoutPurchase checkoutPurchase);
-	void displayShippingInformationForm(UseCaseModelRunner runner);
-	void saveShippingInformation(EnterShippingInformation enterShippingInformation);
-	void displayPaymentDetailsForm(UseCaseModelRunner runner);
-	void savePaymentDetails(EnterPaymentDetails enterPaymentDetails);
-	void displayPurchaseOrderSummary(UseCaseModelRunner runner);
-	void initiateShipping(ConfirmPurchase confirmPurchase); 
-	boolean atLeastOneProductInCart(UseCaseModelRunner useCaseModelRunner);
-	void informUserAndLogException(Throwable t);
+	StartWithEmptyShoppingCart startWithEmptyShoppingCart();
+	DisplayProducts displayProducts();
+	AddProductToPurchaseOrder addProductToPurchaseOrder();
+	LessThan10Products lessThan10Products();
+	DisplayShippingInformationForm displayShippingInformationForm();
+	SaveShippingInformation saveShippingInformation();
+	DisplayPaymentDetailsForm displayPaymentDetailsForm();
+	SavePaymentDetails savePaymentDetails();
+	DisplayPurchaseOrderSummary displayPurchaseOrderSummary();
+	InitiateShipping initiateShipping(); 
+	AtLeastOneProductInCart atLeastOneProductInCart();
+	InformUserAndLogException informUserAndLogException();
 }

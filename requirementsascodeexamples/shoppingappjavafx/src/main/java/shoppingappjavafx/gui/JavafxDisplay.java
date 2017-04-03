@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import shoppingappjavafx.domain.Products;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.gui.controller.AbstractController;
@@ -15,8 +16,7 @@ import shoppingappjavafx.gui.controller.DisplayPaymentDetailsFormController;
 import shoppingappjavafx.gui.controller.DisplayProductsController;
 import shoppingappjavafx.gui.controller.DisplayPurchaseOrderSummaryController;
 import shoppingappjavafx.gui.controller.DisplayShippingInformationFormController;
-import shoppingappjavafx.usecase.event.Products;
-import shoppingappjavafx.usecaserealization.Display;
+import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
 public class JavafxDisplay implements Display{
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";

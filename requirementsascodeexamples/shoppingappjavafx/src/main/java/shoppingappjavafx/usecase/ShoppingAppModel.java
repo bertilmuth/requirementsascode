@@ -35,7 +35,7 @@ public class ShoppingAppModel{
 				.step("S1").system(startWithEmptyShoppingCart())
 				.step("S2").system(displayProducts())
 				.step("S3").user(ADD_PRODUCT_TO_CART).system(addProductToPurchaseOrder()).reactWhile(lessThan10Products())
-				.step("S4").user(CHECKOUT_PURCHASE).system(checkoutPurchase())
+				.step("S4").user(CHECKOUT_PURCHASE)
 				.step("S5").system(displayShippingInformationForm())
 				.step("S6").user(ENTER_SHIPPING_INFORMATION).system(saveShippingInformation())
 				.step("S7").system(displayPaymentDetailsForm())
@@ -59,17 +59,16 @@ public class ShoppingAppModel{
 		return r -> true;
 	}
 
-	protected Consumer<UseCaseModelRunner> startWithEmptyShoppingCart() {return buyProductRealization::startWithEmptyShoppingCart;}
-	protected Consumer<UseCaseModelRunner> displayProducts() {return buyProductRealization::displayProducts;}
-	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {return buyProductRealization::addProductToPurchaseOrder;}
-	protected Predicate<UseCaseModelRunner> lessThan10Products() {return buyProductRealization::lessThen10Products;}
-	protected Consumer<CheckoutPurchase> checkoutPurchase() {return buyProductRealization::checkoutPurchase;}
-	protected Consumer<UseCaseModelRunner> displayShippingInformationForm(){return buyProductRealization::displayShippingInformationForm;}
-	protected Consumer<EnterShippingInformation> saveShippingInformation() {return buyProductRealization::saveShippingInformation;}
-	protected Consumer<UseCaseModelRunner> displayPaymentDetailsForm() {return buyProductRealization::displayPaymentDetailsForm;}
-	protected Consumer<EnterPaymentDetails> savePaymentDetails() {return buyProductRealization::savePaymentDetails;}
-	protected Consumer<UseCaseModelRunner> displayPurchaseOrderSummary() {return buyProductRealization::displayPurchaseOrderSummary;}
-	protected Consumer<ConfirmPurchase> initiateShipping() {return buyProductRealization::initiateShipping;}
-	protected Predicate<UseCaseModelRunner> atLeastOneProductInCart() {return buyProductRealization::atLeastOneProductInCart;}
-	protected Consumer<Throwable> informUserAndLogException() {return buyProductRealization::informUserAndLogException;}
+	protected Consumer<UseCaseModelRunner> startWithEmptyShoppingCart() {return buyProductRealization.startWithEmptyShoppingCart();}
+	protected Consumer<UseCaseModelRunner> displayProducts() {return buyProductRealization.displayProducts();}
+	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {return buyProductRealization.addProductToPurchaseOrder();}
+	protected Predicate<UseCaseModelRunner> lessThan10Products() {return buyProductRealization.lessThan10Products();}
+	protected Consumer<UseCaseModelRunner> displayShippingInformationForm(){return buyProductRealization.displayShippingInformationForm();}
+	protected Consumer<EnterShippingInformation> saveShippingInformation() {return buyProductRealization.saveShippingInformation();}
+	protected Consumer<UseCaseModelRunner> displayPaymentDetailsForm() {return buyProductRealization.displayPaymentDetailsForm();}
+	protected Consumer<EnterPaymentDetails> savePaymentDetails() {return buyProductRealization.savePaymentDetails();}
+	protected Consumer<UseCaseModelRunner> displayPurchaseOrderSummary() {return buyProductRealization.displayPurchaseOrderSummary();}
+	protected Consumer<ConfirmPurchase> initiateShipping() {return buyProductRealization.initiateShipping();}
+	protected Predicate<UseCaseModelRunner> atLeastOneProductInCart() {return buyProductRealization.atLeastOneProductInCart();}
+	protected Consumer<Throwable> informUserAndLogException() {return buyProductRealization.informUserAndLogException();}
 }

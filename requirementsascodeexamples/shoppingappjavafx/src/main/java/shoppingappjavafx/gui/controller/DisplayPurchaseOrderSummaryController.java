@@ -36,7 +36,7 @@ public class DisplayPurchaseOrderSummaryController extends AbstractController{
 		purchaseOrderSummary.add("Your shipping information:");
 		purchaseOrderSummary.add("-------------------------------------");
 		List<String> shippingInformationSummary = 
-			purchaseOrder.shippingInformation().getSummary();
+			purchaseOrder.getShippingInformation().getSummary();
 		purchaseOrderSummary.addAll(shippingInformationSummary);
 		purchaseOrderSummary.add("-------------------------------------");
 		

@@ -1,7 +1,6 @@
-package shoppingappjavafx.usecase.event;
+package shoppingappjavafx.domain;
 
 import javafx.collections.ObservableList;
-import shoppingappjavafx.domain.Product;
 
 public class Products {
 	private ObservableList<Product> products;

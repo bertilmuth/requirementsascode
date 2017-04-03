@@ -13,10 +13,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import shoppingappjavafx.domain.Product;
+import shoppingappjavafx.domain.Products;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecase.event.AddProductToCart;
 import shoppingappjavafx.usecase.event.CheckoutPurchase;
-import shoppingappjavafx.usecase.event.Products;
 
 public class DisplayProductsController extends AbstractController{
     @FXML

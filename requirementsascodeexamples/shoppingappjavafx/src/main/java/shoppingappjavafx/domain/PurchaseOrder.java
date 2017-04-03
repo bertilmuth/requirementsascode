@@ -10,7 +10,7 @@ public class PurchaseOrder extends ProductContainer {
 		paymentDetails = new PaymentDetails();
 	}
 
-	public ShippingInformation shippingInformation() {
+	public ShippingInformation getShippingInformation() {
 		return shippingInformation;
 	}
 	

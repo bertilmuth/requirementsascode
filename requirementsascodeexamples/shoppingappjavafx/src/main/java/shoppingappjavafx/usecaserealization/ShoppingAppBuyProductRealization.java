@@ -1,88 +1,89 @@
 package shoppingappjavafx.usecaserealization;
 
-import org.requirementsascode.UseCaseModelRunner;
-
-import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecase.BuyProductRealization;
-import shoppingappjavafx.usecase.event.AddProductToCart;
-import shoppingappjavafx.usecase.event.CheckoutPurchase;
-import shoppingappjavafx.usecase.event.ConfirmPurchase;
-import shoppingappjavafx.usecase.event.EnterPaymentDetails;
-import shoppingappjavafx.usecase.event.EnterShippingInformation;
-import shoppingappjavafx.usecase.event.Products;
+import shoppingappjavafx.usecase.InformUserAndLogException;
+import shoppingappjavafx.usecaserealization.componentinterface.Display;
+import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductInCart;
+import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
+import shoppingappjavafx.usecaserealization.systemreaction.AddProductToPurchaseOrder;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayPaymentDetailsForm;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayProducts;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayPurchaseOrderSummary;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplayShippingInformationForm;
+import shoppingappjavafx.usecaserealization.systemreaction.InitiateShipping;
+import shoppingappjavafx.usecaserealization.systemreaction.SavePaymentDetails;
+import shoppingappjavafx.usecaserealization.systemreaction.SaveShippingInformation;
+import shoppingappjavafx.usecaserealization.systemreaction.StartWithEmptyShoppingCart;
 
 public class ShoppingAppBuyProductRealization implements BuyProductRealization{
 	private Stock stock;
 	private Display display;
-	private PurchaseOrder purchaseOrder;
+	private RunContext runContext;
 
 	public ShoppingAppBuyProductRealization(Stock stock, Display display) {
 		this.stock = stock;
 		this.display = display;
+		this.runContext = new RunContext();
 	}
 	
 	@Override
-	public void startWithEmptyShoppingCart(UseCaseModelRunner runner){
-		purchaseOrder = new PurchaseOrder();
+	public StartWithEmptyShoppingCart startWithEmptyShoppingCart(){
+		return new StartWithEmptyShoppingCart(runContext);
 	}
 	
 	@Override
-	public void displayProducts(UseCaseModelRunner runner) {
-		Products products = new Products(stock.findProducts());
-		display.displayProductsAndShoppingCartSize(products, purchaseOrder);
+	public DisplayProducts displayProducts() {
+		return new DisplayProducts(runContext, stock, display);
 	}
 	
 	@Override
-	public void addProductToPurchaseOrder(AddProductToCart addProductToCart) {
-		purchaseOrder.addProduct(addProductToCart.get());
-	}
-	
-	@Override
-	public void checkoutPurchase(CheckoutPurchase checkoutPurchase) {
+	public AddProductToPurchaseOrder addProductToPurchaseOrder() {
+		return new AddProductToPurchaseOrder(runContext);
 	}
 
 	@Override
-	public boolean lessThen10Products(UseCaseModelRunner r) {
-		return purchaseOrder.findProducts().size() < 10;
+	public LessThan10Products lessThan10Products() {
+		return new LessThan10Products(runContext);
 	}
 
 	@Override
-	public void displayShippingInformationForm(UseCaseModelRunner runner) {
-		display.displayShippingInformationForm(purchaseOrder.shippingInformation());
+	public DisplayShippingInformationForm displayShippingInformationForm() {
+		return new DisplayShippingInformationForm(runContext, display);
 	}
 
 	@Override
-	public void saveShippingInformation(EnterShippingInformation enterShippingInformation) {
-		purchaseOrder.saveShippingInformation(enterShippingInformation.get());
+	public SaveShippingInformation saveShippingInformation() {
+		return new SaveShippingInformation(runContext);
 	}
 	
 	@Override
-	public void displayPaymentDetailsForm(UseCaseModelRunner runner) {
-		display.displayPaymentDetailsForm();
+	public DisplayPaymentDetailsForm displayPaymentDetailsForm() {
+		return new DisplayPaymentDetailsForm(display);
 	}
 
 	@Override
-	public void savePaymentDetails(EnterPaymentDetails enterPaymentDetails) {
-		purchaseOrder.savePaymentDetails(enterPaymentDetails.get());
+	public SavePaymentDetails savePaymentDetails() {
+		return new SavePaymentDetails(runContext);
 	}
 	
 	@Override
-	public void displayPurchaseOrderSummary(UseCaseModelRunner runner) {
-		display.displayPurchaseOrderSummary(purchaseOrder);
+	public DisplayPurchaseOrderSummary displayPurchaseOrderSummary() {
+		return new DisplayPurchaseOrderSummary(runContext, display);
 	}
 	
 	@Override
-	public void initiateShipping(ConfirmPurchase confirmPurchase) {
+	public InitiateShipping initiateShipping() {
+		return new InitiateShipping();
 	}
 	
 	@Override
-	public boolean atLeastOneProductInCart(UseCaseModelRunner r) {
-		return purchaseOrder.findProducts().size() > 0;
+	public AtLeastOneProductInCart atLeastOneProductInCart() {
+		return new AtLeastOneProductInCart(runContext);
 	}
 
 	@Override
-	public void informUserAndLogException(Throwable t) {
-		t.printStackTrace();
+	public InformUserAndLogException informUserAndLogException() {
+		return new InformUserAndLogException();
 	}
 }
