@@ -249,7 +249,7 @@ public class UseCaseModelRunner {
 	}
 	
 	private <T> Step triggerSystemReactionForStep(T event, Step useCaseStep) {
-		if(useCaseStep.getSystemReaction() == null){
+		if(useCaseStep.getSystem() == null){
 			throw new MissingUseCaseStepPart(useCaseStep, "system");
 		}
 		
@@ -282,7 +282,7 @@ public class UseCaseModelRunner {
 	}
 
 	private boolean stepActorIsRunActor(Step useCaseStep) {
-		Actor[] stepActors = useCaseStep.getActors();
+		Actor[] stepActors = useCaseStep.getAs();
 		if(stepActors == null){
 			throw(new MissingUseCaseStepPart(useCaseStep, "actor"));
 		}
@@ -293,7 +293,7 @@ public class UseCaseModelRunner {
 	}
 	
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.getEventClass();
+		Class<?> stepEventClass = useCaseStep.getUser();
 		return stepEventClass.isAssignableFrom(currentEventClass);
 	}
 	

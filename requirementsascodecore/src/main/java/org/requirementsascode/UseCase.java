@@ -47,7 +47,7 @@ public class UseCase extends UseCaseModelElement{
 		super(useCaseName, useCaseModel);
 		this.nameToFlowMap = new LinkedHashMap<>();
 		this.nameToStepMap = new LinkedHashMap<>();
-		this.basicFlow = newFlow("Basic Flow");
+		this.basicFlow = newFlow("basic flow");
 	} 
 
 	/**
@@ -121,7 +121,7 @@ public class UseCase extends UseCaseModelElement{
 	}
 	private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(Step theStep) {
 		return useCaseModelRunner -> {
-			Class<?> theStepsEventClass = theStep.getEventClass();
+			Class<?> theStepsEventClass = theStep.getUser();
 			UseCaseModel useCaseModel = theStep.getUseCaseModel();
 			
 			Stream<Step> otherStepsStream = 

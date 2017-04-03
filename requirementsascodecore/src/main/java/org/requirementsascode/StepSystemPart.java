@@ -11,7 +11,7 @@ import org.requirementsascode.predicate.After;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  * 
- * @see Step#setSystemReaction(Consumer)
+ * @see Step#setSystem(Consumer)
  * @author b_muth
  *
  */
@@ -22,7 +22,7 @@ public class StepSystemPart<T>{
 	StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
 		this.stepPart = useCaseStepPart;
 		this.step = useCaseStepPart.getStep();
-		step.setSystemReaction(systemReaction);
+		step.setSystem(systemReaction);
 	}
 
 	public UseCaseModel build() {

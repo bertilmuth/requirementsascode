@@ -11,9 +11,7 @@ import java.util.function.Predicate;
  * 
  * A use case step is the core class of requirementsascode, providing all the
  * necessary configuration information to the {@link UseCaseModelRunner} to cause the
- * system to react to events. A use case step has a predicate, which defines the
- * complete condition that needs to be fulfilled to cause the system reaction, given a
- * matching event occurs.
+ * system to react to events.
  * 
  * @author b_muth
  *
@@ -66,26 +64,26 @@ public class Step extends UseCaseModelElement {
 		this.predicate = predicate;
 	}
 
-	public Actor[] getActors() {
+	public Actor[] getAs() {
 		return actors;
 	}
 	
-	void setActors(Actor[] actors) {
+	void setAs(Actor[] actors) {
 		this.actors = actors;
 	}
 	
-	public Class<?> getEventClass() {
+	public Class<?> getUser() {
 		return eventClass;
 	}
 
-	void setEventClass(Class<?> eventClass) {
+	void setUser(Class<?> eventClass) {
 		this.eventClass = eventClass;
 	}
-	public Consumer<?> getSystemReaction() {
+	public Consumer<?> getSystem() {
 		return systemReaction;
 	}
 
-	void setSystemReaction(Consumer<?> systemReaction) {
+	void setSystem(Consumer<?> systemReaction) {
 		this.systemReaction = systemReaction;
 	}
 }

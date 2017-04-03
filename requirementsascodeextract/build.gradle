@@ -1,0 +1,12 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'requirementsascode - extract',
+                   'Implementation-Version': version
+	}
+}
+
+dependencies {
+    compile 'org.freemarker:freemarker:2.3.26-incubating'
+	compile project(':requirementsascodecore')
+  	testCompile 'junit:junit:4.12'
+}

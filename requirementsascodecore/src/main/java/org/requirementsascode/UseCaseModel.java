@@ -30,8 +30,8 @@ public class UseCaseModel {
 	UseCaseModel() {
 		this.nameToActorMap = new HashMap<>();
 		this.nameToUseCaseMap = new HashMap<>();
-		this.userActor = newActor("User");
-		this.systemActor = newActor("Autonomous System Reaction Actor");
+		this.userActor = newActor("user");
+		this.systemActor = newActor("system");
 	}
 
 	/**
