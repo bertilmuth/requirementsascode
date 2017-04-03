@@ -15,19 +15,11 @@ import shoppingappjavafx.usecase.event.EnterShippingInformation;
 import shoppingappjavafx.usecase.event.GoBack;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
 
-public class ShoppingAppModel{
-	private static final Class<AddProductToCart> ADD_PRODUCT_TO_CART = AddProductToCart.class;
-	private static final Class<CheckoutPurchase> CHECKOUT_PURCHASE = CheckoutPurchase.class;
-	private static final Class<EnterShippingInformation> ENTER_SHIPPING_INFORMATION = EnterShippingInformation.class;
-	private static final Class<EnterPaymentDetails> ENTER_PAYMENT_DETAILS = EnterPaymentDetails.class;
-	private static final Class<ConfirmPurchase> CONFIRM_PURCHASE = ConfirmPurchase.class;
-	private static final Class<GoBack> GO_BACK = GoBack.class;
-	private static final Class<Throwable> EXCEPTION = Throwable.class;
-	
-	private BuyProductRealization buyProductRealization;
+public class ShoppingAppModel{	
+	private BuyProductRealization bPR;
 
 	public ShoppingAppModel(BuyProductRealization buyProductRealization){
-		this.buyProductRealization = buyProductRealization;
+		this.bPR = buyProductRealization;
 	}
 	
 	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {		
@@ -35,24 +27,25 @@ public class ShoppingAppModel{
 			.basicFlow()
 				.step("S1").system(startWithEmptyShoppingCart())
 				.step("S2").system(displayProducts())
-				.step("S3").user(ADD_PRODUCT_TO_CART).system(addProductToPurchaseOrder()).reactWhile(lessThan10Products())
-				.step("S4").user(CHECKOUT_PURCHASE)
+				.step("S3").user(addProductToCart()).system(addProductToPurchaseOrder()).reactWhile(lessThan10Products())
+				.step("S4").user(checkoutPurchase())
 				.step("S5").system(displayShippingInformationForm())
-				.step("S6").user(ENTER_SHIPPING_INFORMATION).system(saveShippingInformation())
+				.step("S6").user(enterShippingInformation()).system(saveShippingInformation())
 				.step("S7").system(displayPaymentDetailsForm())
-				.step("S8").user(ENTER_PAYMENT_DETAILS).system(savePaymentDetails())
+				.step("S8").user(enterPaymentDetails()).system(savePaymentDetails())
 				.step("S9").system(displayPurchaseOrderSummary())
-				.step("S10").user(CONFIRM_PURCHASE).system(initiateShipping())
+				.step("S10").user(confirmPurchase()).system(initiateShipping())
 				.step("S11").continueAt("S1")	
 			.flow("Go back from shipping").after("S5")
-				.step("S6a_1").user(GO_BACK)
+				.step("S6a_1").user(goBack())
 				.step("S6a_2").continueAfter("S1")
 			.flow("Go back from payment").after("S7")
-				.step("S8a_1").user(GO_BACK)
+				.step("S8a_1").user(goBack())
 				.step("S8a_2").continueAfter("S4")
 			.flow("Checkout after going back").after("S2").when(atLeastOneProductInCart()).step("S3a_1").continueAfter("S3")
-			.flow("Handle exceptions").when(anytime()).step("EX").handle(EXCEPTION).system(informUserAndLogException())
+			.flow("Handle exceptions").when(anytime()).step("EX").handle(anyException()).system(informUserAndLogException())
 		.build();
+		
 		return useCaseModel;
 	}
 
@@ -60,16 +53,23 @@ public class ShoppingAppModel{
 		return r -> true;
 	}
 
-	protected Consumer<UseCaseModelRunner> startWithEmptyShoppingCart() {return buyProductRealization.startWithEmptyShoppingCart();}
-	protected Consumer<UseCaseModelRunner> displayProducts() {return buyProductRealization.displayProducts();}
-	protected Consumer<AddProductToCart> addProductToPurchaseOrder() {return buyProductRealization.addProductToPurchaseOrder();}
-	protected Predicate<UseCaseModelRunner> lessThan10Products() {return buyProductRealization.lessThan10Products();}
-	protected Consumer<UseCaseModelRunner> displayShippingInformationForm(){return buyProductRealization.displayShippingInformationForm();}
-	protected Consumer<EnterShippingInformation> saveShippingInformation() {return buyProductRealization.saveShippingInformation();}
-	protected Consumer<UseCaseModelRunner> displayPaymentDetailsForm() {return buyProductRealization.displayPaymentDetailsForm();}
-	protected Consumer<EnterPaymentDetails> savePaymentDetails() {return buyProductRealization.savePaymentDetails();}
-	protected Consumer<UseCaseModelRunner> displayPurchaseOrderSummary() {return buyProductRealization.displayPurchaseOrderSummary();}
-	protected Consumer<ConfirmPurchase> initiateShipping() {return buyProductRealization.initiateShipping();}
-	protected Predicate<UseCaseModelRunner> atLeastOneProductInCart() {return buyProductRealization.atLeastOneProductInCart();}
-	protected Consumer<Throwable> informUserAndLogException() {return buyProductRealization.informUserAndLogException();}
+	private Consumer<UseCaseModelRunner> startWithEmptyShoppingCart() {return bPR.startWithEmptyShoppingCart();}
+	private Consumer<UseCaseModelRunner> displayProducts() {return bPR.displayProducts();}
+	private Class<AddProductToCart> addProductToCart() {return AddProductToCart.class;} 
+	private Consumer<AddProductToCart> addProductToPurchaseOrder() {return bPR.addProductToPurchaseOrder();}
+	private Predicate<UseCaseModelRunner> lessThan10Products() {return bPR.lessThan10Products();}
+	private Class<CheckoutPurchase> checkoutPurchase() {return CheckoutPurchase.class;} 
+	private Consumer<UseCaseModelRunner> displayShippingInformationForm(){return bPR.displayShippingInformationForm();}
+	private Class<EnterShippingInformation> enterShippingInformation(){return EnterShippingInformation.class;}
+	private Consumer<EnterShippingInformation> saveShippingInformation() {return bPR.saveShippingInformation();}
+	private Consumer<UseCaseModelRunner> displayPaymentDetailsForm() {return bPR.displayPaymentDetailsForm();}
+	private Class<EnterPaymentDetails> enterPaymentDetails(){return EnterPaymentDetails.class;}
+	private Consumer<EnterPaymentDetails> savePaymentDetails() {return bPR.savePaymentDetails();}
+	private Consumer<UseCaseModelRunner> displayPurchaseOrderSummary() {return bPR.displayPurchaseOrderSummary();}
+	private Class<ConfirmPurchase> confirmPurchase(){return ConfirmPurchase.class;}
+	private Consumer<ConfirmPurchase> initiateShipping() {return bPR.initiateShipping();}
+	private Class<GoBack> goBack(){return GoBack.class;}
+	private Predicate<UseCaseModelRunner> atLeastOneProductInCart() {return bPR.atLeastOneProductInCart();}
+	private Class<Throwable> anyException(){return Throwable.class;}
+	private Consumer<Throwable> informUserAndLogException() {return bPR.informUserAndLogException();}
 }
