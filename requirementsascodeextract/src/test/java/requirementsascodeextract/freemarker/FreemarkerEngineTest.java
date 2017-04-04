@@ -32,6 +32,6 @@ public class FreemarkerEngineTest {
 	}
 
 	private Consumer<UseCaseModelRunner> greetUser() {
-		return new GreetTheUser();
+		return new GreetUser();
 	}
 }
