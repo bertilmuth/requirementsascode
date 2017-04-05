@@ -25,7 +25,7 @@ public class AsWordsMethod implements TemplateMethodModelEx {
     return new SimpleScalar(actorsString);
   }
 
-  public static String as(Actor[] actors, String separator) {
+  private String as(Actor[] actors, String separator) {
     List<String> actorNames = new ArrayList<>();
     for (Actor actor : actors) {
       String actorName = wordsOf(actor.getName());
