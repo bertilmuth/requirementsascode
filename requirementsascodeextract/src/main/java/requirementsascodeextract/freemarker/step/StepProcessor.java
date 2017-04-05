@@ -1,10 +1,23 @@
-package requirementsascodeextract.freemarker.words;
+package requirementsascodeextract.freemarker.step;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.requirementsascode.Actor;
 
-public class WordProcessor {
+public class StepProcessor {
+  public static String as(Actor[] actors, String separator) {
+    List<String> actorNames = new ArrayList<>();
+    for (Actor actor : actors) {
+      String actorName = wordsOf(actor.getName());
+      actorNames.add(actorName);
+    }
+    String actorsString = StringUtils.join(actorNames, separator).toLowerCase();
+    return actorsString;
+  }
+
   public static String user(Class<?> eventClass) {
     String camelCaseString = eventClass.getSimpleName();
     String words = wordsOf(camelCaseString);
