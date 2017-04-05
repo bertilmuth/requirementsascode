@@ -15,10 +15,10 @@ public class UserWordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
   public void testUserWordsMethodForWrongNumberOfArguments() {
-    UserWordsMethod asWordsMethod = new UserWordsMethod();
+    UserWordsMethod userWordsMethod = new UserWordsMethod();
     List arguments = Arrays.asList(new Object[] {});
     try {
-      asWordsMethod.exec(arguments);
+      userWordsMethod.exec(arguments);
       fail();
     } catch (TemplateModelException expected) {
     }
@@ -26,7 +26,7 @@ public class UserWordsMethodTest {
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testUserWordsMethodForTwoActors() throws TemplateModelException {
+  public void testUserWordsMethod() throws TemplateModelException {
     UserWordsMethod userWordsMethod = new UserWordsMethod();
     List arguments = Arrays.asList(new Object[] {EnterName.class});
     assertEquals("enter name", userWordsMethod.exec(arguments).toString());

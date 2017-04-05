@@ -1,6 +1,6 @@
 package requirementsascodeextract.freemarker.methodmodel;
 
-import static requirementsascodeextract.freemarker.methodmodel.StepProcessor.wordsOf;
+import static requirementsascodeextract.freemarker.methodmodel.WordProcessor.wordsOf;
 
 import java.util.ArrayList;
 import java.util.List;

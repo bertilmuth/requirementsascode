@@ -16,11 +16,8 @@ public class AsWordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
   public void testAsWordsMethodForWrongNumberOfArguments() {
-    UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
-    Actor[] actors = new Actor[] {builder.actor("EndCustomer")};
-
     AsWordsMethod asWordsMethod = new AsWordsMethod();
-    List arguments = Arrays.asList(new Object[] {actors});
+    List arguments = Arrays.asList(new Object[] {});
     try {
       asWordsMethod.exec(arguments);
       fail();
@@ -30,7 +27,7 @@ public class AsWordsMethodTest {
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testAsWordsMethodForTwoActors() throws TemplateModelException {
+  public void testAsWordsMethod() throws TemplateModelException {
     UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
     Actor[] actors = new Actor[] {builder.actor("EndCustomer"), builder.actor("admin")};
 
