@@ -1,4 +1,4 @@
-package requirementsascodeextract.freemarker.step;
+package requirementsascodeextract.freemarker.methodmodel;
 
 import java.util.ArrayList;
 import java.util.List;

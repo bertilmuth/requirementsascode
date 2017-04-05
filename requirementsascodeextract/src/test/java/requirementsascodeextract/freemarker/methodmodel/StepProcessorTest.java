@@ -1,9 +1,9 @@
-package requirementsascodeextract.freemarker.step;
+package requirementsascodeextract.freemarker.methodmodel;
 
 import static org.junit.Assert.assertEquals;
-import static requirementsascodeextract.freemarker.step.StepProcessor.as;
-import static requirementsascodeextract.freemarker.step.StepProcessor.system;
-import static requirementsascodeextract.freemarker.step.StepProcessor.user;
+import static requirementsascodeextract.freemarker.methodmodel.StepProcessor.as;
+import static requirementsascodeextract.freemarker.methodmodel.StepProcessor.system;
+import static requirementsascodeextract.freemarker.methodmodel.StepProcessor.user;
 
 import org.junit.Test;
 import org.requirementsascode.Actor;
