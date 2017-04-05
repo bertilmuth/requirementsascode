@@ -1,4 +1,4 @@
-<#macro systemThirdPersonOf step>
+<#macro systemOfStep step>
 <#assign words = words(step.system.class.simpleName)/>
 ${words}</#macro> 
 <html>
@@ -12,7 +12,7 @@ ${words}</#macro>
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
 			<#list flow.steps as step>
-				<li>${step}: ${step.as?join(", ")?capitalize} <@systemThirdPersonOf step=step/>.</li>
+				<li>${step}: ${step.as?join(", ")?capitalize} <@systemOfStep step=step/>.</li>
 			</#list>
 			</ul>	
 		</#list>
