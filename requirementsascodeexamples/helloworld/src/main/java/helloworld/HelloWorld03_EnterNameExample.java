@@ -6,6 +6,8 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
+import helloworld.userevent.EnterText;
+
 public class HelloWorld03_EnterNameExample extends AbstractHelloWorldExample{
 	
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;

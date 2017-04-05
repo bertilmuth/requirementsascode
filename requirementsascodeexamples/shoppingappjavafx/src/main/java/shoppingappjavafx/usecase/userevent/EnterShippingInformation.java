@@ -1,4 +1,4 @@
-package shoppingappjavafx.usecase.event;
+package shoppingappjavafx.usecase.userevent;
 
 import shoppingappjavafx.domain.ShippingInformation;
 

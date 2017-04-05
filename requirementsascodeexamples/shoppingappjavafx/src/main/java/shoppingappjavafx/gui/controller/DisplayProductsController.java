@@ -15,8 +15,8 @@ import javafx.scene.layout.Priority;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.Products;
 import shoppingappjavafx.domain.PurchaseOrder;
-import shoppingappjavafx.usecase.event.AddProductToCart;
-import shoppingappjavafx.usecase.event.CheckoutPurchase;
+import shoppingappjavafx.usecase.userevent.AddProductToCart;
+import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
 
 public class DisplayProductsController extends AbstractController{
     @FXML

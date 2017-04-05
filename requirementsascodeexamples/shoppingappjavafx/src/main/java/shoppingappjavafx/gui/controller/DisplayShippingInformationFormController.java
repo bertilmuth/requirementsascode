@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.ShippingInformation;
-import shoppingappjavafx.usecase.event.EnterShippingInformation;
-import shoppingappjavafx.usecase.event.GoBack;
+import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
+import shoppingappjavafx.usecase.userevent.GoBack;
 
 public class DisplayShippingInformationFormController extends AbstractController{
 	private ShippingInformation shippingInformation;

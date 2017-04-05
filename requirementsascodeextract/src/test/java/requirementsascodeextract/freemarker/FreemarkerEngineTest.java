@@ -10,28 +10,32 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
+import requirementsascodeextract.freemarker.systemreaction.GreetUser;
+
 public class FreemarkerEngineTest {
-	private FreeMarkerEngine engine;
+  private FreeMarkerEngine engine;
 
-	@Before
-	public void setUp() throws Exception {
-		engine = new FreeMarkerEngine();
-	}
+  @Before
+  public void setUp() throws Exception {
+    engine = new FreeMarkerEngine();
+  }
 
-	@Test
-	public void printsUseCaseModelToConsole() throws Exception {
-		UseCaseModel useCaseModel = 
-			UseCaseModelBuilder.newBuilder().useCase("Get greeted")
-				.basicFlow()
-					.step("S1").system(greetUser())
-			.build();
-		
-		engine.put("useCaseModel", useCaseModel);
-		File templateFile = new File("src/test/resources/example.ftl");
-		engine.process(templateFile, new OutputStreamWriter(System.out));
-	}
+  @Test
+  public void printsUseCaseModelToConsole() throws Exception {
+    UseCaseModel useCaseModel =
+        UseCaseModelBuilder.newBuilder()
+            .useCase("Get greeted")
+            .basicFlow()
+            .step("S1")
+            .system(greetUser())
+            .build();
 
-	private Consumer<UseCaseModelRunner> greetUser() {
-		return new GreetUser();
-	}
+    engine.put("useCaseModel", useCaseModel);
+    File templateFile = new File("src/test/resources/example.ftlh");
+    engine.process(templateFile, new OutputStreamWriter(System.out));
+  }
+
+  private Consumer<UseCaseModelRunner> greetUser() {
+    return new GreetUser();
+  }
 }

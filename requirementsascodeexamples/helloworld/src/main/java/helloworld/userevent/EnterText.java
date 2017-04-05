@@ -1,7 +1,6 @@
-package helloworld;
+package helloworld.userevent;
 
-class EnterText {
-	
+public class EnterText {	
 	public final String text;
 	
 	public EnterText(String text) {

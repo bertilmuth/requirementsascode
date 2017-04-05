@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import org.requirementsascode.UseCaseModelRunner;
 
+import helloworld.userevent.EnterText;
+
 public class AbstractHelloWorldExample {
 	private Scanner scanner;
 	private boolean isSystemStopped;

@@ -8,6 +8,8 @@ import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 
+import helloworld.userevent.EnterText;
+
 public class HelloWorldTest {
 	private TestUseCaseModelRunner modelRunner;
 	private UseCaseModel useCaseModel;

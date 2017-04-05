@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.PaymentDetails;
-import shoppingappjavafx.usecase.event.EnterPaymentDetails;
-import shoppingappjavafx.usecase.event.GoBack;
+import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
+import shoppingappjavafx.usecase.userevent.GoBack;
 
 public class DisplayPaymentDetailsFormController extends AbstractController{
     private PaymentDetails paymentDetails;

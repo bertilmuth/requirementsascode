@@ -7,12 +7,12 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
-import shoppingappjavafx.usecase.event.AddProductToCart;
-import shoppingappjavafx.usecase.event.CheckoutPurchase;
-import shoppingappjavafx.usecase.event.ConfirmPurchase;
-import shoppingappjavafx.usecase.event.EnterPaymentDetails;
-import shoppingappjavafx.usecase.event.EnterShippingInformation;
-import shoppingappjavafx.usecase.event.GoBack;
+import shoppingappjavafx.usecase.userevent.AddProductToCart;
+import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
+import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
+import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
+import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
+import shoppingappjavafx.usecase.userevent.GoBack;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
 
 public class ShoppingAppModel{	

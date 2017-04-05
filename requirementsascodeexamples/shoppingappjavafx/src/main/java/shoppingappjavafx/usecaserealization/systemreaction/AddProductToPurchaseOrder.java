@@ -2,7 +2,7 @@ package shoppingappjavafx.usecaserealization.systemreaction;
 
 import java.util.function.Consumer;
 
-import shoppingappjavafx.usecase.event.AddProductToCart;
+import shoppingappjavafx.usecase.userevent.AddProductToCart;
 import shoppingappjavafx.usecaserealization.RunContext;
 
 public class AddProductToPurchaseOrder implements Consumer<AddProductToCart> {

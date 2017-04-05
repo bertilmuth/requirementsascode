@@ -2,7 +2,7 @@ package shoppingappjavafx.usecaserealization.systemreaction;
 
 import java.util.function.Consumer;
 
-import shoppingappjavafx.usecase.event.EnterShippingInformation;
+import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
 import shoppingappjavafx.usecaserealization.RunContext;
 
 public class SaveShippingInformation implements Consumer<EnterShippingInformation> {
