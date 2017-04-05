@@ -12,14 +12,14 @@ import org.requirementsascode.UseCaseModelBuilder;
 
 import freemarker.template.TemplateModelException;
 
-public class AsMethodTest {
+public class AsWordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
-  public void testAsMethodForWrongNumberOfArguments() {
+  public void testAsWordsMethodForWrongNumberOfArguments() {
     UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
     Actor[] actors = new Actor[] {builder.actor("EndCustomer")};
 
-    AsMethod asOfMethod = new AsMethod();
+    AsWordsMethod asOfMethod = new AsWordsMethod();
     List arguments = Arrays.asList(new Object[] {actors});
     try {
       asOfMethod.exec(arguments);
@@ -30,11 +30,11 @@ public class AsMethodTest {
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testAsOfMethodForTwoActors() throws TemplateModelException {
+  public void testAsWordsMethodForTwoActors() throws TemplateModelException {
     UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
     Actor[] actors = new Actor[] {builder.actor("EndCustomer"), builder.actor("admin")};
 
-    AsMethod asOfMethod = new AsMethod();
+    AsWordsMethod asOfMethod = new AsWordsMethod();
     List arguments = Arrays.asList(new Object[] {actors, " & "});
     assertEquals("end customer & admin", asOfMethod.exec(arguments).toString());
   }

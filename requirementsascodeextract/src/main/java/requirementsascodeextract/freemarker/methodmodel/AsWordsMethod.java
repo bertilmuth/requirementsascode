@@ -12,7 +12,7 @@ import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class AsMethod implements TemplateMethodModelEx {
+public class AsWordsMethod implements TemplateMethodModelEx {
   @SuppressWarnings("rawtypes")
   @Override
   public Object exec(List arguments) throws TemplateModelException {
