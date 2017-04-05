@@ -1,13 +1,6 @@
-<#function wordsLowerCase camelCase>
-<#return camelCase?replace('(\\p{Upper})', ' $1', 'r')?lower_case?word_list/>
-</#function> 
-<#macro inLowerCase str>
-<#assign words = wordsLowerCase(str)/>
-<#list words as word> ${word}</#list>
-</#macro> 
-<#macro systemInThirdPerson system>
-<#assign words = wordsLowerCase(system.class.simpleName)/>
-<#list words as word> ${word}<#if word?index == 0>s</#if></#list></#macro> 
+<#macro systemThirdPerson system>
+<#assign words = words(system.class.simpleName)/>
+${words}</#macro> 
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -19,7 +12,7 @@
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
 			<#list flow.steps as step>
-				<li>${step}: ${step.as?join(", ")?capitalize}<@systemInThirdPerson system=step.system/>.</li>
+				<li>${step}: ${step.as?join(", ")?capitalize} <@systemThirdPerson system=step.system/>.</li>
 			</#list>
 			</ul>	
 		</#list>
