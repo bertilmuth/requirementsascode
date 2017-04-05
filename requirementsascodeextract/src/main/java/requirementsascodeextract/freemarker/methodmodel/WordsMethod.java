@@ -1,8 +1,8 @@
 package requirementsascodeextract.freemarker.methodmodel;
 
-import static requirementsascodeextract.freemarker.methodmodel.WordProcessor.wordsOf;
-
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
@@ -15,8 +15,14 @@ public class WordsMethod implements TemplateMethodModelEx {
     if (arguments.size() != 1) {
       throw new TemplateModelException("Wrong number of arguments");
     }
-    String camelCaseString = (String) ((SimpleScalar)arguments.get(0)).getAsString();
+    String camelCaseString = (String) ((SimpleScalar) arguments.get(0)).getAsString();
     String words = wordsOf(camelCaseString);
     return new SimpleScalar(words);
+  }
+
+  private String wordsOf(String camelCaseString) {
+    String[] wordsArray = StringUtils.splitByCharacterTypeCamelCase(camelCaseString);
+    String words = StringUtils.join(wordsArray, " ").toLowerCase();
+    return words;
   }
 }
