@@ -19,10 +19,10 @@ public class AsWordsMethodTest {
     UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
     Actor[] actors = new Actor[] {builder.actor("EndCustomer")};
 
-    AsWordsMethod asOfMethod = new AsWordsMethod();
+    AsWordsMethod asWordsMethod = new AsWordsMethod();
     List arguments = Arrays.asList(new Object[] {actors});
     try {
-      asOfMethod.exec(arguments);
+      asWordsMethod.exec(arguments);
       fail();
     } catch (TemplateModelException expected) {
     }
@@ -34,8 +34,8 @@ public class AsWordsMethodTest {
     UseCaseModelBuilder builder = UseCaseModelBuilder.newBuilder();
     Actor[] actors = new Actor[] {builder.actor("EndCustomer"), builder.actor("admin")};
 
-    AsWordsMethod asOfMethod = new AsWordsMethod();
+    AsWordsMethod asWordsMethod = new AsWordsMethod();
     List arguments = Arrays.asList(new Object[] {actors, " & "});
-    assertEquals("end customer & admin", asOfMethod.exec(arguments).toString());
+    assertEquals("end customer & admin", asWordsMethod.exec(arguments).toString());
   }
 }
