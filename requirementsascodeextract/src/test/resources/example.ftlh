@@ -1,11 +1,9 @@
-<#macro asOf step>
+<#macro systemStep step>
 <#assign actors = step.as?join("/")?capitalize/>
-${actors}</#macro> 
-<#macro systemOf step>
 <#assign systemReaction = step.system.class.simpleName/>
 <#assign verb = firstWordOf(systemReaction)/>
 <#assign noun = afterFirstWordOf(systemReaction)/>
-${verb}s ${noun}</#macro> 
+${actors} ${verb}s ${noun}</#macro> 
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -17,7 +15,7 @@ ${verb}s ${noun}</#macro>
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
 			<#list flow.steps as s>
-				<li>${s}: <@asOf step=s/> <@systemOf step=s/>.</li>
+				<li>${s}: <@systemStep step=s/>.</li>
 			</#list>
 			</ul>	
 		</#list>
