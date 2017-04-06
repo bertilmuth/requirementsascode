@@ -1,6 +1,9 @@
-<#macro systemOfStep step>
-<#assign words = words(step.system.class.simpleName)/>
-${words}</#macro> 
+<#macro asOf step>
+<#assign result = step.as?join("/")?capitalize/>
+${result}</#macro> 
+<#macro systemOf step>
+<#assign result = words(step.system.class.simpleName)/>
+${result}</#macro> 
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -11,8 +14,8 @@ ${words}</#macro>
 		<#list useCase.flows as flow>
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
-			<#list flow.steps as step>
-				<li>${step}: ${step.as?join(", ")?capitalize} <@systemOfStep step=step/>.</li>
+			<#list flow.steps as s>
+				<li>${s}: <@asOf step=s/> <@systemOf step=s/>.</li>
 			</#list>
 			</ul>	
 		</#list>
