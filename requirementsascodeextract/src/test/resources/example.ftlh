@@ -1,9 +1,11 @@
 <#macro asOf step>
-<#assign result = step.as?join("/")?capitalize/>
-${result}</#macro> 
+<#assign actors = step.as?join("/")?capitalize/>
+${actors}</#macro> 
 <#macro systemOf step>
-<#assign result = wordsOf(step.system.class.simpleName)/>
-${result}</#macro> 
+<#assign systemReaction = step.system.class.simpleName/>
+<#assign verb = firstWordOf(systemReaction)/>
+<#assign noun = afterFirstWordOf(systemReaction)/>
+${verb}s ${noun}</#macro> 
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>

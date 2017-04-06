@@ -8,6 +8,8 @@ import java.util.Map;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+import requirementsascodeextract.freemarker.methodmodel.AfterFirstWordOfMethod;
+import requirementsascodeextract.freemarker.methodmodel.FirstWordOfMethod;
 import requirementsascodeextract.freemarker.methodmodel.WordsOfMethod;
 
 public class FreeMarkerEngine {
@@ -27,6 +29,8 @@ public class FreeMarkerEngine {
   }
   private void putFreemarkerMethodsInDataModel() {
 	  put("wordsOf", new WordsOfMethod());
+	  put("firstWordOf", new FirstWordOfMethod());
+	  put("afterFirstWordOf", new AfterFirstWordOfMethod());
   }
 
   public void put(String key, Object value) {
