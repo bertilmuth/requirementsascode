@@ -15,10 +15,10 @@ public class WordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
   public void testWordsOfMethodForWrongNumberOfArguments() {
-	  WordsOfMethod wordsMethod = new WordsOfMethod();
+    WordsOfMethod wordsOfMethod = new WordsOfMethod();
     List arguments = Arrays.asList(new Object[] {});
     try {
-      wordsMethod.exec(arguments);
+      wordsOfMethod.exec(arguments);
       fail();
     } catch (TemplateModelException expected) {
     }
@@ -27,8 +27,28 @@ public class WordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
   public void testWordsOfMethod() throws TemplateModelException {
-	  WordsOfMethod wordsMethod = new WordsOfMethod();
+    WordsOfMethod wordsOfMethod = new WordsOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
-    assertEquals("enter name", wordsMethod.exec(arguments).toString());
+    assertEquals("enter name", wordsOfMethod.exec(arguments).toString());
+  }
+
+  @SuppressWarnings("rawtypes")
+  @Test
+  public void testFirstWordOfMethodForWrongNumberOfArguments() {
+    FirstWordOfMethod firstWordOfMethod = new FirstWordOfMethod();
+    List arguments = Arrays.asList(new Object[] {});
+    try {
+      firstWordOfMethod.exec(arguments);
+      fail();
+    } catch (TemplateModelException expected) {
+    }
+  }
+
+  @SuppressWarnings("rawtypes")
+  @Test
+  public void testFirstWordOfMethod() throws TemplateModelException {
+    FirstWordOfMethod firstWordOfMethod = new FirstWordOfMethod();
+    List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
+    assertEquals("enter", firstWordOfMethod.exec(arguments).toString());
   }
 }
