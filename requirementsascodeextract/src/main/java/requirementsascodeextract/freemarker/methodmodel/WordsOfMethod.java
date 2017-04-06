@@ -3,13 +3,8 @@ package requirementsascodeextract.freemarker.methodmodel;
 import org.apache.commons.lang3.StringUtils;
 
 public class WordsOfMethod extends AbstractCamelCaseToWordsMethod {
-  public String camelCaseToWords(String camelCaseString) {
-    return wordsOf(camelCaseString);
+  public String wordArrayToString(String[] wordArray) {
+    String words = StringUtils.join(wordArray, " ").toLowerCase();
+    return words;
   }
-  
-  private String wordsOf(String camelCaseString) {
-	    String[] wordsArray = StringUtils.splitByCharacterTypeCamelCase(camelCaseString);
-	    String words = StringUtils.join(wordsArray, " ").toLowerCase();
-	    return words;
-	  }
 }

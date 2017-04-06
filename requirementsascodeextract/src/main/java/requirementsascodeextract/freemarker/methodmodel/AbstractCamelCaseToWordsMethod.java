@@ -2,6 +2,8 @@ package requirementsascodeextract.freemarker.methodmodel;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
@@ -13,10 +15,16 @@ public abstract class AbstractCamelCaseToWordsMethod implements TemplateMethodMo
     if (arguments.size() != 1) {
       throw new TemplateModelException("Wrong number of arguments");
     }
-    String camelCaseString = (String) ((SimpleScalar) arguments.get(0)).getAsString();
-    String words = camelCaseToWords(camelCaseString);
+    String camelCaseString = ((SimpleScalar) arguments.get(0)).getAsString();
+    String[] wordArray = toWordArray(camelCaseString);
+    String words = wordArrayToString(wordArray);
     return new SimpleScalar(words);
   }
 
-  public abstract String camelCaseToWords(String camelCaseString);
+  public abstract String wordArrayToString(String[] wordArray);
+
+  private String[] toWordArray(String camelCaseString) {
+    String[] wordsArray = StringUtils.splitByCharacterTypeCamelCase(camelCaseString);
+    return wordsArray;
+  }
 }
