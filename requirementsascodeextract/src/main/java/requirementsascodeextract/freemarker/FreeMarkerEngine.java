@@ -8,7 +8,7 @@ import java.util.Map;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
-import requirementsascodeextract.freemarker.methodmodel.WordsMethod;
+import requirementsascodeextract.freemarker.methodmodel.WordsOfMethod;
 
 public class FreeMarkerEngine {
   private Map<String, Object> dataModel;
@@ -26,7 +26,7 @@ public class FreeMarkerEngine {
     setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
   }
   private void putFreemarkerMethodsInDataModel() {
-	  put("words", new WordsMethod());
+	  put("wordsOf", new WordsOfMethod());
   }
 
   public void put(String key, Object value) {

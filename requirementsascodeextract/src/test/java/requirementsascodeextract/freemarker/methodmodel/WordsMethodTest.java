@@ -14,8 +14,8 @@ import freemarker.template.TemplateModelException;
 public class WordsMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
-  public void testWordsMethodForWrongNumberOfArguments() {
-    WordsMethod wordsMethod = new WordsMethod();
+  public void testWordsOfMethodForWrongNumberOfArguments() {
+	  WordsOfMethod wordsMethod = new WordsOfMethod();
     List arguments = Arrays.asList(new Object[] {});
     try {
       wordsMethod.exec(arguments);
@@ -26,8 +26,8 @@ public class WordsMethodTest {
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testWordsMethod() throws TemplateModelException {
-    WordsMethod wordsMethod = new WordsMethod();
+  public void testWordsOfMethod() throws TemplateModelException {
+	  WordsOfMethod wordsMethod = new WordsOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
     assertEquals("enter name", wordsMethod.exec(arguments).toString());
   }

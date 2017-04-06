@@ -2,7 +2,7 @@
 <#assign result = step.as?join("/")?capitalize/>
 ${result}</#macro> 
 <#macro systemOf step>
-<#assign result = words(step.system.class.simpleName)/>
+<#assign result = wordsOf(step.system.class.simpleName)/>
 ${result}</#macro> 
 <html>
 <head>
