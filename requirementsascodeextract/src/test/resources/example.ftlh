@@ -1,9 +1,18 @@
-<#macro systemStep step>
+<#macro userStep step>
+<#assign systemActorName = step.useCaseModel.systemActor.name?capitalize>
 <#assign actors = step.as?join("/")?capitalize/>
+<#if actors != systemActorName>
+<#assign userEvent = step.user.simpleName/>
+<#assign verb = firstWordOf(userEvent)/>
+<#assign noun = afterFirstWordOf(userEvent)/>
+${actors} ${verb}s ${noun}. </#if></#macro>  
+
+<#macro systemStep step>
 <#assign systemReaction = step.system.class.simpleName/>
+<#if systemReaction != "IgnoreIt">
 <#assign verb = firstWordOf(systemReaction)/>
 <#assign noun = afterFirstWordOf(systemReaction)/>
-${actors} ${verb}s ${noun}</#macro> 
+System ${verb}s ${noun}.</#if></#macro>
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -15,7 +24,7 @@ ${actors} ${verb}s ${noun}</#macro>
 	  		<h2>${flow?cap_first}</h1>
 	  	  	<ul>
 			<#list flow.steps as s>
-				<li>${s}: <@systemStep step=s/>.</li>
+				<li>${s}: <@userStep step=s/><@systemStep step=s/></li>
 			</#list>
 			</ul>	
 		</#list>

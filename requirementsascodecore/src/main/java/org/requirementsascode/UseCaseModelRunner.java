@@ -77,13 +77,13 @@ public class UseCaseModelRunner {
    */
   public void run(UseCaseModel useCaseModel) {
     this.useCaseModel = useCaseModel;
-    this.userAndSystem = userAndSystem(user.orElse(useCaseModel.userActor()));
+    this.userAndSystem = userAndSystem(user.orElse(useCaseModel.getUserActor()));
     this.isRunning = true;
     triggerAutonomousSystemReaction();
   }
 
   private List<Actor> userAndSystem(Actor userActor) {
-    return Arrays.asList(userActor, userActor.getUseCaseModel().systemActor());
+    return Arrays.asList(userActor, userActor.getUseCaseModel().getSystemActor());
   }
 
   /**

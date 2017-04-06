@@ -140,7 +140,7 @@ public class UseCaseModel {
    *
    * @return the user actor
    */
-  public Actor userActor() {
+  public Actor getUserActor() {
     return userActor;
   }
 
@@ -149,7 +149,7 @@ public class UseCaseModel {
    *
    * @return the user actor
    */
-  public Actor systemActor() {
+  public Actor getSystemActor() {
     return systemActor;
   }
 }

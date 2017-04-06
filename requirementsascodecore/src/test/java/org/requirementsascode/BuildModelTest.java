@@ -98,7 +98,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Step step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());	
-		assertEquals(useCaseModel.userActor(), step.getAs()[0]);
+		assertEquals(useCaseModel.getUserActor(), step.getAs()[0]);
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Step step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());	
-		assertEquals(useCaseModel.systemActor(), step.getAs()[0]);
+		assertEquals(useCaseModel.getSystemActor(), step.getAs()[0]);
 	}
 	
 	@Test
@@ -137,7 +137,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Step step = steps.iterator().next();
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());	
-		assertEquals(useCaseModel.systemActor(), step.getAs()[0]);
+		assertEquals(useCaseModel.getSystemActor(), step.getAs()[0]);
 	}
 	
 	@Test
@@ -253,7 +253,7 @@ public class BuildModelTest extends AbstractTestCase{
 						.as(customer).user(EnterNumber.class).system(displayEnteredNumber())
 				.build();
 
-		assertTrue(useCaseModel.getActors().contains(useCaseModel.systemActor()));
+		assertTrue(useCaseModel.getActors().contains(useCaseModel.getSystemActor()));
 		assertTrue(useCaseModel.getActors().contains(customer));
 		
 		Collection<Step> steps = useCasePart.useCase().getSteps();

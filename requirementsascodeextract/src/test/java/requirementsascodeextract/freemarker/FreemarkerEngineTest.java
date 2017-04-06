@@ -11,6 +11,8 @@ import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
 import requirementsascodeextract.freemarker.systemreaction.GreetUser;
+import requirementsascodeextract.freemarker.systemreaction.PromptUserToEnterName;
+import requirementsascodeextract.freemarker.userevent.EnterName;
 
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;
@@ -22,20 +24,27 @@ public class FreemarkerEngineTest {
 
   @Test
   public void printsUseCaseModelToConsole() throws Exception {
-    UseCaseModel useCaseModel =
-        UseCaseModelBuilder.newBuilder()
-            .useCase("Get greeted")
-            .basicFlow()
-            .step("S1")
-            .system(greetUser())
-            .build();
+		UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
+			.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").system(promptUserToEnterName())
+					.step("S2").user(enterName()).system(greetUser())
+		.build();
 
     engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/example.ftlh");
     engine.process(templateFile, new OutputStreamWriter(System.out));
   }
 
-  private Consumer<UseCaseModelRunner> greetUser() {
+  private Consumer<UseCaseModelRunner> promptUserToEnterName() {
+    return new PromptUserToEnterName();
+  }
+
+  private Class<EnterName> enterName() {
+    return EnterName.class;
+  }
+
+  private Consumer<EnterName> greetUser() {
     return new GreetUser();
   }
 }

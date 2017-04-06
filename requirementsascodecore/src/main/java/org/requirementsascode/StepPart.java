@@ -21,7 +21,7 @@ public class StepPart {
     this.step = useCaseStep;
     this.flowPart = useCaseFlowPart;
     this.useCaseModelBuilder = useCaseFlowPart.getUseCaseModelBuilder();
-    this.systemActor = useCaseModelBuilder.build().systemActor();
+    this.systemActor = useCaseModelBuilder.build().getSystemActor();
   }
 
   /**
@@ -52,7 +52,7 @@ public class StepPart {
   public <T> StepUserPart<T> user(Class<T> eventClass) {
     Objects.requireNonNull(eventClass);
 
-    Actor userActor = useCaseModelBuilder.build().userActor();
+    Actor userActor = useCaseModelBuilder.build().getUserActor();
     StepUserPart<T> userPart = as(userActor).user(eventClass);
     return userPart;
   }
@@ -72,7 +72,7 @@ public class StepPart {
   public <T> StepUserPart<T> handle(Class<T> eventOrExceptionClass) {
     Objects.requireNonNull(eventOrExceptionClass);
 
-    Actor systemActor = useCaseModelBuilder.build().systemActor();
+    Actor systemActor = useCaseModelBuilder.build().getSystemActor();
     StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
     return userPart;
   }
