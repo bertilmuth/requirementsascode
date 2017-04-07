@@ -5,7 +5,7 @@
 	<#list useCase.flows as flow>
 		flow: ${flow}.
 		<#list flow.steps as s>
-			step: ${s}.
+			step: ${s}. <@userStep step=s/><@systemStep step=s/>
 		</#list>
 	</#list>
 </#list>
