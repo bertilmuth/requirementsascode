@@ -17,6 +17,7 @@ import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quit;
 import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
+import org.requirementsascode.extract.freemarker.userevent.DontQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreeMarkerEngineTest {
@@ -50,6 +51,8 @@ public class FreeMarkerEngineTest {
 					.step("S2").user(enterName()).system(greetUser())
 					.step("S3").user(decideToQuit())
 					.step("S4").system(quit())
+				.flow("alternative flow").insteadOf("S4")
+					.step("S4a_1").system(dontQuit())
     	.build();
 
     engine.put("useCaseModel", useCaseModel);
@@ -59,14 +62,17 @@ public class FreeMarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "use case: Get greeted. flow: basic flow. step: S1. System prompts user to enter name. "
-            + "step: S2. User enters name. System greets user. "
-            + "step: S3. User decides to quit. "
-            + "step: S4. System quits.",
+        "use case: Get greeted. flow: basic flow." 
+        	+ " step: S1. System prompts user to enter name."
+            + " step: S2. User enters name. System greets user."
+            + " step: S3. User decides to quit."
+            + " step: S4. System quits."
+            + " flow: alternative flow."
+        	+ " step: S4a_1. System donts quit.",
         output);
   }
 
-  @Test
+@Test
   @Ignore
   public void printsUseCaseModelToConsole() throws Exception {
 	UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
@@ -104,5 +110,9 @@ public class FreeMarkerEngineTest {
 
   private Consumer<UseCaseModelRunner> quit() {
     return new Quit();
+  }
+
+  private Consumer<UseCaseModelRunner> dontQuit() { 
+	  return new DontQuit();
   }
 }
