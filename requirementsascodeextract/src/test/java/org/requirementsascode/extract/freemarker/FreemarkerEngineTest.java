@@ -15,7 +15,7 @@ import org.requirementsascode.extract.freemarker.systemreaction.Quit;
 import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
-public class FreemarkerEngineTest {
+public class FreeMarkerEngineTest {
   private FreeMarkerEngine engine;
 
   @Before
