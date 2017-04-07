@@ -1,14 +1,14 @@
 <#macro userStep step>
 <#assign systemActorName = step.useCaseModel.systemActor.name?capitalize>
-<#assign actors = step.as?join("/")?capitalize/>
+<#assign actors = step.actors?join("/")?capitalize/>
 <#if actors != systemActorName>
-<#assign userEvent = step.user.simpleName/>
+<#assign userEvent = step.userEventClass.simpleName/>
 <#assign verb = firstWordOf(userEvent)/>
 <#assign noun = afterFirstWordOf(userEvent)/>
 ${actors} ${verb}s ${noun}. </#if></#macro>  
 
 <#macro systemStep step>
-<#assign systemReaction = step.system.class.simpleName/>
+<#assign systemReaction = step.systemReaction.class.simpleName/>
 <#if systemReaction != "IgnoreIt">
 <#assign verb = firstWordOf(systemReaction)/>
 <#assign noun = afterFirstWordOf(systemReaction)/>
