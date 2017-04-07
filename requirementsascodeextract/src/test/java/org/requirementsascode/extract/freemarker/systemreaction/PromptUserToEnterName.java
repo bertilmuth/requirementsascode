@@ -1,4 +1,4 @@
-package requirementsascodeextract.freemarker.systemreaction;
+package org.requirementsascode.extract.freemarker.systemreaction;
 
 import java.util.function.Consumer;
 

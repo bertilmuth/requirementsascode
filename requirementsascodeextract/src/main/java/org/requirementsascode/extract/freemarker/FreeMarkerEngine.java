@@ -1,16 +1,17 @@
-package requirementsascodeextract.freemarker;
+package org.requirementsascode.extract.freemarker;
 
 import java.io.File;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.requirementsascode.extract.freemarker.methodmodel.AfterFirstWordOfMethod;
+import org.requirementsascode.extract.freemarker.methodmodel.FirstWordOfMethod;
+import org.requirementsascode.extract.freemarker.methodmodel.WordsOfMethod;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
-import requirementsascodeextract.freemarker.methodmodel.AfterFirstWordOfMethod;
-import requirementsascodeextract.freemarker.methodmodel.FirstWordOfMethod;
-import requirementsascodeextract.freemarker.methodmodel.WordsOfMethod;
 
 public class FreeMarkerEngine {
   private Map<String, Object> dataModel;

@@ -1,4 +1,4 @@
-package requirementsascodeextract.freemarker.methodmodel;
+package org.requirementsascode.extract.freemarker.methodmodel;
 
 import freemarker.template.TemplateModelException;
 

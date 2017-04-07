@@ -1,8 +1,8 @@
-package requirementsascodeextract.freemarker.systemreaction;
+package org.requirementsascode.extract.freemarker.systemreaction;
 
 import java.util.function.Consumer;
 
-import requirementsascodeextract.freemarker.userevent.EnterName;
+import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class GreetUser implements Consumer<EnterName> {
   @Override

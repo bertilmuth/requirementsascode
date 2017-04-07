@@ -1,4 +1,4 @@
-package requirementsascodeextract.freemarker;
+package org.requirementsascode.extract.freemarker;
 
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -9,10 +9,10 @@ import org.junit.Test;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
-
-import requirementsascodeextract.freemarker.systemreaction.GreetUser;
-import requirementsascodeextract.freemarker.systemreaction.PromptUserToEnterName;
-import requirementsascodeextract.freemarker.userevent.EnterName;
+import org.requirementsascode.extract.freemarker.FreeMarkerEngine;
+import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
+import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
+import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;

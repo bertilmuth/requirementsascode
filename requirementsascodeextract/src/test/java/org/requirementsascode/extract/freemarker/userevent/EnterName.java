@@ -1,4 +1,4 @@
-package requirementsascodeextract.freemarker.userevent;
+package org.requirementsascode.extract.freemarker.userevent;
 
 public class EnterName {
 	
