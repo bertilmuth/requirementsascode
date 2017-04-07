@@ -38,7 +38,7 @@ public class AfterFirstWordOfMethodTest {
   public void testAfterFirstWordOfMethodForTwoParts() throws TemplateModelException {
     AfterFirstWordOfMethod afterFirstWordOfMethod = new AfterFirstWordOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
-    assertEquals("name", afterFirstWordOfMethod.exec(arguments).toString());
+    assertEquals("Name", afterFirstWordOfMethod.exec(arguments).toString());
   }
   
   @SuppressWarnings("rawtypes")
@@ -46,6 +46,6 @@ public class AfterFirstWordOfMethodTest {
   public void testAfterFirstWordOfMethodForThreeParts() throws TemplateModelException {
     AfterFirstWordOfMethod afterFirstWordOfMethod = new AfterFirstWordOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("GoGetDrunk")});
-    assertEquals("get drunk", afterFirstWordOfMethod.exec(arguments).toString());
+    assertEquals("Get Drunk", afterFirstWordOfMethod.exec(arguments).toString());
   }
 }

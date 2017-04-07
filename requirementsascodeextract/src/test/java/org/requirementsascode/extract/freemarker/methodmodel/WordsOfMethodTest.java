@@ -38,6 +38,6 @@ public class WordsOfMethodTest {
   public void testWordsOfMethodForTwoParts() throws TemplateModelException {
     WordsOfMethod wordsOfMethod = new WordsOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
-    assertEquals("enter name", wordsOfMethod.exec(arguments).toString());
+    assertEquals("Enter Name", wordsOfMethod.exec(arguments).toString());
   }
 }

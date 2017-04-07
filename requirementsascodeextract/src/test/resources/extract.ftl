@@ -14,7 +14,7 @@
 	<#if noun != "">
 		<#assign noun = " " + noun/>
 	</#if>
-${actors} ${verb}s${noun}${dot}</#if></#macro>  
+${actors} ${verb?lower_case}s${noun?lower_case}${dot}</#if></#macro>  
 
 <#macro systemStep step>
 <#assign systemReaction = step.systemReaction.class.simpleName/>
@@ -24,4 +24,4 @@ ${actors} ${verb}s${noun}${dot}</#if></#macro>
 <#if noun != "">
 <#assign noun = " " + noun/>
 </#if>
-System ${verb}s${noun}.</#if></#macro>
+System ${verb?lower_case}s${noun?lower_case}.</#if></#macro>

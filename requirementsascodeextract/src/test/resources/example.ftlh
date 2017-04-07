@@ -5,14 +5,13 @@
 </head>
 <body>
   	<#list useCaseModel.useCases as useCase>
-  		<h1>Use Case: ${useCase}</h1>
+  		<h1>Use Case: ${useCase?capitalize}</h1>
 		<#list useCase.flows as flow>
-	  		<h2>${flow?cap_first}</h1>
-	  	  	<ul>
+	  		<h2>${flow?capitalize}</h1>
+	  	  	
 			<#list flow.steps as s>
-				<li>${s}: <@userStep step=s/><@systemStep step=s/></li>
+				<div>${s}: <@userStep step=s/><@systemStep step=s/></div>
 			</#list>
-			</ul>	
 		</#list>
   	</#list>
 </body>

@@ -38,6 +38,6 @@ public class FirstWordOfMethodTest {
   public void testFirstWordOfMethodForTwoParts() throws TemplateModelException {
     FirstWordOfMethod firstWordOfMethod = new FirstWordOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
-    assertEquals("enter", firstWordOfMethod.exec(arguments).toString());
+    assertEquals("Enter", firstWordOfMethod.exec(arguments).toString());
   }
 }

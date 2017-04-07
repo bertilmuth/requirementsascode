@@ -18,7 +18,7 @@ public abstract class AbstractCamelCaseToWordsMethod implements TemplateMethodMo
     String camelCaseString = ((SimpleScalar) arguments.get(0)).getAsString();
     String[] wordArray = toWordArray(camelCaseString);
     String words = wordArrayToString(wordArray);
-    return new SimpleScalar(words.toLowerCase());
+    return new SimpleScalar(words);
   }
 
   public abstract String wordArrayToString(String[] wordArray) throws TemplateModelException;
