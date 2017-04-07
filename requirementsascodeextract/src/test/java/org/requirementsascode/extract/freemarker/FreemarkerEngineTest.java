@@ -41,12 +41,15 @@ public class FreeMarkerEngineTest {
   }
   
   @Test
-  public void extractsUseCase() throws Exception {
+  public void extractsUseCaseModel() throws Exception {
     UseCaseModel useCaseModel = 
     	UseCaseModelBuilder.newBuilder()
 			.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(promptUserToEnterName())
+					.step("S2").user(enterName()).system(greetUser())
+					.step("S3").user(decideToQuit())
+					.step("S4").system(quit())
     	.build();
 
     engine.put("useCaseModel", useCaseModel);
@@ -54,8 +57,13 @@ public class FreeMarkerEngineTest {
     StringWriter outputWriter = new StringWriter();
     engine.process(templateFile, outputWriter);
     String output = outputWriter.toString();
-    
-    assertEquals("use case: Get greeted. flow: basic flow. step: S1. System prompts user to enter name.", output);
+
+    assertEquals(
+        "use case: Get greeted. flow: basic flow. step: S1. System prompts user to enter name. "
+            + "step: S2. User enters name. System greets user. "
+            + "step: S3. User decides to quit. "
+            + "step: S4. System quits.",
+        output);
   }
 
   @Test
