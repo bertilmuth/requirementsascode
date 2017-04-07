@@ -1,10 +1,14 @@
 package org.requirementsascode.extract.freemarker;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.util.function.Consumer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
@@ -22,8 +26,40 @@ public class FreeMarkerEngineTest {
   public void setUp() throws Exception {
     engine = new FreeMarkerEngine();
   }
+  
+  @Test
+  public void extractsEmptyStringFromEmptyModel() throws Exception {
+    UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
+
+    engine.put("useCaseModel", useCaseModel);
+    File templateFile = new File("src/test/resources/testextract.ftl");
+    StringWriter outputWriter = new StringWriter();
+    engine.process(templateFile, outputWriter);
+    String output = outputWriter.toString();
+    
+    assertEquals("", output);
+  }
+  
+  @Test
+  public void extractsUseCase() throws Exception {
+    UseCaseModel useCaseModel = 
+    	UseCaseModelBuilder.newBuilder()
+			.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").system(promptUserToEnterName())
+    	.build();
+
+    engine.put("useCaseModel", useCaseModel);
+    File templateFile = new File("src/test/resources/testextract.ftl");
+    StringWriter outputWriter = new StringWriter();
+    engine.process(templateFile, outputWriter);
+    String output = outputWriter.toString();
+    
+    assertEquals("use case: get greeted. flow: basic flow.", output);
+  }
 
   @Test
+  @Ignore
   public void printsUseCaseModelToConsole() throws Exception {
 	UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
 		.useCase("Get greeted")
