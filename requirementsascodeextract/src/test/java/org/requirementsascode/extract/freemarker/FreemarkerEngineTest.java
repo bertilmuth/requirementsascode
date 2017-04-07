@@ -55,7 +55,7 @@ public class FreeMarkerEngineTest {
     engine.process(templateFile, outputWriter);
     String output = outputWriter.toString();
     
-    assertEquals("use case: get greeted. flow: basic flow.", output);
+    assertEquals("use case: Get greeted. flow: basic flow. step: S1.", output);
   }
 
   @Test
