@@ -12,8 +12,6 @@ import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.extract.freemarker.FreeMarkerEngine;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
-import org.requirementsascode.extract.freemarker.systemreaction.Quit;
-import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreemarkerEngineTest {
@@ -31,8 +29,6 @@ public class FreemarkerEngineTest {
 				.basicFlow()
 					.step("S1").system(promptUserToEnterName())
 					.step("S2").user(enterName()).system(greetUser())
-					.step("S3").user(decideToQuit())
-					.step("S4").system(quit())
 		.build();
 
     engine.put("useCaseModel", useCaseModel);
@@ -50,13 +46,5 @@ public class FreemarkerEngineTest {
 
   private Consumer<EnterName> greetUser() {
     return new GreetUser();
-  }
-
-  private Class<DecideToQuit> decideToQuit() {
-    return DecideToQuit.class;
-  }
-
-  private Consumer<UseCaseModelRunner> quit() {
-    return new Quit();
   }
 }

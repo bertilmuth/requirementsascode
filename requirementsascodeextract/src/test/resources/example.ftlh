@@ -1,4 +1,18 @@
-<#include "./extract.ftl"/>
+<#macro userStep step>
+<#assign systemActorName = step.useCaseModel.systemActor.name?capitalize>
+<#assign actors = step.actors?join("/")?capitalize/>
+<#if actors != systemActorName>
+<#assign userEvent = step.userEventClass.simpleName/>
+<#assign verb = firstWordOf(userEvent)/>
+<#assign noun = afterFirstWordOf(userEvent)/>
+${actors} ${verb}s ${noun}. </#if></#macro>  
+
+<#macro systemStep step>
+<#assign systemReaction = step.systemReaction.class.simpleName/>
+<#if systemReaction != "IgnoreIt">
+<#assign verb = firstWordOf(systemReaction)/>
+<#assign noun = afterFirstWordOf(systemReaction)/>
+System ${verb}s ${noun}.</#if></#macro>
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
