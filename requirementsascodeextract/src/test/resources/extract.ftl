@@ -6,7 +6,12 @@
 	<#assign flowPosition = " " + flowPositionWords/>
 	<#assign stepName = " " + flow.flowPosition.stepName/>
 </#if>
-${flow}${flowPosition?lower_case}${stepName}</#macro>
+<#assign when = ""/>
+<#if flow.when??>
+	<#assign whenWords = wordsOf(flow.when.class.simpleName)/>
+	<#assign when = " when " + whenWords/>
+</#if>
+${flow}${flowPosition?lower_case}${stepName}${when?lower_case}</#macro>
 
 <#macro userStep step>
 <#assign systemActorName = step.useCaseModel.systemActor.name?capitalize>
