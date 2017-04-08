@@ -1,17 +1,21 @@
 <#macro flow f>
-<#assign flowPosition = ""/>
+${f}</#macro>
+
+<#macro flowPosition f>
+<#assign flowPositionWords = ""/>
 <#assign stepName = ""/>
 <#if f.flowPosition??>
-	<#assign flowPositionWords = wordsOf(f.flowPosition.class.simpleName)/>
-	<#assign flowPosition = " " + flowPositionWords/>
-	<#assign stepName = " " + f.flowPosition.stepName/>
+	<#assign flowPositionWords = wordsOf(f.flowPosition.class.simpleName) + " "/>
+	<#assign stepName = f.flowPosition.stepName/>
 </#if>
-<#assign when = ""/>
+${flowPositionWords?lower_case}${stepName}</#macro>
+
+<#macro when f>
+<#assign whenWords = ""/>
 <#if f.when??>
-	<#assign whenWords = wordsOf(f.when.class.simpleName)/>
-	<#assign when = " when " + whenWords/>
+	<#assign whenWords = "when " + wordsOf(f.when.class.simpleName)/>
 </#if>
-${f}${flowPosition?lower_case}${stepName}${when?lower_case}</#macro>
+${whenWords?lower_case}</#macro>
 
 <#macro userStep s>
 <#assign systemActorName = s.useCaseModel.systemActor.name?capitalize>

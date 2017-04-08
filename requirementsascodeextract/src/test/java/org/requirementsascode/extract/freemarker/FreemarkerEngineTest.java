@@ -70,15 +70,15 @@ public class FreeMarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "use case: Get greeted. flow: basic flow."
+        "use case: Get greeted. flow: basic flow ."
             + " step: S1. System prompts user to enter name."
             + " step: S2. User enters name. System greets user."
             + " step: S3. User decides to quit."
             + " step: S4. System quits."
-            + " flow: alternative flow a instead of S4."
+            + " flow: alternative flow a instead of S4 ."
             + " step: S4a_1. System blows up."
             + " step: S4a_2. System continues at S1."
-            + " flow: alternative flow b after S3."
+            + " flow: alternative flow b after S3 ."
             + " step: S4b_1. System continues after S2."
             + " flow: alternative flow c when there is no alternative."
             + " step: S5. System continues without alternative at S4."

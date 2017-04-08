@@ -8,6 +8,7 @@
   		<h1>Use Case: ${useCase?capitalize}</h1>
 		<#list useCase.flows as useCaseFlow>
 	  		<h2><@flow f=useCaseFlow/></h1>
+	  		<div><@flowPosition f=useCaseFlow/> <@when f=useCaseFlow/></div>
 			<#list useCaseFlow.steps as step>
 				<div>${step}: <@userStep s=step/><@systemStep s=step/></div>
 			</#list>
