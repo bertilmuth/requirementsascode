@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
@@ -18,8 +17,8 @@ import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quit;
-import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.BlowUp;
+import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreeMarkerEngineTest {
@@ -60,6 +59,8 @@ public class FreeMarkerEngineTest {
 					.step("S4b_1").continueAfter("S2")
 				.flow("alternative flow c").when(thereIsNoAlternative())
 					.step("S5").continueWithoutAlternativeAt("S4")
+				.flow("alternative flow d").insteadOf("S4").when(thereIsNoAlternative())
+					.step("S6").continueAt("S1")
     	.build();
 
     engine.put("useCaseModel", useCaseModel);
@@ -80,21 +81,32 @@ public class FreeMarkerEngineTest {
             + " flow: alternative flow b after S3."
             + " step: S4b_1. System continues after S2."
             + " flow: alternative flow c when there is no alternative."
-            + " step: S5. System continues without alternative at S4.",
+            + " step: S5. System continues without alternative at S4."
+            + " flow: alternative flow d instead of S4 when there is no alternative."
+            + " step: S6. System continues at S1.", 
         output);
   }
 
   @Test
-  @Ignore
   public void printsUseCaseModelToConsole() throws Exception {
-	UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
-		.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(promptUserToEnterName())
-				.step("S2").user(enterName()).system(greetUser())
-				.step("S3").user(decideToQuit())
-				.step("S4").system(quit())
-	.build();
+    UseCaseModel useCaseModel = 
+    	UseCaseModelBuilder.newBuilder()
+			.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").system(promptUserToEnterName())
+					.step("S2").user(enterName()).system(greetUser())
+					.step("S3").user(decideToQuit())
+					.step("S4").system(quit())
+				.flow("alternative flow a").insteadOf("S4")
+					.step("S4a_1").system(blowUp())
+					.step("S4a_2").continueAt("S1")
+				.flow("alternative flow b").after("S3")
+					.step("S4b_1").continueAfter("S2")
+				.flow("alternative flow c").when(thereIsNoAlternative())
+					.step("S5").continueWithoutAlternativeAt("S4")
+				.flow("alternative flow d").insteadOf("S4").when(thereIsNoAlternative())
+					.step("S6").continueAt("S1")
+    	.build();
 
     engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/example.ftlh");
