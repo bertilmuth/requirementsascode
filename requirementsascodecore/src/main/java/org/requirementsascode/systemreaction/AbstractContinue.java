@@ -1,5 +1,6 @@
 package org.requirementsascode.systemreaction;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -11,6 +12,8 @@ public abstract class AbstractContinue implements Consumer<UseCaseModelRunner>{
 	private Optional<Step> previousStep;
 	
 	public AbstractContinue(String stepName, Optional<Step> previousStep) {
+		Objects.requireNonNull(stepName);
+		Objects.requireNonNull(previousStep);
 		this.stepName = stepName;
 		this.previousStep = previousStep;
 	}

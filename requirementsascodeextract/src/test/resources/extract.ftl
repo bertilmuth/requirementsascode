@@ -1,3 +1,13 @@
+<#macro useCaseFlow flow>
+<#assign flowPosition = ""/>
+<#assign stepName = ""/>
+<#if flow.flowPosition??>
+	<#assign flowPositionWords = wordsOf(flow.flowPosition.class.simpleName)/>
+	<#assign flowPosition = " " + flowPositionWords/>
+	<#assign stepName = " " + flow.flowPosition.stepName/>
+</#if>
+${flow}${flowPosition?lower_case}${stepName}</#macro>
+
 <#macro userStep step>
 <#assign systemActorName = step.useCaseModel.systemActor.name?capitalize>
 <#assign systemReactionName = step.systemReaction.class.simpleName/>

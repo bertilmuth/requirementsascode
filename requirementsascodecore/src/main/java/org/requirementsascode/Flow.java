@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
  */
 public class Flow extends UseCaseModelElement {
   private UseCase useCase;
+  private Predicate<UseCaseModelRunner> flowPositionPredicate;
+  private Predicate<UseCaseModelRunner> whenPredicate;
 
   /**
    * Creates a use case flow with the specified name that belongs to the specified use case.
@@ -48,5 +51,21 @@ public class Flow extends UseCaseModelElement {
             .filter(step -> step.getFlow().equals(this))
             .collect(Collectors.toList());
     return Collections.unmodifiableList(steps);
+  }
+
+  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPositionPredicate) {
+    this.flowPositionPredicate = flowPositionPredicate;
+  }
+
+  public Predicate<UseCaseModelRunner> getFlowPosition() {
+    return flowPositionPredicate;
+  }
+
+  public void setWhen(Predicate<UseCaseModelRunner> whenPredicate) {
+    this.whenPredicate = whenPredicate;
+  }
+
+  public Predicate<UseCaseModelRunner> getWhen() {
+    return whenPredicate;
   }
 }

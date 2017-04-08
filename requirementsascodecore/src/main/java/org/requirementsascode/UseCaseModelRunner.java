@@ -150,7 +150,7 @@ public class UseCaseModelRunner {
    *
    * <p>After that, the runner will trigger "autonomous system reactions".
    *
-   * <p>See {@link #stepsThatCanReactTo(Class)} for a description of what "can react" means.
+   * <p>See {@link #getStepsThatCanReactTo(Class)} for a description of what "can react" means.
    *
    * @param <T> the type of the event object
    * @param event the event object provided by the frontend
@@ -166,7 +166,7 @@ public class UseCaseModelRunner {
     Optional<Step> latestStepRun = Optional.empty();
     if (isRunning) {
       Class<? extends Object> currentEventClass = event.getClass();
-      Set<Step> stepsThatCanReact = stepsThatCanReactTo(currentEventClass);
+      Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
       latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
     }
     return latestStepRun;
@@ -175,12 +175,12 @@ public class UseCaseModelRunner {
   /**
    * Returns whether at least one step can react to an event of the specified class.
    *
-   * @see #stepsThatCanReactTo(Class)
+   * @see #getStepsThatCanReactTo(Class)
    * @param eventClass the specified class
    * @return true if the runner is running and at least one step can react, false otherwise
    */
   public boolean canReactTo(Class<? extends Object> eventClass) {
-    boolean canReact = stepsThatCanReactTo(eventClass).size() > 0;
+    boolean canReact = getStepsThatCanReactTo(eventClass).size() > 0;
     return canReact;
   }
 
@@ -194,7 +194,7 @@ public class UseCaseModelRunner {
    * @param eventClass the class of events
    * @return the steps that can react to the class of events
    */
-  public Set<Step> stepsThatCanReactTo(Class<? extends Object> eventClass) {
+  public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
     Objects.requireNonNull(eventClass);
     
     Set<Step> stepsThatCanReact;
@@ -212,7 +212,7 @@ public class UseCaseModelRunner {
    * Gets the steps that can react from the specified stream, rather than from the whole use case
    * model.
    *
-   * @see #stepsThatCanReactTo(Class)
+   * @see #getStepsThatCanReactTo(Class)
    * @param eventClass eventClass the class of events
    * @param stepStream the stream of steps
    * @return the subset of steps that can react to the class of events
@@ -305,7 +305,7 @@ public class UseCaseModelRunner {
    *
    * @return the latest step run
    */
-  public Optional<Step> latestStep() {
+  public Optional<Step> getLatestStep() {
     return latestStep;
   }
 
@@ -328,7 +328,7 @@ public class UseCaseModelRunner {
    *
    * @return the latest flow run
    */
-  public Optional<Flow> latestFlow() {
+  public Optional<Flow> getLatestFlow() {
     return latestFlow;
   }
 

@@ -16,13 +16,13 @@ import org.requirementsascode.predicate.InsteadOf;
  * @author b_muth
  */
 public class FlowPart {
-  private Flow useCaseFlow;
+  private Flow flow;
   private UseCase useCase;
   private UseCasePart useCasePart;
   private FlowPredicate flowPredicate;
 
-  FlowPart(Flow useCaseFlow, UseCasePart useCasePart) {
-    this.useCaseFlow = useCaseFlow;
+  FlowPart(Flow flow, UseCasePart useCasePart) {
+    this.flow = flow;
     this.useCasePart = useCasePart;
     this.useCase = useCasePart.useCase();
     this.flowPredicate = new FlowPredicate();
@@ -37,7 +37,7 @@ public class FlowPart {
    */
   public StepPart step(String stepName) {
     Step useCaseStep =
-        useCasePart.useCase().newStep(stepName, useCaseFlow, Optional.empty(), getFlowPredicate());
+        useCasePart.useCase().newStep(stepName, flow, Optional.empty(), getFlowPredicate());
     return new StepPart(useCaseStep, this);
   }
 
@@ -60,7 +60,7 @@ public class FlowPart {
    */
   public FlowPart after(String stepName) {
     Step step = useCase.findStep(stepName);
-    flowPredicate.setStepPredicate(new After(Optional.of(step)));
+    flowPredicate.setFlowPosition(new After(Optional.of(step)));
     return this;
   }
 
@@ -73,7 +73,7 @@ public class FlowPart {
    */
   public FlowPart insteadOf(String stepName) {
     Step step = useCase.findStep(stepName);
-    flowPredicate.setStepPredicate(new InsteadOf(step));
+    flowPredicate.setFlowPosition(new InsteadOf(step));
     return this;
   }
 
@@ -87,12 +87,12 @@ public class FlowPart {
   public FlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
     Objects.requireNonNull(whenPredicate);
 
-    flowPredicate.setWhenPredicate(whenPredicate);
+    flowPredicate.setWhen(whenPredicate);
     return this;
   }
 
   Flow getUseCaseFlow() {
-    return useCaseFlow;
+    return flow;
   }
 
   UseCasePart getUseCasePart() {
@@ -110,11 +110,13 @@ public class FlowPart {
       this.predicate = Optional.empty();
     }
 
-    public void setStepPredicate(Predicate<UseCaseModelRunner> stepPredicate) {
+    public void setFlowPosition(Predicate<UseCaseModelRunner> stepPredicate) {
+      flow.setFlowPosition(stepPredicate);
       predicate = Optional.of(stepPredicate);
     }
 
-    public void setWhenPredicate(Predicate<UseCaseModelRunner> whenPredicate) {
+    public void setWhen(Predicate<UseCaseModelRunner> whenPredicate) {
+      flow.setWhen(whenPredicate);
       predicate = Optional.of(predicate.orElse(r -> true).and(whenPredicate));
     }
 
@@ -125,7 +127,7 @@ public class FlowPart {
     private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
       Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
           runner ->
-              runner.latestFlow().map(runnerFlow -> !useCaseFlow.equals(runnerFlow)).orElse(true);
+              runner.getLatestFlow().map(runnerFlow -> !flow.equals(runnerFlow)).orElse(true);
       return isRunnerInDifferentFlow;
     }
   }

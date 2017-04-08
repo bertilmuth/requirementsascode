@@ -1,21 +1,26 @@
 package org.requirementsascode.predicate;
 
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Objects;
 
-import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.Step;
+import org.requirementsascode.UseCaseModelRunner;
 
-public class InsteadOf implements Predicate<UseCaseModelRunner>{
-	private After after;
+public class InsteadOf implements FlowPosition{
+  private Step step;
+  private After after;
 
-	public InsteadOf(Step step) {
-		Optional<Step> previousStep = step.getPreviousStepInFlow();
-		this.after = new After(previousStep);
-	}
+  public InsteadOf(Step step) {
+    Objects.requireNonNull(step);
+    this.step = step;
+    this.after = new After(step.getPreviousStepInFlow());
+  }
 	
 	@Override
 	public boolean test(UseCaseModelRunner useCaseModelRunner) {
 		return after.test(useCaseModelRunner);
-	}
+  }
+
+  public String getStepName() {
+    return step.getName();
+  }
 }

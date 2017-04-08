@@ -170,7 +170,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		boolean canReact = useCaseModelRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<Step> stepsThatCanReact = useCaseModelRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseModelRunner.getStepsThatCanReactTo(enterText().getClass());
 		assertEquals(1, stepsThatCanReact.size());
 		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
 	}
@@ -190,7 +190,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		boolean canReact = useCaseModelRunner.canReactTo(enterText().getClass());
 		assertTrue(canReact);
 		
-		Set<Step> stepsThatCanReact = useCaseModelRunner.stepsThatCanReactTo(enterText().getClass());
+		Set<Step> stepsThatCanReact = useCaseModelRunner.getStepsThatCanReactTo(enterText().getClass());
 		assertEquals(2, stepsThatCanReact.size());
 	}
 	

@@ -2,23 +2,27 @@ package org.requirementsascode.predicate;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
-import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.Step;
+import org.requirementsascode.UseCaseModelRunner;
 
-public class After implements Predicate<UseCaseModelRunner>{
-	private Optional<Step> previousStep;
+public class After implements FlowPosition{
+	private Optional<Step> step;
 
-	public After(Optional<Step> previousStep) {
-		this.previousStep = previousStep;
+	public After(Optional<Step> step) {
+		Objects.requireNonNull(step);
+		this.step = step;
 	}
 	
 	@Override
 	public boolean test(UseCaseModelRunner useCaseModelRunner) {
-		Optional<Step> latestStep = useCaseModelRunner.latestStep();
+		Optional<Step> latestStep = useCaseModelRunner.getLatestStep();
 		boolean isSystemAtRightStep = 
-			Objects.equals(previousStep, latestStep);
+			Objects.equals(step, latestStep);
 		return isSystemAtRightStep;	
-	}
+  }
+
+  public String getStepName() {
+    return step.map(s -> s.getName()).orElse("");
+  }
 }
