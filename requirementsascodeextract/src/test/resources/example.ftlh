@@ -6,10 +6,10 @@
 <body>
   	<#list useCaseModel.useCases as useCase>
   		<h1>Use Case: ${useCase?capitalize}</h1>
-		<#list useCase.flows as f>
-	  		<h2><@useCaseFlow flow=f/></h1>
-			<#list f.steps as s>
-				<div>${s}: <@userStep step=s/><@systemStep step=s/></div>
+		<#list useCase.flows as useCaseFlow>
+	  		<h2><@flow f=useCaseFlow/></h1>
+			<#list useCaseFlow.steps as step>
+				<div>${step}: <@userStep s=step/><@systemStep s=step/></div>
 			</#list>
 		</#list>
   	</#list>
