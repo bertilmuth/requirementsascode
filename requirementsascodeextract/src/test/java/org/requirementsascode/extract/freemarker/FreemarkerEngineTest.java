@@ -84,8 +84,6 @@ public class FreeMarkerEngineTest {
         output);
   }
 
-
-
   @Test
   @Ignore
   public void printsUseCaseModelToConsole() throws Exception {
