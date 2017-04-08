@@ -12,7 +12,7 @@ public class ContinueWithoutAlternativeAt extends ContinueAt{
 	
 	@Override
 	public void accept(UseCaseModelRunner runner) {
-		runner.setStepWithoutAlternativePredicate(includeOnly(stepName()));
+		runner.setStepWithoutAlternativePredicate(includeOnly(getStepName()));
 		super.accept(runner);		
 	}
 	

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -13,11 +14,12 @@ import org.junit.Test;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quit;
 import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
-import org.requirementsascode.extract.freemarker.userevent.DontQuit;
+import org.requirementsascode.extract.freemarker.userevent.BlowUp;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreeMarkerEngineTest {
@@ -51,8 +53,13 @@ public class FreeMarkerEngineTest {
 					.step("S2").user(enterName()).system(greetUser())
 					.step("S3").user(decideToQuit())
 					.step("S4").system(quit())
-				.flow("alternative flow").insteadOf("S4")
-					.step("S4a_1").system(dontQuit())
+				.flow("alternative flow a").insteadOf("S4")
+					.step("S4a_1").system(blowUp())
+					.step("S4a_2").continueAt("S1")
+				.flow("alternative flow b").after("S3")
+					.step("S4b_1").continueAfter("S2")
+				.flow("alternative flow c").when(thereIsNoAlternative())
+					.step("S5").continueWithoutAlternativeAt("S4")
     	.build();
 
     engine.put("useCaseModel", useCaseModel);
@@ -62,17 +69,24 @@ public class FreeMarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "use case: Get greeted. flow: basic flow." 
-        	+ " step: S1. System prompts user to enter name."
+        "use case: Get greeted. flow: basic flow."
+            + " step: S1. System prompts user to enter name."
             + " step: S2. User enters name. System greets user."
             + " step: S3. User decides to quit."
             + " step: S4. System quits."
-            + " flow: alternative flow."
-        	+ " step: S4a_1. System donts quit.",
+            + " flow: alternative flow a."
+            + " step: S4a_1. System blows up."
+            + " step: S4a_2. System continues at S1."
+            + " flow: alternative flow b."
+            + " step: S4b_1. System continues after S2."
+            + " flow: alternative flow c."
+            + " step: S5. System continues without alternative at S4.",
         output);
   }
 
-@Test
+
+
+  @Test
   @Ignore
   public void printsUseCaseModelToConsole() throws Exception {
 	UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
@@ -90,6 +104,10 @@ public class FreeMarkerEngineTest {
     engine.process(templateFile, new FileWriter(outputFile));
     
     System.out.println("Wrote file to: " + outputFile);
+  }
+
+  private Predicate<UseCaseModelRunner> thereIsNoAlternative() {
+    return new ThereIsNoAlternative();
   }
 
   private Consumer<UseCaseModelRunner> promptUserToEnterName() {
@@ -112,7 +130,7 @@ public class FreeMarkerEngineTest {
     return new Quit();
   }
 
-  private Consumer<UseCaseModelRunner> dontQuit() { 
-	  return new DontQuit();
+  private Consumer<UseCaseModelRunner> blowUp() { 
+	  return new BlowUp();
   }
 }

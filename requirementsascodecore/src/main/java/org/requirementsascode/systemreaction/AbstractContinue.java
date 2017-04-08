@@ -20,7 +20,7 @@ public abstract class AbstractContinue implements Consumer<UseCaseModelRunner>{
 		runner.setLatestStep(previousStep);
 	}
 	
-	public String stepName() {
+	public String getStepName() {
 		return stepName;
 	}
 }
