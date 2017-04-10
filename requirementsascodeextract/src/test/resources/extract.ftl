@@ -19,11 +19,7 @@ ${f}</#macro>
 <#local stepName = (f.flowPosition.stepName)!""/>
 ${flowPositionWords?lower_case} ${stepName}</#macro>
 
-<#macro separator f sep>
-	<#if flowPositionName(f) != "" && whenName(f) != "">
-		${sep}
-	</#if>
-</#macro>
+<#macro separator f sep><#if flowPositionName(f) != "" && whenName(f) != "">${sep}</#if></#macro>
 
 <#macro when f>
 <#local whenWords = ""/>
