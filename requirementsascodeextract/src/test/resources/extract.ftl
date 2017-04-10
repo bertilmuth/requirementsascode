@@ -1,19 +1,41 @@
 <#macro flow f>
 ${f}</#macro>
 
+<#function flowPositionName f>
+	<#if f.flowPosition??>
+		<#return f.flowPosition.class.simpleName/>
+	<#else>
+		<#return ""/>
+	</#if>
+</#function>
+
+<#function whenName f>
+	<#if f.when??>
+		<#return f.when.class.simpleName/>
+	<#else>
+		<#return ""/>
+	</#if>
+</#function>
+
 <#macro flowPosition f>
 <#assign flowPositionWords = ""/>
 <#assign stepName = ""/>
 <#if f.flowPosition??>
-	<#assign flowPositionWords = wordsOf(f.flowPosition.class.simpleName) + " "/>
+	<#assign flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
 	<#assign stepName = f.flowPosition.stepName/>
 </#if>
 ${flowPositionWords?lower_case}${stepName}</#macro>
 
+<#macro separator f sep>
+	<#if flowPositionName(f) != "" && whenName(f) != "">
+		${sep}
+	</#if>
+</#macro>
+
 <#macro when f>
 <#assign whenWords = ""/>
 <#if f.when??>
-	<#assign whenWords = "when " + wordsOf(f.when.class.simpleName)/>
+	<#assign whenWords = "when " + wordsOf(whenName(f))/>
 </#if>
 ${whenWords?lower_case}</#macro>
 
