@@ -12,9 +12,9 @@
 ${f}</#macro>
 
 <#macro flowPosition f>
-<#local flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
+<#local flowPositionWords = wordsOf(flowPositionName(f))/>
 <#local stepName = (f.flowPosition.stepName)!""/>
-${flowPositionWords?lower_case}${stepName}</#macro>
+${flowPositionWords?lower_case} ${stepName}</#macro>
 
 <#macro separator f sep>
 	<#if flowPositionName(f) != "" && whenName(f) != "">
