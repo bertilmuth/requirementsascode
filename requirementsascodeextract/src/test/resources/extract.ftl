@@ -1,27 +1,13 @@
+<#function flowPositionName f><#return (f.flowPosition.class.simpleName)!""/></#function>
+<#function whenName f><#return (f.when.class.simpleName)!""/></#function>
+
 <#macro flow f>
 ${f}</#macro>
 
-<#function flowPositionName f>
-	<#if f.flowPosition??>
-		<#return f.flowPosition.class.simpleName/>
-	<#else>
-		<#return ""/>
-	</#if>
-</#function>
-
-<#function whenName f>
-	<#if f.when??>
-		<#return f.when.class.simpleName/>
-	<#else>
-		<#return ""/>
-	</#if>
-</#function>
-
 <#macro flowPosition f>
-<#assign flowPositionWords = ""/>
+<#assign flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
 <#assign stepName = ""/>
 <#if f.flowPosition??>
-	<#assign flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
 	<#assign stepName = f.flowPosition.stepName/>
 </#if>
 ${flowPositionWords?lower_case}${stepName}</#macro>
