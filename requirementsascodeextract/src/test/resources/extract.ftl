@@ -6,8 +6,8 @@
 ${f}</#macro>
 
 <#macro flowPosition f>
-<#assign flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
-<#assign stepName = (f.flowPosition.stepName)!""/>
+<#local flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
+<#local stepName = (f.flowPosition.stepName)!""/>
 ${flowPositionWords?lower_case}${stepName}</#macro>
 
 <#macro separator f sep>
@@ -17,38 +17,38 @@ ${flowPositionWords?lower_case}${stepName}</#macro>
 </#macro>
 
 <#macro when f>
-<#assign whenWords = ""/>
+<#local whenWords = ""/>
 <#if f.when??>
-	<#assign whenWords = "when " + wordsOf(whenName(f))/>
+	<#local whenWords = "when " + wordsOf(whenName(f))/>
 </#if>
 ${whenWords?lower_case}</#macro>
 
 <#macro userStep s>
-<#assign systemActorName = s.useCaseModel.systemActor.name?capitalize>
+<#local systemActorName = s.useCaseModel.systemActor.name?capitalize>
 <#if "IgnoreIt" != systemReactionName(s)>
-	<#assign dot = ". "/>
+	<#local dot = ". "/>
 <#else>
-	<#assign dot = "."/>
+	<#local dot = "."/>
 </#if>
-<#assign actors = s.actors?join("/")?capitalize/>
+<#local actors = s.actors?join("/")?capitalize/>
 <#if actors != systemActorName>
-	<#assign userEventName = s.userEventClass.simpleName/>
-	<#assign verb = firstWordOf(userEventName)/>
-	<#assign noun = afterFirstWordOf(userEventName)/>
+	<#local userEventName = s.userEventClass.simpleName/>
+	<#local verb = firstWordOf(userEventName)/>
+	<#local noun = afterFirstWordOf(userEventName)/>
 	<#if noun != "">
-		<#assign noun = " " + noun/>
+		<#local noun = " " + noun/>
 	</#if>
 ${actors} ${verb?lower_case}s${noun?lower_case}${dot}</#if></#macro>  
 
 <#macro systemStep s>
 <#local name = systemReactionName(s)/>
 <#if "IgnoreIt" != name>
-	<#assign verb = (firstWordOf(name) + "s")?lower_case/>
-	<#assign noun = afterFirstWordOf(name)?lower_case/>
-	<#assign verbNoun = [verb, noun]?join(" ")?trim/>
+	<#local verb = (firstWordOf(name) + "s")?lower_case/>
+	<#local noun = afterFirstWordOf(name)?lower_case/>
+	<#local verbNoun = [verb, noun]?join(" ")?trim/>
 
-	<#assign stepName = ""/>
+	<#local stepName = ""/>
 	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
-		<#assign stepName = " " + s.systemReaction.stepName/>
+		<#local stepName = " " + s.systemReaction.stepName/>
 	</#if>
 System ${verbNoun}${stepName}.</#if></#macro>
