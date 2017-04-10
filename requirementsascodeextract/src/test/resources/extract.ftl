@@ -44,8 +44,7 @@ ${actors} ${verbNoun(name)}${dot}</#if></#macro>
 <#macro systemStep s>
 <#local name = systemReactionName(s)/>
 <#if "IgnoreIt" != name>
-	<#local stepName = ""/>
 	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
 	</#if>
-System ${verbNoun(name)}${stepName}.</#if></#macro>
+System ${verbNoun(name)}${stepName!""}.</#if></#macro>
