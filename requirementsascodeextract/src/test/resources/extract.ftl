@@ -1,6 +1,12 @@
 <#function flowPositionName flow><#return (flow.flowPosition.class.simpleName)!""/></#function>
 <#function whenName flow><#return (flow.when.class.simpleName)!""/></#function>
 <#function systemReactionName step><#return (step.systemReaction.class.simpleName)!""/></#function>
+<#function verbNoun camelCaseName>
+	<#local verb = (firstWordOf(camelCaseName) + "s")?lower_case/>
+	<#local noun = afterFirstWordOf(camelCaseName)?lower_case/>
+	<#local result = [verb, noun]?join(" ")?trim/>
+	<#return result/>
+</#function>
 
 <#macro flow f>
 ${f}</#macro>
@@ -32,23 +38,14 @@ ${whenWords?lower_case}</#macro>
 </#if>
 <#local actors = s.actors?join("/")?capitalize/>
 <#if actors != systemActorName>
-	<#local userEventName = s.userEventClass.simpleName/>
-	<#local verb = firstWordOf(userEventName)/>
-	<#local noun = afterFirstWordOf(userEventName)/>
-	<#if noun != "">
-		<#local noun = " " + noun/>
-	</#if>
-${actors} ${verb?lower_case}s${noun?lower_case}${dot}</#if></#macro>  
+	<#local name = s.userEventClass.simpleName/>
+${actors} ${verbNoun(name)}${dot}</#if></#macro>  
 
 <#macro systemStep s>
 <#local name = systemReactionName(s)/>
 <#if "IgnoreIt" != name>
-	<#local verb = (firstWordOf(name) + "s")?lower_case/>
-	<#local noun = afterFirstWordOf(name)?lower_case/>
-	<#local verbNoun = [verb, noun]?join(" ")?trim/>
-
 	<#local stepName = ""/>
 	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
 	</#if>
-System ${verbNoun}${stepName}.</#if></#macro>
+System ${verbNoun(name)}${stepName}.</#if></#macro>
