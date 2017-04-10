@@ -1,5 +1,6 @@
-<#function flowPositionName f><#return (f.flowPosition.class.simpleName)!""/></#function>
-<#function whenName f><#return (f.when.class.simpleName)!""/></#function>
+<#function flowPositionName flow><#return (flow.flowPosition.class.simpleName)!""/></#function>
+<#function whenName flow><#return (flow.when.class.simpleName)!""/></#function>
+<#function systemReactionName step><#return (step.systemReaction.class.simpleName)!""/></#function>
 
 <#macro flow f>
 ${f}</#macro>
@@ -24,8 +25,7 @@ ${whenWords?lower_case}</#macro>
 
 <#macro userStep s>
 <#assign systemActorName = s.useCaseModel.systemActor.name?capitalize>
-<#assign systemReactionName = s.systemReaction.class.simpleName/>
-<#if systemReactionName != "IgnoreIt">
+<#if "IgnoreIt" != systemReactionName(s)>
 	<#assign dot = ". "/>
 <#else>
 	<#assign dot = "."/>
@@ -41,15 +41,15 @@ ${whenWords?lower_case}</#macro>
 ${actors} ${verb?lower_case}s${noun?lower_case}${dot}</#if></#macro>  
 
 <#macro systemStep s>
-<#assign systemReactionName = s.systemReaction.class.simpleName/>
-<#if systemReactionName != "IgnoreIt">
-<#assign verb = firstWordOf(systemReactionName)/>
-<#assign noun = afterFirstWordOf(systemReactionName)/>
+<#local name = systemReactionName(s)/>
+<#if "IgnoreIt" != name>
+	<#assign verb = firstWordOf(name)/>
+	<#assign noun = afterFirstWordOf(name)/>
 <#if noun != "">
-<#assign noun = " " + noun/>
+	<#assign noun = " " + noun/>
 </#if>
 <#assign stepName = ""/>
-<#if systemReactionName == "ContinueAt" || systemReactionName == "ContinueAfter" || systemReactionName == "ContinueWithoutAlternativeAt">
-<#assign stepName = " " + s.systemReaction.stepName/>
+<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
+	<#assign stepName = " " + s.systemReaction.stepName/>
 </#if>
 System ${verb?lower_case}s${noun?lower_case}${stepName}.</#if></#macro>
