@@ -43,13 +43,12 @@ ${actors} ${verb?lower_case}s${noun?lower_case}${dot}</#if></#macro>
 <#macro systemStep s>
 <#local name = systemReactionName(s)/>
 <#if "IgnoreIt" != name>
-	<#assign verb = firstWordOf(name)/>
-	<#assign noun = afterFirstWordOf(name)/>
-<#if noun != "">
-	<#assign noun = " " + noun/>
-</#if>
-<#assign stepName = ""/>
-<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
-	<#assign stepName = " " + s.systemReaction.stepName/>
-</#if>
-System ${verb?lower_case}s${noun?lower_case}${stepName}.</#if></#macro>
+	<#assign verb = (firstWordOf(name) + "s")?lower_case/>
+	<#assign noun = afterFirstWordOf(name)?lower_case/>
+	<#assign verbNoun = [verb, noun]?join(" ")?trim/>
+
+	<#assign stepName = ""/>
+	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
+		<#assign stepName = " " + s.systemReaction.stepName/>
+	</#if>
+System ${verbNoun}${stepName}.</#if></#macro>
