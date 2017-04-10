@@ -6,10 +6,7 @@ ${f}</#macro>
 
 <#macro flowPosition f>
 <#assign flowPositionWords = wordsOf(flowPositionName(f)) + " "/>
-<#assign stepName = ""/>
-<#if f.flowPosition??>
-	<#assign stepName = f.flowPosition.stepName/>
-</#if>
+<#assign stepName = (f.flowPosition.stepName)!""/>
 ${flowPositionWords?lower_case}${stepName}</#macro>
 
 <#macro separator f sep>
