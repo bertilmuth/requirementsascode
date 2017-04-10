@@ -1,6 +1,7 @@
 <#function flowPositionName flow><#return (flow.flowPosition.class.simpleName)!""/></#function>
 <#function whenName flow><#return (flow.when.class.simpleName)!""/></#function>
 <#function systemReactionName step><#return (step.systemReaction.class.simpleName)!""/></#function>
+<#function hasSystemReaction step><#return "IgnoreIt" != systemReactionName(step)></#function>
 <#function verbNoun camelCaseName>
 	<#local verb = (firstWordOf(camelCaseName) + "s")?lower_case/>
 	<#local noun = afterFirstWordOf(camelCaseName)?lower_case/>
@@ -31,7 +32,7 @@ ${whenWords?lower_case}</#macro>
 
 <#macro userStep s>
 <#local systemActorName = s.useCaseModel.systemActor.name?capitalize>
-<#if "IgnoreIt" != systemReactionName(s)>
+<#if hasSystemReaction(s)>
 	<#local dot = ". "/>
 <#else>
 	<#local dot = "."/>
@@ -43,7 +44,7 @@ ${actors} ${verbNoun(name)}${dot}</#if></#macro>
 
 <#macro systemStep s>
 <#local name = systemReactionName(s)/>
-<#if "IgnoreIt" != name>
+<#if hasSystemReaction(s)>
 	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
 	</#if>
