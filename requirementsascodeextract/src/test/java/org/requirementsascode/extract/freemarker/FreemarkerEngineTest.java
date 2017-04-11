@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
@@ -34,7 +35,7 @@ public class FreeMarkerEngineTest {
 			.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(promptUserToEnterName())
-					.step("S2").user(enterName()).system(greetUser())
+					.step("S2").user(enterName()).system(greetUser()).reactWhile(someConditionIsFulfilled())
 					.step("S3").user(decideToQuit())
 					.step("S4").system(quit())
 				.flow("Alternative Flow A").insteadOf("S4")
@@ -49,7 +50,8 @@ public class FreeMarkerEngineTest {
     	.build();
     return useCaseModel;
   }
-  
+
+
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
     UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
@@ -103,6 +105,10 @@ public class FreeMarkerEngineTest {
 
   private Consumer<EnterName> greetUser() {
     return new GreetUser();
+  }
+  
+  private Predicate<UseCaseModelRunner> someConditionIsFulfilled() {
+    return new SomeConditionIsFulfilled();
   }
 
   private Class<DecideToQuit> decideToQuit() {
