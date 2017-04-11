@@ -8,24 +8,30 @@ import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
 public class ReactWhile implements Predicate<UseCaseModelRunner>{
-  private Predicate<UseCaseModelRunner> reactWhilePredicate;
+  private Predicate<UseCaseModelRunner> completeCondition;
+  private Predicate<UseCaseModelRunner> reactWhileCondition;
 
 	public ReactWhile(Step step, Predicate<UseCaseModelRunner> reactWhileCondition) {
 		Objects.requireNonNull(step);
     Objects.requireNonNull(reactWhileCondition);
-    createReactWhilePredicate(step, reactWhileCondition);
+    createReactWhileCondition(step, reactWhileCondition);
 	}
 	
   @Override
   public boolean test(UseCaseModelRunner runner) {
-    return reactWhilePredicate.test(runner);
+    return completeCondition.test(runner);
   }
   
-  private void createReactWhilePredicate(
+  private void createReactWhileCondition(
       Step step, Predicate<UseCaseModelRunner> reactWhileCondition) {
     Predicate<UseCaseModelRunner> performIfConditionIsTrue = step.getPredicate().and(reactWhileCondition);
     Predicate<UseCaseModelRunner> repeatIfConditionIsTrue =
         new After(Optional.of(step)).and(reactWhileCondition);
-    reactWhilePredicate = performIfConditionIsTrue.or(repeatIfConditionIsTrue);
+    completeCondition = performIfConditionIsTrue.or(repeatIfConditionIsTrue);
+    this.reactWhileCondition = reactWhileCondition;
+  }
+
+  public Predicate<UseCaseModelRunner> getReactWhileCondition() {
+    return reactWhileCondition;
   }
 }

@@ -10,7 +10,7 @@
 	  		<h2>${useCaseFlow?capitalize}</h2>
 	  		<div><@flowPredicate f=useCaseFlow/></div>
 			<#list useCaseFlow.steps as step>
-				<div>${step}: <@userStep s=step/><@systemStep s=step/></div>
+				<div>${step}: <@reactWhile s=step/><@userStep s=step/><@systemStep s=step/></div>
 			</#list>
 		</#list>
   	</#list>
