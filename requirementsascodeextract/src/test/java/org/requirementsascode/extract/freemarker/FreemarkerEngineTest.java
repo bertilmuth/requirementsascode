@@ -79,14 +79,14 @@ public class FreeMarkerEngineTest {
             + " step: S2. User enters name. System greets user."
             + " step: S3. User decides to quit."
             + " step: S4. System quits."
-            + " flow: Alternative Flow A instead of S4."
+            + " flow: Alternative Flow A Instead of S4."
             + " step: S4a_1. System blows up."
             + " step: S4a_2. System continues at S1."
-            + " flow: Alternative Flow B after S3."
+            + " flow: Alternative Flow B After S3."
             + " step: S4b_1. System continues after S2."
-            + " flow: Alternative Flow C when there is no alternative."
+            + " flow: Alternative Flow C When there is no alternative."
             + " step: S5. System continues without alternative at S4."
-            + " flow: Alternative Flow D instead of S4, when there is no alternative."
+            + " flow: Alternative Flow D Instead of S4, when there is no alternative."
             + " step: S6. System continues at S1.", 
         output);
   }

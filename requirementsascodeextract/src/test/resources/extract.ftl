@@ -34,7 +34,8 @@
 </#function>
 
 <#macro flowPredicate f>
-${flowPosition(f)}${flowPredicateSeparator(f,", ")}${when(f)}</#macro>
+<#local predicate = flowPosition(f) + flowPredicateSeparator(f,", ") + when(f)>
+${predicate?cap_first}</#macro>
 
 <#macro userStep s>
 <#if hasUser(s)>
