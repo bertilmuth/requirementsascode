@@ -109,7 +109,7 @@ public class FreeMarkerEngineTest {
     	.build();
 
     engine.put("useCaseModel", useCaseModel);
-    File templateFile = new File("src/test/resources/example.ftlh");
+    File templateFile = new File("src/test/resources/htmlExample.ftlh");
     File outputFile = File.createTempFile( "requirementsascodeextract_test", ".html");
     engine.process(templateFile, new FileWriter(outputFile));
     

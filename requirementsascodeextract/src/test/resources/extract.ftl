@@ -33,9 +33,6 @@
 	<#return whenWords?lower_case/>
 </#function>
 
-<#macro flowName f>
-${f}</#macro>
-
 <#macro flowPredicate f>
 ${flowPosition(f)}${flowPredicateSeparator(f,", ")}${when(f)}</#macro>
 
