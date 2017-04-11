@@ -37,7 +37,7 @@
 ${f}</#macro>
 
 <#macro flowPredicate f>
-${flowPosition(f)}${flowPredicateSeparator(f,",")}${when(f)}</#macro>
+${flowPosition(f)}${flowPredicateSeparator(f,", ")}${when(f)}</#macro>
 
 <#macro userStep s>
 <#if hasUser(s)>
