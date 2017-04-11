@@ -11,6 +11,6 @@ jar {
 
 dependencies {
 	compile project(':requirementsascodeextract')
-	testCompile project(':requirementsascodeexamples:shoppingappjavafx')
+	compile project(':requirementsascodeexamples:shoppingappjavafx')
   	testCompile 'junit:junit:4.12'
 }
