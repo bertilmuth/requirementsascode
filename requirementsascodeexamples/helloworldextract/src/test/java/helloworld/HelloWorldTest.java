@@ -23,7 +23,7 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld01() {
-		HelloWorld01 example = new HelloWorld01();
+		HelloWorld01_PrintHelloUserExample example = new HelloWorld01_PrintHelloUserExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -33,7 +33,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld02() {
-		HelloWorld02 example = new HelloWorld02();
+		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -43,7 +43,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld03() {
-		HelloWorld03 example = new HelloWorld03();
+		HelloWorld03_EnterNameExample example = new HelloWorld03_EnterNameExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -54,7 +54,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld04() {
-		HelloWorld04 example = new HelloWorld04();
+		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -65,7 +65,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld05_WithCorrectNameAndAge() {
-		HelloWorld05 example = new HelloWorld05();
+		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -76,7 +76,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld05_WithOutOfBoundsAge() {
-		HelloWorld05 example = new HelloWorld05();
+		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -87,7 +87,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld05_WithNonNumericalAge() {
-		HelloWorld05 example = new HelloWorld05();
+		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
@@ -98,7 +98,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld06_AsNormalUser() {
-		HelloWorld06 example = new HelloWorld06();
+		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.normalUser()).run(useCaseModel);
@@ -109,7 +109,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
-		HelloWorld06 example = new HelloWorld06();
+		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.anonymousUser()).run(useCaseModel);
@@ -120,7 +120,7 @@ public class HelloWorldTest {
 	
 	@Test
 	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
-		HelloWorld06 example = new HelloWorld06();
+		HelloWorld06_EnterNameAndAgeWithAnonymousUserExample example = new HelloWorld06_EnterNameAndAgeWithAnonymousUserExample();
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.anonymousUser()).run(useCaseModel);

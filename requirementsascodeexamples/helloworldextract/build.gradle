@@ -1,0 +1,12 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'requirementsascode - hello world extract',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+	compile project(':requirementsascodecore')
+  	testCompile 'junit:junit:4.12'
+}
+

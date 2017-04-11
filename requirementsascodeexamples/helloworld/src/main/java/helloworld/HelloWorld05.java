@@ -8,7 +8,7 @@ import org.requirementsascode.UseCaseModelRunner;
 
 import helloworld.userevent.EnterText;
 
-public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractHelloWorldExample{
+public class HelloWorld05 extends AbstractHelloWorldExample{
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
 	private static final Class<EnterText> ENTER_AGE = EnterText.class;
 	private static final Class<NumberFormatException> NON_NUMERICAL_AGE = NumberFormatException.class;
@@ -74,7 +74,7 @@ public class HelloWorld05_EnterNameAndAgeWithValidationExample extends AbstractH
 	}
 	
 	public static void main(String[] args){		
-		HelloWorld05_EnterNameAndAgeWithValidationExample example = new HelloWorld05_EnterNameAndAgeWithValidationExample();
+		HelloWorld05 example = new HelloWorld05();
 		example.start(); 
 	}
 

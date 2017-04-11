@@ -8,7 +8,7 @@ import org.requirementsascode.UseCaseModelRunner;
 
 import helloworld.userevent.EnterText;
 
-public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExample{
+public class HelloWorld04 extends AbstractHelloWorldExample{
 	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
 	private static final Class<EnterText> ENTER_AGE = EnterText.class;
 	
@@ -49,7 +49,7 @@ public class HelloWorld04_EnterNameAndAgeExample extends AbstractHelloWorldExamp
 	}
 	
 	public static void main(String[] args){		
-		HelloWorld04_EnterNameAndAgeExample example = new HelloWorld04_EnterNameAndAgeExample();
+		HelloWorld04 example = new HelloWorld04();
 		example.start();
 	}
 

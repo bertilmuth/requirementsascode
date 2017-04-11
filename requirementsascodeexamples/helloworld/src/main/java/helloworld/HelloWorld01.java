@@ -6,19 +6,14 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {	
-	
-	private int hoorayCounter = 0;
+public class HelloWorld01 {	
 	
 	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::greetUser)
-					.step("S2").system(this::printHooray)
-						.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
 			.build();
-		
 		return useCaseModel;
 	}
 
@@ -26,17 +21,8 @@ public class HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample {
 		System.out.println("Hello, User.");
 	}
 	
-	private boolean lessThanThreeHooraysHaveBeenPrinted(UseCaseModelRunner runner) {
-		return hoorayCounter < 3; 
-	}
-	
-	private void printHooray(UseCaseModelRunner runner) {
-		System.out.println("Hip, hip, hooray!");
-		hoorayCounter++;
-	}
-	
 	public static void main(String[] args){		
-		HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample example = new HelloWorld02_PrintHelloUserAndHipHipHoorayThreeTimesExample();
+		HelloWorld01 example = new HelloWorld01();
 		example.start();
 	}
 
