@@ -2,8 +2,8 @@ package shoppingappjavafx.usecaserealization.systemreaction;
 
 import java.util.function.Consumer;
 
-public class InformUserAndLogException implements Consumer<Throwable> {
-	public InformUserAndLogException() {
+public class LogException implements Consumer<Throwable> {
+	public LogException() {
 	}
 
 	@Override

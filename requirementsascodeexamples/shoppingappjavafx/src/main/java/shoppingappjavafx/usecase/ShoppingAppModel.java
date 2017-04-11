@@ -8,7 +8,7 @@ import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
 import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
+import shoppingappjavafx.usecase.userevent.CheckOutPurchase;
 import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
 import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
@@ -42,15 +42,12 @@ public class ShoppingAppModel{
 			.flow("Go back from payment").insteadOf("S8")
 				.step("S8a_1").user(goBack())
 				.step("S8a_2").continueAt("S5")
-			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductInCart()).step("S3a_1").continueAt("S4")
-			.flow("Handle exceptions").when(anytime()).step("EX").handle(anyException()).system(informUserAndLogException())
+			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart())
+				.step("S3a_1").continueAt("S4")
+			.flow("Handle exceptions").when(anExceptionOccurs()).step("EX").handle(anyException()).system(logException())
 		.build();
 		
 		return useCaseModel;
-	}
-
-	private Predicate<UseCaseModelRunner> anytime() {
-		return r -> true;
 	}
 
 	private Consumer<UseCaseModelRunner> startWithEmptyShoppingCart() {return bPR.startWithEmptyShoppingCart();}
@@ -58,7 +55,7 @@ public class ShoppingAppModel{
 	private Class<AddProductToCart> addProductToCart() {return AddProductToCart.class;} 
 	private Consumer<AddProductToCart> addProductToPurchaseOrder() {return bPR.addProductToPurchaseOrder();}
 	private Predicate<UseCaseModelRunner> lessThan10Products() {return bPR.lessThan10Products();}
-	private Class<CheckoutPurchase> checkoutPurchase() {return CheckoutPurchase.class;} 
+	private Class<CheckOutPurchase> checkoutPurchase() {return CheckOutPurchase.class;} 
 	private Consumer<UseCaseModelRunner> displayShippingInformationForm(){return bPR.displayShippingInformationForm();}
 	private Class<EnterShippingInformation> enterShippingInformation(){return EnterShippingInformation.class;}
 	private Consumer<EnterShippingInformation> saveShippingInformation() {return bPR.saveShippingInformation();}
@@ -69,7 +66,8 @@ public class ShoppingAppModel{
 	private Class<ConfirmPurchase> confirmPurchase(){return ConfirmPurchase.class;}
 	private Consumer<ConfirmPurchase> initiateShipping() {return bPR.initiateShipping();}
 	private Class<GoBack> goBack(){return GoBack.class;}
-	private Predicate<UseCaseModelRunner> atLeastOneProductInCart() {return bPR.atLeastOneProductInCart();}
+	private Predicate<UseCaseModelRunner> atLeastOneProductIsInCart() {return bPR.atLeastOneProductIsInCart();}
+	private Predicate<UseCaseModelRunner> anExceptionOccurs() {return bPR.anExceptionOccurs();}
 	private Class<Throwable> anyException(){return Throwable.class;}
-	private Consumer<Throwable> informUserAndLogException() {return bPR.informUserAndLogException();}
+	private Consumer<Throwable> logException() {return bPR.logException();}
 }

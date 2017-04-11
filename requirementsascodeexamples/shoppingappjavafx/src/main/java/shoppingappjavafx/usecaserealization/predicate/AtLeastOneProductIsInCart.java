@@ -7,10 +7,10 @@ import org.requirementsascode.UseCaseModelRunner;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;
 
-public class AtLeastOneProductInCart implements Predicate<UseCaseModelRunner> {
+public class AtLeastOneProductIsInCart implements Predicate<UseCaseModelRunner> {
 	private RunContext runContext;
 
-	public AtLeastOneProductInCart(RunContext runContext) {
+	public AtLeastOneProductIsInCart(RunContext runContext) {
 		this.runContext = runContext;
 	}
 	

@@ -1,0 +1,16 @@
+apply plugin: 'application'
+
+mainClassName = 'shoppingappjavafx.extract.ShoppingAppExtract'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'requirementsascode - shopping app JavaFX extract',
+                   'Implementation-Version': version
+	}
+}
+
+dependencies {
+	compile project(':requirementsascodeextract')
+	testCompile project(':requirementsascodeexamples:shoppingappjavafx')
+  	testCompile 'junit:junit:4.12'
+}
