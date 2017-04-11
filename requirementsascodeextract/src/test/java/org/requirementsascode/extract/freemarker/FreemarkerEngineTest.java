@@ -29,29 +29,6 @@ public class FreeMarkerEngineTest {
     engine = new FreeMarkerEngine("org/requirementsascode/extract/freemarker");
   }
   
-  private UseCaseModel buildWithNewBuilder(){
-    UseCaseModel useCaseModel = 
-    	UseCaseModelBuilder.newBuilder()
-			.useCase("Get greeted")
-				.basicFlow()
-					.step("S1").system(promptUserToEnterName())
-					.step("S2").user(enterName()).system(greetUser()).reactWhile(someConditionIsFulfilled())
-					.step("S3").user(decideToQuit())
-					.step("S4").system(quit())
-				.flow("Alternative Flow A").insteadOf("S4")
-					.step("S4a_1").system(blowUp())
-					.step("S4a_2").continueAt("S1")
-				.flow("Alternative Flow B").after("S3")
-					.step("S4b_1").continueAfter("S2")
-				.flow("Alternative Flow C").when(thereIsNoAlternative())
-					.step("S5").continueWithoutAlternativeAt("S4")
-				.flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
-					.step("S6").continueAt("S1")
-    	.build();
-    return useCaseModel;
-  }
-
-
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
     UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
@@ -66,7 +43,25 @@ public class FreeMarkerEngineTest {
   
   @Test
   public void extractsUseCaseModel() throws Exception {
-    UseCaseModel useCaseModel = buildWithNewBuilder();
+    UseCaseModel useCaseModel = 
+        UseCaseModelBuilder.newBuilder()
+        .useCase("Get greeted")
+          .basicFlow()
+            .step("S1").system(promptUserToEnterName())
+            .step("S2").user(enterName()).system(greetUser()).reactWhile(someConditionIsFulfilled())
+            .step("S3").user(decideToQuit())
+            .step("S4").system(quit())
+          .flow("Alternative Flow A").insteadOf("S4")
+            .step("S4a_1").system(blowUp())
+            .step("S4a_2").continueAt("S1")
+          .flow("Alternative Flow B").after("S3")
+            .step("S4b_1").continueAfter("S2")
+          .flow("Alternative Flow C").when(thereIsNoAlternative())
+            .step("S5").continueWithoutAlternativeAt("S4")
+          .flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
+            .step("S6").continueAt("S1")
+        .build();    
+    
     String templateFileName = "testextract.ftl";
     Writer outputWriter = new StringWriter();
     
