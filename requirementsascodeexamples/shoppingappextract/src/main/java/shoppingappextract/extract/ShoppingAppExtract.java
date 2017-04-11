@@ -17,7 +17,7 @@ public class ShoppingAppExtract {
     new ShoppingAppExtract().start();
   }
 
-  private void start() throws IOException, Exception {
+  private void start() throws Exception {
     UseCaseModel useCaseModel = buildUseCaseModel();
 
     FreeMarkerEngine engine = new FreeMarkerEngine();
