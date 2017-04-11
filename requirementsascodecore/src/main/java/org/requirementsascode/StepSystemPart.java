@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
-import org.requirementsascode.predicate.After;
+import org.requirementsascode.predicate.ReactWhile;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
@@ -85,18 +85,15 @@ public class StepSystemPart<T> {
    * <p>Note that if the condition is not fulfilled after the previous step has been performed, the
    * step will not react at all.
    *
-   * @param condition the condition to check
+   * @param reactWhileCondition the condition to check
    * @return the system part
    */
-  public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> condition) {
-    Objects.requireNonNull(condition);
+  public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> reactWhileCondition) {
+    Objects.requireNonNull(reactWhileCondition);
 
     Step useCaseStep = stepPart.getStep();
-    Predicate<UseCaseModelRunner> performIfConditionIsTrue =
-        useCaseStep.getPredicate().and(condition);
-    Predicate<UseCaseModelRunner> repeatIfConditionIsTrue =
-        new After(Optional.of(useCaseStep)).and(condition);
-    useCaseStep.setPredicate(performIfConditionIsTrue.or(repeatIfConditionIsTrue));
+    ReactWhile reactWhile = new ReactWhile(useCaseStep, reactWhileCondition);
+    useCaseStep.setPredicate(reactWhile);
 
     return this;
   }
