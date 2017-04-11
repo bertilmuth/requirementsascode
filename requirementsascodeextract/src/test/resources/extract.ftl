@@ -11,22 +11,33 @@
 	<#return result/>
 </#function>
 
+<#function flowPosition f>
+	<#local flowPositionWords = wordsOf(flowPositionName(f))/>
+	<#local stepName = (f.flowPosition.stepName)!""/>
+	<#local result = [flowPositionWords?lower_case, stepName]?join(" ")?trim/>
+	<#return result/>
+</#function>
+
+<#function separator f sep>
+	<#if flowPositionName(f) != "" && whenName(f) != "">
+		<#local result = sep/>
+	</#if>
+	<#return result!""/>
+</#function>
+
+<#function when f>
+	<#local whenWords = ""/>
+	<#if f.when??>
+		<#local whenWords = "when " + wordsOf(whenName(f))/>
+	</#if>
+	<#return whenWords?lower_case/>
+</#function>
+
 <#macro flow f>
 ${f}</#macro>
 
-<#macro flowPosition f>
-<#local flowPositionWords = wordsOf(flowPositionName(f))/>
-<#local stepName = (f.flowPosition.stepName)!""/>
-${flowPositionWords?lower_case} ${stepName}</#macro>
-
-<#macro separator f sep><#if flowPositionName(f) != "" && whenName(f) != "">${sep}</#if></#macro>
-
-<#macro when f>
-<#local whenWords = ""/>
-<#if f.when??>
-	<#local whenWords = "when " + wordsOf(whenName(f))/>
-</#if>
-${whenWords?lower_case}</#macro>
+<#macro flowPredicate f>
+${flowPosition(f)}${separator(f,",")}${when(f)}</#macro>
 
 <#macro userStep s>
 <#if hasUser(s)>
