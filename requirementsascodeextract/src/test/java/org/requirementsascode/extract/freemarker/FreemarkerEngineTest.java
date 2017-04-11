@@ -55,7 +55,7 @@ public class FreeMarkerEngineTest {
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
     UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
-    File templateFile = new File("src/test/resources/testextract.ftl");
+    File templateFile = new File("src/test/resources/org/requirementsascode/extract/freemarker/testextract.ftl");
     StringWriter outputWriter = new StringWriter();
     engine.extract(useCaseModel, templateFile, outputWriter);
     String output = outputWriter.toString();
@@ -65,7 +65,7 @@ public class FreeMarkerEngineTest {
   
   @Test
   public void extractsUseCaseModel() throws Exception {
-    File templateFile = new File("src/test/resources/testextract.ftl");
+    File templateFile = new File("src/test/resources/org/requirementsascode/extract/freemarker/testextract.ftl");
     StringWriter outputWriter = new StringWriter();
     engine.extract(useCaseModel, templateFile, outputWriter);
     String output = outputWriter.toString();

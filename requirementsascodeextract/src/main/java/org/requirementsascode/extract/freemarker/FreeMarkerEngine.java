@@ -19,7 +19,6 @@ public class FreeMarkerEngine {
   private Configuration cfg;
 
   public FreeMarkerEngine() {
-    this.dataModel = new HashMap<String, Object>();
     createConfiguration();
     putFreemarkerMethodsInDataModel();
   }
@@ -32,6 +31,7 @@ public class FreeMarkerEngine {
   }
 
   private void putFreemarkerMethodsInDataModel() {
+    dataModel = new HashMap<String, Object>();
     put("wordsOf", new WordsOfMethod());
     put("firstWordOf", new FirstWordOfMethod());
     put("afterFirstWordOf", new AfterFirstWordOfMethod());
