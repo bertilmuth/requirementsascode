@@ -1,4 +1,4 @@
-<#include "./extract.ftl"/>
+<#include "./lib/extract.ftl"/>
 <@compress single_line=true>
 <#list useCaseModel.useCases as useCase>
 	use case: ${useCase}.

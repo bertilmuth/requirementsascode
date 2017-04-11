@@ -1,4 +1,4 @@
-<#include "./extract.ftl"/>
+<#include "./lib/extract.ftl"/>
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
