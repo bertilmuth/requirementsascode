@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
-import shoppingappjavafx.usecase.userevent.GoBack;
+import shoppingappjavafx.usecase.userevent.SignalToGoBack;
 
 public class DisplayPaymentDetailsFormController extends AbstractController{
     private PaymentDetails paymentDetails;
@@ -29,7 +29,7 @@ public class DisplayPaymentDetailsFormController extends AbstractController{
 	
 	@FXML
     void onBack(ActionEvent event) {
-		GoBack goBack = new GoBack();
+		SignalToGoBack goBack = new SignalToGoBack();
     	useCaseModelRunner().reactTo(goBack);
     }
     

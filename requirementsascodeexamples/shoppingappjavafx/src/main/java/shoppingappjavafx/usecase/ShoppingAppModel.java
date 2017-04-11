@@ -8,7 +8,7 @@ import shoppingappjavafx.usecase.userevent.CheckOutPurchase;
 import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
 import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
-import shoppingappjavafx.usecase.userevent.GoBack;
+import shoppingappjavafx.usecase.userevent.SignalToGoBack;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
 import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
 import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductIsInCart;
@@ -46,7 +46,7 @@ public class ShoppingAppModel {
   private Class<EnterShippingInformation> enterShippingInformation;
   private Class<EnterPaymentDetails> enterPaymentDetails;
   private Class<ConfirmPurchase> confirmPurchase;
-  private Class<GoBack> goBack;
+  private Class<SignalToGoBack> signalToGoBack;
   private Class<Throwable> anyException;
   
   /**
@@ -84,10 +84,10 @@ public class ShoppingAppModel {
 				.step("S10").user(confirmPurchase).system(initiateShipping)
 				.step("S11").continueAt("S1")	
 			.flow("Go back from shipping").insteadOf("S6")
-				.step("S6a_1").user(goBack)
+				.step("S6a_1").user(signalToGoBack)
 				.step("S6a_2").continueAt("S2")
 			.flow("Go back from payment").insteadOf("S8")
-				.step("S8a_1").user(goBack)
+				.step("S8a_1").user(signalToGoBack)
 				.step("S8a_2").continueAt("S5")
 			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart)
 				.step("S3a_1").continueAt("S4")
@@ -115,7 +115,7 @@ public class ShoppingAppModel {
     this.enterShippingInformation = EnterShippingInformation.class;
     this.enterPaymentDetails = EnterPaymentDetails.class;
     this.confirmPurchase = ConfirmPurchase.class;
-    this.goBack = GoBack.class;
+    this.signalToGoBack = SignalToGoBack.class;
     this.anyException = Throwable.class;
   }
 

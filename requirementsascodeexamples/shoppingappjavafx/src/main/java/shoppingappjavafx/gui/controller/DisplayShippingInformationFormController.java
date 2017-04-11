@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
-import shoppingappjavafx.usecase.userevent.GoBack;
+import shoppingappjavafx.usecase.userevent.SignalToGoBack;
 
 public class DisplayShippingInformationFormController extends AbstractController{
 	private ShippingInformation shippingInformation;
@@ -47,7 +47,7 @@ public class DisplayShippingInformationFormController extends AbstractController
     
 	@FXML
     void onBack(ActionEvent event) {
-		GoBack goBack = new GoBack();
+		SignalToGoBack goBack = new SignalToGoBack();
     	useCaseModelRunner().reactTo(goBack);
     }
     
