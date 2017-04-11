@@ -1,9 +1,5 @@
 package shoppingappjavafx.usecaserealization;
 
-import java.util.function.Predicate;
-
-import org.requirementsascode.UseCaseModelRunner;
-
 import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
@@ -14,8 +10,8 @@ import shoppingappjavafx.usecaserealization.systemreaction.DisplayPaymentDetails
 import shoppingappjavafx.usecaserealization.systemreaction.DisplayProducts;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplayPurchaseOrderSummary;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplayShippingInformationForm;
-import shoppingappjavafx.usecaserealization.systemreaction.LogException;
 import shoppingappjavafx.usecaserealization.systemreaction.InitiateShipping;
+import shoppingappjavafx.usecaserealization.systemreaction.LogException;
 import shoppingappjavafx.usecaserealization.systemreaction.SavePaymentDetails;
 import shoppingappjavafx.usecaserealization.systemreaction.SaveShippingInformation;
 import shoppingappjavafx.usecaserealization.systemreaction.StartWithEmptyShoppingCart;
@@ -75,7 +71,7 @@ public class BuyProductRealization {
     return new AtLeastOneProductIsInCart(runContext);
   }
 
-  public Predicate<UseCaseModelRunner> anExceptionOccurs() {
+  public AnExceptionOccurs anExceptionOccurs() {
     return new AnExceptionOccurs();
   }
 
