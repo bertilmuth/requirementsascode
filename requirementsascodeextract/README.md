@@ -48,7 +48,7 @@ public class EnterName {
 
 The name of the class needs to be of the form _VerbNoun_, in first person singular.
 In the example, it is _EnterName_. 
-The documentation created from step S2 will read: "S2. User _enter_s _name_. System greets user."
+The documentation created from step S2 will read: "S2. User _enters name_. System greets user."
 
 ### Extract the use cases, and generate documentation
 You can create an engine to extract the use cases like this:
