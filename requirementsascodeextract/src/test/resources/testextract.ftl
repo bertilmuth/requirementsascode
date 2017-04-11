@@ -3,7 +3,7 @@
 <#list useCaseModel.useCases as useCase>
 	use case: ${useCase}.
 	<#list useCase.flows as useCaseFlow>
-		flow: ${useCaseFlow} <@flowPredicate f=useCaseFlow/>.
+		flow: ${useCaseFlow} <@flowPredicate f=useCaseFlow/>
 		<#list useCaseFlow.steps as step>
 			step: ${step}. <@userStep s=step/><@systemStep s=step/>
 		</#list>
