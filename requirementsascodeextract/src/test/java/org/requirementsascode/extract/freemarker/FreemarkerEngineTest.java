@@ -3,7 +3,6 @@ package org.requirementsascode.extract.freemarker;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -56,10 +55,9 @@ public class FreeMarkerEngineTest {
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
     UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
-    engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/testextract.ftl");
     StringWriter outputWriter = new StringWriter();
-    engine.process(templateFile, outputWriter);
+    engine.extract(useCaseModel, templateFile, outputWriter);
     String output = outputWriter.toString();
     
     assertEquals("", output);
@@ -67,10 +65,9 @@ public class FreeMarkerEngineTest {
   
   @Test
   public void extractsUseCaseModel() throws Exception {
-    engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/testextract.ftl");
     StringWriter outputWriter = new StringWriter();
-    engine.process(templateFile, outputWriter);
+    engine.extract(useCaseModel, templateFile, outputWriter);
     String output = outputWriter.toString();
 
     assertEquals(
@@ -89,16 +86,6 @@ public class FreeMarkerEngineTest {
             + " flow: Alternative Flow D Instead of S4, when there is no alternative:"
             + " step: S6. System continues at S1.", 
         output);
-  }
-
-  @Test
-  public void printsUseCaseModelToConsole() throws Exception {
-    engine.put("useCaseModel", useCaseModel);
-    File templateFile = new File("src/test/resources/htmlExample.ftlh");
-    File outputFile = File.createTempFile( "requirementsascodeextract_test", ".html");
-    engine.process(templateFile, new FileWriter(outputFile));
-    
-    System.out.println("Wrote file to: " + outputFile);
   }
 
   private Predicate<UseCaseModelRunner> thereIsNoAlternative() {

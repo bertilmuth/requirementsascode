@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.extract.freemarker.methodmodel.AfterFirstWordOfMethod;
 import org.requirementsascode.extract.freemarker.methodmodel.FirstWordOfMethod;
 import org.requirementsascode.extract.freemarker.methodmodel.WordsOfMethod;
@@ -22,16 +23,18 @@ public class FreeMarkerEngine {
     createConfiguration();
     putFreemarkerMethodsInDataModel();
   }
+
   private void createConfiguration() {
     cfg = new Configuration(Configuration.VERSION_2_3_26);
     cfg.setLogTemplateExceptions(false);
     setDefaultEncoding("UTF-8");
     setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
   }
+
   private void putFreemarkerMethodsInDataModel() {
-	  put("wordsOf", new WordsOfMethod());
-	  put("firstWordOf", new FirstWordOfMethod());
-	  put("afterFirstWordOf", new AfterFirstWordOfMethod());
+    put("wordsOf", new WordsOfMethod());
+    put("firstWordOf", new FirstWordOfMethod());
+    put("afterFirstWordOf", new AfterFirstWordOfMethod());
   }
 
   public void put(String key, Object value) {
@@ -46,7 +49,19 @@ public class FreeMarkerEngine {
     cfg.setTemplateExceptionHandler(handler);
   }
 
-  public void process(File templateFile, Writer outputWriter) throws Exception {
+  /**
+   * 'Extracts' the use cases from the model. This is done by putting the specified use case model
+   * in the FreeMarker configuration under the name 'useCaseModel'. Then, the specified template is
+   * used to transform the use case model to text and write it using the specified writer.
+   *
+   * @param useCaseModel the input model, created with requirementsascodecore
+   * @param templateFile the file used to transform the model to text
+   * @param outputWriter the writer that writes out the resulting text
+   * @throws Exception if anything goes wrong
+   */
+  public void extract(UseCaseModel useCaseModel, File templateFile, Writer outputWriter)
+      throws Exception {
+    put("useCaseModel", useCaseModel);
     cfg.setDirectoryForTemplateLoading(templateDirectory(templateFile));
     Template template = cfg.getTemplate(templateFileName(templateFile));
     template.process(dataModel, outputWriter);
