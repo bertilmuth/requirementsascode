@@ -96,4 +96,4 @@ In the example, the ```extract.ftl``` template containing these macros must be i
 Then, you start with the ```useCaseModel``` instance provided by the engine to iterate over the model.
 
 See the [FreeMarker](http://freemarker.org/docs/dgui.html) documentation for details.
-See the test classes for details on how to use requirementsascodeextract.
+See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirementsascodeextract.
