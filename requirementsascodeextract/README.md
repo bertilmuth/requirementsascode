@@ -69,7 +69,7 @@ The second parameter is the name of the template file, relative to the base pack
 The third parameter is a ```java.io.Writer``` that produces the output text.
 
 Here's an example FreeMarker template file:
-``` ftl
+``` 
 <#include "./lib/extract.ftl"/>
 <html>
 <head>
@@ -82,7 +82,7 @@ Here's an example FreeMarker template file:
 	  		<h2>${useCaseFlow?capitalize}</h2>
 	  		<div><@flowPredicate f=useCaseFlow/></div>
 			<#list useCaseFlow.steps as step>
-				<div>${step}: <@userStep s=step/><@systemStep s=step/></div>
+				<div>${step}: <@reactWhile s=step/><@userStep s=step/><@systemStep s=step/></div>
 			</#list>
 		</#list>
   	</#list>
