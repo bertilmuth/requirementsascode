@@ -1,7 +1,5 @@
 package helloworld;
 
-import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
-
 import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
@@ -101,7 +99,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(newBuilder());
+		UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())
