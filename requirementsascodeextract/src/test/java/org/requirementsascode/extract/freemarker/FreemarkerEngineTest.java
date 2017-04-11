@@ -23,27 +23,15 @@ import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreeMarkerEngineTest {
   private FreeMarkerEngine engine;
+  private UseCaseModel useCaseModel;
 
   @Before
   public void setUp() throws Exception {
     engine = new FreeMarkerEngine();
+    useCaseModel = buildWithNewBuilder();
   }
   
-  @Test
-  public void extractsEmptyStringFromEmptyModel() throws Exception {
-    UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
-
-    engine.put("useCaseModel", useCaseModel);
-    File templateFile = new File("src/test/resources/testextract.ftl");
-    StringWriter outputWriter = new StringWriter();
-    engine.process(templateFile, outputWriter);
-    String output = outputWriter.toString();
-    
-    assertEquals("", output);
-  }
-  
-  @Test
-  public void extractsUseCaseModel() throws Exception {
+  private UseCaseModel buildWithNewBuilder(){
     UseCaseModel useCaseModel = 
     	UseCaseModelBuilder.newBuilder()
 			.useCase("Get greeted")
@@ -62,7 +50,23 @@ public class FreeMarkerEngineTest {
 				.flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
 					.step("S6").continueAt("S1")
     	.build();
-
+    return useCaseModel;
+  }
+  
+  @Test
+  public void extractsEmptyStringFromEmptyModel() throws Exception {
+    UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
+    engine.put("useCaseModel", useCaseModel);
+    File templateFile = new File("src/test/resources/testextract.ftl");
+    StringWriter outputWriter = new StringWriter();
+    engine.process(templateFile, outputWriter);
+    String output = outputWriter.toString();
+    
+    assertEquals("", output);
+  }
+  
+  @Test
+  public void extractsUseCaseModel() throws Exception {
     engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/testextract.ftl");
     StringWriter outputWriter = new StringWriter();
@@ -89,25 +93,6 @@ public class FreeMarkerEngineTest {
 
   @Test
   public void printsUseCaseModelToConsole() throws Exception {
-    UseCaseModel useCaseModel = 
-    	UseCaseModelBuilder.newBuilder()
-			.useCase("Get greeted")
-				.basicFlow()
-					.step("S1").system(promptUserToEnterName())
-					.step("S2").user(enterName()).system(greetUser())
-					.step("S3").user(decideToQuit())
-					.step("S4").system(quit())
-				.flow("alternative flow a").insteadOf("S4")
-					.step("S4a_1").system(blowUp())
-					.step("S4a_2").continueAt("S1")
-				.flow("alternative flow b").after("S3")
-					.step("S4b_1").continueAfter("S2")
-				.flow("alternative flow c").when(thereIsNoAlternative())
-					.step("S5").continueWithoutAlternativeAt("S4")
-				.flow("alternative flow d").insteadOf("S4").when(thereIsNoAlternative())
-					.step("S6").continueAt("S1")
-    	.build();
-
     engine.put("useCaseModel", useCaseModel);
     File templateFile = new File("src/test/resources/htmlExample.ftlh");
     File outputFile = File.createTempFile( "requirementsascodeextract_test", ".html");
