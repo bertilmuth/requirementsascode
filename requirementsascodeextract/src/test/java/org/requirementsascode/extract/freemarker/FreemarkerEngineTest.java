@@ -2,7 +2,6 @@ package org.requirementsascode.extract.freemarker;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -22,12 +21,10 @@ import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
 public class FreeMarkerEngineTest {
   private FreeMarkerEngine engine;
-  private UseCaseModel useCaseModel;
 
   @Before
   public void setUp() throws Exception {
-    engine = new FreeMarkerEngine();
-    useCaseModel = buildWithNewBuilder();
+    engine = new FreeMarkerEngine("org/requirementsascode/extract/freemarker");
   }
   
   private UseCaseModel buildWithNewBuilder(){
@@ -55,9 +52,10 @@ public class FreeMarkerEngineTest {
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
     UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
-    File templateFile = new File("src/test/resources/org/requirementsascode/extract/freemarker/testextract.ftl");
+    String templateFileName = "testextract.ftl";
     StringWriter outputWriter = new StringWriter();
-    engine.extract(useCaseModel, templateFile, outputWriter);
+    
+    engine.extract(useCaseModel, templateFileName, outputWriter);
     String output = outputWriter.toString();
     
     assertEquals("", output);
@@ -65,9 +63,11 @@ public class FreeMarkerEngineTest {
   
   @Test
   public void extractsUseCaseModel() throws Exception {
-    File templateFile = new File("src/test/resources/org/requirementsascode/extract/freemarker/testextract.ftl");
+    UseCaseModel useCaseModel = buildWithNewBuilder();
+    String templateFileName = "testextract.ftl";
     StringWriter outputWriter = new StringWriter();
-    engine.extract(useCaseModel, templateFile, outputWriter);
+    
+    engine.extract(useCaseModel, templateFileName, outputWriter);
     String output = outputWriter.toString();
 
     assertEquals(

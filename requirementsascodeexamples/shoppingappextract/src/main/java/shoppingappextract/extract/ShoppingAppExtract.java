@@ -20,9 +20,9 @@ public class ShoppingAppExtract {
   private void start() throws Exception {
     UseCaseModel useCaseModel = buildUseCaseModel();
 
-    FreeMarkerEngine engine = new FreeMarkerEngine();
+    FreeMarkerEngine engine = new FreeMarkerEngine("shoppingappextract/extract");
     File outputFile = outputFile();
-    engine.extract(useCaseModel, templateFile(), new FileWriter(outputFile));
+    engine.extract(useCaseModel, templateFileName(), new FileWriter(outputFile));
     
     System.out.println("Wrote file to: " + outputFile);
   }
@@ -33,9 +33,8 @@ public class ShoppingAppExtract {
     return useCaseModel;
   }
 
-  private File templateFile() {
-    File templateFile = new File("src/test/resources/htmlExample.ftlh");
-    return templateFile;
+  private String templateFileName() {
+    return "htmlExample.ftlh";
   }
 
   private File outputFile() throws IOException {
