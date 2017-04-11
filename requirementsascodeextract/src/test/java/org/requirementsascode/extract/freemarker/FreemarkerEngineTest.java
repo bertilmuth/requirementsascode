@@ -3,6 +3,7 @@ package org.requirementsascode.extract.freemarker;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -65,7 +66,7 @@ public class FreeMarkerEngineTest {
   public void extractsUseCaseModel() throws Exception {
     UseCaseModel useCaseModel = buildWithNewBuilder();
     String templateFileName = "testextract.ftl";
-    StringWriter outputWriter = new StringWriter();
+    Writer outputWriter = new StringWriter();
     
     engine.extract(useCaseModel, templateFileName, outputWriter);
     String output = outputWriter.toString();
