@@ -26,9 +26,8 @@ public class ShoppingAppExtract {
   }
 
   private static UseCaseModel buildUseCaseModel() {
-    BuyProductRealization shoppingAppUseCaseRealization = new BuyProductRealization(null, null);
-    UseCaseModel useCaseModel =
-        new ShoppingAppModel(shoppingAppUseCaseRealization).buildWith(newBuilder());
+    BuyProductRealization buyProductRealization = new BuyProductRealization(null, null);
+    UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(newBuilder());
     return useCaseModel;
   }
 }
