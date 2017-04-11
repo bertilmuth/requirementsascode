@@ -11,7 +11,7 @@ In order to use requirementsascodeextract, you need to:
 Here's how you build a use case model from scratch. 
 Note: this model does not make too much sense. It is just an example.
 
-```
+``` java
 UseCaseModel useCaseModel = 
   UseCaseModelBuilder.newBuilder()
 	.useCase("Get greeted")
@@ -36,7 +36,7 @@ Important: you need to use instances of classes with special names in the model,
 as the engine will create documentation from these names.
  
 For example, in step S2, the ```enterName``` method returns an instance of the following class:
-```
+``` java
 public class EnterName {
 	public final String name;
 	
@@ -52,7 +52,7 @@ The documentation created from step S2 will read: "S2. User _enters name_. Syste
 
 ### Extract the use cases, and generate documentation
 You can create an engine to extract the use cases like this:
-```
+``` java
 FreeMarkerEngine engine = new FreeMarkerEngine(basePackagePath);
 ```
 
@@ -60,7 +60,7 @@ Instead of ```basePackagePath```, you specify your own package path in your clas
 this could be the package path below that folder. 
 
 You can extract the use cases with this call:
-```
+``` java
 engine.extract(useCaseModel, templateFileName, outputWriter);
 ```
 
@@ -69,7 +69,7 @@ The second parameter is the name of the template file, relative to the base pack
 The third parameter is a ```java.io.Writer``` that produces the output text.
 
 Here's an example FreeMarker template file:
-```
+``` ftl
 <#include "./lib/extract.ftl"/>
 <html>
 <head>
