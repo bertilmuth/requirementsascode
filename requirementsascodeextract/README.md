@@ -5,9 +5,9 @@ from a use case model inside the code.
 ## Using requirementsascodeextract
 In order to use requirementsascodeextract, you need to:
 * Obtain a use case model builder, and build a model with it
-* Extract the use cases, and generate documentation
+* Use a template engine to extract the use cases, and generate documentation
 
-### Obtain a model builder, and build a model with it
+### Obtain a use case model builder, and build a model with it
 Here's how you build a use case model from scratch. 
 Note: this model does not make too much sense. It is just an example.
 
@@ -32,10 +32,10 @@ UseCaseModel useCaseModel =
 .build();
 ```
 
-Important: you need to use instances of classes with special names in the model,
+You have to use classes with special names in the model,
 as the engine will create documentation from these names.
  
-For example, in step S2, the ```enterName``` method returns an instance of the following class:
+For example, in step S2, the ```enterName()``` method returns the following class:
 ``` java
 public class EnterName {
 	public final String name;
@@ -50,13 +50,13 @@ The name of the class needs to be of the form _VerbNoun_, in first person singul
 In the example, it is _EnterName_. 
 The documentation created from step S2 will read: "S2. User _enters name_. System greets user."
 
-### Extract the use cases, and generate documentation
+### Use a template engine to extract the use cases, and generate documentation
 You can create an engine to extract the use cases like this:
 ``` java
 FreeMarkerEngine engine = new FreeMarkerEngine(basePackagePath);
 ```
 
-Instead of ```basePackagePath```, you specify your own package path in your classpath, where your FreeMarker templates are located. For example, if you use standard ```src/main/resources``` or ```src/test/resources``` folders,
+For ```basePackagePath```, you specify your own package path in your classpath, where your FreeMarker templates are located. For example, if you use standard ```src/main/resources``` or ```src/test/resources``` folders,
 this could be the package path below that folder. 
 
 You can extract the use cases with this call:
