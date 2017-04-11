@@ -1,6 +1,6 @@
 # requirementsascodeextract
-With this subproject, you can generate plain text documentation (e.g HTML pages)
-from the use cases inside the code.
+With requirementsascodeextract, you can generate plain text documentation (e.g HTML pages)
+from a use case model inside the code.
 
 ## Using requirementsascodeextract
 In order to use requirementsascodeextract, you need to:
