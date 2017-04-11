@@ -18,7 +18,7 @@
 	<#return result/>
 </#function>
 
-<#function separator f sep>
+<#function flowPredicateSeparator f sep>
 	<#if flowPositionName(f) != "" && whenName(f) != "">
 		<#local result = sep/>
 	</#if>
@@ -33,11 +33,11 @@
 	<#return whenWords?lower_case/>
 </#function>
 
-<#macro flow f>
+<#macro flowName f>
 ${f}</#macro>
 
 <#macro flowPredicate f>
-${flowPosition(f)}${separator(f,",")}${when(f)}</#macro>
+${flowPosition(f)}${flowPredicateSeparator(f,",")}${when(f)}</#macro>
 
 <#macro userStep s>
 <#if hasUser(s)>
