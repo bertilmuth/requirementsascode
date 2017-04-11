@@ -53,7 +53,7 @@ The documentation created from step S2 will read: "S2. User _enters name_. Syste
 ### Extract the use cases, and generate documentation
 You can create an engine to extract the use cases like this:
 ```
-FreeMarkerEngine engine = new FreeMarkerEngine("org/requirementsascode/extract/freemarker");
+FreeMarkerEngine engine = new FreeMarkerEngine(basePackagePath);
 ```
 
 Instead of the path shown here, you specify your own package path in your classpath, where your FreeMarker templates are located. For example, if you use standard ```src/main/resources``` or ```src/test/resources``` folders,
