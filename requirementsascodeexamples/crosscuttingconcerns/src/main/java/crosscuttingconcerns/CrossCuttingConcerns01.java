@@ -5,7 +5,7 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class CrossCuttingConcerns01_MeasurePerformanceExample {
+public class CrossCuttingConcerns01 {
 	private int resultOfAddition;
 	private double resultOfPower;
 	
@@ -48,6 +48,6 @@ public class CrossCuttingConcerns01_MeasurePerformanceExample {
 	}
 
 	public static void main(String[] args){
-		new CrossCuttingConcerns01_MeasurePerformanceExample().start();
+		new CrossCuttingConcerns01().start();
 	}
 }
