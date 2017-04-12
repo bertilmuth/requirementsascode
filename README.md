@@ -2,8 +2,8 @@
 When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe a user story.
 As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
 
-With requirementsascode,  you can represent use cases in your source code, as executable specifications.  
-Later, you can generate documentation from the same code - not some documentation you insert into the code! 
+With requirementsascode,  you can represent your application's use cases in the source code. And run them.
+Later, you can generate documentation from _the same code_ - not some additional documentation you insert into the code! 
 The documentation describes the use cases in a non-technical way,
 so that a larger group of stakeholders can understand it.
 
