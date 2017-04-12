@@ -48,6 +48,7 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 ...
 UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+useCaseModelRunner.run(useCaseModel);
 useCaseModelRunner.reactTo(enterText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
