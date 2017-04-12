@@ -1,5 +1,5 @@
 # shoppingappextract
-Example application that extracts the use case model of the shoppingappjavafx example
+Example application that extracts the use case model of the [shoppingappjavafx](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/shoppingappjavafx) example
 and transforms it to a HTML page. 
 
 As a result of running shoppingappextract, it will print the path to the HTML page 
@@ -14,7 +14,7 @@ In order to use shoppingappextract, you need the following libraries on the clas
 * The current requirementsascodeextract jar
 * The current requirementsascodecore jar
 
-If you don't want to download them manually, and you don't use a build system like gradle,
+If you don't want to download them manually, and you don't use a build system like Gradle,
 you can download the shoppingappextract distribution zip from the Releases tab. 
 
 You execute shoppingappextract by running a shell script in the bin subfolder of the distribution.
