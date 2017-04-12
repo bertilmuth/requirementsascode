@@ -37,13 +37,13 @@ Note that the API is likely to change.
 
 Windows:
 ``` java
-java -cp "helloworld-0.4.0.jar;requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.4.0.jar;requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01
 ```
 Unix:
 ``` java
-java -cp "helloworld-0.4.0.jar:requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01_PrintHelloUserExample
+java -cp "helloworld-0.4.0.jar:requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01
 ```
-The same principle applies to the cross cutting concerns example projects: you need to put the example project's jar
+The same principle applies to the cross cutting concerns example project: you need to put the example project's jar
 on the classpath, and the requirementsascodecore jar.
 
 For the shoppingappjavafx and shoppingappextract examples, a distribution zip is available in the Releases tab
@@ -55,7 +55,7 @@ the e(fx)clipse plugin.
 Build tool support will be available in the future.
 
 # subprojects
-* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models, inside the code. Core library with no third-party dependencies. 
+* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models, inside the code - core library with no third-party dependencies. 
 * [requirementsascodeextract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
 * [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
