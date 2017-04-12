@@ -1,6 +1,6 @@
 # requirementsascode
-As long as a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe a user story.
-As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization.
+When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe a user story.
+As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
 
 With requirementsascode,  you can represent user journeys as executable specifications in your application source code.  The form of the representation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives.
 Later, you can generate documentation from the same code (not some documentation you insert into the code!). 
