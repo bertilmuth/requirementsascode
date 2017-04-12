@@ -30,11 +30,11 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 						
 				.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
 					.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
-					.step("S5a_2").continueAfter("S2")
+					.step("S5a_2").continueAt("S3")
 						
 				.flow("Handle non-numerical age").insteadOf("S5")
 					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
-					.step("S5b_2").continueAfter("S2")
+					.step("S5b_2").continueAt("S3")
 			.build();
 		return useCaseModel;
 	}
