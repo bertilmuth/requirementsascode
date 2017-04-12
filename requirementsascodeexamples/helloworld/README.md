@@ -97,7 +97,7 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
 				.step("S5b_2").continueAt("S3")
 		.build();
-		return useCaseModel;
+	return useCaseModel;
 }	
 ...
 UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
