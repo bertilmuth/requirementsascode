@@ -1,5 +1,5 @@
 # requirementsascode
-When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe a user story.
+When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code.
 As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
 
 With requirementsascode,  you can represent your application's use cases in the source code. And run them.
