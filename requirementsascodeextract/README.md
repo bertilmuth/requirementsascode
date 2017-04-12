@@ -2,6 +2,16 @@
 With requirementsascodeextract, you can generate plain text documentation (e.g HTML pages)
 from a use case model inside the code.
 
+## Getting started
+In order to use requirementsascodeextract, you need the following libraries on the classpath:
+* freemarker-2.3.26-incubating-sources.jar (FreeMarker)
+* commons-lang3-3.5-sources.jar (Apache Commons)
+* The current requirementsascodeextract.jar
+* The current requirementsascodecore.jar
+
+If you don't want to download them manually, and you don't use a build system like gradle,
+you can download the shoppingappextract jar from the Releases tab. 
+
 ## Using requirementsascodeextract
 In order to use requirementsascodeextract, you need to:
 * Obtain a use case model builder, and build a model with it
