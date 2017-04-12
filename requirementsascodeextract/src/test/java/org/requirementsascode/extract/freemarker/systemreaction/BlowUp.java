@@ -1,4 +1,4 @@
-package org.requirementsascode.extract.freemarker.userevent;
+package org.requirementsascode.extract.freemarker.systemreaction;
 
 import java.util.function.Consumer;
 

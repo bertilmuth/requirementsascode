@@ -14,10 +14,10 @@ import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
+import org.requirementsascode.extract.freemarker.systemreaction.BlowUp;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quit;
-import org.requirementsascode.extract.freemarker.userevent.BlowUp;
 import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 
