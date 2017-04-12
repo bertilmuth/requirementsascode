@@ -2,14 +2,16 @@
 When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code, maybe a user story.
 As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
 
-With requirementsascode,  you can represent user journeys as executable specifications in your application source code.  The form of the representation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives.
-Later, you can generate documentation from the same code (not some documentation you insert into the code!). 
-The documentation describes the user journeys in a non-technical way,
+With requirementsascode,  you can represent use cases in your source code, as executable specifications.  
+Later, you can generate documentation from the same code - not some documentation you insert into the code! 
+The documentation describes the use cases in a non-technical way,
 so that a larger group of stakeholders can understand it.
 
+In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
+
 # benefits
-As the same code controls the visible behavior of your software and is used as the source of documentation,
-you can always generate documentation that is highly likely to represent how your software really works. Also, there is a defined place in your code that describes the requirements and how they are realized.
+As the same code controls the visible behavior of your software _and_ is used as the source of documentation,
+you can always generate documentation that represents how your software really works. Also, there is a defined place in your code that describes the use cases and how they are realized.
 That makes your application more maintable.
 
 While requirementsascode works with any application design, it makes it easy to transition your application
@@ -18,10 +20,9 @@ By reducing dependencies between the application's components, you can make your
 A clear separation between user interface and backend makes it easier to test the application without user interface, 
 and vary or change the user interface.
 
-In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
-
 # documentation
 * [hello world examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [how to extract requirements from code](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.4.0/requirementsascodecore-0.4.0-javadoc.jar)
 
@@ -53,7 +54,8 @@ the e(fx)clipse plugin.
 Build tool support will be available in the future.
 
 # subprojects
-* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): the core library to be used, with no third-party dependencies.
+* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models, inside the code. Core library with no third-party dependencies. 
+* [requirementsascodeextract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
 * [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
 # related topics
