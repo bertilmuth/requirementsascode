@@ -6,6 +6,7 @@ With requirementsascode,  you can represent user journeys as executable specific
 Later, you can generate documentation from the same code. The documentation describes the user journeys in a non-technical way,
 so that a larger group of stakeholders can understand it.
 
+# benefits
 As the same code controls the visible behavior of your software and is used as the source of documentation,
 you can always generate documentation that is highly likely to represent how your software really works.
 That makes your application more maintable.
