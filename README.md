@@ -3,12 +3,13 @@ As long as a requirement is still under discussion, it makes sense to have a lig
 As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization.
 
 With requirementsascode,  you can represent user journeys as executable specifications in your application source code.  The form of the representation is similar to [user goal level use case](https://en.wikipedia.org/wiki/Use_case#Goal_levels) narratives.
-Later, you can generate documentation from the same code. The documentation describes the user journeys in a non-technical way,
+Later, you can generate documentation from the same code (not some documentation you insert into the code!). 
+The documentation describes the user journeys in a non-technical way,
 so that a larger group of stakeholders can understand it.
 
 # benefits
 As the same code controls the visible behavior of your software and is used as the source of documentation,
-you can always generate documentation that is highly likely to represent how your software really works.
+you can always generate documentation that is highly likely to represent how your software really works. Also, there is a defined place in your code that describes the requirements and how they are realized.
 That makes your application more maintable.
 
 While requirementsascode works with any application design, it makes it easy to transition your application
