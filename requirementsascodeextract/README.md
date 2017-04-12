@@ -4,7 +4,7 @@ from a use case model inside the code.
 
 ## Getting started
 In order to use requirementsascodeextract, you need the following libraries on the classpath:
-* freemarker-2.3.26-incubating-sources.jar (FreeMarker)
+* freemarker-2.3.26-incubating.jar (FreeMarker)
 * commons-lang3-3.5.jar (Apache Commons)
 * The current requirementsascodeextract.jar
 * The current requirementsascodecore.jar
