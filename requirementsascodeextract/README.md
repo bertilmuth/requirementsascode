@@ -9,7 +9,7 @@ In order to use requirementsascodeextract, you need the following libraries on t
 * The current requirementsascodeextract jar
 * The current requirementsascodecore jar
 
-If you don't want to download them manually, and you don't use a build system like gradle,
+If you don't want to download them manually, and you don't use a build system like Gradle,
 you can download the shoppingappextract distribution zip from the Releases tab. 
 
 ## Using requirementsascodeextract
