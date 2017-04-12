@@ -55,13 +55,16 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # hello world 04 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
 ``` java
 public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-      useCaseModel().useCase("Get greeted")
-	.basicFlow()
-		.step("S1").system(promptUserToEnterFirstName())
-		.step("S2").user(ENTER_FIRST_NAME).system(saveFirstName())
-		.step("S3").system(promptUserToEnterAge())
-		.step("S4").user(ENTER_AGE).system(saveAge())
-		.step("S5").system(greetUserWithFirstNameAndAge());
+	UseCaseModel useCaseModel = 
+	        modelBuilder.useCase("Get greeted")
+		        .basicFlow()
+				.step("S1").system(this::promptUserToEnterFirstName)
+				.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
+				.step("S3").system(this::promptUserToEnterAge)
+				.step("S4").user(ENTER_AGE).system(this::saveAge)
+				.step("S5").system(this::greetUserWithFirstNameAndAge)
+		.build();
+	return useCaseModel;
 }
 ...
 UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
