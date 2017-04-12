@@ -22,9 +22,9 @@ A clear separation between user interface and backend makes it easier to test th
 and vary or change the user interface.
 
 # documentation
-* [hello world examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [how to extract requirements from code](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
-* [cross-cutting concerns examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
+* [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
+* [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.4.0/requirementsascodecore-0.4.0-javadoc.jar)
 
 Note that the API is likely to change.
