@@ -4,8 +4,8 @@ As soon as a requirement is implemented, the code itself becomes the most reliab
 
 With requirementsascode,  you can represent your application's use cases in the source code. And run them.
 
-Later, you can generate documentation from _the same code_ - not some additional documentation you insert into the code! 
-The documentation describes the use cases in a non-technical way,
+Later, you can generate documentation from _the same code_.
+That documentation describes the use cases in a non-technical way,
 so that a larger group of stakeholders can understand it.
 
 In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
@@ -55,7 +55,7 @@ the e(fx)clipse plugin.
 Build tool support will be available in the future.
 
 # subprojects
-* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models, inside the code - core library with no third-party dependencies. 
+* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models. 
 * [requirementsascodeextract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
 * [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
