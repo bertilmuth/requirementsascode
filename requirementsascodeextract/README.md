@@ -6,11 +6,11 @@ from a use case model inside the code.
 In order to use requirementsascodeextract, you need the following libraries on the classpath:
 * freemarker-2.3.26-incubating.jar (FreeMarker)
 * commons-lang3-3.5.jar (Apache Commons)
-* The current requirementsascodeextract.jar
-* The current requirementsascodecore.jar
+* The current requirementsascodeextract jar
+* The current requirementsascodecore jar
 
 If you don't want to download them manually, and you don't use a build system like gradle,
-you can download the shoppingappextract jar from the Releases tab. 
+you can download the shoppingappextract distribution zip from the Releases tab. 
 
 ## Using requirementsascodeextract
 In order to use requirementsascodeextract, you need to:
