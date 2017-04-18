@@ -15,10 +15,10 @@ This is also an example of how requirementsascode separates the frontend
 (JavaFX user interface in the ```shoppingappjavafx.gui``` package)
 from the backend domain model (in the ```shoppingappjavafx.domain``` package).
 
-The frontend sends events to the use case runner. The runner, knowing which events to
+The frontend sends events to the use case model runner. The runner, knowing which events to
 react to under which conditions because it is configured by the use case model, forwards 
 each event to a single method in the backend. 
-All communication from frontend to backend is channeled through the use case runner.
+All communication from frontend to backend is channeled through the use case model runner.
 
 # Getting started
 * Download the latest shoppingappjavafx zip file from the [Releases](https://github.com/bertilmuth/requirementsascode/releases) tab.
