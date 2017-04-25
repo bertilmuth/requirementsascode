@@ -6,7 +6,7 @@ Small, simplistic application that demonstrates a "shopping-like" use case:
 * The system shows the customer a summary of the entered data, and the customer
 finishes and return to the main page.
 
-The main class of this application is ```shoppingappjavafx.gui.ShoppingApplicationMain```.
+The main class of this application is ```shoppingappjavafx.gui.JavafxMain```.
 
 This application illustrates how the use case narrative can be represented with 
 requirementsascode in the ```shoppingappjavafx.usecase``` package.
