@@ -123,7 +123,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfMoreThanOneStepCouldReact() { 	 
+	public void throwsExceptionIfMoreThanOneStepCanReactInSameUseCase() { 	 
 		thrown.expect(MoreThanOneStepCanReact.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
@@ -137,6 +137,25 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModelRunner.run(useCaseModel);
 	}
+	
+   @Test
+   public void throwsExceptionIfMoreThanOneStepCanReactInDifferentUseCases() {    
+     thrown.expect(MoreThanOneStepCanReact.class);
+     thrown.expectMessage("Step 1");
+     thrown.expectMessage("Step 2 with same event as Step 1");
+     
+     UseCaseModel useCaseModel = useCaseModelBuilder
+       .useCase("Use Case")
+         .basicFlow()
+           .step("Step 1").user(String.class).system(s -> System.out.println(s))
+       .useCase("Another Use Case")
+         .basicFlow()
+           .step("Step 2 with same event as Step 1").user(String.class).system(s -> System.out.println(s))
+       .build();
+     
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(new String("Some text"));
+   }
 	
 	@Test
 	public void throwsExceptionIfActorPartIsNotSpecified() {		
