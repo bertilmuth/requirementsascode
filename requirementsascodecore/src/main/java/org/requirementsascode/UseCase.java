@@ -102,42 +102,55 @@ public class UseCase extends UseCaseModelElement {
    * @param stepName the name of the step
    * @param flow the flow the step shall belong to
    * @param previousStep the previous step in the flow, if there is one
-   * @param predicate the complete predicate of the step, or else the default predicate is: after
-   *     previous step, unless interrupted by other step (e.g "insteadOf").
+   * @param optionalPredicate the complete predicate of the step. If empty, the default predicate
+   *     is: after previous step, unless interrupted by other flow with specified condition (e.g
+   *     flow with "insteadOf" condition).
    * @return the newly created step
    */
   Step newStep(
       String stepName,
       Flow flow,
       Optional<Step> previousStep,
-      Optional<Predicate<UseCaseModelRunner>> predicate) {
-	  
+      Optional<Predicate<UseCaseModelRunner>> optionalPredicate) {
+
     Step step = new Step(stepName, flow, previousStep);
-    step.setPredicate(predicate.orElse(afterPreviousStepUnlessOtherStepCouldReact(step)));
+    step.setDefaultPredicate(afterPreviousStepUnlessStepWithDefinedConditionInterrupts(step));
+    optionalPredicate.ifPresent(predicate -> step.setPredicate(predicate));
     saveModelElement(step, nameToStepMap);
+
     return step;
   }
 
-  private Predicate<UseCaseModelRunner> afterPreviousStepUnlessOtherStepCouldReact(
+  private Predicate<UseCaseModelRunner> afterPreviousStepUnlessStepWithDefinedConditionInterrupts(
       Step currentStep) {
-	  
-    Optional<Step> previousStepInFlow = currentStep.getPreviousStepInFlow();
-    Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStepInFlow);
-    return afterPreviousStep.and(noOtherStepCouldReactThan(currentStep));
+
+    Optional<Step> previousStep = currentStep.getPreviousStepInFlow();
+    Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStep);
+    return afterPreviousStep.and(noStepWithDefinedConditionInterrupts(currentStep));
   }
 
-  private Predicate<UseCaseModelRunner> noOtherStepCouldReactThan(Step theStep) {
+  private Predicate<UseCaseModelRunner> noStepWithDefinedConditionInterrupts(Step theStep) {
     return useCaseModelRunner -> {
       Class<?> theStepsEventClass = theStep.getUserEventClass();
       UseCaseModel useCaseModel = theStep.getUseCaseModel();
 
-      Stream<Step> otherStepsStream =
-          useCaseModel.getModifiableSteps().stream().filter(step -> !step.equals(theStep));
+      Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
+      Stream<Step> stepsWithDefinedConditionsStream =
+          stepsStream.filter(hasDefinedCondition().and(isOtherStepThan(theStep)));
 
-      Set<Step> otherStepsThatCouldReact =
-          useCaseModelRunner.stepsInStreamThatCanReactTo(theStepsEventClass, otherStepsStream);
-      return otherStepsThatCouldReact.size() == 0;
+      Set<Step> stepsWithDefinedConditionsThatCanReact =
+          useCaseModelRunner.stepsInStreamThatCanReactTo(
+              theStepsEventClass, stepsWithDefinedConditionsStream);
+      return stepsWithDefinedConditionsThatCanReact.size() == 0;
     };
+  }
+
+  private Predicate<Step> hasDefinedCondition() {
+    return step -> !step.hasDefaultPredicate();
+  }
+
+  private Predicate<Step> isOtherStepThan(Step theStep) {
+    return step -> !step.equals(theStep);
   }
 
   /**

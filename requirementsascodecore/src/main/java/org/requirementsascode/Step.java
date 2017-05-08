@@ -17,7 +17,8 @@ import java.util.function.Predicate;
 public class Step extends UseCaseModelElement {
   private Flow flow;
   private Optional<Step> previousStepInFlow;
-  private Predicate<UseCaseModelRunner> predicate;
+  private Predicate<UseCaseModelRunner> defaultPredicate;
+  private Optional<Predicate<UseCaseModelRunner>> optionalPredicate;
 
   private Actor[] actors;
   private Class<?> userEventClass;
@@ -37,6 +38,7 @@ public class Step extends UseCaseModelElement {
 
     this.flow = useCaseFlow;
     this.previousStepInFlow = previousStepInFlow;
+    this.optionalPredicate = Optional.empty();
   }
 
   public Optional<Step> getPreviousStepInFlow() {
@@ -50,13 +52,26 @@ public class Step extends UseCaseModelElement {
   public UseCase getUseCase() {
     return getFlow().getUseCase();
   }
+  
+  void setDefaultPredicate(
+      Predicate<UseCaseModelRunner> defaultPredicate) {
+    this.defaultPredicate = defaultPredicate;
+  }
+  
+  Predicate<UseCaseModelRunner> getDefaultPredicate() {
+    return defaultPredicate;
+  }
+  
+  public boolean hasDefaultPredicate() {
+    return getDefaultPredicate().equals(getPredicate());
+  }
 
   public Predicate<UseCaseModelRunner> getPredicate() {
-    return predicate;
+    return optionalPredicate.orElse(getDefaultPredicate());
   }
 
   void setPredicate(Predicate<UseCaseModelRunner> predicate) {
-    this.predicate = predicate;
+    this.optionalPredicate = Optional.of(predicate);
   }
 
   public Actor[] getActors() {
