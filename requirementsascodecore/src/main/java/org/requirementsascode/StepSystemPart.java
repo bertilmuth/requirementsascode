@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.predicate.After;
 import org.requirementsascode.predicate.ReactWhile;
 
 /**
@@ -95,6 +96,18 @@ public class StepSystemPart<T> {
     ReactWhile reactWhile = new ReactWhile(useCaseStep, reactWhileCondition);
     useCaseStep.setReactWhile(reactWhile);
 
+    return this;
+  }
+
+  public StepSystemPart<T> include(String useCaseName) {
+    UseCase useCase = step.getUseCaseModel().findUseCase(useCaseName);
+
+    Flow flow = useCase.getBasicFlow();
+    Predicate<UseCaseModelRunner> flowPosition = flow.getFlowPosition().orElse(r -> true);
+    Predicate<UseCaseModelRunner> includeFlowAfterStep =
+        flowPosition.or(new After(Optional.of(step)));
+
+    flow.setFlowPosition(includeFlowAfterStep);
     return this;
   }
 }
