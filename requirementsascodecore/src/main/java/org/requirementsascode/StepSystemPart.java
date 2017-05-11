@@ -43,7 +43,7 @@ public class StepSystemPart<T> {
     Step nextUseCaseStepInFlow =
         useCaseFlow
             .getUseCase()
-            .newStep(stepName, useCaseFlow, Optional.of(step), Optional.empty());
+            .newStep(stepName, useCaseFlow, Optional.of(step));
 
     return new StepPart(nextUseCaseStepInFlow, useCaseFlowPart);
   }

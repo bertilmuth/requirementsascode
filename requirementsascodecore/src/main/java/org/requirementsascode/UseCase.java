@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -99,17 +98,9 @@ public class UseCase extends UseCaseModelElement {
    * @param stepName the name of the step
    * @param flow the flow the step shall belong to
    * @param previousStep the previous step in the flow, if there is one
-   * @param optionalPredicate the complete predicate of the step. If empty, the default predicate
-   *     is: after previous step, unless interrupted by other flow with specified condition (e.g
-   *     flow with "insteadOf" condition).
    * @return the newly created step
    */
-  Step newStep(
-      String stepName,
-      Flow flow,
-      Optional<Step> previousStep,
-      Optional<Predicate<UseCaseModelRunner>> optionalPredicate) {
-
+  Step newStep(String stepName, Flow flow, Optional<Step> previousStep) {
     Step step = new Step(stepName, flow, previousStep);
     saveModelElement(step, nameToStepMap);
 
