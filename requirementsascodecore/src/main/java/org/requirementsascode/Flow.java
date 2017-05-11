@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,8 @@ import java.util.stream.Collectors;
  */
 public class Flow extends UseCaseModelElement {
   private UseCase useCase;
-  private Predicate<UseCaseModelRunner> flowPositionPredicate;
-  private Predicate<UseCaseModelRunner> whenPredicate;
+  private Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition;
+  private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
 
   /**
    * Creates a use case flow with the specified name that belongs to the specified use case.
@@ -27,6 +28,8 @@ public class Flow extends UseCaseModelElement {
   Flow(String name, UseCase useCase) {
     super(name, useCase.getUseCaseModel());
     this.useCase = useCase;
+    this.optionalFlowPosition = Optional.empty();
+    this.optionalWhen = Optional.empty();
   }
 
   /**
@@ -53,19 +56,19 @@ public class Flow extends UseCaseModelElement {
     return Collections.unmodifiableList(steps);
   }
 
-  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPositionPredicate) {
-    this.flowPositionPredicate = flowPositionPredicate;
+  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
+    this.optionalFlowPosition = Optional.of(flowPosition);
   }
 
-  public Predicate<UseCaseModelRunner> getFlowPosition() {
-    return flowPositionPredicate;
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
+    return optionalFlowPosition;
   }
 
-  public void setWhen(Predicate<UseCaseModelRunner> whenPredicate) {
-    this.whenPredicate = whenPredicate;
+  public void setWhen(Predicate<UseCaseModelRunner> when) {
+    this.optionalWhen = Optional.of(when);
   }
 
-  public Predicate<UseCaseModelRunner> getWhen() {
-    return whenPredicate;
+  public Optional<Predicate<UseCaseModelRunner>> getWhen() {
+    return optionalWhen;
   }
 }

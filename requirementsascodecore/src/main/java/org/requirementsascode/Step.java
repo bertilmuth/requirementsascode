@@ -68,28 +68,29 @@ public class Step extends UseCaseModelElement {
 
   public Predicate<UseCaseModelRunner> getPredicate() {
     Optional<Predicate<UseCaseModelRunner>> predicate = Optional.empty();
-    
+
     if (reactWhile.isPresent()) {
       predicate = reactWhile;
     } else if (isFirstStepInFlow()) {
-      Predicate<UseCaseModelRunner> flowPosition = getFlow().getFlowPosition();
-      Predicate<UseCaseModelRunner> when = getFlow().getWhen();
+      Optional<Predicate<UseCaseModelRunner>> flowPosition = getFlow().getFlowPosition();
+      Optional<Predicate<UseCaseModelRunner>> when = getFlow().getWhen();
       predicate = getCompletePredicate(flowPosition, when);
     }
-    
+
     return predicate.orElse(defaultPredicate);
   }
 
   private Optional<Predicate<UseCaseModelRunner>> getCompletePredicate(
-      Predicate<UseCaseModelRunner> flowPosition, Predicate<UseCaseModelRunner> when) {
-    Optional<Predicate<UseCaseModelRunner>> predicate = Optional.empty();
-    if (flowPosition != null || when != null) {
-      Predicate<UseCaseModelRunner> alwaysTrue = r -> true;
-      flowPosition = flowPosition != null ? flowPosition : alwaysTrue;
-      when = when != null ? when : alwaysTrue;
-      predicate = Optional.of(isRunnerInDifferentFlow().and(flowPosition).and(when));
+      Optional<Predicate<UseCaseModelRunner>> flowPosition,
+      Optional<Predicate<UseCaseModelRunner>> when) {
+    Optional<Predicate<UseCaseModelRunner>> completePredicate = Optional.empty();
+    if (flowPosition.isPresent() || when.isPresent()) {
+      Predicate<UseCaseModelRunner> flowPositionOrElseTrue = flowPosition.orElse(r -> true);
+      Predicate<UseCaseModelRunner> whenOrElseTrue = when.orElse(r -> true);
+      completePredicate =
+          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseTrue).and(whenOrElseTrue));
     }
-    return predicate;
+    return completePredicate;
   }
 
   private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {

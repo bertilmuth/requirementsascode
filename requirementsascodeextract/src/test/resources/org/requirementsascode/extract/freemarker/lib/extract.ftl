@@ -1,5 +1,5 @@
-<#function flowPositionName flow><#return (flow.flowPosition.class.simpleName)!""/></#function>
-<#function whenName flow><#return (flow.when.class.simpleName)!""/></#function>
+<#function flowPositionName flow><#return (flow.flowPosition.get().class.simpleName)!""/></#function>
+<#function whenName flow><#return (flow.when.get().class.simpleName)!""/></#function>
 <#function predicateName step><#return (step.predicate.class.simpleName)!""/></#function>
 <#function reactWhileConditionName step><#return (step.predicate.reactWhileCondition.class.simpleName)!""/></#function>
 <#function userEventName step><#return (step.userEventClass.simpleName)!""/></#function>
@@ -17,14 +17,17 @@
 </#function>
 
 <#function flowPosition f>
-	<#local flowPositionWords = wordsOf(flowPositionName(f))/>
-	<#local stepName = (f.flowPosition.stepName)!""/>
-	<#local result = [flowPositionWords?lower_case, stepName]?join(" ")?trim/>
+	<#local result = ""/>
+	<#if f.flowPosition.isPresent()>
+		<#local flowPositionWords = wordsOf(flowPositionName(f))/>
+		<#local stepName = (f.flowPosition.get().stepName)!""/>
+		<#local result = [flowPositionWords?lower_case, stepName]?join(" ")?trim/>
+	</#if>
 	<#return result/>
 </#function>
 
 <#function flowPredicateSeparator f sep>
-	<#if flowPositionName(f) != "" && whenName(f) != "">
+	<#if flowPosition(f) != "" && when(f) != "">
 		<#local result = sep/>
 	</#if>
 	<#return result!""/>
@@ -32,7 +35,7 @@
 
 <#function when f>
 	<#local whenWords = ""/>
-	<#if f.when??>
+	<#if f.when.isPresent()>
 		<#local whenWords = "when " + wordsOf(whenName(f))/>
 	</#if>
 	<#return whenWords?lower_case/>
