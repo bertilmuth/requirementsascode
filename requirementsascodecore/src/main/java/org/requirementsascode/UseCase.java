@@ -10,13 +10,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.predicate.After;
 
 /**
  * A use case, as part of a use case model.
@@ -114,43 +111,10 @@ public class UseCase extends UseCaseModelElement {
       Optional<Predicate<UseCaseModelRunner>> optionalPredicate) {
 
     Step step = new Step(stepName, flow, previousStep);
-    step.setDefaultPredicate(afterPreviousStepUnlessStepWithDefinedConditionInterrupts(step));
     optionalPredicate.ifPresent(predicate -> step.setPredicate(predicate));
     saveModelElement(step, nameToStepMap);
 
     return step;
-  }
-
-  private Predicate<UseCaseModelRunner> afterPreviousStepUnlessStepWithDefinedConditionInterrupts(
-      Step currentStep) {
-
-    Optional<Step> previousStep = currentStep.getPreviousStepInFlow();
-    Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStep);
-    return afterPreviousStep.and(noStepWithDefinedConditionInterrupts(currentStep));
-  }
-
-  private Predicate<UseCaseModelRunner> noStepWithDefinedConditionInterrupts(Step theStep) {
-    return useCaseModelRunner -> {
-      Class<?> theStepsEventClass = theStep.getUserEventClass();
-      UseCaseModel useCaseModel = theStep.getUseCaseModel();
-
-      Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
-      Stream<Step> stepsWithDefinedConditionsStream =
-          stepsStream.filter(hasDefinedCondition().and(isOtherStepThan(theStep)));
-
-      Set<Step> stepsWithDefinedConditionsThatCanReact =
-          useCaseModelRunner.stepsInStreamThatCanReactTo(
-              theStepsEventClass, stepsWithDefinedConditionsStream);
-      return stepsWithDefinedConditionsThatCanReact.size() == 0;
-    };
-  }
-
-  private Predicate<Step> hasDefinedCondition() {
-    return step -> !step.hasDefaultPredicate();
-  }
-
-  private Predicate<Step> isOtherStepThan(Step theStep) {
-    return step -> !step.equals(theStep);
   }
 
   /**
