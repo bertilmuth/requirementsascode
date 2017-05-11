@@ -93,7 +93,7 @@ public class StepSystemPart<T> {
 
     Step useCaseStep = stepPart.getStep();
     ReactWhile reactWhile = new ReactWhile(useCaseStep, reactWhileCondition);
-    useCaseStep.setPredicate(reactWhile);
+    useCaseStep.setReactWhile(reactWhile);
 
     return this;
   }

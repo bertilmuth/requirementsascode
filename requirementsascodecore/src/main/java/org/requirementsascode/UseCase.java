@@ -111,7 +111,6 @@ public class UseCase extends UseCaseModelElement {
       Optional<Predicate<UseCaseModelRunner>> optionalPredicate) {
 
     Step step = new Step(stepName, flow, previousStep);
-    optionalPredicate.ifPresent(predicate -> step.setPredicate(predicate));
     saveModelElement(step, nameToStepMap);
 
     return step;

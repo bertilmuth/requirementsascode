@@ -22,7 +22,7 @@ public class Step extends UseCaseModelElement {
   private Flow flow;
   private Optional<Step> previousStepInFlow;
   private Predicate<UseCaseModelRunner> defaultPredicate;
-  private Optional<Predicate<UseCaseModelRunner>> optionalPredicate;
+  private Optional<Predicate<UseCaseModelRunner>> reactWhile;
 
   private Actor[] actors;
   private Class<?> userEventClass;
@@ -42,13 +42,16 @@ public class Step extends UseCaseModelElement {
 
     this.flow = useCaseFlow;
     this.previousStepInFlow = previousStepInFlow;
-    this.optionalPredicate = Optional.empty();
-
-    setDefaultPredicate(afterPreviousStepUnlessStepWithDefinedConditionInterrupts());
+    this.reactWhile = Optional.empty();
+    this.defaultPredicate = afterPreviousStepUnlessStepWithDefinedConditionInterrupts();
   }
 
   public Optional<Step> getPreviousStepInFlow() {
     return previousStepInFlow;
+  }
+  
+  public boolean isFirstStepInFlow() {
+    return !getPreviousStepInFlow().isPresent();
   }
 
   public Flow getFlow() {
@@ -59,24 +62,45 @@ public class Step extends UseCaseModelElement {
     return getFlow().getUseCase();
   }
 
-  private void setDefaultPredicate(Predicate<UseCaseModelRunner> defaultPredicate) {
-    this.defaultPredicate = defaultPredicate;
-  }
-
-  private Predicate<UseCaseModelRunner> getDefaultPredicate() {
-    return defaultPredicate;
-  }
-
   private boolean hasDefaultPredicate() {
-    return getDefaultPredicate().equals(getPredicate());
+    return defaultPredicate.equals(getPredicate());
   }
 
   public Predicate<UseCaseModelRunner> getPredicate() {
-    return optionalPredicate.orElse(getDefaultPredicate());
+    Optional<Predicate<UseCaseModelRunner>> predicate = Optional.empty();
+    
+    if (reactWhile.isPresent()) {
+      predicate = reactWhile;
+    } else if (isFirstStepInFlow()) {
+      Predicate<UseCaseModelRunner> flowPosition = getFlow().getFlowPosition();
+      Predicate<UseCaseModelRunner> when = getFlow().getWhen();
+      predicate = getCompletePredicate(flowPosition, when);
+    }
+    
+    return predicate.orElse(defaultPredicate);
   }
 
-  void setPredicate(Predicate<UseCaseModelRunner> predicate) {
-    this.optionalPredicate = Optional.of(predicate);
+  private Optional<Predicate<UseCaseModelRunner>> getCompletePredicate(
+      Predicate<UseCaseModelRunner> flowPosition, Predicate<UseCaseModelRunner> when) {
+    Optional<Predicate<UseCaseModelRunner>> predicate = Optional.empty();
+    if (flowPosition != null || when != null) {
+      Predicate<UseCaseModelRunner> alwaysTrue = r -> true;
+      flowPosition = flowPosition != null ? flowPosition : alwaysTrue;
+      when = when != null ? when : alwaysTrue;
+      predicate = Optional.of(isRunnerInDifferentFlow().and(flowPosition).and(when));
+    }
+    return predicate;
+  }
+
+  private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
+    Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
+        runner ->
+            runner.getLatestFlow().map(runnerFlow -> !flow.equals(runnerFlow)).orElse(true);
+    return isRunnerInDifferentFlow;
+  }
+
+  void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
+    this.reactWhile = Optional.of(reactWhile);
   }
 
   public Actor[] getActors() {
