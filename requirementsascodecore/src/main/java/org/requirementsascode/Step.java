@@ -26,6 +26,7 @@ public class Step extends UseCaseModelElement {
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
+  private After afterPreviousStep;
   private Predicate<UseCaseModelRunner> defaultPredicate;
 
   /**
@@ -44,11 +45,16 @@ public class Step extends UseCaseModelElement {
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
         
-    setAfterPreviousStepByDefault(new After(previousStepInFlow));
+    setAfterPreviousStepAsDefault(new After(previousStepInFlow));
   }
   
-  void setAfterPreviousStepByDefault(After afterPreviousStep){
+  void setAfterPreviousStepAsDefault(After afterPreviousStep) {
+    this.afterPreviousStep = afterPreviousStep;
     this.defaultPredicate = afterPreviousStep.and(noStepWithDefinedConditionInterrupts());
+  }
+
+  After getAfterPreviousStep() {
+    return afterPreviousStep;
   }
 
   public Optional<Step> getPreviousStepInFlow() {
