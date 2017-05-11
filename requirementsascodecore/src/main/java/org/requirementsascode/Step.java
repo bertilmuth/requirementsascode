@@ -72,32 +72,10 @@ public class Step extends UseCaseModelElement {
     if (reactWhile.isPresent()) {
       predicate = reactWhile;
     } else if (isFirstStepInFlow()) {
-      Optional<Predicate<UseCaseModelRunner>> flowPosition = getFlow().getFlowPosition();
-      Optional<Predicate<UseCaseModelRunner>> when = getFlow().getWhen();
-      predicate = getCompletePredicate(flowPosition, when);
+      predicate = getFlow().getFlowPredicate();
     }
 
     return predicate.orElse(defaultPredicate);
-  }
-
-  private Optional<Predicate<UseCaseModelRunner>> getCompletePredicate(
-      Optional<Predicate<UseCaseModelRunner>> flowPosition,
-      Optional<Predicate<UseCaseModelRunner>> when) {
-    Optional<Predicate<UseCaseModelRunner>> completePredicate = Optional.empty();
-    if (flowPosition.isPresent() || when.isPresent()) {
-      Predicate<UseCaseModelRunner> flowPositionOrElseTrue = flowPosition.orElse(r -> true);
-      Predicate<UseCaseModelRunner> whenOrElseTrue = when.orElse(r -> true);
-      completePredicate =
-          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseTrue).and(whenOrElseTrue));
-    }
-    return completePredicate;
-  }
-
-  private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
-    Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
-        runner ->
-            runner.getLatestFlow().map(runnerFlow -> !flow.equals(runnerFlow)).orElse(true);
-    return isRunnerInDifferentFlow;
   }
 
   void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {

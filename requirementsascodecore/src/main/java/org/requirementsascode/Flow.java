@@ -71,4 +71,23 @@ public class Flow extends UseCaseModelElement {
   public Optional<Predicate<UseCaseModelRunner>> getWhen() {
     return optionalWhen;
   }
+  
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
+    Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
+    
+    if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
+      Predicate<UseCaseModelRunner> flowPositionOrElseTrue = optionalFlowPosition.orElse(r -> true);
+      Predicate<UseCaseModelRunner> whenOrElseTrue = optionalWhen.orElse(r -> true);
+      flowPredicate =
+          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseTrue).and(whenOrElseTrue));
+    }
+    return flowPredicate;
+  }
+  
+  private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
+    Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
+        runner ->
+            runner.getLatestFlow().map(runnerFlow -> !this.equals(runnerFlow)).orElse(true);
+    return isRunnerInDifferentFlow;
+  }
 }
