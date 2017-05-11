@@ -103,11 +103,16 @@ public class StepSystemPart<T> {
     UseCase useCase = step.getUseCaseModel().findUseCase(useCaseName);
 
     Flow flow = useCase.getBasicFlow();
-    Predicate<UseCaseModelRunner> flowPosition = flow.getFlowPosition().orElse(r -> true);
-    Predicate<UseCaseModelRunner> includeFlowAfterStep =
-        flowPosition.or(new After(Optional.of(step)));
-
+    Predicate<UseCaseModelRunner> includeFlowAfterStep = includeFlowAfterStep(flow, step);
     flow.setFlowPosition(includeFlowAfterStep);
+    
     return this;
+  }
+
+  private Predicate<UseCaseModelRunner> includeFlowAfterStep(Flow flow, Step step) {
+    Predicate<UseCaseModelRunner> oldFlowPosition = flow.getFlowPosition().orElse(r -> true);
+    Predicate<UseCaseModelRunner> includeFlowAfterStep =
+        oldFlowPosition.or(new After(Optional.of(step)));
+    return includeFlowAfterStep;
   }
 }
