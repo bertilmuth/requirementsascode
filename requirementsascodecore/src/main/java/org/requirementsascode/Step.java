@@ -21,12 +21,14 @@ import org.requirementsascode.predicate.After;
 public class Step extends UseCaseModelElement {
   private Flow flow;
   private Optional<Step> previousStepInFlow;
-  private Predicate<UseCaseModelRunner> defaultPredicate;
   private Optional<Predicate<UseCaseModelRunner>> reactWhile;
 
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
+  private Predicate<UseCaseModelRunner> afterPreviousStep;
+  private Predicate<UseCaseModelRunner> noStepWithDefinedConditionInterrupts;
+  private Predicate<UseCaseModelRunner> defaultPredicate;
 
   /**
    * Creates a use case step with the specified name that belongs to the specified use case flow.
@@ -43,7 +45,9 @@ public class Step extends UseCaseModelElement {
     this.flow = useCaseFlow;
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
-    this.defaultPredicate = afterPreviousStepUnlessStepWithDefinedConditionInterrupts();
+    this.afterPreviousStep = new After(previousStepInFlow);
+    this.noStepWithDefinedConditionInterrupts = noStepWithDefinedConditionInterrupts();
+    this.defaultPredicate = afterPreviousStep.and(noStepWithDefinedConditionInterrupts);
   }
 
   public Optional<Step> getPreviousStepInFlow() {
@@ -105,13 +109,11 @@ public class Step extends UseCaseModelElement {
   void setSystemReaction(Consumer<?> systemReaction) {
     this.systemReaction = systemReaction;
   }
-
-  private Predicate<UseCaseModelRunner> afterPreviousStepUnlessStepWithDefinedConditionInterrupts() {
-    Optional<Step> previousStep = getPreviousStepInFlow();
-    Predicate<UseCaseModelRunner> afterPreviousStep = new After(previousStep);
-    return afterPreviousStep.and(noStepWithDefinedConditionInterrupts());
+  
+  void setAfterPreviousStep(After afterPreviousStep){
+    this.afterPreviousStep = afterPreviousStep;
   }
-
+  
   private Predicate<UseCaseModelRunner> noStepWithDefinedConditionInterrupts() {
     return useCaseModelRunner -> {
       Class<?> theStepsEventClass = getUserEventClass();

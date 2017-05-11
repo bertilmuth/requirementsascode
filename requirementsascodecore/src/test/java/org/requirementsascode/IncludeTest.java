@@ -3,6 +3,7 @@ package org.requirementsascode;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IncludeTest extends AbstractTestCase{
@@ -14,7 +15,8 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
-    public void includeBasicFlowAfterFirstStep() {
+    @Ignore
+    public void includeBasicFlowAfterFirstStepAndStopAfterRunningIt() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
@@ -23,6 +25,7 @@ public class IncludeTest extends AbstractTestCase{
           .basicFlow()
             .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
             .include(INCLUDED_USE_CASE)
+            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
         .build();
       
       useCaseModelRunner.run(useCaseModel);
