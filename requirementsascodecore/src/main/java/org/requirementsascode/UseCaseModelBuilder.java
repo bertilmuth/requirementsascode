@@ -27,6 +27,7 @@ public class UseCaseModelBuilder {
   /**
    * Create a builder for an existing use case model, to continue building it.
    *
+   * @param useCaseModel the model to continue building
    * @return a builder for the existing model
    */
   public static UseCaseModelBuilder builderOf(UseCaseModel useCaseModel) {

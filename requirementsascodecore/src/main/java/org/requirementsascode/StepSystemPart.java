@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -18,9 +19,11 @@ import org.requirementsascode.predicate.ReactWhile;
 public class StepSystemPart<T> {
   private StepPart stepPart;
   private Step step;
+  private Optional<Step> lastStepOfIncludedFlow;
 
   StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
     this.stepPart = useCaseStepPart;
+    this.lastStepOfIncludedFlow = Optional.empty();
     this.step = useCaseStepPart.getStep();
     step.setSystemReaction(systemReaction);
   }
@@ -41,12 +44,19 @@ public class StepSystemPart<T> {
     FlowPart useCaseFlowPart = stepPart.getFlowPart();
     Flow useCaseFlow = useCaseFlowPart.getUseCaseFlow();
 
-    Step nextUseCaseStepInFlow =
-        useCaseFlow
-            .getUseCase()
-            .newStep(stepName, useCaseFlow, Optional.of(step));
+    Step nextStepInFlow =
+        useCaseFlow.getUseCase().newStep(stepName, useCaseFlow, Optional.of(step));
 
-    return new StepPart(nextUseCaseStepInFlow, useCaseFlowPart);
+    continueAfterIncludedFlowIfPresent(nextStepInFlow);
+
+    return new StepPart(nextStepInFlow, useCaseFlowPart);
+  }
+
+  private void continueAfterIncludedFlowIfPresent(Step nextStepInFlow) {
+    if(lastStepOfIncludedFlow.isPresent()){
+      nextStepInFlow.setAfterStepAsDefaultWhenNotInterrupted(lastStepOfIncludedFlow);
+      lastStepOfIncludedFlow = Optional.empty();
+    }
   }
 
   /**
@@ -101,17 +111,31 @@ public class StepSystemPart<T> {
   public StepSystemPart<T> include(String useCaseName) {
     UseCase useCase = step.getUseCaseModel().findUseCase(useCaseName);
 
-    Flow flow = useCase.getBasicFlow();
-    Predicate<UseCaseModelRunner> includeFlowAfterStep = includeFlowAfterStep(flow, step);
-    flow.setFlowPosition(includeFlowAfterStep);
+    Flow includedFlow = useCase.getBasicFlow();
+    includeFlowAfterStep(includedFlow, step);
+    saveLastStepOf(includedFlow);
     
     return this;
   }
 
-  private Predicate<UseCaseModelRunner> includeFlowAfterStep(Flow flow, Step step) {
-    Predicate<UseCaseModelRunner> oldFlowPosition = flow.getFlowPosition().orElse(r -> true);
+  private void includeFlowAfterStep(Flow includedFlow, Step step) {
+    Predicate<UseCaseModelRunner> oldFlowPosition = includedFlow.getFlowPosition().orElse(r -> true);
     Predicate<UseCaseModelRunner> includeFlowAfterStep =
         oldFlowPosition.or(new After(Optional.of(step)));
-    return includeFlowAfterStep;
+    includedFlow.setFlowPosition(includeFlowAfterStep);
+  }
+  
+  private void saveLastStepOf(Flow includedFlow) {
+    lastStepOfIncludedFlow = Optional.of(getLastStepOf(includedFlow));
+  }
+  
+  private Step getLastStepOf(Flow flow) {
+    List<Step> stepsOfFlow = flow.getSteps();
+    int lastStepIndex = stepsOfFlow.size() - 1;
+    if(lastStepIndex < 0){
+      throw new RuntimeException("Included flow \"" + flow.getName() + "\" has no steps!");
+    }
+    Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
+    return lastStepOfFlow;
   }
 }

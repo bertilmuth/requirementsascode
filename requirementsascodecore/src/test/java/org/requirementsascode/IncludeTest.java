@@ -1,9 +1,8 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class IncludeTest extends AbstractTestCase{
@@ -15,8 +14,7 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
-    @Ignore
-    public void includeBasicFlowAfterFirstStepAndStopAfterRunningIt() {
+    public void includeBasicFlowOnce() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
@@ -28,11 +26,15 @@ public class IncludeTest extends AbstractTestCase{
             .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
         .build();
       
-      useCaseModelRunner.run(useCaseModel);
-      useCaseModelRunner.reactTo(enterText(), enterNumber());
-      
-      assertEquals(SYSTEM_DISPLAYS_TEXT + ";" + SYSTEM_DISPLAYS_NUMBER + ";", runStepNames());
-    }
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterText(), enterNumber());
+
+    String expectedSteps =
+        SYSTEM_DISPLAYS_TEXT + ";"
+            + SYSTEM_DISPLAYS_NUMBER + ";"
+            + SYSTEM_DISPLAYS_TEXT_AGAIN + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
     
     @Test
     public void includedBasicFlowCanBeRunOnItsOwn() {
