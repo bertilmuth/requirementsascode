@@ -170,18 +170,23 @@ public class StepPart {
   }
   
   private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
-    Predicate<UseCaseModelRunner> oldFlowPosition = includedFlow.getFlowPosition().orElse(r -> true);
-    Predicate<UseCaseModelRunner> includeFlowAfterStep =
-        oldFlowPosition.or(new After(Optional.of(previousStep)));
-    includedFlow.setFlowPosition(includeFlowAfterStep);
+    if(!includedFlow.getFlowPosition().isPresent()){
+      Step firstStep = getFirstStepOf(includedFlow);
+      Predicate<UseCaseModelRunner> includeAfterPreviousStep =
+          new After(Optional.of(previousStep)).or(previousStep.getPredicate());
+      firstStep.setDefinedPredicate(Optional.of(includeAfterPreviousStep));
+    }
+  }
+  
+  private Step getFirstStepOf(Flow flow) {
+    List<Step> stepsOfFlow = flow.getSteps();
+    Step lastStepOfFlow = stepsOfFlow.get(0);
+    return lastStepOfFlow;
   }
   
   private Step getLastStepOf(Flow flow) {
     List<Step> stepsOfFlow = flow.getSteps();
     int lastStepIndex = stepsOfFlow.size() - 1;
-    if(lastStepIndex < 0){
-      throw new RuntimeException("Included flow \"" + flow.getName() + "\" has no steps!");
-    }
     Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
     return lastStepOfFlow;
   }
