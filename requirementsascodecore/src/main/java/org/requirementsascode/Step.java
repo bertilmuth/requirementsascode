@@ -26,7 +26,7 @@ public class Step extends UseCaseModelElement {
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
- private Optional<Predicate<UseCaseModelRunner>> definedPredicate;
+ private Optional<Predicate<UseCaseModelRunner>> optionalDefinedPredicate;
   private Predicate<UseCaseModelRunner> defaultPredicate;
 
   /**
@@ -44,7 +44,7 @@ public class Step extends UseCaseModelElement {
     this.flow = useCaseFlow;
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
-    this.definedPredicate = Optional.empty();
+    this.optionalDefinedPredicate = Optional.empty();
     this.defaultPredicate =
         new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
   }
@@ -63,16 +63,16 @@ public class Step extends UseCaseModelElement {
 
   public Predicate<UseCaseModelRunner> getPredicate() {
     Predicate<UseCaseModelRunner> predicate =
-        reactWhile.orElse(definedPredicate.orElse(defaultPredicate));
+        reactWhile.orElse(optionalDefinedPredicate.orElse(defaultPredicate));
     return predicate;
   }
   
   Optional<Predicate<UseCaseModelRunner>> getDefinedPredicate() {
-    return definedPredicate;
+    return optionalDefinedPredicate;
   }
   
-  void setDefinedPredicate(Optional<Predicate<UseCaseModelRunner>> definedPredicate) {
-    this.definedPredicate = definedPredicate;
+  void setDefinedPredicate(Predicate<UseCaseModelRunner> definedPredicate) {
+    this.optionalDefinedPredicate = Optional.of(definedPredicate);
   }
 
   void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {

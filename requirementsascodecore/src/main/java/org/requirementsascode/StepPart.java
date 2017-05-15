@@ -170,12 +170,10 @@ public class StepPart {
   }
   
   private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
-    if(!includedFlow.getFlowPosition().isPresent()){
       Step firstStep = getFirstStepOf(includedFlow);
       Predicate<UseCaseModelRunner> includeAfterPreviousStep =
           new After(Optional.of(previousStep)).or(previousStep.getPredicate());
-      firstStep.setDefinedPredicate(Optional.of(includeAfterPreviousStep));
-    }
+      firstStep.setDefinedPredicate(includeAfterPreviousStep);
   }
   
   private Step getFirstStepOf(Flow flow) {

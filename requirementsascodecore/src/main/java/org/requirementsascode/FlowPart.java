@@ -36,7 +36,7 @@ public class FlowPart {
   public StepPart step(String stepName) {
     Step step =
         useCasePart.useCase().newStep(stepName, flow, Optional.empty());
-    step.setDefinedPredicate(flow.getFlowPredicate());
+    flow.getFlowPredicate().ifPresent(fp -> step.setDefinedPredicate(fp));
     return new StepPart(step, this);
   }
 
