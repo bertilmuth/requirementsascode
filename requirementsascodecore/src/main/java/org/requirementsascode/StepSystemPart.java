@@ -19,11 +19,9 @@ import org.requirementsascode.predicate.ReactWhile;
 public class StepSystemPart<T> {
   private StepPart stepPart;
   private Step step;
-  private Optional<Step> lastStepOfIncludedFlow;
 
   StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
     this.stepPart = useCaseStepPart;
-    this.lastStepOfIncludedFlow = Optional.empty();
     this.step = useCaseStepPart.getStep();
     step.setSystemReaction(systemReaction);
   }
@@ -47,16 +45,7 @@ public class StepSystemPart<T> {
     Step nextStepInFlow =
         useCaseFlow.getUseCase().newStep(stepName, useCaseFlow, Optional.of(step));
 
-    continueAfterIncludedFlowIfPresent(nextStepInFlow);
-
     return new StepPart(nextStepInFlow, useCaseFlowPart);
-  }
-
-  private void continueAfterIncludedFlowIfPresent(Step nextStepInFlow) {
-    if(lastStepOfIncludedFlow.isPresent()){
-      nextStepInFlow.setAfterStepAsDefaultWhenNotInterrupted(lastStepOfIncludedFlow);
-      lastStepOfIncludedFlow = Optional.empty();
-    }
   }
 
   /**
@@ -108,34 +97,55 @@ public class StepSystemPart<T> {
     return this;
   }
 
-  public StepSystemPart<T> include(String useCaseName) {
-    UseCase useCase = step.getUseCaseModel().findUseCase(useCaseName);
-
-    Flow includedFlow = useCase.getBasicFlow();
-    includeFlowAfterStep(includedFlow, step);
-    saveLastStepOf(includedFlow);
+  public IncludePart<T> include(String useCaseName) {
+    UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
+    IncludePart<T> includePart = new IncludePart<>(includedUseCase, step);
+    return includePart;
+  }
+  
+  public class IncludePart<U>{
+    private Step lastStepOfIncludedFlow;
     
-    return this;
-  }
-
-  private void includeFlowAfterStep(Flow includedFlow, Step step) {
-    Predicate<UseCaseModelRunner> oldFlowPosition = includedFlow.getFlowPosition().orElse(r -> true);
-    Predicate<UseCaseModelRunner> includeFlowAfterStep =
-        oldFlowPosition.or(new After(Optional.of(step)));
-    includedFlow.setFlowPosition(includeFlowAfterStep);
-  }
-  
-  private void saveLastStepOf(Flow includedFlow) {
-    lastStepOfIncludedFlow = Optional.of(getLastStepOf(includedFlow));
-  }
-  
-  private Step getLastStepOf(Flow flow) {
-    List<Step> stepsOfFlow = flow.getSteps();
-    int lastStepIndex = stepsOfFlow.size() - 1;
-    if(lastStepIndex < 0){
-      throw new RuntimeException("Included flow \"" + flow.getName() + "\" has no steps!");
+    private IncludePart(UseCase includedUseCase, Step previousStep) {      
+      Flow includedFlow = includedUseCase.getBasicFlow();
+      includeFlowAfterStep(includedFlow, previousStep);
+      lastStepOfIncludedFlow = getLastStepOf(includedFlow);
     }
-    Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
-    return lastStepOfFlow;
-  }
+    
+    private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
+      Predicate<UseCaseModelRunner> oldFlowPosition = includedFlow.getFlowPosition().orElse(r -> true);
+      Predicate<UseCaseModelRunner> includeFlowAfterStep =
+          oldFlowPosition.or(new After(Optional.of(previousStep)));
+      includedFlow.setFlowPosition(includeFlowAfterStep);
+    }
+    
+    private Step getLastStepOf(Flow flow) {
+      List<Step> stepsOfFlow = flow.getSteps();
+      int lastStepIndex = stepsOfFlow.size() - 1;
+      if(lastStepIndex < 0){
+        throw new RuntimeException("Included flow \"" + flow.getName() + "\" has no steps!");
+      }
+      Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
+      return lastStepOfFlow;
+    }
+    
+    public StepPart step(String stepName) {
+      StepPart stepPartAfterInclude = StepSystemPart.this.step(stepName);
+      stepPartAfterInclude.getStep().setAfterStepAsDefault(Optional.of(lastStepOfIncludedFlow));
+
+      return stepPartAfterInclude;
+    }
+    
+    public UseCaseModel build() {
+      return StepSystemPart.this.build();
+    }
+    
+    public FlowPart flow(String flowName) {
+      return StepSystemPart.this.flow(flowName);
+    }
+    
+    public UseCasePart useCase(String useCaseName) {
+      return StepSystemPart.this.useCase(useCaseName);
+    }
+  } 
 }

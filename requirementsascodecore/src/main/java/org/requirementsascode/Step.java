@@ -45,16 +45,12 @@ public class Step extends UseCaseModelElement {
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
         
-    setAfterStepAsDefaultWhenNotInterrupted(previousStepInFlow);
+    setAfterStepAsDefault(previousStepInFlow);
   }
   
-  void setAfterStepAsDefaultWhenNotInterrupted(Optional<Step> step) {
+  void setAfterStepAsDefault(Optional<Step> step) {
     this.afterStep = new After(step);
     this.defaultPredicate = afterStep.and(noStepWithDefinedConditionInterrupts());
-  }
-
-  After getAfterStep() {
-    return afterStep;
   }
 
   public Optional<Step> getPreviousStepInFlow() {
