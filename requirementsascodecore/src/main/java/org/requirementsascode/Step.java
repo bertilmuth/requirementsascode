@@ -26,7 +26,7 @@ public class Step extends UseCaseModelElement {
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
-  private After afterStep;
+ private Optional<Predicate<UseCaseModelRunner>> optionalPredicate;
   private Predicate<UseCaseModelRunner> defaultPredicate;
 
   /**
@@ -44,13 +44,9 @@ public class Step extends UseCaseModelElement {
     this.flow = useCaseFlow;
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
-        
-    setAfterStepAsDefault(previousStepInFlow);
-  }
-  
-  void setAfterStepAsDefault(Optional<Step> step) {
-    this.afterStep = new After(step);
-    this.defaultPredicate = afterStep.and(noStepWithDefinedConditionInterrupts());
+    this.optionalPredicate = Optional.empty();
+    this.defaultPredicate =
+        new After(previousStepInFlow).and(noStepWithDefinedConditionInterrupts());
   }
 
   public Optional<Step> getPreviousStepInFlow() {
@@ -74,15 +70,13 @@ public class Step extends UseCaseModelElement {
   }
 
   public Predicate<UseCaseModelRunner> getPredicate() {
-    Optional<Predicate<UseCaseModelRunner>> predicate = Optional.empty();
-
-    if (reactWhile.isPresent()) {
-      predicate = reactWhile;
-    } else if (isFirstStepInFlow()) {
-      predicate = getFlow().getFlowPredicate();
-    }
-
-    return predicate.orElse(defaultPredicate);
+    Predicate<UseCaseModelRunner> predicate =
+        reactWhile.orElse(optionalPredicate.orElse(defaultPredicate));
+    return predicate;
+  }
+  
+  void setPredicate(Optional<Predicate<UseCaseModelRunner>> optionalPredicate) {
+    this.optionalPredicate = optionalPredicate;
   }
 
   void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {

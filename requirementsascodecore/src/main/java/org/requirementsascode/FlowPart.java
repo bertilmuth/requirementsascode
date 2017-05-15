@@ -34,9 +34,10 @@ public class FlowPart {
    * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
    */
   public StepPart step(String stepName) {
-    Step useCaseStep =
+    Step step =
         useCasePart.useCase().newStep(stepName, flow, Optional.empty());
-    return new StepPart(useCaseStep, this);
+    step.setPredicate(flow.getFlowPredicate());
+    return new StepPart(step, this);
   }
 
   /**

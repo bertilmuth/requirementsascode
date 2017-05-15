@@ -7,7 +7,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class IncludeTest extends AbstractTestCase{
-    private static final String INCLUDED_USE_CASE = "Included Use Case";
+    private static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
+    private static final String INCLUDED_USE_CASE = "Included use case";
 
     @Before
     public void setup() {
@@ -15,6 +16,7 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
+    @Ignore
     public void includeBasicFlowOnce() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
@@ -23,7 +25,7 @@ public class IncludeTest extends AbstractTestCase{
         .useCase(USE_CASE)
           .basicFlow()
             .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .include(INCLUDED_USE_CASE)
+            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
             .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
         .build();
       
@@ -32,6 +34,7 @@ public class IncludeTest extends AbstractTestCase{
 
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
+            + SYSTEM_INCLUDES_USE_CASE + ";"
             + SYSTEM_DISPLAYS_NUMBER + ";"
             + SYSTEM_DISPLAYS_TEXT_AGAIN + ";";
     assertEquals(expectedSteps, runStepNames());
@@ -47,9 +50,9 @@ public class IncludeTest extends AbstractTestCase{
         .useCase(USE_CASE)
           .basicFlow()
             .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .include(INCLUDED_USE_CASE)
+            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
             .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-            .include(INCLUDED_USE_CASE)
+            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
         .build();
       
     useCaseModelRunner.run(useCaseModel);
@@ -57,6 +60,7 @@ public class IncludeTest extends AbstractTestCase{
 
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
+            + SYSTEM_INCLUDES_USE_CASE + ";"
             + SYSTEM_DISPLAYS_NUMBER + ";"
             + SYSTEM_DISPLAYS_TEXT_AGAIN + ";"
             + SYSTEM_DISPLAYS_NUMBER + ";";
@@ -72,7 +76,7 @@ public class IncludeTest extends AbstractTestCase{
         .useCase(USE_CASE)
           .basicFlow()
             .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .include(INCLUDED_USE_CASE)
+            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
         .build();
       
     useCaseModelRunner.run(useCaseModel);

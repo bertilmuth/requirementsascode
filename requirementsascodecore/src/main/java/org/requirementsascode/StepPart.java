@@ -1,9 +1,13 @@
 package org.requirementsascode;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.predicate.After;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
@@ -147,11 +151,38 @@ public class StepPart {
     return flowPart;
   }
 
-  UseCasePart getUseCasePart() {
+  UseCasePart getUseCasePart() { 
     return getFlowPart().getUseCasePart();
   }
 
   UseCaseModelBuilder getUseCaseModelBuilder() {
     return useCaseModelBuilder;
+  }
+  
+  public StepSystemPart<EndFlow> include(String useCaseName) {
+    UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
+    Flow includedFlow = includedUseCase.getBasicFlow();
+    Step previousStep = step.getPreviousStepInFlow().get();
+    includeFlowAfterStep(includedFlow, previousStep);
+    StepSystemPart<EndFlow> stepSystemPart =
+        handle(EndFlow.class).system(endFlow -> {});
+    return stepSystemPart;
+  }
+  
+  private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
+    Predicate<UseCaseModelRunner> oldFlowPosition = includedFlow.getFlowPosition().orElse(r -> true);
+    Predicate<UseCaseModelRunner> includeFlowAfterStep =
+        oldFlowPosition.or(new After(Optional.of(previousStep)));
+    includedFlow.setFlowPosition(includeFlowAfterStep);
+  }
+  
+  private Step getLastStepOf(Flow flow) {
+    List<Step> stepsOfFlow = flow.getSteps();
+    int lastStepIndex = stepsOfFlow.size() - 1;
+    if(lastStepIndex < 0){
+      throw new RuntimeException("Included flow \"" + flow.getName() + "\" has no steps!");
+    }
+    Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
+    return lastStepOfFlow;
   }
 }
