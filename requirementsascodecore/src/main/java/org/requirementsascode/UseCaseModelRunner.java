@@ -30,7 +30,6 @@ public class UseCaseModelRunner {
 
   private UseCaseModel useCaseModel;
   private Optional<Step> latestStep;
-  private Optional<Flow> latestFlow;
   private boolean isRunning;
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
@@ -310,8 +309,7 @@ public class UseCaseModelRunner {
   }
 
   /**
-   * Sets the latest step run by the runner. Implicitly, this also sets the latest flow to the flow
-   * that contains the step.
+   * Sets the latest step run by the runner. 
    *
    * <p>Use this method if you want to restore some previous state, normally you should influence
    * the behavior of the runner by calling {@link #reactTo(Object)}.
@@ -320,7 +318,6 @@ public class UseCaseModelRunner {
    */
   public void setLatestStep(Optional<Step> latestStep) {
     this.latestStep = latestStep;
-    this.latestFlow = latestStep.map(s -> s.getFlow());
   }
 
   /**
@@ -329,7 +326,7 @@ public class UseCaseModelRunner {
    * @return the latest flow run
    */
   public Optional<Flow> getLatestFlow() {
-    return latestFlow;
+    return latestStep.map(step -> step.getFlow());
   }
 
   public void setStepWithoutAlternativePredicate(Predicate<Step> stepWithoutAlternativePredicate) {
