@@ -159,16 +159,15 @@ public class StepPart {
     return useCaseModelBuilder;
   }
   
-  public StepSystemPart<EndFlow> include(String useCaseName) {
+  public StepSystemPart<UseCaseModelRunner> include(String useCaseName) {
     UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
     Flow includedFlow = includedUseCase.getBasicFlow();
     Step previousStep = step.getPreviousStepInFlow().get();
     includeFlowAfterStep(includedFlow, previousStep);
-    StepSystemPart<EndFlow> stepSystemPart =
-        handle(EndFlow.class).system(endFlow -> {});
-    return stepSystemPart;
+    returnToIncludeStepAtEndOfFlow(includedFlow);
+    return system(runner -> {});
   }
-  
+
   private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
       Step firstStep = getFirstStepOf(includedFlow);
       Predicate<UseCaseModelRunner> includeAfterPreviousStep =
@@ -176,16 +175,13 @@ public class StepPart {
       firstStep.setDefinedPredicate(includeAfterPreviousStep);
   }
   
+  private void returnToIncludeStepAtEndOfFlow(Flow includedFlow) {
+    step.setDefinedPredicate(new EndOfFlowReached(includedFlow));
+  }
+  
   private Step getFirstStepOf(Flow flow) {
     List<Step> stepsOfFlow = flow.getSteps();
     Step lastStepOfFlow = stepsOfFlow.get(0);
-    return lastStepOfFlow;
-  }
-  
-  private Step getLastStepOf(Flow flow) {
-    List<Step> stepsOfFlow = flow.getSteps();
-    int lastStepIndex = stepsOfFlow.size() - 1;
-    Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
     return lastStepOfFlow;
   }
 }

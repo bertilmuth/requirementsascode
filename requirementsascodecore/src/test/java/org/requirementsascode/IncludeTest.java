@@ -16,7 +16,6 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
-    @Ignore
     public void includeBasicFlowOnce() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
@@ -34,8 +33,8 @@ public class IncludeTest extends AbstractTestCase{
 
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
-            + SYSTEM_INCLUDES_USE_CASE + ";"
             + SYSTEM_DISPLAYS_NUMBER + ";"
+            + SYSTEM_INCLUDES_USE_CASE + ";"
             + SYSTEM_DISPLAYS_TEXT_AGAIN + ";";
     assertEquals(expectedSteps, runStepNames());
   }
@@ -68,6 +67,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
+  @Ignore
   public void includedBasicFlowCanBeRunOnItsOwn() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
