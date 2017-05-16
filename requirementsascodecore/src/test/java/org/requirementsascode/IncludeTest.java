@@ -19,7 +19,7 @@ public class IncludeTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
           .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
       .build();
       
@@ -41,7 +41,7 @@ public class IncludeTest extends AbstractTestCase{
             .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
         .useCase(USE_CASE)
           .basicFlow()
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+            .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
             .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
         .build();
       
@@ -64,7 +64,7 @@ public class IncludeTest extends AbstractTestCase{
       .useCase(USE_CASE)
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
       .build();
       
@@ -89,7 +89,7 @@ public class IncludeTest extends AbstractTestCase{
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
       .build();
       
     useCaseModelRunner.run(useCaseModel);
@@ -112,8 +112,8 @@ public class IncludeTest extends AbstractTestCase{
       .useCase(USE_CASE)
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE_2).includeUseCase(INCLUDED_USE_CASE)
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
       .build();
       
@@ -139,9 +139,9 @@ public class IncludeTest extends AbstractTestCase{
       .useCase(USE_CASE)
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE_2).includeUseCase(INCLUDED_USE_CASE)
       .build();
       
     useCaseModelRunner.run(useCaseModel);
@@ -166,11 +166,11 @@ public class IncludeTest extends AbstractTestCase{
       .useCase(USE_CASE)
         .basicFlow().when(r -> true)
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
       .useCase(USE_CASE_2)
         .basicFlow().when(r -> true)
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE_2).includeUseCase(INCLUDED_USE_CASE)
       .build();
       
     useCaseModelRunner.run(useCaseModel);
@@ -195,7 +195,7 @@ public class IncludeTest extends AbstractTestCase{
       .useCase(USE_CASE)
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
       .build();
       
     useCaseModelRunner.run(useCaseModel);
