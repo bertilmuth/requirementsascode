@@ -347,7 +347,6 @@ public class UseCaseModelRunner {
   
   private boolean onlyReactInIncludedFlowIfPresent(Step step) {
     boolean result = optionalIncludedFlow.map(oif -> oif.equals(step.getFlow())).orElse(true);
-    System.out.println("Flow: " + optionalIncludedFlow + " step: " +  step + " result: " + result); 
     return result;
   }
   

@@ -6,17 +6,35 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class IncludeTest extends AbstractTestCase{
-    private static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
-    private static final String SYSTEM_INCLUDES_USE_CASE_2 = "Another step that includes use case";
-    private static final String INCLUDED_USE_CASE = "Included use case";
-
     @Before
     public void setup() {
       setupWith(new TestUseCaseModelRunner());
     }
+    
+  @Test
+  public void includeEnabledUseCaseOnceAtFirstStep() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow().when(r -> true)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterNumber(), enterNumber());
+    String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";"
+        + SYSTEM_DISPLAYS_TEXT + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
 
     @Test
-    public void includeUseCaseOnceAtFirstStep() {
+    public void includeDisabledUseCaseOnceAtFirstStep() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow().when(r -> false)
@@ -28,7 +46,7 @@ public class IncludeTest extends AbstractTestCase{
         .build();
       
     useCaseModelRunner.run(useCaseModel);
-    useCaseModelRunner.reactTo(enterNumber());
+    useCaseModelRunner.reactTo(enterNumber(), enterNumber());
 
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"

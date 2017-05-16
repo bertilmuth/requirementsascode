@@ -10,6 +10,7 @@ public abstract class AbstractTestCase {
 	
 	protected static final String USE_CASE = "Use Case";
 	protected static final String USE_CASE_2 = "Use Case 2";
+  protected static final String INCLUDED_USE_CASE = "Included use case";
 
 	protected static final String BASIC_FLOW = "basic flow";
 	protected static final String ALTERNATIVE_FLOW = "Alternative Flow";
@@ -20,6 +21,8 @@ public abstract class AbstractTestCase {
 	protected static final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
 	protected static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
 	protected static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
+	protected static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
+	protected static final String SYSTEM_INCLUDES_USE_CASE_2 = "Another step that includes use case";
 
 	protected static final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
 	protected static final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
