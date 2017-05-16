@@ -34,6 +34,7 @@ public class UseCaseModelRunner {
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
   private Optional<Predicate<Step>> stepWithoutAlternativePredicate;
+  private Optional<Flow> optionalIncludedFlow;
   private Optional<Step> optionalIncludeStep;
 
   /**
@@ -65,6 +66,7 @@ public class UseCaseModelRunner {
    */
   public void restart() {
     setLatestStep(Optional.empty());
+    optionalIncludedFlow = Optional.empty();
     optionalIncludeStep = Optional.empty();
   }
 
@@ -226,7 +228,7 @@ public class UseCaseModelRunner {
             .filter(step -> stepActorIsRunActor(step))
             .filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
             .filter(step -> hasTruePredicate(step))
-            .filter(step -> includingAndIncludedFlowAreDifferentIfPresent(step))
+            .filter(step -> onlyReactInIncludedFlowIfPresent(step))
             .filter(stepWithoutAlternativePredicate.orElse(s -> true))
             .collect(Collectors.toSet());
     return steps;
@@ -278,7 +280,8 @@ public class UseCaseModelRunner {
     this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
   }
 
-  void setIncludeStep(Step includeStep) {
+  void setIncludeStep(Flow includedFlow, Step includeStep) {
+    this.optionalIncludedFlow = Optional.of(includedFlow);
     this.optionalIncludeStep = Optional.of(includeStep);
   }
 
@@ -312,7 +315,7 @@ public class UseCaseModelRunner {
       handleException(e);
     }
     
-    continueAfterIncludeStepAtEndOfFlowIfPresent(step);
+    continueAfterIncludeStepWhenEndOfIncludedFlowIsReached();
 
     triggerAutonomousSystemReaction();
 
@@ -342,17 +345,22 @@ public class UseCaseModelRunner {
     return result;
   }
   
-  private boolean includingAndIncludedFlowAreDifferentIfPresent(Step step) {
-    return optionalIncludeStep.map(ois -> !ois.getFlow().equals(step.getFlow())).orElse(true);
+  private boolean onlyReactInIncludedFlowIfPresent(Step step) {
+    boolean result = optionalIncludedFlow.map(oif -> oif.equals(step.getFlow())).orElse(true);
+    System.out.println("Flow: " + optionalIncludedFlow + " step: " +  step + " result: " + result); 
+    return result;
   }
   
   private void resetStepWithoutAlternativePredicate() {
     stepWithoutAlternativePredicate = Optional.empty();
   }
   
-  private void continueAfterIncludeStepAtEndOfFlowIfPresent(Step useCaseStep) {
-    if(isAtEndOf(useCaseStep.getFlow()) && optionalIncludeStep.isPresent()){
+  private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
+    if (optionalIncludedFlow.isPresent()
+        && isAtEndOf(optionalIncludedFlow.get())
+        && optionalIncludeStep.isPresent()) {
       setLatestStep(optionalIncludeStep);
+      optionalIncludedFlow = Optional.empty();
       optionalIncludeStep = Optional.empty();
     }
   }
