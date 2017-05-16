@@ -16,7 +16,7 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
-    public void includeBasicFlowOnceAtFirstStep() {
+    public void includeUseCaseOnceAtFirstStep() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow().when(r -> false)
@@ -37,22 +37,22 @@ public class IncludeTest extends AbstractTestCase{
     assertEquals(expectedSteps, runStepNames());
   }
     
-    @Test
-    public void includeBasicFlowOnceAtSecondStep() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-        .useCase(USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-        .build();
+  @Test
+  public void includeUseCaseOnceAtSecondStep() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterText(), enterNumber());
-
+  
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
           + SYSTEM_INCLUDES_USE_CASE + ";"
@@ -61,18 +61,18 @@ public class IncludeTest extends AbstractTestCase{
     assertEquals(expectedSteps, runStepNames());
   }
     
-    @Test
-    public void includeBasicFlowOnceAtLastStep() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-        .useCase(USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-        .build();
+  @Test
+  public void includeUseCaseOnceAtLastStep() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterText(), enterNumber());
@@ -86,18 +86,18 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeBasicFlowTwoConsecutiveTimes() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-        .useCase(USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-            .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
-            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-        .build();
+  public void includeUseCaseTwoConsecutiveTimes() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
@@ -113,18 +113,18 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeBasicFlowTwoNonConsecutiveTimes() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-        .useCase(USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
-            .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
-        .build();
+  public void includeUseCaseTwoNonConsecutiveTimes() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
@@ -140,20 +140,20 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeBasicFlowFromTwoDifferentUseCases() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow().when(r -> false)
-            .step(SYSTEM_DISPLAYS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
-        .useCase(USE_CASE)
-          .basicFlow().when(r -> true)
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-        .useCase(USE_CASE_2)
-          .basicFlow().when(r -> true)
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
-        .build();
+  public void includeUseCaseFromTwoDifferentUseCases() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow().when(r -> false)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
+      .useCase(USE_CASE)
+        .basicFlow().when(r -> true)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+      .useCase(USE_CASE_2)
+        .basicFlow().when(r -> true)
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE_2).include(INCLUDED_USE_CASE)
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterText(), enterText(), enterNumber(), enterText());
@@ -169,16 +169,16 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includedBasicFlowCanBeRunOnItsOwn() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
-        .useCase(INCLUDED_USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
-        .useCase(USE_CASE)
-          .basicFlow()
-            .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
-        .build();
+  public void includedUseCaseCanBeRunOnItsOwn() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+      .build();
       
     useCaseModelRunner.run(useCaseModel);
     useCaseModelRunner.reactTo(enterNumber());
