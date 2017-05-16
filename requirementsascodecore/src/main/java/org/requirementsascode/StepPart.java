@@ -158,25 +158,20 @@ public class StepPart {
   UseCaseModelBuilder getUseCaseModelBuilder() {
     return useCaseModelBuilder;
   }
-  
+
   public StepSystemPart<UseCaseModelRunner> include(String useCaseName) {
     UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
     Flow includedFlow = includedUseCase.getBasicFlow();
-    Step previousStep = step.getPreviousStepInFlow().get();
-    includeFlowAfterStep(includedFlow, previousStep);
-    returnToIncludeStepAtEndOfFlow(includedFlow);
-    return system(runner -> {});
+    includeFlowAfterStep(includedFlow, step);
+    StepSystemPart<UseCaseModelRunner> stepSystemPart = system(runner -> runner.setIncludeStep(step));
+    return stepSystemPart;
   }
 
-  private void includeFlowAfterStep(Flow includedFlow, Step previousStep) {
-      Step firstStep = getFirstStepOf(includedFlow);
-      Predicate<UseCaseModelRunner> includeAfterPreviousStep =
-          new After(Optional.of(previousStep)).or(previousStep.getPredicate());
-      firstStep.setDefinedPredicate(includeAfterPreviousStep);
-  }
-  
-  private void returnToIncludeStepAtEndOfFlow(Flow includedFlow) {
-    step.setDefinedPredicate(new EndOfFlowReached(includedFlow));
+  private void includeFlowAfterStep(Flow includedFlow, Step step) {
+    Step firstStepOfIncludedFlow = getFirstStepOf(includedFlow);
+    Predicate<UseCaseModelRunner> includeAfterStep =
+        new After(Optional.of(step)).or(firstStepOfIncludedFlow.getPredicate());
+      firstStepOfIncludedFlow.setDefinedPredicate(includeAfterStep);
   }
   
   private Step getFirstStepOf(Flow flow) {

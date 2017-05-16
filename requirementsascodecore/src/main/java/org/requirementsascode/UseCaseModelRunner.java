@@ -34,6 +34,7 @@ public class UseCaseModelRunner {
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
   private Optional<Predicate<Step>> stepWithoutAlternativePredicate;
+  private Optional<Step> optionalIncludeStep;
 
   /**
    * Constructor for creating a runner with standard system reaction, that is: the system reaction,
@@ -59,11 +60,12 @@ public class UseCaseModelRunner {
   }
 
   /**
-   * Restarts the runner, setting latest flow and latest step to its original defaults ("no flow has
-   * been run, no step has been run").
+   * Restarts the runner, resetting it to its original defaults ("no flow has
+   * been run, no step has been run, no use case included").
    */
   public void restart() {
     setLatestStep(Optional.empty());
+    optionalIncludeStep = Optional.empty();
   }
 
   /**
@@ -97,7 +99,7 @@ public class UseCaseModelRunner {
    */
   public UseCaseModelRunner as(Actor actor) {
     Objects.requireNonNull(actor);
-    
+
     this.user = Optional.of(actor);
     this.userAndSystem = userAndSystem(user.get());
     return this;
@@ -195,7 +197,7 @@ public class UseCaseModelRunner {
    */
   public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
     Objects.requireNonNull(eventClass);
-    
+
     Set<Step> stepsThatCanReact;
     if (isRunning) {
       Stream<Step> stepStream = useCaseModel.getModifiableSteps().stream();
@@ -224,44 +226,10 @@ public class UseCaseModelRunner {
             .filter(step -> stepActorIsRunActor(step))
             .filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
             .filter(step -> hasTruePredicate(step))
+            .filter(step -> includingAndIncludedFlowAreDifferentIfPresent(step))
             .filter(stepWithoutAlternativePredicate.orElse(s -> true))
             .collect(Collectors.toSet());
     return steps;
-  }
-
-  private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> useCaseSteps) {
-    Step useCaseStep = null;
-
-    if (useCaseSteps.size() == 1) {
-      useCaseStep = useCaseSteps.iterator().next();
-      triggerSystemReactionForStep(event, useCaseStep);
-    } else if (useCaseSteps.size() > 1) {
-      throw new MoreThanOneStepCanReact(useCaseSteps);
-    } else if (event instanceof Throwable) {
-      throw new UnhandledException((Throwable) event);
-    }
-
-    return useCaseStep != null ? Optional.of(useCaseStep) : Optional.empty();
-  }
-
-  private <T> Step triggerSystemReactionForStep(T event, Step useCaseStep) {
-    if (useCaseStep.getSystemReaction() == null) {
-      throw new MissingUseCaseStepPart(useCaseStep, "system");
-    }
-
-    setLatestStep(Optional.of(useCaseStep));
-    stepWithoutAlternativePredicate = Optional.empty();
-    systemReactionTrigger.setupWith(event, useCaseStep);
-
-    try {
-      systemReaction.accept(systemReactionTrigger);
-    } catch (Exception e) {
-      handleException(e);
-    }
-
-    triggerAutonomousSystemReaction();
-
-    return useCaseStep;
   }
 
   /**
@@ -276,29 +244,6 @@ public class UseCaseModelRunner {
     reactTo(e);
   }
 
-  private boolean stepActorIsRunActor(Step useCaseStep) {
-    Actor[] stepActors = useCaseStep.getActors();
-    if (stepActors == null) {
-      throw (new MissingUseCaseStepPart(useCaseStep, "actor"));
-    }
-
-    boolean stepActorIsRunActor =
-        Stream.of(stepActors).anyMatch(stepActor -> userAndSystem.contains(stepActor));
-    return stepActorIsRunActor;
-  }
-
-  private boolean stepEventClassIsSameOrSuperclassAsEventClass(
-      Step useCaseStep, Class<?> currentEventClass) {
-    Class<?> stepEventClass = useCaseStep.getUserEventClass();
-    return stepEventClass.isAssignableFrom(currentEventClass);
-  }
-
-  private boolean hasTruePredicate(Step useCaseStep) {
-    Predicate<UseCaseModelRunner> predicate = useCaseStep.getPredicate();
-    boolean result = predicate.test(this);
-    return result;
-  }
-
   /**
    * Returns the latest step that has been run by this runner.
    *
@@ -309,7 +254,7 @@ public class UseCaseModelRunner {
   }
 
   /**
-   * Sets the latest step run by the runner. 
+   * Sets the latest step run by the runner.
    *
    * <p>Use this method if you want to restore some previous state, normally you should influence
    * the behavior of the runner by calling {@link #reactTo(Object)}.
@@ -331,5 +276,97 @@ public class UseCaseModelRunner {
 
   public void setStepWithoutAlternativePredicate(Predicate<Step> stepWithoutAlternativePredicate) {
     this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
+  }
+
+  void setIncludeStep(Step includeStep) {
+    this.optionalIncludeStep = Optional.of(includeStep);
+  }
+
+  private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> steps) {
+    Step useCaseStep = null;
+
+    if (steps.size() == 1) {
+      useCaseStep = steps.iterator().next();
+      triggerSystemReactionForStep(event, useCaseStep);
+    } else if (steps.size() > 1) {
+      throw new MoreThanOneStepCanReact(steps);
+    } else if (event instanceof Throwable) {
+      throw new UnhandledException((Throwable) event);
+    }
+
+    return useCaseStep != null ? Optional.of(useCaseStep) : Optional.empty();
+  }
+
+  private <T> Step triggerSystemReactionForStep(T event, Step step) {
+    if (step.getSystemReaction() == null) {
+      throw new MissingUseCaseStepPart(step, "system");
+    }
+
+    setLatestStep(Optional.of(step));
+    resetStepWithoutAlternativePredicate();
+    systemReactionTrigger.setupWith(event, step);
+
+    try {
+      systemReaction.accept(systemReactionTrigger);
+    } catch (Exception e) {
+      handleException(e);
+    }
+    
+    continueAfterIncludeStepAtEndOfFlowIfPresent(step);
+
+    triggerAutonomousSystemReaction();
+
+    return step;
+  }
+
+  private boolean stepActorIsRunActor(Step step) {
+    Actor[] stepActors = step.getActors();
+    if (stepActors == null) {
+      throw (new MissingUseCaseStepPart(step, "actor"));
+    }
+
+    boolean stepActorIsRunActor =
+        Stream.of(stepActors).anyMatch(stepActor -> userAndSystem.contains(stepActor));
+    return stepActorIsRunActor;
+  }
+
+  private boolean stepEventClassIsSameOrSuperclassAsEventClass(
+      Step useCaseStep, Class<?> currentEventClass) {
+    Class<?> stepEventClass = useCaseStep.getUserEventClass();
+    return stepEventClass.isAssignableFrom(currentEventClass);
+  }
+
+  private boolean hasTruePredicate(Step step) {
+    Predicate<UseCaseModelRunner> predicate = step.getPredicate();
+    boolean result = predicate.test(this);
+    return result;
+  }
+  
+  private boolean includingAndIncludedFlowAreDifferentIfPresent(Step step) {
+    return optionalIncludeStep.map(ois -> !ois.getFlow().equals(step.getFlow())).orElse(true);
+  }
+  
+  private void resetStepWithoutAlternativePredicate() {
+    stepWithoutAlternativePredicate = Optional.empty();
+  }
+  
+  private void continueAfterIncludeStepAtEndOfFlowIfPresent(Step useCaseStep) {
+    if(isAtEndOf(useCaseStep.getFlow()) && optionalIncludeStep.isPresent()){
+      setLatestStep(optionalIncludeStep);
+      optionalIncludeStep = Optional.empty();
+    }
+  }
+  
+  private boolean isAtEndOf(Flow flow) {
+    Step lastStep = getLastStepOf(flow);
+    boolean result = getLatestStep().map(latestStep -> latestStep.equals(lastStep)).orElse(false);
+    return result;
+  }
+
+  private Step getLastStepOf(Flow flow) {
+    List<Step> stepsOfFlow = flow.getSteps();
+    int lastStepIndex = stepsOfFlow.size() - 1;
+    Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
+    return lastStepOfFlow;
   }
 }
