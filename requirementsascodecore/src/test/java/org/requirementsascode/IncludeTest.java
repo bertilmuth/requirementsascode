@@ -16,7 +16,29 @@ public class IncludeTest extends AbstractTestCase{
     }
 
     @Test
-    public void includeBasicFlowOnce() {
+    public void includeBasicFlowOnceAtFirstStep() {
+      UseCaseModel useCaseModel = useCaseModelBuilder
+        .useCase(INCLUDED_USE_CASE)
+          .basicFlow().when(r -> false)
+            .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+        .useCase(USE_CASE)
+          .basicFlow()
+            .step(SYSTEM_INCLUDES_USE_CASE).include(INCLUDED_USE_CASE)
+            .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+        .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterNumber());
+
+    String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";"
+        + SYSTEM_DISPLAYS_TEXT + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+    
+    @Test
+    public void includeBasicFlowOnceAtSecondStep() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
