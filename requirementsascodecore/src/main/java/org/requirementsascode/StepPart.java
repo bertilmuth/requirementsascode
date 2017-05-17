@@ -138,6 +138,28 @@ public class StepPart {
     UseCasePart useCasePart = as(systemActor).continueWithoutAlternativeAt(stepName);
     return useCasePart;
   }
+  
+  /**
+   * Includes the use case with the specified name. 
+   * 
+   * The runner starts the included use case right after the current step.
+   * Any flow of the included use case that does not have a defined predicate
+   * (i.e. typically the basic flow) may react, given the right event for
+   * its first step occurs.
+   * 
+   * The runner returns to the current flow when it reaches the end of an included flow.
+   * The runner then continues after the current step of the current flow.
+   * 
+   * @param useCaseName the name of the use case to include
+   * @return the step system part, to ease creation of further steps and flows
+   * @throws NoSuchElementInModel if the included use case has not been specified before
+   */
+  public StepSystemPart<UseCaseModelRunner> includeUseCase(String useCaseName) {
+    UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
+    StepSystemPart<UseCaseModelRunner> stepSystemPart =
+        system(runner -> runner.includeUseCase(includedUseCase, step));
+    return stepSystemPart;
+  }
 
   Step getStep() {
     return step;
@@ -153,12 +175,5 @@ public class StepPart {
 
   UseCaseModelBuilder getUseCaseModelBuilder() {
     return useCaseModelBuilder;
-  }
-
-  public StepSystemPart<UseCaseModelRunner> includeUseCase(String useCaseName) {
-    UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
-    StepSystemPart<UseCaseModelRunner> stepSystemPart =
-        system(runner -> runner.includeUseCase(includedUseCase, step));
-    return stepSystemPart;
   }
 }
