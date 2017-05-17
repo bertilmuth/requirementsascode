@@ -163,7 +163,8 @@ public class StepPart {
     UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
     Flow includedFlow = includedUseCase.getBasicFlow();
     includeFlowAfterStep(includedFlow, step);
-    StepSystemPart<UseCaseModelRunner> stepSystemPart = system(runner -> runner.setIncludeStep(includedFlow, step));
+    StepSystemPart<UseCaseModelRunner> stepSystemPart =
+        system(runner -> runner.setIncludeStep(includedUseCase, step));
     return stepSystemPart;
   }
 

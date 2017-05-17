@@ -34,7 +34,7 @@ public class UseCaseModelRunner {
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
   private Optional<Predicate<Step>> stepWithoutAlternativePredicate;
-  private Optional<Flow> optionalIncludedFlow;
+  private Optional<UseCase> optionalIncludedUseCase;
   private Optional<Step> optionalIncludeStep;
 
   /**
@@ -66,7 +66,7 @@ public class UseCaseModelRunner {
    */
   public void restart() {
     setLatestStep(Optional.empty());
-    optionalIncludedFlow = Optional.empty();
+    optionalIncludedUseCase = Optional.empty();
     optionalIncludeStep = Optional.empty();
   }
 
@@ -228,7 +228,7 @@ public class UseCaseModelRunner {
             .filter(step -> stepActorIsRunActor(step))
             .filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
             .filter(step -> hasTruePredicate(step))
-            .filter(step -> onlyReactInIncludedFlowIfPresent(step))
+            .filter(step -> isStepInIncludedUseCase(step))
             .filter(stepWithoutAlternativePredicate.orElse(s -> true))
             .collect(Collectors.toSet());
     return steps;
@@ -280,8 +280,8 @@ public class UseCaseModelRunner {
     this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
   }
 
-  void setIncludeStep(Flow includedFlow, Step includeStep) {
-    this.optionalIncludedFlow = Optional.of(includedFlow);
+  void setIncludeStep(UseCase includedUseCase, Step includeStep) {
+    this.optionalIncludedUseCase = Optional.of(includedUseCase);
     this.optionalIncludeStep = Optional.of(includeStep);
   }
 
@@ -345,8 +345,8 @@ public class UseCaseModelRunner {
     return result;
   }
   
-  private boolean onlyReactInIncludedFlowIfPresent(Step step) {
-    boolean result = optionalIncludedFlow.map(oif -> oif.equals(step.getFlow())).orElse(true);
+  private boolean isStepInIncludedUseCase(Step step) {
+    boolean result = optionalIncludedUseCase.map(uc -> uc.equals(step.getUseCase())).orElse(true);
     return result;
   }
   
@@ -355,11 +355,11 @@ public class UseCaseModelRunner {
   }
   
   private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
-    if (optionalIncludedFlow.isPresent()
+    if (optionalIncludedUseCase.isPresent()
         && optionalIncludeStep.isPresent()
         && isAtEndOfIncludedFlow()) {
       setLatestStep(optionalIncludeStep);
-      optionalIncludedFlow = Optional.empty();
+      optionalIncludedUseCase = Optional.empty();
       optionalIncludeStep = Optional.empty();
     }
   }
@@ -370,7 +370,7 @@ public class UseCaseModelRunner {
         getLatestStep()
             .map(
                 ls ->
-                    ls.getUseCase().equals(optionalIncludedFlow.get().getUseCase())
+                    ls.getUseCase().equals(optionalIncludedUseCase.get())
                         && ls.equals(lastStepOfRunningFlow.get()))
             .orElse(false);
     return result;
