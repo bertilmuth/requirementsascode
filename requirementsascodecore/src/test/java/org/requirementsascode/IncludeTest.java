@@ -3,7 +3,6 @@ package org.requirementsascode;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class IncludeTest extends AbstractTestCase{
@@ -81,7 +80,6 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  @Ignore
   public void includeUseCaseWithAlternativeFlowOnceAtSecondStep() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
