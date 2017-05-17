@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.UnhandledException;
+import org.requirementsascode.predicate.After;
 
 /**
  * A use case model runner is a highly configurable use case controller that receives events from
@@ -280,9 +281,25 @@ public class UseCaseModelRunner {
     this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
   }
 
-  void setIncludeStep(UseCase includedUseCase, Step includeStep) {
+  void includeUseCase(UseCase includedUseCase, Step includeStep) {
     this.optionalIncludedUseCase = Optional.of(includedUseCase);
     this.optionalIncludeStep = Optional.of(includeStep);
+    for(Flow includedFlow : includedUseCase.getFlows()){
+      includeFlowAfterStep(includedFlow, includeStep);
+    }
+  }
+  
+  private void includeFlowAfterStep(Flow includedFlow, Step step) {
+    Step firstStepOfIncludedFlow = getFirstStepOf(includedFlow);
+    Predicate<UseCaseModelRunner> includeAfterStep =
+        new After(Optional.of(step)).or(firstStepOfIncludedFlow.getPredicate());
+      firstStepOfIncludedFlow.setDefinedPredicate(includeAfterStep);
+  }
+  
+  private Step getFirstStepOf(Flow flow) {
+    List<Step> stepsOfFlow = flow.getSteps();
+    Step lastStepOfFlow = stepsOfFlow.get(0);
+    return lastStepOfFlow;
   }
 
   private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> steps) {
