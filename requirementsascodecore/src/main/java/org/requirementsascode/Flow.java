@@ -57,6 +57,16 @@ public class Flow extends UseCaseModelElement {
             .collect(Collectors.toList());
     return Collections.unmodifiableList(steps);
   }
+  
+  /**
+   * Returns the first step of the flow
+   * 
+   * @return the first step of the flow, or an empty optional if the flow has no steps.
+   */
+  public Optional<Step> getFirstStep() {
+    List<Step> steps = getSteps();
+    return steps.size() > 0? Optional.of(steps.get(0)) : Optional.empty();
+  }
 
   public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
     this.optionalFlowPosition = Optional.of(flowPosition);
@@ -74,15 +84,19 @@ public class Flow extends UseCaseModelElement {
     return optionalWhen;
   }
   
-  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate(
+      Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition,
+      Optional<Predicate<UseCaseModelRunner>> optionalWhen) {
     Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
-    
+
     if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
       Anytime anytime = new Anytime();
-      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime = optionalFlowPosition.orElse(anytime);
+      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
+          optionalFlowPosition.orElse(anytime);
       Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
       flowPredicate =
-          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
+          Optional.of(
+              isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
     }
     return flowPredicate;
   }

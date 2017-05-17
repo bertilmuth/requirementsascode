@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.requirementsascode.predicate.After;
+import org.requirementsascode.predicate.Anytime;
 
 /**
  * A use case step, as part of a use case. The use case steps define the behavior of the use case.
@@ -25,7 +26,8 @@ public class Step extends UseCaseModelElement {
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
- private Optional<Predicate<UseCaseModelRunner>> optionalDefinedPredicate;
+  private Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition;
+  private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
 
   /**
    * Creates a use case step with the specified name that belongs to the specified use case flow.
@@ -38,8 +40,9 @@ public class Step extends UseCaseModelElement {
 
     this.flow = useCaseFlow;
     this.reactWhile = Optional.empty();
-    this.optionalDefinedPredicate = Optional.empty();
     this.optionalPreviousStepInFlow = Optional.empty();
+    this.optionalFlowPosition = Optional.empty();
+    this.optionalWhen = Optional.empty();
   }
 
   public Optional<Step> getPreviousStepInFlow() {
@@ -60,7 +63,7 @@ public class Step extends UseCaseModelElement {
 
   public Predicate<UseCaseModelRunner> getPredicate() {
     Predicate<UseCaseModelRunner> predicate =
-        reactWhile.orElse(optionalDefinedPredicate.orElse(getDefaultPredicate()));
+        reactWhile.orElse(getFlowPredicate().orElse(getDefaultPredicate()));
     return predicate;
   }
   
@@ -68,12 +71,42 @@ public class Step extends UseCaseModelElement {
     this.reactWhile = Optional.of(reactWhile);
   }
   
-  Optional<Predicate<UseCaseModelRunner>> getDefinedPredicate() {
-    return optionalDefinedPredicate;
+  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
+    this.optionalFlowPosition = Optional.of(flowPosition);
+  }
+
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
+    return optionalFlowPosition;
+  }
+
+  public void setWhen(Predicate<UseCaseModelRunner> when) {
+    this.optionalWhen = Optional.of(when);
+  }
+
+  public Optional<Predicate<UseCaseModelRunner>> getWhen() {
+    return optionalWhen;
   }
   
-  void setDefinedPredicate(Predicate<UseCaseModelRunner> definedPredicate) {
-    this.optionalDefinedPredicate = Optional.of(definedPredicate);
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
+    Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
+
+    if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
+      Anytime anytime = new Anytime();
+      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
+          optionalFlowPosition.orElse(anytime);
+      Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
+      flowPredicate =
+          Optional.of(
+              isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
+    }
+    return flowPredicate;
+  }
+  
+  private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
+    Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
+        runner ->
+            runner.getLatestFlow().map(runnerFlow -> !getFlow().equals(runnerFlow)).orElse(true);
+    return isRunnerInDifferentFlow;
   }
   
   Predicate<UseCaseModelRunner> getDefaultPredicate() {
@@ -121,7 +154,7 @@ public class Step extends UseCaseModelElement {
   }
 
   private Predicate<Step> hasDefinedPredicate() {
-    return step -> step.getDefinedPredicate().isPresent();
+    return step -> step.getFlowPredicate().isPresent();
   }
 
   private Predicate<Step> isOtherStepThan(Step theStep) {

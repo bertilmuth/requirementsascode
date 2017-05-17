@@ -12,7 +12,7 @@ public class IncludeTest extends AbstractTestCase{
     }
     
   @Test
-  public void includeUseCaseWithBasicFlowOnceAtFirstStep() {
+  public void includeUseCaseWithBasicFlowAtFirstStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -33,10 +33,10 @@ public class IncludeTest extends AbstractTestCase{
   }  
     
   @Test
-  public void includeEnabledUseCaseWithBasicFlowOnceAtFirstStep() {
+  public void includeUseCaseWithBasicFlowAtFirstStep_withAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
-        .basicFlow().when(r -> true)
+        .basicFlow().anytime()
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
@@ -55,7 +55,7 @@ public class IncludeTest extends AbstractTestCase{
   }
 
   @Test
-  public void includeDisabledUseCaseWithBasicFlowOnceAtFirstStep() {
+  public void includeUseCaseWithBasicFlowAtFirstStep_withFalsePredicate_cantReact() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
@@ -70,6 +70,25 @@ public class IncludeTest extends AbstractTestCase{
     useCaseModelRunner.reactTo(enterNumber(), enterNumber());
 
     String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+  
+  @Test
+  public void includeUseCaseWithAlternativeFlowAtFirstStep_withoutPredicate() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .flow(ALTERNATIVE_FLOW)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterNumber(), enterNumber());
+    String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
         + SYSTEM_DISPLAYS_NUMBER + ";"
         + SYSTEM_DISPLAYS_TEXT + ";";
@@ -77,10 +96,10 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeEnabledUseCaseWithAlternativeFlowOnceAtFirstStep() {
+  public void includeUseCaseWithAlternativeFlowAtFirstStep_witAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
-        .flow(ALTERNATIVE_FLOW).when(r -> true)
+        .flow(ALTERNATIVE_FLOW).anytime()
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
@@ -99,7 +118,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeDisabledUseCaseWithAlternativeFlowOnceAtFirstStep() {
+  public void includeUseCaseWithAlternativeFlowAtFirstStep_withFalsePredicate_cantReact() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .flow(ALTERNATIVE_FLOW).when(r -> false)
@@ -114,14 +133,12 @@ public class IncludeTest extends AbstractTestCase{
     useCaseModelRunner.reactTo(enterNumber(), enterNumber());
 
     String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + SYSTEM_DISPLAYS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";";
+        SYSTEM_INCLUDES_USE_CASE + ";";
     assertEquals(expectedSteps, runStepNames());
   }
     
   @Test
-  public void includeUseCaseWithBasicFlowOnceAtSecondStep() {
+  public void includeUseCaseWithBasicFlowAtSecondStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -134,7 +151,7 @@ public class IncludeTest extends AbstractTestCase{
       .build();
       
     useCaseModelRunner.run(useCaseModel);
-    useCaseModelRunner.reactTo(enterText(), enterNumber());
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
   
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
@@ -145,7 +162,54 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithAlternativeFlowOnceAtSecondStep() {
+  public void includeUseCaseWithBasicFlowAtSecondStep_withAnytimePredicate() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow().anytime()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
+  
+    String expectedSteps =
+        SYSTEM_DISPLAYS_TEXT + ";"
+          + SYSTEM_INCLUDES_USE_CASE + ";"
+          + SYSTEM_DISPLAYS_NUMBER + ";"
+          + SYSTEM_DISPLAYS_TEXT_AGAIN + ";"
+          + SYSTEM_DISPLAYS_NUMBER + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+  
+  @Test
+  public void includeUseCaseWithBasicFlowAtSecondStep_withFalsePredicate_cantReact() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow().when(r -> false)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
+  
+    String expectedSteps =
+        SYSTEM_DISPLAYS_TEXT + ";"
+          + SYSTEM_INCLUDES_USE_CASE + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+  
+  @Test
+  public void includeUseCaseWithAlternativeFlowAtSecondStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -160,7 +224,7 @@ public class IncludeTest extends AbstractTestCase{
       .build();
       
     useCaseModelRunner.run(useCaseModel);
-    useCaseModelRunner.reactTo(enterText(), enterNumber());
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
   
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
@@ -171,26 +235,53 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeUseCaseOnceAtLastStep() {
+  public void includeUseCaseWithAlternativeFlowAtSecondStep_withAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
+          .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
+        .flow(ALTERNATIVE_FLOW).anytime()
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
-          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
           .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
       .build();
       
     useCaseModelRunner.run(useCaseModel);
-    useCaseModelRunner.reactTo(enterText(), enterNumber());
-
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
+  
     String expectedSteps =
         SYSTEM_DISPLAYS_TEXT + ";"
-          + SYSTEM_DISPLAYS_TEXT_AGAIN + ";"
           + SYSTEM_INCLUDES_USE_CASE + ";"
+          + SYSTEM_DISPLAYS_NUMBER + ";"
+          + SYSTEM_DISPLAYS_TEXT_AGAIN + ";"
           + SYSTEM_DISPLAYS_NUMBER + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+  
+  @Test
+  public void includeUseCaseWithAlternativeFlowAtSecondStep_withFalsePredicate() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
+        .flow(ALTERNATIVE_FLOW).when(r -> false)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterNumber());
+  
+    String expectedSteps =
+        SYSTEM_DISPLAYS_TEXT + ";"
+          + SYSTEM_INCLUDES_USE_CASE + ";";
     assertEquals(expectedSteps, runStepNames());
   }
     
@@ -252,7 +343,7 @@ public class IncludeTest extends AbstractTestCase{
   public void includeUseCaseFromTwoDifferentUseCases() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
-        .basicFlow().when(r -> false)
+        .basicFlow()
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
       .useCase(USE_CASE)
         .basicFlow().when(r -> true)
