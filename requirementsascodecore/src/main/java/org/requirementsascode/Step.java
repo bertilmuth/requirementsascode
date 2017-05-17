@@ -27,7 +27,6 @@ public class Step extends UseCaseModelElement {
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
  private Optional<Predicate<UseCaseModelRunner>> optionalDefinedPredicate;
-  private Predicate<UseCaseModelRunner> defaultPredicate;
 
   /**
    * Creates a use case step with the specified name that belongs to the specified use case flow.
@@ -45,8 +44,6 @@ public class Step extends UseCaseModelElement {
     this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
     this.optionalDefinedPredicate = Optional.empty();
-    this.defaultPredicate =
-        new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
   }
 
   public Optional<Step> getPreviousStepInFlow() {
@@ -63,7 +60,7 @@ public class Step extends UseCaseModelElement {
 
   public Predicate<UseCaseModelRunner> getPredicate() {
     Predicate<UseCaseModelRunner> predicate =
-        reactWhile.orElse(optionalDefinedPredicate.orElse(defaultPredicate));
+        reactWhile.orElse(optionalDefinedPredicate.orElse(getDefaultPredicate()));
     return predicate;
   }
   
@@ -73,6 +70,10 @@ public class Step extends UseCaseModelElement {
   
   void setDefinedPredicate(Predicate<UseCaseModelRunner> definedPredicate) {
     this.optionalDefinedPredicate = Optional.of(definedPredicate);
+  }
+  
+  Predicate<UseCaseModelRunner> getDefaultPredicate() {
+    return new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
   }
 
   void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
