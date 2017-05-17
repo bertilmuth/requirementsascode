@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -97,11 +96,10 @@ public class UseCase extends UseCaseModelElement {
    *
    * @param stepName the name of the step
    * @param flow the flow the step shall belong to
-   * @param previousStep the previous step in the flow, if there is one
    * @return the newly created step
    */
-  Step newStep(String stepName, Flow flow, Optional<Step> previousStep) {
-    Step step = new Step(stepName, flow, previousStep);
+  Step newStep(String stepName, Flow flow) {
+    Step step = new Step(stepName, flow);
     saveModelElement(step, nameToStepMap);
 
     return step;

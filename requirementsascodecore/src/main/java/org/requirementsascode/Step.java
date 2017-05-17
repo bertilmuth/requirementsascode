@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -20,7 +19,7 @@ import org.requirementsascode.predicate.After;
  */
 public class Step extends UseCaseModelElement {
   private Flow flow;
-  private Optional<Step> previousStepInFlow;
+  private Optional<Step> optionalPreviousStepInFlow;
   private Optional<Predicate<UseCaseModelRunner>> reactWhile;
 
   private Actor[] actors;
@@ -33,21 +32,22 @@ public class Step extends UseCaseModelElement {
    *
    * @param stepName the name of the step to be created
    * @param useCaseFlow the use case flow that will contain the new use case
-   * @param previousStepInFlow the step created before the step in its flow, or else an empty
-   *     optional if it is the first step in its flow
    */
-  Step(String stepName, Flow useCaseFlow, Optional<Step> previousStepInFlow) {
+  Step(String stepName, Flow useCaseFlow) {
     super(stepName, useCaseFlow.getUseCaseModel());
-    Objects.requireNonNull(previousStepInFlow);
 
     this.flow = useCaseFlow;
-    this.previousStepInFlow = previousStepInFlow;
     this.reactWhile = Optional.empty();
     this.optionalDefinedPredicate = Optional.empty();
+    this.optionalPreviousStepInFlow = Optional.empty();
   }
 
   public Optional<Step> getPreviousStepInFlow() {
-    return previousStepInFlow;
+    return optionalPreviousStepInFlow;
+  }
+  
+  void setPreviousStepInFlow(Step previousStepInFlow) {
+    this.optionalPreviousStepInFlow = Optional.of(previousStepInFlow);
   }
 
   public Flow getFlow() {
@@ -64,6 +64,10 @@ public class Step extends UseCaseModelElement {
     return predicate;
   }
   
+  void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
+    this.reactWhile = Optional.of(reactWhile);
+  }
+  
   Optional<Predicate<UseCaseModelRunner>> getDefinedPredicate() {
     return optionalDefinedPredicate;
   }
@@ -73,11 +77,7 @@ public class Step extends UseCaseModelElement {
   }
   
   Predicate<UseCaseModelRunner> getDefaultPredicate() {
-    return new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
-  }
-
-  void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
-    this.reactWhile = Optional.of(reactWhile);
+    return new After(optionalPreviousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
   }
 
   public Actor[] getActors() {

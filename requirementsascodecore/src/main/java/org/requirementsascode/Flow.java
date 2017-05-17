@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.requirementsascode.predicate.Anytime;
+
 /**
  * A use case flow defines a sequence of steps that lead the user through the use case.
  *
@@ -76,10 +78,11 @@ public class Flow extends UseCaseModelElement {
     Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
     
     if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
-      Predicate<UseCaseModelRunner> flowPositionOrElseTrue = optionalFlowPosition.orElse(r -> true);
-      Predicate<UseCaseModelRunner> whenOrElseTrue = optionalWhen.orElse(r -> true);
+      Anytime anytime = new Anytime();
+      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime = optionalFlowPosition.orElse(anytime);
+      Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
       flowPredicate =
-          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseTrue).and(whenOrElseTrue));
+          Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
     }
     return flowPredicate;
   }

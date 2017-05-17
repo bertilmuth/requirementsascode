@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -41,7 +40,8 @@ public class StepSystemPart<T> {
     Flow useCaseFlow = useCaseFlowPart.getUseCaseFlow();
 
     Step nextStepInFlow =
-        useCaseFlow.getUseCase().newStep(stepName, useCaseFlow, Optional.of(step));
+        useCaseFlow.getUseCase().newStep(stepName, useCaseFlow);
+    nextStepInFlow.setPreviousStepInFlow(step);
 
     return new StepPart(nextStepInFlow, useCaseFlowPart);
   }
