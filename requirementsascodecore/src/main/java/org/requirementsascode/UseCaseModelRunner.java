@@ -363,16 +363,13 @@ public class UseCaseModelRunner {
   }
   
   private void includeFlowAfterStep(Flow includedFlow, Step includeStep) {
-    Step firstStepOfIncludedFlow = getFirstStepOf(includedFlow);
-    Predicate<UseCaseModelRunner> includeAfterIncludeStep =
-        new After(Optional.of(includeStep)).or(firstStepOfIncludedFlow.getPredicate());
-      firstStepOfIncludedFlow.setDefinedPredicate(includeAfterIncludeStep);
-  }
-  
-  private Step getFirstStepOf(Flow flow) {
-    List<Step> stepsOfFlow = flow.getSteps();
-    Step lastStepOfFlow = stepsOfFlow.get(0);
-    return lastStepOfFlow;
+    List<Step> steps = includedFlow.getSteps();
+    if(steps.size() > 0){
+      Step firstStepOfIncludedFlow = steps.get(0);
+      Predicate<UseCaseModelRunner> includeAfterIncludeStep =
+          new After(Optional.of(includeStep)).or(firstStepOfIncludedFlow.getPredicate());
+        firstStepOfIncludedFlow.setDefinedPredicate(includeAfterIncludeStep);
+    }
   }
   
   private boolean isAtEndOfIncludedFlow() {

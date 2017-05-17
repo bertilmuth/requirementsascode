@@ -12,7 +12,7 @@ public class IncludeTest extends AbstractTestCase{
     }
     
   @Test
-  public void includeEnabledUseCaseOnceAtFirstStep() {
+  public void includeEnabledUseCaseWithBasicFlowOnceAtFirstStep() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> true)
@@ -33,11 +33,55 @@ public class IncludeTest extends AbstractTestCase{
     assertEquals(expectedSteps, runStepNames());
   }
 
-    @Test
-    public void includeDisabledUseCaseOnceAtFirstStep() {
+  @Test
+  public void includeDisabledUseCaseWithBasicFlowOnceAtFirstStep() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow().when(r -> false)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterNumber(), enterNumber());
+
+    String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";"
+        + SYSTEM_DISPLAYS_TEXT + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+  
+  @Test
+  public void includeEnabledUseCaseWithAlternativeFlowOnceAtFirstStep() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(INCLUDED_USE_CASE)
+        .flow(ALTERNATIVE_FLOW).when(r -> true)
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterNumber(), enterNumber());
+    String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";"
+        + SYSTEM_DISPLAYS_TEXT + ";"
+        + SYSTEM_DISPLAYS_NUMBER + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }
+    
+  @Test
+  public void includeDisabledUseCaseWithAlternativeFlowOnceAtFirstStep() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
-          .basicFlow().when(r -> false)
+          .flow(ALTERNATIVE_FLOW).when(r -> false)
             .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
         .useCase(USE_CASE)
           .basicFlow()
@@ -56,7 +100,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeUseCaseOnceAtSecondStep() {
+  public void includeUseCaseWithBasicFlowOnceAtSecondStep() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
