@@ -356,17 +356,23 @@ public class UseCaseModelRunner {
   
   private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
     if (optionalIncludedFlow.isPresent()
-        && isAtEndOf(optionalIncludedFlow.get())
-        && optionalIncludeStep.isPresent()) {
+        && optionalIncludeStep.isPresent()
+        && isAtEndOfIncludedFlow()) {
       setLatestStep(optionalIncludeStep);
       optionalIncludedFlow = Optional.empty();
       optionalIncludeStep = Optional.empty();
     }
   }
   
-  private boolean isAtEndOf(Flow flow) {
-    Step lastStep = getLastStepOf(flow);
-    boolean result = getLatestStep().map(latestStep -> latestStep.equals(lastStep)).orElse(false);
+  private boolean isAtEndOfIncludedFlow() {
+    Optional<Step> lastStepOfRunningFlow = getLatestStep().map(ls -> getLastStepOf(ls.getFlow()));
+    boolean result =
+        getLatestStep()
+            .map(
+                ls ->
+                    ls.getUseCase().equals(optionalIncludedFlow.get().getUseCase())
+                        && ls.equals(lastStepOfRunningFlow.get()))
+            .orElse(false);
     return result;
   }
 
