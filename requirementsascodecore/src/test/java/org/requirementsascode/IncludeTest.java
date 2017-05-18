@@ -12,7 +12,7 @@ public class IncludeTest extends AbstractTestCase{
     }
     
   @Test
-  public void includeUseCaseWithBasicFlowAtFirstStep_withoutPredicate() {
+  public void includesUseCaseWithBasicFlowAtFirstStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -33,7 +33,7 @@ public class IncludeTest extends AbstractTestCase{
   }  
     
   @Test
-  public void includeUseCaseWithBasicFlowAtFirstStep_withAnytimePredicate() {
+  public void includesUseCaseWithBasicFlowAtFirstStep_withAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
@@ -55,7 +55,7 @@ public class IncludeTest extends AbstractTestCase{
   }
 
   @Test
-  public void includeUseCaseWithBasicFlowAtFirstStep_withFalsePredicate_cantReact() {
+  public void includesUseCaseWithBasicFlowAtFirstStep_withFalsePredicate_cantReact() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
@@ -75,7 +75,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithAlternativeFlowAtFirstStep_withoutPredicate() {
+  public void includesUseCaseWithAlternativeFlowAtFirstStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .flow(ALTERNATIVE_FLOW)
@@ -96,7 +96,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithAlternativeFlowAtFirstStep_witAnytimePredicate() {
+  public void includesUseCaseWithAlternativeFlowAtFirstStep_witAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .flow(ALTERNATIVE_FLOW).anytime()
@@ -118,7 +118,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeUseCaseWithAlternativeFlowAtFirstStep_withFalsePredicate_cantReact() {
+  public void includesUseCaseWithAlternativeFlowAtFirstStep_withFalsePredicate_cantReact() {
       UseCaseModel useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .flow(ALTERNATIVE_FLOW).when(r -> false)
@@ -138,7 +138,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeUseCaseWithBasicFlowAtSecondStep_withoutPredicate() {
+  public void includesUseCaseWithBasicFlowAtSecondStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -162,7 +162,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithBasicFlowAtSecondStep_withAnytimePredicate() {
+  public void includesUseCaseWithBasicFlowAtSecondStep_withAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
@@ -187,7 +187,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithBasicFlowAtSecondStep_withFalsePredicate_cantReact() {
+  public void includesUseCaseWithBasicFlowAtSecondStep_withFalsePredicate_cantReact() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
@@ -209,7 +209,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithAlternativeFlowAtSecondStep_withoutPredicate() {
+  public void includesUseCaseWithAlternativeFlowAtSecondStep_withoutPredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -235,7 +235,7 @@ public class IncludeTest extends AbstractTestCase{
   }
     
   @Test
-  public void includeUseCaseWithAlternativeFlowAtSecondStep_withAnytimePredicate() {
+  public void includesUseCaseWithAlternativeFlowAtSecondStep_withAnytimePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
@@ -262,7 +262,7 @@ public class IncludeTest extends AbstractTestCase{
   }
   
   @Test
-  public void includeUseCaseWithAlternativeFlowAtSecondStep_withFalsePredicate() {
+  public void includesUseCaseWithAlternativeFlowAtSecondStep_withFalsePredicate() {
     UseCaseModel useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
