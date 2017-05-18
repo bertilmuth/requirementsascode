@@ -200,4 +200,20 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModelRunner.run(useCaseModel);
 	}
+	
+  @Test
+  public void throwsExceptionWhenIncludedUseCaseIsDeclaredLater() {
+    thrown.expect(NoSuchElementInModel.class);
+    thrown.expectMessage(INCLUDED_USE_CASE);
+    
+    useCaseModelBuilder
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+    .build();
+  }  
 }
