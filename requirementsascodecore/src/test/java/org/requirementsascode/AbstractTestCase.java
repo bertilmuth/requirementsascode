@@ -19,10 +19,13 @@ public abstract class AbstractTestCase {
 	protected static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	protected static final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
 	protected static final String SYSTEM_DISPLAYS_NUMBER = "System displays number";
+	 protected static final String SYSTEM_DISPLAYS_NUMBER_AGAIN = "System displays number again";
+
 	protected static final String SYSTEM_THROWS_EXCEPTION = "System throws Exception";
 	protected static final String SYSTEM_HANDLES_EXCEPTION = "System handles exception";
 	protected static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
-	protected static final String SYSTEM_INCLUDES_USE_CASE_2 = "Another step that includes use case";
+	protected static final String SYSTEM_INCLUDES_USE_CASE_2 = "Second step that includes use case";
+	protected static final String SYSTEM_INCLUDES_USE_CASE_3 = "Third step that includes use case";
 
 	protected static final String CUSTOMER_ENTERS_TEXT = "Customer enters text";
 	protected static final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
