@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.predicate.Anytime;
-
 /**
  * A use case flow defines a sequence of steps that lead the user through the use case.
  *
@@ -18,8 +16,6 @@ import org.requirementsascode.predicate.Anytime;
  */
 public class Flow extends UseCaseModelElement {
   private UseCase useCase;
-  private Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition;
-  private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
 
   /**
    * Creates a use case flow with the specified name that belongs to the specified use case.
@@ -30,8 +26,6 @@ public class Flow extends UseCaseModelElement {
   Flow(String name, UseCase useCase) {
     super(name, useCase.getUseCaseModel());
     this.useCase = useCase;
-    this.optionalFlowPosition = Optional.empty();
-    this.optionalWhen = Optional.empty();
   }
 
   /**
@@ -57,54 +51,52 @@ public class Flow extends UseCaseModelElement {
             .collect(Collectors.toList());
     return Collections.unmodifiableList(steps);
   }
-  
+
   /**
    * Returns the first step of the flow
-   * 
+   *
    * @return the first step of the flow, or an empty optional if the flow has no steps.
    */
   public Optional<Step> getFirstStep() {
     List<Step> steps = getSteps();
-    return steps.size() > 0? Optional.of(steps.get(0)) : Optional.empty();
+    return steps.size() > 0 ? Optional.of(steps.get(0)) : Optional.empty();
   }
 
-  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
-    this.optionalFlowPosition = Optional.of(flowPosition);
-  }
-
+  /**
+   * Convenience method that returns the position of the flow (as defined e.g. by "InsteadOf").
+   *
+   * <p>Internally this calls the method of the same name of the first step in the flow.
+   *
+   * @return the flow position
+   */
   public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
-    return optionalFlowPosition;
+    Optional<Predicate<UseCaseModelRunner>> flowPosition =
+        getFirstStep().flatMap(step -> step.getFlowPosition());
+    return flowPosition;
   }
 
-  public void setWhen(Predicate<UseCaseModelRunner> when) {
-    this.optionalWhen = Optional.of(when);
-  }
-
+  /**
+   * Convenience method that returns the when predicate of the flow.
+   *
+   * <p>Internally this calls the method of the same name of the first step in the flow.
+   *
+   * @return the when predicate
+   */
   public Optional<Predicate<UseCaseModelRunner>> getWhen() {
-    return optionalWhen;
+    Optional<Predicate<UseCaseModelRunner>> when = getFirstStep().flatMap(step -> step.getWhen());
+    return when;
   }
-  
-  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate(
-      Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition,
-      Optional<Predicate<UseCaseModelRunner>> optionalWhen) {
-    Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
 
-    if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
-      Anytime anytime = new Anytime();
-      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
-          optionalFlowPosition.orElse(anytime);
-      Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
-      flowPredicate =
-          Optional.of(
-              isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
-    }
+  /**
+   * Convenience method that returns the complete predicate of the flow.
+   *
+   * <p>Internally this calls the method of the same name of the first step in the flow.
+   *
+   * @return the complete predicate
+   */
+  public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
+    Optional<Predicate<UseCaseModelRunner>> flowPredicate =
+        getFirstStep().flatMap(step -> step.getFlowPredicate());
     return flowPredicate;
-  }
-  
-  private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
-    Predicate<UseCaseModelRunner> isRunnerInDifferentFlow =
-        runner ->
-            runner.getLatestFlow().map(runnerFlow -> !this.equals(runnerFlow)).orElse(true);
-    return isRunnerInDifferentFlow;
   }
 }

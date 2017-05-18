@@ -79,7 +79,7 @@ public class FreeMarkerEngineTest {
             + " step: S4a_2. System continues at S1."
             + " flow: Alternative Flow B After S3:"
             + " step: S4b_1. System continues after S2."
-            + " flow: Alternative Flow C When there is no alternative:"
+            + " flow: Alternative Flow C Anytime, when there is no alternative:"
             + " step: S5. System continues without alternative at S4."
             + " flow: Alternative Flow D Instead of S4, when there is no alternative:"
             + " step: S6. System continues at S1.", 
