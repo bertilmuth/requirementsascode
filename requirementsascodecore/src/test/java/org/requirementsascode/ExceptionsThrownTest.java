@@ -128,9 +128,9 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-			.basicFlow().when(run -> true)
+			.basicFlow().anytime()
 				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())
-			.flow(ALTERNATIVE_FLOW).when(run -> true)
+			.flow(ALTERNATIVE_FLOW).anytime()
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText())
 			.build();
 		

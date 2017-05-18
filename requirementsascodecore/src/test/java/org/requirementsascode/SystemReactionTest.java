@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.predicate.Anytime;
 
 public class SystemReactionTest extends AbstractTestCase{
 	private Actor secondActor;
@@ -179,9 +180,9 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void moreThanOneStepCanReact() { 
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
-				.basicFlow().when(run -> true)
+				.basicFlow().anytime()
 					.step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
-				.flow("Alternative Flow: Could react as well").when(run -> true)
+				.flow("Alternative Flow: Could react as well").anytime()
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 			.build();
 		
@@ -489,7 +490,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.basicFlow()
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EnterText.class).system(throwRuntimeException())
 					.step(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).user(EnterText.class).system(throwRuntimeException())		
-				.flow(ALTERNATIVE_FLOW).when(r -> true)
+				.flow(ALTERNATIVE_FLOW).anytime()
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EnterText.class).system(displayEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
@@ -597,7 +598,7 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterText.class).system(displayEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.user(EnterText.class).system(displayEnteredText())
-							.reactWhile(r -> true)
+							.reactWhile(new Anytime())
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EnterNumber.class).system(displayEnteredNumber())
 				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
@@ -620,7 +621,7 @@ public class SystemReactionTest extends AbstractTestCase{
 						.user(EnterText.class).system(displayEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.user(EnterText.class).system(displayEnteredText())
-							.reactWhile(r -> true)
+							.reactWhile(new Anytime())
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EnterNumber.class).system(displayEnteredNumber())
 				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_NUMBER)
@@ -642,7 +643,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EnterText.class).system(displayEnteredText())
-							.reactWhile(r -> true)
+							.reactWhile(new Anytime())
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();
@@ -660,7 +661,7 @@ public class SystemReactionTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EnterText.class).system(displayEnteredText())
-							.reactWhile(r -> true)
+							.reactWhile(new Anytime())
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EnterNumber.class).system(displayEnteredNumber())
 			.build();

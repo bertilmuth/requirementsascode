@@ -346,7 +346,7 @@ public class IncludeTest extends AbstractTestCase{
         .basicFlow()
           .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
       .useCase(USE_CASE)
-        .basicFlow().when(r -> true)
+        .basicFlow().anytime()
           .step(SYSTEM_DISPLAYS_TEXT).user(EnterText.class).system(displayEnteredText())
           .step(SYSTEM_INCLUDES_USE_CASE_3).includeUseCase(INCLUDED_USE_CASE)
           .step(SYSTEM_DISPLAYS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
