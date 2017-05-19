@@ -66,5 +66,7 @@ ${actors} ${userEvent}.${space!""}</#if></#macro>
 	<#local systemReaction = verbNoun(name)/>
 	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
+	<#elseif name == "IncludeUseCase">
+		<#local stepName = " " + s.systemReaction.includedUseCase.name/>
 	</#if>
 System ${systemReaction}${stepName!""}.</#if></#macro>

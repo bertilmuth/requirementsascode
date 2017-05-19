@@ -354,7 +354,7 @@ public class UseCaseModelRunner {
     this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
   }
 
-  void includeUseCase(UseCase includedUseCase, Step includeStep) {
+  public void includeUseCase(UseCase includedUseCase, Step includeStep) {
     this.optionalIncludedUseCase = Optional.of(includedUseCase);
     this.optionalIncludeStep = Optional.of(includeStep);
     for(Flow includedFlow : includedUseCase.getFlows()){

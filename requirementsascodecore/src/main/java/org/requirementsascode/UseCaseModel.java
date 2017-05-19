@@ -7,7 +7,7 @@ import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,8 +27,8 @@ public class UseCaseModel {
   private Actor systemActor;
 
   UseCaseModel() {
-    this.nameToActorMap = new HashMap<>();
-    this.nameToUseCaseMap = new HashMap<>();
+    this.nameToActorMap = new LinkedHashMap<>();
+    this.nameToUseCaseMap = new LinkedHashMap<>();
     this.userActor = newActor("user");
     this.systemActor = newActor("system");
   }

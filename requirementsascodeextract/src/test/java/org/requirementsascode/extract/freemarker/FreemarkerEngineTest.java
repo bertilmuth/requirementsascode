@@ -20,6 +20,7 @@ import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnte
 import org.requirementsascode.extract.freemarker.systemreaction.Quit;
 import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
+import org.requirementsascode.systemreaction.IgnoreIt;
 
 public class FreeMarkerEngineTest {
   private FreeMarkerEngine engine;
@@ -45,6 +46,9 @@ public class FreeMarkerEngineTest {
   public void extractsUseCaseModel() throws Exception {
     UseCaseModel useCaseModel = 
         UseCaseModelBuilder.newBuilder()
+        .useCase("Included Use Case")
+          .basicFlow()
+            .step("Included Step").system(new IgnoreIt<>())
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptUserToEnterName())
@@ -59,7 +63,8 @@ public class FreeMarkerEngineTest {
           .flow("Alternative Flow C").when(thereIsNoAlternative())
             .step("S5").continueWithoutAlternativeAt("S4")
           .flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
-            .step("S6").continueAt("S1")
+            .step("S4c_1").includeUseCase("Included Use Case")
+            .step("S4c_2").continueAt("S1")
         .build();    
     
     String templateFileName = "testextract.ftl";
@@ -69,20 +74,23 @@ public class FreeMarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "use case: Get greeted. flow: basic flow"
+        "use case: Included Use Case. flow: basic flow"
+            + " step: Included Step."
+        + " use case: Get greeted. flow: basic flow"
             + " step: S1. System prompts user to enter name."
             + " step: S2. As long as some condition is fulfilled: User enters name. System greets user."
             + " step: S3. User decides to quit."
             + " step: S4. System quits."
             + " flow: Alternative Flow A Instead of S4:"
-            + " step: S4a_1. System blows up."
+            + " step: S4a_1. System blows up." 
             + " step: S4a_2. System continues at S1."
             + " flow: Alternative Flow B After S3:"
             + " step: S4b_1. System continues after S2."
             + " flow: Alternative Flow C Anytime, when there is no alternative:"
             + " step: S5. System continues without alternative at S4."
             + " flow: Alternative Flow D Instead of S4, when there is no alternative:"
-            + " step: S6. System continues at S1.", 
+            + " step: S4c_1. System includes use case Included Use Case."
+            + " step: S4c_2. System continues at S1.",
         output);
   }
 

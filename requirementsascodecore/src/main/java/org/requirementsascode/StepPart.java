@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.systemreaction.IncludeUseCase;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
@@ -157,7 +158,7 @@ public class StepPart {
   public StepSystemPart<UseCaseModelRunner> includeUseCase(String useCaseName) {
     UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
     StepSystemPart<UseCaseModelRunner> stepSystemPart =
-        system(runner -> runner.includeUseCase(includedUseCase, step));
+        system(new IncludeUseCase(includedUseCase, step));
     return stepSystemPart;
   }
 
