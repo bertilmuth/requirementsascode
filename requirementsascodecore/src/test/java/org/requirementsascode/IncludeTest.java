@@ -443,4 +443,33 @@ public class IncludeTest extends AbstractTestCase{
 
     assertEquals(CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
   }
+  
+  @Test
+  public void includesUseCaseThatIncludesUseCase_withoutPredicate() {
+    UseCaseModel useCaseModel = useCaseModelBuilder
+      .useCase(USE_CASE_2)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+      .useCase(INCLUDED_USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EnterText.class).system(displayEnteredText())
+          .step(SYSTEM_INCLUDES_USE_CASE_2).includeUseCase(USE_CASE_2)
+          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EnterText.class).system(displayEnteredText())
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+      .build();
+      
+    useCaseModelRunner.run(useCaseModel);
+    useCaseModelRunner.reactTo(enterText(), enterNumber(), enterText());
+    String expectedSteps =
+        SYSTEM_INCLUDES_USE_CASE + ";"
+        + CUSTOMER_ENTERS_TEXT + ";"
+        + SYSTEM_INCLUDES_USE_CASE_2 + ";"
+        + CUSTOMER_ENTERS_NUMBER + ";"
+        + CUSTOMER_ENTERS_TEXT_AGAIN + ";"
+        + SYSTEM_DISPLAYS_TEXT + ";";
+    assertEquals(expectedSteps, runStepNames());
+  }  
 }

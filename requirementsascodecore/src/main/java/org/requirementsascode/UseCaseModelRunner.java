@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +36,8 @@ public class UseCaseModelRunner {
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
   private Optional<Predicate<Step>> stepWithoutAlternativePredicate;
+  private LinkedList<UseCase> includedUseCases;
+  private LinkedList<Step> includeSteps;
   private Optional<UseCase> optionalIncludedUseCase;
   private Optional<Step> optionalIncludeStep;
 
@@ -67,6 +70,8 @@ public class UseCaseModelRunner {
    */
   public void restart() {
     setLatestStep(Optional.empty());
+    includedUseCases = new LinkedList<>();
+    includeSteps = new LinkedList<>();
     optionalIncludedUseCase = Optional.empty();
     optionalIncludeStep = Optional.empty();
   }
@@ -216,9 +221,21 @@ public class UseCaseModelRunner {
         && optionalIncludeStep.isPresent()
         && isAtEndOfIncludedFlow()) {
       setLatestStep(optionalIncludeStep);
-      optionalIncludedUseCase = Optional.empty();
-      optionalIncludeStep = Optional.empty();
+      optionalIncludedUseCase = getUseCaseIncludedBefore();
+      optionalIncludeStep = getIncludeStepBefore();
     }
+  }
+  
+  private Optional<UseCase> getUseCaseIncludedBefore(){
+    includedUseCases.pop();
+    UseCase includedUseCase = includedUseCases.peek();
+    return includedUseCase != null? Optional.of(includedUseCase) : Optional.empty();
+  }
+  
+  private Optional<Step> getIncludeStepBefore(){
+    includeSteps.pop();
+    Step includeStep = includeSteps.peek();
+    return includeStep != null? Optional.of(includeStep) : Optional.empty();
   }
 
 
@@ -350,13 +367,15 @@ public class UseCaseModelRunner {
     return latestStep.map(step -> step.getFlow());
   }
 
-  public void setStepWithoutAlternativePredicate(Predicate<Step> stepWithoutAlternativePredicate) {
-    this.stepWithoutAlternativePredicate = Optional.of(stepWithoutAlternativePredicate);
+  public void setStepWithoutAlternativePredicate(Predicate<Step> predicate) {
+    stepWithoutAlternativePredicate = Optional.of(predicate);
   }
 
   public void includeUseCase(UseCase includedUseCase, Step includeStep) {
-    this.optionalIncludedUseCase = Optional.of(includedUseCase);
-    this.optionalIncludeStep = Optional.of(includeStep);
+    includedUseCases.push(includedUseCase);
+    includeSteps.push(includeStep);
+    optionalIncludedUseCase = Optional.of(includedUseCase);
+    optionalIncludeStep = Optional.of(includeStep);
     for(Flow includedFlow : includedUseCase.getFlows()){
       includeFlowAfterStep(includedFlow, includeStep);
     }
