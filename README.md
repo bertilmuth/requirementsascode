@@ -25,23 +25,23 @@ and vary or change the user interface.
 * [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
-* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.4.0/requirementsascodecore-0.4.0-javadoc.jar)
+* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0-javadoc.jar)
 
 Note that the API is likely to change.
 
 # getting started
 * At least Java 8 is required, download and install it if necessary.
-* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.4.0/requirementsascodecore-0.4.0.jar) and save it in a local folder.
-* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.4.0/helloworld-0.4.0.jar) and save it in the same folder.
+* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0.jar) and save it in a local folder.
+* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/helloworld-0.5.0.jar) and save it in the same folder.
 * To run the first Hello World example, switch to the folder in a console and enter: 
 
 Windows:
 ``` java
-java -cp "helloworld-0.4.0.jar;requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01
+java -cp "helloworld-0.5.0.jar;requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
 ```
 Unix:
 ``` java
-java -cp "helloworld-0.4.0.jar:requirementsascodecore-0.4.0.jar" helloworld.HelloWorld01
+java -cp "helloworld-0.5.0.jar:requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
 ```
 The same principle applies to the cross cutting concerns example project: you need to put the example project's jar
 on the classpath, and the requirementsascodecore jar.
