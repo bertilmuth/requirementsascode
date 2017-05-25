@@ -16,7 +16,7 @@ import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecase.ShoppingAppModel;
 import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
+import shoppingappjavafx.usecase.userevent.StartCheckoutProcess;
 import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
 import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
@@ -46,7 +46,7 @@ public class BuyProductRealizationTest {
 		useCaseModelRunner.run(useCaseModel);
 		useCaseModelRunner.reactTo(
 			new AddProductToCart(new Product("Hamster Wheel, Black", new BigDecimal(9.95))),
-			new CheckoutPurchase(),
+			new StartCheckoutProcess(),
 			new EnterShippingInformation(new ShippingInformation()),
 			new EnterPaymentDetails(new PaymentDetails()),
 			new ConfirmPurchase());
