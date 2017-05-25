@@ -16,7 +16,7 @@ import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.Products;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.CheckOutPurchase;
+import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
 
 public class DisplayProductsController extends AbstractController{
     @FXML
@@ -30,7 +30,7 @@ public class DisplayProductsController extends AbstractController{
         
     @FXML
     void onCheckout(ActionEvent event) {
-    	CheckOutPurchase checkoutPurchase =  new CheckOutPurchase();
+    	CheckoutPurchase checkoutPurchase =  new CheckoutPurchase();
     	useCaseModelRunner().reactTo(checkoutPurchase);
     }
 	
@@ -91,6 +91,6 @@ public class DisplayProductsController extends AbstractController{
 		checkoutButton.setDisable(whenCheckoutIsNotPossible());
 	}
 	private boolean whenCheckoutIsNotPossible() {
-		return !useCaseModelRunner().canReactTo(CheckOutPurchase.class);
+		return !useCaseModelRunner().canReactTo(CheckoutPurchase.class);
 	}
 }

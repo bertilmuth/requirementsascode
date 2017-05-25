@@ -4,7 +4,7 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 
 import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.CheckOutPurchase;
+import shoppingappjavafx.usecase.userevent.CheckoutPurchase;
 import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
 import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
@@ -42,7 +42,7 @@ public class ShoppingAppModel {
    * User/system events
    */
   private Class<AddProductToCart> addProductToCart;
-  private Class<CheckOutPurchase> checkOutPurchase;
+  private Class<CheckoutPurchase> checkOutPurchase;
   private Class<EnterShippingInformation> enterShippingInformation;
   private Class<EnterPaymentDetails> enterPaymentDetails;
   private Class<ConfirmPurchase> confirmPurchase;
@@ -111,7 +111,7 @@ public class ShoppingAppModel {
 
   private void setupEvents() {
     this.addProductToCart = AddProductToCart.class;
-    this.checkOutPurchase = CheckOutPurchase.class;
+    this.checkOutPurchase = CheckoutPurchase.class;
     this.enterShippingInformation = EnterShippingInformation.class;
     this.enterPaymentDetails = EnterPaymentDetails.class;
     this.confirmPurchase = ConfirmPurchase.class;

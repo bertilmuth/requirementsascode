@@ -1,6 +1,6 @@
 package shoppingappjavafx.usecase.userevent;
 
-public class CheckOutPurchase {	
-	public CheckOutPurchase() {
+public class CheckoutPurchase {	
+	public CheckoutPurchase() {
 	}
 }
