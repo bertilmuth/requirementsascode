@@ -8,5 +8,5 @@ import org.requirementsascode.extract.freemarker.methodmodel.FirstWordOfMethodTe
 import org.requirementsascode.extract.freemarker.methodmodel.WordsOfMethodTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({FreeMarkerEngineTest.class, AfterFirstWordOfMethodTest.class, FirstWordOfMethodTest.class, WordsOfMethodTest.class})
+@SuiteClasses({FreemarkerEngineTest.class, AfterFirstWordOfMethodTest.class, FirstWordOfMethodTest.class, WordsOfMethodTest.class})
 public class AllTests {}

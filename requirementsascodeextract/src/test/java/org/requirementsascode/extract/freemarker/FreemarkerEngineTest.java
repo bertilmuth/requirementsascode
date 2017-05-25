@@ -22,7 +22,7 @@ import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EnterName;
 import org.requirementsascode.systemreaction.IgnoreIt;
 
-public class FreeMarkerEngineTest {
+public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;
 
   @Before
