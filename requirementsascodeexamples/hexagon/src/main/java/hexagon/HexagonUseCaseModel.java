@@ -4,22 +4,21 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 
 public class HexagonUseCaseModel {
-  private DisplayPort displayPort;
+  private ConsolePort consolePort;
   private final Class<AskForPoem> askForPoem;
   
-  public HexagonUseCaseModel(DisplayPort displayPort) {
-    this.displayPort = displayPort;
+  public HexagonUseCaseModel(ConsolePort consolePort) {
+    this.consolePort = consolePort;
     askForPoem = AskForPoem.class;
   }
   
   public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-    UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder()
-      .useCase("Feel Stuff")
-        .basicFlow()
-          .step("1").user(askForPoem).system(displayPort::displaySadPoem)
-          .step("2").user(askForPoem).system(displayPort::displayHappyPoem)
-          .step("3").user(askForPoem).system(displayPort::displayFunnyPoem)
-      .build();
+    UseCaseModel useCaseModel = modelBuilder.useCase("Feel Stuff")
+      .basicFlow()
+        .step("1").user(askForPoem).system(consolePort::writeSadPoem)
+        .step("2").user(askForPoem).system(consolePort::writeHappyPoem)
+        .step("3").user(askForPoem).system(consolePort::writeFunnyPoem)
+    .build();
     
     return useCaseModel;
   }  

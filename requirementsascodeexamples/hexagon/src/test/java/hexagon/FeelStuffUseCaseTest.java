@@ -12,13 +12,13 @@ public class FeelStuffUseCaseTest {
 
   private UseCaseModel useCaseModel;
   private TestUseCaseModelRunner testRunner;
-  private DisplayPort displayPort;
+  private ConsolePort consolePort;
 
   @Before
   public void setUp() throws Exception {
-    displayPort = new DisplayStub();
+    consolePort = new ConsoleStub();
     useCaseModel = 
-      new HexagonUseCaseModel(displayPort).buildWith(UseCaseModelBuilder.newBuilder());
+      new HexagonUseCaseModel(consolePort).buildWith(UseCaseModelBuilder.newBuilder());
     testRunner = new TestUseCaseModelRunner();
   }
 
@@ -28,6 +28,4 @@ public class FeelStuffUseCaseTest {
     testRunner.reactTo(new AskForPoem(), new AskForPoem(), new AskForPoem());
     assertEquals("1;2;3;", testRunner.getRunStepNames());
   }
-  
-
 }
