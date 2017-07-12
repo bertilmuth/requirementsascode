@@ -1,6 +1,6 @@
 package hexagon;
 
-public class FeelStuffUseCaseRealization implements ConsolePort{
+public class FeelStuffUseCaseRealization{
   private RepositoryPort repositoryPort;
   private WriterPort writerPort;
 
@@ -9,19 +9,16 @@ public class FeelStuffUseCaseRealization implements ConsolePort{
     this.repositoryPort = repositoryPort;
   }
   
-  @Override
   public void writeSadPoem(AskForPoem ask){
     String poem = repositoryPort.getSadPoem();
     writerPort.write(poem); 
   }
   
-  @Override
   public void writeHappyPoem(AskForPoem ask){
     String poem = repositoryPort.getHappyPoem();
     writerPort.write(poem); 
   }
   
-  @Override
   public void writeFunnyPoem(AskForPoem ask){
     String poem = repositoryPort.getFunnyPoem();
     writerPort.write(poem); 
