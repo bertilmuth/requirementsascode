@@ -1,10 +1,10 @@
 package hexagon;
 
-public class ConsoleAdapter implements ConsolePort{
+public class FeelStuffUseCaseRealization implements ConsolePort{
   private RepositoryPort repositoryPort;
   private WriterPort writerPort;
 
-  public ConsoleAdapter(WriterPort writerPort, RepositoryPort repositoryPort) {
+  public FeelStuffUseCaseRealization(WriterPort writerPort, RepositoryPort repositoryPort) {
     this.writerPort = writerPort;
     this.repositoryPort = repositoryPort;
   }

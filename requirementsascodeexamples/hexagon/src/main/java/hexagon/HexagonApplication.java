@@ -5,7 +5,7 @@ import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
 public class HexagonApplication {
-  private ConsolePort consolePort;
+  private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
   private UseCaseModel useCaseModel;
   private UseCaseModelRunner runner;
 
@@ -14,9 +14,9 @@ public class HexagonApplication {
   }
 
   private void start() {
-    consolePort = new ConsoleAdapter(new WriterAdapter(), new RepositoryAdapter());
+    feelStuffUseCaseRealization = new FeelStuffUseCaseRealization(new WriterAdapter(), new RepositoryAdapter());
     useCaseModel = 
-      new HexagonUseCaseModel(consolePort).buildWith(UseCaseModelBuilder.newBuilder());
+      new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(UseCaseModelBuilder.newBuilder());
     
     runner = new UseCaseModelRunner();
     runner.run(useCaseModel);

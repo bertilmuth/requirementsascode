@@ -12,13 +12,15 @@ public class FeelStuffUseCaseTest {
 
   private UseCaseModel useCaseModel;
   private TestUseCaseModelRunner testRunner;
-  private ConsolePort consolePort;
+  private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
 
   @Before
   public void setUp() throws Exception {
-    consolePort = new ConsoleStub();
-    useCaseModel = 
-      new HexagonUseCaseModel(consolePort).buildWith(UseCaseModelBuilder.newBuilder());
+    feelStuffUseCaseRealization =
+        new FeelStuffUseCaseRealization(new WriterStub(), new RepositoryStub());
+    useCaseModel =
+        new HexagonUseCaseModel(feelStuffUseCaseRealization)
+            .buildWith(UseCaseModelBuilder.newBuilder());
     testRunner = new TestUseCaseModelRunner();
   }
 
