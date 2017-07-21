@@ -1,4 +1,6 @@
-package hexagon;
+package hexagon.adapter.stub;
+
+import hexagon.usecaserealization.WriterPort;
 
 public class WriterStub implements WriterPort {
   @Override

@@ -1,4 +1,4 @@
-package hexagon;
+package hexagon.usecaserealization;
 
 public interface RepositoryPort {
   String getSadPoem();

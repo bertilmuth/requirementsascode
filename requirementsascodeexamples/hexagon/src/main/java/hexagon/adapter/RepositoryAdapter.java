@@ -1,4 +1,6 @@
-package hexagon;
+package hexagon.adapter;
+
+import hexagon.usecaserealization.RepositoryPort;
 
 public class RepositoryAdapter implements RepositoryPort {
   @Override

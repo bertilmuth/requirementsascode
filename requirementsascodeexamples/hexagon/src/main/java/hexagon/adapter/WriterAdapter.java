@@ -1,4 +1,6 @@
-package hexagon;
+package hexagon.adapter;
+
+import hexagon.usecaserealization.WriterPort;
 
 public class WriterAdapter implements WriterPort {
   @Override

@@ -1,4 +1,6 @@
-package hexagon;
+package hexagon.usecaserealization;
+
+import hexagon.usecase.AskForPoem;
 
 public class FeelStuffUseCaseRealization{
   private RepositoryPort repositoryPort;

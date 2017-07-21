@@ -4,6 +4,12 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
+import hexagon.adapter.RepositoryAdapter;
+import hexagon.adapter.WriterAdapter;
+import hexagon.usecase.AskForPoem;
+import hexagon.usecase.HexagonUseCaseModel;
+import hexagon.usecaserealization.FeelStuffUseCaseRealization;
+
 public class HexagonApplication {
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
   private UseCaseModel useCaseModel;

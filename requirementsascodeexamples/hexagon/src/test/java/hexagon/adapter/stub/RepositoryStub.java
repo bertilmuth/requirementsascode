@@ -1,4 +1,6 @@
-package hexagon;
+package hexagon.adapter.stub;
+
+import hexagon.usecaserealization.RepositoryPort;
 
 public class RepositoryStub implements RepositoryPort {
 

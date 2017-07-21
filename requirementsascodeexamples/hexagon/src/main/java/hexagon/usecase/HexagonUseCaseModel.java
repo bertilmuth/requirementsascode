@@ -1,7 +1,9 @@
-package hexagon;
+package hexagon.usecase;
 
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
+
+import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class HexagonUseCaseModel {
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
