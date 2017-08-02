@@ -12,7 +12,7 @@ As the same code controls the visible behavior of your software _and_ is used as
 you can always generate documentation that represents how your software really works. Also, there is a defined place in your code that describes the use cases and how they are realized.
 That makes your application more maintable.
 
-While requirementsascode works with any application design, it makes it easy to transition your application
+While requirements as code works with any application design, it makes it easy to transition your application
 to a [clean architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html). 
 By reducing dependencies between the application's components, you can make your application more changeable.
 A clear separation between user interface and backend makes it easier to test the application without user interface, 
@@ -28,7 +28,7 @@ Note that the API is likely to change.
 
 # getting started
 * At least Java 8 is required, download and install it if necessary.
-* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0.jar) and save it in a local folder.
+* To use the library, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0.jar) and save it in a local folder.
 * If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/helloworld-0.5.0.jar) and save it in the same folder.
 * To run the first Hello World example, switch to the folder in a console and enter: 
 
