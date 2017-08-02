@@ -1,8 +1,5 @@
 # requirements as code
-When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code.
-As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
-
-Using this project,  you can put your application's functional requirements as executable use cases in the code. They control the visible behavior of your application.
+As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. Writing functional requirements as executable use cases in the code - that is what this project is about. The use cases control the visible behavior of your application.
 
 Later, you can automatically generate documentation from _that code_.
 The documentation describes the use cases in a non-technical way,
