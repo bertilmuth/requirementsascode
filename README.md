@@ -2,21 +2,12 @@
 As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. Writing functional requirements as executable use cases in the code - that is what this project is about. The use cases control the visible behavior of your application.
 
 Later, you can automatically generate documentation from that code. The documentation describes the use cases in a non-technical way, so that a larger group of stakeholders can understand it.
-=======
-# requirements as code
-As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. Writing functional requirements as executable use cases in the code - that is what this project is about. The use cases control the visible behavior of your application.
-
-Later, you can automatically generate documentation from _that code_.
-The documentation describes the use cases in a non-technical way,
-so that a larger group of stakeholders can understand it.
->>>>>>> origin/master
 
 In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
 
-<<<<<<< HEAD
 If you are using Maven, include the following in your POM:
 ``` xml
 	<dependencies>
@@ -47,13 +38,6 @@ For a simple Hello World example, run the following code (e.g. in a main method)
 
 Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
 the e(fx)clipse plugin.
-=======
-While requirements as code works with any application design, it makes it easy to transition your application
-to a [clean architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html). 
-By reducing dependencies between the application's components, you can make your application more changeable.
-A clear separation between user interface and backend makes it easier to test the application without user interface, 
-and vary or change the user interface.
->>>>>>> origin/master
 
 # documentation
 * [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
@@ -62,35 +46,10 @@ and vary or change the user interface.
 
 Note that the API is likely to change.
 
-<<<<<<< HEAD
 # benefits of using requirements as code
 As the same code controls the visible behavior of your software _and_ is used as the source of documentation,
 you can always generate documentation that represents how your software really works. Also, there is a defined place in your code that describes the use cases and how they are realized.
 That makes your application more maintable.
-=======
-# getting started
-* At least Java 8 is required, download and install it if necessary.
-* To use the library, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0.jar) and save it in a local folder.
-* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/helloworld-0.5.0.jar) and save it in the same folder.
-* To run the first Hello World example, switch to the folder in a console and enter: 
-
-Windows:
-``` java
-java -cp "helloworld-0.5.0.jar;requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
-```
-Unix:
-``` java
-java -cp "helloworld-0.5.0.jar:requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
-```
-The same principle applies to the cross cutting concerns example project: you need to put the example project's jar
-on the classpath, and the requirementsascodecore jar.
-
-For the shoppingappjavafx and shoppingappextract examples, a distribution zip is available in the Releases tab
-that makes it easy to start the application.
-
-Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
-the e(fx)clipse plugin.
->>>>>>> origin/master
 
 While requirementsascode works with any application design, it makes it easy to transition your application
 to a [clean architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html). 
