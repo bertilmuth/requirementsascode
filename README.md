@@ -16,13 +16,11 @@ Requirements as code is available on Maven Central.
 
 If you are using Maven, include the following in your POM, to use the core:
 ``` xml
-<dependencies>
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
     <version>0.5.1</version>
   </dependency>
-</dependencies>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
