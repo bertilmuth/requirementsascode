@@ -1,6 +1,6 @@
 jar {
     manifest {
-        attributes 'Implementation-Title': 'requirementsascode - cross cutting concerns',
+        attributes 'Implementation-Title': 'requirements as code - cross cutting concerns',
                    'Implementation-Version': version
     }
 }

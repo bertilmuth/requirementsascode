@@ -4,7 +4,7 @@ mainClassName = 'shoppingappjavafx.gui.JavafxMain'
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'requirementsascode - shopping app JavaFX',
+        attributes 'Implementation-Title': 'requirements as code - shopping app JavaFX',
                    'Implementation-Version': version
 	}
 }

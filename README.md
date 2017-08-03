@@ -1,16 +1,52 @@
 # requirementsascode
-When a requirement is still under discussion, it makes sense to have a lightweight documentation of it outside the code.
-As soon as a requirement is implemented, the code itself becomes the most reliable "source of truth" for the requirement and its realization. 
+As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. Writing functional requirements as executable use cases in the code - that is what this project is about. The use cases control the visible behavior of your application.
 
-With requirementsascode,  you can represent your application's use cases in the source code. And run them. They control the visible behavior of your application.
-
-Later, you can automatically generate documentation from _that code_.
-The documentation describes the use cases in a non-technical way,
-so that a larger group of stakeholders can understand it.
+Later, you can automatically generate documentation from that code. The documentation describes the use cases in a non-technical way, so that a larger group of stakeholders can understand it.
 
 In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
 
-# benefits
+# getting started
+At least Java 8 is required, download and install it if necessary.
+
+If you are using Maven, include the following in your POM:
+``` xml
+	<dependencies>
+		<dependency>
+			<groupId>org.requirementsascode</groupId>
+			<artifactId>requirementsascodecore</artifactId>
+			<version>0.5.1</version>
+		</dependency>
+	</dependencies>
+```
+
+If you are using Gradle, include the following in your build.gradle:
+```
+compile 'org.requirementsascode:requirementsascodecore:0.5.1'
+```
+
+For a simple Hello World example, run the following code (e.g. in a main method):
+``` java
+	UseCaseModel useCaseModel = 
+		UseCaseModelBuilder.newBuilder()
+			.useCase("Say Hello")
+				.basicFlow()
+					.step("S1").system(r -> System.out.println("Hello World!"))
+		.build();
+	UseCaseModelRunner runner = new UseCaseModelRunner();
+	runner.run(useCaseModel);
+```
+
+Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
+the e(fx)clipse plugin.
+
+# documentation
+* [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
+* [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
+
+Note that the API is likely to change.
+
+# benefits of using requirements as code
 As the same code controls the visible behavior of your software _and_ is used as the source of documentation,
 you can always generate documentation that represents how your software really works. Also, there is a defined place in your code that describes the use cases and how they are realized.
 That makes your application more maintable.
@@ -20,39 +56,6 @@ to a [clean architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-cle
 By reducing dependencies between the application's components, you can make your application more changeable.
 A clear separation between user interface and backend makes it easier to test the application without user interface, 
 and vary or change the user interface.
-
-# documentation
-* [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
-* [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
-* [javadoc](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0-javadoc.jar)
-
-Note that the API is likely to change.
-
-# getting started
-* At least Java 8 is required, download and install it if necessary.
-* To use the framework, download the [requirementsascodecore jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/requirementsascodecore-0.5.0.jar) and save it in a local folder.
-* If you want to try out the Hello World examples, download the [helloworld jar](https://github.com/bertilmuth/requirementsascode/releases/download/v0.5.0/helloworld-0.5.0.jar) and save it in the same folder.
-* To run the first Hello World example, switch to the folder in a console and enter: 
-
-Windows:
-``` java
-java -cp "helloworld-0.5.0.jar;requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
-```
-Unix:
-``` java
-java -cp "helloworld-0.5.0.jar:requirementsascodecore-0.5.0.jar" helloworld.HelloWorld01
-```
-The same principle applies to the cross cutting concerns example project: you need to put the example project's jar
-on the classpath, and the requirementsascodecore jar.
-
-For the shoppingappjavafx and shoppingappextract examples, a distribution zip is available in the Releases tab
-that makes it easy to start the application.
-
-Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
-the e(fx)clipse plugin.
-
-Build tool support will be available in the future.
 
 # subprojects
 * [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models. 

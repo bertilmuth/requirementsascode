@@ -1,6 +1,6 @@
 jar {
     manifest {
-        attributes 'Implementation-Title': 'requirementsascode - hello world',
+        attributes 'Implementation-Title': 'requirements as code - hello world',
                    'Implementation-Version': version
     }
 }
