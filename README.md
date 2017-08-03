@@ -1,9 +1,11 @@
 # requirements as code
-As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. Writing functional requirements as executable use cases in the code - that is what this project is about. The use cases control the visible behavior of your application.
+As soon as a requirement is implemented, the code becomes the most reliable "source of truth" for it. 
 
-Later, you can automatically generate documentation from that code. The documentation describes the use cases in a non-technical way, so that a larger group of stakeholders can understand it.
+Writing functional requirements as use cases in the code, and being able to run them - that is what this project is about. 
 
-In addition to that, you can also specify cross-cutting concerns, e.g. for measuring performance.
+Later, you can automatically generate living documentation from the use cases. This documentation accurately reflects the visible behavior of your application.
+
+In addition to that, you can also specify cross-cutting concerns in a very simple way, e.g. for measuring performance.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
@@ -38,15 +40,10 @@ UseCaseModelRunner runner = new UseCaseModelRunner();
 runner.run(useCaseModel);
 ```
 
-Note that if you want to use the shoppingappjavafx example in Eclipse, you should use
-the e(fx)clipse plugin.
-
 # documentation
-* [hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [more hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
-
-Note that the API is likely to change.
 
 # benefits of using requirements as code
 As the same code controls the visible behavior of your software _and_ is used as the source of documentation,
