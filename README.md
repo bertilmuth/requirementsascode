@@ -8,32 +8,32 @@ In addition to that, you can also specify cross-cutting concerns, e.g. for measu
 # getting started
 At least Java 8 is required, download and install it if necessary.
 
-The library is available on Maven Central.
+Requirements as code is available on Maven Central.
 
-If you are using Maven, include the following in your POM:
+If you are using Maven, include the following in your POM, to use the core:
 ``` xml
 <dependencies>
-	<dependency>
-		<groupId>org.requirementsascode</groupId>
-		<artifactId>requirementsascodecore</artifactId>
-		<version>0.5.1</version>
-	</dependency>
+  <dependency>
+    <groupId>org.requirementsascode</groupId>
+    <artifactId>requirementsascodecore</artifactId>
+    <version>0.5.1</version>
+  </dependency>
 </dependencies>
 ```
 
-If you are using Gradle, include the following in your build.gradle:
+If you are using Gradle, include the following in your build.gradle, to use the core:
 ```
 compile 'org.requirementsascode:requirementsascodecore:0.5.1'
 ```
 
-For a simple Hello World example, run the following code (e.g. in a main method):
+Then, for a simple Hello World example, run the following code (e.g. in a main method):
 ``` java
 UseCaseModel useCaseModel = 
-	UseCaseModelBuilder.newBuilder()
-		.useCase("Say Hello")
-			.basicFlow()
-				.step("S1").system(r -> System.out.println("Hello World!"))
-	.build();
+  UseCaseModelBuilder.newBuilder()
+    .useCase("Say Hello")
+      .basicFlow()
+        .step("S1").system(r -> System.out.println("Hello World!"))
+  .build();
 UseCaseModelRunner runner = new UseCaseModelRunner();
 runner.run(useCaseModel);
 ```
