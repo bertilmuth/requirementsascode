@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -18,7 +19,9 @@ import org.requirementsascode.predicate.Anytime;
  *
  * @author b_muth
  */
-public class Step extends UseCaseModelElement {
+public class Step extends UseCaseModelElement implements Serializable{
+  private static final long serialVersionUID = -2926490717985964131L;
+  
   private Flow flow;
   private Step previousStepInFlow;
   private Predicate<UseCaseModelRunner> reactWhile;
