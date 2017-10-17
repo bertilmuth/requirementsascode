@@ -1,5 +1,7 @@
 package org.requirementsascode.exception;
 
+import java.io.Serializable;
+
 import org.requirementsascode.Step;
 
 /**
@@ -9,7 +11,7 @@ import org.requirementsascode.Step;
  * @author b_muth
  *
  */
-public class MissingUseCaseStepPart extends RuntimeException{
+public class MissingUseCaseStepPart extends RuntimeException implements Serializable{
 	private static final long serialVersionUID = 1154053717206525045L;
 	
 	public MissingUseCaseStepPart(Step useCaseStep, String partName) {
