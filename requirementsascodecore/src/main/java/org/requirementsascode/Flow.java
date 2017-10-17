@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,8 @@ import java.util.stream.Collectors;
  *
  * @author b_muth
  */
-public class Flow extends UseCaseModelElement {
+public class Flow extends UseCaseModelElement implements Serializable{
+  private static final long serialVersionUID = -2448742413260609615L;
   private UseCase useCase;
 
   /**
