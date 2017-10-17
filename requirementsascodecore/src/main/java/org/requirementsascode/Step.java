@@ -20,7 +20,7 @@ import org.requirementsascode.predicate.Anytime;
  */
 public class Step extends UseCaseModelElement {
   private Flow flow;
-  private Optional<Step> optionalPreviousStepInFlow;
+  private Step previousStepInFlow;
   private Optional<Predicate<UseCaseModelRunner>> reactWhile;
 
   private Actor[] actors;
@@ -40,17 +40,16 @@ public class Step extends UseCaseModelElement {
 
     this.flow = useCaseFlow;
     this.reactWhile = Optional.empty();
-    this.optionalPreviousStepInFlow = Optional.empty();
     this.optionalFlowPosition = Optional.empty();
     this.optionalWhen = Optional.empty();
   }
 
   public Step getPreviousStepInFlow() {
-    return optionalPreviousStepInFlow.orElse(null);
+    return previousStepInFlow;
   }
   
   void setPreviousStepInFlow(Step previousStepInFlow) {
-    this.optionalPreviousStepInFlow = Optional.of(previousStepInFlow);
+    this.previousStepInFlow = previousStepInFlow;
   }
 
   public Flow getFlow() {
@@ -110,8 +109,7 @@ public class Step extends UseCaseModelElement {
   }
   
   Predicate<UseCaseModelRunner> getDefaultPredicate() {
-    Step previousStep = optionalPreviousStepInFlow.orElse(null);
-    return new After(previousStep).and(noStepWithDefinedPredicateInterrupts());
+    return new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
   }
 
   public Actor[] getActors() {
