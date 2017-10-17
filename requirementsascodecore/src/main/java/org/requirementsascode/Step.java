@@ -26,7 +26,7 @@ public class Step extends UseCaseModelElement {
   private Actor[] actors;
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
-  private Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition;
+  private Predicate<UseCaseModelRunner> flowPosition;
   private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
 
   /**
@@ -39,7 +39,6 @@ public class Step extends UseCaseModelElement {
     super(stepName, useCaseFlow.getUseCaseModel());
 
     this.flow = useCaseFlow;
-    this.optionalFlowPosition = Optional.empty();
     this.optionalWhen = Optional.empty();
   }
 
@@ -81,11 +80,11 @@ public class Step extends UseCaseModelElement {
   }
   
   public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
-    this.optionalFlowPosition = Optional.of(flowPosition);
+    this.flowPosition = flowPosition;
   }
 
   public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
-    return optionalFlowPosition;
+    return Optional.ofNullable(flowPosition);
   }
 
   public void setWhen(Predicate<UseCaseModelRunner> when) {
@@ -99,10 +98,10 @@ public class Step extends UseCaseModelElement {
   public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
     Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
 
-    if (optionalFlowPosition.isPresent() || optionalWhen.isPresent()) {
+    if (flowPosition != null || optionalWhen.isPresent()) {
       Anytime anytime = new Anytime();
       Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
-          optionalFlowPosition.orElse(anytime);
+          flowPosition != null? flowPosition : anytime;
       Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
       flowPredicate =
           Optional.of(
