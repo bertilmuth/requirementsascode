@@ -83,7 +83,7 @@ public class Step extends UseCaseModelElement implements Serializable{
     return Optional.ofNullable(flowPosition);
   }
 
-  public void setWhen(Predicate<UseCaseModelRunner> when) {
+  void setWhen(Predicate<UseCaseModelRunner> when) {
     this.when = when;
   }
 
