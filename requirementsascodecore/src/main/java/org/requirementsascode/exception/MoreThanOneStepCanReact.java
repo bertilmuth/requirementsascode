@@ -1,5 +1,6 @@
 package org.requirementsascode.exception;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ import org.requirementsascode.Step;
  * @author b_muth
  *
  */
-public class MoreThanOneStepCanReact  extends RuntimeException {	
+public class MoreThanOneStepCanReact extends RuntimeException implements Serializable{	
 	private static final long serialVersionUID = 1773129287125843814L;
 
 	public MoreThanOneStepCanReact(Collection<Step> useCaseSteps) {
