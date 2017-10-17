@@ -1,11 +1,14 @@
 package org.requirementsascode.predicate;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class InsteadOf implements FlowPosition{
+public class InsteadOf implements FlowPosition, Serializable{
+  private static final long serialVersionUID = -3958653686352185075L;
+  
   private Step step;
   private After after;
 
