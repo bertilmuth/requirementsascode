@@ -75,7 +75,7 @@ public class Step extends UseCaseModelElement implements Serializable{
     this.reactWhile = reactWhile;
   }
   
-  public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
+  void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
     this.flowPosition = flowPosition;
   }
 
