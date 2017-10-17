@@ -36,7 +36,7 @@ public class UseCaseModelRunner implements Serializable{
   private boolean isRunning;
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
-  private Optional<Predicate<Step>> stepWithoutAlternativePredicate;
+  private Predicate<Step> stepWithoutAlternativePredicate;
   private LinkedList<UseCase> includedUseCases;
   private LinkedList<Step> includeSteps;
   private Optional<UseCase> optionalIncludedUseCase;
@@ -51,7 +51,6 @@ public class UseCaseModelRunner implements Serializable{
   public UseCaseModelRunner() {
     this.user = Optional.empty();
     this.systemReactionTrigger = new SystemReactionTrigger();
-    this.stepWithoutAlternativePredicate = Optional.empty();
 
     adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
     restart();
@@ -205,7 +204,7 @@ public class UseCaseModelRunner implements Serializable{
     }
 
     setLatestStep(step);
-    stepWithoutAlternativePredicate = Optional.empty();
+    setStepWithoutAlternativePredicate(null);
     systemReactionTrigger.setupWith(event, step);
 
     try {
@@ -296,7 +295,7 @@ public class UseCaseModelRunner implements Serializable{
             .filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
             .filter(step -> hasTruePredicate(step))
             .filter(step -> isStepInIncludedUseCaseIfPresent(step))
-            .filter(stepWithoutAlternativePredicate.orElse(s -> true))
+            .filter(getStepWithoutAlternativePredicate().orElse(s -> true))
             .collect(Collectors.toSet());
     return steps;
   }
@@ -371,7 +370,11 @@ public class UseCaseModelRunner implements Serializable{
   }
 
   public void setStepWithoutAlternativePredicate(Predicate<Step> predicate) {
-    stepWithoutAlternativePredicate = Optional.of(predicate);
+    stepWithoutAlternativePredicate = predicate;
+  }
+
+  private Optional<Predicate<Step>> getStepWithoutAlternativePredicate() {
+    return Optional.ofNullable(stepWithoutAlternativePredicate);
   }
 
   public void includeUseCase(UseCase includedUseCase, Step includeStep) {
