@@ -45,8 +45,8 @@ public class Step extends UseCaseModelElement {
     this.optionalWhen = Optional.empty();
   }
 
-  public Optional<Step> getPreviousStepInFlow() {
-    return optionalPreviousStepInFlow;
+  public Step getPreviousStepInFlow() {
+    return optionalPreviousStepInFlow.orElse(null);
   }
   
   void setPreviousStepInFlow(Step previousStepInFlow) {
@@ -110,7 +110,8 @@ public class Step extends UseCaseModelElement {
   }
   
   Predicate<UseCaseModelRunner> getDefaultPredicate() {
-    return new After(optionalPreviousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
+    Step previousStep = optionalPreviousStepInFlow.orElse(null);
+    return new After(previousStep).and(noStepWithDefinedPredicateInterrupts());
   }
 
   public Actor[] getActors() {

@@ -6,6 +6,8 @@ package org.requirementsascode;
  * @author b_muth
  */
 public class TestUseCaseModelRunner extends UseCaseModelRunner {
+	private static final long serialVersionUID = 1161211712610795119L;
+
   private StringBuilder runStepNames;
 
   public TestUseCaseModelRunner() {

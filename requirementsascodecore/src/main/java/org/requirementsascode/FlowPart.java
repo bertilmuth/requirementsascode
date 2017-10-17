@@ -57,7 +57,7 @@ public class FlowPart {
    */
   public FlowPart after(String stepName) {
     Step step = useCase.findStep(stepName);
-    optionalFlowPosition = Optional.of(new After(Optional.of(step)));
+    optionalFlowPosition = Optional.of(new After(step));
     return this;
   }
 

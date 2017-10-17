@@ -1,7 +1,6 @@
 package org.requirementsascode.predicate;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.Step;
@@ -26,7 +25,7 @@ public class ReactWhile implements Predicate<UseCaseModelRunner>{
       Step step, Predicate<UseCaseModelRunner> reactWhileCondition) {
     Predicate<UseCaseModelRunner> performIfConditionIsTrue = step.getPredicate().and(reactWhileCondition);
     Predicate<UseCaseModelRunner> repeatIfConditionIsTrue =
-        new After(Optional.of(step)).and(reactWhileCondition);
+        new After(step).and(reactWhileCondition);
     completeCondition = performIfConditionIsTrue.or(repeatIfConditionIsTrue);
     this.reactWhileCondition = reactWhileCondition;
   }

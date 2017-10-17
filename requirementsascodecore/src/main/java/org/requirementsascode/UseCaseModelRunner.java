@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,12 +27,12 @@ import org.requirementsascode.predicate.After;
  * the backend. It is configured by the use case model it owns. Each real user needs an instance of
  * a runner, as the runner determines the journey of the user through the use cases.
  */
-public class UseCaseModelRunner {
+public class UseCaseModelRunner implements Serializable{
   private Optional<Actor> user;
   private List<Actor> userAndSystem;
 
   private UseCaseModel useCaseModel;
-  private Optional<Step> latestStep;
+  private Step latestStep;
   private boolean isRunning;
   private SystemReactionTrigger systemReactionTrigger;
   private Consumer<SystemReactionTrigger> systemReaction;
@@ -41,6 +42,8 @@ public class UseCaseModelRunner {
   private Optional<UseCase> optionalIncludedUseCase;
   private Optional<Step> optionalIncludeStep;
 
+  private static final long serialVersionUID = 1787451244764017381L;
+  
   /**
    * Constructor for creating a runner with standard system reaction, that is: the system reaction,
    * as defined in the use case step, simply accepts an event.
@@ -69,7 +72,7 @@ public class UseCaseModelRunner {
    * been run, no step has been run, no use case included").
    */
   public void restart() {
-    setLatestStep(Optional.empty());
+    setLatestStep(null);
     includedUseCases = new LinkedList<>();
     includeSteps = new LinkedList<>();
     optionalIncludedUseCase = Optional.empty();
@@ -201,7 +204,7 @@ public class UseCaseModelRunner {
       throw new MissingUseCaseStepPart(step, "system");
     }
 
-    setLatestStep(Optional.of(step));
+    setLatestStep(step);
     stepWithoutAlternativePredicate = Optional.empty();
     systemReactionTrigger.setupWith(event, step);
 
@@ -220,7 +223,7 @@ public class UseCaseModelRunner {
     if (optionalIncludedUseCase.isPresent()
         && optionalIncludeStep.isPresent()
         && isAtEndOfIncludedFlow()) {
-      setLatestStep(optionalIncludeStep);
+      setLatestStep(optionalIncludeStep.get());
       optionalIncludedUseCase = getUseCaseIncludedBefore();
       optionalIncludeStep = getIncludeStepBefore();
     }
@@ -343,7 +346,7 @@ public class UseCaseModelRunner {
    * @return the latest step run
    */
   public Optional<Step> getLatestStep() {
-    return latestStep;
+    return Optional.ofNullable(latestStep);
   }
 
   /**
@@ -354,7 +357,7 @@ public class UseCaseModelRunner {
    *
    * @param latestStep the latest step run
    */
-  public void setLatestStep(Optional<Step> latestStep) {
+  public void setLatestStep(Step latestStep) {
     this.latestStep = latestStep;
   }
 
@@ -364,7 +367,7 @@ public class UseCaseModelRunner {
    * @return the latest flow run
    */
   public Optional<Flow> getLatestFlow() {
-    return latestStep.map(step -> step.getFlow());
+    return getLatestStep().map(step -> step.getFlow());
   }
 
   public void setStepWithoutAlternativePredicate(Predicate<Step> predicate) {
@@ -387,7 +390,7 @@ public class UseCaseModelRunner {
         firstStepOfFlow -> {
           Predicate<UseCaseModelRunner> oldFlowPosition = firstStepOfFlow.getFlowPosition().orElse(r -> false);
           Predicate<UseCaseModelRunner> includeFlowPosition =
-              new After(Optional.of(includeStep)).or(oldFlowPosition);
+              new After(includeStep).or(oldFlowPosition);
           firstStepOfFlow.setFlowPosition(includeFlowPosition);
         });
   }
