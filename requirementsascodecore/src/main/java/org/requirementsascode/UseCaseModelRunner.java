@@ -30,7 +30,7 @@ import org.requirementsascode.predicate.After;
 public class UseCaseModelRunner implements Serializable{
   private static final long serialVersionUID = 1787451244764017381L;
   
-  private Optional<Actor> user;
+  private Actor user;
   private List<Actor> userAndSystem;
 
   private UseCaseModel useCaseModel;
@@ -49,7 +49,6 @@ public class UseCaseModelRunner implements Serializable{
    * as defined in the use case step, simply accepts an event.
    */
   public UseCaseModelRunner() {
-    this.user = Optional.empty();
     this.systemReactionTrigger = new SystemReactionTrigger();
 
     adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
@@ -88,7 +87,7 @@ public class UseCaseModelRunner implements Serializable{
    */
   public void run(UseCaseModel useCaseModel) {
     this.useCaseModel = useCaseModel;
-    this.userAndSystem = userAndSystem(user.orElse(useCaseModel.getUserActor()));
+    this.userAndSystem = userAndSystem(user != null? user : useCaseModel.getUserActor());
     this.isRunning = true;
     triggerAutonomousSystemReaction();
   }
@@ -114,8 +113,8 @@ public class UseCaseModelRunner implements Serializable{
   public UseCaseModelRunner as(Actor actor) {
     Objects.requireNonNull(actor);
 
-    this.user = Optional.of(actor);
-    this.userAndSystem = userAndSystem(user.get());
+    this.user = actor;
+    this.userAndSystem = userAndSystem(user);
     return this;
   }
 
