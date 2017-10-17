@@ -21,7 +21,7 @@ import org.requirementsascode.predicate.Anytime;
 public class Step extends UseCaseModelElement {
   private Flow flow;
   private Step previousStepInFlow;
-  private Optional<Predicate<UseCaseModelRunner>> reactWhile;
+  private Predicate<UseCaseModelRunner> reactWhile;
 
   private Actor[] actors;
   private Class<?> userEventClass;
@@ -39,7 +39,6 @@ public class Step extends UseCaseModelElement {
     super(stepName, useCaseFlow.getUseCaseModel());
 
     this.flow = useCaseFlow;
-    this.reactWhile = Optional.empty();
     this.optionalFlowPosition = Optional.empty();
     this.optionalWhen = Optional.empty();
   }
@@ -66,13 +65,19 @@ public class Step extends UseCaseModelElement {
   }
 
   public Predicate<UseCaseModelRunner> getPredicate() {
-    Predicate<UseCaseModelRunner> predicate =
-        reactWhile.orElse(getFlowPredicate().orElse(getDefaultPredicate()));
+    Predicate<UseCaseModelRunner> predicate = getDefaultPredicate();
+    
+    if(reactWhile != null) {
+      predicate = reactWhile;
+    } else if(getFlowPredicate().isPresent()) {
+      predicate = getFlowPredicate().get();
+    }
+    
     return predicate;
   }
   
   void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
-    this.reactWhile = Optional.of(reactWhile);
+    this.reactWhile = reactWhile;
   }
   
   public void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
