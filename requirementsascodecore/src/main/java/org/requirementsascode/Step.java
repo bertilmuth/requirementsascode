@@ -98,8 +98,7 @@ public class Step extends UseCaseModelElement {
 
     if (flowPosition != null || when != null) {
       Anytime anytime = new Anytime();
-      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
-          flowPosition != null? flowPosition : anytime;
+      Predicate<UseCaseModelRunner> flowPositionOrElseAnytime = flowPosition != null? flowPosition : anytime;
       Predicate<UseCaseModelRunner> whenOrElseAnytime = when != null? when : anytime;
       flowPredicate =
           Optional.of(
