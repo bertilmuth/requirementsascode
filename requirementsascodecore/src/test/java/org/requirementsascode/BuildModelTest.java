@@ -1,12 +1,13 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
@@ -235,9 +236,9 @@ public class BuildModelTest extends AbstractTestCase{
 		Collection<Step> steps = useCasePart.useCase().getSteps();
 		assertEquals(1, steps.size());
 		
-		Step previousStep = steps.iterator().next().getPreviousStepInFlow();
+		Optional<Step> previousStep = steps.iterator().next().getPreviousStepInFlow();
 		
-		assertNull(previousStep);
+		assertFalse(previousStep.isPresent());
 	}
 
 	@Test
@@ -331,7 +332,7 @@ public class BuildModelTest extends AbstractTestCase{
 		Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
 		Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow());
+		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
 	}
 	
 	@Test
@@ -347,8 +348,8 @@ public class BuildModelTest extends AbstractTestCase{
 		Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
 		Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 		
-		assertNull(firstUseCaseStep.getPreviousStepInFlow());
-		assertNull(secondUseCaseStep.getPreviousStepInFlow());
+		assertFalse(firstUseCaseStep.getPreviousStepInFlow().isPresent());
+		assertFalse(secondUseCaseStep.getPreviousStepInFlow().isPresent());
 	}
 	
 	@Test

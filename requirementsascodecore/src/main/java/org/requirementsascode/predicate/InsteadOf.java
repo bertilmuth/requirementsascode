@@ -15,7 +15,7 @@ public class InsteadOf implements FlowPosition, Serializable{
   public InsteadOf(Step step) {
     Objects.requireNonNull(step);
     this.step = step;
-    this.after = new After(step.getPreviousStepInFlow());
+    this.after = new After(step.getPreviousStepInFlow().orElse(null));
   }
 	
 	@Override
