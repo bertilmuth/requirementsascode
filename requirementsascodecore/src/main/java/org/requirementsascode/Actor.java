@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +18,8 @@ import java.util.Set;
  *
  * @author b_muth
  */
-public class Actor extends UseCaseModelElement {
+public class Actor extends UseCaseModelElement implements Serializable{
+  private static final long serialVersionUID = 2441478758595877661L;
   private Map<UseCase, List<Step>> useCaseToStepMap;
 
   /**
