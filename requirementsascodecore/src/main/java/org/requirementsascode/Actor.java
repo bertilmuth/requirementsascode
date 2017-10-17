@@ -18,9 +18,10 @@ import java.util.Set;
  *
  * @author b_muth
  */
-public class Actor extends UseCaseModelElement implements Serializable{
-  private static final long serialVersionUID = 2441478758595877661L;
-  private Map<UseCase, List<Step>> useCaseToStepMap;
+public class Actor extends UseCaseModelElement implements Serializable {
+	private static final long serialVersionUID = 2441478758595877661L;
+	
+	private Map<UseCase, List<Step>> useCaseToStepMap;
 
   /**
    * Creates an actor with the specified name that is part of the specified use case model.

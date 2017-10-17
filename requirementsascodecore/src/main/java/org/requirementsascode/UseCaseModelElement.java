@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,9 +9,11 @@ import java.util.Objects;
  *
  * @author b_muth
  */
-abstract class UseCaseModelElement {
-  private String name;
-  private UseCaseModel useCaseModel;
+abstract class UseCaseModelElement implements Serializable {
+	private static final long serialVersionUID = 4955023531983786087L;
+	
+	private String name;
+	private UseCaseModel useCaseModel;
 
   /**
    * Creates a new element that is a part of the specified use case model.

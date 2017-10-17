@@ -51,8 +51,15 @@ public class UseCaseModelRunner implements Serializable{
   public UseCaseModelRunner() {
     this.systemReactionTrigger = new SystemReactionTrigger();
 
-    adaptSystemReaction(systemReactionTrigger -> systemReactionTrigger.trigger());
+    adaptSystemReaction(new DirectSystemReactionTrigger());
     restart();
+  }
+  private static class DirectSystemReactionTrigger implements Consumer<SystemReactionTrigger>, Serializable{
+	private static final long serialVersionUID = 9039056478378482872L;
+	@Override
+	public void accept(SystemReactionTrigger t) {
+		t.trigger();
+	}
   }
 
   /**
