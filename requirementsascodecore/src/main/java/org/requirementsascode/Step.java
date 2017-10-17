@@ -44,6 +44,11 @@ public class Step extends UseCaseModelElement {
     this.optionalWhen = Optional.empty();
   }
 
+  /**
+   * Returns the step before the current step in the current flow.
+   * 
+   * @return the step, or null if there is no step before the current step.
+   */
   public Step getPreviousStepInFlow() {
     return previousStepInFlow;
   }
