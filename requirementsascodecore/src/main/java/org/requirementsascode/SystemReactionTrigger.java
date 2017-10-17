@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 
 /**
@@ -10,7 +11,9 @@ import java.util.function.Consumer;
  *
  * @author b_muth
  */
-public class SystemReactionTrigger {
+public class SystemReactionTrigger implements Serializable{
+  private static final long serialVersionUID = -8615677956101523359L;
+  
   private Object event;
   private Step useCaseStep;
 
