@@ -42,7 +42,7 @@ public class UseCaseModelRunner implements Serializable{
   private LinkedList<UseCase> includedUseCases;
   private LinkedList<Step> includeSteps;
   private UseCase includedUseCase;
-  private Optional<Step> optionalIncludeStep;
+  private Step includeStep;
   
   /**
    * Constructor for creating a runner with standard system reaction, that is: the system reaction,
@@ -75,7 +75,7 @@ public class UseCaseModelRunner implements Serializable{
     includedUseCases = new LinkedList<>();
     includeSteps = new LinkedList<>();
     includedUseCase = null;
-    optionalIncludeStep = Optional.empty();
+    includeStep = null;
   }
 
   /**
@@ -220,11 +220,11 @@ public class UseCaseModelRunner implements Serializable{
   
   private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
     if (includedUseCase != null
-        && optionalIncludeStep.isPresent()
+        && includeStep != null
         && isAtEndOfIncludedFlow()) {
-      setLatestStep(optionalIncludeStep.get());
+      setLatestStep(includeStep);
       includedUseCase = getUseCaseIncludedBefore();
-      optionalIncludeStep = getIncludeStepBefore();
+      includeStep = getIncludeStepBefore();
     }
   }
   
@@ -234,10 +234,10 @@ public class UseCaseModelRunner implements Serializable{
     return includedUseCase;
   }
   
-  private Optional<Step> getIncludeStepBefore(){
+  private Step getIncludeStepBefore(){
     includeSteps.pop();
     Step includeStep = includeSteps.peek();
-    return includeStep != null? Optional.of(includeStep) : Optional.empty();
+    return includeStep;
   }
 
 
@@ -382,9 +382,10 @@ public class UseCaseModelRunner implements Serializable{
 
   public void includeUseCase(UseCase includedUseCase, Step includeStep) {
     this.includedUseCase = includedUseCase;
+    this.includeStep = includeStep;
+
     includedUseCases.push(includedUseCase);
     includeSteps.push(includeStep);
-    optionalIncludeStep = Optional.of(includeStep);
     for(Flow includedFlow : includedUseCase.getFlows()){
       includeFlowAfterStep(includedFlow, includeStep);
     }
