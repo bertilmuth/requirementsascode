@@ -1,5 +1,7 @@
 package org.requirementsascode.exception;
 
+import java.io.Serializable;
+
 /**
  * Exception that is thrown when an element should be in the use case
  * because it is referenced from somewhere in the same use case, but it can't be found.
@@ -7,7 +9,7 @@ package org.requirementsascode.exception;
  * @author b_muth
  *
  */
-public class NoSuchElementInModel extends RuntimeException{
+public class NoSuchElementInModel extends RuntimeException implements Serializable{
 	private static final long serialVersionUID = -6636292150079241122L;
 
 	public NoSuchElementInModel(String elementName) {
