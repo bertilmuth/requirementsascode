@@ -5,6 +5,7 @@ import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -25,7 +26,9 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  *
  * @author b_muth
  */
-public class UseCase extends UseCaseModelElement {
+public class UseCase extends UseCaseModelElement implements Serializable{
+  private static final long serialVersionUID = 4939249650285018834L;
+  
   private Map<String, Flow> nameToFlowMap;
   private Map<String, Step> nameToStepMap;
   private Flow basicFlow;
