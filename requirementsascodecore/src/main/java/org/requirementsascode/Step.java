@@ -27,7 +27,7 @@ public class Step extends UseCaseModelElement {
   private Class<?> userEventClass;
   private Consumer<?> systemReaction;
   private Predicate<UseCaseModelRunner> flowPosition;
-  private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
+  private Predicate<UseCaseModelRunner> when;
 
   /**
    * Creates a use case step with the specified name that belongs to the specified use case flow.
@@ -37,9 +37,7 @@ public class Step extends UseCaseModelElement {
    */
   Step(String stepName, Flow useCaseFlow) {
     super(stepName, useCaseFlow.getUseCaseModel());
-
     this.flow = useCaseFlow;
-    this.optionalWhen = Optional.empty();
   }
 
   /**
@@ -88,21 +86,21 @@ public class Step extends UseCaseModelElement {
   }
 
   public void setWhen(Predicate<UseCaseModelRunner> when) {
-    this.optionalWhen = Optional.of(when);
+    this.when = when;
   }
 
   public Optional<Predicate<UseCaseModelRunner>> getWhen() {
-    return optionalWhen;
+    return Optional.ofNullable(when);
   }
   
   public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
     Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
 
-    if (flowPosition != null || optionalWhen.isPresent()) {
+    if (flowPosition != null || when != null) {
       Anytime anytime = new Anytime();
       Predicate<UseCaseModelRunner> flowPositionOrElseAnytime =
           flowPosition != null? flowPosition : anytime;
-      Predicate<UseCaseModelRunner> whenOrElseAnytime = optionalWhen.orElse(anytime);
+      Predicate<UseCaseModelRunner> whenOrElseAnytime = when != null? when : anytime;
       flowPredicate =
           Optional.of(
               isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
