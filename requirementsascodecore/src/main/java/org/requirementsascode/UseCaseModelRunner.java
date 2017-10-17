@@ -28,6 +28,8 @@ import org.requirementsascode.predicate.After;
  * a runner, as the runner determines the journey of the user through the use cases.
  */
 public class UseCaseModelRunner implements Serializable{
+  private static final long serialVersionUID = 1787451244764017381L;
+  
   private Optional<Actor> user;
   private List<Actor> userAndSystem;
 
@@ -39,10 +41,8 @@ public class UseCaseModelRunner implements Serializable{
   private Predicate<Step> stepWithoutAlternativePredicate;
   private LinkedList<UseCase> includedUseCases;
   private LinkedList<Step> includeSteps;
-  private Optional<UseCase> optionalIncludedUseCase;
+  private UseCase includedUseCase;
   private Optional<Step> optionalIncludeStep;
-
-  private static final long serialVersionUID = 1787451244764017381L;
   
   /**
    * Constructor for creating a runner with standard system reaction, that is: the system reaction,
@@ -74,7 +74,7 @@ public class UseCaseModelRunner implements Serializable{
     setLatestStep(null);
     includedUseCases = new LinkedList<>();
     includeSteps = new LinkedList<>();
-    optionalIncludedUseCase = Optional.empty();
+    includedUseCase = null;
     optionalIncludeStep = Optional.empty();
   }
 
@@ -219,19 +219,19 @@ public class UseCaseModelRunner implements Serializable{
   }
   
   private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
-    if (optionalIncludedUseCase.isPresent()
+    if (includedUseCase != null
         && optionalIncludeStep.isPresent()
         && isAtEndOfIncludedFlow()) {
       setLatestStep(optionalIncludeStep.get());
-      optionalIncludedUseCase = getUseCaseIncludedBefore();
+      includedUseCase = getUseCaseIncludedBefore();
       optionalIncludeStep = getIncludeStepBefore();
     }
   }
   
-  private Optional<UseCase> getUseCaseIncludedBefore(){
+  private UseCase getUseCaseIncludedBefore(){
     includedUseCases.pop();
     UseCase includedUseCase = includedUseCases.peek();
-    return includedUseCase != null? Optional.of(includedUseCase) : Optional.empty();
+    return includedUseCase;
   }
   
   private Optional<Step> getIncludeStepBefore(){
@@ -323,7 +323,10 @@ public class UseCaseModelRunner implements Serializable{
   }
   
   private boolean isStepInIncludedUseCaseIfPresent(Step step) {
-    boolean result = optionalIncludedUseCase.map(uc -> uc.equals(step.getUseCase())).orElse(true);
+    boolean result = true;
+    if(includedUseCase != null) {
+      result = includedUseCase.equals(step.getUseCase());
+    }
     return result;
   }
 
@@ -378,15 +381,15 @@ public class UseCaseModelRunner implements Serializable{
   }
 
   public void includeUseCase(UseCase includedUseCase, Step includeStep) {
+    this.includedUseCase = includedUseCase;
     includedUseCases.push(includedUseCase);
     includeSteps.push(includeStep);
-    optionalIncludedUseCase = Optional.of(includedUseCase);
     optionalIncludeStep = Optional.of(includeStep);
     for(Flow includedFlow : includedUseCase.getFlows()){
       includeFlowAfterStep(includedFlow, includeStep);
     }
   }
-  
+
   private void includeFlowAfterStep(Flow includedFlow, Step includeStep) {
     Optional<Step> optionalFirstStepOfFlow = includedFlow.getFirstStep();
     optionalFirstStepOfFlow.ifPresent(
@@ -404,7 +407,7 @@ public class UseCaseModelRunner implements Serializable{
         getLatestStep()
             .map(
                 ls ->
-                    ls.getUseCase().equals(optionalIncludedUseCase.get())
+                    ls.getUseCase().equals(includedUseCase)
                         && ls.equals(lastStepOfRunningFlow.get()))
             .orElse(false);
     return result;
