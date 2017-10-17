@@ -5,6 +5,7 @@ import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -20,7 +21,9 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  *
  * @author b_muth
  */
-public class UseCaseModel {
+public class UseCaseModel implements Serializable{
+  private static final long serialVersionUID = -410733530299609758L;
+  
   private Map<String, Actor> nameToActorMap;
   private Map<String, UseCase> nameToUseCaseMap;
   private Actor userActor;
