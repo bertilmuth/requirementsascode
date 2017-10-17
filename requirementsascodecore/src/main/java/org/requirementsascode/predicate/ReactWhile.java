@@ -1,12 +1,15 @@
 package org.requirementsascode.predicate;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class ReactWhile implements Predicate<UseCaseModelRunner>{
+public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable{
+  private static final long serialVersionUID = -3190093346311188647L;
+  
   private Predicate<UseCaseModelRunner> completeCondition;
   private Predicate<UseCaseModelRunner> reactWhileCondition;
 
