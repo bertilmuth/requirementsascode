@@ -4,7 +4,7 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").system(this::greetUser)
+				.step("S1").system(this::greetsUser)
 		.build();
 	return useCaseModel;
 }
@@ -20,8 +20,8 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").system(this::greetUser)
-				.step("S2").system(this::printHooray)
+				.step("S1").system(this::greetsUser)
+				.step("S2").system(this::printsHooray)
 					.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
 		.build();
 	
@@ -40,8 +40,8 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").system(this::promptUserToEnterFirstName)
-				.step("S2").user(ENTER_FIRST_NAME).system(this::greetUserWithFirstName)
+				.step("S1").system(this::promptsUserToEnterFirstName)
+				.step("S2").user(ENTER_FIRST_NAME).system(this::greetsUserWithFirstName)
 		.build();
 	return useCaseModel;
 }
@@ -49,7 +49,7 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 useCaseModelRunner.run(useCaseModel);
-useCaseModelRunner.reactTo(enterText());
+useCaseModelRunner.reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
@@ -57,13 +57,13 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
-	        modelBuilder.useCase("Get greeted")
-		        .basicFlow()
-				.step("S1").system(this::promptUserToEnterFirstName)
-				.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
-				.step("S3").system(this::promptUserToEnterAge)
-				.step("S4").user(ENTER_AGE).system(this::saveAge)
-				.step("S5").system(this::greetUserWithFirstNameAndAge)
+		modelBuilder.useCase("Get greeted")
+			.basicFlow()
+				.step("S1").system(this::promptsUserToEnterFirstName)
+				.step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+				.step("S3").system(this::promptsUserToEnterAge)
+				.step("S4").user(ENTERS_AGE).system(this::savesAge)
+				.step("S5").system(this::greetsUserWithFirstNameAndAge)
 		.build();
 	return useCaseModel;
 }
@@ -71,8 +71,8 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 useCaseModelRunner.run(useCaseModel);
-useCaseModelRunner.reactTo(enterText());
-useCaseModelRunner.reactTo(enterText());	
+useCaseModelRunner.reactTo(entersText());
+useCaseModelRunner.reactTo(entersText());	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04.java).
 
@@ -82,20 +82,20 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").system(this::promptUserToEnterFirstName)
-				.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
-				.step("S3").system(this::promptUserToEnterAge)
-				.step("S4").user(ENTER_AGE).system(this::saveAge)
-				.step("S5").system(this::greetUserWithFirstNameAndAge)
-				.step("S6").system(this::stopSystem)
-						
+				.step("S1").system(this::promptsUserToEnterFirstName)
+				.step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+				.step("S3").system(this::promptsUserToEnterAge)
+				.step("S4").user(ENTERS_AGE).system(this::savesAge)
+				.step("S5").system(this::greetsUserWithFirstNameAndAge)
+				.step("S6").system(this::stops)
+					
 			.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
-				.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
-				.step("S5a_2").continueAt("S3")
-						
+				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
+				.step("S5a_2").continuesAt("S3")
+					
 			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
-				.step("S5b_2").continueAt("S3")
+				.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+				.step("S5b_2").continuesAt("S3")
 		.build();
 	return useCaseModel;
 }	
@@ -104,7 +104,7 @@ UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 useCaseModelRunner.run(useCaseModel);			
 while(!systemStopped())
-	useCaseModelRunner.reactTo(enterText());	
+	useCaseModelRunner.reactTo(entersText());	
 exitSystem();	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05.java).
@@ -121,27 +121,27 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	UseCaseModel useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
-				.step("S1").as(normalUser).system(this::promptUserToEnterFirstName)
-				.step("S2").as(normalUser).user(ENTER_FIRST_NAME).system(this::saveFirstName)
-				.step("S3").as(normalUser, anonymousUser).system(this::promptUserToEnterAge)
-				.step("S4").as(normalUser, anonymousUser).user(ENTER_AGE).system(this::saveAge)
-				.step("S5").as(normalUser).system(this::greetUserWithFirstName)
-				.step("S6").as(normalUser, anonymousUser).system(this::greetUserWithAge)
-				.step("S7").as(normalUser, anonymousUser).system(this::stopSystem)
+				.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
+				.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+				.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
+				.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
+				.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
+				.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
+				.step("S7").as(normalUser, anonymousUser).system(this::stops)
 					
 			.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
-				.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
-				.step("S5a_2").continueAt("S3")
+				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
+				.step("S5a_2").continuesAt("S3")
 					
 			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
-				.step("S5b_2").continueAt("S3")
+				.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+				.step("S5b_2").continuesAt("S3")
 				
 			.flow("Anonymous greeted with age only").insteadOf("S5").when(this::ageIsOk)
-				.step("S5c_1").as(anonymousUser).continueAt("S6")
+				.step("S5c_1").as(anonymousUser).continuesAt("S6")
 				
 			.flow("Anonymous does not enter name").insteadOf("S1")
-				.step("S1a_1").as(anonymousUser).continueAt("S3")
+				.step("S1a_1").as(anonymousUser).continuesAt("S3")
 		.build();
 	return useCaseModel;
 }
@@ -150,7 +150,7 @@ UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 while(!systemStopped())
-	useCaseModelRunner.reactTo(enterText());	
+	useCaseModelRunner.reactTo(entersText());	
 exitSystem();	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld06.java).
