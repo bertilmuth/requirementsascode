@@ -1,44 +1,34 @@
-<#function flowPositionName flow><#return (flow.flowPosition.get().class.simpleName)!""/></#function>
-<#function whenName flow><#return (flow.when.get().class.simpleName)!""/></#function>
-<#function predicateName step><#return (step.predicate.class.simpleName)!""/></#function>
-<#function reactWhileConditionName step><#return (step.predicate.reactWhileCondition.class.simpleName)!""/></#function>
-<#function userEventName step><#return (step.userEventClass.simpleName)!""/></#function>
 <#function systemReactionName step><#return (step.systemReaction.class.simpleName)!""/></#function>
 
-<#function hasReactWhile step><#return "ReactWhile" == predicateName(step)/></#function>
+<#function hasReactWhile step><#return "ReactWhile" == step.predicate.class.simpleName/></#function>
 <#function hasUser step><#return (step.useCaseModel.systemActor.name != step.actors[0])></#function>
 <#function hasSystemReaction step><#return "IgnoreIt" != systemReactionName(step)></#function>
 
-<#function verbNoun camelCaseName>
-	<#local verb = (firstWordOf(camelCaseName))?lower_case/>
-	<#local noun = afterFirstWordOf(camelCaseName)?lower_case/>
-	<#local result = [verb, noun]?join(" ")?trim/>
-	<#return result/>
-</#function>
-
-<#function flowPosition f>
+<#function flowPosition flow>
 	<#local result = ""/>
-	<#if f.flowPosition.isPresent()>
-		<#local flowPositionWords = wordsOf(flowPositionName(f))/>
-		<#local stepName = (f.flowPosition.get().stepName)!""/>
-		<#local result = [flowPositionWords?lower_case, stepName]?join(" ")?trim/>
+	<#if flow.flowPosition.isPresent()>
+		<#local flowPosition = flow.flowPosition.get()/>
+		<#local flowPositionWords = lowerCaseWordsOf(flowPosition.class.simpleName)/>
+		<#local stepName = (flowPosition.stepName)!""/>
+		<#local result = [flowPositionWords, stepName]?join(" ")?trim/>
 	</#if>
 	<#return result/>
 </#function>
 
-<#function flowPredicateSeparator f sep>
-	<#if flowPosition(f) != "" && when(f) != "">
+<#function flowPredicateSeparator flow sep>
+	<#if flowPosition(flow) != "" && when(flow) != "">
 		<#local result = sep/>
 	</#if>
 	<#return result!""/>
 </#function>
 
-<#function when f>
+<#function when flow>
 	<#local whenWords = ""/>
-	<#if f.when.isPresent()>
-		<#local whenWords = "when " + wordsOf(whenName(f))/>
+	<#if flow.when.isPresent()>
+		<#local when = flow.when.get()/>
+		<#local whenWords = "when " + lowerCaseWordsOf(when.class.simpleName)/>
 	</#if>
-	<#return whenWords?lower_case/>
+	<#return whenWords/>
 </#function>
 
 <#macro flowPredicate f>
@@ -48,22 +38,22 @@ ${predicate?cap_first}${colon}</#macro>
 
 <#macro reactWhile s>
 <#if hasReactWhile(s)>
-	<#local reactWhileCondition = wordsOf(reactWhileConditionName(s))?lower_case/>
+	<#local reactWhileCondition = lowerCaseWordsOf(s.predicate.reactWhileCondition.class.simpleName)/>
 <#if reactWhileCondition != "">As long as ${reactWhileCondition}: </#if></#if></#macro>  
 
 <#macro userStep s>
 <#if hasUser(s)>
 	<#local actors = s.actors?join("/")?capitalize/>
-	<#local userEvent = verbNoun(userEventName(s))/>
+	<#local userEvent = lowerCaseWordsOf(s.userEventClass.simpleName)/>
 	<#if hasSystemReaction(s)>
 		<#local space = " "/>
 	</#if>
 ${actors} ${userEvent}.${space!""}</#if></#macro>  
 
 <#macro systemStep s>
-<#local name = systemReactionName(s)/>
 <#if hasSystemReaction(s)>
-	<#local systemReaction = verbNoun(name)/>
+	<#local name = systemReactionName(s)/>
+	<#local systemReaction = lowerCaseWordsOf(name)/>
 	<#if name == "ContinuesAt" || name == "ContinuesAfter" || name == "ContinuesWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
 	<#elseif name == "IncludesUseCase">

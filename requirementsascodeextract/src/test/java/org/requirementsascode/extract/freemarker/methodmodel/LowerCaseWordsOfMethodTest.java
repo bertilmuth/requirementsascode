@@ -7,16 +7,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.requirementsascode.extract.freemarker.methodmodel.WordsOfMethod;
+import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfMethod;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateModelException;
 
-public class WordsOfMethodTest {
+public class LowerCaseWordsOfMethodTest {
   @SuppressWarnings("rawtypes")
   @Test
   public void testWordsOfMethodForWrongNumberOfArguments() {
-    WordsOfMethod wordsOfMethod = new WordsOfMethod();
+    LowerCaseWordsOfMethod wordsOfMethod = new LowerCaseWordsOfMethod();
     List arguments = Arrays.asList(new Object[] {});
     try {
       wordsOfMethod.exec(arguments);
@@ -27,17 +27,17 @@ public class WordsOfMethodTest {
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testWordsOfMethodForOnePart() throws TemplateModelException {
-    WordsOfMethod wordsOfMethod = new WordsOfMethod();
+  public void testLowerCaseWordsOfMethodForOnePart() throws TemplateModelException {
+    LowerCaseWordsOfMethod wordsOfMethod = new LowerCaseWordsOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("fly")});
     assertEquals("fly", wordsOfMethod.exec(arguments).toString());
   }
 
   @SuppressWarnings("rawtypes")
   @Test
-  public void testWordsOfMethodForTwoParts() throws TemplateModelException {
-    WordsOfMethod wordsOfMethod = new WordsOfMethod();
+  public void testLowerCaseWordsOfMethodForTwoParts() throws TemplateModelException {
+    LowerCaseWordsOfMethod wordsOfMethod = new LowerCaseWordsOfMethod();
     List arguments = Arrays.asList(new Object[] {new SimpleScalar("EnterName")});
-    assertEquals("Enter Name", wordsOfMethod.exec(arguments).toString());
+    assertEquals("enter name", wordsOfMethod.exec(arguments).toString());
   }
 }

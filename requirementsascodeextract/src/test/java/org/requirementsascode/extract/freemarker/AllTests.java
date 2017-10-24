@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.requirementsascode.extract.freemarker.methodmodel.AfterFirstWordOfMethodTest;
 import org.requirementsascode.extract.freemarker.methodmodel.FirstWordOfMethodTest;
-import org.requirementsascode.extract.freemarker.methodmodel.WordsOfMethodTest;
+import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfMethodTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({FreemarkerEngineTest.class, AfterFirstWordOfMethodTest.class, FirstWordOfMethodTest.class, WordsOfMethodTest.class})
+@SuiteClasses({FreemarkerEngineTest.class, AfterFirstWordOfMethodTest.class, FirstWordOfMethodTest.class, LowerCaseWordsOfMethodTest.class})
 public class AllTests {}
