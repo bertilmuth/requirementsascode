@@ -6,10 +6,10 @@ import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.Step; 
 
-public class ContinueWithoutAlternativeAt extends ContinueAt implements Serializable{
+public class ContinuesWithoutAlternativeAt extends ContinuesAt implements Serializable{
   private static final long serialVersionUID = -2063519627961799238L;
 
-  public ContinueWithoutAlternativeAt(UseCase useCase, String stepName) {
+  public ContinuesWithoutAlternativeAt(UseCase useCase, String stepName) {
 		super(useCase, stepName);
 	}
 	

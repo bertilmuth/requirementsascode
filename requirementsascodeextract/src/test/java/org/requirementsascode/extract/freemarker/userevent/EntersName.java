@@ -1,10 +1,10 @@
 package org.requirementsascode.extract.freemarker.userevent;
 
-public class EnterName {
+public class EntersName {
 	
 	public final String name;
 	
-	public EnterName(String name) {
+	public EntersName(String name) {
 		this.name = name;
 	}
 }

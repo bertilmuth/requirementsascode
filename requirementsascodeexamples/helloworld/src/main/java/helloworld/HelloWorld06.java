@@ -5,11 +5,11 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
-import helloworld.userevent.EnterText;
+import helloworld.userevent.EntersText;
 
 public class HelloWorld06 extends AbstractHelloWorldExample{
-	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
-	private static final Class<EnterText> ENTER_AGE = EnterText.class;
+	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
+	private static final Class<EntersText> ENTERS_AGE = EntersText.class;
 	private static final Class<NumberFormatException> NON_NUMERICAL_AGE = NumberFormatException.class;
 	
 	private static final int MIN_AGE = 5;
@@ -28,52 +28,52 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").as(normalUser).system(this::promptUserToEnterFirstName)
-					.step("S2").as(normalUser).user(ENTER_FIRST_NAME).system(this::saveFirstName)
-					.step("S3").as(normalUser, anonymousUser).system(this::promptUserToEnterAge)
-					.step("S4").as(normalUser, anonymousUser).user(ENTER_AGE).system(this::saveAge)
-					.step("S5").as(normalUser).system(this::greetUserWithFirstName)
-					.step("S6").as(normalUser, anonymousUser).system(this::greetUserWithAge)
-					.step("S7").as(normalUser, anonymousUser).system(this::stopSystem)
+					.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
+					.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+					.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
+					.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
+					.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
+					.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
+					.step("S7").as(normalUser, anonymousUser).system(this::stops)
 						
 				.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
-					.step("S5a_1").system(this::informUserAboutOutOfBoundsAge)
-					.step("S5a_2").continueAt("S3")
+					.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
+					.step("S5a_2").continuesAt("S3")
 						
 				.flow("Handle non-numerical age").insteadOf("S5")
-					.step("S5b_1").handle(NON_NUMERICAL_AGE).system(this::informUserAboutNonNumericalAge)
-					.step("S5b_2").continueAt("S3")
+					.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+					.step("S5b_2").continuesAt("S3")
 					
 				.flow("Anonymous greeted with age only").insteadOf("S5").when(this::ageIsOk)
-					.step("S5c_1").as(anonymousUser).continueAt("S6")
+					.step("S5c_1").as(anonymousUser).continuesAt("S6")
 					
 				.flow("Anonymous does not enter name").insteadOf("S1")
-					.step("S1a_1").as(anonymousUser).continueAt("S3")
+					.step("S1a_1").as(anonymousUser).continuesAt("S3")
 			.build();
 		return useCaseModel;
 	}
 
-	private void promptUserToEnterFirstName(UseCaseModelRunner runner) {
+	private void promptsUserToEnterFirstName(UseCaseModelRunner runner) {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptUserToEnterAge(UseCaseModelRunner runner) {
+	private void promptsUserToEnterAge(UseCaseModelRunner runner) {
 		System.out.print("Please enter your age: ");
 	}
 
-	private void saveFirstName(EnterText enterText) {
+	private void savesFirstName(EntersText enterText) {
 		firstName = enterText.text;
 	}
 	
-	private void saveAge(EnterText enterText) {
+	private void savesAge(EntersText enterText) {
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetUserWithFirstName(UseCaseModelRunner runner) {
+	private void greetsUserWithFirstName(UseCaseModelRunner runner) {
 		System.out.println("Hello, " + firstName + ".");
 	}
 	
-	private void greetUserWithAge(UseCaseModelRunner runner) {
+	private void greetsUserWithAge(UseCaseModelRunner runner) {
 		System.out.println("You are " + age + " years old.");
 	}
 	
@@ -85,11 +85,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		return age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private void informUserAboutOutOfBoundsAge(UseCaseModelRunner runner) {
+	private void informsUserAboutOutOfBoundsAge(UseCaseModelRunner runner) {
 		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	
-	private void informUserAboutNonNumericalAge(NumberFormatException exception) {
+	private void informsUserAboutNonNumericalAge(NumberFormatException exception) {
 		System.out.println("You entered a non-numerical age.");
 	}
 	
@@ -103,7 +103,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())
-			useCaseModelRunner.reactTo(enterText());	
+			useCaseModelRunner.reactTo(entersText());	
 		exitSystem();	
 	}
 

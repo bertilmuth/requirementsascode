@@ -7,19 +7,19 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class HexagonUseCaseModel {
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
-  private final Class<AskForPoem> askForPoem;
+  private final Class<AsksForPoem> asksForPoem;
   
   public HexagonUseCaseModel(FeelStuffUseCaseRealization feelStuffUseCaseRealization) {
     this.feelStuffUseCaseRealization = feelStuffUseCaseRealization;
-    askForPoem = AskForPoem.class;
+    asksForPoem = AsksForPoem.class;
   }
   
   public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
     UseCaseModel useCaseModel = modelBuilder.useCase("Feel Stuff")
       .basicFlow()
-        .step("1").user(askForPoem).system(feelStuffUseCaseRealization::writeSadPoem)
-        .step("2").user(askForPoem).system(feelStuffUseCaseRealization::writeHappyPoem)
-        .step("3").user(askForPoem).system(feelStuffUseCaseRealization::writeFunnyPoem)
+        .step("1").user(asksForPoem).system(feelStuffUseCaseRealization::writesSadPoem)
+        .step("2").user(asksForPoem).system(feelStuffUseCaseRealization::writesHappyPoem)
+        .step("3").user(asksForPoem).system(feelStuffUseCaseRealization::writesFunnyPoem)
     .build();
     
     return useCaseModel;

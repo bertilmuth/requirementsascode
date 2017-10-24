@@ -9,12 +9,12 @@ import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecaserealization.RunContext;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
-public class DisplayProducts implements Consumer<UseCaseModelRunner> {
+public class DisplaysProducts implements Consumer<UseCaseModelRunner> {
 	private RunContext runContext;
 	private Stock stock;
 	private Display display;
 
-	public DisplayProducts(RunContext runContext, Stock stock, Display display) {
+	public DisplaysProducts(RunContext runContext, Stock stock, Display display) {
 		this.runContext = runContext;
 		this.stock = stock;
 		this.display = display;

@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.systemreaction.IncludeUseCase;
+import org.requirementsascode.systemreaction.IncludesUseCase;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
@@ -70,7 +70,7 @@ public class StepPart {
    * @param <T> the type of the class
    * @return the created user part of this step
    */
-  public <T> StepUserPart<T> handle(Class<T> eventOrExceptionClass) {
+  public <T> StepUserPart<T> handles(Class<T> eventOrExceptionClass) {
     Objects.requireNonNull(eventOrExceptionClass);
 
     Actor systemActor = useCaseModelBuilder.build().getSystemActor();
@@ -101,10 +101,10 @@ public class StepPart {
    * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use
    *     case
    */
-  public UseCasePart continueAfter(String stepName) {
+  public UseCasePart continuesAfter(String stepName) {
     Objects.requireNonNull(stepName);
 
-    UseCasePart useCasePart = as(systemActor).continueAfter(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesAfter(stepName);
     return useCasePart;
   }
 
@@ -117,10 +117,10 @@ public class StepPart {
    * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use
    *     case
    */
-  public UseCasePart continueAt(String stepName) {
+  public UseCasePart continuesAt(String stepName) {
     Objects.requireNonNull(stepName);
 
-    UseCasePart useCasePart = as(systemActor).continueAt(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesAt(stepName);
     return useCasePart;
   }
 
@@ -133,10 +133,10 @@ public class StepPart {
    * @throws NoSuchElementInModel if no step with the specified stepName is found in the current use
    *     case
    */
-  public UseCasePart continueWithoutAlternativeAt(String stepName) {
+  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
     Objects.requireNonNull(stepName);
 
-    UseCasePart useCasePart = as(systemActor).continueWithoutAlternativeAt(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesWithoutAlternativeAt(stepName);
     return useCasePart;
   }
   
@@ -155,10 +155,10 @@ public class StepPart {
    * @return the step system part, to ease creation of further steps and flows
    * @throws NoSuchElementInModel if the included use case has not been specified before
    */
-  public StepSystemPart<UseCaseModelRunner> includeUseCase(String useCaseName) {
+  public StepSystemPart<UseCaseModelRunner> includesUseCase(String useCaseName) {
     UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
     StepSystemPart<UseCaseModelRunner> stepSystemPart =
-        system(new IncludeUseCase(includedUseCase, step));
+        system(new IncludesUseCase(includedUseCase, step));
     return stepSystemPart;
   }
 

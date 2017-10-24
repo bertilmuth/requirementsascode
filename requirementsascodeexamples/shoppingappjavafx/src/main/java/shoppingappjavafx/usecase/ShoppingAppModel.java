@@ -3,26 +3,26 @@ package shoppingappjavafx.usecase;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 
-import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.StartCheckoutProcess;
-import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
-import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
-import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
-import shoppingappjavafx.usecase.userevent.SignalToGoBack;
+import shoppingappjavafx.usecase.userevent.AddsProductToCart;
+import shoppingappjavafx.usecase.userevent.StartsCheckoutProcess;
+import shoppingappjavafx.usecase.userevent.ConfirmsPurchase;
+import shoppingappjavafx.usecase.userevent.EntersPaymentDetails;
+import shoppingappjavafx.usecase.userevent.EntersShippingInformation;
+import shoppingappjavafx.usecase.userevent.SignalsToGoBack;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
 import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
 import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductIsInCart;
 import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
-import shoppingappjavafx.usecaserealization.systemreaction.AddProductToPurchaseOrder;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayPaymentDetailsForm;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayProducts;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayPurchaseOrderSummary;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayShippingInformationForm;
-import shoppingappjavafx.usecaserealization.systemreaction.InitiateShipping;
-import shoppingappjavafx.usecaserealization.systemreaction.LogException;
-import shoppingappjavafx.usecaserealization.systemreaction.SavePaymentDetails;
-import shoppingappjavafx.usecaserealization.systemreaction.SaveShippingInformation;
-import shoppingappjavafx.usecaserealization.systemreaction.StartWithEmptyShoppingCart;
+import shoppingappjavafx.usecaserealization.systemreaction.AddsProductToPurchaseOrder;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPaymentDetailsForm;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysProducts;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPurchaseOrderSummary;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysShippingInformationForm;
+import shoppingappjavafx.usecaserealization.systemreaction.InitiatesShipping;
+import shoppingappjavafx.usecaserealization.systemreaction.LogsException;
+import shoppingappjavafx.usecaserealization.systemreaction.SavesPaymentDetails;
+import shoppingappjavafx.usecaserealization.systemreaction.SavesShippingInformation;
+import shoppingappjavafx.usecaserealization.systemreaction.StartsWithEmptyShoppingCart;
 
 /**
  * Responsible for building the use case model of the shopping app. Its instance is injected with a
@@ -41,27 +41,27 @@ public class ShoppingAppModel {
   /**
    * User/system events
    */
-  private Class<AddProductToCart> addProductToCart;
-  private Class<StartCheckoutProcess> checkOutPurchase;
-  private Class<EnterShippingInformation> enterShippingInformation;
-  private Class<EnterPaymentDetails> enterPaymentDetails;
-  private Class<ConfirmPurchase> confirmPurchase;
-  private Class<SignalToGoBack> signalToGoBack;
+  private Class<AddsProductToCart> addsProductToCart;
+  private Class<StartsCheckoutProcess> checksOutPurchase;
+  private Class<EntersShippingInformation> entersShippingInformation;
+  private Class<EntersPaymentDetails> entersPaymentDetails;
+  private Class<ConfirmsPurchase> confirmsPurchase;
+  private Class<SignalsToGoBack> signalsToGoBack;
   private Class<Throwable> anyException;
   
   /**
    * System reactions
    */
-  private StartWithEmptyShoppingCart startWithEmptyShoppingCart;
-  private DisplayProducts displayProducts;
-  private AddProductToPurchaseOrder addProductToPurchaseOrder;
-  private DisplayShippingInformationForm displayShippingInformationForm;
-  private SaveShippingInformation saveShippingInformation;
-  private DisplayPaymentDetailsForm displayPaymentDetailsForm;
-  private SavePaymentDetails savePaymentDetails;
-  private DisplayPurchaseOrderSummary displayPurchaseOrderSummary;
-  private InitiateShipping initiateShipping;
-  private LogException logException;
+  private StartsWithEmptyShoppingCart startsWithEmptyShoppingCart;
+  private DisplaysProducts displaysProducts;
+  private AddsProductToPurchaseOrder addsProductToPurchaseOrder;
+  private DisplaysShippingInformationForm displaysShippingInformationForm;
+  private SavesShippingInformation savesShippingInformation;
+  private DisplaysPaymentDetailsForm displaysPaymentDetailsForm;
+  private SavesPaymentDetails savesPaymentDetails;
+  private DisplaysPurchaseOrderSummary displaysPurchaseOrderSummary;
+  private InitiatesShipping initiatesShipping;
+  private LogsException logsException;
 
   /**
    * Builds the use case model using the specified builder.
@@ -72,26 +72,26 @@ public class ShoppingAppModel {
   public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 		UseCaseModel useCaseModel = modelBuilder.useCase("Buy product")
 			.basicFlow()
-				.step("S1").system(startWithEmptyShoppingCart)
-				.step("S2").system(displayProducts)
-				.step("S3").user(addProductToCart).system(addProductToPurchaseOrder).reactWhile(lessThan10Products)
-				.step("S4").user(checkOutPurchase)
-				.step("S5").system(displayShippingInformationForm)
-				.step("S6").user(enterShippingInformation).system(saveShippingInformation)
-				.step("S7").system(displayPaymentDetailsForm)
-				.step("S8").user(enterPaymentDetails).system(savePaymentDetails)
-				.step("S9").system(displayPurchaseOrderSummary)
-				.step("S10").user(confirmPurchase).system(initiateShipping)
-				.step("S11").continueAt("S1")	
+				.step("S1").system(startsWithEmptyShoppingCart)
+				.step("S2").system(displaysProducts)
+				.step("S3").user(addsProductToCart).system(addsProductToPurchaseOrder).reactWhile(lessThan10Products)
+				.step("S4").user(checksOutPurchase)
+				.step("S5").system(displaysShippingInformationForm)
+				.step("S6").user(entersShippingInformation).system(savesShippingInformation)
+				.step("S7").system(displaysPaymentDetailsForm)
+				.step("S8").user(entersPaymentDetails).system(savesPaymentDetails)
+				.step("S9").system(displaysPurchaseOrderSummary)
+				.step("S10").user(confirmsPurchase).system(initiatesShipping)
+				.step("S11").continuesAt("S1")	
 			.flow("Go back from shipping").insteadOf("S6")
-				.step("S6a_1").user(signalToGoBack)
-				.step("S6a_2").continueAt("S2")
+				.step("S6a_1").user(signalsToGoBack)
+				.step("S6a_2").continuesAt("S2")
 			.flow("Go back from payment").insteadOf("S8")
-				.step("S8a_1").user(signalToGoBack)
-				.step("S8a_2").continueAt("S5")
+				.step("S8a_1").user(signalsToGoBack)
+				.step("S8a_2").continuesAt("S5")
 			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart)
-				.step("S3a_1").continueAt("S4")
-			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").handle(anyException).system(logException)
+				.step("S3a_1").continuesAt("S4")
+			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").handles(anyException).system(logsException)
 		.build();
 		
 		return useCaseModel;
@@ -110,25 +110,25 @@ public class ShoppingAppModel {
   }
 
   private void setupEvents() {
-    this.addProductToCart = AddProductToCart.class;
-    this.checkOutPurchase = StartCheckoutProcess.class;
-    this.enterShippingInformation = EnterShippingInformation.class;
-    this.enterPaymentDetails = EnterPaymentDetails.class;
-    this.confirmPurchase = ConfirmPurchase.class;
-    this.signalToGoBack = SignalToGoBack.class;
+    this.addsProductToCart = AddsProductToCart.class;
+    this.checksOutPurchase = StartsCheckoutProcess.class;
+    this.entersShippingInformation = EntersShippingInformation.class;
+    this.entersPaymentDetails = EntersPaymentDetails.class;
+    this.confirmsPurchase = ConfirmsPurchase.class;
+    this.signalsToGoBack = SignalsToGoBack.class;
     this.anyException = Throwable.class;
   }
 
   private void setupSystemReactions(BuyProductRealization bPR) {
-    this.startWithEmptyShoppingCart = bPR.startWithEmptyShoppingCart();
-    this.displayProducts = bPR.displayProducts();
-    this.addProductToPurchaseOrder = bPR.addProductToPurchaseOrder();
-    this.displayShippingInformationForm = bPR.displayShippingInformationForm();
-    this.saveShippingInformation = bPR.saveShippingInformation();
-    this.displayPaymentDetailsForm = bPR.displayPaymentDetailsForm();
-    this.savePaymentDetails = bPR.savePaymentDetails();
-    this.displayPurchaseOrderSummary = bPR.displayPurchaseOrderSummary();
-    this.initiateShipping = bPR.initiateShipping();
-    this.logException = bPR.logException();
+    this.startsWithEmptyShoppingCart = bPR.startsWithEmptyShoppingCart();
+    this.displaysProducts = bPR.displaysProducts();
+    this.addsProductToPurchaseOrder = bPR.addsProductToPurchaseOrder();
+    this.displaysShippingInformationForm = bPR.displaysShippingInformationForm();
+    this.savesShippingInformation = bPR.savesShippingInformation();
+    this.displaysPaymentDetailsForm = bPR.displaysPaymentDetailsForm();
+    this.savesPaymentDetails = bPR.savesPaymentDetails();
+    this.displaysPurchaseOrderSummary = bPR.displaysPurchaseOrderSummary();
+    this.initiatesShipping = bPR.initiatesShipping();
+    this.logsException = bPR.logsException();
   }
 }

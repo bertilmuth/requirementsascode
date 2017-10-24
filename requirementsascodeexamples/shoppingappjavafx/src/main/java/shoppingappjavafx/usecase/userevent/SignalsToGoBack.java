@@ -1,5 +1,5 @@
 package shoppingappjavafx.usecase.userevent;
 
-public class ConfirmPurchase {
+public class SignalsToGoBack {
 
 }

@@ -4,11 +4,11 @@ import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
-import helloworld.userevent.EnterText;
+import helloworld.userevent.EntersText;
 
 public class HelloWorld04 extends AbstractHelloWorldExample{
-	private static final Class<EnterText> ENTER_FIRST_NAME = EnterText.class;
-	private static final Class<EnterText> ENTER_AGE = EnterText.class;
+	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
+	private static final Class<EntersText> ENTERS_AGE = EntersText.class;
 	
 	private String firstName;
 	private int age;
@@ -17,32 +17,32 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(this::promptUserToEnterFirstName)
-					.step("S2").user(ENTER_FIRST_NAME).system(this::saveFirstName)
-					.step("S3").system(this::promptUserToEnterAge)
-					.step("S4").user(ENTER_AGE).system(this::saveAge)
-					.step("S5").system(this::greetUserWithFirstNameAndAge)
+					.step("S1").system(this::promptsUserToEnterFirstName)
+					.step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+					.step("S3").system(this::promptsUserToEnterAge)
+					.step("S4").user(ENTERS_AGE).system(this::savesAge)
+					.step("S5").system(this::greetsUserWithFirstNameAndAge)
 			.build();
 		return useCaseModel;
 	}
 	
-	private void promptUserToEnterFirstName(UseCaseModelRunner runner) {
+	private void promptsUserToEnterFirstName(UseCaseModelRunner runner) {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptUserToEnterAge(UseCaseModelRunner runner) {
+	private void promptsUserToEnterAge(UseCaseModelRunner runner) {
 		System.out.print("Please enter your age: ");
 	}
 
-	private void saveFirstName(EnterText enterText) {
+	private void savesFirstName(EntersText enterText) {
 		firstName = enterText.text;
 	}
 	
-	private void saveAge(EnterText enterText) {
+	private void savesAge(EntersText enterText) {
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetUserWithFirstNameAndAge(UseCaseModelRunner runner) {
+	private void greetsUserWithFirstNameAndAge(UseCaseModelRunner runner) {
 		System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
@@ -55,7 +55,7 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 		UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(enterText());
-		useCaseModelRunner.reactTo(enterText());	
+		useCaseModelRunner.reactTo(entersText());
+		useCaseModelRunner.reactTo(entersText());	
 	}
 }

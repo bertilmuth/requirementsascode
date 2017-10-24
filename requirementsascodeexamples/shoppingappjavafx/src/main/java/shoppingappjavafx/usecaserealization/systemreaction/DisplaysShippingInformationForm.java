@@ -8,11 +8,11 @@ import shoppingappjavafx.domain.ShippingInformation;
 import shoppingappjavafx.usecaserealization.RunContext;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
-public class DisplayShippingInformationForm implements Consumer<UseCaseModelRunner> {
+public class DisplaysShippingInformationForm implements Consumer<UseCaseModelRunner> {
 	private RunContext runContext;
 	private Display display;
 
-	public DisplayShippingInformationForm(RunContext runContext, Display display) {
+	public DisplaysShippingInformationForm(RunContext runContext, Display display) {
 		this.runContext = runContext;
 		this.display = display;
 	}

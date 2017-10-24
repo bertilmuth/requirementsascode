@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import shoppingappjavafx.domain.PurchaseOrder;
-import shoppingappjavafx.usecase.userevent.ConfirmPurchase;
+import shoppingappjavafx.usecase.userevent.ConfirmsPurchase;
 
 public class DisplayPurchaseOrderSummaryController extends AbstractController{
     @FXML
@@ -21,7 +21,7 @@ public class DisplayPurchaseOrderSummaryController extends AbstractController{
 	
     @FXML
     void onFinish(ActionEvent event) {
-    	useCaseModelRunner().reactTo(new ConfirmPurchase());
+    	useCaseModelRunner().reactTo(new ConfirmsPurchase());
     }
     
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder) {

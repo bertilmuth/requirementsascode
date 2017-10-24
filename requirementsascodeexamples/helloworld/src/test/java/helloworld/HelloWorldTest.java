@@ -8,7 +8,7 @@ import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 
-import helloworld.userevent.EnterText;
+import helloworld.userevent.EntersText;
 
 public class HelloWorldTest {
 	private TestUseCaseModelRunner modelRunner;
@@ -47,7 +47,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John Q. Public"));
+		modelRunner.reactTo(new EntersText("John Q. Public"));
 
 		assertEquals("S1;S2;", modelRunner.getRunStepNames());
 	}
@@ -58,7 +58,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John"), new EnterText("39"));
+		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertEquals("S1;S2;S3;S4;S5;", modelRunner.getRunStepNames());
 	}
@@ -69,7 +69,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John"), new EnterText("39"));
+		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertEquals("S1;S2;S3;S4;S5;S6;", modelRunner.getRunStepNames());
 	}
@@ -80,7 +80,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John"), new EnterText("1000"));
+		modelRunner.reactTo(new EntersText("John"), new EntersText("1000"));
 
 		assertEquals("S1;S2;S3;S4;S5a_1;S5a_2;S3;", modelRunner.getRunStepNames());
 	}
@@ -91,7 +91,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John"), new EnterText("NON-NUMERICAL-AGE"));
+		modelRunner.reactTo(new EntersText("John"), new EntersText("NON-NUMERICAL-AGE"));
 
 		assertEquals("S1;S2;S3;S4;S5b_1;S5b_2;S3;", modelRunner.getRunStepNames());
 	}
@@ -102,7 +102,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.normalUser()).run(useCaseModel);
-		modelRunner.reactTo(new EnterText("John"), new EnterText("39"));
+		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertEquals("S1;S2;S3;S4;S5;S6;S7;", modelRunner.getRunStepNames());
 	}
@@ -113,7 +113,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.anonymousUser()).run(useCaseModel);
-		modelRunner.reactTo(new EnterText("39"));
+		modelRunner.reactTo(new EntersText("39"));
 
 		assertEquals("S1a_1;S3;S4;S5c_1;S6;S7;", modelRunner.getRunStepNames());
 	}
@@ -124,7 +124,7 @@ public class HelloWorldTest {
 		useCaseModel = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.anonymousUser()).run(useCaseModel);
-		modelRunner.reactTo(new EnterText("NotANumber"));
+		modelRunner.reactTo(new EntersText("NotANumber"));
 
 		assertEquals("S1a_1;S3;S4;S5b_1;S5b_2;S3;", modelRunner.getRunStepNames());
 	}

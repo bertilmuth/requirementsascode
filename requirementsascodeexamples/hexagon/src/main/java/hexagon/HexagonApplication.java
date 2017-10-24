@@ -6,7 +6,7 @@ import org.requirementsascode.UseCaseModelRunner;
 
 import hexagon.adapter.RepositoryAdapter;
 import hexagon.adapter.WriterAdapter;
-import hexagon.usecase.AskForPoem;
+import hexagon.usecase.AsksForPoem;
 import hexagon.usecase.HexagonUseCaseModel;
 import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
@@ -26,6 +26,6 @@ public class HexagonApplication {
     
     runner = new UseCaseModelRunner();
     runner.run(useCaseModel);
-    runner.reactTo(new AskForPoem(), new AskForPoem(), new AskForPoem());
+    runner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
   }
 }

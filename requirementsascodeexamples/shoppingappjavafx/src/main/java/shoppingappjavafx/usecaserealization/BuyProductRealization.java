@@ -5,16 +5,16 @@ import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
 import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductIsInCart;
 import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
-import shoppingappjavafx.usecaserealization.systemreaction.AddProductToPurchaseOrder;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayPaymentDetailsForm;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayProducts;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayPurchaseOrderSummary;
-import shoppingappjavafx.usecaserealization.systemreaction.DisplayShippingInformationForm;
-import shoppingappjavafx.usecaserealization.systemreaction.InitiateShipping;
-import shoppingappjavafx.usecaserealization.systemreaction.LogException;
-import shoppingappjavafx.usecaserealization.systemreaction.SavePaymentDetails;
-import shoppingappjavafx.usecaserealization.systemreaction.SaveShippingInformation;
-import shoppingappjavafx.usecaserealization.systemreaction.StartWithEmptyShoppingCart;
+import shoppingappjavafx.usecaserealization.systemreaction.AddsProductToPurchaseOrder;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPaymentDetailsForm;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysProducts;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPurchaseOrderSummary;
+import shoppingappjavafx.usecaserealization.systemreaction.DisplaysShippingInformationForm;
+import shoppingappjavafx.usecaserealization.systemreaction.InitiatesShipping;
+import shoppingappjavafx.usecaserealization.systemreaction.LogsException;
+import shoppingappjavafx.usecaserealization.systemreaction.SavesPaymentDetails;
+import shoppingappjavafx.usecaserealization.systemreaction.SavesShippingInformation;
+import shoppingappjavafx.usecaserealization.systemreaction.StartsWithEmptyShoppingCart;
 
 public class BuyProductRealization {
   private Stock stock;
@@ -27,44 +27,44 @@ public class BuyProductRealization {
     this.runContext = new RunContext();
   }
 
-  public StartWithEmptyShoppingCart startWithEmptyShoppingCart() {
-    return new StartWithEmptyShoppingCart(runContext);
+  public StartsWithEmptyShoppingCart startsWithEmptyShoppingCart() {
+    return new StartsWithEmptyShoppingCart(runContext);
   }
 
-  public DisplayProducts displayProducts() {
-    return new DisplayProducts(runContext, stock, display);
+  public DisplaysProducts displaysProducts() {
+    return new DisplaysProducts(runContext, stock, display);
   }
 
-  public AddProductToPurchaseOrder addProductToPurchaseOrder() {
-    return new AddProductToPurchaseOrder(runContext);
+  public AddsProductToPurchaseOrder addsProductToPurchaseOrder() {
+    return new AddsProductToPurchaseOrder(runContext);
   }
 
   public LessThan10Products lessThan10Products() {
     return new LessThan10Products(runContext);
   }
 
-  public DisplayShippingInformationForm displayShippingInformationForm() {
-    return new DisplayShippingInformationForm(runContext, display);
+  public DisplaysShippingInformationForm displaysShippingInformationForm() {
+    return new DisplaysShippingInformationForm(runContext, display);
   }
 
-  public SaveShippingInformation saveShippingInformation() {
-    return new SaveShippingInformation(runContext);
+  public SavesShippingInformation savesShippingInformation() {
+    return new SavesShippingInformation(runContext);
   }
 
-  public DisplayPaymentDetailsForm displayPaymentDetailsForm() {
-    return new DisplayPaymentDetailsForm(display);
+  public DisplaysPaymentDetailsForm displaysPaymentDetailsForm() {
+    return new DisplaysPaymentDetailsForm(display);
   }
 
-  public SavePaymentDetails savePaymentDetails() {
-    return new SavePaymentDetails(runContext);
+  public SavesPaymentDetails savesPaymentDetails() {
+    return new SavesPaymentDetails(runContext);
   }
 
-  public DisplayPurchaseOrderSummary displayPurchaseOrderSummary() {
-    return new DisplayPurchaseOrderSummary(runContext, display);
+  public DisplaysPurchaseOrderSummary displaysPurchaseOrderSummary() {
+    return new DisplaysPurchaseOrderSummary(runContext, display);
   }
 
-  public InitiateShipping initiateShipping() {
-    return new InitiateShipping();
+  public InitiatesShipping initiatesShipping() {
+    return new InitiatesShipping();
   }
 
   public AtLeastOneProductIsInCart atLeastOneProductIsInCart() {
@@ -75,7 +75,7 @@ public class BuyProductRealization {
     return new AnExceptionOccurs();
   }
 
-  public LogException logException() {
-    return new LogException();
+  public LogsException logsException() {
+    return new LogsException();
   }
 }

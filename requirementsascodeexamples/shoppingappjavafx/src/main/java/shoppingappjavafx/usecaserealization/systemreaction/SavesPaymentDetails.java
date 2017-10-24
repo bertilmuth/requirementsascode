@@ -2,18 +2,18 @@ package shoppingappjavafx.usecaserealization.systemreaction;
 
 import java.util.function.Consumer;
 
-import shoppingappjavafx.usecase.userevent.EnterPaymentDetails;
+import shoppingappjavafx.usecase.userevent.EntersPaymentDetails;
 import shoppingappjavafx.usecaserealization.RunContext;
 
-public class SavePaymentDetails implements Consumer<EnterPaymentDetails> {
+public class SavesPaymentDetails implements Consumer<EntersPaymentDetails> {
 	private RunContext runContext;
 	
-	public SavePaymentDetails(RunContext runContext) {
+	public SavesPaymentDetails(RunContext runContext) {
 		this.runContext = runContext;
 	}
 	
 	@Override
-	public void accept(EnterPaymentDetails enterPaymentDetails) {
+	public void accept(EntersPaymentDetails enterPaymentDetails) {
 		runContext.getPurchaseOrder().savePaymentDetails(enterPaymentDetails.get());
 	}
 

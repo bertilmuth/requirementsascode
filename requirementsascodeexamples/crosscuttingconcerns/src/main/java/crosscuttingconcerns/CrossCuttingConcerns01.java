@@ -14,35 +14,35 @@ public class CrossCuttingConcerns01 {
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
 				.basicFlow()
-					.step("S1").system(this::addTwoNumbers)
-					.step("S2").system(this::calculateTwoToThePowerOfAThousand)
-					.step("S3").system(this::displayResults)
+					.step("S1").system(this::addsTwoNumbers)
+					.step("S2").system(this::calculatesTwoToThePowerOfAThousand)
+					.step("S3").system(this::displaysResults)
 			.build();
 		
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-		useCaseModelRunner.adaptSystemReaction(this::measurePerformance);
+		useCaseModelRunner.adaptSystemReaction(this::measuresPerformance);
 		useCaseModelRunner.run(useCaseModel);
 	}
 	
-	private void measurePerformance(SystemReactionTrigger systemReactionTrigger) {
+	private void measuresPerformance(SystemReactionTrigger systemReactionTrigger) {
 			long timeBefore = System.nanoTime();
 			systemReactionTrigger.trigger();
-			long timeafter = System.nanoTime();
-			long timeElapsed = timeafter - timeBefore;
+			long timeAfter = System.nanoTime();
+			long timeElapsed = timeAfter - timeBefore;
 			
 			System.out.println("Step " + systemReactionTrigger.getUseCaseStep() + 
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
-	private void addTwoNumbers(UseCaseModelRunner runner) {
+	private void addsTwoNumbers(UseCaseModelRunner runner) {
 		resultOfAddition = 123456789 + 123456789;
 	}
 	
-	private void calculateTwoToThePowerOfAThousand(UseCaseModelRunner runner) {
+	private void calculatesTwoToThePowerOfAThousand(UseCaseModelRunner runner) {
 		resultOfPower = Math.pow(2, 1000);
 	}
 	
-	private void displayResults(UseCaseModelRunner runner) {
+	private void displaysResults(UseCaseModelRunner runner) {
 		System.out.println("Result of addition: " + resultOfAddition);	
 		System.out.println("Result of 2 to the power of a thousand = " + resultOfPower);	
 	}

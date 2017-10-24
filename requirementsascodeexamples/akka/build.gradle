@@ -1,9 +1,5 @@
 apply plugin: 'java-library'
 
-repositories {
-    jcenter()
-}
-
 dependencies {
   compile 'org.requirementsascode:requirementsascodecore:0.5.2'
   compile 'com.typesafe.akka:akka-actor_2.11:2.5.4'

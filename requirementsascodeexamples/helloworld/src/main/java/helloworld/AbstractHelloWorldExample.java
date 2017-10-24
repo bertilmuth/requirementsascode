@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import org.requirementsascode.UseCaseModelRunner;
 
-import helloworld.userevent.EnterText;
+import helloworld.userevent.EntersText;
 
 public class AbstractHelloWorldExample {
 	private Scanner scanner;
@@ -16,12 +16,12 @@ public class AbstractHelloWorldExample {
 
 	}
 	
-	protected EnterText enterText() {
+	protected EntersText entersText() {
 		String text = scanner.next(); 
-		return new EnterText(text);
+		return new EntersText(text);
 	}
 	
-	protected void stopSystem(UseCaseModelRunner runner){
+	protected void stops(UseCaseModelRunner runner){
 		isSystemStopped = true;
 	}
 	

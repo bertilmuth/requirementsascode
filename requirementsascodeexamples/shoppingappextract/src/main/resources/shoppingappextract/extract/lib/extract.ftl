@@ -10,7 +10,7 @@
 <#function hasSystemReaction step><#return "IgnoreIt" != systemReactionName(step)></#function>
 
 <#function verbNoun camelCaseName>
-	<#local verb = (firstWordOf(camelCaseName) + "s")?lower_case/>
+	<#local verb = (firstWordOf(camelCaseName))?lower_case/>
 	<#local noun = afterFirstWordOf(camelCaseName)?lower_case/>
 	<#local result = [verb, noun]?join(" ")?trim/>
 	<#return result/>
@@ -64,7 +64,9 @@ ${actors} ${userEvent}.${space!""}</#if></#macro>
 <#local name = systemReactionName(s)/>
 <#if hasSystemReaction(s)>
 	<#local systemReaction = verbNoun(name)/>
-	<#if name == "ContinueAt" || name == "ContinueAfter" || name == "ContinueWithoutAlternativeAt">
+	<#if name == "ContinuesAt" || name == "ContinuesAfter" || name == "ContinuesWithoutAlternativeAt">
 		<#local stepName = " " + s.systemReaction.stepName/>
+	<#elseif name == "IncludesUseCase">
+		<#local stepName = " " + s.systemReaction.includedUseCase.name/>
 	</#if>
 System ${systemReaction}${stepName!""}.</#if></#macro>

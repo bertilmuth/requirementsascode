@@ -3,9 +3,9 @@ package org.requirementsascode;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.requirementsascode.systemreaction.ContinueAfter;
-import org.requirementsascode.systemreaction.ContinueAt;
-import org.requirementsascode.systemreaction.ContinueWithoutAlternativeAt;
+import org.requirementsascode.systemreaction.ContinuesAfter;
+import org.requirementsascode.systemreaction.ContinuesAt;
+import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
@@ -65,18 +65,18 @@ public class StepAsPart {
     return systemPart;
   }
 
-  public UseCasePart continueAt(String stepName) {
-    system(new ContinueAt(step.getUseCase(), stepName));
+  public UseCasePart continuesAt(String stepName) {
+    system(new ContinuesAt(step.getUseCase(), stepName));
     return stepPart.getUseCasePart();
   }
 
-  public UseCasePart continueAfter(String stepName) {
-    system(new ContinueAfter(step.getUseCase(), stepName));
+  public UseCasePart continuesAfter(String stepName) {
+    system(new ContinuesAfter(step.getUseCase(), stepName));
     return stepPart.getUseCasePart();
   }
 
-  public UseCasePart continueWithoutAlternativeAt(String stepName) {
-    system(new ContinueWithoutAlternativeAt(step.getUseCase(), stepName));
+  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
+    system(new ContinuesWithoutAlternativeAt(step.getUseCase(), stepName));
     return stepPart.getUseCasePart();
   }
 }

@@ -26,12 +26,12 @@ UseCaseModel useCaseModel =
   UseCaseModelBuilder.newBuilder()
 	.useCase("Get greeted")
 		.basicFlow()
-			.step("S1").system(promptUserToEnterName())
-			.step("S2").user(enterName()).system(greetUser())
-			.step("S3").user(decideToQuit())
-			.step("S4").system(quit())
+			.step("S1").system(promptsUserToEnterName())
+			.step("S2").user(entersName()).system(greetsUser())
+			.step("S3").user(decidesToQuit())
+			.step("S4").system(quits())
 		.flow("Alternative Flow A").insteadOf("S4")
-			.step("S4a_1").system(blowUp())
+			.step("S4a_1").system(blowsUp())
 			.step("S4a_2").continueAt("S1")
 		.flow("Alternative Flow B").after("S3")
 			.step("S4b_1").continueAfter("S2")
@@ -45,19 +45,19 @@ UseCaseModel useCaseModel =
 You have to use classes with special names in the model,
 as the engine will create documentation from these names.
  
-For example, in step S2, the ```enterName()``` method returns the following class:
+For example, in step S2, the ```entersName()``` method returns the following class:
 ``` java
-public class EnterName {
+public class EntersName {
 	public final String name;
 	
-	public EnterName(String name) {
+	public EntersName(String name) {
 		this.name = name;
 	}
 }
 ```
 
-The name of the class needs to be of the form _VerbNoun_, in first person singular.
-In the example, it is _EnterName_. 
+The name of the class needs to be of the form _VerbNoun_, in third person singular.
+In the example, it is _EntersName_. 
 The documentation created from step S2 will read: "S2. User _enters name_. System greets user."
 
 ### Use a template engine to extract the use cases, and generate documentation

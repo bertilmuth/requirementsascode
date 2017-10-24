@@ -48,7 +48,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
-			.basicFlow().step("S1").continueAfter(CONTINUE);
+			.basicFlow().step("S1").continuesAfter(CONTINUE);
 	}
 	
 	@Test
@@ -57,7 +57,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
-			.basicFlow().step("S1").continueAt(CONTINUE);
+			.basicFlow().step("S1").continuesAt(CONTINUE);
 	}
 	
 	@Test
@@ -66,7 +66,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		thrown.expectMessage(CONTINUE);
 		
 		useCaseModelBuilder.useCase(USE_CASE)
-			.basicFlow().step("S1").continueWithoutAlternativeAt(CONTINUE);
+			.basicFlow().step("S1").continuesWithoutAlternativeAt(CONTINUE);
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModelBuilder.useCase(USE_CASE)
 			.flow(ALTERNATIVE_FLOW)
-				.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.flow(ALTERNATIVE_FLOW);
 	}
 	
@@ -117,8 +117,8 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())			
-				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText());
+				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())			
+				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText());
 	}
 	
 	@Test
@@ -129,9 +129,9 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().anytime()
-				.step(CUSTOMER_ENTERS_TEXT).system(displayConstantText())
+				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
 			.flow(ALTERNATIVE_FLOW).anytime()
-				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displayConstantText())
+				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displaysConstantText())
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);
@@ -178,12 +178,12 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT)
-					.as(customer).user(EnterText.class);
+					.as(customer).user(EntersText.class);
 		
 		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 			
 		useCaseModelRunner.as(customer).run(useCaseModel);
-		useCaseModelRunner.reactTo(enterText());		
+		useCaseModelRunner.reactTo(entersText());		
 	}
 	
 	@Test
@@ -209,11 +209,11 @@ public class ExceptionsThrownTest extends AbstractTestCase{
     useCaseModelBuilder
       .useCase(USE_CASE)
         .basicFlow()
-          .step(SYSTEM_INCLUDES_USE_CASE).includeUseCase(INCLUDED_USE_CASE)
-          .step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+          .step(SYSTEM_INCLUDES_USE_CASE).includesUseCase(INCLUDED_USE_CASE)
+          .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
-          .step(SYSTEM_DISPLAYS_NUMBER).user(EnterNumber.class).system(displayEnteredNumber())
+          .step(SYSTEM_DISPLAYS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
     .build();
   }  
 }

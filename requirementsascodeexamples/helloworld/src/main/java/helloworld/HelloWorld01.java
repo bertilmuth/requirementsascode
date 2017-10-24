@@ -10,12 +10,12 @@ public class HelloWorld01 {
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(this::greetUser)
+					.step("S1").system(this::greetsUser)
 			.build();
 		return useCaseModel;
 	}
 
-	private void greetUser(UseCaseModelRunner runner) {
+	private void greetsUser(UseCaseModelRunner runner) {
 		System.out.println("Hello, User.");
 	}
 	

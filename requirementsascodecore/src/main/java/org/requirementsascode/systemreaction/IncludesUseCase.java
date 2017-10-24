@@ -7,13 +7,13 @@ import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class IncludeUseCase implements Consumer<UseCaseModelRunner>, Serializable {
+public class IncludesUseCase implements Consumer<UseCaseModelRunner>, Serializable {
   private static final long serialVersionUID = -9078568632090369442L;
   
   private UseCase includedUseCase;
   private Step includeStep;
 
-  public IncludeUseCase(UseCase includedUseCase, Step includeStep) {
+  public IncludesUseCase(UseCase includedUseCase, Step includeStep) {
     this.includedUseCase = includedUseCase;
     this.includeStep = includeStep;
   }

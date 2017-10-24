@@ -12,15 +12,15 @@ public class HelloWorld02 {
 		UseCaseModel useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(this::greetUser)
-					.step("S2").system(this::printHooray)
+					.step("S1").system(this::greetsUser)
+					.step("S2").system(this::printsHooray)
 						.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
 			.build();
 		
 		return useCaseModel;
 	}
 
-	private void greetUser(UseCaseModelRunner runner) {
+	private void greetsUser(UseCaseModelRunner runner) {
 		System.out.println("Hello, User.");
 	}
 	
@@ -28,7 +28,7 @@ public class HelloWorld02 {
 		return hoorayCounter < 3; 
 	}
 	
-	private void printHooray(UseCaseModelRunner runner) {
+	private void printsHooray(UseCaseModelRunner runner) {
 		System.out.println("Hip, hip, hooray!");
 		hoorayCounter++;
 	}

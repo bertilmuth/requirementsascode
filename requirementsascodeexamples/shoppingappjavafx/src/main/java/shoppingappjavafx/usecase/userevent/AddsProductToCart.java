@@ -2,10 +2,10 @@ package shoppingappjavafx.usecase.userevent;
 
 import shoppingappjavafx.domain.Product;
 
-public class AddProductToCart {
+public class AddsProductToCart {
 	private Product product;
 
-	public AddProductToCart(Product product) {
+	public AddsProductToCart(Product product) {
 		this.product = product;
 	}
 

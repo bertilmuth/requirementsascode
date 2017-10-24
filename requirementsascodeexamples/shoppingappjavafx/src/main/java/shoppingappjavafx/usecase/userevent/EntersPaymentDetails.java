@@ -2,10 +2,10 @@ package shoppingappjavafx.usecase.userevent;
 
 import shoppingappjavafx.domain.PaymentDetails;
 
-public class EnterPaymentDetails {
+public class EntersPaymentDetails {
 	private PaymentDetails paymentDetails;
 
-	public EnterPaymentDetails(PaymentDetails paymentDetails) {
+	public EntersPaymentDetails(PaymentDetails paymentDetails) {
 		this.paymentDetails = paymentDetails;
 	}
 

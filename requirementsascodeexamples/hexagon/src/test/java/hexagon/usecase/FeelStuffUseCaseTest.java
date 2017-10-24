@@ -32,7 +32,7 @@ public class FeelStuffUseCaseTest {
   @Test
   public void testBasicFlow() {
     testRunner.run(useCaseModel);
-    testRunner.reactTo(new AskForPoem(), new AskForPoem(), new AskForPoem());
+    testRunner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
     assertEquals("1;2;3;", testRunner.getRunStepNames());
   }
 }

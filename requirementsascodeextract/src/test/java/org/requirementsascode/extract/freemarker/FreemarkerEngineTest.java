@@ -14,12 +14,12 @@ import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
-import org.requirementsascode.extract.freemarker.systemreaction.BlowUp;
-import org.requirementsascode.extract.freemarker.systemreaction.GreetUser;
-import org.requirementsascode.extract.freemarker.systemreaction.PromptUserToEnterName;
-import org.requirementsascode.extract.freemarker.systemreaction.Quit;
-import org.requirementsascode.extract.freemarker.userevent.DecideToQuit;
-import org.requirementsascode.extract.freemarker.userevent.EnterName;
+import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
+import org.requirementsascode.extract.freemarker.systemreaction.GreetsUser;
+import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnterName;
+import org.requirementsascode.extract.freemarker.systemreaction.Quits;
+import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
+import org.requirementsascode.extract.freemarker.userevent.EntersName;
 import org.requirementsascode.systemreaction.IgnoreIt;
 
 public class FreemarkerEngineTest {
@@ -51,20 +51,20 @@ public class FreemarkerEngineTest {
             .step("Included Step").system(new IgnoreIt<>())
         .useCase("Get greeted")
           .basicFlow()
-            .step("S1").system(promptUserToEnterName())
-            .step("S2").user(enterName()).system(greetUser()).reactWhile(someConditionIsFulfilled())
-            .step("S3").user(decideToQuit())
-            .step("S4").system(quit())
+            .step("S1").system(promptsUserToEnterName())
+            .step("S2").user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
+            .step("S3").user(decidesToQuit())
+            .step("S4").system(quits())
           .flow("Alternative Flow A").insteadOf("S4")
-            .step("S4a_1").system(blowUp())
-            .step("S4a_2").continueAt("S1")
+            .step("S4a_1").system(blowsUp())
+            .step("S4a_2").continuesAt("S1")
           .flow("Alternative Flow B").after("S3")
-            .step("S4b_1").continueAfter("S2")
+            .step("S4b_1").continuesAfter("S2")
           .flow("Alternative Flow C").when(thereIsNoAlternative())
-            .step("S5").continueWithoutAlternativeAt("S4")
+            .step("S5").continuesWithoutAlternativeAt("S4")
           .flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
-            .step("S4c_1").includeUseCase("Included Use Case")
-            .step("S4c_2").continueAt("S1")
+            .step("S4c_1").includesUseCase("Included Use Case")
+            .step("S4c_2").continuesAt("S1")
         .build();    
     
     String templateFileName = "testextract.ftl";
@@ -98,31 +98,31 @@ public class FreemarkerEngineTest {
     return new ThereIsNoAlternative();
   }
 
-  private Consumer<UseCaseModelRunner> promptUserToEnterName() {
-    return new PromptUserToEnterName();
+  private Consumer<UseCaseModelRunner> promptsUserToEnterName() {
+    return new PromptsUserToEnterName();
   }
 
-  private Class<EnterName> enterName() {
-    return EnterName.class;
+  private Class<EntersName> entersName() {
+    return EntersName.class;
   }
 
-  private Consumer<EnterName> greetUser() {
-    return new GreetUser();
+  private Consumer<EntersName> greetsUser() {
+    return new GreetsUser();
   }
   
   private Predicate<UseCaseModelRunner> someConditionIsFulfilled() {
     return new SomeConditionIsFulfilled();
   }
 
-  private Class<DecideToQuit> decideToQuit() {
-    return DecideToQuit.class;
+  private Class<DecidesToQuit> decidesToQuit() {
+    return DecidesToQuit.class;
   }
 
-  private Consumer<UseCaseModelRunner> quit() {
-    return new Quit();
+  private Consumer<UseCaseModelRunner> quits() {
+    return new Quits();
   }
 
-  private Consumer<UseCaseModelRunner> blowUp() { 
-	  return new BlowUp();
+  private Consumer<UseCaseModelRunner> blowsUp() { 
+	  return new BlowsUp();
   }
 }

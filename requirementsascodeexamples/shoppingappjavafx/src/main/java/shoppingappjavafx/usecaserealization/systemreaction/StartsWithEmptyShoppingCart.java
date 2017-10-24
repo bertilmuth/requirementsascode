@@ -7,10 +7,10 @@ import org.requirementsascode.UseCaseModelRunner;
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;
 
-public class StartWithEmptyShoppingCart implements Consumer<UseCaseModelRunner> {
+public class StartsWithEmptyShoppingCart implements Consumer<UseCaseModelRunner> {
 	private RunContext runContext;
 
-	public StartWithEmptyShoppingCart(RunContext runContext) {
+	public StartsWithEmptyShoppingCart(RunContext runContext) {
 		this.runContext = runContext;
 	}
 

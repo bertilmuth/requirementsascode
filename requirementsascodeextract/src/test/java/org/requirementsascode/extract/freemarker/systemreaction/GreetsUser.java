@@ -2,11 +2,11 @@ package org.requirementsascode.extract.freemarker.systemreaction;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.extract.freemarker.userevent.EnterName;
+import org.requirementsascode.extract.freemarker.userevent.EntersName;
 
-public class GreetUser implements Consumer<EnterName> {
+public class GreetsUser implements Consumer<EntersName> {
   @Override
-  public void accept(EnterName enterName) {
+  public void accept(EntersName enterName) {
     System.out.println("Hello, " + enterName.name);
   }
 }

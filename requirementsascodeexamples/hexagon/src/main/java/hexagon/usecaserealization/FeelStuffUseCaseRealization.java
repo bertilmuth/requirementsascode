@@ -1,6 +1,6 @@
 package hexagon.usecaserealization;
 
-import hexagon.usecase.AskForPoem;
+import hexagon.usecase.AsksForPoem;
 
 public class FeelStuffUseCaseRealization{
   private RepositoryPort repositoryPort;
@@ -11,17 +11,17 @@ public class FeelStuffUseCaseRealization{
     this.repositoryPort = repositoryPort;
   }
   
-  public void writeSadPoem(AskForPoem ask){
+  public void writesSadPoem(AsksForPoem ask){
     String poem = repositoryPort.getSadPoem();
     writerPort.write(poem); 
   }
   
-  public void writeHappyPoem(AskForPoem ask){
+  public void writesHappyPoem(AsksForPoem ask){
     String poem = repositoryPort.getHappyPoem();
     writerPort.write(poem); 
   }
   
-  public void writeFunnyPoem(AskForPoem ask){
+  public void writesFunnyPoem(AsksForPoem ask){
     String poem = repositoryPort.getFunnyPoem();
     writerPort.write(poem); 
   }

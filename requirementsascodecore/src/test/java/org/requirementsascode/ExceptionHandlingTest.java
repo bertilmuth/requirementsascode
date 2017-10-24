@@ -17,9 +17,9 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 
 		useCaseModelRunner.run(useCaseModel);
@@ -32,9 +32,9 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
+					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);
@@ -47,9 +47,9 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())		
+					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())		
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);
@@ -62,11 +62,11 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())		
+					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_THROWS_EXCEPTION).system(throwArrayIndexOutOfBoundsException())
+					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())
 				.flow(ALTERNATIVE_FLOW_2).anytime()
-					.step(SYSTEM_HANDLES_EXCEPTION).handle(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);

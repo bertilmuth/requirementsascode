@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.UseCaseModelRunner;
 
-public class Quit implements Consumer<UseCaseModelRunner> {
+public class BlowsUp implements Consumer<UseCaseModelRunner> {
   @Override
   public void accept(UseCaseModelRunner runner) {
   }

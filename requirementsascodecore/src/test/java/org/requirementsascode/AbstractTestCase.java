@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public abstract class AbstractTestCase {
 	
@@ -59,51 +58,44 @@ public abstract class AbstractTestCase {
 		return r -> displayedText == null;
 	}
 	
-	protected EnterText enterText(){
-		return new EnterText("Hello, Basic Flow!");
+	protected EntersText entersText(){
+		return new EntersText("Hello, Basic Flow!");
 	}
 	
-	protected EnterText enterAlternativeText(){
-		return new EnterText("Hello, I am an Alternative Flow!");
+	protected EntersText entersAlternativeText(){
+		return new EntersText("Hello, I am an Alternative Flow!");
 	}
 	
-	protected EnterNumber enterNumber(){
-		EnterNumber enterNumber = new EnterNumber(42);
+	protected EntersNumber entersNumber(){
+		EntersNumber enterNumber = new EntersNumber(42);
 		return enterNumber;
 	}
 	
-	protected Consumer<UseCaseModelRunner> displayConstantText() {
+	protected Consumer<UseCaseModelRunner> displaysConstantText() {
 		return r -> {
 			displayedText = "Hello, Basic Flow!";
 		};
 	}
 	
-	protected Consumer<EnterText> displayEnteredText() {
+	protected Consumer<EntersText> displaysEnteredText() {
 		return enterText -> {
 			displayedText = enterText.toString();
 		};
 	}
 	
-	protected Consumer<EnterNumber> displayEnteredNumber() {
+	protected Consumer<EntersNumber> displaysEnteredNumber() {
 		return enterNumber -> {
 			displayedText = enterNumber.toString();
 		};
 	}
 	
-	protected Supplier<EnterNumber> raiseEnterNumber() {
-		return () -> {
-			EnterNumber enterNumberEvent = new EnterNumber(42);
-			return enterNumberEvent;
-		};
-	}
-	
-	protected Consumer<UseCaseModelRunner> throwArrayIndexOutOfBoundsException() {
+	protected Consumer<UseCaseModelRunner> throwsArrayIndexOutOfBoundsException() {
 		return r -> {
 			throw new ArrayIndexOutOfBoundsException(42);
 		};
 	}
 	
-	protected Consumer<EnterText> throwRuntimeException() {
+	protected Consumer<EntersText> throwsRuntimeException() {
 		return (object) -> {throw new RuntimeException("Test failed!");};
 	}
 	
@@ -118,10 +110,10 @@ public abstract class AbstractTestCase {
 		return latestStepName;
 	}
 	
-	public class EnterText{
+	public class EntersText{
 		private String value;
 		
-		public EnterText(String text) {
+		public EntersText(String text) {
 			this.value = text;
 		}
 		
@@ -135,10 +127,10 @@ public abstract class AbstractTestCase {
 		}
 	}
 	
-	protected class EnterNumber{
+	protected class EntersNumber{
 		private Integer value;
 		
-		public EnterNumber(int value) {
+		public EntersNumber(int value) {
 			this.value = value;
 		}
 		

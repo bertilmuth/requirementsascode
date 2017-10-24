@@ -15,8 +15,8 @@ import javafx.scene.layout.Priority;
 import shoppingappjavafx.domain.Product;
 import shoppingappjavafx.domain.Products;
 import shoppingappjavafx.domain.PurchaseOrder;
-import shoppingappjavafx.usecase.userevent.AddProductToCart;
-import shoppingappjavafx.usecase.userevent.StartCheckoutProcess;
+import shoppingappjavafx.usecase.userevent.AddsProductToCart;
+import shoppingappjavafx.usecase.userevent.StartsCheckoutProcess;
 
 public class DisplayProductsController extends AbstractController{
     @FXML
@@ -30,7 +30,7 @@ public class DisplayProductsController extends AbstractController{
         
     @FXML
     void onCheckout(ActionEvent event) {
-    	StartCheckoutProcess checkoutPurchase =  new StartCheckoutProcess();
+    	StartsCheckoutProcess checkoutPurchase =  new StartsCheckoutProcess();
     	useCaseModelRunner().reactTo(checkoutPurchase);
     }
 	
@@ -49,7 +49,7 @@ public class DisplayProductsController extends AbstractController{
         }
 
 		private void buyProduct() {
-			AddProductToCart addProductToCart = new AddProductToCart(product);
+			AddsProductToCart addProductToCart = new AddsProductToCart(product);
 			useCaseModelRunner().reactTo(addProductToCart);
 			productsListView.refresh();
 		}
@@ -74,7 +74,7 @@ public class DisplayProductsController extends AbstractController{
     		buyButton.setDisable(whenNoMoreProductsCanBeBought());
     	}
     	private boolean whenNoMoreProductsCanBeBought() {
-    		return !useCaseModelRunner().canReactTo(AddProductToCart.class);
+    		return !useCaseModelRunner().canReactTo(AddsProductToCart.class);
     	}
     }
 
@@ -91,6 +91,6 @@ public class DisplayProductsController extends AbstractController{
 		checkoutButton.setDisable(whenCheckoutIsNotPossible());
 	}
 	private boolean whenCheckoutIsNotPossible() {
-		return !useCaseModelRunner().canReactTo(StartCheckoutProcess.class);
+		return !useCaseModelRunner().canReactTo(StartsCheckoutProcess.class);
 	}
 }

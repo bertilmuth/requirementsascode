@@ -24,7 +24,7 @@ public class AdaptedSystemReactionTest extends AbstractTestCase{
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displayConstantText())
+					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);

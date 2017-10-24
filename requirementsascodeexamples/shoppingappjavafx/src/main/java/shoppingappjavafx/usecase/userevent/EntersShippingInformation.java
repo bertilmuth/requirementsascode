@@ -2,10 +2,10 @@ package shoppingappjavafx.usecase.userevent;
 
 import shoppingappjavafx.domain.ShippingInformation;
 
-public class EnterShippingInformation {
+public class EntersShippingInformation {
 	private ShippingInformation shippingInformation;
 
-	public EnterShippingInformation(ShippingInformation shippingInformation) {
+	public EntersShippingInformation(ShippingInformation shippingInformation) {
 		this.shippingInformation = shippingInformation;
 	}
 

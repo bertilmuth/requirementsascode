@@ -8,11 +8,11 @@ import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
-public class DisplayPurchaseOrderSummary implements Consumer<UseCaseModelRunner> {
+public class DisplaysPurchaseOrderSummary implements Consumer<UseCaseModelRunner> {
 	private RunContext runContext;
 	private Display display;
 
-	public DisplayPurchaseOrderSummary(RunContext runContext, Display display) {
+	public DisplaysPurchaseOrderSummary(RunContext runContext, Display display) {
 		this.runContext = runContext;
 		this.display = display;
 	}

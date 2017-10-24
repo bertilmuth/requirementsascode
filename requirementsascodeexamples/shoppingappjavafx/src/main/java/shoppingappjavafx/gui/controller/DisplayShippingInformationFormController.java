@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import shoppingappjavafx.domain.ShippingInformation;
-import shoppingappjavafx.usecase.userevent.EnterShippingInformation;
-import shoppingappjavafx.usecase.userevent.SignalToGoBack;
+import shoppingappjavafx.usecase.userevent.EntersShippingInformation;
+import shoppingappjavafx.usecase.userevent.SignalsToGoBack;
 
 public class DisplayShippingInformationFormController extends AbstractController{
 	private ShippingInformation shippingInformation;
@@ -41,13 +41,13 @@ public class DisplayShippingInformationFormController extends AbstractController
     
     @FXML
     void onConfirm(ActionEvent event) {
-    	EnterShippingInformation enterShippingInformation =  new EnterShippingInformation(shippingInformation);
+    	EntersShippingInformation enterShippingInformation =  new EntersShippingInformation(shippingInformation);
     	useCaseModelRunner().reactTo(enterShippingInformation);
     }
     
 	@FXML
     void onBack(ActionEvent event) {
-		SignalToGoBack goBack = new SignalToGoBack();
+		SignalsToGoBack goBack = new SignalsToGoBack();
     	useCaseModelRunner().reactTo(goBack);
     }
     

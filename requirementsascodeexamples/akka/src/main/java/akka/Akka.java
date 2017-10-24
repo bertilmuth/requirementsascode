@@ -15,19 +15,18 @@ import akka.actor.Props;
 import akka.actor.UntypedAbstractActor;
 
 public class Akka {
-	private static final Class<AskForHelloToUser> ASK_FOR_HELLO_TO_USER = AskForHelloToUser.class;
-	private static final Class<AskForHelloWorld> ASK_FOR_HELLO_WORLD = AskForHelloWorld.class;
-	private static final String SAY_HELLO_ACTOR = "sayHelloActor";
+	private static final Class<AsksForHelloToUser> ASKS_FOR_HELLO_TO_USER = AsksForHelloToUser.class;
+	private static final Class<AsksForHelloWorld> ASKS_FOR_HELLO_WORLD = AsksForHelloWorld.class;
 
 	public static void main(String[] args) {
 		ActorSystem actorSystem = ActorSystem.create("modelBasedActorSystem");
 		
 		UseCaseModelRunner useCaseModelRunner = runnerOf(useCaseModel());
 
-		ActorRef sayHelloActor = spawn(SAY_HELLO_ACTOR, actorSystem, SayHelloActor.class, useCaseModelRunner);
+		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class, useCaseModelRunner);
 		
-		sayHelloActor.tell(new AskForHelloWorld(), ActorRef.noSender());
-		sayHelloActor.tell(new AskForHelloToUser("Sandra"), ActorRef.noSender());
+		sayHelloActor.tell(new AsksForHelloWorld(), ActorRef.noSender());
+		sayHelloActor.tell(new AsksForHelloToUser("Sandra"), ActorRef.noSender());
 
 		waitForReturnKeyPressed(); 
 
@@ -47,25 +46,25 @@ public class Akka {
 	}
 
 	static UseCaseModel useCaseModel() {
-		SayHelloWorld sayHelloWorld = new SayHelloWorld();
-		SayHelloToUser sayHelloToUser = new SayHelloToUser();
+		SaysHelloWorld saysHelloWorld = new SaysHelloWorld();
+		SaysHelloToUser saysHelloToUser = new SaysHelloToUser();
 		
 		UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().useCase("Say hello to world, then user")
 			.basicFlow()
-				.step("S1").user(ASK_FOR_HELLO_WORLD).system(sayHelloWorld)
-				.step("S2").user(ASK_FOR_HELLO_TO_USER).system(sayHelloToUser)
+				.step("S1").user(ASKS_FOR_HELLO_WORLD).system(saysHelloWorld)
+				.step("S2").user(ASKS_FOR_HELLO_TO_USER).system(saysHelloToUser)
 			.build();
 		return useCaseModel;
 	}
 	
-	static class AskForHelloWorld implements Serializable{
+	static class AsksForHelloWorld implements Serializable{
 		private static final long serialVersionUID = -8546529101337178227L;
 	}
 
-	static class AskForHelloToUser implements Serializable {
+	static class AsksForHelloToUser implements Serializable {
 		private static final long serialVersionUID = -133206036145556906L;
 		private String name;
-		public AskForHelloToUser(String name) {
+		public AsksForHelloToUser(String name) {
 			this.name = name;
 		}
 		public String getName() {
@@ -73,20 +72,20 @@ public class Akka {
 		}
 	}
 	
-	static class SayHelloWorld implements Consumer<AskForHelloWorld>, Serializable{
+	static class SaysHelloWorld implements Consumer<AsksForHelloWorld>, Serializable{
 		private static final long serialVersionUID = 5717637483302189546L;
 
 		@Override
-		public void accept(AskForHelloWorld t) {
+		public void accept(AsksForHelloWorld t) {
 			System.out.println("Hello, World.");
 		}
 	}
 	
-	static class SayHelloToUser implements Consumer<AskForHelloToUser>, Serializable{
+	static class SaysHelloToUser implements Consumer<AsksForHelloToUser>, Serializable{
 		private static final long serialVersionUID = 5090421774929433206L;
 
 		@Override
-		public void accept(AskForHelloToUser t) {
+		public void accept(AsksForHelloToUser t) {
 			System.out.println("Hello, " + t.getName() + ".");
 		}
 	}
