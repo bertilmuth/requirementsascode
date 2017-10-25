@@ -7,6 +7,7 @@ import java.util.Map;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.extract.freemarker.methodmodel.ActorPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfClassName;
+import org.requirementsascode.extract.freemarker.methodmodel.ReactWhileOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.SystemPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.UserPartOfStep;
 
@@ -36,7 +37,8 @@ public class FreeMarkerEngine {
     put("lowerCaseWordsOfClassName", new LowerCaseWordsOfClassName());
     put("actorPartOfStep", new ActorPartOfStep());
     put("userPartOfStep", new UserPartOfStep());
-    put("systemPartOfStep", new SystemPartOfStep());
+    put("systemPartOfStep", new SystemPartOfStep()); 
+    put("reactWhileOfStep", new ReactWhileOfStep());
   }
 
   public void put(String key, Object value) {

@@ -5,7 +5,7 @@
 	<#list useCase.flows as useCaseFlow>
 		Flow: ${useCaseFlow} <@flowPredicate f=useCaseFlow/>
 		<#list useCaseFlow.steps as s>
-			Step: ${s}. <@reactWhile s=s/>${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}
+			Step: ${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}
 		</#list>
 	</#list>
 </#list>

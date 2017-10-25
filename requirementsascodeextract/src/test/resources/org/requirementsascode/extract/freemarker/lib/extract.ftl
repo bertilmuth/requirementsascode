@@ -29,8 +29,3 @@
 <#local predicate = flowPosition(f) + flowPredicateSeparator(f,", ") + when(f)>
 <#local colon><#if predicate != "">:</#if></#local>
 ${predicate?cap_first}${colon}</#macro>
-
-<#macro reactWhile s>
-<#if "ReactWhile" == s.predicate.class.simpleName>
-	<#local reactWhileCondition = lowerCaseWordsOfClassName(s.predicate.reactWhileCondition.class)/>
-<#if reactWhileCondition != "">As long as ${reactWhileCondition}: </#if></#if></#macro>  
