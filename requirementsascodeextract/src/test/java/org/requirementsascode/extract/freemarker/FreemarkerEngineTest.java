@@ -78,7 +78,7 @@ public class FreemarkerEngineTest {
             + " step: Included Step."
         + " use case: Get greeted. flow: basic flow"
             + " step: S1. System prompts user to enter name."
-            + " step: S2. As long as some condition is fulfilled: User enters name. System greets user."
+            + " step: S2. As long as some condition is fulfilled: User enters name.System greets user."
             + " step: S3. User decides to quit."
             + " step: S4. System quits."
             + " flow: Alternative Flow A Instead of S4:"

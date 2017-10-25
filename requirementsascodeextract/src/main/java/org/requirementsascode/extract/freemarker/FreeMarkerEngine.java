@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.extract.freemarker.methodmodel.AfterFirstWordOfMethod;
-import org.requirementsascode.extract.freemarker.methodmodel.FirstWordOfMethod;
-import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfMethod;
+import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfClassName;
+import org.requirementsascode.extract.freemarker.methodmodel.SystemPartOfStep;
+import org.requirementsascode.extract.freemarker.methodmodel.UserPartOfStep;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -32,9 +32,9 @@ public class FreeMarkerEngine {
 
   private void putFreemarkerMethodsInDataModel() {
     dataModel = new HashMap<String, Object>();
-    put("lowerCaseWordsOf", new LowerCaseWordsOfMethod());
-    put("firstWordOf", new FirstWordOfMethod());
-    put("afterFirstWordOf", new AfterFirstWordOfMethod());
+    put("lowerCaseWordsOfClassName", new LowerCaseWordsOfClassName());
+    put("userPartOfStep", new UserPartOfStep());
+    put("systemPartOfStep", new SystemPartOfStep());
   }
 
   public void put(String key, Object value) {

@@ -4,8 +4,8 @@
 	use case: ${useCase}.
 	<#list useCase.flows as useCaseFlow>
 		flow: ${useCaseFlow} <@flowPredicate f=useCaseFlow/>
-		<#list useCaseFlow.steps as step>
-			step: ${step}. <@reactWhile s=step/><@userStep s=step/><@systemStep s=step/>
+		<#list useCaseFlow.steps as s>
+			step: ${s}. <@reactWhile s=s/>${userPartOfStep(s)}${systemPartOfStep(s)}
 		</#list>
 	</#list>
 </#list>
