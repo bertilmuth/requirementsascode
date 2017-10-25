@@ -32,8 +32,8 @@ public class UseCaseModel implements Serializable{
   UseCaseModel() {
     this.nameToActorMap = new LinkedHashMap<>();
     this.nameToUseCaseMap = new LinkedHashMap<>();
-    this.userActor = newActor("user");
-    this.systemActor = newActor("system");
+    this.userActor = newActor("User");
+    this.systemActor = newActor("System");
   }
 
   /**

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.extract.freemarker.methodmodel.ActorPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.LowerCaseWordsOfClassName;
 import org.requirementsascode.extract.freemarker.methodmodel.SystemPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.UserPartOfStep;
@@ -33,6 +34,7 @@ public class FreeMarkerEngine {
   private void putFreemarkerMethodsInDataModel() {
     dataModel = new HashMap<String, Object>();
     put("lowerCaseWordsOfClassName", new LowerCaseWordsOfClassName());
+    put("actorPartOfStep", new ActorPartOfStep());
     put("userPartOfStep", new UserPartOfStep());
     put("systemPartOfStep", new SystemPartOfStep());
   }

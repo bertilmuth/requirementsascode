@@ -29,6 +29,8 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 public class UseCase extends UseCaseModelElement implements Serializable{
   private static final long serialVersionUID = 4939249650285018834L;
   
+  private static final String BASIC_FLOW = "Basic flow";
+  
   private Map<String, Flow> nameToFlowMap;
   private Map<String, Step> nameToStepMap;
   private Flow basicFlow;
@@ -43,7 +45,7 @@ public class UseCase extends UseCaseModelElement implements Serializable{
     super(useCaseName, useCaseModel);
     this.nameToFlowMap = new LinkedHashMap<>();
     this.nameToStepMap = new LinkedHashMap<>();
-    this.basicFlow = newFlow("basic flow");
+    this.basicFlow = newFlow(BASIC_FLOW);
   }
 
   /**
