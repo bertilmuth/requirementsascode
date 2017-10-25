@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.Actor;
 import org.requirementsascode.UseCaseModel;
 import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
@@ -44,26 +45,32 @@ public class FreemarkerEngineTest {
   
   @Test
   public void extractsUseCaseModel() throws Exception {
+    
+    UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
+    Actor firstActor = modelBuilder.actor("First actor");
+    Actor secondActor = modelBuilder.actor("Second actor");
+    
     UseCaseModel useCaseModel = 
-        UseCaseModelBuilder.newBuilder()
-        .useCase("Included Use Case")
+      modelBuilder
+        .useCase("Included use case")
           .basicFlow()
-            .step("Included Step").system(new IgnoreIt<>())
+            .step("Included step").system(new IgnoreIt<>())
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
-            .step("S2").user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
-            .step("S3").user(decidesToQuit())
-            .step("S4").system(quits())
-          .flow("Alternative Flow A").insteadOf("S4")
+            .step("S2").as(firstActor).user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
+            .step("S3").as(firstActor, secondActor).user(decidesToQuit())
+            .step("S4").as(firstActor, secondActor).system(promptsUserToEnterName())
+            .step("S5").system(quits())
+          .flow("Alternative flow A").insteadOf("S4")
             .step("S4a_1").system(blowsUp())
             .step("S4a_2").continuesAt("S1")
-          .flow("Alternative Flow B").after("S3")
+          .flow("Alternative flow B").after("S3")
             .step("S4b_1").continuesAfter("S2")
-          .flow("Alternative Flow C").when(thereIsNoAlternative())
-            .step("S5").continuesWithoutAlternativeAt("S4")
-          .flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
-            .step("S4c_1").includesUseCase("Included Use Case")
+          .flow("Alternative flow C").when(thereIsNoAlternative())
+            .step("S5a").continuesWithoutAlternativeAt("S4")
+          .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
+            .step("S4c_1").includesUseCase("Included use case")
             .step("S4c_2").continuesAt("S1")
         .build();    
     
@@ -74,23 +81,24 @@ public class FreemarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "use case: Included Use Case. flow: basic flow"
-            + " step: Included Step."
-        + " use case: Get greeted. flow: basic flow"
-            + " step: S1. System prompts user to enter name."
-            + " step: S2. As long as some condition is fulfilled: User enters name.System greets user."
-            + " step: S3. User decides to quit."
-            + " step: S4. System quits."
-            + " flow: Alternative Flow A Instead of S4:"
-            + " step: S4a_1. System blows up." 
-            + " step: S4a_2. System continues at S1."
-            + " flow: Alternative Flow B After S3:"
-            + " step: S4b_1. System continues after S2."
-            + " flow: Alternative Flow C Anytime, when there is no alternative:"
-            + " step: S5. System continues without alternative at S4."
-            + " flow: Alternative Flow D Instead of S4, when there is no alternative:"
-            + " step: S4c_1. System includes use case Included Use Case."
-            + " step: S4c_2. System continues at S1.",
+        "Use case: Included use case. Flow: Basic flow"
+            + " Step: Included step."
+        + " Use case: Get greeted. Flow: Basic flow"
+              + " Step: S1. System prompts user to enter name."
+              + " Step: S2. As long as some condition is fulfilled: As First actor: User enters name.System greets user."
+              + " Step: S3. As First actor/Second actor: User decides to quit."
+              + " Step: S4. As First actor/Second actor: System prompts user to enter name."
+              + " Step: S5. System quits."
+            + " Flow: Alternative flow A Instead of S4:"
+              + " Step: S4a_1. System blows up." 
+              + " Step: S4a_2. System continues at S1."
+            + " Flow: Alternative flow B After S3:"
+              + " Step: S4b_1. System continues after S2."
+            + " Flow: Alternative flow C Anytime, when there is no alternative:"
+              + " Step: S5a. System continues without alternative at S4."
+            + " Flow: Alternative flow D Instead of S4, when there is no alternative:"
+              + " Step: S4c_1. System includes use case Included use case."
+              + " Step: S4c_2. System continues at S1.",
         output);
   }
 

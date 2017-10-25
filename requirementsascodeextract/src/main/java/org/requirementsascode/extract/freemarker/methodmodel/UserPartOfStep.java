@@ -2,14 +2,13 @@ package org.requirementsascode.extract.freemarker.methodmodel;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Step;
+import org.requirementsascode.UseCaseModelRunner;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import freemarker.template.utility.StringUtil;
 
 public class UserPartOfStep implements TemplateMethodModelEx {
   @SuppressWarnings("rawtypes")
@@ -22,22 +21,26 @@ public class UserPartOfStep implements TemplateMethodModelEx {
     String userPartOfStep = "";
     Step step = getStep(arguments.get(0));
     if (hasUser(step)) {
-      String actors = getCapitalizedJoinedActors(step, "/");
-      String wordsOfUserEventClassName = Words.getLowerCaseWordsOfClassName(step.getUserEventClass().getSimpleName());
-      userPartOfStep = actors + " " + wordsOfUserEventClassName + ".";
+      String userActorName = getUserActorName(step);
+      String wordsOfUserEventClassName = Words.getLowerCaseWordsOfClassName(getUserEventName(step));
+      userPartOfStep = userActorName + " " + wordsOfUserEventClassName + ".";
     }
     
     return new SimpleScalar(userPartOfStep);
   }
-
-  private boolean hasUser(Step step) {
-    return step.getUseCaseModel().getSystemActor().getName() != step.getActors()[0].getName();
+  
+  private String getUserEventName(Step step) {
+    Class<?> userEvent = step.getUserEventClass();
+    String userEventName = userEvent.getSimpleName();
+    return userEventName;
   }
-
-  private String getCapitalizedJoinedActors(Step step, String separator) {
-    String actorsLowerCase = StringUtils.join(step.getActors(), separator);
-    String actorsUpperCase = StringUtil.capitalize(actorsLowerCase);
-    return actorsUpperCase;
+  
+  private boolean hasUser(Step step) {
+    return !UseCaseModelRunner.class.equals(step.getUserEventClass());
+  }
+  
+  private String getUserActorName(Step step) {
+    return step.getUseCaseModel().getUserActor().getName();
   }
 
   private Step getStep(Object argument) {
