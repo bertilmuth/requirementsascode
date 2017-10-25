@@ -67,8 +67,6 @@ public class BuildModelTest extends AbstractTestCase{
 		Collection<Flow> flows = useCase.getFlows();
 		
 		assertEquals(1, flows.size());
-		assertTrue(useCase.hasFlow(BASIC_FLOW));
-		assertEquals(BASIC_FLOW, flows.iterator().next().getName());
 	}
 
 	@Test

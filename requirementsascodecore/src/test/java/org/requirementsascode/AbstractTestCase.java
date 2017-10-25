@@ -7,13 +7,12 @@ public abstract class AbstractTestCase {
 	
 	protected static final String CUSTOMER = "Customer";
 	
-	protected static final String USE_CASE = "Use Case";
-	protected static final String USE_CASE_2 = "Use Case 2";
+	protected static final String USE_CASE = "Use case";
+	protected static final String USE_CASE_2 = "Use case 2";
   protected static final String INCLUDED_USE_CASE = "Included use case";
 
-	protected static final String BASIC_FLOW = "basic flow";
-	protected static final String ALTERNATIVE_FLOW = "Alternative Flow";
-	protected static final String ALTERNATIVE_FLOW_2 = "Alternative Flow 2";
+	protected static final String ALTERNATIVE_FLOW = "Alternative flow";
+	protected static final String ALTERNATIVE_FLOW_2 = "Alternative flow 2";
 	
 	protected static final String SYSTEM_DISPLAYS_TEXT = "System displays text";
 	protected static final String SYSTEM_DISPLAYS_TEXT_AGAIN = "System displays text again";
