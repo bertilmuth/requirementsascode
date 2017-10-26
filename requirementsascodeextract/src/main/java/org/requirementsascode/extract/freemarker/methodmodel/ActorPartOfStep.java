@@ -1,17 +1,22 @@
 package org.requirementsascode.extract.freemarker.methodmodel;
 
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.getStepFromFreemarker;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasNonDefaultActor;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.requirementsascode.Actor;
 import org.requirementsascode.Step;
 
-import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class ActorPartOfStep implements TemplateMethodModelEx {
+  private static final String ACTOR_PREFIX = "As ";
+  private static final String ACTOR_SEPARATOR = "/";
+  private static final String ACTOR_POSTFIX = ": ";
+
   @SuppressWarnings("rawtypes")
   @Override
   public Object exec(List arguments) throws TemplateModelException {
@@ -19,34 +24,17 @@ public class ActorPartOfStep implements TemplateMethodModelEx {
       throw new TemplateModelException("Wrong number of arguments. Must be 1.");
     }
 
-    Step step = getStep(arguments.get(0));
-    String actors = getJoinedActors(step, "/");
+    Step step = getStepFromFreemarker(arguments.get(0));
+    String actors = getJoinedActors(step, ACTOR_SEPARATOR);
 
     return new SimpleScalar(actors);
   }
 
   private String getJoinedActors(Step step, String separator) {
     String actorNames = "";
-    if (hasNonDefaultUser(step)) {
-      actorNames = "As " + StringUtils.join(step.getActors(), separator) + ": ";
+    if (hasNonDefaultActor(step)) {
+      actorNames = ACTOR_PREFIX + StringUtils.join(step.getActors(), separator) + ACTOR_POSTFIX;
     }
     return actorNames;
-  }
-
-  private boolean hasNonDefaultUser(Step step) {
-    return !getUserActor(step).equals(step.getActors()[0]) &&
-        !getSystemActor(step).equals(step.getActors()[0]);
-  }
-  
-  private Actor getSystemActor(Step step) {
-    return step.getUseCaseModel().getSystemActor();
-  }
-  
-  private Actor getUserActor(Step step) {
-    return step.getUseCaseModel().getUserActor();
-  }
-
-  private Step getStep(Object argument) {
-    return (Step) ((BeanModel) argument).getAdaptedObject(Step.class);
   }
 }

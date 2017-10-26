@@ -1,20 +1,28 @@
 package org.requirementsascode.extract.freemarker.methodmodel;
 
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.getStepFromFreemarker;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.getSystemActor;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasSystemEvent;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasSystemReaction;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasSystemUser;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
+
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.requirementsascode.Actor;
 import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.AbstractContinue;
-import org.requirementsascode.systemreaction.IgnoreIt;
 import org.requirementsascode.systemreaction.IncludesUseCase;
 
-import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class SystemPartOfStep implements TemplateMethodModelEx {
+  private static final String HANDLES_PREFIX = "Handles ";
+  private static final String HANDLES_POSTFIX = ": ";
+  private static final String SYSTEM_POSTFIX = ".";
+
   @SuppressWarnings("rawtypes")
   @Override
   public Object exec(List arguments) throws TemplateModelException {
@@ -22,7 +30,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
       throw new TemplateModelException("Wrong number of arguments. Must be 1.");
     }
 
-    Step step = getStep(arguments.get(0));
+    Step step = getStepFromFreemarker(arguments.get(0));
 
     String systemPartOfStep = getSystemPartOfStep(step);
 
@@ -32,20 +40,23 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
   private String getSystemPartOfStep(Step step) {
     String systemPartOfStep = "";
     if (hasSystemReaction(step)) {
-      String systemReactionClassName = getSystemReactionClassName(step);
-      String wordsOfSystemReactionClassName = Words.getLowerCaseWordsOfClassName(systemReactionClassName);
+      String handles = getHandles(step);
+      String systemActorName = getSystemActor(step).getName();
+      String wordsOfSystemReactionClassName = getLowerCaseWordsOfClassName(step.getSystemReaction().getClass());
       String stepNameOrIncludedUseCase = getStepNameOrIncludedUseCase(step);
-      systemPartOfStep = getSystemActor(step) + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase + ".";
+      systemPartOfStep = handles + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
+          + SYSTEM_POSTFIX;
     }
     return systemPartOfStep;
   }
 
-  private boolean hasSystemReaction(Step step) {
-    return !(step.getSystemReaction() instanceof IgnoreIt<?>);
-  }
-  
-  private String getSystemReactionClassName(Step step) {
-    return step.getSystemReaction().getClass().getSimpleName();
+  private String getHandles(Step step) {
+    String handles = "";
+
+    if (hasSystemUser(step) && !hasSystemEvent(step)) {
+      handles = HANDLES_PREFIX + step.getUserEventClass().getSimpleName() + HANDLES_POSTFIX;
+    }
+    return handles;
   }
 
   private String getStepNameOrIncludedUseCase(Step step) {
@@ -53,19 +64,11 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     if (hasSystemReaction(step)) {
       Consumer<?> systemReaction = step.getSystemReaction();
       if (systemReaction instanceof AbstractContinue) {
-        stepNameOrIncludedUseCase = " " + ((AbstractContinue)systemReaction).getStepName();
+        stepNameOrIncludedUseCase = " " + ((AbstractContinue) systemReaction).getStepName();
       } else if (systemReaction instanceof IncludesUseCase) {
-        stepNameOrIncludedUseCase = " " + ((IncludesUseCase)systemReaction).getIncludedUseCase().getName();
+        stepNameOrIncludedUseCase = " " + ((IncludesUseCase) systemReaction).getIncludedUseCase().getName();
       }
     }
     return stepNameOrIncludedUseCase;
-  }
-
-  private Actor getSystemActor(Step step) {
-    return step.getUseCaseModel().getSystemActor();
-  }
-
-  private Step getStep(Object argument) {
-    return (Step) ((BeanModel) argument).getAdaptedObject(Step.class);
   }
 }

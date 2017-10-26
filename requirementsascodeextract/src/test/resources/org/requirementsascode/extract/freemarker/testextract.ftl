@@ -1,10 +1,9 @@
-<#include "./lib/extract.ftl"/>
 <@compress single_line=true>
 <#list useCaseModel.useCases as useCase>
 	Use case: ${useCase}.
-	<#list useCase.flows as useCaseFlow>
-		Flow: ${useCaseFlow} <@flowPredicate f=useCaseFlow/>
-		<#list useCaseFlow.steps as s>
+	<#list useCase.flows as f>
+		Flow: ${f} ${flowPredicate(f)}
+		<#list f.steps as s>
 			Step: ${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}
 		</#list>
 	</#list>

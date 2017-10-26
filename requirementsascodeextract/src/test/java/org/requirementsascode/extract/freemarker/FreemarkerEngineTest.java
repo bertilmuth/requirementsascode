@@ -17,6 +17,7 @@ import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfil
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetsUser;
+import org.requirementsascode.extract.freemarker.systemreaction.LogsException;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quits;
 import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
@@ -58,10 +59,11 @@ public class FreemarkerEngineTest {
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
-            .step("S2").as(firstActor).user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
-            .step("S3").as(firstActor, secondActor).user(decidesToQuit())
-            .step("S4").as(firstActor, secondActor).system(promptsUserToEnterName())
-            .step("S5").system(quits())
+            .step("S2").user(entersName()).system(greetsUser())
+            .step("S3").as(firstActor).user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
+            .step("S4").as(firstActor, secondActor).user(decidesToQuit())
+            .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
+            .step("S6").system(quits())
           .flow("Alternative flow A").insteadOf("S4")
             .step("S4a_1").system(blowsUp())
             .step("S4a_2").continuesAt("S1")
@@ -72,6 +74,7 @@ public class FreemarkerEngineTest {
           .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
             .step("S4c_1").includesUseCase("Included use case")
             .step("S4c_2").continuesAt("S1")
+          .flow("EX").step("EX1").handles(Exception.class).system(logsException())
         .build();    
     
     String templateFileName = "testextract.ftl";
@@ -85,10 +88,11 @@ public class FreemarkerEngineTest {
             + " Step: Included step."
         + " Use case: Get greeted. Flow: Basic flow"
               + " Step: S1. System prompts user to enter name."
-              + " Step: S2. As long as some condition is fulfilled: As First actor: User enters name.System greets user."
-              + " Step: S3. As First actor/Second actor: User decides to quit."
-              + " Step: S4. As First actor/Second actor: System prompts user to enter name."
-              + " Step: S5. System quits."
+              + " Step: S2. User enters name.System greets user."
+              + " Step: S3. As long as some condition is fulfilled: As First actor: User enters name.System greets user."
+              + " Step: S4. As First actor/Second actor: User decides to quit."
+              + " Step: S5. As First actor/Second actor: System prompts user to enter name."
+              + " Step: S6. System quits."
             + " Flow: Alternative flow A Instead of S4:"
               + " Step: S4a_1. System blows up." 
               + " Step: S4a_2. System continues at S1."
@@ -98,7 +102,9 @@ public class FreemarkerEngineTest {
               + " Step: S5a. System continues without alternative at S4."
             + " Flow: Alternative flow D Instead of S4, when there is no alternative:"
               + " Step: S4c_1. System includes use case Included use case."
-              + " Step: S4c_2. System continues at S1.",
+              + " Step: S4c_2. System continues at S1."
+            + " Flow: EX"
+              + " Step: EX1. Handles Exception: System logs exception.",
         output);
   }
 
@@ -132,5 +138,9 @@ public class FreemarkerEngineTest {
 
   private Consumer<UseCaseModelRunner> blowsUp() { 
 	  return new BlowsUp();
+  }
+  
+  private Consumer<Exception> logsException() {
+    return new LogsException();
   }
 }

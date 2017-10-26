@@ -13,33 +13,35 @@ If you don't want to download them manually, and you don't use a build system li
 you can download the shoppingappextract distribution zip from the Releases tab. 
 
 ## Using requirementsascodeextract
-In order to use requirementsascodeextract, you need to:
-* Obtain a use case model builder, and build a model with it
-* Use a template engine to extract the use cases, and generate documentation
-
 ### Obtain a use case model builder, and build a model with it
 Here's how you build a use case model from scratch. 
 Note: this model does not make too much sense. It is just an example.
 
 ``` java
 UseCaseModel useCaseModel = 
-  UseCaseModelBuilder.newBuilder()
-	.useCase("Get greeted")
-		.basicFlow()
-			.step("S1").system(promptsUserToEnterName())
-			.step("S2").user(entersName()).system(greetsUser())
-			.step("S3").user(decidesToQuit())
-			.step("S4").system(quits())
-		.flow("Alternative Flow A").insteadOf("S4")
-			.step("S4a_1").system(blowsUp())
-			.step("S4a_2").continueAt("S1")
-		.flow("Alternative Flow B").after("S3")
-			.step("S4b_1").continueAfter("S2")
-		.flow("Alternative Flow C").when(thereIsNoAlternative())
-			.step("S5").continueWithoutAlternativeAt("S4")
-		.flow("Alternative Flow D").insteadOf("S4").when(thereIsNoAlternative())
-			.step("S6").continueAt("S1")
-.build();
+  modelBuilder
+    .useCase("Included use case")
+      .basicFlow()
+        .step("Included step").system(new IgnoreIt<>())
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(promptsUserToEnterName())
+        .step("S2").user(entersName()).system(greetsUser())
+        .step("S3").as(firstActor).user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
+        .step("S4").as(firstActor, secondActor).user(decidesToQuit())
+        .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
+        .step("S6").system(quits())
+      .flow("Alternative flow A").insteadOf("S4")
+        .step("S4a_1").system(blowsUp())
+        .step("S4a_2").continuesAt("S1")
+      .flow("Alternative flow B").after("S3")
+        .step("S4b_1").continuesAfter("S2")
+      .flow("Alternative flow C").when(thereIsNoAlternative())
+        .step("S5a").continuesWithoutAlternativeAt("S4")
+      .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
+        .step("S4c_1").includesUseCase("Included use case")
+        .step("S4c_2").continuesAt("S1")
+    .build();    
 ```
 
 You have to use classes with special names in the model,
@@ -58,7 +60,7 @@ public class EntersName {
 
 The name of the class needs to be of the form _VerbNoun_, in third person singular.
 In the example, it is _EntersName_. 
-The documentation created from step S2 will read: "S2. User _enters name_. System greets user."
+The documentation created from step S2 will read: "S2. User _enters name_.System greets user."
 
 ### Use a template engine to extract the use cases, and generate documentation
 You can create an engine to extract the use cases like this:

@@ -1,16 +1,22 @@
 package org.requirementsascode.extract.freemarker.methodmodel;
 
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.getStepFromFreemarker;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.getUserActor;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasSystemEvent;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.hasSystemUser;
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
+
 import java.util.List;
 
 import org.requirementsascode.Step;
-import org.requirementsascode.UseCaseModelRunner;
 
-import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class UserPartOfStep implements TemplateMethodModelEx {
+  private static final String USER_POSTFIX = ".";
+
   @SuppressWarnings("rawtypes")
   @Override
   public Object exec(List arguments) throws TemplateModelException {
@@ -19,31 +25,17 @@ public class UserPartOfStep implements TemplateMethodModelEx {
     }
 
     String userPartOfStep = "";
-    Step step = getStep(arguments.get(0));
+    Step step = getStepFromFreemarker(arguments.get(0));
     if (hasUser(step)) {
-      String userActorName = getUserActorName(step);
-      String wordsOfUserEventClassName = Words.getLowerCaseWordsOfClassName(getUserEventName(step));
-      userPartOfStep = userActorName + " " + wordsOfUserEventClassName + ".";
+      String userActorName = getUserActor(step).getName();
+      String wordsOfUserEventClassName = getLowerCaseWordsOfClassName(step.getUserEventClass());
+      userPartOfStep = userActorName + " " + wordsOfUserEventClassName + USER_POSTFIX;
     }
     
     return new SimpleScalar(userPartOfStep);
   }
   
-  private String getUserEventName(Step step) {
-    Class<?> userEvent = step.getUserEventClass();
-    String userEventName = userEvent.getSimpleName();
-    return userEventName;
-  }
-  
   private boolean hasUser(Step step) {
-    return !UseCaseModelRunner.class.equals(step.getUserEventClass());
-  }
-  
-  private String getUserActorName(Step step) {
-    return step.getUseCaseModel().getUserActor().getName();
-  }
-
-  private Step getStep(Object argument) {
-    return (Step) ((BeanModel) argument).getAdaptedObject(Step.class);
+    return !hasSystemUser(step) && !hasSystemEvent(step);
   }
 }

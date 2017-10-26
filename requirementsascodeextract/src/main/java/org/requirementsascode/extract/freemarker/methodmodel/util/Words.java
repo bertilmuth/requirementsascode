@@ -1,10 +1,10 @@
-package org.requirementsascode.extract.freemarker.methodmodel;
+package org.requirementsascode.extract.freemarker.methodmodel.util;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class Words {
-  public static String getLowerCaseWordsOfClassName(String camelCaseClassName) {
-    String[] wordArray = toWordArray(camelCaseClassName);
+  public static String getLowerCaseWordsOfClassName(Class<?> clazz) {
+    String[] wordArray = toWordArray(clazz.getSimpleName());
     String words = wordArrayToLowerCaseString(wordArray);
     return words;
   }

@@ -1,5 +1,7 @@
 package org.requirementsascode.extract.freemarker.methodmodel;
 
+import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
+
 import java.util.List;
 
 import org.requirementsascode.Step;
@@ -11,6 +13,9 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class ReactWhileOfStep implements TemplateMethodModelEx {
+  private static final String REACT_WHILE_PREFIX = "As long as ";
+  private static final String REACT_WHILE_POSTFIX = ": ";
+
   @SuppressWarnings("rawtypes")
   @Override
   public Object exec(List arguments) throws TemplateModelException {
@@ -19,19 +24,19 @@ public class ReactWhileOfStep implements TemplateMethodModelEx {
     }
 
     Step step = getStep(arguments.get(0));
-    
+
     String reactWhile = "";
-    if(step.getPredicate() instanceof ReactWhile) {
-      ReactWhile reactWhilePredicate = (ReactWhile)step.getPredicate();
-      reactWhile = "As long as " + Words.getLowerCaseWordsOfClassName(getReactWhileConditionClassName(reactWhilePredicate))
-        + ": ";
+    if (step.getPredicate() instanceof ReactWhile) {
+      ReactWhile reactWhilePredicate = (ReactWhile) step.getPredicate();
+      reactWhile = REACT_WHILE_PREFIX
+          + getLowerCaseWordsOfClassName(getReactWhileConditionClass(reactWhilePredicate)) + REACT_WHILE_POSTFIX;
     }
 
     return new SimpleScalar(reactWhile);
   }
 
-  private String getReactWhileConditionClassName(ReactWhile reactWhilePredicate) {
-    return reactWhilePredicate.getReactWhileCondition().getClass().getSimpleName();
+  private Class<?> getReactWhileConditionClass(ReactWhile reactWhilePredicate) {
+    return reactWhilePredicate.getReactWhileCondition().getClass();
   }
 
   private Step getStep(Object argument) {
