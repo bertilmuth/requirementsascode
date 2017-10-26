@@ -5,7 +5,7 @@ With requirements as code extract, you can generate plain text documentation
 The use case model is defined with the requirements as code core project.
 
 ## Getting started
-If you are using Maven, include the following in your POM, to use the core:
+If you are using Maven, include the following in your POM:
 
 ``` xml
   <dependency>
