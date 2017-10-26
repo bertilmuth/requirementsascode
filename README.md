@@ -15,6 +15,7 @@ At least Java 8 is required, download and install it if necessary.
 Requirements as code is available on Maven Central.
 
 If you are using Maven, include the following in your POM, to use the core:
+
 ``` xml
   <dependency>
     <groupId>org.requirementsascode</groupId>
@@ -24,11 +25,13 @@ If you are using Maven, include the following in your POM, to use the core:
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
+
 ```
 compile 'org.requirementsascode:requirementsascodecore:0.6.0'
 ```
 
 Then, for a simple Hello World example, run the following code (e.g. in a main method):
+
 ``` java
 UseCaseModel useCaseModel = 
   UseCaseModelBuilder.newBuilder()
@@ -57,9 +60,9 @@ A clear separation between user interface and backend makes it easier to test th
 and vary or change the user interface.
 
 # subprojects
-* [requirementsascodecore](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models. 
-* [requirementsascodeextract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
-* [requirementsascodeexamples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
+* [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models. 
+* [requirements as code extract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
+* [requirements as code examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirementsascodecore.
 
 # related topics
 * The work of Ivar Jacobson on Use Cases. As an example, have a look at [Use Case 2.0](https://www.ivarjacobson.com/publications/white-papers/use-case-ebook).

@@ -1,19 +1,34 @@
-# requirementsascodeextract
-With requirementsascodeextract, you can generate plain text documentation (e.g HTML pages)
-from a use case model inside the code.
+# requirements as code extract
+With requirements as code extract, you can generate plain text documentation 
+(e.g HTML pages) from a use case model inside the code. 
+
+The use case model is defined with the requirements as code core project.
 
 ## Getting started
-In order to use requirementsascodeextract, you need the following libraries on the classpath:
+If you are using Maven, include the following in your POM, to use the core:
+
+``` xml
+  <dependency>
+    <groupId>org.requirementsascode</groupId>
+    <artifactId>requirementsascodeextract</artifactId>
+    <version>0.6.0</version>
+  </dependency>
+```
+
+If you are using Gradle, include the following in your build.gradle:
+
+```
+compile 'org.requirementsascode:requirementsascodeextract:0.6.0'
+```
+
+This will put the following libraries on the classpath:
 * freemarker-2.3.26-incubating.jar (FreeMarker)
 * commons-lang3-3.5.jar (Apache Commons)
-* The current requirementsascodeextract jar
-* The current requirementsascodecore jar
+* The current requirements as code extract jar
+* The current requirements as code core jar
 
-If you don't want to download them manually, and you don't use a build system like Gradle,
-you can download the shoppingappextract distribution zip from the Releases tab. 
-
-## Using requirementsascodeextract
-### Obtain a use case model builder, and build a model with it
+## Using requirements as code extract
+### Build a use case model
 Here's how you build a use case model from scratch. 
 Note: this model does not make too much sense. It is just an example.
 
@@ -63,8 +78,9 @@ The name of the class needs to be of the form _VerbNoun_, in third person singul
 In the example, it is _EntersName_. 
 The documentation created from step S2 will read: "S2. User _enters name_.System greets user."
 
-### Use a template engine to extract the use cases, and generate documentation
+### Use template engine to extract use cases, and generate documentation
 You can create an engine to extract the use cases like this:
+
 ``` java
 FreeMarkerEngine engine = new FreeMarkerEngine(basePackagePath);
 ```
@@ -108,4 +124,4 @@ Here's an example FreeMarker template file:
 The template file starts with the ```useCaseModel``` instance provided by the engine, then it iterates over the model.
 
 See the [FreeMarker](http://freemarker.org/docs/dgui.html) documentation for details.
-See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirementsascodeextract.
+See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirements as code extract.
