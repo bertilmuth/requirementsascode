@@ -19,6 +19,13 @@ public class FreeMarkerEngine {
   private Map<String, Object> dataModel;
   private Configuration cfg;
 
+  /**
+   * Creates an engine for generating documentation, based on a 
+   * requirementsascodecore UseCaseModel and using the FreeMarker 
+   * template engine.
+   * 
+   * @param basePackagePath package path in your classpath, where your FreeMarker templates are located.
+   */
   public FreeMarkerEngine(String basePackagePath) {
     createConfiguration(basePackagePath);
     putFreemarkerMethodsInDataModel();
