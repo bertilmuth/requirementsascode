@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -9,7 +11,7 @@
 	  		<h2>${f}</h2>
 	  		<div>${flowPredicate(f)}</div>
 			<#list f.steps as s>
-				<div>${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}
+				<div>${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}</div>
 			</#list>
 		</#list>
   	</#list>

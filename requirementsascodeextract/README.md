@@ -41,6 +41,7 @@ UseCaseModel useCaseModel =
       .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
         .step("S4c_1").includesUseCase("Included use case")
         .step("S4c_2").continuesAt("S1")
+      .flow("EX").step("EX1").handles(Exception.class).system(logsException())
     .build();    
 ```
 
@@ -81,8 +82,10 @@ The second parameter is the name of the template file, relative to the base pack
 The third parameter is a ```java.io.Writer``` that produces the output text.
 
 Here's an example FreeMarker template file:
-``` 
-<#include "./lib/extract.ftl"/>
+
+``` xml
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Requirements as Code - Extract Example</title>
@@ -90,11 +93,11 @@ Here's an example FreeMarker template file:
 <body>
   	<#list useCaseModel.useCases as useCase>
   		<h1>Use Case: ${useCase?capitalize}</h1>
-		<#list useCase.flows as useCaseFlow>
-	  		<h2>${useCaseFlow?capitalize}</h2>
-	  		<div><@flowPredicate f=useCaseFlow/></div>
-			<#list useCaseFlow.steps as step>
-				<div>${step}: <@reactWhile s=step/><@userStep s=step/><@systemStep s=step/></div>
+		<#list useCase.flows as f>
+	  		<h2>${f}</h2>
+	  		<div>${flowPredicate(f)}</div>
+			<#list f.steps as s>
+				<div>${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}</div>
 			</#list>
 		</#list>
   	</#list>
@@ -102,10 +105,7 @@ Here's an example FreeMarker template file:
 </html>
 ```
 
-The first line includes some useful macros and functions to make extracting easy.
-In the example, the ```extract.ftl``` template containing these macros must be in the ```lib``` subfolder.
-
-Then, you start with the ```useCaseModel``` instance provided by the engine to iterate over the model.
+The template file starts with the ```useCaseModel``` instance provided by the engine, then it iterates over the model.
 
 See the [FreeMarker](http://freemarker.org/docs/dgui.html) documentation for details.
 See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirementsascodeextract.
