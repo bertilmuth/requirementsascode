@@ -1,14 +1,14 @@
 # requirements as code
 Ever wondered how to make your code self-documenting?
 
-With requirements as code, you can specify use cases in the code, and run them.
+With requirements as code, you can specify your application's use cases directly in the code. And execute them.
 
 You can  [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the code without adding comments to it.
 
-Even years in the future, you will know how your application works,
-and which part to adapt when a requirement changes.
+Even years in the future, you will know how your application works.
+You will also know which part to adapt when a requirement changes.
 
-In addition to that, you can handle cross-cutting concerns in a very simple way, e.g. for measuring performance.
+You can also handle cross-cutting concerns in a very simple way, for example for measuring performance.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
