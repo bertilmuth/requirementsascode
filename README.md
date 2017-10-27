@@ -49,17 +49,6 @@ runner.run(useCaseModel);
 * [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
-# benefits of using requirements as code
-As the same code controls the visible behavior of your software _and_ is used as the source of documentation,
-you can always generate documentation that represents how your software really works. Also, there is a defined place in your code that describes the use cases and how they are realized.
-That makes your application more maintable.
-
-While requirements as code works with any application design, it makes it easy to transition your application
-to a [clean architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html). 
-By reducing dependencies between the application's components, you can make your application more changeable.
-A clear separation between user interface and backend makes it easier to test the application without user interface, 
-and vary or change the user interface.
-
 # subprojects
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run use case models. 
 * [requirements as code extract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): extract use cases from code and generate documentation from it.
