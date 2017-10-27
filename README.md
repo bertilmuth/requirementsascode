@@ -1,13 +1,14 @@
 # requirements as code
-As soon as a requirement is implemented, the code becomes the most reliable "source of truth". 
+Ever wondered how to make your code self-documenting?
 
-Writing functional requirements as use cases in the code, and being able to run them - that is what this project is about. 
+With requirements as code, you can specify use cases in the code, and run them.
 
-Later, you can automatically generate living documentation from the use cases. This documentation accurately reflects the visible behavior of your application.
+You can  [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the code without adding comments to it.
+
+Even years in the future, you will know how your application works,
+and which part to adapt when a requirement changes.
 
 In addition to that, you can handle cross-cutting concerns in a very simple way, e.g. for measuring performance.
-
-While requirements as code works with any application design, it makes it specifically easy to transition your application to a clean architecture.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
