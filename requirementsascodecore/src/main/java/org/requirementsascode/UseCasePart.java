@@ -7,33 +7,33 @@ package org.requirementsascode;
  * @author b_muth
  */
 public class UseCasePart {
-  private UseCase useCase;
-  private UseCaseModelBuilder useCaseModelBuilder;
+    private UseCase useCase;
+    private UseCaseModelBuilder useCaseModelBuilder;
 
-  UseCasePart(UseCase useCase, UseCaseModelBuilder useCaseModelBuilder) {
-    this.useCase = useCase;
-    this.useCaseModelBuilder = useCaseModelBuilder;
-  }
+    UseCasePart(UseCase useCase, UseCaseModelBuilder useCaseModelBuilder) {
+	this.useCase = useCase;
+	this.useCaseModelBuilder = useCaseModelBuilder;
+    }
 
-  public FlowPart basicFlow() {
-    Flow useCaseFlow = useCase().getBasicFlow();
-    return new FlowPart(useCaseFlow, this);
-  }
+    public FlowPart basicFlow() {
+	Flow useCaseFlow = useCase().getBasicFlow();
+	return new FlowPart(useCaseFlow, this);
+    }
 
-  public FlowPart flow(String flowName) {
-    Flow useCaseFlow = useCase().newFlow(flowName);
-    return new FlowPart(useCaseFlow, this);
-  }
+    public FlowPart flow(String flowName) {
+	Flow useCaseFlow = useCase().newFlow(flowName);
+	return new FlowPart(useCaseFlow, this);
+    }
 
-  UseCase useCase() {
-    return useCase;
-  }
+    UseCase useCase() {
+	return useCase;
+    }
 
-  UseCaseModelBuilder useCaseModelBuilder() {
-    return useCaseModelBuilder;
-  }
+    UseCaseModelBuilder useCaseModelBuilder() {
+	return useCaseModelBuilder;
+    }
 
-  public UseCaseModel build() {
-    return useCaseModelBuilder.build();
-  }
+    public UseCaseModel build() {
+	return useCaseModelBuilder.build();
+    }
 }

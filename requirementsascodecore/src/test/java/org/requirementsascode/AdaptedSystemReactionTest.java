@@ -7,37 +7,38 @@ import java.util.function.Consumer;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AdaptedSystemReactionTest extends AbstractTestCase{
-	private String stepName;
-	private Object event;
-	
-	@Before
-	public void setup() {
-		setupWith(new TestUseCaseModelRunner());
-	}
-	
-	@Test
-	public void printsTextAndPerformsAdaptedSystemReaction() {	
-		useCaseModelRunner.adaptSystemReaction(withSavingStepNameAndEvent());
-		stepName = "";
-		
-		UseCaseModel useCaseModel = useCaseModelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-			.build();
-		
-		useCaseModelRunner.run(useCaseModel);
-		
-		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
-		assertEquals(TestUseCaseModelRunner.class, event.getClass());
-	}
+public class AdaptedSystemReactionTest extends AbstractTestCase {
+    private String stepName;
+    private Object event;
 
-	private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {
-		return systemReactionTrigger -> {
-			stepName = systemReactionTrigger.getUseCaseStep().getName();
-			event = systemReactionTrigger.getEvent();
-			systemReactionTrigger.trigger();
-		};
-	}
+    @Before
+    public void setup() {
+	setupWith(new TestUseCaseModelRunner());
+    }
+
+    @Test
+    public void printsTextAndPerformsAdaptedSystemReaction() {
+	useCaseModelRunner.adaptSystemReaction(withSavingStepNameAndEvent());
+	stepName = "";
+
+	UseCaseModel useCaseModel = 
+		useCaseModelBuilder.useCase(USE_CASE)
+			.basicFlow()
+				.step(SYSTEM_DISPLAYS_TEXT)
+					.system(displaysConstantText())
+		.build();
+
+	useCaseModelRunner.run(useCaseModel);
+
+	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
+	assertEquals(TestUseCaseModelRunner.class, event.getClass());
+    }
+
+    private Consumer<SystemReactionTrigger> withSavingStepNameAndEvent() {
+	return systemReactionTrigger -> {
+	    stepName = systemReactionTrigger.getUseCaseStep().getName();
+	    event = systemReactionTrigger.getEvent();
+	    systemReactionTrigger.trigger();
+	};
+    }
 }
