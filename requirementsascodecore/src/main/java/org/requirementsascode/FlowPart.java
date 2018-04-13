@@ -41,15 +41,9 @@ public class FlowPart {
     Step step = useCase.newStep(stepName, flow);
     
     if(existingSteps.size() == 0) {
-      if(optionalFlowPosition != null) {
-        step.setFlowPosition(optionalFlowPosition);
-      }
-      if(optionalWhen != null) {
-        step.setWhen(optionalWhen);
-      }
+      step.setFlowPosition(optionalFlowPosition);
+      step.setWhen(optionalWhen);
     } else {
-      optionalFlowPosition = null;
-      optionalWhen = null;
       Step lastExistingStep = existingSteps.get(existingSteps.size() - 1);
       step.setPreviousStepInFlow(lastExistingStep);
     }
