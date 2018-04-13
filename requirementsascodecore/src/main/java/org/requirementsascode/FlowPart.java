@@ -40,13 +40,13 @@ public class FlowPart {
     List<Step> existingSteps = flow.getSteps();
     Step step = useCase.newStep(stepName, flow);
     
-    if(existingSteps.size() == 0) {
-      step.setFlowPosition(optionalFlowPosition);
-      step.setWhen(optionalWhen);
-    } else {
-      Step lastExistingStep = existingSteps.get(existingSteps.size() - 1);
-      step.setPreviousStepInFlow(lastExistingStep);
-    }
+    step.setFlowPosition(optionalFlowPosition);
+    step.setWhen(optionalWhen);
+    optionalFlowPosition = null;
+    optionalWhen = null;
+    
+    Step lastExistingStep = existingSteps.size() > 0? existingSteps.get(existingSteps.size() - 1) : null;
+    step.setPreviousStepInFlow(lastExistingStep);
     
     return new StepPart(step, this);
   }
