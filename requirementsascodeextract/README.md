@@ -18,7 +18,7 @@ If you are using Maven, include the following in your POM:
 If you are using Gradle, include the following in your build.gradle:
 
 ```
-compile 'org.requirementsascode:requirementsascodeextract:0.6.0'
+compile 'org.requirementsascode:requirementsascodeextract:0.6.1'
 ```
 
 This will put the following libraries on the classpath:
