@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
@@ -21,15 +20,13 @@ public class FlowPart {
   private Flow flow;
   private UseCase useCase;
   private UseCasePart useCasePart;
-  private Optional<Predicate<UseCaseModelRunner>> optionalFlowPosition;
-  private Optional<Predicate<UseCaseModelRunner>> optionalWhen;
+  private Predicate<UseCaseModelRunner> optionalFlowPosition;
+  private Predicate<UseCaseModelRunner> optionalWhen;
 
   FlowPart(Flow flow, UseCasePart useCasePart) {
     this.flow = flow;
     this.useCasePart = useCasePart;
     this.useCase = useCasePart.useCase();
-    this.optionalFlowPosition = Optional.empty();
-    this.optionalWhen = Optional.empty();
   }
 
   /**
@@ -44,11 +41,15 @@ public class FlowPart {
     Step step = useCase.newStep(stepName, flow);
     
     if(existingSteps.size() == 0) {
-      optionalFlowPosition.ifPresent(position -> step.setFlowPosition(position));
-      optionalWhen.ifPresent(when -> step.setWhen(when));
+      if(optionalFlowPosition != null) {
+        step.setFlowPosition(optionalFlowPosition);
+      }
+      if(optionalWhen != null) {
+        step.setWhen(optionalWhen);
+      }
     } else {
-      optionalFlowPosition = Optional.empty();
-      optionalWhen = Optional.empty();
+      optionalFlowPosition = null;
+      optionalWhen = null;
       Step lastExistingStep = existingSteps.get(existingSteps.size() - 1);
       step.setPreviousStepInFlow(lastExistingStep);
     }
@@ -66,7 +67,7 @@ public class FlowPart {
    */
   public FlowPart after(String stepName) {
     Step step = useCase.findStep(stepName);
-    optionalFlowPosition = Optional.of(new After(step));
+    optionalFlowPosition = new After(step);
     return this;
   }
 
@@ -79,7 +80,7 @@ public class FlowPart {
    */
   public FlowPart insteadOf(String stepName) {
     Step step = useCase.findStep(stepName);
-    optionalFlowPosition = Optional.of(new InsteadOf(step));
+    optionalFlowPosition = new InsteadOf(step);
     return this;
   }
 
@@ -89,7 +90,7 @@ public class FlowPart {
    * @return this use case flow part, to ease creation of the predicate and the first step of the flow
    */
   public FlowPart anytime() {
-    optionalFlowPosition = Optional.of(new Anytime());
+    optionalFlowPosition = new Anytime();
     return this;
   }
   
@@ -103,10 +104,10 @@ public class FlowPart {
   public FlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
     Objects.requireNonNull(whenPredicate);
 
-    if(!optionalFlowPosition.isPresent()){
+    if(optionalFlowPosition == null){
       anytime();
     }
-    optionalWhen = Optional.of(whenPredicate);
+    optionalWhen = whenPredicate;
     return this;
   }
 
