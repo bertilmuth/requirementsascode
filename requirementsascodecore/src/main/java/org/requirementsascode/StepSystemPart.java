@@ -36,12 +36,10 @@ public class StepSystemPart<T> {
    * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
    */
   public StepPart step(String stepName) {
-    FlowPart useCaseFlowPart = stepPart.getFlowPart();
-    Flow useCaseFlow = useCaseFlowPart.getUseCaseFlow();
+    Objects.requireNonNull(stepName);
 
-    Step nextStepInFlow =
-        useCaseFlow.getUseCase().newStep(stepName, useCaseFlow);
-    nextStepInFlow.setPreviousStepInFlow(step);
+    FlowPart useCaseFlowPart = stepPart.getFlowPart();    
+    Step nextStepInFlow = useCaseFlowPart.step(stepName).getStep();
 
     return new StepPart(nextStepInFlow, useCaseFlowPart);
   }

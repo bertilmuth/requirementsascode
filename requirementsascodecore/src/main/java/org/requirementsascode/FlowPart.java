@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -32,18 +33,26 @@ public class FlowPart {
   }
 
   /**
-   * Creates the first step of this flow, with the specified name.
+   * Creates a new step in this flow, with the specified name.
    *
    * @param stepName the name of the step to be created
    * @return the newly created step part, to ease creation of further steps
    * @throws ElementAlreadyInModel if a step with the specified name already exists in the use case
    */
   public StepPart step(String stepName) {
-    Step step =
-        useCasePart.useCase().newStep(stepName, flow);
+    List<Step> existingSteps = flow.getSteps();
+    Step step = useCase.newStep(stepName, flow);
     
-    optionalFlowPosition.ifPresent(position -> step.setFlowPosition(position));
-    optionalWhen.ifPresent(when -> step.setWhen(when));
+    if(existingSteps.size() == 0) {
+      optionalFlowPosition.ifPresent(position -> step.setFlowPosition(position));
+      optionalWhen.ifPresent(when -> step.setWhen(when));
+    } else {
+      optionalFlowPosition = Optional.empty();
+      optionalWhen = Optional.empty();
+      Step lastExistingStep = existingSteps.get(existingSteps.size() - 1);
+      step.setPreviousStepInFlow(lastExistingStep);
+    }
+    
     return new StepPart(step, this);
   }
 
