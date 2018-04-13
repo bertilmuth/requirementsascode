@@ -352,6 +352,24 @@ public class BuildModelTest extends AbstractTestCase{
 		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
 	}
 	
+	 @Test
+	  public void createsTwoStepsIncrementally() {
+	    UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+	    useCaseModelBuilder.useCase(USE_CASE)
+	      .basicFlow()
+	        .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
+	    
+	    useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+	    useCaseModelBuilder.useCase(USE_CASE)
+       .basicFlow()
+         .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
+
+	    Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
+	    Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
+	    
+	    assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
+	  }
+	
 	@Test
 	public void createsTwoStepsInDifferentFlowsThatBothHaveNoPreviousSteps() { 
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
