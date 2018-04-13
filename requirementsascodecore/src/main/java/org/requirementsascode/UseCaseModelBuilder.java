@@ -36,13 +36,14 @@ public class UseCaseModelBuilder {
 
   /**
    * Creates a new actor in the current model.
+   * If an actor with the specified name already exists, returns the existing actor.
    *
-   * @param actorName the name of the actor to be created.
-   * @return the newly created actor
-   * @throws ElementAlreadyInModel if an actor with the specified name already exists in the model
+   * @param actorName the name of the existing actor / actor to be created.
+   * @return the actor created / found.
    */
   public Actor actor(String actorName) {
-    return useCaseModel.newActor(actorName);
+    Actor actor = useCaseModel.hasActor(actorName)? useCaseModel.findActor(actorName) : useCaseModel.newActor(actorName);
+    return actor;
   }
 
   /**

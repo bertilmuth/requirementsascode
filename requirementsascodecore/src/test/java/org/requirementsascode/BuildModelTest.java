@@ -158,6 +158,12 @@ public class BuildModelTest extends AbstractTestCase{
 		assertEquals(customer, step.getActors()[0]);
 	}
 	
+	 @Test
+	 public void accessesExistingCustomerActor() {
+	   Actor actualCustomer = useCaseModelBuilder.actor(CUSTOMER);
+	   assertEquals(customer, actualCustomer);
+	 }
+	
 	@Test
 	public void createsSingleActorWithSingleUseCase() {	
 		UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);

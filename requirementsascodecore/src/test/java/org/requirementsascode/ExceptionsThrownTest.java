@@ -70,15 +70,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void throwsExceptionIfActorIsCreatedTwice() {		
-		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(CUSTOMER);
-		
-		useCaseModelBuilder.actor(CUSTOMER);
-		useCaseModelBuilder.actor(CUSTOMER);
-	}
-	
-	@Test
 	public void throwsExceptionIfUseCaseIsCreatedTwiceInOneGo() {		
 		thrown.expect(ElementAlreadyInModel.class);
 		thrown.expectMessage(USE_CASE);
