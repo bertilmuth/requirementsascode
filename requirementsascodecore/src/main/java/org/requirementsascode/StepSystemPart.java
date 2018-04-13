@@ -39,9 +39,9 @@ public class StepSystemPart<T> {
     Objects.requireNonNull(stepName);
 
     FlowPart useCaseFlowPart = stepPart.getFlowPart();    
-    Step nextStepInFlow = useCaseFlowPart.step(stepName).getStep();
+    StepPart nextStepInFlowPart = useCaseFlowPart.step(stepName);
 
-    return new StepPart(nextStepInFlow, useCaseFlowPart);
+    return nextStepInFlowPart;
   }
 
   /**
