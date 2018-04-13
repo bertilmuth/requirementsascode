@@ -11,7 +11,7 @@ If you are using Maven, include the following in your POM:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodeextract</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
   </dependency>
 ```
 
