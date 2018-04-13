@@ -1,9 +1,6 @@
 package org.requirementsascode;
 
 import static org.hamcrest.core.Is.isA;
-import static org.junit.Assert.assertEquals;
-
-import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -67,27 +64,6 @@ public class ExceptionsThrownTest extends AbstractTestCase{
 		
 		useCaseModelBuilder.useCase(USE_CASE)
 			.basicFlow().step("S1").continuesWithoutAlternativeAt(CONTINUE);
-	}
-	
-	@Test
-	public void throwsExceptionIfUseCaseIsCreatedTwiceInOneGo() {		
-		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(USE_CASE);
-		
-		useCaseModelBuilder.useCase(USE_CASE);
-		useCaseModelBuilder.useCase(USE_CASE);
-	}
-	
-	@Test
-	public void throwsExceptionIfUseCaseIsCreatedTwiceByBuildingOnExistingModel() {
-		thrown.expect(ElementAlreadyInModel.class);
-		thrown.expectMessage(USE_CASE);
-		
-		UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
-		UseCaseModelBuilder.builderOf(useCaseModel).useCase(USE_CASE);
-
-		Collection<UseCase> useCases = useCaseModel.getUseCases();
-		assertEquals(2, useCases.size());
 	}
 	
 	@Test

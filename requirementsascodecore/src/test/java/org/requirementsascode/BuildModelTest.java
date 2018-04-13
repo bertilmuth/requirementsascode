@@ -30,14 +30,27 @@ public class BuildModelTest extends AbstractTestCase{
 	@Test
 	public void createsSingleUseCase() {
 		useCaseModelBuilder.useCase(USE_CASE);
-		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		
+		UseCaseModel useCaseModel = useCaseModelBuilder.build();
 		assertTrue(useCaseModel.hasUseCase(USE_CASE));
 
 		Collection<UseCase> useCases = useCaseModel.getUseCases();
 		assertEquals(1, useCases.size());
 		assertEquals(USE_CASE, useCases.iterator().next().getName());
 	}
+	
+  @Test
+  public void accessesExistingUseCase() {
+    useCaseModelBuilder.useCase(USE_CASE);
+    useCaseModelBuilder.useCase(USE_CASE);
+    
+    UseCaseModel useCaseModel = useCaseModelBuilder.build();
+    assertTrue(useCaseModel.hasUseCase(USE_CASE));
+
+    Collection<UseCase> useCases = useCaseModel.getUseCases();
+    assertEquals(1, useCases.size());
+    assertEquals(USE_CASE, useCases.iterator().next().getName());
+  }
 
 	@Test
 	public void createsTwoUseCasesInOneGo() {

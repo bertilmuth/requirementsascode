@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import org.requirementsascode.exception.ElementAlreadyInModel;
-
 /**
  * Class that builds a {@link UseCaseModel}, in a fluent way.
  *
@@ -39,7 +37,7 @@ public class UseCaseModelBuilder {
    * If an actor with the specified name already exists, returns the existing actor.
    *
    * @param actorName the name of the existing actor / actor to be created.
-   * @return the actor created / found.
+   * @return the created / found actor.
    */
   public Actor actor(String actorName) {
     Actor actor = useCaseModel.hasActor(actorName)? useCaseModel.findActor(actorName) : useCaseModel.newActor(actorName);
@@ -47,14 +45,15 @@ public class UseCaseModelBuilder {
   }
 
   /**
-   * Creates a new use case in the current model.
+   * Creates a new use case in the current model, and returns a part for building its details.
+   * If a use case with the specified name already exists, returns a part for the existing use case.
    *
-   * @param useCaseName the name of the use case to be created.
-   * @return the newly created use case
-   * @throws ElementAlreadyInModel if a use case with the specified name already exists in the model
+   * @param useCaseName the name of the existing use case / use case to be created.
+   * @return the created / found use case's part.
    */
   public UseCasePart useCase(String useCaseName) {
-    UseCase useCase = useCaseModel.newUseCase(useCaseName);
+    UseCase useCase = useCaseModel.hasUseCase(useCaseName)? useCaseModel.findUseCase(useCaseName) : useCaseModel.newUseCase(useCaseName);
+
     return new UseCasePart(useCase, this);
   }
 
