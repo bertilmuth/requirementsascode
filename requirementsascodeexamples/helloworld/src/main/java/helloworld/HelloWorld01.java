@@ -25,7 +25,7 @@ public class HelloWorld01 {
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
+		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
 		new UseCaseModelRunner().run(useCaseModel);
 	}
 }

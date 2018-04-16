@@ -35,6 +35,14 @@ public class UseCaseModel implements Serializable {
 	this.userActor = newActor("User");
 	this.systemActor = newActor("System");
     }
+    
+    /**
+     * The only way to build a use case model and its parts is to
+     * use the builder returned by this method.
+     */
+    public static UseCaseModelBuilder builder() {
+	return new UseCaseModelBuilder(new UseCaseModel());
+    }
 
     /**
      * Checks whether this model contains the specified actor.

@@ -1,7 +1,6 @@
 package hexagon;
 
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
 import org.requirementsascode.UseCaseModelRunner;
 
 import hexagon.adapter.RepositoryAdapter;
@@ -22,7 +21,7 @@ public class HexagonApplication {
   private void start() {
     feelStuffUseCaseRealization = new FeelStuffUseCaseRealization(new WriterAdapter(), new RepositoryAdapter());
     useCaseModel = 
-      new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(UseCaseModelBuilder.newBuilder());
+      new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(UseCaseModel.builder());
     
     runner = new UseCaseModelRunner();
     runner.run(useCaseModel);

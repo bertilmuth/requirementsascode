@@ -10,7 +10,7 @@ public class CrossCuttingConcerns01 {
 	private double resultOfPower;
 	
 	public void start() {		
-		UseCaseModelBuilder useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
+		UseCaseModelBuilder useCaseModelBuilder = UseCaseModel.builder();
 		UseCaseModel useCaseModel = 
 			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
 				.basicFlow()

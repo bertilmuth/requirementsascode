@@ -1,7 +1,5 @@
 package shoppingappextract.extract;
 
-import static org.requirementsascode.UseCaseModelBuilder.newBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class ShoppingAppExtract {
 
   private UseCaseModel buildUseCaseModel() {
     BuyProductRealization buyProductRealization = new BuyProductRealization(null, null);
-    UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(newBuilder());
+    UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(UseCaseModel.builder());
     return useCaseModel;
   }
 

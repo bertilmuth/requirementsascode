@@ -9,28 +9,8 @@ public class UseCaseModelBuilder {
 
     private UseCaseModel useCaseModel;
 
-    private UseCaseModelBuilder(UseCaseModel useCaseModel) {
+    UseCaseModelBuilder(UseCaseModel useCaseModel) {
 	this.useCaseModel = useCaseModel;
-    }
-
-    /**
-     * Create a builder for a new use case model.
-     *
-     * @return the new builder
-     */
-    public static UseCaseModelBuilder newBuilder() {
-	return builderOf(new UseCaseModel());
-    }
-
-    /**
-     * Create a builder for an existing use case model, to continue building it.
-     *
-     * @param useCaseModel
-     *            the model to continue building
-     * @return a builder for the existing model
-     */
-    public static UseCaseModelBuilder builderOf(UseCaseModel useCaseModel) {
-	return new UseCaseModelBuilder(useCaseModel);
     }
 
     /**

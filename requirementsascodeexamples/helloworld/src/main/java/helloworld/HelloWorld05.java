@@ -77,7 +77,7 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
+		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.run(useCaseModel);			
 		while(!systemStopped())

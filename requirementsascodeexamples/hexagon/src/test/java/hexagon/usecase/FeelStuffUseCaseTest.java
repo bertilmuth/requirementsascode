@@ -6,11 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.TestUseCaseModelRunner;
 import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
 
 import hexagon.adapter.stub.RepositoryStub;
 import hexagon.adapter.stub.WriterStub;
-import hexagon.usecase.HexagonUseCaseModel;
 import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class FeelStuffUseCaseTest {
@@ -25,7 +23,7 @@ public class FeelStuffUseCaseTest {
         new FeelStuffUseCaseRealization(new WriterStub(), new RepositoryStub());
     useCaseModel =
         new HexagonUseCaseModel(feelStuffUseCaseRealization)
-            .buildWith(UseCaseModelBuilder.newBuilder());
+            .buildWith(UseCaseModel.builder());
     testRunner = new TestUseCaseModelRunner();
   }
 

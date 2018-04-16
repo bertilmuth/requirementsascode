@@ -18,7 +18,7 @@ public class HelloWorldTest {
 	@Before
 	public void setUp() throws Exception {
 		modelRunner = new TestUseCaseModelRunner();
-		modelBuilder = UseCaseModelBuilder.newBuilder();
+		modelBuilder = UseCaseModel.builder();
 	}
 
 	@Test

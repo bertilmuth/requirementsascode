@@ -34,7 +34,7 @@ public class FreemarkerEngineTest {
   
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
-    UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().build();
+    UseCaseModel useCaseModel = UseCaseModel.builder().build();
     String templateFileName = "testextract.ftl";
     StringWriter outputWriter = new StringWriter();
     
@@ -47,7 +47,7 @@ public class FreemarkerEngineTest {
   @Test
   public void extractsUseCaseModel() throws Exception {
     
-    UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
+    UseCaseModelBuilder modelBuilder = UseCaseModel.builder();
     Actor firstActor = modelBuilder.actor("First actor");
     Actor secondActor = modelBuilder.actor("Second actor");
     

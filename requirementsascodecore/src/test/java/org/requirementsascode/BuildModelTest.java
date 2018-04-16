@@ -63,15 +63,6 @@ public class BuildModelTest extends AbstractTestCase {
     }
 
     @Test
-    public void createsTwoUseCasesByBuildingOnExistingModel() {
-	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).build();
-	UseCaseModelBuilder.builderOf(useCaseModel).useCase(USE_CASE_2);
-
-	Collection<UseCase> useCases = useCaseModel.getUseCases();
-	assertEquals(2, useCases.size());
-    }
-
-    @Test
     public void implicitlyCreatesBasicFlow() {
 	useCaseModelBuilder.useCase(USE_CASE);
 	UseCaseModel useCaseModel = useCaseModelBuilder.build();

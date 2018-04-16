@@ -99,7 +99,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
+		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
 		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
 		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())

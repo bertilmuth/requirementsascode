@@ -44,7 +44,7 @@ public abstract class AbstractTestCase {
 
     protected void setupWith(TestUseCaseModelRunner useCaseModelRunner) {
 	this.useCaseModelRunner = useCaseModelRunner;
-	this.useCaseModelBuilder = UseCaseModelBuilder.newBuilder();
+	this.useCaseModelBuilder = UseCaseModel.builder();
 	this.customer = useCaseModelBuilder.actor(CUSTOMER);
 	this.displayedText = null;
     }

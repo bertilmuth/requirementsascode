@@ -30,7 +30,7 @@ public class BuyProductRealizationTest {
 	@Before
 	public void setUp() throws Exception {
 		useCaseModelRunner = new TestUseCaseModelRunner();
-		UseCaseModelBuilder modelBuilder = UseCaseModelBuilder.newBuilder();
+		UseCaseModelBuilder modelBuilder = UseCaseModel.builder();
 		
 		Stock stock = new Stock();
 		Display displayStub = new DisplayStub();
