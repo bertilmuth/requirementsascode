@@ -63,12 +63,11 @@ public class TrailingStep extends Step implements Serializable {
 	    UseCaseModel useCaseModel = getUseCaseModel();
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
-	    Stream<Step> stepsWithDefinedPredicatesStream = stepsStream
-		    .filter(isConditionalStep().and(isOtherStepThan(this)));
+	    Stream<Step> conditionalStepsStream = stepsStream.filter(isConditionalStep().and(isOtherStepThan(this)));
 
-	    Set<Step> stepsWithDefinedConditionsThatCanReact = useCaseModelRunner
-		    .stepsInStreamThatCanReactTo(theStepsEventClass, stepsWithDefinedPredicatesStream);
-	    return stepsWithDefinedConditionsThatCanReact.size() == 0;
+	    Set<Step> conditionalStepsThatCanReact = useCaseModelRunner.stepsInStreamThatCanReactTo(theStepsEventClass,
+		    conditionalStepsStream);
+	    return conditionalStepsThatCanReact.size() == 0;
 	};
     }
 
