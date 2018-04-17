@@ -1,12 +1,9 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.predicate.After;
 import org.requirementsascode.systemreaction.IncludesUseCase;
 
 /**
@@ -184,20 +181,9 @@ public class StepPart {
 	UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
 	StepSystemPart<UseCaseModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, step));
 	
-	for (Flow includedFlow : includedUseCase.getFlows()) {
-	    includeFlowAfterStep(includedFlow, step);
-	}
+	step.includeUseCase(includedUseCase);
 	
 	return stepSystemPart;
-    }
-    
-    private void includeFlowAfterStep(Flow includedFlow, Step includeStep) {
-	Optional<Step> optionalFirstStepOfFlow = includedFlow.getFirstStep();
-	optionalFirstStepOfFlow.ifPresent(firstStepOfFlow -> {
-	    Predicate<UseCaseModelRunner> oldFlowPosition = firstStepOfFlow.getFlowPosition().orElse(r -> false);
-	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(includeStep).or(oldFlowPosition);
-	    firstStepOfFlow.setFlowPosition(includeFlowPosition);
-	});
     }
 
     Step getStep() {

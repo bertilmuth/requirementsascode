@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.predicate.After;
+
 /**
  * A use case step, as part of a use case. The use case steps define the
  * behavior of the use case.
@@ -45,8 +47,8 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.useCase = useCase;
 	this.flow = useCaseFlow;
     }
-    
-    public abstract Predicate<UseCaseModelRunner> getPredicate() ;
+
+    public abstract Predicate<UseCaseModelRunner> getPredicate();
 
     public Flow getFlow() {
 	return flow;
@@ -55,11 +57,11 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     public UseCase getUseCase() {
 	return useCase;
     }
-    
+
     public Optional<Step> getPreviousStepInFlow() {
 	return Optional.ofNullable(previousStepInFlow);
     }
-    
+
     protected void setPreviousStepInFlow(Step previousStepInFlow) {
 	this.previousStepInFlow = previousStepInFlow;
     }
@@ -69,7 +71,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     }
 
     public Predicate<UseCaseModelRunner> getReactWhile() {
-        return reactWhile;
+	return reactWhile;
     }
 
     void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
@@ -110,5 +112,20 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     void setSystemReaction(Consumer<?> systemReaction) {
 	this.systemReaction = systemReaction;
+    }
+
+    public void includeUseCase(UseCase includedUseCase) {
+	for (Flow includedFlow : includedUseCase.getFlows()) {
+	    includeFlow(includedFlow);
+	}
+    }
+
+    private void includeFlow(Flow includedFlow) {
+	Optional<Step> optionalFirstStepOfFlow = includedFlow.getFirstStep();
+	optionalFirstStepOfFlow.ifPresent(firstStepOfFlow -> {
+	    Predicate<UseCaseModelRunner> oldFlowPosition = firstStepOfFlow.getFlowPosition().orElse(r -> false);
+	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(this).or(oldFlowPosition);
+	    firstStepOfFlow.setFlowPosition(includeFlowPosition);
+	});
     }
 }
