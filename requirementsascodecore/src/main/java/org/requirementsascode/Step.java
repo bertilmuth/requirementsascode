@@ -1,14 +1,12 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.requirementsascode.predicate.After;
 import org.requirementsascode.predicate.Anytime;
 
 /**
@@ -27,7 +25,6 @@ public class Step extends UseCaseModelElement implements Serializable {
 
     private UseCase useCase;
     private Flow flow;
-    private Step previousStepInFlow;
     private Predicate<UseCaseModelRunner> reactWhile;
 
     private Actor[] actors;
@@ -36,6 +33,7 @@ public class Step extends UseCaseModelElement implements Serializable {
     private Predicate<UseCaseModelRunner> flowPosition;
     private Predicate<UseCaseModelRunner> when;
 
+    private Step previousStepInFlow;
 
     /**
      * Creates a use case step with the specified name that belongs to the specified
@@ -50,23 +48,6 @@ public class Step extends UseCaseModelElement implements Serializable {
 	super(stepName, useCase.getUseCaseModel());
 	this.useCase = useCase;
 	this.flow = useCaseFlow;
-	setLastFlowStepAsPreviousStep();
-    }
-
-    void setLastFlowStepAsPreviousStep() {
-	if (flow != null) {
-	    List<Step> existingSteps = flow.getSteps();
-	    Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
-	    setPreviousStepInFlow(lastExistingStep);
-	}
-    }
-
-    public Optional<Step> getPreviousStepInFlow() {
-	return Optional.ofNullable(previousStepInFlow);
-    }
-
-    void setPreviousStepInFlow(Step previousStepInFlow) {
-	this.previousStepInFlow = previousStepInFlow;
     }
 
     public Flow getFlow() {
@@ -76,13 +57,21 @@ public class Step extends UseCaseModelElement implements Serializable {
     public UseCase getUseCase() {
 	return useCase;
     }
+    
+    public Optional<Step> getPreviousStepInFlow() {
+	return Optional.ofNullable(previousStepInFlow);
+    }
+    
+    void setPreviousStepInFlow(Step previousStepInFlow) {
+	this.previousStepInFlow = previousStepInFlow;
+    }
 
     public Predicate<UseCaseModelRunner> getPredicate() {
-	Predicate<UseCaseModelRunner> predicate = getDefaultPredicate();
+	Predicate<UseCaseModelRunner> predicate;
 
 	if (reactWhile != null) {
 	    predicate = reactWhile;
-	} else if (getFlowPredicate().isPresent()) {
+	} else{ 
 	    predicate = getFlowPredicate().get();
 	}
 
@@ -91,6 +80,10 @@ public class Step extends UseCaseModelElement implements Serializable {
 
     void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
 	this.reactWhile = reactWhile;
+    }
+
+    public Predicate<UseCaseModelRunner> getReactWhile() {
+        return reactWhile;
     }
 
     void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
@@ -128,10 +121,6 @@ public class Step extends UseCaseModelElement implements Serializable {
 	return isRunnerInDifferentFlow;
     }
 
-    Predicate<UseCaseModelRunner> getDefaultPredicate() {
-	return new After(previousStepInFlow).and(noStepWithDefinedPredicateInterrupts());
-    }
-
     public Actor[] getActors() {
 	return actors;
     }
@@ -156,14 +145,14 @@ public class Step extends UseCaseModelElement implements Serializable {
 	this.systemReaction = systemReaction;
     }
 
-    private Predicate<UseCaseModelRunner> noStepWithDefinedPredicateInterrupts() {
+    public Predicate<UseCaseModelRunner> noStepWithDefinedPredicateInterrupts() {
 	return useCaseModelRunner -> {
 	    Class<?> theStepsEventClass = getUserEventClass();
 	    UseCaseModel useCaseModel = getUseCaseModel();
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
 	    Stream<Step> stepsWithDefinedPredicatesStream = stepsStream
-		    .filter(hasDefinedPredicate().and(isOtherStepThan(this)));
+		    .filter(isOtherStepThan(this).and(hasDefinedPredicate()));
 
 	    Set<Step> stepsWithDefinedConditionsThatCanReact = useCaseModelRunner
 		    .stepsInStreamThatCanReactTo(theStepsEventClass, stepsWithDefinedPredicatesStream);

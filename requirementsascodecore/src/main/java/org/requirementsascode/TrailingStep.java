@@ -23,8 +23,8 @@ public class TrailingStep extends Step implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
-     * Creates a use case step with the specified name that belongs to the specified
-     * use case flow.
+     * Creates a use case step with the specified name as the last step of the
+     * specified use case flow.
      *
      * @param stepName
      *            the name of the step to be created
@@ -36,22 +36,26 @@ public class TrailingStep extends Step implements Serializable {
 	setLastFlowStepAsPreviousStep();
     }
 
-    void setLastFlowStepAsPreviousStep() {
-	List<Step> existingSteps = getFlow().getSteps();
-	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
-	setPreviousStepInFlow(lastExistingStep);
+    private void setLastFlowStepAsPreviousStep() {
+	List<Step> flowSteps = getFlow().getSteps();
+	Step lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
+	setPreviousStepInFlow(lastFlowStep);
     }
 
     public Predicate<UseCaseModelRunner> getPredicate() {
-	Step previousStepInFlow = getPreviousStepInFlow().orElse(null);
-	Predicate<UseCaseModelRunner> afterPreviousStepIfNoConditionalStepInterrupts = new After(previousStepInFlow)
-		.and(noConditionalStepInterrupts());
-	return afterPreviousStepIfNoConditionalStepInterrupts;
-    }
+	Predicate<UseCaseModelRunner> predicate;
+	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
 
-    Predicate<UseCaseModelRunner> getDefaultPredicate() {
-	Step previousStepInFlow = getPreviousStepInFlow().orElse(null);
-	return new After(previousStepInFlow).and(noConditionalStepInterrupts());
+	if (reactWhile != null) {
+	    predicate = reactWhile;
+	} else {
+	    Step previousStepInFlow = getPreviousStepInFlow().orElse(null);
+	    Predicate<UseCaseModelRunner> afterPreviousStepIfNoConditionalStepInterrupts = new After(previousStepInFlow)
+		    .and(noConditionalStepInterrupts());
+	    predicate = afterPreviousStepIfNoConditionalStepInterrupts;
+	}
+
+	return predicate;
     }
 
     private Predicate<UseCaseModelRunner> noConditionalStepInterrupts() {
@@ -73,7 +77,7 @@ public class TrailingStep extends Step implements Serializable {
 	return step -> step.getFlowPredicate().isPresent();
     }
 
-    private Predicate<Step> isOtherStepThan(TrailingStep theStep) {
+    private Predicate<Step> isOtherStepThan(Step theStep) {
 	return step -> !step.equals(theStep);
     }
 }

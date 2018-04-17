@@ -44,13 +44,16 @@ public class FlowPart {
     }
 
     Step createStep(String stepName) {
-	Step step = useCase.newStep(stepName, flow);
-
-	step.setFlowPosition(optionalFlowPosition);
-	step.setWhen(optionalWhen);
-	optionalFlowPosition = null;
-	optionalWhen = null;
-
+	Step step;
+	
+	if(optionalWhen != null || optionalFlowPosition != null) {
+	    step = useCase.newStep(stepName, flow);
+	    step.setFlowPosition(optionalFlowPosition);
+	    step.setWhen(optionalWhen);
+	} else {
+	    step = useCase.newTrailingStep(stepName, flow);
+	}
+	
 	return step;
     }
 

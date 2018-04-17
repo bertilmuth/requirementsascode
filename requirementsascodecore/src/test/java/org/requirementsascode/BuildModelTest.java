@@ -387,9 +387,11 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsTwoStepsInDifferentFlowsThatBothHaveNoPreviousSteps() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	useCasePart.basicFlow()
-		.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText()).flow(ALTERNATIVE_FLOW)
-		.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
+	useCasePart
+		.basicFlow()
+			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
+		.flow(ALTERNATIVE_FLOW)
+			.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
 	Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
 	Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
