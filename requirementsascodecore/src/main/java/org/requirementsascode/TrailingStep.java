@@ -6,8 +6,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.requirementsascode.predicate.After;
-
 /**
  * A use case step, as part of a use case. The use case steps define the
  * behavior of the use case.
@@ -34,8 +32,6 @@ public class TrailingStep extends Step implements Serializable {
     TrailingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
 	appendToLastStepOfFlow();
-	Step previousStep = getPreviousStepInFlow().orElse(null);
-	setFlowPosition(new After(previousStep));
     }
 
     private void appendToLastStepOfFlow() {

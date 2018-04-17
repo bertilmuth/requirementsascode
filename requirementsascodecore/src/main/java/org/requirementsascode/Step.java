@@ -64,6 +64,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     protected void setPreviousStepInFlow(Step previousStepInFlow) {
 	this.previousStepInFlow = previousStepInFlow;
+	setFlowPosition(new After(previousStepInFlow));
     }
 
     protected void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
