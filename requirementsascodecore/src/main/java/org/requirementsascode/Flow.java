@@ -96,18 +96,4 @@ public class Flow extends UseCaseModelElement implements Serializable {
 	Optional<Predicate<UseCaseModelRunner>> when = getFirstStep().flatMap(step -> step.getWhen());
 	return when;
     }
-
-    /**
-     * Convenience method that returns the complete predicate of the flow.
-     *
-     * <p>
-     * Internally this calls the method of the same name of the first step in the
-     * flow.
-     *
-     * @return the complete predicate
-     */
-    public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
-	Optional<Predicate<UseCaseModelRunner>> flowPredicate = getFirstStep().flatMap(step -> step.getFlowPredicate());
-	return flowPredicate;
-    }
 }

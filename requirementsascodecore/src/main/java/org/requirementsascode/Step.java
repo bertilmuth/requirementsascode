@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.predicate.Anytime;
-
 /**
  * A use case step, as part of a use case. The use case steps define the
  * behavior of the use case.
@@ -23,7 +21,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     private UseCase useCase;
     private Flow flow;
-    protected Predicate<UseCaseModelRunner> reactWhile;
+    private Predicate<UseCaseModelRunner> reactWhile;
 
     private Actor[] actors;
     private Class<?> userEventClass;
@@ -66,7 +64,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.previousStepInFlow = previousStepInFlow;
     }
 
-    void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
+    protected void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
 	this.reactWhile = reactWhile;
     }
 
@@ -88,25 +86,6 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     public Optional<Predicate<UseCaseModelRunner>> getWhen() {
 	return Optional.ofNullable(when);
-    }
-
-    public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
-	Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
-
-	if (flowPosition != null || when != null) {
-	    Anytime anytime = new Anytime();
-	    Predicate<UseCaseModelRunner> flowPositionOrElseAnytime = flowPosition != null ? flowPosition : anytime;
-	    Predicate<UseCaseModelRunner> whenOrElseAnytime = when != null ? when : anytime;
-	    flowPredicate = Optional
-		    .of(isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
-	}
-	return flowPredicate;
-    }
-
-    private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
-	Predicate<UseCaseModelRunner> isRunnerInDifferentFlow = runner -> runner.getLatestFlow()
-		.map(runnerFlow -> !runnerFlow.equals(flow)).orElse(true);
-	return isRunnerInDifferentFlow;
     }
 
     public Actor[] getActors() {
