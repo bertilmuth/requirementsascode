@@ -2,6 +2,8 @@ package org.requirementsascode;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.predicate.Anytime;
+
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
@@ -50,11 +52,15 @@ public class UseCasePart {
 
 	public FlowlessUserPart(Class<T> eventOrExceptionClass, long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
-
-	    String stepName = "S" + flowlessStepCounter;	    
-	    Step newStep = useCase.newStep(stepName, null);
-	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
+	    StepPart stepPart = createStepPart(eventOrExceptionClass, "S" + flowlessStepCounter);
 	    this.userPart = stepPart.handles(eventOrExceptionClass);
+	}
+
+	StepPart createStepPart(Class<T> eventOrExceptionClass, String stepName) {
+	    Step newStep = useCase.newStep(stepName, null);
+	    newStep.setFlowPosition(new Anytime());
+	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
+	    return stepPart;
 	}
 
 	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {

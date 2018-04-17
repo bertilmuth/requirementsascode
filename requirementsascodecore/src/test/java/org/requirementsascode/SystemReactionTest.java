@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.predicate.Anytime;
 
@@ -197,7 +196,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	@Ignore
 	public void oneFlowlessStepReacts() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
@@ -225,7 +223,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	@Ignore
 	public void twoFlowlessStepsReactToEventsOfDifferentTypeInRightOrder() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
@@ -239,16 +236,10 @@ public class SystemReactionTest extends AbstractTestCase{
 		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
 		
 		latestStepRun = useCaseModelRunner.reactTo(entersNumber());
-		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
-		
-		latestStepRun =  useCaseModelRunner.getLatestStep();
-		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
-		
-		assertEquals("S1;S2;", runStepNames());
+		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());	
 	}
 	
 	@Test
-	@Ignore
 	public void twoFlowlessStepsReactToEventsOfDifferentTypeInWrongOrder() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
@@ -257,11 +248,12 @@ public class SystemReactionTest extends AbstractTestCase{
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(entersNumber(), entersText());
-		Optional<Step> latestStepRun =  useCaseModelRunner.getLatestStep();
 		
+		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
+		
+		latestStepRun = useCaseModelRunner.reactTo(entersText());
 		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
-		assertEquals("S1;S2;", runStepNames());
 	}
 	
 	@Test
