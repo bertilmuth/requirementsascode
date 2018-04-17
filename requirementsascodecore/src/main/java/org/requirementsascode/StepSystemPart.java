@@ -40,10 +40,17 @@ public class StepSystemPart<T> {
     public StepPart step(String stepName) {
 	Objects.requireNonNull(stepName);
 
-	FlowPart useCaseFlowPart = stepPart.getFlowPart();
-	StepPart nextStepInFlowPart = useCaseFlowPart.step(stepName);
+	FlowPart flowPart = stepPart.getFlowPart();
+	Step nextStepInFlow = createTrailingStep(stepName, flowPart);
+	StepPart nextStepInFlowPart = new StepPart(nextStepInFlow, stepPart.getUseCasePart(), flowPart);
 
 	return nextStepInFlowPart;
+    }
+    
+    Step createTrailingStep(String stepName, FlowPart flowPart) {
+	Flow flow = flowPart.getFlow();
+	Step newTrailingStep = step.getUseCase().newTrailingStep(stepName, flow);
+	return newTrailingStep;
     }
 
     /**

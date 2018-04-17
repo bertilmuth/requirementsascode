@@ -122,6 +122,22 @@ public class UseCase extends UseCaseModelElement implements Serializable {
 
 	return step;
     }
+    
+    /**
+     * Creates a new trailing step with the specified parameters.
+     *
+     * @param stepName
+     *            the name of the step
+     * @param flow
+     *            the flow the step shall belong to
+     * @return the newly created step
+     */
+    Step newTrailingStep(String stepName, Flow flow) {
+	Step step = new TrailingStep(stepName, this, flow);
+	saveModelElement(step, nameToStepMap);
+
+	return step;
+    }
 
     /**
      * Finds the flow with the specified name, contained in this use case.

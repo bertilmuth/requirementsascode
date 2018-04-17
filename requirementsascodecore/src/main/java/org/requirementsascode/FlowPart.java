@@ -39,7 +39,8 @@ public class FlowPart {
      */
     public StepPart step(String stepName) {
 	Step step = createStep(stepName);
-	return new StepPart(step, useCasePart, this);
+	StepPart stepPart = new StepPart(step, useCasePart, this);
+	return stepPart;
     }
 
     Step createStep(String stepName) {
@@ -118,7 +119,7 @@ public class FlowPart {
 	return this;
     }
 
-    Flow getUseCaseFlow() {
+    Flow getFlow() {
 	return flow;
     }
 
