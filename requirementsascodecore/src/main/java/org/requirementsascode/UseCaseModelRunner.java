@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.UnhandledException;
-import org.requirementsascode.predicate.After;
 
 /**
  * A use case model runner is a highly configurable use case controller that
@@ -419,18 +418,6 @@ public class UseCaseModelRunner implements Serializable {
 
 	includedUseCases.push(includedUseCase);
 	includeSteps.push(includeStep);
-	for (Flow includedFlow : includedUseCase.getFlows()) {
-	    includeFlowAfterStep(includedFlow, includeStep);
-	}
-    }
-
-    private void includeFlowAfterStep(Flow includedFlow, Step includeStep) {
-	Optional<Step> optionalFirstStepOfFlow = includedFlow.getFirstStep();
-	optionalFirstStepOfFlow.ifPresent(firstStepOfFlow -> {
-	    Predicate<UseCaseModelRunner> oldFlowPosition = firstStepOfFlow.getFlowPosition().orElse(r -> false);
-	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(includeStep).or(oldFlowPosition);
-	    firstStepOfFlow.setFlowPosition(includeFlowPosition);
-	});
     }
 
     private boolean isAtEndOfIncludedFlow() {
