@@ -31,7 +31,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     private Predicate<UseCaseModelRunner> flowPosition;
     private Predicate<UseCaseModelRunner> when;
 
-    protected Step previousStepInFlow;
+    private Step previousStepInFlow;
 
     /**
      * Creates a use case step with the specified name that belongs to the specified

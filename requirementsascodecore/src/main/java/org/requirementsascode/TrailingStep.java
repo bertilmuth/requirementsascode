@@ -34,7 +34,8 @@ public class TrailingStep extends Step implements Serializable {
     TrailingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
 	appendToLastStepOfFlow();
-	setFlowPosition(new After(previousStepInFlow));
+	Step previousStep = getPreviousStepInFlow().orElse(null);
+	setFlowPosition(new After(previousStep));
     }
 
     private void appendToLastStepOfFlow() {
@@ -63,10 +64,11 @@ public class TrailingStep extends Step implements Serializable {
 	    UseCaseModel useCaseModel = getUseCaseModel();
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
-	    Stream<Step> conditionalStepsStream = stepsStream.filter(isConditionalStep().and(isOtherStepThan(this)));
+	    Stream<Step> conditionalStepsStream = stepsStream
+		    .filter(isConditionalStep().and(isOtherStepThan(this)));
 
-	    Set<Step> conditionalStepsThatCanReact = useCaseModelRunner.stepsInStreamThatCanReactTo(theStepsEventClass,
-		    conditionalStepsStream);
+	    Set<Step> conditionalStepsThatCanReact = useCaseModelRunner
+		    .stepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
 	    return conditionalStepsThatCanReact.size() == 0;
 	};
     }
