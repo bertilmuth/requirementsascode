@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.predicate.Anytime;
 
@@ -196,7 +197,21 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void oneStepReacts() {		
+	@Ignore
+	public void oneFlowlessStepReacts() {		
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.handles(EntersText.class).system(displaysEnteredText())
+			.build();
+				
+		useCaseModelRunner.run(useCaseModel);
+		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
+		
+		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+	}
+	
+	@Test
+	public void oneStepInFlowReacts() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -210,18 +225,43 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void twoSequentialStepsReactToEventsOfSameType() {		
+	@Ignore
+	public void twoFlowlessStepsReactToEventsOfDifferentTypeInRightOrder() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
-				.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+				.handles(EntersText.class).system(displaysEnteredText())
+				.handles(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 		
 		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(entersText(), entersText());
 		
-		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
+		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
+		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+		
+		latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
+		
+		latestStepRun =  useCaseModelRunner.getLatestStep();
+		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
+		
+		assertEquals("S1;S2;", runStepNames());
+	}
+	
+	@Test
+	@Ignore
+	public void twoFlowlessStepsReactToEventsOfDifferentTypeInWrongOrder() {		
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.handles(EntersText.class).system(displaysEnteredText())
+				.handles(EntersNumber.class).system(displaysEnteredNumber())
+			.build();
+		
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(entersNumber(), entersText());
+		Optional<Step> latestStepRun =  useCaseModelRunner.getLatestStep();
+		
+		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+		assertEquals("S1;S2;", runStepNames());
 	}
 	
 	@Test
@@ -237,6 +277,21 @@ public class SystemReactionTest extends AbstractTestCase{
 		useCaseModelRunner.reactTo(entersText(), entersNumber());
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_NUMBER +";", runStepNames());
+	}
+	
+	@Test
+	public void twoSequentialStepsReactToEventsOfSameType() {		
+		UseCaseModel useCaseModel = useCaseModelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		useCaseModelRunner.run(useCaseModel);
+		useCaseModelRunner.reactTo(entersText(), entersText());
+		
+		assertEquals(CUSTOMER_ENTERS_TEXT +";" + CUSTOMER_ENTERS_TEXT_AGAIN +";", runStepNames());
 	}
 	
 	@Test

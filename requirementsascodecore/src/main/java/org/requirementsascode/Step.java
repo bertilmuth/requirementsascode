@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -46,6 +47,9 @@ public class Step extends UseCaseModelElement implements Serializable {
     Step(String stepName, Flow useCaseFlow) {
 	super(stepName, useCaseFlow.getUseCaseModel());
 	this.flow = useCaseFlow;
+	List<Step> existingSteps = flow.getSteps();
+	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
+	setPreviousStepInFlow(lastExistingStep);
     }
 
     public Optional<Step> getPreviousStepInFlow() {

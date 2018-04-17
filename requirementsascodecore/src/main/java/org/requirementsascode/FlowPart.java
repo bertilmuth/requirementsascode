@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -39,17 +38,11 @@ public class FlowPart {
      *             if a step with the specified name already exists in the use case
      */
     public StepPart step(String stepName) {
-	List<Step> existingSteps = flow.getSteps();
-
-	Step step = createStepWithoutPreviousStep(stepName);
-
-	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
-	step.setPreviousStepInFlow(lastExistingStep);
-
+	Step step = createStep(stepName);
 	return new StepPart(step, this);
     }
 
-    Step createStepWithoutPreviousStep(String stepName) {
+    Step createStep(String stepName) {
 	Step step = useCase.newStep(stepName, flow);
 
 	step.setFlowPosition(optionalFlowPosition);

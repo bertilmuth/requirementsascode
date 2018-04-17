@@ -51,7 +51,7 @@ public class UseCasePart {
 	public FlowlessUserPart(Class<T> eventOrExceptionClass, long flowlessStepCounter) {
 	    FlowPart anytime = basicFlow().anytime();
 	    String stepName = "S" + flowlessStepCounter;
-	    StepPart stepPart = new StepPart(anytime.createStepWithoutPreviousStep(stepName), anytime);
+	    StepPart stepPart = new StepPart(anytime.createStep(stepName), anytime);
 	    this.userPart = stepPart.handles(eventOrExceptionClass);
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
