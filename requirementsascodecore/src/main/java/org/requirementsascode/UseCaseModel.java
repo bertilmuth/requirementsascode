@@ -39,6 +39,7 @@ public class UseCaseModel implements Serializable {
     /**
      * The only way to build a use case model and its parts is to
      * use the builder returned by this method.
+     * @return the builder.
      */
     public static UseCaseModelBuilder builder() {
 	return new UseCaseModelBuilder(new UseCaseModel());
