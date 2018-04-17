@@ -40,7 +40,7 @@ public class BuildModelTest extends AbstractTestCase {
     }
 
     @Test
-    public void accessesExistingUseCase() {
+    public void accessesExistingUseCaseTwice() {
 	useCaseModelBuilder.useCase(USE_CASE);
 	useCaseModelBuilder.useCase(USE_CASE);
 
@@ -82,9 +82,28 @@ public class BuildModelTest extends AbstractTestCase {
 	Collection<Step> steps = useCase.getSteps();
 	assertEquals(0, steps.size());
     }
+    
+    @Test
+    public void createsSingleStepThatHandlesUserEventWithoutFlow() {
+	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+
+	UseCaseModel useCaseModel = 
+		useCasePart
+			.handles(EntersText.class).system(displaysEnteredText())
+		.build();
+
+	UseCase useCase = useCasePart.useCase();
+	Collection<Step> steps = useCase.getSteps();
+	assertEquals(1, steps.size());
+
+	Step step = steps.iterator().next();
+	assertEquals("S1", step.getName());
+	assertEquals(USE_CASE, step.getUseCase().getName());
+	assertEquals(useCaseModel.getSystemActor(), step.getActors()[0]);
+    }
 
     @Test
-    public void createsSingleStepThatHandlesUserEvent() {
+    public void createsSingleStepThatHandlesUserEventWithFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 	UseCaseModel useCaseModel = 
@@ -239,9 +258,31 @@ public class BuildModelTest extends AbstractTestCase {
 
 	assertFalse(previousStep.isPresent());
     }
+    
+    @Test
+    public void createsTwoStepsWithoutFlow() {
+	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+
+	useCasePart
+		.handles(EntersText.class).system(displaysEnteredText())
+		.handles(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	Collection<Step> steps = useCasePart.useCase().getSteps();
+	assertEquals(2, steps.size());
+
+	Iterator<Step> stepIt = steps.iterator();
+	Step step = stepIt.next();
+	assertEquals("S1", step.getName());
+	assertEquals(USE_CASE, step.getUseCase().getName());
+
+	step = stepIt.next();
+	assertEquals("S2", step.getName());
+	assertEquals(USE_CASE, step.getUseCase().getName());
+    }
 
     @Test
-    public void createsTwoSteps() {
+    public void createsTwoStepsWithActorAndFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 	UseCaseModel useCaseModel = 

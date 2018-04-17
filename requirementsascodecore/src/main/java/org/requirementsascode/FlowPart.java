@@ -40,6 +40,16 @@ public class FlowPart {
      */
     public StepPart step(String stepName) {
 	List<Step> existingSteps = flow.getSteps();
+
+	Step step = createStepWithoutPreviousStep(stepName);
+
+	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
+	step.setPreviousStepInFlow(lastExistingStep);
+
+	return new StepPart(step, this);
+    }
+
+    Step createStepWithoutPreviousStep(String stepName) {
 	Step step = useCase.newStep(stepName, flow);
 
 	step.setFlowPosition(optionalFlowPosition);
@@ -47,10 +57,7 @@ public class FlowPart {
 	optionalFlowPosition = null;
 	optionalWhen = null;
 
-	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
-	step.setPreviousStepInFlow(lastExistingStep);
-
-	return new StepPart(step, this);
+	return step;
     }
 
     /**
