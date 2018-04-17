@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.requirementsascode.predicate.Anytime;
@@ -19,20 +18,19 @@ public class ConditionalStep extends Step {
 	if (reactWhile != null) {
 	    predicate = reactWhile;
 	} else {
-	    predicate = getFlowPredicate().get();
+	    predicate = getFlowPredicate();
 	}
 
 	return predicate;
     }
 
-    public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
+    public Predicate<UseCaseModelRunner> getFlowPredicate() {
 	Anytime anytime = new Anytime();
 
 	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition().orElse(anytime);
 	Predicate<UseCaseModelRunner> when = getWhen().orElse(anytime);
 
-	Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional
-		.of(isRunnerInDifferentFlow().and(flowPosition).and(when));
+	Predicate<UseCaseModelRunner> flowPredicate = isRunnerInDifferentFlow().and(flowPosition).and(when);
 	return flowPredicate;
     }
 
