@@ -23,7 +23,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     private UseCase useCase;
     private Flow flow;
-    private Predicate<UseCaseModelRunner> reactWhile;
+    protected Predicate<UseCaseModelRunner> reactWhile;
 
     private Actor[] actors;
     private Class<?> userEventClass;
@@ -47,6 +47,8 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.useCase = useCase;
 	this.flow = useCaseFlow;
     }
+    
+    public abstract Predicate<UseCaseModelRunner> getPredicate() ;
 
     public Flow getFlow() {
 	return flow;
@@ -59,17 +61,9 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     public Optional<Step> getPreviousStepInFlow() {
 	return Optional.ofNullable(previousStepInFlow);
     }
-
-    public Predicate<UseCaseModelRunner> getPredicate() {
-	Predicate<UseCaseModelRunner> predicate;
-
-	if (reactWhile != null) {
-	    predicate = reactWhile;
-	} else{ 
-	    predicate = getFlowPredicate().get();
-	}
-
-	return predicate;
+    
+    protected void setPreviousStepInFlow(Step previousStepInFlow) {
+	this.previousStepInFlow = previousStepInFlow;
     }
 
     void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {

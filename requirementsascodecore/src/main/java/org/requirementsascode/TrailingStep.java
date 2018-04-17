@@ -43,10 +43,6 @@ public class TrailingStep extends Step implements Serializable {
 	setPreviousStepInFlow(lastFlowStep);
     }
 
-    void setPreviousStepInFlow(Step previousStepInFlow) {
-	super.previousStepInFlow = previousStepInFlow;
-    }
-
     @Override
     public Predicate<UseCaseModelRunner> getPredicate() {
 	Predicate<UseCaseModelRunner> predicate;
@@ -55,9 +51,7 @@ public class TrailingStep extends Step implements Serializable {
 	if (reactWhile != null) {
 	    predicate = reactWhile;
 	} else {
-	    Predicate<UseCaseModelRunner> afterPreviousStepIfNoConditionalStepInterrupts = getFlowPosition().get()
-		    .and(noConditionalStepInterrupts());
-	    predicate = afterPreviousStepIfNoConditionalStepInterrupts;
+	    predicate = getFlowPosition().get().and(noConditionalStepInterrupts());
 	}
 
 	return predicate;
