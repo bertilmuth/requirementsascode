@@ -26,14 +26,13 @@ public class ConditionalStep extends Step {
     }
 
     public Optional<Predicate<UseCaseModelRunner>> getFlowPredicate() {
-	Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional.empty();
-	Optional<Predicate<UseCaseModelRunner>> flowPosition = getFlowPosition();
-	Optional<Predicate<UseCaseModelRunner>> when = getWhen();
-
 	Anytime anytime = new Anytime();
-	Predicate<UseCaseModelRunner> flowPositionOrElseAnytime = flowPosition.orElse(anytime);
-	Predicate<UseCaseModelRunner> whenOrElseAnytime = when.orElse(anytime);
-	flowPredicate = Optional.of(isRunnerInDifferentFlow().and(flowPositionOrElseAnytime).and(whenOrElseAnytime));
+
+	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition().orElse(anytime);
+	Predicate<UseCaseModelRunner> when = getWhen().orElse(anytime);
+
+	Optional<Predicate<UseCaseModelRunner>> flowPredicate = Optional
+		.of(isRunnerInDifferentFlow().and(flowPosition).and(when));
 	return flowPredicate;
     }
 
