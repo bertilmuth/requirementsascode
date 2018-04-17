@@ -19,10 +19,10 @@ public class StepPart {
     private Actor userActor;
     private Actor systemActor;
 
-    StepPart(Step useCaseStep, FlowPart useCaseFlowPart) {
+    StepPart(Step useCaseStep, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
 	this.step = useCaseStep;
 	this.flowPart = useCaseFlowPart;
-	this.useCaseModelBuilder = useCaseFlowPart.getUseCaseModelBuilder();
+	this.useCaseModelBuilder = useCasePart.getUseCaseModelBuilder();
 	this.userActor = useCaseModelBuilder.build().getUserActor();
 	this.systemActor = useCaseModelBuilder.build().getSystemActor();
     }

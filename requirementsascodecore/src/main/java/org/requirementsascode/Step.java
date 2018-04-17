@@ -25,6 +25,7 @@ import org.requirementsascode.predicate.Anytime;
 public class Step extends UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
+    private UseCase useCase;
     private Flow flow;
     private Step previousStepInFlow;
     private Predicate<UseCaseModelRunner> reactWhile;
@@ -35,6 +36,7 @@ public class Step extends UseCaseModelElement implements Serializable {
     private Predicate<UseCaseModelRunner> flowPosition;
     private Predicate<UseCaseModelRunner> when;
 
+
     /**
      * Creates a use case step with the specified name that belongs to the specified
      * use case flow.
@@ -44,12 +46,19 @@ public class Step extends UseCaseModelElement implements Serializable {
      * @param useCaseFlow
      *            the use case flow that will contain the new use case
      */
-    Step(String stepName, Flow useCaseFlow) {
-	super(stepName, useCaseFlow.getUseCaseModel());
+    Step(String stepName, UseCase useCase, Flow useCaseFlow) {
+	super(stepName, useCase.getUseCaseModel());
+	this.useCase = useCase;
 	this.flow = useCaseFlow;
-	List<Step> existingSteps = flow.getSteps();
-	Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
-	setPreviousStepInFlow(lastExistingStep);
+	setLastFlowStepAsPreviousStep();
+    }
+
+    void setLastFlowStepAsPreviousStep() {
+	if (flow != null) {
+	    List<Step> existingSteps = flow.getSteps();
+	    Step lastExistingStep = existingSteps.size() > 0 ? existingSteps.get(existingSteps.size() - 1) : null;
+	    setPreviousStepInFlow(lastExistingStep);
+	}
     }
 
     public Optional<Step> getPreviousStepInFlow() {
@@ -65,7 +74,7 @@ public class Step extends UseCaseModelElement implements Serializable {
     }
 
     public UseCase getUseCase() {
-	return getFlow().getUseCase();
+	return useCase;
     }
 
     public Predicate<UseCaseModelRunner> getPredicate() {
@@ -115,7 +124,7 @@ public class Step extends UseCaseModelElement implements Serializable {
 
     private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
 	Predicate<UseCaseModelRunner> isRunnerInDifferentFlow = runner -> runner.getLatestFlow()
-		.map(runnerFlow -> !getFlow().equals(runnerFlow)).orElse(true);
+		.map(runnerFlow -> !runnerFlow.equals(flow)).orElse(true);
 	return isRunnerInDifferentFlow;
     }
 

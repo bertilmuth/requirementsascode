@@ -31,7 +31,7 @@ public class UseCasePart {
 	return useCase;
     }
 
-    UseCaseModelBuilder useCaseModelBuilder() {
+    UseCaseModelBuilder getUseCaseModelBuilder() {
 	return useCaseModelBuilder;
     }
 
@@ -49,11 +49,12 @@ public class UseCasePart {
 	private long flowlessStepCounter;
 
 	public FlowlessUserPart(Class<T> eventOrExceptionClass, long flowlessStepCounter) {
-	    FlowPart anytime = basicFlow().anytime();
-	    String stepName = "S" + flowlessStepCounter;
-	    StepPart stepPart = new StepPart(anytime.createStep(stepName), anytime);
-	    this.userPart = stepPart.handles(eventOrExceptionClass);
 	    this.flowlessStepCounter = flowlessStepCounter;
+
+	    String stepName = "S" + flowlessStepCounter;	    
+	    Step newStep = useCase.newStep(stepName, null);
+	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
+	    this.userPart = stepPart.handles(eventOrExceptionClass);
 	}
 
 	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {

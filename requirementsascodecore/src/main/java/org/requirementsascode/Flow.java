@@ -52,7 +52,7 @@ public class Flow extends UseCaseModelElement implements Serializable {
      * @return a collection of the steps
      */
     public List<Step> getSteps() {
-	List<Step> steps = getUseCase().getModifiableSteps().stream().filter(step -> step.getFlow().equals(this))
+	List<Step> steps = getUseCase().getModifiableSteps().stream().filter(step -> this.equals(step.getFlow()))
 		.collect(Collectors.toList());
 	return Collections.unmodifiableList(steps);
     }

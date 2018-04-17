@@ -117,7 +117,7 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      * @return the newly created step
      */
     Step newStep(String stepName, Flow flow) {
-	Step step = new Step(stepName, flow);
+	Step step = new Step(stepName, this, flow);
 	saveModelElement(step, nameToStepMap);
 
 	return step;

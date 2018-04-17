@@ -39,7 +39,7 @@ public class FlowPart {
      */
     public StepPart step(String stepName) {
 	Step step = createStep(stepName);
-	return new StepPart(step, this);
+	return new StepPart(step, useCasePart, this);
     }
 
     Step createStep(String stepName) {
@@ -127,6 +127,6 @@ public class FlowPart {
     }
 
     UseCaseModelBuilder getUseCaseModelBuilder() {
-	return useCasePart.useCaseModelBuilder();
+	return useCasePart.getUseCaseModelBuilder();
     }
 }
