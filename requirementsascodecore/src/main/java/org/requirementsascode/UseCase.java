@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -114,15 +115,21 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      *            the name of the step
      * @param flow
      *            the flow the step shall belong to
+     * @param optionalWhen
+     * @param optionalFlowPosition
      * @return the newly created step
      */
-    Step newStep(String stepName, Flow flow) {
-	Step step = new Step(stepName, this, flow);
+    ConditionalStep newConditionalStep(String stepName, Flow flow, Predicate<UseCaseModelRunner> optionalFlowPosition,
+	    Predicate<UseCaseModelRunner> optionalWhen) {
+	ConditionalStep step = new ConditionalStep(stepName, this, flow);
+	step.setFlowPosition(optionalFlowPosition);
+	step.setWhen(optionalWhen);
+
 	saveModelElement(step, nameToStepMap);
 
 	return step;
     }
-    
+
     /**
      * Creates a new trailing step with the specified parameters.
      *
@@ -132,8 +139,8 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      *            the flow the step shall belong to
      * @return the newly created step
      */
-    Step newTrailingStep(String stepName, Flow flow) {
-	Step step = new TrailingStep(stepName, this, flow);
+    TrailingStep newTrailingStep(String stepName, Flow flow) {
+	TrailingStep step = new TrailingStep(stepName, this, flow);
 	saveModelElement(step, nameToStepMap);
 
 	return step;

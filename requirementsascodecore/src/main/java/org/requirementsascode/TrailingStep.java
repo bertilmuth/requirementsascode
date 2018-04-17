@@ -33,15 +33,21 @@ public class TrailingStep extends Step implements Serializable {
      */
     TrailingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
-	setLastFlowStepAsPreviousStep();
+	appendToLastStepOfFlow();
+	setFlowPosition(new After(previousStepInFlow));
     }
 
-    private void setLastFlowStepAsPreviousStep() {
+    private void appendToLastStepOfFlow() {
 	List<Step> flowSteps = getFlow().getSteps();
 	Step lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
 	setPreviousStepInFlow(lastFlowStep);
     }
 
+    void setPreviousStepInFlow(Step previousStepInFlow) {
+	super.previousStepInFlow = previousStepInFlow;
+    }
+
+    @Override
     public Predicate<UseCaseModelRunner> getPredicate() {
 	Predicate<UseCaseModelRunner> predicate;
 	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
@@ -49,8 +55,7 @@ public class TrailingStep extends Step implements Serializable {
 	if (reactWhile != null) {
 	    predicate = reactWhile;
 	} else {
-	    Step previousStepInFlow = getPreviousStepInFlow().orElse(null);
-	    Predicate<UseCaseModelRunner> afterPreviousStepIfNoConditionalStepInterrupts = new After(previousStepInFlow)
+	    Predicate<UseCaseModelRunner> afterPreviousStepIfNoConditionalStepInterrupts = getFlowPosition().get()
 		    .and(noConditionalStepInterrupts());
 	    predicate = afterPreviousStepIfNoConditionalStepInterrupts;
 	}
@@ -65,7 +70,7 @@ public class TrailingStep extends Step implements Serializable {
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
 	    Stream<Step> stepsWithDefinedPredicatesStream = stepsStream
-		    .filter(hasDefinedPredicate().and(isOtherStepThan(this)));
+		    .filter(isConditionalStep().and(isOtherStepThan(this)));
 
 	    Set<Step> stepsWithDefinedConditionsThatCanReact = useCaseModelRunner
 		    .stepsInStreamThatCanReactTo(theStepsEventClass, stepsWithDefinedPredicatesStream);
@@ -73,8 +78,8 @@ public class TrailingStep extends Step implements Serializable {
 	};
     }
 
-    private Predicate<Step> hasDefinedPredicate() {
-	return step -> step.getFlowPredicate().isPresent();
+    private Predicate<Step> isConditionalStep() {
+	return step -> ConditionalStep.class.equals(step.getClass());
     }
 
     private Predicate<Step> isOtherStepThan(Step theStep) {

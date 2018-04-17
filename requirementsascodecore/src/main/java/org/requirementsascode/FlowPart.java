@@ -47,9 +47,7 @@ public class FlowPart {
 	Step step;
 	
 	if(optionalWhen != null || optionalFlowPosition != null) {
-	    step = useCase.newStep(stepName, flow);
-	    step.setFlowPosition(optionalFlowPosition);
-	    step.setWhen(optionalWhen);
+	    step = useCase.newConditionalStep(stepName, flow, optionalFlowPosition, optionalWhen);
 	} else {
 	    step = useCase.newTrailingStep(stepName, flow);
 	}

@@ -57,8 +57,7 @@ public class UseCasePart {
 	}
 
 	StepPart createStepPart(Class<T> eventOrExceptionClass, String stepName) {
-	    Step newStep = useCase.newStep(stepName, null);
-	    newStep.setFlowPosition(new Anytime());
+	    Step newStep = useCase.newConditionalStep(stepName, null, new Anytime(), null);
 	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 	    return stepPart;
 	}

@@ -2,10 +2,8 @@ package org.requirementsascode;
 
 import java.io.Serializable;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import org.requirementsascode.predicate.Anytime;
 
@@ -20,7 +18,7 @@ import org.requirementsascode.predicate.Anytime;
  *
  * @author b_muth
  */
-public class Step extends UseCaseModelElement implements Serializable {
+public abstract class Step extends UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     private UseCase useCase;
@@ -33,7 +31,7 @@ public class Step extends UseCaseModelElement implements Serializable {
     private Predicate<UseCaseModelRunner> flowPosition;
     private Predicate<UseCaseModelRunner> when;
 
-    private Step previousStepInFlow;
+    protected Step previousStepInFlow;
 
     /**
      * Creates a use case step with the specified name that belongs to the specified
@@ -60,10 +58,6 @@ public class Step extends UseCaseModelElement implements Serializable {
     
     public Optional<Step> getPreviousStepInFlow() {
 	return Optional.ofNullable(previousStepInFlow);
-    }
-    
-    void setPreviousStepInFlow(Step previousStepInFlow) {
-	this.previousStepInFlow = previousStepInFlow;
     }
 
     public Predicate<UseCaseModelRunner> getPredicate() {
@@ -143,28 +137,5 @@ public class Step extends UseCaseModelElement implements Serializable {
 
     void setSystemReaction(Consumer<?> systemReaction) {
 	this.systemReaction = systemReaction;
-    }
-
-    public Predicate<UseCaseModelRunner> noStepWithDefinedPredicateInterrupts() {
-	return useCaseModelRunner -> {
-	    Class<?> theStepsEventClass = getUserEventClass();
-	    UseCaseModel useCaseModel = getUseCaseModel();
-
-	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
-	    Stream<Step> stepsWithDefinedPredicatesStream = stepsStream
-		    .filter(isOtherStepThan(this).and(hasDefinedPredicate()));
-
-	    Set<Step> stepsWithDefinedConditionsThatCanReact = useCaseModelRunner
-		    .stepsInStreamThatCanReactTo(theStepsEventClass, stepsWithDefinedPredicatesStream);
-	    return stepsWithDefinedConditionsThatCanReact.size() == 0;
-	};
-    }
-
-    private Predicate<Step> hasDefinedPredicate() {
-	return step -> step.getFlowPredicate().isPresent();
-    }
-
-    private Predicate<Step> isOtherStepThan(Step theStep) {
-	return step -> !step.equals(theStep);
     }
 }
