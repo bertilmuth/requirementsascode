@@ -14,17 +14,17 @@ import org.requirementsascode.predicate.ReactWhile;
  * @author b_muth
  */
 public class StepSystemPart<T> {
-    private FlowStepPart flowStepPart;
+    private StepPart stepPart;
     private FlowStep step;
 
-    StepSystemPart(FlowStepPart flowStepPart, Consumer<T> systemReaction) {
-	this.flowStepPart = flowStepPart;
-	this.step = flowStepPart.getStep();
+    StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
+	this.stepPart = useCaseStepPart;
+	this.step = useCaseStepPart.getStep();
 	step.setSystemReaction(systemReaction);
     }
 
     public UseCaseModel build() {
-	return flowStepPart.getUseCaseModelBuilder().build();
+	return stepPart.getUseCaseModelBuilder().build();
     }
 
     /**
@@ -40,9 +40,9 @@ public class StepSystemPart<T> {
     public StepPart step(String stepName) {
 	Objects.requireNonNull(stepName);
 
-	FlowPart flowPart = flowStepPart.getFlowPart();
+	FlowPart flowPart = stepPart.getFlowPart();
 	FlowStep trailingStepInFlow = createTrailingStepInFlow(stepName, flowPart);
-	StepPart trailingStepInFlowPart = new FlowStepPart(trailingStepInFlow, flowStepPart.getUseCasePart(), flowPart);
+	StepPart trailingStepInFlowPart = new StepPart(trailingStepInFlow, stepPart.getUseCasePart(), flowPart);
 
 	return trailingStepInFlowPart;
     }
@@ -65,7 +65,7 @@ public class StepSystemPart<T> {
     public FlowPart flow(String flowName) {
 	Objects.requireNonNull(flowName);
 
-	FlowPart useCaseFlowPart = flowStepPart.getUseCasePart().flow(flowName);
+	FlowPart useCaseFlowPart = stepPart.getUseCasePart().flow(flowName);
 	return useCaseFlowPart;
     }
 
@@ -81,7 +81,7 @@ public class StepSystemPart<T> {
     public UseCasePart useCase(String useCaseName) {
 	Objects.requireNonNull(useCaseName);
 
-	UseCasePart useCasePart = flowStepPart.getUseCaseModelBuilder().useCase(useCaseName);
+	UseCasePart useCasePart = stepPart.getUseCaseModelBuilder().useCase(useCaseName);
 	return useCasePart;
     }
 
