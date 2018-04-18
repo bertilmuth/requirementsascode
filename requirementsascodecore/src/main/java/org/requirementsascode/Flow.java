@@ -72,6 +72,17 @@ public class Flow extends UseCaseModelElement implements Serializable {
     }
 
     /**
+     * Returns the last step of the flow
+     *
+     * @return the last step of the flow, or an empty optional if the flow has no
+     *         steps.
+     */
+    public Optional<FlowStep> getLastStep() {
+	List<FlowStep> steps = getSteps();
+	return steps.size() > 0 ? Optional.of(steps.get(steps.size() - 1)) : Optional.empty();
+    }
+
+    /**
      * Convenience method that returns the position of the flow (as defined e.g. by
      * "InsteadOf").
      *
