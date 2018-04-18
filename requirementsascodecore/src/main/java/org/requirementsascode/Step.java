@@ -122,11 +122,11 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     }
 
     private void includeFlow(Flow includedFlow) {
-	Optional<Step> optionalFirstStepOfFlow = includedFlow.getFirstStep();
-	optionalFirstStepOfFlow.ifPresent(firstStepOfFlow -> {
-	    Predicate<UseCaseModelRunner> oldFlowPosition = firstStepOfFlow.getFlowPosition().orElse(r -> false);
-	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(this).or(oldFlowPosition);
-	    firstStepOfFlow.setFlowPosition(includeFlowPosition);
+	Optional<Step> optionalFirstStepOfIncludedFlow = includedFlow.getFirstStep();
+	optionalFirstStepOfIncludedFlow.ifPresent(firstStepOfIncludedFlow -> {
+	    Predicate<UseCaseModelRunner> includedFlowPosition = firstStepOfIncludedFlow.getFlowPosition().orElse(r -> false);
+	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(this).or(includedFlowPosition);
+	    firstStepOfIncludedFlow.setFlowPosition(includeFlowPosition);
 	});
     }
 }

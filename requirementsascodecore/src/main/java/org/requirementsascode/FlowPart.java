@@ -97,7 +97,7 @@ public class FlowPart {
      *         first step of the flow
      */
     public FlowPart anytime() {
-	optionalFlowPosition = new Anytime();
+	optionalWhen = new Anytime();
 	return this;
     }
 
