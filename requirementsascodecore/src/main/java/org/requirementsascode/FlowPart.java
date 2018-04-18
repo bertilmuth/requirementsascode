@@ -113,9 +113,6 @@ public class FlowPart {
     public FlowPart when(Predicate<UseCaseModelRunner> whenPredicate) {
 	Objects.requireNonNull(whenPredicate);
 
-	if (optionalFlowPosition == null) {
-	    anytime();
-	}
 	optionalWhen = whenPredicate;
 	return this;
     }
