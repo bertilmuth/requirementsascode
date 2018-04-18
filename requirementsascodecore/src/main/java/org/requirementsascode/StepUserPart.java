@@ -13,12 +13,12 @@ import org.requirementsascode.systemreaction.IgnoreIt;
  * @author b_muth
  */
 public class StepUserPart<T> {
-    private StepPart stepPart;
+    private FlowStepPart flowStepPart;
     private FlowStep step;
 
-    StepUserPart(StepPart useCaseStepPart, Class<T> eventClass) {
-	this.stepPart = useCaseStepPart;
-	this.step = useCaseStepPart.getStep();
+    StepUserPart(FlowStepPart flowStepPart, Class<T> eventClass) {
+	this.flowStepPart = flowStepPart;
+	this.step = flowStepPart.getStep();
 
 	step.setUserEventClass(eventClass);
     }
@@ -35,7 +35,7 @@ public class StepUserPart<T> {
     public StepSystemPart<T> system(Consumer<T> systemReaction) {
 	Objects.requireNonNull(systemReaction);
 
-	return new StepSystemPart<>(stepPart, systemReaction);
+	return new StepSystemPart<>(flowStepPart, systemReaction);
     }
 
     /**

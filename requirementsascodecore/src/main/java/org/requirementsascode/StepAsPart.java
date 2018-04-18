@@ -15,11 +15,11 @@ import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
  */
 public class StepAsPart {
     private FlowStep step;
-    private StepPart stepPart;
+    private FlowStepPart flowStepPart;
 
-    StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
-	this.stepPart = useCaseStepPart;
-	this.step = useCaseStepPart.getStep();
+    StepAsPart(FlowStepPart flowStepPart, Actor[] actors) {
+	this.flowStepPart = flowStepPart;
+	this.step = flowStepPart.getStep();
 
 	step.setActors(actors);
 	connectActorsToThisStep(step, actors);
@@ -49,7 +49,7 @@ public class StepAsPart {
     public <T> StepUserPart<T> user(Class<T> eventClass) {
 	Objects.requireNonNull(eventClass);
 
-	return new StepUserPart<>(stepPart, eventClass);
+	return new StepUserPart<>(flowStepPart, eventClass);
     }
 
     /**
@@ -71,16 +71,16 @@ public class StepAsPart {
 
     public UseCasePart continuesAt(String stepName) {
 	system(new ContinuesAt(step.getUseCase(), stepName));
-	return stepPart.getUseCasePart();
+	return flowStepPart.getUseCasePart();
     }
 
     public UseCasePart continuesAfter(String stepName) {
 	system(new ContinuesAfter(step.getUseCase(), stepName));
-	return stepPart.getUseCasePart();
+	return flowStepPart.getUseCasePart();
     }
 
     public UseCasePart continuesWithoutAlternativeAt(String stepName) {
 	system(new ContinuesWithoutAlternativeAt(step.getUseCase(), stepName));
-	return stepPart.getUseCasePart();
+	return flowStepPart.getUseCasePart();
     }
 }

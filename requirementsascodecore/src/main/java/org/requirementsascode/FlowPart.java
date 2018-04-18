@@ -39,7 +39,7 @@ public class FlowPart {
      */
     public StepPart step(String stepName) {
 	FlowStep step = createStep(stepName);
-	StepPart stepPart = new StepPart(step, useCasePart, this);
+	StepPart stepPart = new FlowStepPart(step, useCasePart, this);
 	return stepPart;
     }
 
