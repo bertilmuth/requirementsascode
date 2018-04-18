@@ -51,13 +51,13 @@ public abstract class FlowStep extends Step implements Serializable {
 
     private void includeFlow(Flow includedFlow) {
 	Optional<FlowStep> optionalFirstStepOfIncludedFlow = includedFlow.getFirstStep();
-	optionalFirstStepOfIncludedFlow.ifPresent(this::includeStep);
+	optionalFirstStepOfIncludedFlow.ifPresent(this::afterThisStepComesFirstStepOfIncludedFlow);
     }
 
-    private void includeStep(FlowStep firstStepOfIncludedFlow) {
-	Predicate<UseCaseModelRunner> originalFlowPosition = firstStepOfIncludedFlow.getFlowPosition()
+    private void afterThisStepComesFirstStepOfIncludedFlow(FlowStep firstStepOfIncludedFlow) {
+	Predicate<UseCaseModelRunner> firstStepOfIncludedFlowPosition = firstStepOfIncludedFlow.getFlowPosition()
 		.orElse(r -> false);
-	Predicate<UseCaseModelRunner> newFlowPosition = new After(this).or(originalFlowPosition);
+	Predicate<UseCaseModelRunner> newFlowPosition = new After(this).or(firstStepOfIncludedFlowPosition);
 	firstStepOfIncludedFlow.setFlowPosition(newFlowPosition);
     }
 }
