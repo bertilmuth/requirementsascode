@@ -15,11 +15,11 @@ import org.requirementsascode.predicate.ReactWhile;
  */
 public class StepSystemPart<T> {
     private StepPart stepPart;
-    private FlowStep step;
+    private Step step;
 
-    StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
-	this.stepPart = useCaseStepPart;
-	this.step = useCaseStepPart.getStep();
+    StepSystemPart(StepPart stepPart, Consumer<T> systemReaction) {
+	this.stepPart = stepPart;
+	this.step = stepPart.getStep();
 	step.setSystemReaction(systemReaction);
     }
 

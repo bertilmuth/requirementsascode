@@ -26,7 +26,7 @@ public class SystemReactionTrigger implements Serializable {
      * The system reaction of the step accepts the event (both event and step passed
      * in earlier).
      *
-     * @see #setupWith(Object, FlowStep)
+     * @see #setupWith(Object, Step)
      */
     @SuppressWarnings("unchecked")
     public void trigger() {

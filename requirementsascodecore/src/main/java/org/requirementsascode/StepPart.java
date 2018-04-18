@@ -9,18 +9,18 @@ import org.requirementsascode.systemreaction.IncludesUseCase;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see FlowStep
+ * @see Step
  * @author b_muth
  */
 public class StepPart {
-    private FlowStep step;
+    private Step step;
     private FlowPart flowPart;
     private UseCaseModelBuilder useCaseModelBuilder;
     private Actor userActor;
     private Actor systemActor;
 
-    StepPart(FlowStep useCaseStep, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
-	this.step = useCaseStep;
+    StepPart(Step step, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
+	this.step = step;
 	this.flowPart = useCaseFlowPart;
 	this.useCaseModelBuilder = useCasePart.getUseCaseModelBuilder();
 	this.userActor = useCaseModelBuilder.build().getUserActor();
@@ -178,15 +178,16 @@ public class StepPart {
      *             if the included use case has not been specified before
      */
     public StepSystemPart<UseCaseModelRunner> includesUseCase(String useCaseName) {
-	UseCase includedUseCase = step.getUseCaseModel().findUseCase(useCaseName);
-	StepSystemPart<UseCaseModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, step));
+	FlowStep flowStep = (FlowStep)step;
+	UseCase includedUseCase = flowStep.getUseCaseModel().findUseCase(useCaseName);
+	StepSystemPart<UseCaseModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, flowStep));
 	
-	step.includeUseCase(includedUseCase);
+	flowStep.includeUseCase(includedUseCase);
 	
 	return stepSystemPart;
     }
 
-    FlowStep getStep() {
+    Step getStep() {
 	return step;
     }
 

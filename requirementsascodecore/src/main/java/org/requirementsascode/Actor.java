@@ -22,7 +22,7 @@ import java.util.Set;
 public class Actor extends UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = 2441478758595877661L;
 
-    private Map<UseCase, List<FlowStep>> useCaseToStepMap;
+    private Map<UseCase, List<Step>> useCaseToStepMap;
 
     /**
      * Creates an actor with the specified name that is part of the specified use
@@ -60,22 +60,22 @@ public class Actor extends UseCaseModelElement implements Serializable {
      *            the use case to query for steps the actor is connected with
      * @return the use case steps the actor is connected with
      */
-    public List<FlowStep> getStepsOf(UseCase useCase) {
+    public List<Step> getStepsOf(UseCase useCase) {
 	Objects.requireNonNull(useCase);
 
-	List<FlowStep> steps = getModifiableStepsOf(useCase);
+	List<Step> steps = getModifiableStepsOf(useCase);
 	return Collections.unmodifiableList(steps);
     }
 
-    void newStep(FlowStep useCaseStep) {
-	Objects.requireNonNull(useCaseStep.getUseCase());
-	Objects.requireNonNull(useCaseStep);
+    void newStep(Step step) {
+	Objects.requireNonNull(step.getUseCase());
+	Objects.requireNonNull(step);
 
-	List<FlowStep> steps = getModifiableStepsOf(useCaseStep.getUseCase());
-	steps.add(useCaseStep);
+	List<Step> steps = getModifiableStepsOf(step.getUseCase());
+	steps.add(step);
     }
 
-    private List<FlowStep> getModifiableStepsOf(UseCase useCase) {
+    private List<Step> getModifiableStepsOf(UseCase useCase) {
 	useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 	return useCaseToStepMap.get(useCase);
     }

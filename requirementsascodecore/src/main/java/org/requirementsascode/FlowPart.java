@@ -59,7 +59,7 @@ public class FlowPart {
      * Starts the flow after the specified step has been run, in this flow's use
      * case. 
      * 
-     * Note: You should use after to handle exceptions that occured in the specified
+     * Note: You should use after to handle exceptions that occurred in the specified
      * step.
      *
      * @param stepName
@@ -71,7 +71,7 @@ public class FlowPart {
      * 		            
      */
     public FlowPart after(String stepName) {
-	FlowStep step = (FlowStep)useCase.findStep(stepName);
+	Step step = useCase.findStep(stepName);
 	optionalFlowPosition = new After(step);
 	return this;
     }

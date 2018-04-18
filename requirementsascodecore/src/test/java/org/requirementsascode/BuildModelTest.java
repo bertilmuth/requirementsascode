@@ -210,8 +210,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.build();
 
 	Actor customerActor = useCaseModel.findActor(customer.getName());
-	List<FlowStep> steps = customerActor.getStepsOf(useCasePart.useCase());
-	FlowStep step = steps.get(0);
+	List<Step> steps = customerActor.getStepsOf(useCasePart.useCase());
+	Step step = steps.get(0);
 
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
@@ -230,8 +230,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.build();
 
 	Actor customerActor = useCaseModel.findActor(customer.getName());
-	List<FlowStep> steps = customerActor.getStepsOf(useCasePart.useCase());
-	FlowStep step = steps.get(0);
+	List<Step> steps = customerActor.getStepsOf(useCasePart.useCase());
+	Step step = steps.get(0);
 
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
