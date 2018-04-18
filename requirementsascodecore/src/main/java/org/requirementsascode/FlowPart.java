@@ -38,18 +38,18 @@ public class FlowPart {
      *             if a step with the specified name already exists in the use case
      */
     public StepPart step(String stepName) {
-	Step step = createStep(stepName);
+	FlowStep step = createStep(stepName);
 	StepPart stepPart = new StepPart(step, useCasePart, this);
 	return stepPart;
     }
 
-    Step createStep(String stepName) {
-	Step step;
+    FlowStep createStep(String stepName) {
+	FlowStep step;
 	
 	if(optionalWhen != null || optionalFlowPosition != null) {
-	    step = useCase.newConditionalStep(stepName, flow, optionalFlowPosition, optionalWhen);
+	    step = useCase.newInterruptingFlowStep(stepName, flow, optionalFlowPosition, optionalWhen);
 	} else {
-	    step = useCase.newTrailingStep(stepName, flow);
+	    step = useCase.newInterruptableFlowStep(stepName, flow);
 	}
 	
 	return step;
@@ -57,7 +57,9 @@ public class FlowPart {
 
     /**
      * Starts the flow after the specified step has been run, in this flow's use
-     * case. You should use after to handle exceptions that occured in the specified
+     * case. 
+     * 
+     * Note: You should use after to handle exceptions that occured in the specified
      * step.
      *
      * @param stepName
@@ -65,10 +67,11 @@ public class FlowPart {
      * @return this use case flow part, to ease creation of the predicate and the
      *         first step of the flow
      * @throws NoSuchElementInModel
-     *             if the specified step is not found in this flow's use case
+     * 		if the specified step is not found in a flow of this use case
+     * 		            
      */
     public FlowPart after(String stepName) {
-	Step step = useCase.findStep(stepName);
+	FlowStep step = (FlowStep)useCase.findStep(stepName);
 	optionalFlowPosition = new After(step);
 	return this;
     }
@@ -85,7 +88,7 @@ public class FlowPart {
      *             if the specified step is not found in this flow's use case
      */
     public FlowPart insteadOf(String stepName) {
-	Step step = useCase.findStep(stepName);
+	FlowStep step = (FlowStep)useCase.findStep(stepName);
 	optionalFlowPosition = new InsteadOf(step);
 	return this;
     }

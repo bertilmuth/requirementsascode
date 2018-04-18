@@ -9,12 +9,12 @@ import org.requirementsascode.systemreaction.IgnoreIt;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see Step#setUserEventClass(Class)
+ * @see FlowStep#setUserEventClass(Class)
  * @author b_muth
  */
 public class StepUserPart<T> {
     private StepPart stepPart;
-    private Step step;
+    private FlowStep step;
 
     StepUserPart(StepPart useCaseStepPart, Class<T> eventClass) {
 	this.stepPart = useCaseStepPart;

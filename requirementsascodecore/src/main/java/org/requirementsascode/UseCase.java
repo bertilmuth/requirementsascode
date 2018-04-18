@@ -109,19 +109,21 @@ public class UseCase extends UseCaseModelElement implements Serializable {
     }
 
     /**
-     * Creates a new step with the specified parameters.
+     * Creates a new step that can interrupt other flows.
+     * This is the first step of a flow with a defined flow position and/or when condition.
+     * The flow position and when condition are the same as defined for the flow.
      *
      * @param stepName
      *            the name of the step
      * @param flow
      *            the flow the step shall belong to
-     * @param optionalWhen
-     * @param optionalFlowPosition
+     * @param optionalFlowPosition the flow position
+     * @param optionalFlowWhen the when condition
      * @return the newly created step
      */
-    InterruptingStep newConditionalStep(String stepName, Flow flow, Predicate<UseCaseModelRunner> optionalFlowPosition,
+    InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, Predicate<UseCaseModelRunner> optionalFlowPosition,
 	    Predicate<UseCaseModelRunner> optionalWhen) {
-	InterruptingStep step = new InterruptingStep(stepName, this, flow);
+	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
 	step.setFlowPosition(optionalFlowPosition);
 	step.setWhen(optionalWhen);
 
@@ -131,7 +133,14 @@ public class UseCase extends UseCaseModelElement implements Serializable {
     }
 
     /**
-     * Creates a new trailing step with the specified parameters.
+     * Creates a step that can be "interrupted", that is: interrupting steps are performed
+     * instead of this step when their flow position is correct and their condition is fulfilled.
+     * 
+     * All steps of a flow are interruptable steps, with the potential exception of the first step.
+     * The first step is interruptable as well iff no flow position and no when condition are specified.
+     * 
+     * So, for example, if you build <code>builder.useCase("UC1").basicFlow().step("S1")</code>, then
+     * S1 is an interruptable step as well.
      *
      * @param stepName
      *            the name of the step
@@ -139,8 +148,22 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      *            the flow the step shall belong to
      * @return the newly created step
      */
-    InterruptableStep newTrailingStep(String stepName, Flow flow) {
-	InterruptableStep step = new InterruptableStep(stepName, this, flow);
+    InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {
+	InterruptableFlowStep step = new InterruptableFlowStep(stepName, this, flow);
+	saveModelElement(step, nameToStepMap);
+
+	return step;
+    }
+    
+    /**
+     * Creates a step that is independent of a flow.
+     *
+     * @param stepName
+     *            the name of the step
+     * @return the newly created step
+     */
+    FlowlessStep newFlowlessStep(String stepName) {
+	FlowlessStep step = new FlowlessStep(stepName, this);
 	saveModelElement(step, nameToStepMap);
 
 	return step;

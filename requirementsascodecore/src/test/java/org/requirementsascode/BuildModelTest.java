@@ -210,8 +210,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.build();
 
 	Actor customerActor = useCaseModel.findActor(customer.getName());
-	List<Step> steps = customerActor.getStepsOf(useCasePart.useCase());
-	Step step = steps.get(0);
+	List<FlowStep> steps = customerActor.getStepsOf(useCasePart.useCase());
+	FlowStep step = steps.get(0);
 
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
@@ -230,8 +230,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.build();
 
 	Actor customerActor = useCaseModel.findActor(customer.getName());
-	List<Step> steps = customerActor.getStepsOf(useCasePart.useCase());
-	Step step = steps.get(0);
+	List<FlowStep> steps = customerActor.getStepsOf(useCasePart.useCase());
+	FlowStep step = steps.get(0);
 
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
@@ -249,12 +249,13 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepWithNoPreviousStep() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	useCasePart.basicFlow().step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
+	useCasePart.basicFlow()
+		.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
 
 	Collection<Step> steps = useCasePart.useCase().getSteps();
 	assertEquals(1, steps.size());
 
-	Optional<Step> previousStep = steps.iterator().next().getPreviousStepInFlow();
+	Optional<FlowStep> previousStep = ((FlowStep) steps.iterator().next()).getPreviousStepInFlow();
 
 	assertFalse(previousStep.isPresent());
     }
@@ -333,7 +334,7 @@ public class BuildModelTest extends AbstractTestCase {
 		.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
-	List<Step> steps = useCasePart.useCase().getBasicFlow().getSteps();
+	List<FlowStep> steps = useCasePart.useCase().getBasicFlow().getSteps();
 	assertEquals(2, steps.size());
 
 	assertEquals(SYSTEM_DISPLAYS_TEXT, steps.get(0).getName());
@@ -348,7 +349,7 @@ public class BuildModelTest extends AbstractTestCase {
 		.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText()).flow(ALTERNATIVE_FLOW)
 		.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
-	List<Step> steps = useCasePart.useCase().findFlow(ALTERNATIVE_FLOW).getSteps();
+	List<FlowStep> steps = useCasePart.useCase().findFlow(ALTERNATIVE_FLOW).getSteps();
 	assertEquals(1, steps.size());
 
 	assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(0).getName());
@@ -362,8 +363,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
-	Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
-	Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
+	FlowStep firstUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
+	FlowStep secondUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 
 	assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
     }
@@ -377,8 +378,8 @@ public class BuildModelTest extends AbstractTestCase {
 	useCaseModelBuilder.useCase(USE_CASE).basicFlow()
 		.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
-	Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
-	Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
+	FlowStep firstUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
+	FlowStep secondUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 
 	assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
     }
@@ -393,8 +394,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.flow(ALTERNATIVE_FLOW)
 			.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 
-	Step firstUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
-	Step secondUseCaseStep = useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
+	FlowStep firstUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT);
+	FlowStep secondUseCaseStep = (FlowStep)useCasePart.useCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 
 	assertFalse(firstUseCaseStep.getPreviousStepInFlow().isPresent());
 	assertFalse(secondUseCaseStep.getPreviousStepInFlow().isPresent());

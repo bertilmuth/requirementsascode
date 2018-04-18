@@ -9,17 +9,17 @@ import org.requirementsascode.systemreaction.IncludesUseCase;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see Step
+ * @see FlowStep
  * @author b_muth
  */
 public class StepPart {
-    private Step step;
+    private FlowStep step;
     private FlowPart flowPart;
     private UseCaseModelBuilder useCaseModelBuilder;
     private Actor userActor;
     private Actor systemActor;
 
-    StepPart(Step useCaseStep, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
+    StepPart(FlowStep useCaseStep, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
 	this.step = useCaseStep;
 	this.flowPart = useCaseFlowPart;
 	this.useCaseModelBuilder = useCasePart.getUseCaseModelBuilder();
@@ -186,7 +186,7 @@ public class StepPart {
 	return stepSystemPart;
     }
 
-    Step getStep() {
+    FlowStep getStep() {
 	return step;
     }
 

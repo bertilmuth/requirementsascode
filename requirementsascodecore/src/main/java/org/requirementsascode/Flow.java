@@ -51,8 +51,11 @@ public class Flow extends UseCaseModelElement implements Serializable {
      *
      * @return a collection of the steps
      */
-    public List<Step> getSteps() {
-	List<Step> steps = getUseCase().getModifiableSteps().stream().filter(step -> this.equals(step.getFlow()))
+    public List<FlowStep> getSteps() {
+	List<FlowStep> steps = getUseCase().getModifiableSteps().stream()
+		.filter(step -> step instanceof FlowStep)
+		.map(step -> (FlowStep)step)
+		.filter(step -> this.equals(step.getFlow()))
 		.collect(Collectors.toList());
 	return Collections.unmodifiableList(steps);
     }
@@ -63,8 +66,8 @@ public class Flow extends UseCaseModelElement implements Serializable {
      * @return the first step of the flow, or an empty optional if the flow has no
      *         steps.
      */
-    public Optional<Step> getFirstStep() {
-	List<Step> steps = getSteps();
+    public Optional<FlowStep> getFirstStep() {
+	List<FlowStep> steps = getSteps();
 	return steps.size() > 0 ? Optional.of(steps.get(0)) : Optional.empty();
     }
 

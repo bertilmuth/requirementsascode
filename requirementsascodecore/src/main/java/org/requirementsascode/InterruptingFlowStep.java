@@ -4,10 +4,10 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.predicate.Anytime;
 
-public class InterruptingStep extends Step {
+public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
-    InterruptingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
+    InterruptingFlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
     }
 
@@ -24,7 +24,7 @@ public class InterruptingStep extends Step {
 	return predicate;
     }
 
-    public Predicate<UseCaseModelRunner> getFlowPredicate() {
+    private Predicate<UseCaseModelRunner> getFlowPredicate() {
 	Anytime anytime = new Anytime();
 
 	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition().orElse(anytime);

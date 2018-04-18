@@ -10,11 +10,11 @@ import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see Step#setActors(Actor[])
+ * @see FlowStep#setActors(Actor[])
  * @author b_muth
  */
 public class StepAsPart {
-    private Step step;
+    private FlowStep step;
     private StepPart stepPart;
 
     StepAsPart(StepPart useCaseStepPart, Actor[] actors) {
@@ -25,7 +25,7 @@ public class StepAsPart {
 	connectActorsToThisStep(step, actors);
     }
 
-    private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
+    private void connectActorsToThisStep(FlowStep useCaseStep, Actor[] actors) {
 	for (Actor actor : actors) {
 	    actor.newStep(useCaseStep);
 	}

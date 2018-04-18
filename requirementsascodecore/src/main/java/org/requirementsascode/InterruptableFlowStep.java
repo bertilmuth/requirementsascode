@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * @author b_muth
  */
-public class InterruptableStep extends Step implements Serializable {
+public class InterruptableFlowStep extends FlowStep implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
@@ -21,14 +21,14 @@ public class InterruptableStep extends Step implements Serializable {
      * @param useCaseFlow
      *            the use case flow that will contain the new use case
      */
-    InterruptableStep(String stepName, UseCase useCase, Flow useCaseFlow) {
+    InterruptableFlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
 	appendToLastStepOfFlow();
     }
 
     private void appendToLastStepOfFlow() {
-	List<Step> flowSteps = getFlow().getSteps();
-	Step lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
+	List<FlowStep> flowSteps = getFlow().getSteps();
+	FlowStep lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
 	setPreviousStepInFlow(lastFlowStep);
     }
 
@@ -40,20 +40,20 @@ public class InterruptableStep extends Step implements Serializable {
 	if (reactWhile != null) {
 	    predicate = reactWhile;
 	} else {
-	    predicate = getFlowPosition().get().and(noConditionalStepInterrupts());
+	    predicate = getFlowPosition().get().and(noStepInterrupts());
 	}
 
 	return predicate;
     }
 
-    private Predicate<UseCaseModelRunner> noConditionalStepInterrupts() {
+    private Predicate<UseCaseModelRunner> noStepInterrupts() {
 	return useCaseModelRunner -> {
 	    Class<?> theStepsEventClass = getUserEventClass();
 	    UseCaseModel useCaseModel = getUseCaseModel();
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
 	    Stream<Step> conditionalStepsStream = stepsStream
-		    .filter(isConditionalStep().and(isOtherStepThan(this)));
+		    .filter(isInterruptingStep().and(isOtherStepThan(this)));
 
 	    Set<Step> conditionalStepsThatCanReact = useCaseModelRunner
 		    .stepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
@@ -61,11 +61,11 @@ public class InterruptableStep extends Step implements Serializable {
 	};
     }
 
-    private Predicate<Step> isConditionalStep() {
-	return step -> InterruptingStep.class.equals(step.getClass());
+    private Predicate<Step> isInterruptingStep() {
+	return step -> InterruptingFlowStep.class.equals(step.getClass());
     }
 
-    private Predicate<Step> isOtherStepThan(Step theStep) {
+    private Predicate<Step> isOtherStepThan(FlowStep theStep) {
 	return step -> !step.equals(theStep);
     }
 }

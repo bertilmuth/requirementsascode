@@ -3,7 +3,7 @@ package org.requirementsascode.systemreaction;
 import java.io.Serializable;
 import java.util.function.Consumer;
 
-import org.requirementsascode.Step;
+import org.requirementsascode.FlowStep;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.UseCaseModelRunner;
 
@@ -11,9 +11,9 @@ public class IncludesUseCase implements Consumer<UseCaseModelRunner>, Serializab
   private static final long serialVersionUID = -9078568632090369442L;
   
   private UseCase includedUseCase;
-  private Step includeStep;
+  private FlowStep includeStep;
 
-  public IncludesUseCase(UseCase includedUseCase, Step includeStep) {
+  public IncludesUseCase(UseCase includedUseCase, FlowStep includeStep) {
     this.includedUseCase = includedUseCase;
     this.includeStep = includeStep;
   }

@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.requirementsascode.predicate.After;
-
 /**
  * A use case step, as part of a use case. The use case steps define the
  * behavior of the use case.
@@ -22,49 +20,30 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     private UseCase useCase;
-    private Flow flow;
     private Predicate<UseCaseModelRunner> reactWhile;
 
     private Actor[] actors;
     private Class<?> userEventClass;
     private Consumer<?> systemReaction;
-    private Predicate<UseCaseModelRunner> flowPosition;
     private Predicate<UseCaseModelRunner> when;
-
-    private Step previousStepInFlow;
 
     /**
      * Creates a use case step with the specified name that belongs to the specified
-     * use case flow.
+     * use case.
      *
+     * @param useCase the use case this step belongs to
      * @param stepName
      *            the name of the step to be created
-     * @param useCaseFlow
-     *            the use case flow that will contain the new use case
      */
-    Step(String stepName, UseCase useCase, Flow useCaseFlow) {
+    Step(String stepName, UseCase useCase) {
 	super(stepName, useCase.getUseCaseModel());
 	this.useCase = useCase;
-	this.flow = useCaseFlow;
     }
 
     public abstract Predicate<UseCaseModelRunner> getPredicate();
 
-    public Flow getFlow() {
-	return flow;
-    }
-
     public UseCase getUseCase() {
 	return useCase;
-    }
-
-    public Optional<Step> getPreviousStepInFlow() {
-	return Optional.ofNullable(previousStepInFlow);
-    }
-
-    protected void setPreviousStepInFlow(Step previousStepInFlow) {
-	this.previousStepInFlow = previousStepInFlow;
-	setFlowPosition(new After(previousStepInFlow));
     }
 
     protected void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
@@ -73,14 +52,6 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     public Predicate<UseCaseModelRunner> getReactWhile() {
 	return reactWhile;
-    }
-
-    void setFlowPosition(Predicate<UseCaseModelRunner> flowPosition) {
-	this.flowPosition = flowPosition;
-    }
-
-    public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
-	return Optional.ofNullable(flowPosition);
     }
 
     void setWhen(Predicate<UseCaseModelRunner> when) {
@@ -113,20 +84,5 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 
     void setSystemReaction(Consumer<?> systemReaction) {
 	this.systemReaction = systemReaction;
-    }
-
-    public void includeUseCase(UseCase includedUseCase) {
-	for (Flow includedFlow : includedUseCase.getFlows()) {
-	    includeFlow(includedFlow);
-	}
-    }
-
-    private void includeFlow(Flow includedFlow) {
-	Optional<Step> optionalFirstStepOfIncludedFlow = includedFlow.getFirstStep();
-	optionalFirstStepOfIncludedFlow.ifPresent(firstStepOfIncludedFlow -> {
-	    Predicate<UseCaseModelRunner> includedFlowPosition = firstStepOfIncludedFlow.getFlowPosition().orElse(r -> false);
-	    Predicate<UseCaseModelRunner> includeFlowPosition = new After(this).or(includedFlowPosition);
-	    firstStepOfIncludedFlow.setFlowPosition(includeFlowPosition);
-	});
     }
 }

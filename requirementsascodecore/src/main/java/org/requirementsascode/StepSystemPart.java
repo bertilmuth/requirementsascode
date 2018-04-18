@@ -10,12 +10,12 @@ import org.requirementsascode.predicate.ReactWhile;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see Step#setSystemReaction(Consumer)
+ * @see FlowStep#setSystemReaction(Consumer)
  * @author b_muth
  */
 public class StepSystemPart<T> {
     private StepPart stepPart;
-    private Step step;
+    private FlowStep step;
 
     StepSystemPart(StepPart useCaseStepPart, Consumer<T> systemReaction) {
 	this.stepPart = useCaseStepPart;
@@ -41,15 +41,15 @@ public class StepSystemPart<T> {
 	Objects.requireNonNull(stepName);
 
 	FlowPart flowPart = stepPart.getFlowPart();
-	Step trailingStepInFlow = createTrailingStepInFlow(stepName, flowPart);
+	FlowStep trailingStepInFlow = createTrailingStepInFlow(stepName, flowPart);
 	StepPart trailingStepInFlowPart = new StepPart(trailingStepInFlow, stepPart.getUseCasePart(), flowPart);
 
 	return trailingStepInFlowPart;
     }
     
-    Step createTrailingStepInFlow(String stepName, FlowPart flowPart) {
+    FlowStep createTrailingStepInFlow(String stepName, FlowPart flowPart) {
 	Flow flow = flowPart.getFlow();
-	Step newTrailingStep = step.getUseCase().newTrailingStep(stepName, flow);
+	FlowStep newTrailingStep = step.getUseCase().newInterruptableFlowStep(stepName, flow);
 	return newTrailingStep;
     }
 

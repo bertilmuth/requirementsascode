@@ -42,9 +42,9 @@ public class UseCaseModelRunner implements Serializable {
     private Consumer<SystemReactionTrigger> systemReaction;
     private Predicate<Step> stepWithoutAlternativePredicate;
     private LinkedList<UseCase> includedUseCases;
-    private LinkedList<Step> includeSteps;
+    private LinkedList<FlowStep> includeSteps;
     private UseCase includedUseCase;
-    private Step includeStep;
+    private FlowStep includeStep;
 
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
@@ -260,9 +260,9 @@ public class UseCaseModelRunner implements Serializable {
 	return includedUseCase;
     }
 
-    private Step getIncludeStepBefore() {
+    private FlowStep getIncludeStepBefore() {
 	includeSteps.pop();
-	Step includeStep = includeSteps.peek();
+	FlowStep includeStep = includeSteps.peek();
 	return includeStep;
     }
 
@@ -401,7 +401,7 @@ public class UseCaseModelRunner implements Serializable {
      * @return the latest flow run
      */
     public Optional<Flow> getLatestFlow() {
-	return getLatestStep().map(step -> step.getFlow());
+	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
     }
 
     public void setStepWithoutAlternativePredicate(Predicate<Step> predicate) {
@@ -412,7 +412,7 @@ public class UseCaseModelRunner implements Serializable {
 	return Optional.ofNullable(stepWithoutAlternativePredicate);
     }
 
-    public void includeUseCase(UseCase includedUseCase, Step includeStep) {
+    public void includeUseCase(UseCase includedUseCase, FlowStep includeStep) {
 	this.includedUseCase = includedUseCase;
 	this.includeStep = includeStep;
 
@@ -421,17 +421,17 @@ public class UseCaseModelRunner implements Serializable {
     }
 
     private boolean isAtEndOfIncludedFlow() {
-	Optional<Step> lastStepOfRunningFlow = getLatestStep().map(ls -> getLastStepOf(ls.getFlow()));
+	Optional<FlowStep> lastStepOfRunningFlow = getLatestStep().map(ls -> getLastStepOf(((FlowStep)ls).getFlow()));
 	boolean result = getLatestStep()
 		.map(ls -> ls.getUseCase().equals(includedUseCase) && ls.equals(lastStepOfRunningFlow.get()))
 		.orElse(false);
 	return result;
     }
 
-    private Step getLastStepOf(Flow flow) {
-	List<Step> stepsOfFlow = flow.getSteps();
+    private FlowStep getLastStepOf(Flow flow) {
+	List<FlowStep> stepsOfFlow = flow.getSteps();
 	int lastStepIndex = stepsOfFlow.size() - 1;
-	Step lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
+	FlowStep lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
 	return lastStepOfFlow;
     }
 }
