@@ -7,17 +7,9 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * A use case step, as part of a use case. The use case steps define the
- * behavior of the use case.
- *
- * <p>
- * A use case step is the core class of requirementsascode, providing all the
- * necessary configuration information to the {@link UseCaseModelRunner} to
- * cause the system to react to events.
- *
  * @author b_muth
  */
-public class TrailingStep extends Step implements Serializable {
+public class InterruptableStep extends Step implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
@@ -29,7 +21,7 @@ public class TrailingStep extends Step implements Serializable {
      * @param useCaseFlow
      *            the use case flow that will contain the new use case
      */
-    TrailingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
+    InterruptableStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
 	appendToLastStepOfFlow();
     }
@@ -70,7 +62,7 @@ public class TrailingStep extends Step implements Serializable {
     }
 
     private Predicate<Step> isConditionalStep() {
-	return step -> ConditionalStep.class.equals(step.getClass());
+	return step -> InterruptingStep.class.equals(step.getClass());
     }
 
     private Predicate<Step> isOtherStepThan(Step theStep) {

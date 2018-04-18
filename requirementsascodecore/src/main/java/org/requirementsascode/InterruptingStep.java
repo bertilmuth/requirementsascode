@@ -4,10 +4,10 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.predicate.Anytime;
 
-public class ConditionalStep extends Step {
+public class InterruptingStep extends Step {
     private static final long serialVersionUID = 7204738737376844201L;
 
-    ConditionalStep(String stepName, UseCase useCase, Flow useCaseFlow) {
+    InterruptingStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
     }
 

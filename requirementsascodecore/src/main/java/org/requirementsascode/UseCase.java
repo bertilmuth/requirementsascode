@@ -119,9 +119,9 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      * @param optionalFlowPosition
      * @return the newly created step
      */
-    ConditionalStep newConditionalStep(String stepName, Flow flow, Predicate<UseCaseModelRunner> optionalFlowPosition,
+    InterruptingStep newConditionalStep(String stepName, Flow flow, Predicate<UseCaseModelRunner> optionalFlowPosition,
 	    Predicate<UseCaseModelRunner> optionalWhen) {
-	ConditionalStep step = new ConditionalStep(stepName, this, flow);
+	InterruptingStep step = new InterruptingStep(stepName, this, flow);
 	step.setFlowPosition(optionalFlowPosition);
 	step.setWhen(optionalWhen);
 
@@ -139,8 +139,8 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      *            the flow the step shall belong to
      * @return the newly created step
      */
-    TrailingStep newTrailingStep(String stepName, Flow flow) {
-	TrailingStep step = new TrailingStep(stepName, this, flow);
+    InterruptableStep newTrailingStep(String stepName, Flow flow) {
+	InterruptableStep step = new InterruptableStep(stepName, this, flow);
 	saveModelElement(step, nameToStepMap);
 
 	return step;
