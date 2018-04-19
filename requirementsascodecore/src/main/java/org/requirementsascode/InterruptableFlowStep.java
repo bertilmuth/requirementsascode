@@ -6,6 +6,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.requirementsascode.predicate.After;
+import org.requirementsascode.predicate.FlowPosition;
+
 /**
  * @author b_muth
  */
@@ -30,6 +33,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 	List<FlowStep> flowSteps = getFlow().getSteps();
 	FlowStep lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
 	setPreviousStepInFlow(lastFlowStep);
+	setFlowPosition(new After(lastFlowStep));
     }
 
     @Override
@@ -40,7 +44,8 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 	if (reactWhile != null) {
 	    predicate = reactWhile;
 	} else {
-	    predicate = getFlowPosition().get().and(noStepInterrupts());
+	    FlowPosition flowPosition = getFlowPosition();
+	    predicate = flowPosition.and(noStepInterrupts());
 	}
 
 	return predicate;
