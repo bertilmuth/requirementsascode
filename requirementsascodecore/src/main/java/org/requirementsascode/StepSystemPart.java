@@ -103,7 +103,7 @@ public class StepSystemPart<T> {
     public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> reactWhileCondition) {
 	Objects.requireNonNull(reactWhileCondition);
 
-	ReactWhile reactWhile = new ReactWhile(step, reactWhileCondition);
+	ReactWhile reactWhile = new ReactWhile((FlowStep)step, reactWhileCondition);
 	step.setReactWhile(reactWhile);
 
 	return this;
