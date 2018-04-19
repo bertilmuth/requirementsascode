@@ -48,9 +48,7 @@ public class FlowPart {
 	FlowStep step;
 
 	if (hasDefinedFlowPositionOrWhen()) {
-	    FlowPosition flowPosition = optionalFlowPosition != null? optionalFlowPosition : new Anytime();
-	    Predicate<UseCaseModelRunner> when = optionalWhen != null? optionalWhen : r -> true;
-	    step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, when);
+	    step = useCase.newInterruptingFlowStep(stepName, flow, optionalFlowPosition, optionalWhen);
 	} else {
 	    step = useCase.newInterruptableFlowStep(stepName, flow);
 	}
