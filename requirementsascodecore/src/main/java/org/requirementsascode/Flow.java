@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.requirementsascode.predicate.FlowPosition;
+
 /**
  * A use case flow defines a sequence of steps that lead the user through the
  * use case.
@@ -92,8 +94,8 @@ public class Flow extends UseCaseModelElement implements Serializable {
      *
      * @return the flow position
      */
-    public Optional<Predicate<UseCaseModelRunner>> getFlowPosition() {
-	Optional<Predicate<UseCaseModelRunner>> flowPosition = getFirstStep().flatMap(step -> step.getFlowPosition());
+    public Optional<FlowPosition> getFlowPosition() {
+	Optional<FlowPosition> flowPosition = getFirstStep().flatMap(step -> step.getFlowPosition());
 	return flowPosition;
     }
 

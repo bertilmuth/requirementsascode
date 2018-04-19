@@ -6,23 +6,22 @@ import java.util.Objects;
 import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class After implements FlowPosition, Serializable {
+public class After extends FlowPosition implements Serializable {
     private static final long serialVersionUID = -4951912635216926005L;
 
-    private Step step;
-
     public After(Step step) {
-	this.step = step;
+	super(step);
+    }
+    
+    @Override
+    public boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner) {
+        Step latestStepRun = useCaseModelRunner.getLatestStep().orElse(null);
+	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
+	return stepWasRunLast;
     }
 
     @Override
-    public boolean test(UseCaseModelRunner useCaseModelRunner) {
-	Step latestStep = useCaseModelRunner.getLatestStep().orElse(null);
-	boolean isSystemAtRightStep = Objects.equals(step, latestStep);
-	return isSystemAtRightStep;
-    }
-
-    public String getStepName() {
+    public String getStepName(Step step) {
 	String name = step != null ? step.getName() : "";
 	return name;
     }

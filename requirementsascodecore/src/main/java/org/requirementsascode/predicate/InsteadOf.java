@@ -1,29 +1,26 @@
 package org.requirementsascode.predicate;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import org.requirementsascode.FlowStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class InsteadOf implements FlowPosition, Serializable {
+public class InsteadOf extends FlowPosition implements Serializable {
     private static final long serialVersionUID = -3958653686352185075L;
 
-    private FlowStep step;
-    private After after;
-
     public InsteadOf(FlowStep step) {
-	Objects.requireNonNull(step);
-	this.step = step;
-	this.after = new After(step.getPreviousStepInFlow().orElse(null));
+	super(step);
     }
 
     @Override
-    public boolean test(UseCaseModelRunner useCaseModelRunner) {
+    public boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner) {
+	FlowStep previousStep = ((FlowStep)step).getPreviousStepInFlow().orElse(null);
+	After after = new After(previousStep);
 	return after.test(useCaseModelRunner);
     }
 
-    public String getStepName() {
+    public String getStepName(Step step) {
 	return step.getName();
     }
 }

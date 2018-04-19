@@ -7,6 +7,7 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.predicate.After;
 import org.requirementsascode.predicate.Anytime;
+import org.requirementsascode.predicate.FlowPosition;
 import org.requirementsascode.predicate.InsteadOf;
 
 /**
@@ -19,7 +20,7 @@ public class FlowPart {
     private Flow flow;
     private UseCase useCase;
     private UseCasePart useCasePart;
-    private Predicate<UseCaseModelRunner> optionalFlowPosition;
+    private FlowPosition optionalFlowPosition;
     private Predicate<UseCaseModelRunner> optionalWhen;
 
     FlowPart(Flow flow, UseCasePart useCasePart) {
