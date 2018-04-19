@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.requirementsascode.predicate.FlowPosition;
@@ -29,19 +30,23 @@ public abstract class FlowStep extends Step implements Serializable {
 	return Optional.ofNullable(previousStepInFlow);
     }
 
-    protected void setPreviousStepInFlow(FlowStep previousStepInFlow) {
+    void setPreviousStepInFlow(FlowStep previousStepInFlow) {
 	this.previousStepInFlow = previousStepInFlow;
     }
-
-    void setFlowPosition(FlowPosition flowPosition) {
-	this.flowPosition = flowPosition;
-    }
-
+    
     public FlowPosition getFlowPosition() {
 	return flowPosition;
     }
 
+    void setFlowPosition(FlowPosition flowPosition) {
+	Objects.requireNonNull(flowPosition);
+	
+	this.flowPosition = flowPosition;
+    }
+
     public void includeUseCase(UseCase includedUseCase) {
+	Objects.requireNonNull(flowPosition);
+	
 	for (Flow includedFlow : includedUseCase.getFlows()) {
 	    includeFlow(includedFlow);
 	}
