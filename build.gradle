@@ -3,6 +3,7 @@ allprojects{
 	version = '0.7.0-SNAPSHOT'
 	
 	apply plugin: 'java'
+	apply plugin: 'eclipse'
 
 	repositories {
 		mavenCentral()

@@ -2,8 +2,6 @@ package org.requirementsascode;
 
 import java.util.function.Predicate;
 
-import org.requirementsascode.predicate.Anytime;
-
 public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
@@ -25,10 +23,8 @@ public class InterruptingFlowStep extends FlowStep {
     }
 
     private Predicate<UseCaseModelRunner> getFlowPredicate() {
-	Anytime anytime = new Anytime();
-
-	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition().orElse(anytime);
-	Predicate<UseCaseModelRunner> when = getWhen().orElse(anytime);
+	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition();
+	Predicate<UseCaseModelRunner> when = getWhen().orElse(r -> true);
 
 	Predicate<UseCaseModelRunner> flowPredicate = isRunnerInDifferentFlow().and(flowPosition).and(when);
 	return flowPredicate;

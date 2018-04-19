@@ -92,10 +92,10 @@ public class Flow extends UseCaseModelElement implements Serializable {
      * Internally this calls the method of the same name of the first step in the
      * flow.
      *
-     * @return the flow position
+     * @return the flow position, or null if the flow is empty.
      */
-    public Optional<FlowPosition> getFlowPosition() {
-	Optional<FlowPosition> flowPosition = getFirstStep().flatMap(step -> step.getFlowPosition());
+    public FlowPosition getFlowPosition() {
+	FlowPosition flowPosition = getFirstStep().map(step -> step.getFlowPosition()).orElse(null);
 	return flowPosition;
     }
 

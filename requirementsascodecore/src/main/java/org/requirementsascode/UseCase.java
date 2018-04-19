@@ -118,17 +118,17 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      *            the name of the step
      * @param flow
      *            the flow the step shall belong to
-     * @param optionalFlowPosition
+     * @param flowPosition
      *            the flow position
-     * @param optionalFlowWhen
+     * @param when
      *            the when condition
      * @return the newly created step
      */
-    InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition optionalFlowPosition,
-	    Predicate<UseCaseModelRunner> optionalWhen) {
+    InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
+	    Predicate<UseCaseModelRunner> when) {
 	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
-	step.setFlowPosition(optionalFlowPosition);
-	step.setWhen(optionalWhen);
+	step.setFlowPosition(flowPosition);
+	step.setWhen(when);
 
 	saveModelElement(step, nameToStepMap);
 

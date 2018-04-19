@@ -3,9 +3,7 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Optional;
 
-import org.requirementsascode.predicate.After;
 import org.requirementsascode.predicate.FlowPosition;
-import org.requirementsascode.predicate.Never;
 
 /**
  * @author b_muth
@@ -33,15 +31,14 @@ public abstract class FlowStep extends Step implements Serializable {
 
     protected void setPreviousStepInFlow(FlowStep previousStepInFlow) {
 	this.previousStepInFlow = previousStepInFlow;
-	setFlowPosition(new After(previousStepInFlow));
     }
 
     void setFlowPosition(FlowPosition flowPosition) {
 	this.flowPosition = flowPosition;
     }
 
-    public Optional<FlowPosition> getFlowPosition() {
-	return Optional.ofNullable(flowPosition);
+    public FlowPosition getFlowPosition() {
+	return flowPosition;
     }
 
     public void includeUseCase(UseCase includedUseCase) {
@@ -56,8 +53,7 @@ public abstract class FlowStep extends Step implements Serializable {
     }
 
     private void afterThisStepComesIncludedFlow(FlowStep firstStepOfIncludedFlow) {
-	// The included flow position if there is one, or else "never" (because included flows don't start themselves by default)
-	FlowPosition includedFlowPosition = firstStepOfIncludedFlow.getFlowPosition().orElse(new Never());
-	includedFlowPosition.mergeAfter(this);
+	FlowPosition includedFlowPosition = firstStepOfIncludedFlow.getFlowPosition();
+	firstStepOfIncludedFlow.setFlowPosition(includedFlowPosition.orAfter(this));
     }
 }

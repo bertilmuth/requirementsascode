@@ -46,14 +46,20 @@ public class FlowPart {
 
     FlowStep createStep(String stepName) {
 	FlowStep step;
-	
-	if(optionalWhen != null || optionalFlowPosition != null) {
-	    step = useCase.newInterruptingFlowStep(stepName, flow, optionalFlowPosition, optionalWhen);
+
+	if (hasDefinedFlowPositionOrWhen()) {
+	    FlowPosition flowPosition = optionalFlowPosition != null? optionalFlowPosition : new Anytime();
+	    Predicate<UseCaseModelRunner> when = optionalWhen != null? optionalWhen : r -> true;
+	    step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, when);
 	} else {
 	    step = useCase.newInterruptableFlowStep(stepName, flow);
 	}
-	
+
 	return step;
+    }
+
+    private boolean hasDefinedFlowPositionOrWhen() {
+	return optionalWhen != null || optionalFlowPosition != null;
     }
 
     /**

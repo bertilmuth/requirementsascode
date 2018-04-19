@@ -31,8 +31,8 @@ public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable {
     }
 
     private void createLoop(FlowStep step) {
-	FlowPosition flowPosition = step.getFlowPosition().orElse(new After(null));
-	flowPosition.mergeAfter(step);
+	FlowPosition flowPosition = step.getFlowPosition();
+	flowPosition.orAfter(step);
     }
 
     public Predicate<UseCaseModelRunner> getReactWhileCondition() {
