@@ -1,4 +1,4 @@
-package shoppingappjavafx.usecaserealization.predicate;
+package shoppingappjavafx.usecaserealization.condition;
 
 import java.util.function.Predicate;
 

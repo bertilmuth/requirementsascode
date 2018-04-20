@@ -40,7 +40,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.useCase = useCase;
     }
 
-    public abstract Predicate<UseCaseModelRunner> getPredicate();
+    public abstract Predicate<UseCaseModelRunner> getCondition();
 
     public UseCase getUseCase() {
 	return useCase;

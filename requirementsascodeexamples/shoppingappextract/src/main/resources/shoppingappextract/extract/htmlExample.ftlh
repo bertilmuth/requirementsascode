@@ -9,7 +9,7 @@
   		<h1>Use Case: ${useCase?capitalize}</h1>
 		<#list useCase.flows as f>
 	  		<h2>${f}</h2>
-	  		<div>${flowPredicate(f)}</div>
+	  		<div>${flowCondition(f)}</div>
 			<#list f.steps as s>
 				<div>${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}</div>
 			</#list>

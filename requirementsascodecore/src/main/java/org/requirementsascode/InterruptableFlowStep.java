@@ -37,18 +37,18 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
     }
 
     @Override
-    public Predicate<UseCaseModelRunner> getPredicate() {
-	Predicate<UseCaseModelRunner> predicate;
+    public Predicate<UseCaseModelRunner> getCondition() {
+	Predicate<UseCaseModelRunner> condition;
 	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
 
 	if (reactWhile != null) {
-	    predicate = reactWhile;
+	    condition = reactWhile;
 	} else {
 	    FlowPosition flowPosition = getFlowPosition();
-	    predicate = flowPosition.and(noStepInterrupts());
+	    condition = flowPosition.and(noStepInterrupts());
 	}
 
-	return predicate;
+	return condition;
     }
 
     private Predicate<UseCaseModelRunner> noStepInterrupts() {

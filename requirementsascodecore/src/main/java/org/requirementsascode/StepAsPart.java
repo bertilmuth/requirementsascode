@@ -36,7 +36,7 @@ public class StepAsPart {
      * type can cause a system reaction.
      *
      * <p>
-     * Given that the step's predicate is true, and the actor is right, the system
+     * Given that the step's condition is true, and the actor is right, the system
      * reacts to objects that are instances of the specified class or instances of
      * any direct or indirect subclass of the specified class.
      *

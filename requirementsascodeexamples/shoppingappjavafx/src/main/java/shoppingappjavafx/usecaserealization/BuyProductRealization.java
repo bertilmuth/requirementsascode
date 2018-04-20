@@ -2,9 +2,9 @@ package shoppingappjavafx.usecaserealization;
 
 import shoppingappjavafx.domain.Stock;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
-import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
-import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductIsInCart;
-import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
+import shoppingappjavafx.usecaserealization.condition.AnExceptionOccurs;
+import shoppingappjavafx.usecaserealization.condition.AtLeastOneProductIsInCart;
+import shoppingappjavafx.usecaserealization.condition.LessThan10Products;
 import shoppingappjavafx.usecaserealization.systemreaction.AddsProductToPurchaseOrder;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPaymentDetailsForm;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplaysProducts;

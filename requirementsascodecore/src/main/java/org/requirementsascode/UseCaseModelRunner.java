@@ -40,7 +40,7 @@ public class UseCaseModelRunner implements Serializable {
     private boolean isRunning;
     private SystemReactionTrigger systemReactionTrigger;
     private Consumer<SystemReactionTrigger> systemReaction;
-    private Predicate<Step> stepWithoutAlternativePredicate;
+    private Predicate<Step> stepWithoutAlternativeCondition;
     private LinkedList<UseCase> includedUseCases;
     private LinkedList<FlowStep> includeSteps;
     private UseCase includedUseCase;
@@ -232,7 +232,7 @@ public class UseCaseModelRunner implements Serializable {
 	}
 
 	setLatestStep(step);
-	setStepWithoutAlternativePredicate(null);
+	setStepWithoutAlternativeCondition(null);
 	systemReactionTrigger.setupWith(event, step);
 
 	try {
@@ -289,7 +289,7 @@ public class UseCaseModelRunner implements Serializable {
      * A step "can react" if all of the following conditions are met: a) the runner
      * is running b) one of the step's actors matches the actor the runner is run as
      * c) the step's event class is the same or a superclass of the specified event
-     * class d) the step has a predicate that is true
+     * class d) the step has a condition that is true
      *
      * @param eventClass
      *            the class of events
@@ -324,8 +324,8 @@ public class UseCaseModelRunner implements Serializable {
 	Set<Step> steps;
 	steps = stepStream.filter(step -> stepActorIsRunActor(step))
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-		.filter(step -> hasTruePredicate(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step))
-		.filter(getStepWithoutAlternativePredicate().orElse(s -> true)).collect(Collectors.toSet());
+		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step))
+		.filter(getStepWithoutAlternativeCondition().orElse(s -> true)).collect(Collectors.toSet());
 	return steps;
     }
 
@@ -343,9 +343,9 @@ public class UseCaseModelRunner implements Serializable {
 	return stepEventClass.isAssignableFrom(currentEventClass);
     }
 
-    private boolean hasTruePredicate(Step step) {
-	Predicate<UseCaseModelRunner> predicate = step.getPredicate();
-	boolean result = predicate.test(this);
+    private boolean hasTrueCondition(Step step) {
+	Predicate<UseCaseModelRunner> condition = step.getCondition();
+	boolean result = condition.test(this);
 	return result;
     }
 
@@ -404,12 +404,12 @@ public class UseCaseModelRunner implements Serializable {
 	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
     }
 
-    public void setStepWithoutAlternativePredicate(Predicate<Step> predicate) {
-	stepWithoutAlternativePredicate = predicate;
+    public void setStepWithoutAlternativeCondition(Predicate<Step> condition) {
+	stepWithoutAlternativeCondition = condition;
     }
 
-    private Optional<Predicate<Step>> getStepWithoutAlternativePredicate() {
-	return Optional.ofNullable(stepWithoutAlternativePredicate);
+    private Optional<Predicate<Step>> getStepWithoutAlternativeCondition() {
+	return Optional.ofNullable(stepWithoutAlternativeCondition);
     }
 
     public void includeUseCase(UseCase includedUseCase, FlowStep includeStep) {

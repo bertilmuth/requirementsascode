@@ -15,7 +15,7 @@ public class ContinuesWithoutAlternativeAt extends ContinuesAt implements Serial
 	
 	@Override
 	public void accept(UseCaseModelRunner runner) {
-		runner.setStepWithoutAlternativePredicate(includeOnly(getStepName()));
+		runner.setStepWithoutAlternativeCondition(includeOnly(getStepName()));
 		super.accept(runner);		
 	}
 	

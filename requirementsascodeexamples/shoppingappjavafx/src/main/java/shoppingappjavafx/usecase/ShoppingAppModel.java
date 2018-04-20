@@ -10,9 +10,9 @@ import shoppingappjavafx.usecase.userevent.EntersPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EntersShippingInformation;
 import shoppingappjavafx.usecase.userevent.SignalsToGoBack;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
-import shoppingappjavafx.usecaserealization.predicate.AnExceptionOccurs;
-import shoppingappjavafx.usecaserealization.predicate.AtLeastOneProductIsInCart;
-import shoppingappjavafx.usecaserealization.predicate.LessThan10Products;
+import shoppingappjavafx.usecaserealization.condition.AnExceptionOccurs;
+import shoppingappjavafx.usecaserealization.condition.AtLeastOneProductIsInCart;
+import shoppingappjavafx.usecaserealization.condition.LessThan10Products;
 import shoppingappjavafx.usecaserealization.systemreaction.AddsProductToPurchaseOrder;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplaysPaymentDetailsForm;
 import shoppingappjavafx.usecaserealization.systemreaction.DisplaysProducts;
@@ -32,7 +32,7 @@ import shoppingappjavafx.usecaserealization.systemreaction.StartsWithEmptyShoppi
  */
 public class ShoppingAppModel {
   /**
-   * Predicates
+   * Conditions
    */
   private LessThan10Products lessThan10Products;
   private AtLeastOneProductIsInCart atLeastOneProductIsInCart;
@@ -98,12 +98,12 @@ public class ShoppingAppModel {
 	}
   
   public ShoppingAppModel(BuyProductRealization bPR) {
-    setupPredicates(bPR);
+    setupConditions(bPR);
     setupEvents();
     setupSystemReactions(bPR);
   }
 
-  private void setupPredicates(BuyProductRealization bPR) {
+  private void setupConditions(BuyProductRealization bPR) {
     this.lessThan10Products = bPR.lessThan10Products();
     this.atLeastOneProductIsInCart = bPR.atLeastOneProductIsInCart();
     this.anExceptionOccurs = bPR.anExceptionOccurs();

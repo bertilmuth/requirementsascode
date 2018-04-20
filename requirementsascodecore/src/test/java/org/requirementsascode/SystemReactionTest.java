@@ -393,7 +393,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void onlyStepWithTruePredicateReacts() { 	
+	public void onlyStepWithTrueConditionReacts() { 	
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()		
@@ -409,7 +409,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void stepThasHasTruePredicateReactsEvenIfOtherStepWouldBePerformedBySystem() { 		
+	public void stepThasHasTrueConditionReactsEvenIfOtherStepWouldBePerformedBySystem() { 		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
@@ -479,7 +479,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactIfStepHasRightActorButFalsePredicate() {	
+	public void doesNotReactIfStepHasRightActorButFalseCondition() {	
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
@@ -531,7 +531,7 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReenterAlternativeFlowEvenIfItHasTruePredicate() {		
+	public void doesNotReenterAlternativeFlowEvenIfItHasTrueCondition() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()

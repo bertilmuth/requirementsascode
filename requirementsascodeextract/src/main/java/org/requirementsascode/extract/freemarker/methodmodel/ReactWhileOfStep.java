@@ -5,7 +5,7 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.g
 import java.util.List;
 
 import org.requirementsascode.Step;
-import org.requirementsascode.predicate.ReactWhile;
+import org.requirementsascode.flowposition.ReactWhile;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;
@@ -26,8 +26,8 @@ public class ReactWhileOfStep implements TemplateMethodModelEx {
     Step step = getStep(arguments.get(0));
 
     String reactWhile = "";
-    if (step.getPredicate() instanceof ReactWhile) {
-      ReactWhile reactWhilePredicate = (ReactWhile) step.getPredicate();
+    if (step.getCondition() instanceof ReactWhile) {
+      ReactWhile reactWhilePredicate = (ReactWhile) step.getCondition();
       reactWhile = REACT_WHILE_PREFIX
           + getLowerCaseWordsOfClassName(getReactWhileConditionClass(reactWhilePredicate)) + REACT_WHILE_POSTFIX;
     }

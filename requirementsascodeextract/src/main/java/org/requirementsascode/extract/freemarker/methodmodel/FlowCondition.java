@@ -8,14 +8,14 @@ import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
-import org.requirementsascode.predicate.Anytime;
-import org.requirementsascode.predicate.FlowPosition;
+import org.requirementsascode.flowposition.Anytime;
+import org.requirementsascode.flowposition.FlowPosition;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class FlowPredicate implements TemplateMethodModelEx {
+public class FlowCondition implements TemplateMethodModelEx {
     private static final String WHEN = "when ";
     private static final String PREDICATE_SEPARATOR = ", ";
     private static final String PREDICATE_POSTFIX = ": ";

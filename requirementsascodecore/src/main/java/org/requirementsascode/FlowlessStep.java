@@ -12,20 +12,20 @@ public class FlowlessStep extends Step {
     }
 
     @Override
-    public Predicate<UseCaseModelRunner> getPredicate() {
-	Predicate<UseCaseModelRunner> predicate;
+    public Predicate<UseCaseModelRunner> getCondition() {
+	Predicate<UseCaseModelRunner> condition;
 	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
 
 	if (reactWhile != null) {
-	    predicate = reactWhile;
+	    condition = reactWhile;
 	} else {
-	    predicate = getFlowPredicate();
+	    condition = getFlowCondition();
 	}
 
-	return predicate;
+	return condition;
     }
 
-    private Predicate<UseCaseModelRunner> getFlowPredicate() {
+    private Predicate<UseCaseModelRunner> getFlowCondition() {
 	Anytime anytime = new Anytime();
 	Predicate<UseCaseModelRunner> when = getWhen().orElse(anytime);
 	return when;

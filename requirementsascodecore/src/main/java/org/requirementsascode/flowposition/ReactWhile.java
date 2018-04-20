@@ -26,7 +26,7 @@ public class ReactWhile extends FlowPosition implements Serializable {
     }
 
     private void createReactWhileCondition(FlowStep step, Predicate<UseCaseModelRunner> reactWhileCondition) {
-	completeCondition = step.getPredicate().and(reactWhileCondition);
+	completeCondition = step.getCondition().and(reactWhileCondition);
 	createLoop(step);
 	this.reactWhileCondition = reactWhileCondition;
     }

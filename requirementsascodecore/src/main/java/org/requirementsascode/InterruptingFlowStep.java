@@ -9,25 +9,25 @@ public class InterruptingFlowStep extends FlowStep {
 	super(stepName, useCase, useCaseFlow);
     }
 
-    public Predicate<UseCaseModelRunner> getPredicate() {
-	Predicate<UseCaseModelRunner> predicate;
+    public Predicate<UseCaseModelRunner> getCondition() {
+	Predicate<UseCaseModelRunner> condition;
 	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
 
 	if (reactWhile != null) {
-	    predicate = reactWhile;
+	    condition = reactWhile;
 	} else {
-	    predicate = getFlowPredicate();
+	    condition = getFlowCondition();
 	}
 
-	return predicate;
+	return condition;
     }
 
-    private Predicate<UseCaseModelRunner> getFlowPredicate() {
+    private Predicate<UseCaseModelRunner> getFlowCondition() {
 	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition();
 	Predicate<UseCaseModelRunner> when = getWhen().orElse(r -> true);
 
-	Predicate<UseCaseModelRunner> flowPredicate = isRunnerInDifferentFlow().and(flowPosition).and(when);
-	return flowPredicate;
+	Predicate<UseCaseModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition).and(when);
+	return flowCondition;
     }
 
     private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {

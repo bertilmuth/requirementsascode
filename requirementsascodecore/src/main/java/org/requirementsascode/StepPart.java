@@ -46,7 +46,7 @@ public class StepPart {
      * type can cause a system reaction.
      *
      * <p>
-     * Given that the step's predicate is true, and the actor is right, the system
+     * Given that the step's condition is true, and the actor is right, the system
      * reacts to objects that are instances of the specified class or instances of
      * any direct or indirect subclass of the specified class.
      *
@@ -68,7 +68,7 @@ public class StepPart {
      * handles. Events of this type can cause a system reaction.
      *
      * <p>
-     * Given that the step's predicate is true, and the actor is right, the system
+     * Given that the step's condition is true, and the actor is right, the system
      * reacts to objects that are instances of the specified class or instances of
      * any direct or indirect subclass of the specified class.
      *
@@ -163,11 +163,7 @@ public class StepPart {
     /**
      * Includes the use case with the specified name.
      * 
-     * The runner starts the included use case right after the current step. Any
-     * flow of the included use case that does not have a defined predicate (i.e.
-     * typically the basic flow) may react, given the right event for its first step
-     * occurs.
-     * 
+     * The runner starts the included use case right after the current step. 
      * The runner returns to the current flow when it reaches the end of an included
      * flow. The runner then continues after the current step of the current flow.
      * 
