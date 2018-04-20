@@ -5,7 +5,7 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.g
 import java.util.List;
 
 import org.requirementsascode.Step;
-import org.requirementsascode.flowposition.ReactWhile;
+import org.requirementsascode.condition.ReactWhile;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.template.SimpleScalar;

@@ -4,8 +4,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.condition.ReactWhile;
 import org.requirementsascode.exception.ElementAlreadyInModel;
-import org.requirementsascode.flowposition.ReactWhile;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
