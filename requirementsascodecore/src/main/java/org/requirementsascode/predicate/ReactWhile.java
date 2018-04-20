@@ -5,23 +5,24 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.requirementsascode.FlowStep;
+import org.requirementsascode.Step;
 import org.requirementsascode.UseCaseModelRunner;
 
-public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable {
+public class ReactWhile extends FlowPosition implements Serializable {
     private static final long serialVersionUID = -3190093346311188647L;
 
     private Predicate<UseCaseModelRunner> completeCondition;
     private Predicate<UseCaseModelRunner> reactWhileCondition;
 
     public ReactWhile(FlowStep step, Predicate<UseCaseModelRunner> reactWhileCondition) {
-	Objects.requireNonNull(step);
+	super(step);
 	Objects.requireNonNull(reactWhileCondition);
 	createReactWhileCondition(step, reactWhileCondition);
     }
-
+    
     @Override
-    public boolean test(UseCaseModelRunner runner) {
-	return completeCondition.test(runner);
+    protected boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner) {
+	return completeCondition.test(useCaseModelRunner);
     }
 
     private void createReactWhileCondition(FlowStep step, Predicate<UseCaseModelRunner> reactWhileCondition) {
@@ -38,4 +39,6 @@ public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable {
     public Predicate<UseCaseModelRunner> getReactWhileCondition() {
 	return reactWhileCondition;
     }
+
+
 }
