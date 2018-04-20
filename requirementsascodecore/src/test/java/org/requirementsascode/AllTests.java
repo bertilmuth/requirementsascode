@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BuildModelTest.class, ExceptionsThrownTest.class, ExceptionHandlingTest.class, SystemReactionTest.class,
-	AdaptedSystemReactionTest.class, BuildModelTest.class, IncludesTest.class })
+@SuiteClasses({ BuildModelTest.class, RunnAndStopTest.class, FlowTest.class, FlowlessTest.class, ExceptionsThrownTest.class,
+	ExceptionHandlingTest.class, AdaptedSystemReactionTest.class, IncludesTest.class })
 public class AllTests {
 
 }

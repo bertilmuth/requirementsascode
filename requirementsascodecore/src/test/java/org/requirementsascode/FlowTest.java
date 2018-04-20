@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.flowposition.Anytime;
 
-public class SystemReactionTest extends AbstractTestCase{
+public class FlowTest extends AbstractTestCase{
 	private Actor secondActor;
 	private int timesDisplayed;
 		
@@ -20,32 +20,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	public void setup() {
 		setupWith(new TestUseCaseModelRunner());
 		this.secondActor = useCaseModelBuilder.actor("Second Actor");
-	}
-	
-	@Test
-	public void useCaseModelRunnerIsNotRunningAtFirst(){
-		assertFalse(useCaseModelRunner.isRunning());
-	}
-	
-	@Test
-	public void useCaseModelRunnerIsRunningAfterRunCall(){
-		UseCaseModel model = useCaseModelBuilder.build();
-		useCaseModelRunner.run(model);
-		assertTrue(useCaseModelRunner.isRunning());
-	}
-	
-	@Test
-	public void useCaseModelRunnerIsNotRunningWhenBeingStoppedBeforeRunCall(){
-		useCaseModelRunner.stop();
-		assertFalse(useCaseModelRunner.isRunning());
-	}
-	
-	@Test
-	public void useCaseModelRunnerIsNotRunningWhenBeingStoppedAfterRunCall(){
-		UseCaseModel model = useCaseModelBuilder.build();
-		useCaseModelRunner.run(model);
-		useCaseModelRunner.stop();
-		assertFalse(useCaseModelRunner.isRunning());
 	}
 	
 	@Test
@@ -196,19 +170,6 @@ public class SystemReactionTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void oneFlowlessStepReacts() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
-			.useCase(USE_CASE)
-				.handles(EntersText.class).system(displaysEnteredText())
-			.build();
-				
-		useCaseModelRunner.run(useCaseModel);
-		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
-		
-		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
-	}
-	
-	@Test
 	public void oneStepInFlowReacts() {		
 		UseCaseModel useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
@@ -222,39 +183,7 @@ public class SystemReactionTest extends AbstractTestCase{
 		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().getName());
 	}
 	
-	@Test
-	public void twoFlowlessStepsReactToEventsOfDifferentTypeInRightOrder() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
-			.useCase(USE_CASE)
-				.handles(EntersText.class).system(displaysEnteredText())
-				.handles(EntersNumber.class).system(displaysEnteredNumber())
-			.build();
-		
-		useCaseModelRunner.run(useCaseModel);
-		
-		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
-		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
-		
-		latestStepRun = useCaseModelRunner.reactTo(entersNumber());
-		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());	
-	}
-	
-	@Test
-	public void twoFlowlessStepsReactToEventsOfDifferentTypeInWrongOrder() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
-			.useCase(USE_CASE)
-				.handles(EntersText.class).system(displaysEnteredText())
-				.handles(EntersNumber.class).system(displaysEnteredNumber())
-			.build();
-		
-		useCaseModelRunner.run(useCaseModel);
-		
-		Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersNumber());
-		assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
-		
-		latestStepRun = useCaseModelRunner.reactTo(entersText());
-		assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
-	}
+
 	
 	@Test
 	public void twoSequentialStepsReactToEventsOfDifferentType() {		
