@@ -22,7 +22,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
      * @param stepName
      *            the name of the step to be created
      * @param useCaseFlow
-     *            the use case flow that will contain the new use case
+     *            the use case flow that will contain the new step
      */
     InterruptableFlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase, useCaseFlow);
