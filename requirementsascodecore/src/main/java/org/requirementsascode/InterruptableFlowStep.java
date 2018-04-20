@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.requirementsascode.predicate.After;
-import org.requirementsascode.predicate.FlowPosition;
+import org.requirementsascode.flowposition.After;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * @author b_muth

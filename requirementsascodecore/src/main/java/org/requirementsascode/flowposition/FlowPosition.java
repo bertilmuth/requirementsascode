@@ -1,4 +1,4 @@
-package org.requirementsascode.predicate;
+package org.requirementsascode.flowposition;
 
 import java.util.ArrayList;
 import java.util.List;

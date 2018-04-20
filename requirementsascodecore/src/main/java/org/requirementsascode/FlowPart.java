@@ -5,10 +5,10 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.predicate.After;
-import org.requirementsascode.predicate.Anytime;
-import org.requirementsascode.predicate.FlowPosition;
-import org.requirementsascode.predicate.InsteadOf;
+import org.requirementsascode.flowposition.After;
+import org.requirementsascode.flowposition.Anytime;
+import org.requirementsascode.flowposition.FlowPosition;
+import org.requirementsascode.flowposition.InsteadOf;
 
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.

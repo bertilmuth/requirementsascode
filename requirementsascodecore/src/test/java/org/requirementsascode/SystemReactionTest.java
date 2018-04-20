@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.predicate.Anytime;
+import org.requirementsascode.flowposition.Anytime;
 
 public class SystemReactionTest extends AbstractTestCase{
 	private Actor secondActor;

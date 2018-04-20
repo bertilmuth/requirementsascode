@@ -1,4 +1,4 @@
-package org.requirementsascode.predicate;
+package org.requirementsascode.flowposition;
 
 import java.io.Serializable;
 import java.util.Objects;

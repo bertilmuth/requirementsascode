@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.requirementsascode.predicate.FlowPosition;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * @author b_muth

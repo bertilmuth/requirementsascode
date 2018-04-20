@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.requirementsascode.predicate.FlowPosition;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * A use case flow defines a sequence of steps that lead the user through the

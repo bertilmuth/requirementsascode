@@ -14,8 +14,8 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.predicate.Anytime;
-import org.requirementsascode.predicate.FlowPosition;
+import org.requirementsascode.flowposition.Anytime;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * A use case, as part of a use case model.
