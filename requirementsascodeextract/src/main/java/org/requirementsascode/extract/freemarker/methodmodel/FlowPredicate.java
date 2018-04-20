@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
+import org.requirementsascode.predicate.Anytime;
 import org.requirementsascode.predicate.FlowPosition;
 
 import freemarker.template.SimpleScalar;
@@ -44,7 +45,8 @@ public class FlowPredicate implements TemplateMethodModelEx {
 	FlowPosition flowPosition = flow.getFlowPosition();
 	String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
 	String stepName = flowPosition.getStepName();
-	String flowPositionWithStepName = !"".equals(stepName)? flowPositionWords + " " + stepName : "";
+	boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
+	String flowPositionWithStepName = isNonDefaultFlowPosition? flowPositionWords + " " + stepName : "";
 	return flowPositionWithStepName.trim();
     }
 

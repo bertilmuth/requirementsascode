@@ -19,8 +19,4 @@ public class InsteadOf extends FlowPosition implements Serializable {
 	After after = new After(previousStep);
 	return after.test(useCaseModelRunner);
     }
-
-    public String getStepName(Step step) {
-	return step.getName();
-    }
 }

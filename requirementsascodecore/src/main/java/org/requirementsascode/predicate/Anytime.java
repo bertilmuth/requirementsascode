@@ -17,9 +17,4 @@ public class Anytime extends FlowPosition implements Serializable {
     protected boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner) {
 	return true;
     }
-
-    @Override
-    protected String getStepName(Step step) {
-	return "";
-    }
 }

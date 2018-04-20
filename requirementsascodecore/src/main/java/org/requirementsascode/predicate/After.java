@@ -31,10 +31,4 @@ public class After extends FlowPosition implements Serializable {
 	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
 	return stepWasRunLast;
     }
-
-    @Override
-    public String getStepName(Step step) {
-	String name = step != null ? step.getName() : "";
-	return name;
-    }
 }

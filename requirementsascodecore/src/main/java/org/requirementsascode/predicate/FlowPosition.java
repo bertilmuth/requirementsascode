@@ -11,9 +11,8 @@ import org.requirementsascode.UseCaseModelRunner;
 public abstract class FlowPosition implements Predicate<UseCaseModelRunner> {
     private List<FlowStep> orAfterSteps;
     private Step step;
-    
+
     protected abstract boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner);
-    protected abstract String getStepName(Step step);
 
     public FlowPosition(Step step) {
 	this.step = step;
@@ -22,13 +21,14 @@ public abstract class FlowPosition implements Predicate<UseCaseModelRunner> {
 
     @Override
     public final boolean test(UseCaseModelRunner useCaseModelRunner) {
-	boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, useCaseModelRunner)
-		|| orAfterSteps.stream().anyMatch(step -> new After(step).test(useCaseModelRunner));
+	boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step,
+		useCaseModelRunner) || orAfterSteps.stream().anyMatch(step -> new After(step).test(useCaseModelRunner));
 	return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
     }
 
     public final String getStepName() {
-	return getStepName(step);
+	String name = step != null ? step.getName() : "";
+	return name;
     }
 
     public FlowPosition orAfter(FlowStep mergeStep) {
