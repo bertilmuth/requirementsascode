@@ -16,13 +16,13 @@ public class InterruptingFlowStep extends FlowStep {
 	if (reactWhile != null) {
 	    condition = reactWhile;
 	} else {
-	    condition = getFlowCondition();
+	    condition = isFlowConditionTrueAndRunnerInDifferentFlow();
 	}
 
 	return condition;
     }
 
-    private Predicate<UseCaseModelRunner> getFlowCondition() {
+    private Predicate<UseCaseModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
 	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition();
 	Predicate<UseCaseModelRunner> when = getWhen().orElse(r -> true);
 
