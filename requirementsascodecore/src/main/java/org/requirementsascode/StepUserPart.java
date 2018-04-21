@@ -9,7 +9,6 @@ import org.requirementsascode.systemreaction.IgnoreIt;
 /**
  * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
  *
- * @see Step#setUserEventClass(Class)
  * @author b_muth
  */
 public class StepUserPart<T> {
@@ -20,7 +19,7 @@ public class StepUserPart<T> {
 	this.stepPart = stepPart;
 	this.step = stepPart.getStep();
 
-	step.setUserEventClass(eventClass);
+	step.setEventClass(eventClass);
     }
 
     /**

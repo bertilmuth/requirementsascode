@@ -171,7 +171,7 @@ public class UseCaseModelRunner implements Serializable {
     }
 
     /**
-     * Call this method from the frontend to provide an event object to the runner.
+     * Call this method from the frontend to provide a command or event object to the runner.
      *
      * <p>
      * If it is running, the runner will then check which steps can react to the
@@ -188,9 +188,9 @@ public class UseCaseModelRunner implements Serializable {
      * react" means.
      *
      * @param <T>
-     *            the type of the event object
+     *            the type of the command or event object
      * @param event
-     *            the event object provided by the frontend
+     *            the command or event object
      * @return the use case step whose system reaction was triggered, or else an
      *         empty optional if none was triggered.
      * @throws MoreThanOneStepCanReact
@@ -339,7 +339,7 @@ public class UseCaseModelRunner implements Serializable {
     }
 
     private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
-	Class<?> stepEventClass = useCaseStep.getUserEventClass();
+	Class<?> stepEventClass = useCaseStep.getEventClass();
 	return stepEventClass.isAssignableFrom(currentEventClass);
     }
 

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * A use case step, as part of a use case. The use case steps define the
+ * A use case step is a part of a use case. The use case steps define the
  * behavior of the use case.
  *
  * <p>
@@ -23,7 +23,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     private Predicate<UseCaseModelRunner> reactWhile;
 
     private Actor[] actors;
-    private Class<?> userEventClass;
+    private Class<?> eventClass;
     private Consumer<?> systemReaction;
     private Predicate<UseCaseModelRunner> when;
 
@@ -70,12 +70,12 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.actors = actors;
     }
 
-    public Class<?> getUserEventClass() {
-	return userEventClass;
+    public Class<?> getEventClass() {
+	return eventClass;
     }
 
-    void setUserEventClass(Class<?> userEventClass) {
-	this.userEventClass = userEventClass;
+    void setEventClass(Class<?> eventClass) {
+	this.eventClass = eventClass;
     }
 
     public Consumer<?> getSystemReaction() {

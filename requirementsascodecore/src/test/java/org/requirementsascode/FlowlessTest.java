@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class FlowlessTest extends AbstractTestCase {
 	useCaseModelRunner.run(useCaseModel);
 	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
 
-	assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
 
     @Test
@@ -36,10 +37,10 @@ public class FlowlessTest extends AbstractTestCase {
 	useCaseModelRunner.run(useCaseModel);
 
 	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
-	assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = useCaseModelRunner.reactTo(entersNumber());
-	assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
     @Test
@@ -52,9 +53,73 @@ public class FlowlessTest extends AbstractTestCase {
 	useCaseModelRunner.run(useCaseModel);
 
 	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersNumber());
-	assertEquals(EntersNumber.class, latestStepRun.get().getUserEventClass());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = useCaseModelRunner.reactTo(entersText());
-	assertEquals(EntersText.class, latestStepRun.get().getUserEventClass());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
+    public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStep() {
+	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
+		.when(r -> true).handles(EntersText.class).system(displaysEnteredText())
+		.handles(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	useCaseModelRunner.run(useCaseModel);
+	
+	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+
+	latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
+    public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStep() {
+	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
+		.handles(EntersText.class).system(displaysEnteredText())
+		.when(r -> true).handles(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	useCaseModelRunner.run(useCaseModel);
+
+	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+
+	latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
+    public void twoFlowlessStepsDontReactWhenConditionIsFalseInFirstStep() {
+	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
+		.when(r -> false).handles(EntersText.class).system(displaysEnteredText())
+		.handles(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	useCaseModelRunner.run(useCaseModel);
+
+	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+
+	latestStepRun = useCaseModelRunner.reactTo(entersText());
+	assertFalse(latestStepRun.isPresent());
+    }
+    
+    @Test
+    public void twoFlowlessStepsDontReactWhenConditionIsFalseInSecondStep() {
+	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
+		.handles(EntersText.class).system(displaysEnteredText())
+		.when(r -> false).handles(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	useCaseModelRunner.run(useCaseModel);
+
+	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+
+	latestStepRun = useCaseModelRunner.reactTo(entersNumber());
+	assertFalse(latestStepRun.isPresent());
     }
 }
