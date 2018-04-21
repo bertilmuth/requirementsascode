@@ -31,7 +31,7 @@ public class Steps {
   }
   
   public static boolean hasSystemEvent(Step step) {
-    return UseCaseModelRunner.class.equals(step.getUserEventClass());
+    return UseCaseModelRunner.class.equals(step.getEventClass());
   }
 
   public static boolean hasSystemReaction(Step step) {
