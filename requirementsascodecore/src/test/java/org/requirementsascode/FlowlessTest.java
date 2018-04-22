@@ -18,8 +18,9 @@ public class FlowlessTest extends AbstractTestCase {
 
     @Test
     public void oneFlowlessStepReacts() {
-	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).handles(EntersText.class)
-		.with(displaysEnteredText()).build();
+	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
+		.handles(EntersText.class).with(displaysEnteredText())
+	.build();
 
 	useCaseModelRunner.run(useCaseModel);
 	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
