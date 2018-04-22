@@ -32,7 +32,7 @@ public class StepAsPart {
     }
 
     /**
-     * Defines the type of user event objects that this step accepts. Events of this
+     * Defines the type of user command objects that this step accepts. Commands of this
      * type can cause a system reaction.
      *
      * <p>
@@ -41,7 +41,7 @@ public class StepAsPart {
      * any direct or indirect subclass of the specified class.
      *
      * @param eventClass
-     *            the class of events the system reacts to in this step
+     *            the class of commands the system reacts to in this step
      * @param <T>
      *            the type of the class
      * @return the created user part of this step

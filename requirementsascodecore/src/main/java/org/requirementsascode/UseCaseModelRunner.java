@@ -171,7 +171,7 @@ public class UseCaseModelRunner implements Serializable {
     }
 
     /**
-     * Call this method from the frontend to provide a command or event object to the runner.
+     * Call this method to provide a command or event object to the runner.
      *
      * <p>
      * If it is running, the runner will then check which steps can react to the

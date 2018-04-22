@@ -103,7 +103,7 @@ public class UseCasePart {
 	    return stepPart;
 	}
 
-	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
+	public FlowlessSystemPart<T> with(Consumer<T> systemReaction) {
 	    userPart.system(systemReaction);
 	    return new FlowlessSystemPart<>(flowlessStepCounter);
 	}

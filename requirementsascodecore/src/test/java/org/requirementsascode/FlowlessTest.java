@@ -19,7 +19,7 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void oneFlowlessStepReacts() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE).handles(EntersText.class)
-		.system(displaysEnteredText()).build();
+		.with(displaysEnteredText()).build();
 
 	useCaseModelRunner.run(useCaseModel);
 	Optional<Step> latestStepRun = useCaseModelRunner.reactTo(entersText());
@@ -30,8 +30,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsReactToEventsOfDifferentTypeInRightOrder() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.handles(EntersText.class).system(displaysEnteredText())
-		.handles(EntersNumber.class).system(displaysEnteredNumber())
+		.handles(EntersText.class).with(displaysEnteredText())
+		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
@@ -46,8 +46,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsReactToEventsOfDifferentTypeInWrongOrder() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.handles(EntersText.class).system(displaysEnteredText())
-		.handles(EntersNumber.class).system(displaysEnteredNumber())
+		.handles(EntersText.class).with(displaysEnteredText())
+		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
@@ -62,8 +62,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStep() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.when(r -> true).handles(EntersText.class).system(displaysEnteredText())
-		.handles(EntersNumber.class).system(displaysEnteredNumber())
+		.when(r -> true).handles(EntersText.class).with(displaysEnteredText())
+		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
@@ -78,8 +78,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStep() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.handles(EntersText.class).system(displaysEnteredText())
-		.when(r -> true).handles(EntersNumber.class).system(displaysEnteredNumber())
+		.handles(EntersText.class).with(displaysEnteredText())
+		.when(r -> true).handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
@@ -94,8 +94,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsDontReactWhenConditionIsFalseInFirstStep() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.when(r -> false).handles(EntersText.class).system(displaysEnteredText())
-		.handles(EntersNumber.class).system(displaysEnteredNumber())
+		.when(r -> false).handles(EntersText.class).with(displaysEnteredText())
+		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
@@ -110,8 +110,8 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void twoFlowlessStepsDontReactWhenConditionIsFalseInSecondStep() {
 	UseCaseModel useCaseModel = useCaseModelBuilder.useCase(USE_CASE)
-		.handles(EntersText.class).system(displaysEnteredText())
-		.when(r -> false).handles(EntersNumber.class).system(displaysEnteredNumber())
+		.handles(EntersText.class).with(displaysEnteredText())
+		.when(r -> false).handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	useCaseModelRunner.run(useCaseModel);
