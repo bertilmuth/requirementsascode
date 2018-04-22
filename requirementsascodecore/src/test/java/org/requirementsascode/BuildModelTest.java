@@ -84,12 +84,31 @@ public class BuildModelTest extends AbstractTestCase {
     }
     
     @Test
-    public void createsSingleStepThatHandlesUserEventWithoutFlow() {
+    public void createsSingleStepThatHandlesUserCommandWithUseCaseButWithoutFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 	UseCaseModel useCaseModel = 
 		useCasePart
-			.handles(EntersText.class).system(displaysEnteredText())
+			.handles(EntersText.class).with(displaysEnteredText())
+		.build();
+
+	UseCase useCase = useCasePart.useCase();
+	Collection<Step> steps = useCase.getSteps();
+	assertEquals(1, steps.size());
+
+	Step step = steps.iterator().next();
+	assertEquals("S1", step.getName());
+	assertEquals(USE_CASE, step.getUseCase().getName());
+	assertEquals(useCaseModel.getSystemActor(), step.getActors()[0]);
+    }
+    
+    @Test
+    public void createsSingleStepThatHandlesUserCommandWithoutUseCaseAndWithoutFlow() {
+	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
+
+	UseCaseModel useCaseModel = 
+		useCasePart
+			.handles(EntersText.class).with(displaysEnteredText())
 		.build();
 
 	UseCase useCase = useCasePart.useCase();
@@ -103,7 +122,7 @@ public class BuildModelTest extends AbstractTestCase {
     }
 
     @Test
-    public void createsSingleStepThatHandlesUserEventWithFlow() {
+    public void createsSingleStepThatHandlesUserCommandWithFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 	UseCaseModel useCaseModel = 
@@ -265,8 +284,8 @@ public class BuildModelTest extends AbstractTestCase {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
 	useCasePart
-		.handles(EntersText.class).system(displaysEnteredText())
-		.handles(EntersNumber.class).system(displaysEnteredNumber())
+		.handles(EntersText.class).with(displaysEnteredText())
+		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
 	Collection<Step> steps = useCasePart.useCase().getSteps();
