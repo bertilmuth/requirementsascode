@@ -19,6 +19,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.UnhandledException;
 
 /**
+ * A model runner is a highly configurable controller that
  * receives events and conditionally calls methods that handle them (the "system reactions").
  *
  * <p>
