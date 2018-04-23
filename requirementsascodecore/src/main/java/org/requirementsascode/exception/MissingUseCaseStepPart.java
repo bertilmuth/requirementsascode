@@ -6,7 +6,7 @@ import org.requirementsascode.Step;
 
 /**
  * Exception that is thrown when the model runner tries to to access a certain part
- * of a use case step, but that part does not exist.
+ * of a step, but that part does not exist.
  * 
  * @author b_muth
  *

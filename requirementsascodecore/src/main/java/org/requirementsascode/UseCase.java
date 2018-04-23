@@ -25,7 +25,7 @@ import org.requirementsascode.flowposition.FlowPosition;
  * case for an online flight reservation system is "Book flight".
  *
  * <p>
- * The use case itself defines no behavior. The use case steps that are part of
+ * The use case itself defines no behavior. The steps that are part of
  * the use case define the behavior of the use case. As steps are often
  * performed one after the other, in sequence, they are grouped in use case
  * flows.
@@ -61,7 +61,7 @@ public class UseCase extends ModelElement implements Serializable {
      * exceptions are handled in it, all steps are assumed to go well.
      *
      * <p>
-     * The basic flow is a sequence of use case steps that lead the user to the
+     * The basic flow is a sequence of steps that lead the user to the
      * user's goal. There is exactly one basic flow per use case.
      *
      * @return the basic flow of the use case

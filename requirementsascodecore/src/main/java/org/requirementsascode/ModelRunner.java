@@ -45,7 +45,7 @@ public class ModelRunner implements Serializable {
 
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
-     * system reaction, as defined in the use case step, simply accepts an event.
+     * system reaction, as defined in the step, simply accepts an event.
      */
     public ModelRunner() {
 	this.systemReactionTrigger = new SystemReactionTrigger();
@@ -188,7 +188,7 @@ public class ModelRunner implements Serializable {
      *            the type of the command or event object
      * @param event
      *            the command or event object
-     * @return the use case step whose system reaction was triggered, or else an
+     * @return the step whose system reaction was triggered, or else an
      *         empty optional if none was triggered.
      * @throws MoreThanOneStepCanReact
      *             if more than one step can react
@@ -279,7 +279,7 @@ public class ModelRunner implements Serializable {
     }
 
     /**
-     * Returns the use case steps in the model that can react to the
+     * Returns the steps in the model that can react to the
      * specified event class.
      *
      * <p>

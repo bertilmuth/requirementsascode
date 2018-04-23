@@ -17,7 +17,7 @@ public class SystemReactionTrigger implements Serializable {
     private static final long serialVersionUID = -8615677956101523359L;
 
     private Object event;
-    private Step useCaseStep;
+    private Step step;
 
     SystemReactionTrigger() {
     }
@@ -30,12 +30,12 @@ public class SystemReactionTrigger implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public void trigger() {
-	((Consumer<Object>) useCaseStep.getSystemReaction()).accept(event);
+	((Consumer<Object>) step.getSystemReaction()).accept(event);
     }
 
     void setupWith(Object event, Step useCaseStep) {
 	this.event = event;
-	this.useCaseStep = useCaseStep;
+	this.step = useCaseStep;
     }
 
     /**
@@ -49,12 +49,12 @@ public class SystemReactionTrigger implements Serializable {
     }
 
     /**
-     * Returns the use case step whose system reaction is performed when
+     * Returns the step whose system reaction is performed when
      * {@link #trigger()} is called.
      *
-     * @return the use case step.
+     * @return the step.
      */
-    public Step getUseCaseStep() {
-	return useCaseStep;
+    public Step getStep() {
+	return step;
     }
 }

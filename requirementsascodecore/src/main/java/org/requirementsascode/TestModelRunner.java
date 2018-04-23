@@ -16,7 +16,7 @@ public class TestModelRunner extends ModelRunner {
     }
 
     /**
-     * Returns the names of the use case steps that have been run, separated with a
+     * Returns the names of the steps that have been run, separated with a
      * semicolon after each step, without spaces.
      *
      * <p>
@@ -31,7 +31,7 @@ public class TestModelRunner extends ModelRunner {
     }
 
     private void withStepNameTracking(SystemReactionTrigger systemReactionTrigger) {
-	String stepName = systemReactionTrigger.getUseCaseStep().getName();
+	String stepName = systemReactionTrigger.getStep().getName();
 	runStepNames.append(stepName);
 	runStepNames.append(";");
 	systemReactionTrigger.trigger();

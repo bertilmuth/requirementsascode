@@ -15,7 +15,7 @@ import java.util.Set;
  * <p>
  * An actor is a role that a user plays. Actors represent different user groups.
  * They enable to distinguish user rights: only an actor that is connected to a
- * particular use case step is allowed to cause a system reaction for that step.
+ * particular step is allowed to cause a system reaction for that step.
  *
  * @author b_muth
  */
@@ -43,7 +43,7 @@ public class Actor extends ModelElement implements Serializable {
      *
      * <p>
      * The actor is associated to a use case if it is connected to at least one of
-     * its use case steps.
+     * its steps.
      *
      * @return the use cases the actor is associated with
      */
@@ -53,12 +53,12 @@ public class Actor extends ModelElement implements Serializable {
     }
 
     /**
-     * Returns the use case steps this actor is connected with, for the specified
+     * Returns the steps this actor is connected with, for the specified
      * use case.
      *
      * @param useCase
      *            the use case to query for steps the actor is connected with
-     * @return the use case steps the actor is connected with
+     * @return the steps the actor is connected with
      */
     public List<Step> getStepsOf(UseCase useCase) {
 	Objects.requireNonNull(useCase);

@@ -6,11 +6,11 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * A use case step is a part of a use case. The use case steps define the
+ * A step is a part of a use case. The steps define the
  * behavior of the use case.
  *
  * <p>
- * A use case step is the core class of requirementsascode, providing all the
+ * A step is the core class of requirementsascode, providing all the
  * necessary configuration information to the {@link ModelRunner} to
  * cause the system to react to events.
  *
@@ -28,7 +28,7 @@ public abstract class Step extends ModelElement implements Serializable {
     private Predicate<ModelRunner> when;
 
     /**
-     * Creates a use case step with the specified name that belongs to the specified
+     * Creates a step with the specified name that belongs to the specified
      * use case.
      *
      * @param useCase the use case this step belongs to

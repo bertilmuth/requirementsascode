@@ -20,7 +20,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  * that handle them.
  * 
  * Either implicitly or explicitly, the model contains use cases and their
- * contained use case steps. Each step contains the event/command and
+ * contained steps. Each step contains the event/command and
  * the system reaction, the condition under which it is executed and the
  * actors it is associated with.
  * 
@@ -143,7 +143,7 @@ public class Model implements Serializable {
     }
 
     /**
-     * Returns the use case steps of use cases contained in this model.
+     * Returns the steps of use cases contained in this model.
      *
      * @return the use steps
      */

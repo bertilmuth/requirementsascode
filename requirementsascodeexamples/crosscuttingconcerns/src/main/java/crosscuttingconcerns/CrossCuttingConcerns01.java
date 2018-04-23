@@ -30,7 +30,7 @@ public class CrossCuttingConcerns01 {
 			long timeAfter = System.nanoTime();
 			long timeElapsed = timeAfter - timeBefore;
 			
-			System.out.println("Step " + systemReactionTrigger.getUseCaseStep() + 
+			System.out.println("Step " + systemReactionTrigger.getStep() + 
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
