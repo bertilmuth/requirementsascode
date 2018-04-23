@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.Model;
 import org.requirementsascode.extract.freemarker.FreeMarkerEngine;
 
 import shoppingappjavafx.usecase.ShoppingAppModel;
@@ -16,18 +16,18 @@ public class ShoppingAppExtract {
   }
 
   private void start() throws Exception {
-    UseCaseModel useCaseModel = buildUseCaseModel();
+    Model model = buildModel();
 
     FreeMarkerEngine engine = new FreeMarkerEngine("shoppingappextract/extract");
     File outputFile = outputFile();
-    engine.extract(useCaseModel, templateFileName(), new FileWriter(outputFile));
+    engine.extract(model, templateFileName(), new FileWriter(outputFile));
     
     System.out.println("Wrote file to: " + outputFile);
   }
 
-  private UseCaseModel buildUseCaseModel() {
+  private Model buildModel() {
     BuyProductRealization buyProductRealization = new BuyProductRealization(null, null);
-    UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(UseCaseModel.builder());
+    Model useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(Model.builder());
     return useCaseModel;
   }
 

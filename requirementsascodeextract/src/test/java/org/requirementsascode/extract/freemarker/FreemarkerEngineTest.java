@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.Actor;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -34,7 +34,7 @@ public class FreemarkerEngineTest {
   
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
-    UseCaseModel useCaseModel = UseCaseModel.builder().build();
+    Model useCaseModel = Model.builder().build();
     String templateFileName = "testextract.ftl";
     StringWriter outputWriter = new StringWriter();
     
@@ -47,11 +47,11 @@ public class FreemarkerEngineTest {
   @Test
   public void extractsUseCaseModel() throws Exception {
     
-    UseCaseModelBuilder modelBuilder = UseCaseModel.builder();
+    ModelBuilder modelBuilder = Model.builder();
     Actor firstActor = modelBuilder.actor("First actor");
     Actor secondActor = modelBuilder.actor("Second actor");
     
-    UseCaseModel useCaseModel = 
+    Model model = 
       modelBuilder
         .useCase("Included use case")
           .basicFlow()
@@ -81,7 +81,7 @@ public class FreemarkerEngineTest {
     String templateFileName = "testextract.ftl";
     Writer outputWriter = new StringWriter();
     
-    engine.extract(useCaseModel, templateFileName, outputWriter);
+    engine.extract(model, templateFileName, outputWriter);
     String output = outputWriter.toString();
 
     assertEquals(
@@ -109,11 +109,11 @@ public class FreemarkerEngineTest {
         output);
   }
 
-  private Predicate<UseCaseModelRunner> thereIsNoAlternative() {
+  private Predicate<ModelRunner> thereIsNoAlternative() {
     return new ThereIsNoAlternative();
   }
 
-  private Consumer<UseCaseModelRunner> promptsUserToEnterName() {
+  private Consumer<ModelRunner> promptsUserToEnterName() {
     return new PromptsUserToEnterName();
   }
 
@@ -125,7 +125,7 @@ public class FreemarkerEngineTest {
     return new GreetsUser();
   }
   
-  private Predicate<UseCaseModelRunner> someConditionIsFulfilled() {
+  private Predicate<ModelRunner> someConditionIsFulfilled() {
     return new SomeConditionIsFulfilled();
   }
 
@@ -133,11 +133,11 @@ public class FreemarkerEngineTest {
     return DecidesToQuit.class;
   }
 
-  private Consumer<UseCaseModelRunner> quits() {
+  private Consumer<ModelRunner> quits() {
     return new Quits();
   }
 
-  private Consumer<UseCaseModelRunner> blowsUp() { 
+  private Consumer<ModelRunner> blowsUp() { 
 	  return new BlowsUp();
   }
   

@@ -2,10 +2,10 @@ package org.requirementsascode.extract.freemarker.systemreaction;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
-public class BlowsUp implements Consumer<UseCaseModelRunner> {
+public class BlowsUp implements Consumer<ModelRunner> {
   @Override
-  public void accept(UseCaseModelRunner runner) {
+  public void accept(ModelRunner runner) {
   }
 }

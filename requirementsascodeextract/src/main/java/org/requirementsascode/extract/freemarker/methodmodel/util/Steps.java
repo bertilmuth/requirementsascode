@@ -2,8 +2,8 @@ package org.requirementsascode.extract.freemarker.methodmodel.util;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Flow;
+import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
-import org.requirementsascode.UseCaseModelRunner;
 import org.requirementsascode.systemreaction.IgnoreIt;
 
 import freemarker.ext.beans.BeanModel;
@@ -31,7 +31,7 @@ public class Steps {
   }
   
   public static boolean hasSystemEvent(Step step) {
-    return UseCaseModelRunner.class.equals(step.getEventClass());
+    return ModelRunner.class.equals(step.getEventClass());
   }
 
   public static boolean hasSystemReaction(Step step) {

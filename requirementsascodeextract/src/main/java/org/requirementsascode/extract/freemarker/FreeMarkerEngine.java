@@ -4,7 +4,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.Model;
 import org.requirementsascode.extract.freemarker.methodmodel.ActorPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.FlowCondition;
 import org.requirementsascode.extract.freemarker.methodmodel.ReactWhileOfStep;
@@ -65,14 +65,14 @@ public class FreeMarkerEngine {
    * in the FreeMarker configuration under the name 'useCaseModel'. Then, the specified template is
    * used to transform the use case model to text and write it using the specified writer.
    *
-   * @param useCaseModel the input model, created with requirementsascodecore
+   * @param model the input model, created with requirementsascodecore
    * @param templateFileName name of the template file, relative to the base class path (when constructing the engine)
    * @param outputWriter the writer that writes out the resulting text
    * @throws Exception if anything goes wrong
    */
-  public void extract(UseCaseModel useCaseModel, String templateFileName, Writer outputWriter)
+  public void extract(Model model, String templateFileName, Writer outputWriter)
       throws Exception {
-    put("useCaseModel", useCaseModel);
+    put("useCaseModel", model);
     Template template = cfg.getTemplate(templateFileName);
     template.process(dataModel, outputWriter);
   }
