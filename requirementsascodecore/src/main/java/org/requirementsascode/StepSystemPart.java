@@ -24,7 +24,7 @@ public class StepSystemPart<T> {
     }
 
     public Model build() {
-	return stepPart.getUseCaseModelBuilder().build();
+	return stepPart.getModelBuilder().build();
     }
 
     /**
@@ -81,7 +81,7 @@ public class StepSystemPart<T> {
     public UseCasePart useCase(String useCaseName) {
 	Objects.requireNonNull(useCaseName);
 
-	UseCasePart useCasePart = stepPart.getUseCaseModelBuilder().useCase(useCaseName);
+	UseCasePart useCasePart = stepPart.getModelBuilder().useCase(useCaseName);
 	return useCasePart;
     }
 

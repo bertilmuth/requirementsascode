@@ -15,16 +15,16 @@ import org.requirementsascode.systemreaction.IncludesUseCase;
 public class StepPart {
     private Step step;
     private FlowPart flowPart;
-    private ModelBuilder useCaseModelBuilder;
+    private ModelBuilder modelBuilder;
     private Actor userActor;
     private Actor systemActor;
 
     StepPart(Step step, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
 	this.step = step;
 	this.flowPart = useCaseFlowPart;
-	this.useCaseModelBuilder = useCasePart.getUseCaseModelBuilder();
-	this.userActor = useCaseModelBuilder.build().getUserActor();
-	this.systemActor = useCaseModelBuilder.build().getSystemActor();
+	this.modelBuilder = useCasePart.getUseCaseModelBuilder();
+	this.userActor = modelBuilder.build().getUserActor();
+	this.systemActor = modelBuilder.build().getSystemActor();
     }
 
     /**
@@ -175,7 +175,7 @@ public class StepPart {
      */
     public StepSystemPart<ModelRunner> includesUseCase(String useCaseName) {
 	FlowStep flowStep = (FlowStep)step;
-	UseCase includedUseCase = flowStep.getUseCaseModel().findUseCase(useCaseName);
+	UseCase includedUseCase = flowStep.getModel().findUseCase(useCaseName);
 	StepSystemPart<ModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, flowStep));
 	
 	flowStep.includeUseCase(includedUseCase);
@@ -195,7 +195,7 @@ public class StepPart {
 	return getFlowPart().getUseCasePart();
     }
 
-    ModelBuilder getUseCaseModelBuilder() {
-	return useCaseModelBuilder;
+    ModelBuilder getModelBuilder() {
+	return modelBuilder;
     }
 }

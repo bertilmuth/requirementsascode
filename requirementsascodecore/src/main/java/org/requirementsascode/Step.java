@@ -36,7 +36,7 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
      *            the name of the step to be created
      */
     Step(String stepName, UseCase useCase) {
-	super(stepName, useCase.getUseCaseModel());
+	super(stepName, useCase.getModel());
 	this.useCase = useCase;
     }
 

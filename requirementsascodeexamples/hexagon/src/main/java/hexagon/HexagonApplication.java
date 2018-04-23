@@ -11,7 +11,7 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class HexagonApplication {
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
-  private Model useCaseModel;
+  private Model model;
   private ModelRunner runner;
 
   public static void main(String[] args) {
@@ -20,11 +20,11 @@ public class HexagonApplication {
 
   private void start() {
     feelStuffUseCaseRealization = new FeelStuffUseCaseRealization(new WriterAdapter(), new RepositoryAdapter());
-    useCaseModel = 
+    model = 
       new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(Model.builder());
     
     runner = new ModelRunner();
-    runner.run(useCaseModel);
+    runner.run(model);
     runner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
   }
 }

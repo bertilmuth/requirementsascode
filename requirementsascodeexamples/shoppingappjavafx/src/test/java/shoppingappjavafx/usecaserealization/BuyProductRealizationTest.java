@@ -24,12 +24,12 @@ import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
 public class BuyProductRealizationTest {
-	private TestModelRunner useCaseModelRunner;
-	private Model useCaseModel;
+	private TestModelRunner modelRunner;
+	private Model model;
 
 	@Before
 	public void setUp() throws Exception {
-		useCaseModelRunner = new TestModelRunner();
+		modelRunner = new TestModelRunner();
 		ModelBuilder modelBuilder = Model.builder();
 		
 		Stock stock = new Stock();
@@ -37,20 +37,20 @@ public class BuyProductRealizationTest {
 		
 		BuyProductRealization shoppingAppUseCaseRealization =
 			new BuyProductRealization(stock, displayStub);
-		useCaseModel = 
+		model = 
 			new ShoppingAppModel(shoppingAppUseCaseRealization).buildWith(modelBuilder);
 	}
 
 	@Test
 	public void runsBasicFlow() {
-		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(
+		modelRunner.run(model);
+		modelRunner.reactTo(
 			new AddsProductToCart(new Product("Hamster Wheel, Black", new BigDecimal(9.95))),
 			new StartsCheckoutProcess(),
 			new EntersShippingInformation(new ShippingInformation()),
 			new EntersPaymentDetails(new PaymentDetails()),
 			new ConfirmsPurchase());
 		
-		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", useCaseModelRunner.getRunStepNames());
+		assertEquals("S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S1;S2;", modelRunner.getRunStepNames());
 	}
 }

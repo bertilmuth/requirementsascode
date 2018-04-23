@@ -42,13 +42,13 @@ public class DisplayShippingInformationFormController extends AbstractController
     @FXML
     void onConfirm(ActionEvent event) {
     	EntersShippingInformation enterShippingInformation =  new EntersShippingInformation(shippingInformation);
-    	useCaseModelRunner().reactTo(enterShippingInformation);
+    	modelRunner().reactTo(enterShippingInformation);
     }
     
 	@FXML
     void onBack(ActionEvent event) {
 		SignalsToGoBack goBack = new SignalsToGoBack();
-    	useCaseModelRunner().reactTo(goBack);
+    	modelRunner().reactTo(goBack);
     }
     
 	public void displayShippingInformationForm(ShippingInformation shippingInformation) {

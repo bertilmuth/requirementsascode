@@ -35,7 +35,7 @@ public class ModelRunner implements Serializable {
     private Actor user;
     private List<Actor> userAndSystem;
 
-    private Model useCaseModel;
+    private Model model;
     private Step latestStep;
     private boolean isRunning;
     private SystemReactionTrigger systemReactionTrigger;
@@ -102,7 +102,7 @@ public class ModelRunner implements Serializable {
      *            the model that defines the runner's behavior
      */
     public void run(Model useCaseModel) {
-	this.useCaseModel = useCaseModel;
+	this.model = useCaseModel;
 	this.userAndSystem = userAndSystem(user != null ? user : useCaseModel.getUserActor());
 	this.isRunning = true;
 	triggerAutonomousSystemReaction();
@@ -113,7 +113,7 @@ public class ModelRunner implements Serializable {
     }
 
     private List<Actor> userAndSystem(Actor userActor) {
-	return Arrays.asList(userActor, userActor.getUseCaseModel().getSystemActor());
+	return Arrays.asList(userActor, userActor.getModel().getSystemActor());
     }
 
     /**
@@ -300,7 +300,7 @@ public class ModelRunner implements Serializable {
 
 	Set<Step> stepsThatCanReact;
 	if (isRunning) {
-	    Stream<Step> stepStream = useCaseModel.getModifiableSteps().stream();
+	    Stream<Step> stepStream = model.getModifiableSteps().stream();
 	    stepsThatCanReact = stepsInStreamThatCanReactTo(eventClass, stepStream);
 	} else {
 	    stepsThatCanReact = new HashSet<>();

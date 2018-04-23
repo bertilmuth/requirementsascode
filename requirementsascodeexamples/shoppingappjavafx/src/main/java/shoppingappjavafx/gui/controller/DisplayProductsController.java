@@ -31,7 +31,7 @@ public class DisplayProductsController extends AbstractController{
     @FXML
     void onCheckout(ActionEvent event) {
     	StartsCheckoutProcess checkoutPurchase =  new StartsCheckoutProcess();
-    	useCaseModelRunner().reactTo(checkoutPurchase);
+    	modelRunner().reactTo(checkoutPurchase);
     }
 	
 	private class ProductListItem extends ListCell<Product> {
@@ -50,7 +50,7 @@ public class DisplayProductsController extends AbstractController{
 
 		private void buyProduct() {
 			AddsProductToCart addProductToCart = new AddsProductToCart(product);
-			useCaseModelRunner().reactTo(addProductToCart);
+			modelRunner().reactTo(addProductToCart);
 			productsListView.refresh();
 		}
 	
@@ -74,7 +74,7 @@ public class DisplayProductsController extends AbstractController{
     		buyButton.setDisable(whenNoMoreProductsCanBeBought());
     	}
     	private boolean whenNoMoreProductsCanBeBought() {
-    		return !useCaseModelRunner().canReactTo(AddsProductToCart.class);
+    		return !modelRunner().canReactTo(AddsProductToCart.class);
     	}
     }
 
@@ -91,6 +91,6 @@ public class DisplayProductsController extends AbstractController{
 		checkoutButton.setDisable(whenCheckoutIsNotPossible());
 	}
 	private boolean whenCheckoutIsNotPossible() {
-		return !useCaseModelRunner().canReactTo(StartsCheckoutProcess.class);
+		return !modelRunner().canReactTo(StartsCheckoutProcess.class);
 	}
 }

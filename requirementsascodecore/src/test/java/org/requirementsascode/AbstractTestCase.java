@@ -38,14 +38,14 @@ public abstract class AbstractTestCase {
     protected static final String CONTINUE_2 = "Continue 2";
 
     protected Actor customer;
-    protected ModelBuilder useCaseModelBuilder;
-    protected TestModelRunner useCaseModelRunner;
+    protected ModelBuilder modelBuilder;
+    protected TestModelRunner modelRunner;
     protected String displayedText;
 
     protected void setupWith(TestModelRunner useCaseModelRunner) {
-	this.useCaseModelRunner = useCaseModelRunner;
-	this.useCaseModelBuilder = Model.builder();
-	this.customer = useCaseModelBuilder.actor(CUSTOMER);
+	this.modelRunner = useCaseModelRunner;
+	this.modelBuilder = Model.builder();
+	this.customer = modelBuilder.actor(CUSTOMER);
 	this.displayedText = null;
     }
 
@@ -101,11 +101,11 @@ public abstract class AbstractTestCase {
     }
 
     protected String runStepNames() {
-	return useCaseModelRunner.getRunStepNames();
+	return modelRunner.getRunStepNames();
     }
 
     protected String latestStepName() {
-	String latestStepName = useCaseModelRunner.getLatestStep().map(step -> step.getName()).orElse(null);
+	String latestStepName = modelRunner.getLatestStep().map(step -> step.getName()).orElse(null);
 	return latestStepName;
     }
 

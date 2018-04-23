@@ -13,7 +13,7 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class FeelStuffUseCaseTest {
 
-  private Model useCaseModel;
+  private Model model;
   private TestModelRunner testRunner;
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
 
@@ -21,7 +21,7 @@ public class FeelStuffUseCaseTest {
   public void setUp() throws Exception {
     feelStuffUseCaseRealization =
         new FeelStuffUseCaseRealization(new WriterStub(), new RepositoryStub());
-    useCaseModel =
+    model =
         new HexagonUseCaseModel(feelStuffUseCaseRealization)
             .buildWith(Model.builder());
     testRunner = new TestModelRunner();
@@ -29,7 +29,7 @@ public class FeelStuffUseCaseTest {
 
   @Test
   public void testBasicFlow() {
-    testRunner.run(useCaseModel);
+    testRunner.run(model);
     testRunner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
     assertEquals("1;2;3;", testRunner.getRunStepNames());
   }

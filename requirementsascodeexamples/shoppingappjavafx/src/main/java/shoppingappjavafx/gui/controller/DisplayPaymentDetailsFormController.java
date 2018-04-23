@@ -24,13 +24,13 @@ public class DisplayPaymentDetailsFormController extends AbstractController{
 	@FXML
     void onConfirm(ActionEvent event) {
     	EntersPaymentDetails enterPaymentDetails =  new EntersPaymentDetails(paymentDetails);
-    	useCaseModelRunner().reactTo(enterPaymentDetails);
+    	modelRunner().reactTo(enterPaymentDetails);
     }
 	
 	@FXML
     void onBack(ActionEvent event) {
 		SignalsToGoBack goBack = new SignalsToGoBack();
-    	useCaseModelRunner().reactTo(goBack);
+    	modelRunner().reactTo(goBack);
     }
     
 	public void displayPaymentDetails() {

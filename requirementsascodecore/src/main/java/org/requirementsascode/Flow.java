@@ -34,7 +34,7 @@ public class Flow extends UseCaseModelElement implements Serializable {
      *            the use case that will contain the new flow
      */
     Flow(String name, UseCase useCase) {
-	super(name, useCase.getUseCaseModel());
+	super(name, useCase.getModel());
 	this.useCase = useCase;
     }
 

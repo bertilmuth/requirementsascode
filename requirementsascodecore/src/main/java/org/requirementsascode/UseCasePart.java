@@ -11,11 +11,11 @@ import java.util.function.Predicate;
  */
 public class UseCasePart {
     private UseCase useCase;
-    private ModelBuilder useCaseModelBuilder;
+    private ModelBuilder modelBuilder;
 
     UseCasePart(UseCase useCase, ModelBuilder useCaseModelBuilder) {
 	this.useCase = useCase;
-	this.useCaseModelBuilder = useCaseModelBuilder;
+	this.modelBuilder = useCaseModelBuilder;
     }
 
     /**
@@ -46,16 +46,16 @@ public class UseCasePart {
     }
 
     ModelBuilder getUseCaseModelBuilder() {
-	return useCaseModelBuilder;
+	return modelBuilder;
     }
 
     /**
-     * Returns the use case model that has been built.
+     * Returns the model that has been built.
      * 
      * @return the model
      */
     public Model build() {
-	return useCaseModelBuilder.build();
+	return modelBuilder.build();
     }
 
     public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {

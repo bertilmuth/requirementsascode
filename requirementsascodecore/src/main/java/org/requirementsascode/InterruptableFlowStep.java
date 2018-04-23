@@ -54,7 +54,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
     private Predicate<ModelRunner> noStepInterrupts() {
 	return useCaseModelRunner -> {
 	    Class<?> theStepsEventClass = getEventClass();
-	    Model useCaseModel = getUseCaseModel();
+	    Model useCaseModel = getModel();
 
 	    Stream<Step> stepsStream = useCaseModel.getModifiableSteps().stream();
 	    Stream<Step> conditionalStepsStream = stepsStream
