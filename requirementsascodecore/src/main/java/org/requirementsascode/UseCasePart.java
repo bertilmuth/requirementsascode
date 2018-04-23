@@ -69,7 +69,7 @@ public class UseCasePart {
 	return whenPart;
     }
 
-    class WhenPart {
+    public class WhenPart {
 	private long flowlessStepCounter;
 	private Predicate<ModelRunner> optionalWhenCondition;
 
@@ -84,7 +84,7 @@ public class UseCasePart {
 	}
     }
 
-    class FlowlessUserPart<T> {
+    public class FlowlessUserPart<T> {
 	private StepUserPart<T> userPart;
 	private long flowlessStepCounter;
 
@@ -109,7 +109,7 @@ public class UseCasePart {
 	}
     }
 
-    class FlowlessSystemPart<T> {
+    public class FlowlessSystemPart<T> {
 	private long flowlessStepCounter;
 
 	public FlowlessSystemPart(long flowlessStepCounter) {
