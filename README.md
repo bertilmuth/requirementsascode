@@ -107,8 +107,8 @@ public class HelloUser {
 ```
 
 # documentation
-* [examples for building/running more sophisticated use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
+* [examples for building/running more state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [how to generate documentation from the models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
 # subprojects
