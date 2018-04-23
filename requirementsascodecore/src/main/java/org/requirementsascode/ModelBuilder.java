@@ -9,8 +9,8 @@ public class ModelBuilder {
 
     private Model model;
 
-    ModelBuilder(Model useCaseModel) {
-	this.model = useCaseModel;
+    ModelBuilder(Model model) {
+	this.model = model;
     }
 
     /**

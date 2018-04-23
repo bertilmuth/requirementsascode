@@ -21,14 +21,14 @@ public class AdaptedSystemReactionTest extends AbstractTestCase {
 	modelRunner.adaptSystemReaction(withSavingStepNameAndEvent());
 	stepName = "";
 
-	Model useCaseModel = 
+	Model model = 
 		modelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT)
 					.system(displaysConstantText())
 		.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 	assertEquals(TestModelRunner.class, event.getClass());

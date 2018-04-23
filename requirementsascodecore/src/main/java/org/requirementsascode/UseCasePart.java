@@ -13,9 +13,9 @@ public class UseCasePart {
     private UseCase useCase;
     private ModelBuilder modelBuilder;
 
-    UseCasePart(UseCase useCase, ModelBuilder useCaseModelBuilder) {
+    UseCasePart(UseCase useCase, ModelBuilder modelBuilder) {
 	this.useCase = useCase;
-	this.modelBuilder = useCaseModelBuilder;
+	this.modelBuilder = modelBuilder;
     }
 
     /**
@@ -45,7 +45,7 @@ public class UseCasePart {
 	return useCase;
     }
 
-    ModelBuilder getUseCaseModelBuilder() {
+    ModelBuilder getModelBuilder() {
 	return modelBuilder;
     }
 

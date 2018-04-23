@@ -19,7 +19,7 @@ import java.util.Set;
  *
  * @author b_muth
  */
-public class Actor extends UseCaseModelElement implements Serializable {
+public class Actor extends ModelElement implements Serializable {
     private static final long serialVersionUID = 2441478758595877661L;
 
     private Map<UseCase, List<Step>> useCaseToStepMap;
@@ -30,11 +30,11 @@ public class Actor extends UseCaseModelElement implements Serializable {
      *
      * @param name
      *            the name of the actor
-     * @param useCaseModel
+     * @param model
      *            the use case model
      */
-    Actor(String name, Model useCaseModel) {
-	super(name, useCaseModel);
+    Actor(String name, Model model) {
+	super(name, model);
 	this.useCaseToStepMap = new HashMap<>();
     }
 

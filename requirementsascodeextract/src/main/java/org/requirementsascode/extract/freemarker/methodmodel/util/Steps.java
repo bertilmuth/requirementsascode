@@ -39,11 +39,11 @@ public class Steps {
   }
   
   public static Actor getUserActor(Step step) {
-    return step.getUseCaseModel().getUserActor();
+    return step.getModel().getUserActor();
   }
   
   public static Actor getSystemActor(Step step) {
-    return step.getUseCaseModel().getSystemActor();
+    return step.getModel().getSystemActor();
   }
   
   private static Actor getFirstActorOfStep(Step step) {

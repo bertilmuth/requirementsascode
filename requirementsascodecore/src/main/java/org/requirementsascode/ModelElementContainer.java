@@ -14,7 +14,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  * @author b_muth
  */
 class ModelElementContainer {
-    static <T extends UseCaseModelElement> T findModelElement(String modelElementName,
+    static <T extends ModelElement> T findModelElement(String modelElementName,
 	    Map<String, T> modelElementNameToElementMap) {
 	Objects.requireNonNull(modelElementName);
 	Objects.requireNonNull(modelElementNameToElementMap);
@@ -26,7 +26,7 @@ class ModelElementContainer {
 	return useCaseModelElement;
     }
 
-    static <T extends UseCaseModelElement> boolean hasModelElement(String modelElementName,
+    static <T extends ModelElement> boolean hasModelElement(String modelElementName,
 	    Map<String, T> modelElementNameToElementMap) {
 	Objects.requireNonNull(modelElementName);
 	Objects.requireNonNull(modelElementNameToElementMap);
@@ -35,7 +35,7 @@ class ModelElementContainer {
 	return hasModelElement;
     }
 
-    static <T extends UseCaseModelElement> void saveModelElement(T modelElement,
+    static <T extends ModelElement> void saveModelElement(T modelElement,
 	    Map<String, T> modelElementNameToElementMap) {
 	Objects.requireNonNull(modelElement);
 	Objects.requireNonNull(modelElementNameToElementMap);
@@ -47,7 +47,7 @@ class ModelElementContainer {
 	modelElementNameToElementMap.put(modelElementName, modelElement);
     }
 
-    static <T extends UseCaseModelElement> Collection<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
+    static <T extends ModelElement> Collection<T> getModelElements(Map<String, T> modelElementNameToElementMap) {
 	Objects.requireNonNull(modelElementNameToElementMap);
 
 	return modelElementNameToElementMap.values();

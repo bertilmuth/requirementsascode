@@ -91,19 +91,19 @@ public class ModelRunner implements Serializable {
     }
 
     /**
-     * Configures the runner to use the specified use case model. After you called
+     * Configures the runner to use the specified model. After you called
      * this method, the runner will accept events via {@link #reactTo(Object)}.
      *
      * <p>
      * As a side effect, this method immediately triggers "autonomous system
      * reactions".
      *
-     * @param useCaseModel
+     * @param model
      *            the model that defines the runner's behavior
      */
-    public void run(Model useCaseModel) {
-	this.model = useCaseModel;
-	this.userAndSystem = userAndSystem(user != null ? user : useCaseModel.getUserActor());
+    public void run(Model model) {
+	this.model = model;
+	this.userAndSystem = userAndSystem(user != null ? user : model.getUserActor());
 	this.isRunning = true;
 	triggerAutonomousSystemReaction();
     }

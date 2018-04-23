@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  *
  * @author b_muth
  */
-public abstract class Step extends UseCaseModelElement implements Serializable {
+public abstract class Step extends ModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     private UseCase useCase;

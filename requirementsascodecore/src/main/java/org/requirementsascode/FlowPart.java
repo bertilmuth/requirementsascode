@@ -133,7 +133,7 @@ public class FlowPart {
 	return useCasePart;
     }
 
-    ModelBuilder getUseCaseModelBuilder() {
-	return useCasePart.getUseCaseModelBuilder();
+    ModelBuilder getModelBuilder() {
+	return useCasePart.getModelBuilder();
     }
 }

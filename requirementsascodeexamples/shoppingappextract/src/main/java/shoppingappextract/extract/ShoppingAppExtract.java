@@ -27,8 +27,8 @@ public class ShoppingAppExtract {
 
   private Model buildModel() {
     BuyProductRealization buyProductRealization = new BuyProductRealization(null, null);
-    Model useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(Model.builder());
-    return useCaseModel;
+    Model model = new ShoppingAppModel(buyProductRealization).buildWith(Model.builder());
+    return model;
   }
 
   private String templateFileName() {

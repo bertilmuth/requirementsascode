@@ -4,31 +4,30 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Abstract base class for elements of a use case model. The main purpose of
- * this class is to create named model elements, and make them part of a use
- * case model.
+ * Abstract base class for elements of a model. The main purpose of
+ * this class is to create named model elements, and make them part of a model.
  *
  * @author b_muth
  */
-abstract class UseCaseModelElement implements Serializable {
+abstract class ModelElement implements Serializable {
     private static final long serialVersionUID = 4955023531983786087L;
 
     private String name;
     private Model model;
 
     /**
-     * Creates a new element that is a part of the specified use case model.
+     * Creates a new element that is a part of the specified model.
      *
      * @param name
      *            the name of the element to be created
-     * @param useCaseModel
-     *            the use case model that will contain the element
+     * @param model
+     *            the model that will contain the element
      */
-    UseCaseModelElement(String name, Model useCaseModel) {
+    ModelElement(String name, Model model) {
 	Objects.requireNonNull(name);
-	Objects.requireNonNull(useCaseModel);
+	Objects.requireNonNull(model);
 	this.name = name;
-	this.model = useCaseModel;
+	this.model = model;
     }
 
     /**

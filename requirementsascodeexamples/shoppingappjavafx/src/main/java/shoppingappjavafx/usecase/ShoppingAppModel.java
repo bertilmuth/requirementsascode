@@ -70,7 +70,7 @@ public class ShoppingAppModel {
    * @return the created model
    */
   public Model buildWith(ModelBuilder modelBuilder) {
-		Model useCaseModel = modelBuilder.useCase("Buy product")
+		Model model = modelBuilder.useCase("Buy product")
 			.basicFlow()
 				.step("S1").system(startsWithEmptyShoppingCart)
 				.step("S2").system(displaysProducts)
@@ -94,7 +94,7 @@ public class ShoppingAppModel {
 			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").handles(anyException).system(logsException)
 		.build();
 		
-		return useCaseModel;
+		return model;
 	}
   
   public ShoppingAppModel(BuyProductRealization bPR) {

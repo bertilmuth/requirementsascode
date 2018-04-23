@@ -32,7 +32,7 @@ import org.requirementsascode.flowposition.FlowPosition;
  *
  * @author b_muth
  */
-public class UseCase extends UseCaseModelElement implements Serializable {
+public class UseCase extends ModelElement implements Serializable {
     private static final long serialVersionUID = 4939249650285018834L;
 
     private static final String BASIC_FLOW = "Basic flow";
@@ -42,16 +42,15 @@ public class UseCase extends UseCaseModelElement implements Serializable {
     private Flow basicFlow;
 
     /**
-     * Creates a use case with the specified name that belongs to the specified use
-     * case model.
+     * Creates a use case with the specified name that belongs to the specified model.
      *
      * @param useCaseName
      *            the name of the use case to be created
-     * @param useCaseModel
-     *            the use case model that will contain the new use case
+     * @param model
+     *            the model that will contain the new use case
      */
-    UseCase(String useCaseName, Model useCaseModel) {
-	super(useCaseName, useCaseModel);
+    UseCase(String useCaseName, Model model) {
+	super(useCaseName, model);
 	this.nameToFlowMap = new LinkedHashMap<>();
 	this.nameToStepMap = new LinkedHashMap<>();
 	this.basicFlow = newFlow(BASIC_FLOW);

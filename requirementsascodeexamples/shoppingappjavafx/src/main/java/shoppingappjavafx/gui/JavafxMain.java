@@ -43,8 +43,8 @@ public class JavafxMain extends Application {
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {	
 		BuyProductRealization buyProductRealization = new BuyProductRealization(stock, display);
-		Model useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(modelBuilder);
-		modelRunner.run(useCaseModel);
+		Model model = new ShoppingAppModel(buyProductRealization).buildWith(modelBuilder);
+		modelRunner.run(model);
 	}
 
 	public static void main(String[] args) {

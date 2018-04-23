@@ -18,7 +18,7 @@ public class DisplaysPurchaseOrderSummary implements Consumer<ModelRunner> {
 	}
 
 	@Override
-	public void accept(ModelRunner useCaseModelRunner) {
+	public void accept(ModelRunner modelRunner) {
 		PurchaseOrder purchaseOrder = runContext.getPurchaseOrder();
 		display.displayPurchaseOrderSummary(purchaseOrder);
 	}

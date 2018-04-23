@@ -21,9 +21,9 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void createsNoUseCase() {
-	Model useCaseModel = modelBuilder.build();
+	Model model = modelBuilder.build();
 
-	Collection<UseCase> useCases = useCaseModel.getUseCases();
+	Collection<UseCase> useCases = model.getUseCases();
 	assertEquals(0, useCases.size());
     }
 
@@ -31,10 +31,10 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleUseCase() {
 	modelBuilder.useCase(USE_CASE);
 
-	Model useCaseModel = modelBuilder.build();
-	assertTrue(useCaseModel.hasUseCase(USE_CASE));
+	Model model = modelBuilder.build();
+	assertTrue(model.hasUseCase(USE_CASE));
 
-	Collection<UseCase> useCases = useCaseModel.getUseCases();
+	Collection<UseCase> useCases = model.getUseCases();
 	assertEquals(1, useCases.size());
 	assertEquals(USE_CASE, useCases.iterator().next().getName());
     }
@@ -44,10 +44,10 @@ public class BuildModelTest extends AbstractTestCase {
 	modelBuilder.useCase(USE_CASE);
 	modelBuilder.useCase(USE_CASE);
 
-	Model useCaseModel = modelBuilder.build();
-	assertTrue(useCaseModel.hasUseCase(USE_CASE));
+	Model model = modelBuilder.build();
+	assertTrue(model.hasUseCase(USE_CASE));
 
-	Collection<UseCase> useCases = useCaseModel.getUseCases();
+	Collection<UseCase> useCases = model.getUseCases();
 	assertEquals(1, useCases.size());
 	assertEquals(USE_CASE, useCases.iterator().next().getName());
     }
@@ -56,9 +56,9 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsTwoUseCasesInOneGo() {
 	modelBuilder.useCase(USE_CASE);
 	modelBuilder.useCase(USE_CASE_2);
-	Model useCaseModel = modelBuilder.build();
+	Model model = modelBuilder.build();
 
-	Collection<UseCase> useCases = useCaseModel.getUseCases();
+	Collection<UseCase> useCases = model.getUseCases();
 	assertEquals(2, useCases.size());
     }
 

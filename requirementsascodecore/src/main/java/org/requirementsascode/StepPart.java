@@ -22,7 +22,7 @@ public class StepPart {
     StepPart(Step step, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
 	this.step = step;
 	this.flowPart = useCaseFlowPart;
-	this.modelBuilder = useCasePart.getUseCaseModelBuilder();
+	this.modelBuilder = useCasePart.getModelBuilder();
 	this.userActor = modelBuilder.build().getUserActor();
 	this.systemActor = modelBuilder.build().getSystemActor();
     }
