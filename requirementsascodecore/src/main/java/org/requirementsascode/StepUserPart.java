@@ -7,7 +7,7 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoreIt;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @author b_muth
  */
@@ -25,7 +25,7 @@ public class StepUserPart<T> {
     /**
      * Defines the system reaction. The system will react as specified to the
      * current step's events, when you call
-     * {@link UseCaseModelRunner#reactTo(Object)}.
+     * {@link ModelRunner#reactTo(Object)}.
      *
      * @param systemReaction
      *            the specified system reaction

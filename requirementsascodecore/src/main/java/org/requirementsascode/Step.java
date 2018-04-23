@@ -11,7 +11,7 @@ import java.util.function.Predicate;
  *
  * <p>
  * A use case step is the core class of requirementsascode, providing all the
- * necessary configuration information to the {@link UseCaseModelRunner} to
+ * necessary configuration information to the {@link ModelRunner} to
  * cause the system to react to events.
  *
  * @author b_muth
@@ -20,12 +20,12 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     private UseCase useCase;
-    private Predicate<UseCaseModelRunner> reactWhile;
+    private Predicate<ModelRunner> reactWhile;
 
     private Actor[] actors;
     private Class<?> eventClass;
     private Consumer<?> systemReaction;
-    private Predicate<UseCaseModelRunner> when;
+    private Predicate<ModelRunner> when;
 
     /**
      * Creates a use case step with the specified name that belongs to the specified
@@ -40,25 +40,25 @@ public abstract class Step extends UseCaseModelElement implements Serializable {
 	this.useCase = useCase;
     }
 
-    public abstract Predicate<UseCaseModelRunner> getCondition();
+    public abstract Predicate<ModelRunner> getCondition();
 
     public UseCase getUseCase() {
 	return useCase;
     }
 
-    protected void setReactWhile(Predicate<UseCaseModelRunner> reactWhile) {
+    protected void setReactWhile(Predicate<ModelRunner> reactWhile) {
 	this.reactWhile = reactWhile;
     }
 
-    public Predicate<UseCaseModelRunner> getReactWhile() {
+    public Predicate<ModelRunner> getReactWhile() {
 	return reactWhile;
     }
 
-    void setWhen(Predicate<UseCaseModelRunner> when) {
+    void setWhen(Predicate<ModelRunner> when) {
 	this.when = when;
     }
 
-    public Optional<Predicate<UseCaseModelRunner>> getWhen() {
+    public Optional<Predicate<ModelRunner>> getWhen() {
 	return Optional.ofNullable(when);
     }
 

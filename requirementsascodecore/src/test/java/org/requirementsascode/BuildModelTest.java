@@ -16,12 +16,12 @@ import org.junit.Test;
 public class BuildModelTest extends AbstractTestCase {
     @Before
     public void setup() {
-	setupWith(new TestUseCaseModelRunner());
+	setupWith(new TestModelRunner());
     }
 
     @Test
     public void createsNoUseCase() {
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	Collection<UseCase> useCases = useCaseModel.getUseCases();
 	assertEquals(0, useCases.size());
@@ -31,7 +31,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleUseCase() {
 	useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 	assertTrue(useCaseModel.hasUseCase(USE_CASE));
 
 	Collection<UseCase> useCases = useCaseModel.getUseCases();
@@ -44,7 +44,7 @@ public class BuildModelTest extends AbstractTestCase {
 	useCaseModelBuilder.useCase(USE_CASE);
 	useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 	assertTrue(useCaseModel.hasUseCase(USE_CASE));
 
 	Collection<UseCase> useCases = useCaseModel.getUseCases();
@@ -56,7 +56,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsTwoUseCasesInOneGo() {
 	useCaseModelBuilder.useCase(USE_CASE);
 	useCaseModelBuilder.useCase(USE_CASE_2);
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	Collection<UseCase> useCases = useCaseModel.getUseCases();
 	assertEquals(2, useCases.size());
@@ -65,7 +65,7 @@ public class BuildModelTest extends AbstractTestCase {
     @Test
     public void implicitlyCreatesBasicFlow() {
 	useCaseModelBuilder.useCase(USE_CASE);
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	UseCase useCase = useCaseModel.findUseCase(USE_CASE);
 	Collection<Flow> flows = useCase.getFlows();
@@ -76,7 +76,7 @@ public class BuildModelTest extends AbstractTestCase {
     @Test
     public void createsNoSteps() {
 	useCaseModelBuilder.useCase(USE_CASE);
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	UseCase useCase = useCaseModel.findUseCase(USE_CASE);
 	Collection<Step> steps = useCase.getSteps();
@@ -87,7 +87,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesUserCommandWithUseCaseButWithoutFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart
 			.handles(EntersText.class).with(displaysEnteredText())
 		.build();
@@ -106,7 +106,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesUserCommandWithoutUseCaseAndWithoutFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart
 			.handles(EntersText.class).with(displaysEnteredText())
 		.build();
@@ -125,7 +125,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesUserCommandWithFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -144,7 +144,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesSystemEvent() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).handles(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -163,7 +163,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatPerformsSystemReactionAutomatically() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.build();
@@ -181,7 +181,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).as(customer).system(displaysConstantText())
 		.build();
@@ -206,7 +206,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleActorWithSingleUseCase() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -223,7 +223,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleActorWithSingleUseCaseStep() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -243,7 +243,7 @@ public class BuildModelTest extends AbstractTestCase {
 	Actor anotherActor = useCaseModelBuilder.actor("Another Actor");
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer, anotherActor).user(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -305,7 +305,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsTwoStepsWithActorAndFlow() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.step(SYSTEM_DISPLAYS_NUMBER).as(customer).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -424,7 +424,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void useCasesAreUniquelyIdentifiedByName() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.flow(ALTERNATIVE_FLOW)
@@ -453,7 +453,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void thereIsOnlyOneBasicFlowPerUseCase() {
 	useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 	UseCase uc = useCaseModel.findUseCase(USE_CASE);
 	assertEquals(1, uc.getFlows().size());
     }
@@ -462,7 +462,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void actorsCanBeReusedInUseCase() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 			.step(CUSTOMER_ENTERS_TEXT_AGAIN).as(customer).user(EntersText.class).system(displaysEnteredText())
@@ -483,7 +483,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void actorsCanBeReusedBetweenUseCases() {
 	UseCasePart useCasePart = useCaseModelBuilder.useCase(USE_CASE);
 
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		useCasePart.basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 		.useCase(USE_CASE_2)

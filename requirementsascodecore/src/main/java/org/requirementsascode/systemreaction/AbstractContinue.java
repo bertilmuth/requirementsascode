@@ -4,9 +4,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.FlowStep;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
-public abstract class AbstractContinue implements Consumer<UseCaseModelRunner>{
+public abstract class AbstractContinue implements Consumer<ModelRunner>{
 	private String stepName;
 	private FlowStep previousStep;
 	
@@ -17,7 +17,7 @@ public abstract class AbstractContinue implements Consumer<UseCaseModelRunner>{
 	}
 	
 	@Override
-	public void accept(UseCaseModelRunner runner) {
+	public void accept(ModelRunner runner) {
 		runner.setLatestStep(previousStep);
 	}
 	

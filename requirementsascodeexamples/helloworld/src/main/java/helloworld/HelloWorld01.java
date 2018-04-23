@@ -1,13 +1,13 @@
 package helloworld;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 
 public class HelloWorld01 {	
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-		UseCaseModel useCaseModel = 
+	public Model buildWith(ModelBuilder modelBuilder) {
+		Model useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::greetsUser)
@@ -15,7 +15,7 @@ public class HelloWorld01 {
 		return useCaseModel;
 	}
 
-	private void greetsUser(UseCaseModelRunner runner) {
+	private void greetsUser(ModelRunner runner) {
 		System.out.println("Hello, User.");
 	}
 	
@@ -25,7 +25,7 @@ public class HelloWorld01 {
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
-		new UseCaseModelRunner().run(useCaseModel);
+		Model useCaseModel = buildWith(Model.builder());
+		new ModelRunner().run(useCaseModel);
 	}
 }

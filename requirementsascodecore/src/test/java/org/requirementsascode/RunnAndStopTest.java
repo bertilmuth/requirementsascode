@@ -9,7 +9,7 @@ public class RunnAndStopTest extends AbstractTestCase {
 
     @Before
     public void setUp() throws Exception {
-	setupWith(new TestUseCaseModelRunner());
+	setupWith(new TestModelRunner());
 
     }
 
@@ -20,7 +20,7 @@ public class RunnAndStopTest extends AbstractTestCase {
 
     @Test
     public void useCaseModelRunnerIsRunningAfterRunCall() {
-	UseCaseModel model = useCaseModelBuilder.build();
+	Model model = useCaseModelBuilder.build();
 	useCaseModelRunner.run(model);
 	assertTrue(useCaseModelRunner.isRunning());
     }
@@ -33,7 +33,7 @@ public class RunnAndStopTest extends AbstractTestCase {
 
     @Test
     public void useCaseModelRunnerIsNotRunningWhenBeingStoppedAfterRunCall() {
-	UseCaseModel model = useCaseModelBuilder.build();
+	Model model = useCaseModelBuilder.build();
 	useCaseModelRunner.run(model);
 	useCaseModelRunner.stop();
 	assertFalse(useCaseModelRunner.isRunning());

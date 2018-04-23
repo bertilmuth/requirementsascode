@@ -1,16 +1,16 @@
 package org.requirementsascode;
 
 /**
- * Class that builds a {@link UseCaseModel}, in a fluent way.
+ * Class that builds a {@link Model}, in a fluent way.
  *
  * @author b_muth
  */
-public class UseCaseModelBuilder {
+public class ModelBuilder {
 
-    private UseCaseModel useCaseModel;
+    private Model model;
 
-    UseCaseModelBuilder(UseCaseModel useCaseModel) {
-	this.useCaseModel = useCaseModel;
+    ModelBuilder(Model useCaseModel) {
+	this.model = useCaseModel;
     }
 
     /**
@@ -22,8 +22,8 @@ public class UseCaseModelBuilder {
      * @return the created / found actor.
      */
     public Actor actor(String actorName) {
-	Actor actor = useCaseModel.hasActor(actorName) ? useCaseModel.findActor(actorName)
-		: useCaseModel.newActor(actorName);
+	Actor actor = model.hasActor(actorName) ? model.findActor(actorName)
+		: model.newActor(actorName);
 	return actor;
     }
 
@@ -37,8 +37,8 @@ public class UseCaseModelBuilder {
      * @return the created / found use case's part.
      */
     public UseCasePart useCase(String useCaseName) {
-	UseCase useCase = useCaseModel.hasUseCase(useCaseName) ? useCaseModel.findUseCase(useCaseName)
-		: useCaseModel.newUseCase(useCaseName);
+	UseCase useCase = model.hasUseCase(useCaseName) ? model.findUseCase(useCaseName)
+		: model.newUseCase(useCaseName);
 
 	return new UseCasePart(useCase, this);
     }
@@ -48,7 +48,7 @@ public class UseCaseModelBuilder {
      *
      * @return the use case model
      */
-    public UseCaseModel build() {
-	return useCaseModel;
+    public Model build() {
+	return model;
     }
 }

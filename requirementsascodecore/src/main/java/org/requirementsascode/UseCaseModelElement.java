@@ -14,7 +14,7 @@ abstract class UseCaseModelElement implements Serializable {
     private static final long serialVersionUID = 4955023531983786087L;
 
     private String name;
-    private UseCaseModel useCaseModel;
+    private Model useCaseModel;
 
     /**
      * Creates a new element that is a part of the specified use case model.
@@ -24,7 +24,7 @@ abstract class UseCaseModelElement implements Serializable {
      * @param useCaseModel
      *            the use case model that will contain the element
      */
-    UseCaseModelElement(String name, UseCaseModel useCaseModel) {
+    UseCaseModelElement(String name, Model useCaseModel) {
 	Objects.requireNonNull(name);
 	Objects.requireNonNull(useCaseModel);
 	this.name = name;
@@ -45,7 +45,7 @@ abstract class UseCaseModelElement implements Serializable {
      *
      * @return the use case model
      */
-    public UseCaseModel getUseCaseModel() {
+    public Model getUseCaseModel() {
 	return useCaseModel;
     }
 

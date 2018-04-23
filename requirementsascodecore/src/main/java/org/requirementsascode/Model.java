@@ -16,12 +16,19 @@ import java.util.stream.Collectors;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
- * A use case model is a container for use cases and their associated actors. It
- * is used to configure a {@link UseCaseModelRunner}.
+ * A model is a container for events/commands and the system reactions 
+ * that handle them.
+ * 
+ * Either implicitly or explicitly, the model contains use cases and their
+ * contained use case steps. Each step contains the event/command and
+ * the system reaction, the condition under which it is executed and the
+ * actors it is associated with.
+ * 
+ * A model is used to configure a {@link ModelRunner}.
  *
  * @author b_muth
  */
-public class UseCaseModel implements Serializable {
+public class Model implements Serializable {
     private static final long serialVersionUID = -410733530299609758L;
 
     private Map<String, Actor> nameToActorMap;
@@ -29,7 +36,7 @@ public class UseCaseModel implements Serializable {
     private Actor userActor;
     private Actor systemActor;
 
-    UseCaseModel() {
+    Model() {
 	this.nameToActorMap = new LinkedHashMap<>();
 	this.nameToUseCaseMap = new LinkedHashMap<>();
 	this.userActor = newActor("User");
@@ -41,8 +48,8 @@ public class UseCaseModel implements Serializable {
      * use the builder returned by this method.
      * @return the builder.
      */
-    public static UseCaseModelBuilder builder() {
-	return new UseCaseModelBuilder(new UseCaseModel());
+    public static ModelBuilder builder() {
+	return new ModelBuilder(new Model());
     }
 
     /**

@@ -1,15 +1,15 @@
 package shoppingappjavafx.gui.controller;
 
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
 public abstract class AbstractController {
-	private UseCaseModelRunner useCaseModelRunner;
+	private ModelRunner useCaseModelRunner;
 
-	public UseCaseModelRunner useCaseModelRunner() {
+	public ModelRunner useCaseModelRunner() {
 		return useCaseModelRunner;
 	}
 
-	public void setUseCaseModelRunner(UseCaseModelRunner useCaseModelRunner) {
+	public void setUseCaseModelRunner(ModelRunner useCaseModelRunner) {
 		this.useCaseModelRunner = useCaseModelRunner;
 	}
 }

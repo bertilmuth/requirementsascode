@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseModelRunner;
-import org.requirementsascode.UseCaseModel;
+import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.Model;
 
 import hexagon.adapter.stub.RepositoryStub;
 import hexagon.adapter.stub.WriterStub;
@@ -13,8 +13,8 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class FeelStuffUseCaseTest {
 
-  private UseCaseModel useCaseModel;
-  private TestUseCaseModelRunner testRunner;
+  private Model useCaseModel;
+  private TestModelRunner testRunner;
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
 
   @Before
@@ -23,8 +23,8 @@ public class FeelStuffUseCaseTest {
         new FeelStuffUseCaseRealization(new WriterStub(), new RepositoryStub());
     useCaseModel =
         new HexagonUseCaseModel(feelStuffUseCaseRealization)
-            .buildWith(UseCaseModel.builder());
-    testRunner = new TestUseCaseModelRunner();
+            .buildWith(Model.builder());
+    testRunner = new TestModelRunner();
   }
 
   @Test

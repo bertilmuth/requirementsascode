@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseModelRunner;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
+import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
 
 import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
@@ -24,13 +24,13 @@ import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
 public class BuyProductRealizationTest {
-	private TestUseCaseModelRunner useCaseModelRunner;
-	private UseCaseModel useCaseModel;
+	private TestModelRunner useCaseModelRunner;
+	private Model useCaseModel;
 
 	@Before
 	public void setUp() throws Exception {
-		useCaseModelRunner = new TestUseCaseModelRunner();
-		UseCaseModelBuilder modelBuilder = UseCaseModel.builder();
+		useCaseModelRunner = new TestModelRunner();
+		ModelBuilder modelBuilder = Model.builder();
 		
 		Stock stock = new Stock();
 		Display displayStub = new DisplayStub();

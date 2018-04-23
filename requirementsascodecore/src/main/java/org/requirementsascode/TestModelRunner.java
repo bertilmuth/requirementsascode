@@ -1,16 +1,16 @@
 package org.requirementsascode;
 
 /**
- * Simple use case model runner for automated tests.
+ * Simple model runner for automated tests.
  *
  * @author b_muth
  */
-public class TestUseCaseModelRunner extends UseCaseModelRunner {
+public class TestModelRunner extends ModelRunner {
     private static final long serialVersionUID = 1161211712610795119L;
 
     private StringBuilder runStepNames;
 
-    public TestUseCaseModelRunner() {
+    public TestModelRunner() {
 	runStepNames = new StringBuilder();
 	adaptSystemReaction(this::withStepNameTracking);
     }

@@ -33,7 +33,7 @@ public class Actor extends UseCaseModelElement implements Serializable {
      * @param useCaseModel
      *            the use case model
      */
-    Actor(String name, UseCaseModel useCaseModel) {
+    Actor(String name, Model useCaseModel) {
 	super(name, useCaseModel);
 	this.useCaseToStepMap = new HashMap<>();
     }

@@ -4,21 +4,21 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestUseCaseModelRunner;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
+import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
 
 import helloworld.userevent.EntersText;
 
 public class HelloWorldTest {
-	private TestUseCaseModelRunner modelRunner;
-	private UseCaseModel useCaseModel;
-	private UseCaseModelBuilder modelBuilder;
+	private TestModelRunner modelRunner;
+	private Model useCaseModel;
+	private ModelBuilder modelBuilder;
 	
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new TestUseCaseModelRunner();
-		modelBuilder = UseCaseModel.builder();
+		modelRunner = new TestModelRunner();
+		modelBuilder = Model.builder();
 	}
 
 	@Test

@@ -1,17 +1,17 @@
 package crosscuttingconcerns;
 
 import org.requirementsascode.SystemReactionTrigger;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 
 public class CrossCuttingConcerns01 {
 	private int resultOfAddition;
 	private double resultOfPower;
 	
 	public void start() {		
-		UseCaseModelBuilder useCaseModelBuilder = UseCaseModel.builder();
-		UseCaseModel useCaseModel = 
+		ModelBuilder useCaseModelBuilder = Model.builder();
+		Model useCaseModel = 
 			useCaseModelBuilder.useCase("Measure performance of simple mathematical operations")
 				.basicFlow()
 					.step("S1").system(this::addsTwoNumbers)
@@ -19,7 +19,7 @@ public class CrossCuttingConcerns01 {
 					.step("S3").system(this::displaysResults)
 			.build();
 		
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+		ModelRunner useCaseModelRunner = new ModelRunner();
 		useCaseModelRunner.adaptSystemReaction(this::measuresPerformance);
 		useCaseModelRunner.run(useCaseModel);
 	}
@@ -34,15 +34,15 @@ public class CrossCuttingConcerns01 {
 				" took " + timeElapsed + " nanoseconds.");
 	}
 
-	private void addsTwoNumbers(UseCaseModelRunner runner) {
+	private void addsTwoNumbers(ModelRunner runner) {
 		resultOfAddition = 123456789 + 123456789;
 	}
 	
-	private void calculatesTwoToThePowerOfAThousand(UseCaseModelRunner runner) {
+	private void calculatesTwoToThePowerOfAThousand(ModelRunner runner) {
 		resultOfPower = Math.pow(2, 1000);
 	}
 	
-	private void displaysResults(UseCaseModelRunner runner) {
+	private void displaysResults(ModelRunner runner) {
 		System.out.println("Result of addition: " + resultOfAddition);	
 		System.out.println("Result of 2 to the power of a thousand = " + resultOfPower);	
 	}

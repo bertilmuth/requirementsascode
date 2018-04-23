@@ -18,7 +18,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 
     @Before
     public void setup() {
-	setupWith(new TestUseCaseModelRunner());
+	setupWith(new TestModelRunner());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 	thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder
+	Model useCaseModel = useCaseModelBuilder
 		.useCase(USE_CASE)
 			.basicFlow().anytime()
 				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
@@ -108,7 +108,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	thrown.expectMessage("Step 1");
 	thrown.expectMessage("Step 2 with same event as Step 1");
 
-	UseCaseModel useCaseModel = useCaseModelBuilder
+	Model useCaseModel = useCaseModelBuilder
 		.useCase("Use Case")
 			.basicFlow()
 				.step("Step 1").user(String.class).system(s -> System.out.println(s))
@@ -128,7 +128,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 
 	useCaseModelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	useCaseModelRunner.run(useCaseModel);
     }
@@ -141,7 +141,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	useCaseModelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).as(customer)
 		.user(EntersText.class);
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	useCaseModelRunner.as(customer).run(useCaseModel);
 	useCaseModelRunner.reactTo(entersText());
@@ -156,7 +156,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	    throw new IllegalStateException();
 	});
 
-	UseCaseModel useCaseModel = useCaseModelBuilder.build();
+	Model useCaseModel = useCaseModelBuilder.build();
 
 	useCaseModelRunner.run(useCaseModel);
     }

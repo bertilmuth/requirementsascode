@@ -1,7 +1,7 @@
 package hexagon;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 
 import hexagon.adapter.RepositoryAdapter;
 import hexagon.adapter.WriterAdapter;
@@ -11,8 +11,8 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
 public class HexagonApplication {
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
-  private UseCaseModel useCaseModel;
-  private UseCaseModelRunner runner;
+  private Model useCaseModel;
+  private ModelRunner runner;
 
   public static void main(String[] args) {
     new HexagonApplication().start();
@@ -21,9 +21,9 @@ public class HexagonApplication {
   private void start() {
     feelStuffUseCaseRealization = new FeelStuffUseCaseRealization(new WriterAdapter(), new RepositoryAdapter());
     useCaseModel = 
-      new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(UseCaseModel.builder());
+      new HexagonUseCaseModel(feelStuffUseCaseRealization).buildWith(Model.builder());
     
-    runner = new UseCaseModelRunner();
+    runner = new ModelRunner();
     runner.run(useCaseModel);
     runner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
   }

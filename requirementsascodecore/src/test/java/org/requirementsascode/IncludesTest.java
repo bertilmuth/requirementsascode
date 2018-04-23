@@ -8,12 +8,12 @@ import org.junit.Test;
 public class IncludesTest extends AbstractTestCase{
     @Before
     public void setup() {
-      setupWith(new TestUseCaseModelRunner());
+      setupWith(new TestModelRunner());
     }
     
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withoutCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -34,7 +34,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withAnytimeCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -56,7 +56,7 @@ public class IncludesTest extends AbstractTestCase{
 
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withFalseCondition_cantReact() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -76,7 +76,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_withoutCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -99,7 +99,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_witAnytimeCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -123,7 +123,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_witInsteadOfCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -146,7 +146,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_withFalseCondition_cantReact() {
-      UseCaseModel useCaseModel = useCaseModelBuilder
+      Model useCaseModel = useCaseModelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
             .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -168,7 +168,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withoutCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -192,7 +192,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withAnytimeCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -217,7 +217,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withFalseCondition_cantReact() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -239,7 +239,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withoutCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -265,7 +265,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withAnytimeCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -292,7 +292,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withInsteadOfCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -318,7 +318,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withFalseCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -342,7 +342,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includeUseCaseTwoConsecutiveTimes() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -369,7 +369,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includeUseCaseTwoNonConsecutiveTimes() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -396,7 +396,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includeUseCaseFromTwoDifferentUseCases() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -428,7 +428,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includedUseCaseCanBeRunOnItsOwn() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -446,7 +446,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseThatIncludesUseCase_withoutCondition() {
-    UseCaseModel useCaseModel = useCaseModelBuilder
+    Model useCaseModel = useCaseModelBuilder
       .useCase(USE_CASE_2)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())

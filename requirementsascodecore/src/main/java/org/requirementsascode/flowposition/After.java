@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import org.requirementsascode.Step;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
 /**
  * Tests whether the specified step was the last step run.
@@ -26,7 +26,7 @@ public class After extends FlowPosition implements Serializable {
     }
 
     @Override
-    public boolean isRunnerAtRightPositionFor(Step step, UseCaseModelRunner useCaseModelRunner) {
+    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner useCaseModelRunner) {
 	Step latestStepRun = useCaseModelRunner.getLatestStep().orElse(null);
 	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
 	return stepWasRunLast;

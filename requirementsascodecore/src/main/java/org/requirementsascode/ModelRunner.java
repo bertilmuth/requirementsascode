@@ -29,13 +29,13 @@ import org.requirementsascode.exception.UnhandledException;
  * owns. Each real user needs an instance of a runner, as the runner determines
  * the journey of the user through the use cases.
  */
-public class UseCaseModelRunner implements Serializable {
+public class ModelRunner implements Serializable {
     private static final long serialVersionUID = 1787451244764017381L;
 
     private Actor user;
     private List<Actor> userAndSystem;
 
-    private UseCaseModel useCaseModel;
+    private Model useCaseModel;
     private Step latestStep;
     private boolean isRunning;
     private SystemReactionTrigger systemReactionTrigger;
@@ -50,7 +50,7 @@ public class UseCaseModelRunner implements Serializable {
      * Constructor for creating a runner with standard system reaction, that is: the
      * system reaction, as defined in the use case step, simply accepts an event.
      */
-    public UseCaseModelRunner() {
+    public ModelRunner() {
 	this.systemReactionTrigger = new SystemReactionTrigger();
 
 	adaptSystemReaction(new DirectSystemReactionTrigger());
@@ -101,7 +101,7 @@ public class UseCaseModelRunner implements Serializable {
      * @param useCaseModel
      *            the model that defines the runner's behavior
      */
-    public void run(UseCaseModel useCaseModel) {
+    public void run(Model useCaseModel) {
 	this.useCaseModel = useCaseModel;
 	this.userAndSystem = userAndSystem(user != null ? user : useCaseModel.getUserActor());
 	this.isRunning = true;
@@ -127,9 +127,9 @@ public class UseCaseModelRunner implements Serializable {
      *
      * @param actor
      *            the actor to run as
-     * @return this runner, for method chaining with {@link #run(UseCaseModel)}
+     * @return this runner, for method chaining with {@link #run(Model)}
      */
-    public UseCaseModelRunner as(Actor actor) {
+    public ModelRunner as(Actor actor) {
 	Objects.requireNonNull(actor);
 
 	this.user = actor;
@@ -140,7 +140,7 @@ public class UseCaseModelRunner implements Serializable {
     /**
      * Returns whether the runner is currently running.
      *
-     * @see #run(UseCaseModel)
+     * @see #run(Model)
      * @return true if the runner is running, false otherwise.
      */
     public boolean isRunning() {
@@ -149,7 +149,7 @@ public class UseCaseModelRunner implements Serializable {
 
     /**
      * Stops the runner. It will not be reacting to events, until
-     * {@link #run(UseCaseModel)} is called again.
+     * {@link #run(Model)} is called again.
      */
     public void stop() {
 	isRunning = false;
@@ -344,7 +344,7 @@ public class UseCaseModelRunner implements Serializable {
     }
 
     private boolean hasTrueCondition(Step step) {
-	Predicate<UseCaseModelRunner> condition = step.getCondition();
+	Predicate<ModelRunner> condition = step.getCondition();
 	boolean result = condition.test(this);
 	return result;
     }

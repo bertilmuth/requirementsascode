@@ -2,7 +2,7 @@ package shoppingappjavafx.gui;
 
 import java.io.IOException;
 
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,12 +20,12 @@ import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
 public class JavafxDisplay implements Display{
 	private static final String RELATIVE_FXML_PACKAGE_NAME = "fxml";
-	private UseCaseModelRunner useCaseModelRunner;
+	private ModelRunner useCaseModelRunner;
 	private Stage primaryStage;
 	private VBox vBox;
 	private AbstractController controller;
 	
-	public JavafxDisplay(UseCaseModelRunner useCaseModelRunner, Stage primaryStage) {
+	public JavafxDisplay(ModelRunner useCaseModelRunner, Stage primaryStage) {
 		this.useCaseModelRunner = useCaseModelRunner;
 		this.primaryStage = primaryStage;
 }

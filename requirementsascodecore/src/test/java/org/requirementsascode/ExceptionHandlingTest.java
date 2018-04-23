@@ -9,12 +9,12 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseModelRunner());
+		setupWith(new TestModelRunner());
 	}
 	
 	@Test
 	public void doesNotHandleExceptionIfNoExceptionOccurs() {
-		UseCaseModel useCaseModel = 
+		Model useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -29,7 +29,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotHandleExceptionIfSystemReactionDoesNotThrowException() {	
-		UseCaseModel useCaseModel = 
+		Model useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
@@ -44,7 +44,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void handlesExceptionAfterSpecificStep() {	
-		UseCaseModel useCaseModel = 
+		Model useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())		
@@ -59,7 +59,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void handlesExceptionAtAnyTime() {
-		UseCaseModel useCaseModel = 
+		Model useCaseModel = 
 			useCaseModelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		

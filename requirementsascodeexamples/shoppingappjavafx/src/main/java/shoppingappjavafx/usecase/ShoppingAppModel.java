@@ -1,7 +1,7 @@
 package shoppingappjavafx.usecase;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
 
 import shoppingappjavafx.usecase.userevent.AddsProductToCart;
 import shoppingappjavafx.usecase.userevent.StartsCheckoutProcess;
@@ -69,8 +69,8 @@ public class ShoppingAppModel {
    * @param modelBuilder the builder used
    * @return the created model
    */
-  public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-		UseCaseModel useCaseModel = modelBuilder.useCase("Buy product")
+  public Model buildWith(ModelBuilder modelBuilder) {
+		Model useCaseModel = modelBuilder.useCase("Buy product")
 			.basicFlow()
 				.step("S1").system(startsWithEmptyShoppingCart)
 				.step("S2").system(displaysProducts)

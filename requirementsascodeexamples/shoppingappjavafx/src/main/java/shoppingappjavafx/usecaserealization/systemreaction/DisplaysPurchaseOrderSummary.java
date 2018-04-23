@@ -2,13 +2,13 @@ package shoppingappjavafx.usecaserealization.systemreaction;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;
 import shoppingappjavafx.usecaserealization.componentinterface.Display;
 
-public class DisplaysPurchaseOrderSummary implements Consumer<UseCaseModelRunner> {
+public class DisplaysPurchaseOrderSummary implements Consumer<ModelRunner> {
 	private RunContext runContext;
 	private Display display;
 
@@ -18,7 +18,7 @@ public class DisplaysPurchaseOrderSummary implements Consumer<UseCaseModelRunner
 	}
 
 	@Override
-	public void accept(UseCaseModelRunner useCaseModelRunner) {
+	public void accept(ModelRunner useCaseModelRunner) {
 		PurchaseOrder purchaseOrder = runContext.getPurchaseOrder();
 		display.displayPurchaseOrderSummary(purchaseOrder);
 	}

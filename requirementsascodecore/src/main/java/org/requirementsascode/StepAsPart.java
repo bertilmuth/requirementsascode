@@ -8,7 +8,7 @@ import org.requirementsascode.systemreaction.ContinuesAt;
 import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @see Step#setActors(Actor[])
  * @author b_muth
@@ -55,17 +55,17 @@ public class StepAsPart {
     /**
      * Defines an "autonomous system reaction", meaning the system will react
      * without needing an event provided via
-     * {@link UseCaseModelRunner#reactTo(Object)}. Instead, the use case model
+     * {@link ModelRunner#reactTo(Object)}. Instead, the use case model
      * runner provides itself as an event to the system reaction.
      *
      * @param systemReaction
      *            the autonomous system reaction
      * @return the created system part of this step
      */
-    public StepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
+    public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
 	Objects.requireNonNull(systemReaction);
 
-	StepSystemPart<UseCaseModelRunner> systemPart = user(UseCaseModelRunner.class).system(systemReaction);
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(systemReaction);
 	return systemPart;
     }
 

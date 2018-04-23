@@ -7,7 +7,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.IncludesUseCase;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @see Step
  * @author b_muth
@@ -15,7 +15,7 @@ import org.requirementsascode.systemreaction.IncludesUseCase;
 public class StepPart {
     private Step step;
     private FlowPart flowPart;
-    private UseCaseModelBuilder useCaseModelBuilder;
+    private ModelBuilder useCaseModelBuilder;
     private Actor userActor;
     private Actor systemActor;
 
@@ -88,17 +88,17 @@ public class StepPart {
     /**
      * Defines an "autonomous system reaction", meaning the system will react
      * without needing an event provided via
-     * {@link UseCaseModelRunner#reactTo(Object)}. Instead, the use case model
+     * {@link ModelRunner#reactTo(Object)}. Instead, the use case model
      * runner provides itself as an event to the system reaction.
      *
      * @param systemReaction
      *            the autonomous system reaction
      * @return the created system part of this step
      */
-    public StepSystemPart<UseCaseModelRunner> system(Consumer<UseCaseModelRunner> systemReaction) {
+    public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
 	Objects.requireNonNull(systemReaction);
 
-	StepSystemPart<UseCaseModelRunner> systemPart = as(systemActor).system(systemReaction);
+	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
 	return systemPart;
     }
 
@@ -173,10 +173,10 @@ public class StepPart {
      * @throws NoSuchElementInModel
      *             if the included use case has not been specified before
      */
-    public StepSystemPart<UseCaseModelRunner> includesUseCase(String useCaseName) {
+    public StepSystemPart<ModelRunner> includesUseCase(String useCaseName) {
 	FlowStep flowStep = (FlowStep)step;
 	UseCase includedUseCase = flowStep.getUseCaseModel().findUseCase(useCaseName);
-	StepSystemPart<UseCaseModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, flowStep));
+	StepSystemPart<ModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, flowStep));
 	
 	flowStep.includeUseCase(includedUseCase);
 	
@@ -195,7 +195,7 @@ public class StepPart {
 	return getFlowPart().getUseCasePart();
     }
 
-    UseCaseModelBuilder getUseCaseModelBuilder() {
+    ModelBuilder getUseCaseModelBuilder() {
 	return useCaseModelBuilder;
     }
 }

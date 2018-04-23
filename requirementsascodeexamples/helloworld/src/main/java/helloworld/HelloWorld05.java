@@ -1,8 +1,8 @@
 package helloworld;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 
 import helloworld.userevent.EntersText;
 
@@ -17,8 +17,8 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 	private String firstName;
 	private int age;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-		UseCaseModel useCaseModel = 
+	public Model buildWith(ModelBuilder modelBuilder) {
+		Model useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::promptsUserToEnterFirstName)
@@ -39,11 +39,11 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 		return useCaseModel;
 	}
 
-	private void promptsUserToEnterFirstName(UseCaseModelRunner runner) {
+	private void promptsUserToEnterFirstName(ModelRunner runner) {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptsUserToEnterAge(UseCaseModelRunner runner) {
+	private void promptsUserToEnterAge(ModelRunner runner) {
 		System.out.print("Please enter your age: ");
 	}
 
@@ -55,15 +55,15 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetsUserWithFirstNameAndAge(UseCaseModelRunner runner) {
+	private void greetsUserWithFirstNameAndAge(ModelRunner runner) {
 		System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
-	private boolean ageIsOutOfBounds(UseCaseModelRunner runner) {
+	private boolean ageIsOutOfBounds(ModelRunner runner) {
 		return age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private void informsUserAboutOutOfBoundsAge(UseCaseModelRunner runner) {
+	private void informsUserAboutOutOfBoundsAge(ModelRunner runner) {
 		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	
@@ -77,8 +77,8 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+		Model useCaseModel = buildWith(Model.builder());
+		ModelRunner useCaseModelRunner = new ModelRunner();
 		useCaseModelRunner.run(useCaseModel);			
 		while(!systemStopped())
 			useCaseModelRunner.reactTo(entersText());	

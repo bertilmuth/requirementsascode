@@ -2,9 +2,9 @@ package shoppingappjavafx.gui;
 
 import java.io.IOException;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -13,8 +13,8 @@ import shoppingappjavafx.usecase.ShoppingAppModel;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
 
 public class JavafxMain extends Application {
-	private UseCaseModelBuilder modelBuilder;
-	private UseCaseModelRunner modelRunner;
+	private ModelBuilder modelBuilder;
+	private ModelRunner modelRunner;
 	private Stock stock;
 	private JavafxDisplay display;
 
@@ -31,8 +31,8 @@ public class JavafxMain extends Application {
 	}
 
 	private void createModelBuilderAndRunner() {
-		this.modelBuilder = UseCaseModel.builder();
-		this.modelRunner = new UseCaseModelRunner();
+		this.modelBuilder = Model.builder();
+		this.modelRunner = new ModelRunner();
 	}
 
 	private void createAndShowDisplay(Stage primaryStage) throws IOException {
@@ -43,7 +43,7 @@ public class JavafxMain extends Application {
 	
 	public void createAndRunUseCaseRealization(Stage primaryStage) {	
 		BuyProductRealization buyProductRealization = new BuyProductRealization(stock, display);
-		UseCaseModel useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(modelBuilder);
+		Model useCaseModel = new ShoppingAppModel(buyProductRealization).buildWith(modelBuilder);
 		modelRunner.run(useCaseModel);
 	}
 

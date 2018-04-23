@@ -9,9 +9,9 @@ public class InterruptingFlowStep extends FlowStep {
 	super(stepName, useCase, useCaseFlow);
     }
 
-    public Predicate<UseCaseModelRunner> getCondition() {
-	Predicate<UseCaseModelRunner> condition;
-	Predicate<UseCaseModelRunner> reactWhile = getReactWhile();
+    public Predicate<ModelRunner> getCondition() {
+	Predicate<ModelRunner> condition;
+	Predicate<ModelRunner> reactWhile = getReactWhile();
 
 	if (reactWhile != null) {
 	    condition = reactWhile;
@@ -22,16 +22,16 @@ public class InterruptingFlowStep extends FlowStep {
 	return condition;
     }
 
-    private Predicate<UseCaseModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
-	Predicate<UseCaseModelRunner> flowPosition = getFlowPosition();
-	Predicate<UseCaseModelRunner> when = getWhen().orElse(r -> true);
+    private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
+	Predicate<ModelRunner> flowPosition = getFlowPosition();
+	Predicate<ModelRunner> when = getWhen().orElse(r -> true);
 
-	Predicate<UseCaseModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition).and(when);
+	Predicate<ModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition).and(when);
 	return flowCondition;
     }
 
-    private Predicate<UseCaseModelRunner> isRunnerInDifferentFlow() {
-	Predicate<UseCaseModelRunner> isRunnerInDifferentFlow = runner -> runner.getLatestFlow()
+    private Predicate<ModelRunner> isRunnerInDifferentFlow() {
+	Predicate<ModelRunner> isRunnerInDifferentFlow = runner -> runner.getLatestFlow()
 		.map(runnerFlow -> !runnerFlow.equals(getFlow())).orElse(true);
 	return isRunnerInDifferentFlow;
     }

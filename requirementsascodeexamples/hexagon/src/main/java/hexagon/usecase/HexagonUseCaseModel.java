@@ -1,7 +1,7 @@
 package hexagon.usecase;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
 
 import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 
@@ -14,8 +14,8 @@ public class HexagonUseCaseModel {
     asksForPoem = AsksForPoem.class;
   }
   
-  public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-    UseCaseModel useCaseModel = modelBuilder.useCase("Feel Stuff")
+  public Model buildWith(ModelBuilder modelBuilder) {
+    Model useCaseModel = modelBuilder.useCase("Feel Stuff")
       .basicFlow()
         .step("1").user(asksForPoem).system(feelStuffUseCaseRealization::writesSadPoem)
         .step("2").user(asksForPoem).system(feelStuffUseCaseRealization::writesHappyPoem)

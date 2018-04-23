@@ -50,7 +50,7 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      * @param useCaseModel
      *            the use case model that will contain the new use case
      */
-    UseCase(String useCaseName, UseCaseModel useCaseModel) {
+    UseCase(String useCaseName, Model useCaseModel) {
 	super(useCaseName, useCaseModel);
 	this.nameToFlowMap = new LinkedHashMap<>();
 	this.nameToStepMap = new LinkedHashMap<>();
@@ -126,7 +126,7 @@ public class UseCase extends UseCaseModelElement implements Serializable {
      * @return the newly created step
      */
     InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
-	    Predicate<UseCaseModelRunner> when) {
+	    Predicate<ModelRunner> when) {
 	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
 	if(flowPosition == null) {
 	    flowPosition = new Anytime();

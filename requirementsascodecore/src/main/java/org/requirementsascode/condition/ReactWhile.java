@@ -5,27 +5,27 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.requirementsascode.FlowStep;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 import org.requirementsascode.flowposition.FlowPosition;
 
-public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable {
+public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     private static final long serialVersionUID = -3190093346311188647L;
 
-    private Predicate<UseCaseModelRunner> completeCondition;
-    private Predicate<UseCaseModelRunner> reactWhileCondition;
+    private Predicate<ModelRunner> completeCondition;
+    private Predicate<ModelRunner> reactWhileCondition;
 
-    public ReactWhile(FlowStep step, Predicate<UseCaseModelRunner> reactWhileCondition) {
+    public ReactWhile(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
 	Objects.requireNonNull(step);
 	Objects.requireNonNull(reactWhileCondition);
 	createReactWhileCondition(step, reactWhileCondition);
     }
     
     @Override
-    public boolean test(UseCaseModelRunner useCaseModelRunner) {
+    public boolean test(ModelRunner useCaseModelRunner) {
 	return completeCondition.test(useCaseModelRunner);
     }
 
-    private void createReactWhileCondition(FlowStep step, Predicate<UseCaseModelRunner> reactWhileCondition) {
+    private void createReactWhileCondition(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
 	completeCondition = step.getCondition().and(reactWhileCondition);
 	createLoop(step);
 	this.reactWhileCondition = reactWhileCondition;
@@ -36,7 +36,7 @@ public class ReactWhile implements Predicate<UseCaseModelRunner>, Serializable {
 	flowPosition.orAfter(step);
     }
 
-    public Predicate<UseCaseModelRunner> getReactWhileCondition() {
+    public Predicate<ModelRunner> getReactWhileCondition() {
 	return reactWhileCondition;
     }
 

@@ -4,16 +4,16 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @see UseCase
  * @author b_muth
  */
 public class UseCasePart {
     private UseCase useCase;
-    private UseCaseModelBuilder useCaseModelBuilder;
+    private ModelBuilder useCaseModelBuilder;
 
-    UseCasePart(UseCase useCase, UseCaseModelBuilder useCaseModelBuilder) {
+    UseCasePart(UseCase useCase, ModelBuilder useCaseModelBuilder) {
 	this.useCase = useCase;
 	this.useCaseModelBuilder = useCaseModelBuilder;
     }
@@ -45,7 +45,7 @@ public class UseCasePart {
 	return useCase;
     }
 
-    UseCaseModelBuilder getUseCaseModelBuilder() {
+    ModelBuilder getUseCaseModelBuilder() {
 	return useCaseModelBuilder;
     }
 
@@ -54,7 +54,7 @@ public class UseCasePart {
      * 
      * @return the model
      */
-    public UseCaseModel build() {
+    public Model build() {
 	return useCaseModelBuilder.build();
     }
 
@@ -64,16 +64,16 @@ public class UseCasePart {
 	return flowlessUserPart;
     }
 
-    public WhenPart when(Predicate<UseCaseModelRunner> whenCondition) {
+    public WhenPart when(Predicate<ModelRunner> whenCondition) {
 	WhenPart whenPart = new WhenPart(whenCondition, 1);
 	return whenPart;
     }
 
     class WhenPart {
 	private long flowlessStepCounter;
-	private Predicate<UseCaseModelRunner> optionalWhenCondition;
+	private Predicate<ModelRunner> optionalWhenCondition;
 
-	public WhenPart(Predicate<UseCaseModelRunner> optionalWhenCondition, long flowlessStepCounter) {
+	public WhenPart(Predicate<ModelRunner> optionalWhenCondition, long flowlessStepCounter) {
 	    this.optionalWhenCondition = optionalWhenCondition;
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
@@ -88,14 +88,14 @@ public class UseCasePart {
 	private StepUserPart<T> userPart;
 	private long flowlessStepCounter;
 
-	public FlowlessUserPart(Predicate<UseCaseModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	public FlowlessUserPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
 		long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	    StepPart stepPart = createStepPart(optionalWhenCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
 	    this.userPart = stepPart.handles(eventOrExceptionClass);
 	}
 
-	StepPart createStepPart(Predicate<UseCaseModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	StepPart createStepPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
 		String stepName) {
 	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
 	    newStep.setWhen(optionalWhenCondition);
@@ -116,7 +116,7 @@ public class UseCasePart {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	public WhenPart when(Predicate<UseCaseModelRunner> whenCondition) {
+	public WhenPart when(Predicate<ModelRunner> whenCondition) {
 	    WhenPart whenPart = new WhenPart(whenCondition, ++flowlessStepCounter);
 	    return whenPart;
 	}
@@ -126,7 +126,7 @@ public class UseCasePart {
 	    return flowlessUserPart;
 	}
 
-	public UseCaseModel build() {
+	public Model build() {
 	    return UseCasePart.this.build();
 	}
 

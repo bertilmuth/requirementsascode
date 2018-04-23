@@ -11,7 +11,7 @@ import org.requirementsascode.flowposition.FlowPosition;
 import org.requirementsascode.flowposition.InsteadOf;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @see Flow
  * @author b_muth
@@ -21,7 +21,7 @@ public class FlowPart {
     private UseCase useCase;
     private UseCasePart useCasePart;
     private FlowPosition optionalFlowPosition;
-    private Predicate<UseCaseModelRunner> optionalWhen;
+    private Predicate<ModelRunner> optionalWhen;
 
     FlowPart(Flow flow, UseCasePart useCasePart) {
 	this.flow = flow;
@@ -118,7 +118,7 @@ public class FlowPart {
      * @return this use case flow part, to ease creation of the condition and the
      *         first step of the flow
      */
-    public FlowPart when(Predicate<UseCaseModelRunner> whenCondition) {
+    public FlowPart when(Predicate<ModelRunner> whenCondition) {
 	Objects.requireNonNull(whenCondition);
 
 	optionalWhen = whenCondition;
@@ -133,7 +133,7 @@ public class FlowPart {
 	return useCasePart;
     }
 
-    UseCaseModelBuilder getUseCaseModelBuilder() {
+    ModelBuilder getUseCaseModelBuilder() {
 	return useCasePart.getUseCaseModelBuilder();
     }
 }

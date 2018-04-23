@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
-import org.requirementsascode.UseCaseModelRunner; 
+import org.requirementsascode.ModelRunner; 
 
 public class ContinuesWithoutAlternativeAt extends ContinuesAt implements Serializable{
   private static final long serialVersionUID = -2063519627961799238L;
@@ -14,7 +14,7 @@ public class ContinuesWithoutAlternativeAt extends ContinuesAt implements Serial
 	}
 	
 	@Override
-	public void accept(UseCaseModelRunner runner) {
+	public void accept(ModelRunner runner) {
 		runner.setStepWithoutAlternativeCondition(includeOnly(getStepName()));
 		super.accept(runner);		
 	}

@@ -18,13 +18,13 @@ public class FlowTest extends AbstractTestCase{
 		
 	@Before
 	public void setup() {
-		setupWith(new TestUseCaseModelRunner());
+		setupWith(new TestModelRunner());
 		this.secondActor = useCaseModelBuilder.actor("Second Actor");
 	}
 	
 	@Test
 	public void printsTextAutonomously() {
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -37,7 +37,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void printsTextAutonomouslyOnlyIfActorIsRightInFirstStep() {
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).as(customer).system(displaysConstantText())
@@ -51,7 +51,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void printsTextAutonomouslyOnlyIfActorIsRightInSecondStep() {
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -65,7 +65,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void printsTextAutonomouslyTwice() {
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -79,7 +79,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotReactToEventIfNotRunning() { 	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -94,7 +94,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotReactToAlreadyRunStep() { 	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -120,7 +120,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void cantReactIfEventIsWrong() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -134,7 +134,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void oneStepCanReactIfEventIsRight() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -152,7 +152,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void moreThanOneStepCanReact() { 
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow().anytime()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -171,7 +171,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void oneStepInFlowReacts() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -187,7 +187,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactToEventsOfDifferentType() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -202,7 +202,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactToEventsOfSameType() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -217,7 +217,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactWhenOneIsUserStepAndOtherIsSystemStep() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class)
@@ -232,7 +232,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactOnlyWhenActorIsRight() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -249,7 +249,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactWhenActorIsChanged() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -269,7 +269,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactWhenSeveralActorsContainRightActorAtFirstPosition() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -286,7 +286,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactWhenSeveralActorsContainRightActorAtSecondPosition() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -303,7 +303,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void twoSequentialStepsReactWhenRunningWithDifferentActors() { 		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -323,7 +323,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void onlyStepWithTrueConditionReacts() { 	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()		
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())			
@@ -339,7 +339,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void stepThasHasTrueConditionReactsEvenIfOtherStepWouldBePerformedBySystem() { 		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())			
@@ -355,7 +355,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void onlyStepWithRightActorReacts() { 		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -372,7 +372,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void onlyStepWithRightActorInDifferentFlowReacts() { 
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -390,7 +390,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void stepWithWrongActorInDifferentFlowDoesNotReact() { 
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -409,7 +409,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotReactIfStepHasRightActorButFalseCondition() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -427,7 +427,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void reactsToFirstStepAlternativeWhen() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()					
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
@@ -444,7 +444,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void reactsToSecondStepAlternativeWhen() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -461,7 +461,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotReenterAlternativeFlowEvenIfItHasTrueCondition() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
@@ -480,7 +480,7 @@ public class FlowTest extends AbstractTestCase{
 	 
 	@Test
 	public void reactsToAlternativeAfterFirstStep() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -497,7 +497,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void reactsToAlternativeAtFirstStep() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
@@ -515,7 +515,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void startsOneOfTwoParallelUseCasesByDifferentEvent() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -532,7 +532,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void startsTwoUseCasesSequentially() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -549,7 +549,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotReactWhileConditionNotFulfilled() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -567,7 +567,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void interruptsReactWhileBefore() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)			
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -590,7 +590,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void interruptsReactWhileAfter() {
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -614,7 +614,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void reactToStepOnce() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -632,7 +632,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void reactToStepTwice() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -653,7 +653,7 @@ public class FlowTest extends AbstractTestCase{
 	public void reactToStepThreeTimes() {		
 		timesDisplayed = 0;
 		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -682,7 +682,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAtThirdStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -701,7 +701,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAtCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()			
 					.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EntersText.class).system(displaysEnteredText())
@@ -719,7 +719,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAtNotCalledWhenActorIsWrong() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()				
 					.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EntersText.class).system(displaysEnteredText())
@@ -737,7 +737,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAtCalledFromSecondStepOfAlternativeFlow() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()			
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -757,7 +757,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAtCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()		
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -780,7 +780,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAfterSecondStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -799,7 +799,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAfterCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EntersText.class).system(displaysEnteredText())
@@ -817,7 +817,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAfterNotCalledWhenActorIsWrong() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()			
 					.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EntersText.class).system(displaysEnteredText())
@@ -835,7 +835,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAfterCalledFromSecondStepOfAlternativeFlow() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -855,7 +855,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesAfterCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -878,7 +878,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesWithoutAlternativeAtFirstStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -897,7 +897,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesWithoutAlternativeAtCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
@@ -916,7 +916,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesWithoutAlternativeAtNotCalledWhenActorIsWrong() {	
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()		
 					.step(CUSTOMER_ENTERS_TEXT).as(secondActor).user(EntersText.class).system(displaysEnteredText())
@@ -934,7 +934,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesWithoutAlternativeAtCalledFromSecondStepOfAlternativeFlow() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()				
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -954,7 +954,7 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void continuesWithoutAlternativeAtCalledFromMultipleMutuallyExclusiveAlternativeFlows() {		
-		UseCaseModel useCaseModel = useCaseModelBuilder
+		Model useCaseModel = useCaseModelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()		
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())

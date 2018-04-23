@@ -2,7 +2,7 @@ package helloworld;
 
 import java.util.Scanner;
 
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import helloworld.userevent.EntersText;
 
@@ -21,7 +21,7 @@ public class AbstractHelloWorldExample {
 		return new EntersText(text);
 	}
 	
-	protected void stops(UseCaseModelRunner runner){
+	protected void stops(ModelRunner runner){
 		isSystemStopped = true;
 	}
 	

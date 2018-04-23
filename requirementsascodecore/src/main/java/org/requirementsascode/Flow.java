@@ -108,8 +108,8 @@ public class Flow extends UseCaseModelElement implements Serializable {
      *
      * @return the when condition
      */
-    public Optional<Predicate<UseCaseModelRunner>> getWhen() {
-	Optional<Predicate<UseCaseModelRunner>> when = getFirstStep().flatMap(step -> step.getWhen());
+    public Optional<Predicate<ModelRunner>> getWhen() {
+	Optional<Predicate<ModelRunner>> when = getFirstStep().flatMap(step -> step.getWhen());
 	return when;
     }
 }

@@ -8,7 +8,7 @@ import org.requirementsascode.condition.ReactWhile;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
- * Part used by the {@link UseCaseModelBuilder} to build a {@link UseCaseModel}.
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
  * @see FlowStep#setSystemReaction(Consumer)
  * @author b_muth
@@ -23,7 +23,7 @@ public class StepSystemPart<T> {
 	step.setSystemReaction(systemReaction);
     }
 
-    public UseCaseModel build() {
+    public Model build() {
 	return stepPart.getUseCaseModelBuilder().build();
     }
 
@@ -100,7 +100,7 @@ public class StepSystemPart<T> {
      *            the condition to check
      * @return the system part
      */
-    public StepSystemPart<T> reactWhile(Predicate<UseCaseModelRunner> reactWhileCondition) {
+    public StepSystemPart<T> reactWhile(Predicate<ModelRunner> reactWhileCondition) {
 	Objects.requireNonNull(reactWhileCondition);
 
 	ReactWhile reactWhile = new ReactWhile((FlowStep)step, reactWhileCondition);

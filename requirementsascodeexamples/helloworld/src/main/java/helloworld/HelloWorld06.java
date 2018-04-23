@@ -1,9 +1,9 @@
 package helloworld;
 
 import org.requirementsascode.Actor;
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.ModelRunner;
 
 import helloworld.userevent.EntersText;
 
@@ -21,11 +21,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 	private Actor normalUser;
 	private Actor anonymousUser;
 	
-	public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
+	public Model buildWith(ModelBuilder modelBuilder) {
 		normalUser = modelBuilder.actor("Normal User");
 		anonymousUser = modelBuilder.actor("Anonymous User");
 				
-		UseCaseModel useCaseModel = 
+		Model useCaseModel = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
@@ -53,11 +53,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		return useCaseModel;
 	}
 
-	private void promptsUserToEnterFirstName(UseCaseModelRunner runner) {
+	private void promptsUserToEnterFirstName(ModelRunner runner) {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptsUserToEnterAge(UseCaseModelRunner runner) {
+	private void promptsUserToEnterAge(ModelRunner runner) {
 		System.out.print("Please enter your age: ");
 	}
 
@@ -69,23 +69,23 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetsUserWithFirstName(UseCaseModelRunner runner) {
+	private void greetsUserWithFirstName(ModelRunner runner) {
 		System.out.println("Hello, " + firstName + ".");
 	}
 	
-	private void greetsUserWithAge(UseCaseModelRunner runner) {
+	private void greetsUserWithAge(ModelRunner runner) {
 		System.out.println("You are " + age + " years old.");
 	}
 	
-	private boolean ageIsOk(UseCaseModelRunner runner) {
+	private boolean ageIsOk(ModelRunner runner) {
 		return !ageIsOutOfBounds(runner);
 	}
 	
-	private boolean ageIsOutOfBounds(UseCaseModelRunner runner) {
+	private boolean ageIsOutOfBounds(ModelRunner runner) {
 		return age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private void informsUserAboutOutOfBoundsAge(UseCaseModelRunner runner) {
+	private void informsUserAboutOutOfBoundsAge(ModelRunner runner) {
 		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	
@@ -99,8 +99,8 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		UseCaseModel useCaseModel = buildWith(UseCaseModel.builder());
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
+		Model useCaseModel = buildWith(Model.builder());
+		ModelRunner useCaseModelRunner = new ModelRunner();
 		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
 		while(!systemStopped())
 			useCaseModelRunner.reactTo(entersText());	

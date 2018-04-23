@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.UseCase;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.ModelRunner;
 
-public class IncludesUseCase implements Consumer<UseCaseModelRunner>, Serializable {
+public class IncludesUseCase implements Consumer<ModelRunner>, Serializable {
   private static final long serialVersionUID = -9078568632090369442L;
   
   private UseCase includedUseCase;
@@ -19,7 +19,7 @@ public class IncludesUseCase implements Consumer<UseCaseModelRunner>, Serializab
   }
 
   @Override
-  public void accept(UseCaseModelRunner runner) {
+  public void accept(ModelRunner runner) {
     runner.includeUseCase(includedUseCase, includeStep);
   }
 
