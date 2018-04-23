@@ -1,14 +1,21 @@
 # requirements as code
-Ever wondered how to make your code self-documenting?
+Starting to develop an event driven application can be challenging.
+This project aims to simplify it. 
 
-With requirements as code, you can specify your application's use cases directly in the code. And execute them.
+The project provides a concise way to create handlers for many types of events at once.
 
-You can  [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the code without adding comments to it.
+A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
-Even years in the future, you will know how your application works.
-You will also know which part to adapt when a requirement changes.
+For more advanced scenarios that depend on the application's state, 
+you create a use case model with flows.
+It's an easy alternative to state machines,
+understandable by developers and business people alike.
 
-You can also handle cross-cutting concerns in a very simple way, for example for measuring performance.
+For the long term maintenance of your application,
+you [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) 
+from the models inside the code without the need to add comments to it.
+
+You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
@@ -21,31 +28,86 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>0.6.1</version>
+    <version>0.7.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:0.6.1'
+compile 'org.requirementsascode:requirementsascodecore:0.7.0'
+```
+# how to use requirements as code
+Here's what you need to do as a developer:
+
+## Step 1: Build a model defining the event classes to handle, and the methods that react to events:
+``` java
+Model model = Model.builder()
+	.handles(<Event Class Name>.class).with(<Reference To Method That Handles Event>)
+	.handles(..).with(...)
+	...
+.build()
 ```
 
-Then, for a simple Hello World example, run the following code (e.g. in a main method):
+The order of the statements has no significance.
+For handling exceptions instead of events, use the specific exception's class or Throwable.class.
+Use when before handles to define an additional condition that must be fulfilled.
+
+## Step 2: Create a runner and run the model:
+``` java
+ModelRunner runner = new ModelRunner();
+runner.run(model);
+```
+
+## Step 3: Send events to the runner, and enjoy watching it react:
+``` java
+runner.reactTo(<Event POJO Object>);
+```
+If an event's class is not declared in the model, the runner consumes it silently.
+If an exception is thrown in one of the handler methods and it is not handled by any 
+other handler method, the runner will throw an  unchecked UnhandledException
+that wraps it.
+
+# hello world
+Here's a complete Hello World example:
 
 ``` java
-UseCaseModel useCaseModel = 
-  UseCaseModelBuilder.newBuilder()
-    .useCase("Say Hello")
-      .basicFlow()
-        .step("S1").system(r -> System.out.println("Hello World!"))
-  .build();
-UseCaseModelRunner runner = new UseCaseModelRunner();
-runner.run(useCaseModel);
+package hello;
+
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
+
+public class HelloUser {
+	public static void main(String[] args) {
+		Model model = Model.builder()
+			.handles(NameEntered.class).with(HelloUser::displayEnteredName)
+		.build();
+
+		ModelRunner runner = new ModelRunner();
+		runner.run(model);
+		runner.reactTo(new NameEntered("Joe"));
+	}
+
+	public static void displayEnteredName(NameEntered nameEntered) {
+		System.out.println("Hello, " + nameEntered.getUserName());
+	}
+
+	static class NameEntered {
+		private String userName;
+
+		public NameEntered(String userName) {
+			this.userName = userName;
+		}
+
+		public String getUserName() {
+			return userName;
+		}
+	}
+}
 ```
 
 # documentation
-* [more hello world examples for building/running use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [examples for building/running more sophisticated use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [how to extract use cases from code, and generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 

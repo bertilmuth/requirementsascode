@@ -1,8 +1,8 @@
 # requirements as code extract
 With requirements as code extract, you can generate plain text documentation 
-(e.g HTML pages) from a use case model inside the code. 
+(e.g HTML pages) from a model inside the code. 
 
-The use case model is defined with the requirements as code core project.
+The model is defined with the requirements as code core project.
 
 ## Getting started
 If you are using Maven, include the following in your POM:
@@ -11,14 +11,14 @@ If you are using Maven, include the following in your POM:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodeextract</artifactId>
-    <version>0.6.1</version>
+    <version>0.7.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle:
 
 ```
-compile 'org.requirementsascode:requirementsascodeextract:0.6.1'
+compile 'org.requirementsascode:requirementsascodeextract:0.7.0'
 ```
 
 This will put the following libraries on the classpath:
@@ -28,13 +28,12 @@ This will put the following libraries on the classpath:
 * The current requirements as code core jar
 
 ## Using requirements as code extract
-### Build a use case model
-Here's how you build a use case model from scratch. 
-Note: this model does not make too much sense. It is just an example.
+### Build a model
+Here's how you build a model from scratch. 
+Note: this model does not make too much sense. It is just a comprehensive example.
 
 ``` java
-UseCaseModel useCaseModel = 
-  modelBuilder
+Model model = modelBuilder
     .useCase("Included use case")
       .basicFlow()
         .step("Included step").system(new IgnoreIt<>())
@@ -56,8 +55,9 @@ UseCaseModel useCaseModel =
       .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
         .step("S4c_1").includesUseCase("Included use case")
         .step("S4c_2").continuesAt("S1")
-      .flow("EX").step("EX1").handles(Exception.class).system(logsException())
-    .build();    
+      .flow("EX").anytime()
+      	.step("EX1").handles(Exception.class).system(logsException())
+    .build();  
 ```
 
 You have to use classes with special names in the model,
@@ -78,22 +78,22 @@ The name of the class needs to be of the form _VerbNoun_, in third person singul
 In the example, it is _EntersName_. 
 The documentation created from step S2 will read: "S2. User _enters name_.System greets user."
 
-### Use template engine to extract use cases, and generate documentation
-You can create an engine to extract the use cases like this:
+### Use template engine to generate documentation
+You can create the engine like this:
 
 ``` java
 FreeMarkerEngine engine = new FreeMarkerEngine(basePackagePath);
 ```
 
 For ```basePackagePath```, you specify your own package path in your classpath, where your FreeMarker templates are located. For example, if you use standard ```src/main/resources``` or ```src/test/resources``` folders,
-this could be the package path below that folder. 
+this is the package path below that folder. 
 
-You can extract the use cases with this call:
+You can generate the documentation with this call:
 ``` java
-engine.extract(useCaseModel, templateFileName, outputWriter);
+engine.extract(model, templateFileName, outputWriter);
 ```
 
-The first parameter is the use case model, as shown above.
+The first parameter is the model, as shown above.
 The second parameter is the name of the template file, relative to the base package path (during construction).
 The third parameter is a ```java.io.Writer``` that produces the output text.
 
@@ -107,11 +107,11 @@ Here's an example FreeMarker template file:
   <title>Requirements as Code - Extract Example</title>
 </head>
 <body>
-  	<#list useCaseModel.useCases as useCase>
+  	<#list model.useCases as useCase>
   		<h1>Use Case: ${useCase?capitalize}</h1>
 		<#list useCase.flows as f>
 	  		<h2>${f}</h2>
-	  		<div>${flowPredicate(f)}</div>
+	  		<div>${flowCondition(f)}</div>
 			<#list f.steps as s>
 				<div>${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}</div>
 			</#list>
@@ -121,7 +121,7 @@ Here's an example FreeMarker template file:
 </html>
 ```
 
-The template file starts with the ```useCaseModel``` instance provided by the engine, then it iterates over the model.
+The template file starts with the ```model``` instance provided by the engine, then it iterates over the model.
 
 See the [FreeMarker](http://freemarker.org/docs/dgui.html) documentation for details.
 See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirements as code extract.

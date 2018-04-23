@@ -38,7 +38,8 @@ public class ModelBuilder {
      * Internally, a default use case ("Handles events") is created in the model.
      * </p>
      * 
-     * @param eventOrExceptionClass the specified event / exception
+     * @param eventOrExceptionClass the specified event / exception class
+     * @param <T> the type of events/exceptions
      * @return a part of the builder used to create the event handler (the "system reaction")
      */
     public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {

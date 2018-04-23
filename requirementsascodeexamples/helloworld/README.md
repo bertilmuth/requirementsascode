@@ -1,23 +1,23 @@
-# hello world 01 - system prints 'Hello, User.'
+# example 01 - system prints 'Hello, User.'
 ``` java		
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-	UseCaseModel useCaseModel = 
+public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::greetsUser)
 		.build();
-	return useCaseModel;
+	return model;
 }
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-new UseCaseModelRunner().run(useCaseModel);
+Model model = buildWith(Model.builder());
+new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01.java).
 
-# hello world 02 - system prints 'Hello, User.' and 'Hip, hip, hooray!' three times
+# example 02 - system prints 'Hello, User.' and 'Hip, hip, hooray!' three times
 ``` java		
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-	UseCaseModel useCaseModel = 
+public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::greetsUser)
@@ -25,38 +25,38 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 					.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
 		.build();
 	
-	return useCaseModel;
+	return model;
 }
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-new UseCaseModelRunner().run(useCaseModel);
+Model model = buildWith(Model.builder());
+new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02.java).
 
 
-# hello world 03 - user enters first name, system prints it
+# example 03 - user enters first name, system prints it
 ``` java
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-	UseCaseModel useCaseModel = 
+public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::promptsUserToEnterFirstName)
 				.step("S2").user(ENTER_FIRST_NAME).system(this::greetsUserWithFirstName)
 		.build();
-	return useCaseModel;
+	return model;
 }
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-useCaseModelRunner.run(useCaseModel);
-useCaseModelRunner.reactTo(entersText());
+Model model = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.run(model);
+modelRunner.reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
-# hello world 04 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
+# example 04 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
 ``` java
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-	UseCaseModel useCaseModel = 
+public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::promptsUserToEnterFirstName)
@@ -65,21 +65,21 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 				.step("S4").user(ENTERS_AGE).system(this::savesAge)
 				.step("S5").system(this::greetsUserWithFirstNameAndAge)
 		.build();
-	return useCaseModel;
+	return model;
 }
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-useCaseModelRunner.run(useCaseModel);
-useCaseModelRunner.reactTo(entersText());
-useCaseModelRunner.reactTo(entersText());	
+Model model = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.run(model);
+modelRunner.reactTo(entersText());
+modelRunner.reactTo(entersText());	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04.java).
 
-# hello world 05 - user enters name and age, system prints them (with validation)
+# example 05 - user enters name and age, system prints them (with validation)
 ``` java
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
-	UseCaseModel useCaseModel = 
+public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::promptsUserToEnterFirstName)
@@ -97,28 +97,29 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 				.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
 				.step("S5b_2").continuesAt("S3")
 		.build();
-	return useCaseModel;
+	return model;
 }	
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-useCaseModelRunner.run(useCaseModel);			
+Model model = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.run(model);			
 while(!systemStopped())
-	useCaseModelRunner.reactTo(entersText());	
+	modelRunner.reactTo(entersText());	
 exitSystem();	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05.java).
 
-# hello world 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
+# example 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
 ``` java
-UseCaseRunner useCaseRunner = new UseCaseRunner();
-UseCaseModel useCaseModel = useCaseRunner.useCaseModel();
+Model model = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.as(anonymousUser()).run(model); 
 ...
-public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
+public Model buildWith(ModelBuilder modelBuilder) {
 	normalUser = modelBuilder.actor("Normal User");
 	anonymousUser = modelBuilder.actor("Anonymous User");
 			
-	UseCaseModel useCaseModel = 
+	Model useCaseModel = 
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
@@ -146,11 +147,11 @@ public UseCaseModel buildWith(UseCaseModelBuilder modelBuilder) {
 	return useCaseModel;
 }
 ...
-UseCaseModel useCaseModel = buildWith(UseCaseModelBuilder.newBuilder());
-UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
+Model useCaseModel = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.as(anonymousUser()).run(useCaseModel);			
 while(!systemStopped())
-	useCaseModelRunner.reactTo(entersText());	
+	modelRunner.reactTo(entersText());	
 exitSystem();	
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld06.java).
