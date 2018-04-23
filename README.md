@@ -7,7 +7,7 @@ The project provides a concise way to create handlers for many types of events a
 A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
 For more advanced scenarios that depend on the application's state, 
-you create a use case model with flows.
+you create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's an easy alternative to state machines,
 understandable by developers and business people alike.
 
@@ -15,7 +15,7 @@ For the long term maintenance of your application,
 you [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) 
 from the models inside the code without the need to add comments to it.
 
-You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance.
+You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for validation in event sourced applications.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
@@ -50,8 +50,8 @@ Model model = Model.builder()
 ```
 
 The order of the statements has no significance.
-For handling exceptions instead of events, use the specific exception's class or Throwable.class.
-Use when before handles to define an additional condition that must be fulfilled.
+For handling exceptions instead of events, use the specific exception's class or ``` java Throwable.class ```.
+Use ``` java when ``` before handles to define an additional condition that must be fulfilled.
 
 ## Step 2: Create a runner and run the model:
 ``` java
@@ -107,8 +107,8 @@ public class HelloUser {
 ```
 
 # documentation
-* [examples for building/running more state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [how to generate documentation from the models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
+* [examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [how to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
 # subprojects
