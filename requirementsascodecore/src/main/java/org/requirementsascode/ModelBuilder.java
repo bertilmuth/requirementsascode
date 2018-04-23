@@ -1,11 +1,17 @@
 package org.requirementsascode;
 
+import java.util.function.Predicate;
+
+import org.requirementsascode.UseCasePart.FlowlessUserPart;
+import org.requirementsascode.UseCasePart.WhenPart;
+
 /**
  * Class that builds a {@link Model}, in a fluent way.
  *
  * @author b_muth
  */
 public class ModelBuilder {
+    private static final String HANDLES_EVENTS = "Handles events";
 
     private Model model;
 
@@ -22,9 +28,33 @@ public class ModelBuilder {
      * @return the created / found actor.
      */
     public Actor actor(String actorName) {
-	Actor actor = model.hasActor(actorName) ? model.findActor(actorName)
-		: model.newActor(actorName);
+	Actor actor = model.hasActor(actorName) ? model.findActor(actorName) : model.newActor(actorName);
 	return actor;
+    }
+
+    /**
+     * Creates a handler for events or exceptions of the specified type.
+     * <p>
+     * Internally, a default use case ("Handles events") is created in the model.
+     * </p>
+     * 
+     * @param eventOrExceptionClass the specified event / exception
+     * @return a part of the builder used to create the event handler (the "system reaction")
+     */
+    public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {
+	FlowlessUserPart<T> handles = useCase(HANDLES_EVENTS).handles(eventOrExceptionClass);
+	return handles;
+    }
+    
+    /**
+     * Only if the specified condition is true, the event is handled.
+     *
+     * @param whenCondition
+     *            the condition that constrains when the event is handled
+     * @return a part of the builder used to define the event's class ("handles")
+     */
+    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+	return useCase(HANDLES_EVENTS).when(whenCondition);
     }
 
     /**
