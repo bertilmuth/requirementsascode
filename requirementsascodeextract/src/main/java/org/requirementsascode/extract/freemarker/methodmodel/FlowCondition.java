@@ -43,11 +43,16 @@ public class FlowCondition implements TemplateMethodModelEx {
 
     private String getFlowPosition(Flow flow) {
 	FlowPosition flowPosition = flow.getFlowPosition();
-	String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
-	String stepName = flowPosition.getStepName();
-	boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
-	String flowPositionWithStepName = isNonDefaultFlowPosition? flowPositionWords + " " + stepName : "";
-	return flowPositionWithStepName.trim();
+	String result = "";
+	
+	if(flowPosition != null) {
+		String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
+		String stepName = flowPosition.getStepName();
+		boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
+		String flowPositionWithStepName = isNonDefaultFlowPosition? flowPositionWords + " " + stepName : "";
+		result = flowPositionWithStepName.trim();
+	}
+	return result;
     }
 
     private String getFlowPredicateSeparator(Flow flow, String sep) {

@@ -108,6 +108,26 @@ public class FreemarkerEngineTest {
               + " Step: EX1. Handles Exception: System logs exception.",
         output);
   }
+  
+    @Test
+    public void extractsFlowlessModel() throws Exception {
+	Model model = Model.builder()
+		.handles(entersName()).with(greetsUser())
+		.handles(Exception.class).with(logsException())
+	.build();
+  
+	String templateFileName = "testextract_flowless.ftl";
+	Writer outputWriter = new StringWriter();
+
+	engine.extract(model, templateFileName, outputWriter);
+	String output = outputWriter.toString();
+
+          assertEquals(
+              "Use case: Handles events."
+                    + " Step: S1. Handles EntersName: System greets user."                 
+                    + " Step: S2. Handles Exception: System logs exception.",
+              output);
+  }
 
   private Predicate<ModelRunner> thereIsNoAlternative() {
     return new ThereIsNoAlternative();
