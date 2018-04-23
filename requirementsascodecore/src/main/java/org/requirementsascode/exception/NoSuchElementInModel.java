@@ -3,8 +3,8 @@ package org.requirementsascode.exception;
 import java.io.Serializable;
 
 /**
- * Exception that is thrown when an element should be in the use case
- * because it is referenced from somewhere in the same use case, but it can't be found.
+ * Exception that is thrown when an element should be in the model
+ * because it is referenced from somewhere, but it can't be found.
  * 
  * @author b_muth
  *

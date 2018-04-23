@@ -69,7 +69,7 @@ public class FlowPart {
      *
      * @param stepName
      *            the name of the step to start the flow after
-     * @return this use case flow part, to ease creation of the condition and the
+     * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
      * 		if the specified step is not found in a flow of this use case
@@ -87,7 +87,7 @@ public class FlowPart {
      *
      * @param stepName
      *            the name of the specified step
-     * @return this use case flow part, to ease creation of the condition and the
+     * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
      *             if the specified step is not found in this flow's use case
@@ -101,7 +101,7 @@ public class FlowPart {
     /**
      * Starts the flow after any step that has been run, or at the beginning.
      * 
-     * @return this use case flow part, to ease creation of the condition and the
+     * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      */
     public FlowPart anytime() {
@@ -115,7 +115,7 @@ public class FlowPart {
      *
      * @param whenCondition
      *            the condition that constrains when the flow is started
-     * @return this use case flow part, to ease creation of the condition and the
+     * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      */
     public FlowPart when(Predicate<ModelRunner> whenCondition) {

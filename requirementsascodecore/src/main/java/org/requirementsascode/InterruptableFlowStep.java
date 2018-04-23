@@ -17,15 +17,15 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
     /**
      * Creates step with the specified name as the last step of the
-     * specified use case flow.
+     * specified flow.
      *
      * @param stepName
      *            the name of the step to be created
-     * @param useCaseFlow
-     *            the use case flow that will contain the new step
+     * @param flow
+     *            the flow that will contain the new step
      */
-    InterruptableFlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
-	super(stepName, useCase, useCaseFlow);
+    InterruptableFlowStep(String stepName, UseCase useCase, Flow flow) {
+	super(stepName, useCase, flow);
 	appendToLastStepOfFlow();
     }
 

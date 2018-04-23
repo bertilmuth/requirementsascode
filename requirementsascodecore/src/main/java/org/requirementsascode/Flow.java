@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import org.requirementsascode.flowposition.FlowPosition;
 
 /**
- * A use case flow defines a sequence of steps that lead the user through the
+ * A flow defines a sequence of steps that lead the user through a
  * use case.
  *
  * <p>
@@ -25,7 +25,7 @@ public class Flow extends ModelElement implements Serializable {
     private UseCase useCase;
 
     /**
-     * Creates a use case flow with the specified name that belongs to the specified
+     * Creates a flow with the specified name that belongs to the specified
      * use case.
      *
      * @param name
