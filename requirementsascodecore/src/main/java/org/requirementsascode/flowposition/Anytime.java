@@ -14,7 +14,7 @@ public class Anytime extends FlowPosition implements Serializable {
 
 
     @Override
-    protected boolean isRunnerAtRightPositionFor(Step step, ModelRunner useCaseModelRunner) {
+    protected boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner) {
 	return true;
     }
 }

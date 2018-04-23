@@ -7,12 +7,12 @@ import org.requirementsascode.ModelRunner;
 public class HelloWorld01 {	
 	
 	public Model buildWith(ModelBuilder modelBuilder) {
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::greetsUser)
 			.build();
-		return useCaseModel;
+		return model;
 	}
 
 	private void greetsUser(ModelRunner runner) {
@@ -25,7 +25,7 @@ public class HelloWorld01 {
 	}
 
 	private void start() {
-		Model useCaseModel = buildWith(Model.builder());
-		new ModelRunner().run(useCaseModel);
+		Model model = buildWith(Model.builder());
+		new ModelRunner().run(model);
 	}
 }

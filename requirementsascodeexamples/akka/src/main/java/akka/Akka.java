@@ -20,9 +20,9 @@ public class Akka {
 	public static void main(String[] args) {
 		ActorSystem actorSystem = ActorSystem.create("modelBasedActorSystem");
 		
-		ModelRunner useCaseModelRunner = runnerOf(model());
+		ModelRunner modelRunner = runnerOf(model());
 
-		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class, useCaseModelRunner);
+		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class, modelRunner);
 		
 		sayHelloActor.tell(new AsksForHelloWorld(), ActorRef.noSender());
 		sayHelloActor.tell(new AsksForHelloToUser("Sandra"), ActorRef.noSender());

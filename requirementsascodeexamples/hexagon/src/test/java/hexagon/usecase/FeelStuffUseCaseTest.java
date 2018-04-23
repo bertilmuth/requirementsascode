@@ -22,7 +22,7 @@ public class FeelStuffUseCaseTest {
     feelStuffUseCaseRealization =
         new FeelStuffUseCaseRealization(new WriterStub(), new RepositoryStub());
     model =
-        new HexagonUseCaseModel(feelStuffUseCaseRealization)
+        new HexagonModel(feelStuffUseCaseRealization)
             .buildWith(Model.builder());
     testRunner = new TestModelRunner();
   }

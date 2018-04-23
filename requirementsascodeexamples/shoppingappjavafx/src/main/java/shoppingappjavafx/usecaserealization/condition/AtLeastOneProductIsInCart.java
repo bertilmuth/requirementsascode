@@ -15,7 +15,7 @@ public class AtLeastOneProductIsInCart implements Predicate<ModelRunner> {
 	}
 	
 	@Override
-	public boolean test(ModelRunner useCaseModelRunner) {
+	public boolean test(ModelRunner modelRunner) {
 		PurchaseOrder purchaseOrder = runContext.getPurchaseOrder();
 		return purchaseOrder.findProducts().size() > 0;
 	}

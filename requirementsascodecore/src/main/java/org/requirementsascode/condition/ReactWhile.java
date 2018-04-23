@@ -21,8 +21,8 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     }
     
     @Override
-    public boolean test(ModelRunner useCaseModelRunner) {
-	return completeCondition.test(useCaseModelRunner);
+    public boolean test(ModelRunner modelRunner) {
+	return completeCondition.test(modelRunner);
     }
 
     private void createReactWhileCondition(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {

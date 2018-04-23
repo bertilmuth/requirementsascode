@@ -26,8 +26,8 @@ public class After extends FlowPosition implements Serializable {
     }
 
     @Override
-    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner useCaseModelRunner) {
-	Step latestStepRun = useCaseModelRunner.getLatestStep().orElse(null);
+    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner) {
+	Step latestStepRun = modelRunner.getLatestStep().orElse(null);
 	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
 	return stepWasRunLast;
     }

@@ -14,25 +14,25 @@ public class RunnAndStopTest extends AbstractTestCase {
     }
 
     @Test
-    public void useCaseModelRunnerIsNotRunningAtFirst() {
+    public void modelRunnerIsNotRunningAtFirst() {
 	assertFalse(modelRunner.isRunning());
     }
 
     @Test
-    public void useCaseModelRunnerIsRunningAfterRunCall() {
+    public void modelRunnerIsRunningAfterRunCall() {
 	Model model = modelBuilder.build();
 	modelRunner.run(model);
 	assertTrue(modelRunner.isRunning());
     }
 
     @Test
-    public void useCaseModelRunnerIsNotRunningWhenBeingStoppedBeforeRunCall() {
+    public void modelRunnerIsNotRunningWhenBeingStoppedBeforeRunCall() {
 	modelRunner.stop();
 	assertFalse(modelRunner.isRunning());
     }
 
     @Test
-    public void useCaseModelRunnerIsNotRunningWhenBeingStoppedAfterRunCall() {
+    public void modelRunnerIsNotRunningWhenBeingStoppedAfterRunCall() {
 	Model model = modelBuilder.build();
 	modelRunner.run(model);
 	modelRunner.stop();

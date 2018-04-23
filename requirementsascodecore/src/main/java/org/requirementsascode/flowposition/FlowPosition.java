@@ -12,7 +12,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     private List<FlowStep> orAfterSteps;
     private Step step;
 
-    protected abstract boolean isRunnerAtRightPositionFor(Step step, ModelRunner useCaseModelRunner);
+    protected abstract boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner);
 
     public FlowPosition(Step step) {
 	this.step = step;
@@ -20,9 +20,9 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     }
 
     @Override
-    public final boolean test(ModelRunner useCaseModelRunner) {
+    public final boolean test(ModelRunner modelRunner) {
 	boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step,
-		useCaseModelRunner) || orAfterSteps.stream().anyMatch(step -> new After(step).test(useCaseModelRunner));
+		modelRunner) || orAfterSteps.stream().anyMatch(step -> new After(step).test(modelRunner));
 	return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
     }
 

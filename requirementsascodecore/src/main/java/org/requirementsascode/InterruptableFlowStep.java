@@ -16,7 +16,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
-     * Creates a use case step with the specified name as the last step of the
+     * Creates step with the specified name as the last step of the
      * specified use case flow.
      *
      * @param stepName
@@ -52,7 +52,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
     }
 
     private Predicate<ModelRunner> noStepInterrupts() {
-	return useCaseModelRunner -> {
+	return modelRunner -> {
 	    Class<?> theStepsEventClass = getEventClass();
 	    Model useCaseModel = getModel();
 
@@ -60,7 +60,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 	    Stream<Step> conditionalStepsStream = stepsStream
 		    .filter(isInterruptingStep().and(isOtherStepThan(this)));
 
-	    Set<Step> conditionalStepsThatCanReact = useCaseModelRunner
+	    Set<Step> conditionalStepsThatCanReact = modelRunner
 		    .stepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
 	    return conditionalStepsThatCanReact.size() == 0;
 	};

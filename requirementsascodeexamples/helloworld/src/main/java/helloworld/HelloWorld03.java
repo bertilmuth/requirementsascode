@@ -11,13 +11,13 @@ public class HelloWorld03 extends AbstractHelloWorldExample{
 	private static final Class<EntersText> ENTER_FIRST_NAME = EntersText.class;
 
 	public Model buildWith(ModelBuilder modelBuilder) {
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::promptsUserToEnterFirstName)
 					.step("S2").user(ENTER_FIRST_NAME).system(this::greetsUserWithFirstName)
 			.build();
-		return useCaseModel;
+		return model;
 	}
 	
 	private void promptsUserToEnterFirstName(ModelRunner runner) {
@@ -34,9 +34,9 @@ public class HelloWorld03 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		Model useCaseModel = buildWith(Model.builder());
-		ModelRunner useCaseModelRunner = new ModelRunner();
-		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(entersText());
+		Model model = buildWith(Model.builder());
+		ModelRunner modelRunner = new ModelRunner();
+		modelRunner.run(model);
+		modelRunner.reactTo(entersText());
 	}
 }

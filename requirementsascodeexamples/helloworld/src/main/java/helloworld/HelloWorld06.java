@@ -25,7 +25,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		normalUser = modelBuilder.actor("Normal User");
 		anonymousUser = modelBuilder.actor("Anonymous User");
 				
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
@@ -50,7 +50,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 				.flow("Anonymous does not enter name").insteadOf("S1")
 					.step("S1a_1").as(anonymousUser).continuesAt("S3")
 			.build();
-		return useCaseModel;
+		return model;
 	}
 
 	private void promptsUserToEnterFirstName(ModelRunner runner) {
@@ -99,11 +99,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		Model useCaseModel = buildWith(Model.builder());
-		ModelRunner useCaseModelRunner = new ModelRunner();
-		useCaseModelRunner.as(anonymousUser()).run(useCaseModel);			
+		Model model = buildWith(Model.builder());
+		ModelRunner modelRunner = new ModelRunner();
+		modelRunner.as(anonymousUser()).run(model);			
 		while(!systemStopped())
-			useCaseModelRunner.reactTo(entersText());	
+			modelRunner.reactTo(entersText());	
 		exitSystem();	
 	}
 

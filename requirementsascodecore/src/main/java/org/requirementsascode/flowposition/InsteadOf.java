@@ -14,9 +14,9 @@ public class InsteadOf extends FlowPosition implements Serializable {
     }
 
     @Override
-    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner useCaseModelRunner) {
+    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner) {
 	FlowStep previousStep = ((FlowStep)step).getPreviousStepInFlow().orElse(null);
 	After after = new After(previousStep);
-	return after.test(useCaseModelRunner);
+	return after.test(modelRunner);
     }
 }

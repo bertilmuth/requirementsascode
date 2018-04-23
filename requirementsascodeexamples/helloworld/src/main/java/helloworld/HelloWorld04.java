@@ -14,7 +14,7 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 	private int age;
 	
 	public Model buildWith(ModelBuilder modelBuilder) {
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::promptsUserToEnterFirstName)
@@ -23,7 +23,7 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 					.step("S4").user(ENTERS_AGE).system(this::savesAge)
 					.step("S5").system(this::greetsUserWithFirstNameAndAge)
 			.build();
-		return useCaseModel;
+		return model;
 	}
 	
 	private void promptsUserToEnterFirstName(ModelRunner runner) {
@@ -52,10 +52,10 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 	}
 
 	private void start() {
-		Model useCaseModel = buildWith(Model.builder());
-		ModelRunner useCaseModelRunner = new ModelRunner();
-		useCaseModelRunner.run(useCaseModel);
-		useCaseModelRunner.reactTo(entersText());
-		useCaseModelRunner.reactTo(entersText());	
+		Model model = buildWith(Model.builder());
+		ModelRunner modelRunner = new ModelRunner();
+		modelRunner.run(model);
+		modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());	
 	}
 }

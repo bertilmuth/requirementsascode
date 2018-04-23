@@ -6,7 +6,7 @@ import org.requirementsascode.ModelRunner;
 
 public class AnExceptionOccurs implements Predicate<ModelRunner> {
 	@Override
-	public boolean test(ModelRunner useCaseModelRunner) {
+	public boolean test(ModelRunner modelRunner) {
 		return true;
 	}
 }

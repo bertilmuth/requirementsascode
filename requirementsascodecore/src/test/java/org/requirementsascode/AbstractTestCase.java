@@ -42,8 +42,8 @@ public abstract class AbstractTestCase {
     protected TestModelRunner modelRunner;
     protected String displayedText;
 
-    protected void setupWith(TestModelRunner useCaseModelRunner) {
-	this.modelRunner = useCaseModelRunner;
+    protected void setupWith(TestModelRunner modelRunner) {
+	this.modelRunner = modelRunner;
 	this.modelBuilder = Model.builder();
 	this.customer = modelBuilder.actor(CUSTOMER);
 	this.displayedText = null;
