@@ -41,7 +41,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 		modelBuilder.useCase("Get greeted")
 			.basicFlow()
 				.step("S1").system(this::promptsUserToEnterFirstName)
-				.step("S2").user(ENTER_FIRST_NAME).system(this::greetsUserWithFirstName)
+				.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
 		.build();
 	return model;
 }

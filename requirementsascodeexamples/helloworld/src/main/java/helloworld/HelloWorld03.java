@@ -8,14 +8,14 @@ import helloworld.userevent.EntersText;
 
 public class HelloWorld03 extends AbstractHelloWorldExample{
 	
-	private static final Class<EntersText> ENTER_FIRST_NAME = EntersText.class;
+	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
 
 	public Model buildWith(ModelBuilder modelBuilder) {
 		Model model = 
 			modelBuilder.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").system(this::promptsUserToEnterFirstName)
-					.step("S2").user(ENTER_FIRST_NAME).system(this::greetsUserWithFirstName)
+					.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
 			.build();
 		return model;
 	}
