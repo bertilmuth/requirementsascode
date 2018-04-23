@@ -1,5 +1,5 @@
 <@compress single_line=true>
-<#list useCaseModel.useCases as useCase>
+<#list model.useCases as useCase>
 	Use case: ${useCase}.
 	<#list useCase.flows as f>
 		Flow: ${f} ${flowCondition(f)}

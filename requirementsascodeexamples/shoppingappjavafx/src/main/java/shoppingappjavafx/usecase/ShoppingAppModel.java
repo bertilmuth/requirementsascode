@@ -25,7 +25,7 @@ import shoppingappjavafx.usecaserealization.systemreaction.SavesShippingInformat
 import shoppingappjavafx.usecaserealization.systemreaction.StartsWithEmptyShoppingCart;
 
 /**
- * Responsible for building the use case model of the shopping app. Its instance is injected with a
+ * Responsible for building the model of the shopping app. Its instance is injected with a
  * use case realization that contains the methods to call.
  *
  * @author b_muth
@@ -64,7 +64,7 @@ public class ShoppingAppModel {
   private LogsException logsException;
 
   /**
-   * Builds the use case model using the specified builder.
+   * Builds the model using the specified builder.
    *
    * @param modelBuilder the builder used
    * @return the created model

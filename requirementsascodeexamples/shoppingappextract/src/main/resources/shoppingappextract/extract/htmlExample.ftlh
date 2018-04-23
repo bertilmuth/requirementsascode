@@ -5,7 +5,7 @@
   <title>Requirements as Code - Extract Example</title>
 </head>
 <body>
-  	<#list useCaseModel.useCases as useCase>
+  	<#list model.useCases as useCase>
   		<h1>Use Case: ${useCase?capitalize}</h1>
 		<#list useCase.flows as f>
 	  		<h2>${f}</h2>

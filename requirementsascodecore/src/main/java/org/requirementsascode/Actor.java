@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * An actor, as part of a use case model.
+ * An actor, as part of a model.
  *
  * <p>
  * An actor is a role that a user plays. Actors represent different user groups.
@@ -31,7 +31,7 @@ public class Actor extends ModelElement implements Serializable {
      * @param name
      *            the name of the actor
      * @param model
-     *            the use case model
+     *            the model
      */
     Actor(String name, Model model) {
 	super(name, model);

@@ -44,7 +44,7 @@ public class Model implements Serializable {
     }
     
     /**
-     * The only way to build a use case model and its parts is to
+     * The only way to build a model and its parts is to
      * use the builder returned by this method.
      * @return the builder.
      */
@@ -118,7 +118,7 @@ public class Model implements Serializable {
     }
 
     /**
-     * Returns the actors contained in this use case model. Do not modify that
+     * Returns the actors contained in this model. Do not modify that
      * collection directly, use {@link #newActor(String)}.
      *
      * @return the actors
@@ -129,7 +129,7 @@ public class Model implements Serializable {
     }
 
     /**
-     * Returns the use cases contained in this use case model.
+     * Returns the use cases contained in this model.
      *
      * @return the use cases
      */
@@ -143,7 +143,7 @@ public class Model implements Serializable {
     }
 
     /**
-     * Returns the use case steps of use cases contained in this use case model.
+     * Returns the use case steps of use cases contained in this model.
      *
      * @return the use steps
      */

@@ -18,7 +18,7 @@ import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.FlowPosition;
 
 /**
- * A use case, as part of a use case model.
+ * A use case, as part of a model.
  *
  * <p>
  * As an example, a use case for an ATM is "Get cash". As another example, a use

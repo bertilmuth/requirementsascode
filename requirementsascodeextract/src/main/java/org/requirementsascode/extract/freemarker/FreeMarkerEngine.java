@@ -61,9 +61,9 @@ public class FreeMarkerEngine {
   }
 
   /**
-   * 'Extracts' the use cases from the model. This is done by putting the specified use case model
-   * in the FreeMarker configuration under the name 'useCaseModel'. Then, the specified template is
-   * used to transform the use case model to text and write it using the specified writer.
+   * 'Extracts' the use cases from the model. This is done by putting the specified models
+   * in the FreeMarker configuration under the name 'model'. Then, the specified template is
+   * used to transform the model to text and write it using the specified writer.
    *
    * @param model the input model, created with requirementsascodecore
    * @param templateFileName name of the template file, relative to the base class path (when constructing the engine)
@@ -72,7 +72,7 @@ public class FreeMarkerEngine {
    */
   public void extract(Model model, String templateFileName, Writer outputWriter)
       throws Exception {
-    put("useCaseModel", model);
+    put("model", model);
     Template template = cfg.getTemplate(templateFileName);
     template.process(dataModel, outputWriter);
   }

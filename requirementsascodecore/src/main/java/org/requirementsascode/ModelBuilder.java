@@ -44,9 +44,9 @@ public class ModelBuilder {
     }
 
     /**
-     * Returns the use case model built so far.
+     * Returns the model built so far.
      *
-     * @return the use case model
+     * @return the model
      */
     public Model build() {
 	return model;

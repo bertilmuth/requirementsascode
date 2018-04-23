@@ -19,15 +19,11 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.UnhandledException;
 
 /**
- * A use case model runner is a highly configurable use case controller that
- * receives events from the frontend and conditionally calls methods on the
- * backend.
+ * receives events and conditionally calls methods that handle them (the "system reactions").
  *
  * <p>
- * In requirementsascode, a use case model runner is the only way the frontend
- * communicates with the backend. It is configured by the use case model it
- * owns. Each real user needs an instance of a runner, as the runner determines
- * the journey of the user through the use cases.
+ * The runner is configured by the model it owns. Each real user needs an instance of a runner, as the runner determines
+ * the user journey.
  */
 public class ModelRunner implements Serializable {
     private static final long serialVersionUID = 1787451244764017381L;
@@ -282,7 +278,7 @@ public class ModelRunner implements Serializable {
     }
 
     /**
-     * Returns the use case steps in the use case model that can react to the
+     * Returns the use case steps in the model that can react to the
      * specified event class.
      *
      * <p>
@@ -311,7 +307,7 @@ public class ModelRunner implements Serializable {
 
     /**
      * Gets the steps that can react from the specified stream, rather than from the
-     * whole use case model.
+     * whole model.
      *
      * @see #getStepsThatCanReactTo(Class)
      * @param eventClass
