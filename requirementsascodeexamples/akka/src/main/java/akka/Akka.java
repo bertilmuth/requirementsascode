@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.Consumer;
 
-import org.requirementsascode.UseCaseModel;
-import org.requirementsascode.UseCaseModelBuilder;
-import org.requirementsascode.UseCaseModelRunner;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -21,7 +20,7 @@ public class Akka {
 	public static void main(String[] args) {
 		ActorSystem actorSystem = ActorSystem.create("modelBasedActorSystem");
 		
-		UseCaseModelRunner useCaseModelRunner = runnerOf(useCaseModel());
+		ModelRunner useCaseModelRunner = runnerOf(model());
 
 		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class, useCaseModelRunner);
 		
@@ -33,10 +32,10 @@ public class Akka {
 		actorSystem.terminate();
 	}
 
-	static UseCaseModelRunner runnerOf(UseCaseModel useCaseModel) {
-		UseCaseModelRunner useCaseModelRunner = new UseCaseModelRunner();
-		useCaseModelRunner.run(useCaseModel);
-		return useCaseModelRunner;
+	static ModelRunner runnerOf(Model model) {
+		ModelRunner modelRunner = new ModelRunner();
+		modelRunner.run(model);
+		return modelRunner;
 	}
 	
 	static <T> ActorRef spawn(String actorName, ActorSystem system, Class<? extends AbstractActor> actorClass,
@@ -45,16 +44,16 @@ public class Akka {
 		return system.actorOf(props, actorName);
 	}
 
-	static UseCaseModel useCaseModel() {
+	static Model model() {
 		SaysHelloWorld saysHelloWorld = new SaysHelloWorld();
 		SaysHelloToUser saysHelloToUser = new SaysHelloToUser();
 		
-		UseCaseModel useCaseModel = UseCaseModelBuilder.newBuilder().useCase("Say hello to world, then user")
+		Model model = Model.builder().useCase("Say hello to world, then user")
 			.basicFlow()
 				.step("S1").user(ASKS_FOR_HELLO_WORLD).system(saysHelloWorld)
 				.step("S2").user(ASKS_FOR_HELLO_TO_USER).system(saysHelloToUser)
 			.build();
-		return useCaseModel;
+		return model;
 	}
 	
 	static class AsksForHelloWorld implements Serializable{
@@ -91,15 +90,15 @@ public class Akka {
 	}
 
 	static class SayHelloActor extends UntypedAbstractActor {
-		private UseCaseModelRunner useCaseModelRunner;
+		private ModelRunner modelRunner;
 
-		public SayHelloActor(UseCaseModelRunner useCaseModelRunner) {
-			this.useCaseModelRunner = useCaseModelRunner;
+		public SayHelloActor(ModelRunner modelRunner) {
+			this.modelRunner = modelRunner;
 		}
 
 		@Override
 		public void onReceive(Object msg) throws Exception {
-			useCaseModelRunner.reactTo(msg);
+		    modelRunner.reactTo(msg);
 		}
 	}
 

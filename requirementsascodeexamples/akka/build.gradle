@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 
 dependencies {
-  compile 'org.requirementsascode:requirementsascodecore:0.5.2'
+  compile project(':requirementsascodecore')
   compile 'com.typesafe.akka:akka-actor_2.11:2.5.4'
   compile 'com.typesafe.akka:akka-remote_2.11:2.5.4'
   testCompile 'junit:junit:4.12'
