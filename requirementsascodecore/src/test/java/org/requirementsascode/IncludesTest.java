@@ -13,7 +13,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withoutCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -23,7 +23,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
@@ -34,7 +34,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withAnytimeCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -44,7 +44,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
@@ -56,7 +56,7 @@ public class IncludesTest extends AbstractTestCase{
 
   @Test
   public void includesUseCaseWithBasicFlowAtFirstStep_withFalseCondition_cantReact() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -66,7 +66,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
     String expectedSteps =
@@ -76,7 +76,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_withoutCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -88,7 +88,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
@@ -99,7 +99,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_witAnytimeCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -111,7 +111,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
@@ -123,7 +123,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_witInsteadOfCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -135,7 +135,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"
@@ -146,7 +146,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithAlternativeFlowAtFirstStep_withFalseCondition_cantReact() {
-      Model useCaseModel = modelBuilder
+      Model model = modelBuilder
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
             .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -158,7 +158,7 @@ public class IncludesTest extends AbstractTestCase{
             .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
         .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
     String expectedSteps =
@@ -168,7 +168,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withoutCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -179,7 +179,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -192,7 +192,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withAnytimeCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().anytime()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -203,7 +203,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -217,7 +217,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithBasicFlowAtSecondStep_withFalseCondition_cantReact() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow().when(r -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -228,7 +228,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -239,7 +239,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withoutCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -252,7 +252,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -265,7 +265,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withAnytimeCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -278,7 +278,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -292,7 +292,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withInsteadOfCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -305,7 +305,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -318,7 +318,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseWithAlternativeFlowAtSecondStep_withFalseCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
@@ -331,7 +331,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
     String expectedSteps =
@@ -342,7 +342,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includeUseCaseTwoConsecutiveTimes() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -354,7 +354,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
 
     String expectedSteps =
@@ -369,7 +369,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includeUseCaseTwoNonConsecutiveTimes() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -381,7 +381,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE_2).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
 
     String expectedSteps =
@@ -396,7 +396,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includeUseCaseFromTwoDifferentUseCases() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -411,7 +411,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE_2).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber(), entersText(), entersNumber(), entersText(), entersNumber());
 
     String expectedSteps =
@@ -428,7 +428,7 @@ public class IncludesTest extends AbstractTestCase{
     
   @Test
   public void includedUseCaseCanBeRunOnItsOwn() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -438,7 +438,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersNumber());
 
     assertEquals(CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
@@ -446,7 +446,7 @@ public class IncludesTest extends AbstractTestCase{
   
   @Test
   public void includesUseCaseThatIncludesUseCase_withoutCondition() {
-    Model useCaseModel = modelBuilder
+    Model model = modelBuilder
       .useCase(USE_CASE_2)
         .basicFlow()
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
@@ -461,7 +461,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(useCaseModel);
+    modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersText());
     String expectedSteps =
         SYSTEM_INCLUDES_USE_CASE + ";"

@@ -91,7 +91,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 	thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 
-	Model useCaseModel = modelBuilder
+	Model model = modelBuilder
 		.useCase(USE_CASE)
 			.basicFlow().anytime()
 				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
@@ -99,7 +99,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displaysConstantText())
 		.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	thrown.expectMessage("Step 1");
 	thrown.expectMessage("Step 2 with same event as Step 1");
 
-	Model useCaseModel = modelBuilder
+	Model model = modelBuilder
 		.useCase("Use Case")
 			.basicFlow()
 				.step("Step 1").user(String.class).system(s -> System.out.println(s))
@@ -117,7 +117,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 				.step("Step 2 with same event as Step 1").user(String.class).system(s -> System.out.println(s))
 		.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 	modelRunner.reactTo(new String("Some text"));
     }
 
@@ -128,9 +128,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 
 	modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT);
 
-	Model useCaseModel = modelBuilder.build();
+	Model model = modelBuilder.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
     }
 
     @Test
@@ -141,9 +141,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).as(customer)
 		.user(EntersText.class);
 
-	Model useCaseModel = modelBuilder.build();
+	Model model = modelBuilder.build();
 
-	modelRunner.as(customer).run(useCaseModel);
+	modelRunner.as(customer).run(model);
 	modelRunner.reactTo(entersText());
     }
 
@@ -156,9 +156,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	    throw new IllegalStateException();
 	});
 
-	Model useCaseModel = modelBuilder.build();
+	Model model = modelBuilder.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
     }
 
     @Test

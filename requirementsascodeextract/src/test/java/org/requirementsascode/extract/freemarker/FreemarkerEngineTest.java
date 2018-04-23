@@ -34,11 +34,11 @@ public class FreemarkerEngineTest {
   
   @Test
   public void extractsEmptyStringFromEmptyModel() throws Exception {
-    Model useCaseModel = Model.builder().build();
+    Model model = Model.builder().build();
     String templateFileName = "testextract.ftl";
     StringWriter outputWriter = new StringWriter();
     
-    engine.extract(useCaseModel, templateFileName, outputWriter);
+    engine.extract(model, templateFileName, outputWriter);
     String output = outputWriter.toString();
     
     assertEquals("", output);

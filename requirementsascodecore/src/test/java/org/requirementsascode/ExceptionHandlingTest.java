@@ -14,7 +14,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	
 	@Test
 	public void doesNotHandleExceptionIfNoExceptionOccurs() {
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -22,14 +22,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 
-		modelRunner.run(useCaseModel);
+		modelRunner.run(model);
 
 		assertEquals(SYSTEM_DISPLAYS_TEXT + ";", runStepNames());
 	}
 	
 	@Test
 	public void doesNotHandleExceptionIfSystemReactionDoesNotThrowException() {	
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
@@ -37,14 +37,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		modelRunner.run(useCaseModel);
+		modelRunner.run(model);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";", runStepNames());
 	}
 	
 	@Test
 	public void handlesExceptionAfterSpecificStep() {	
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())		
@@ -52,14 +52,14 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		modelRunner.run(useCaseModel);
+		modelRunner.run(model);
 		
 		assertEquals(SYSTEM_HANDLES_EXCEPTION, latestStepName());
 	}
 	
 	@Test
 	public void handlesExceptionAtAnyTime() {
-		Model useCaseModel = 
+		Model model = 
 			modelBuilder.useCase(USE_CASE)
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
@@ -69,7 +69,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
-		modelRunner.run(useCaseModel);
+		modelRunner.run(model);
 		
 		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_THROWS_EXCEPTION + ";" + SYSTEM_HANDLES_EXCEPTION +";", runStepNames());
 	}

@@ -18,11 +18,11 @@ public class FlowlessTest extends AbstractTestCase {
 
     @Test
     public void oneFlowlessStepReacts() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.handles(EntersText.class).with(displaysEnteredText())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
@@ -30,12 +30,12 @@ public class FlowlessTest extends AbstractTestCase {
 
     @Test
     public void twoFlowlessStepsReactToEventsOfDifferentTypeInRightOrder() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.handles(EntersText.class).with(displaysEnteredText())
 		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
@@ -46,12 +46,12 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void twoFlowlessStepsReactToEventsOfDifferentTypeInWrongOrder() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.handles(EntersText.class).with(displaysEnteredText())
 		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
 	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
@@ -62,12 +62,12 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStep() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.when(r -> true).handles(EntersText.class).with(displaysEnteredText())
 		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 	
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
@@ -78,12 +78,12 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStep() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.handles(EntersText.class).with(displaysEnteredText())
 		.when(r -> true).handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
@@ -94,12 +94,12 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void twoFlowlessStepsDontReactWhenConditionIsFalseInFirstStep() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.when(r -> false).handles(EntersText.class).with(displaysEnteredText())
 		.handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
 	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
@@ -110,12 +110,12 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void twoFlowlessStepsDontReactWhenConditionIsFalseInSecondStep() {
-	Model useCaseModel = modelBuilder.useCase(USE_CASE)
+	Model model = modelBuilder.useCase(USE_CASE)
 		.handles(EntersText.class).with(displaysEnteredText())
 		.when(r -> false).handles(EntersNumber.class).with(displaysEnteredNumber())
 	.build();
 
-	modelRunner.run(useCaseModel);
+	modelRunner.run(model);
 
 	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());

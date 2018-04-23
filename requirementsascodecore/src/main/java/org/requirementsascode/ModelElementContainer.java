@@ -22,8 +22,8 @@ class ModelElementContainer {
 	if (!hasModelElement(modelElementName, modelElementNameToElementMap)) {
 	    throw new NoSuchElementInModel(modelElementName);
 	}
-	T useCaseModelElement = modelElementNameToElementMap.get(modelElementName);
-	return useCaseModelElement;
+	T modelElement = modelElementNameToElementMap.get(modelElementName);
+	return modelElement;
     }
 
     static <T extends ModelElement> boolean hasModelElement(String modelElementName,
