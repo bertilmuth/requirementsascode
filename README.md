@@ -1,5 +1,5 @@
 # requirements as code
-Starting to develop an event driven application can be challenging.
+Starting to develop an event-driven application can be challenging.
 This project aims to simplify it. 
 
 The project provides a concise way to create handlers for many types of events at once.
