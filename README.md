@@ -50,8 +50,8 @@ Model model = Model.builder()
 ```
 
 The order of the statements has no significance.
-For handling exceptions instead of events, use the specific exception's class or ```Throwable.class```.
-Use ```when``` before ```handles``` to define an additional condition that must be fulfilled.
+For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
+Use `when` before `handles` to define an additional condition that must be fulfilled.
 
 ## Step 2: Create a runner and run the model:
 ``` java
@@ -65,7 +65,7 @@ runner.reactTo(<Event POJO Object>);
 ```
 If an event's class is not declared in the model, the runner consumes it silently.
 If an exception is thrown in one of the handler methods and it is not handled by any 
-other handler method, the runner will throw an  unchecked ```UnhandledException```
+other handler method, the runner will throw an unchecked `UnhandledException`
 that wraps it.
 
 # hello world
