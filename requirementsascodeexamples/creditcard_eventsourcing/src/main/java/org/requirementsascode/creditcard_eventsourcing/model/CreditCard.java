@@ -30,8 +30,10 @@ public class CreditCard {
         this.uuid = uuid;
         this.eventHandlingModel = 
         	Model.builder()
-        		.handles(LimitAssigned.class).with(this::limitAssigned)
-        		.handles(CardWithdrawn.class).with(this::cardWithdrawn)
+        		.when(this::limitNotAssigned).handles(LimitAssigned.class).with(this::limitAssigned)
+        		.when(this::limitAlreadyAssigned).handles(LimitAssigned.class).with(this::throwsException)
+        		.when(this::notTooManyWithdrawalsInCycle).handles(CardWithdrawn.class).with(this::cardWithdrawn)
+        		.when(this::tooManyWithdrawalsInCycle).handles(CardWithdrawn.class).with(this::throwsException)
         		.handles(CardRepaid.class).with(this::cardRepaid)
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
@@ -39,11 +41,7 @@ public class CreditCard {
         modelRunner.run(eventHandlingModel);
     }
 
-
     public void assignLimit(BigDecimal amount) { 
-        if(limitAlreadyAssigned()) {  
-            throw new IllegalStateException(); 
-        }
         limitAssigned(new LimitAssigned(uuid, amount, Instant.now()));
     }
 
@@ -56,9 +54,6 @@ public class CreditCard {
         if(notEnoughMoneyToWithdraw(amount)) {
             throw new IllegalStateException();
         }
-        if(tooManyWithdrawalsInCycle()) {
-            throw new IllegalStateException();
-        }
         cardWithdrawn(new CardWithdrawn(uuid, amount, Instant.now()));
     }
 
@@ -67,7 +62,6 @@ public class CreditCard {
         withdrawals++;
         pendingEvents.add(event);
     }
-
 
     public void repay(BigDecimal amount) {
         cardRepaid(new CardRepaid(uuid, amount, Instant.now()));
@@ -86,13 +80,25 @@ public class CreditCard {
         withdrawals = 0;
         pendingEvents.add(event);
     }
-
-    private boolean limitAlreadyAssigned() {
+    
+    public void throwsException(Object event) {
+	throw new IllegalStateException(); 
+    }
+    
+    private boolean limitAlreadyAssigned(ModelRunner r) {
         return initialLimit != null;
     }
 
-    private boolean tooManyWithdrawalsInCycle() {
+    private boolean limitNotAssigned(ModelRunner r) {
+        return !limitAlreadyAssigned(r);
+    }
+
+    private boolean tooManyWithdrawalsInCycle(ModelRunner r) {
         return withdrawals >= 45;
+    }
+    
+    private boolean notTooManyWithdrawalsInCycle(ModelRunner r) {
+        return !tooManyWithdrawalsInCycle(r);
     }
 
     private boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
