@@ -1,14 +1,15 @@
-package org.requirementsascode.creditcard_eventsourcing;
+package creditcard_eventsourcing;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.requirementsascode.creditcard_eventsourcing.model.CreditCard;
-import org.requirementsascode.creditcard_eventsourcing.persistence.CreditCardRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import creditcard_eventsourcing.model.CreditCard;
+import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
  * Based on code by Jakub Pilimon: 

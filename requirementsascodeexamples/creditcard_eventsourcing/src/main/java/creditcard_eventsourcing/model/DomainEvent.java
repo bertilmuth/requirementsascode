@@ -1,4 +1,4 @@
-package org.requirementsascode.creditcard_eventsourcing.model;
+package creditcard_eventsourcing.model;
 
 /**
  * Based on code by Jakub Pilimon: 

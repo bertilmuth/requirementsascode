@@ -1,4 +1,4 @@
-package org.requirementsascode.creditcard_eventsourcing.model;
+package creditcard_eventsourcing.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -42,7 +42,7 @@ public class CreditCard {
     }
 
     public void assignLimit(BigDecimal amount) { 
-        limitAssigned(new LimitAssigned(uuid, amount, Instant.now()));
+        handle(new LimitAssigned(uuid, amount, Instant.now()));
     }
 
     private void limitAssigned(LimitAssigned event) {
@@ -54,7 +54,7 @@ public class CreditCard {
         if(notEnoughMoneyToWithdraw(amount)) {
             throw new IllegalStateException();
         }
-        cardWithdrawn(new CardWithdrawn(uuid, amount, Instant.now()));
+        handle(new CardWithdrawn(uuid, amount, Instant.now()));
     }
 
     private void cardWithdrawn(CardWithdrawn event) {
@@ -64,7 +64,7 @@ public class CreditCard {
     }
 
     public void repay(BigDecimal amount) {
-        cardRepaid(new CardRepaid(uuid, amount, Instant.now()));
+        handle(new CardRepaid(uuid, amount, Instant.now()));
     }
 
     private void cardRepaid(CardRepaid event) {
@@ -73,7 +73,7 @@ public class CreditCard {
     }
 
     public void cycleClosed() {
-        cycleWasClosed(new CycleClosed(uuid, Instant.now()));
+        handle(new CycleClosed(uuid, Instant.now()));
     }
 
     private void cycleWasClosed(CycleClosed event) {

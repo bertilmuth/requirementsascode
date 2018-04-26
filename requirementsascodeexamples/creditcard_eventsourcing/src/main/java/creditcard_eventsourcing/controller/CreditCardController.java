@@ -1,15 +1,16 @@
-package org.requirementsascode.creditcard_eventsourcing.controller;
+package creditcard_eventsourcing.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.requirementsascode.creditcard_eventsourcing.model.CreditCard;
-import org.requirementsascode.creditcard_eventsourcing.persistence.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import creditcard_eventsourcing.model.CreditCard;
+import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
  * Based on code by Jakub Pilimon: 

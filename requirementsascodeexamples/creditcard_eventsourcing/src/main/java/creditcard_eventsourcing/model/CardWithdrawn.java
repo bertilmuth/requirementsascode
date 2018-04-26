@@ -1,5 +1,6 @@
-package org.requirementsascode.creditcard_eventsourcing.model;
+package creditcard_eventsourcing.model;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -10,18 +11,24 @@ import java.util.UUID;
  * @author b_muth
  *
  */
-public class CycleClosed implements DomainEvent {
+public class CardWithdrawn implements DomainEvent {
 
     private final UUID cardNo;
+    private final BigDecimal amount;
     private final Instant timestamp;
 
-    public CycleClosed(UUID cardNo, Instant timestamp) {
+    public CardWithdrawn(UUID cardNo, BigDecimal amount, Instant timestamp) {
         this.cardNo = cardNo;
+        this.amount = amount;
         this.timestamp = timestamp;
     }
 
     public UUID getCardNo() {
         return cardNo;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     public Instant getTimestamp() {
@@ -31,6 +38,6 @@ public class CycleClosed implements DomainEvent {
 
     @Override
     public String getType() {
-        return "cycle-closed";
+        return "card-withdrawn";
     }
 }

@@ -1,4 +1,4 @@
-package org.requirementsascode.creditcard_eventsourcing.model;
+package creditcard_eventsourcing.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;

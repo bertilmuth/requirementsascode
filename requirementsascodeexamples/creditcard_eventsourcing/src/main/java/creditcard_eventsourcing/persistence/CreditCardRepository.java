@@ -1,4 +1,4 @@
-package org.requirementsascode.creditcard_eventsourcing.persistence;
+package creditcard_eventsourcing.persistence;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +7,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.requirementsascode.creditcard_eventsourcing.model.CreditCard;
-import org.requirementsascode.creditcard_eventsourcing.model.DomainEvent;
 import org.springframework.stereotype.Repository;
+
+import creditcard_eventsourcing.model.CreditCard;
+import creditcard_eventsourcing.model.DomainEvent;
 
 /**
  * Based on code by Jakub Pilimon: 
