@@ -15,7 +15,7 @@ public class CreditCardTest {
     @Before
     public void setUp() throws Exception {
     }
-    
+
     @Test
     public void assigningLimitOnceWorksCorrectly() {
 	CreditCard card = new CreditCard(UUID.randomUUID());
@@ -31,6 +31,30 @@ public class CreditCardTest {
 	boolean illegalStateExceptionThrown = false;
 	try {
 	    card.assignLimit(BigDecimal.TEN);
+	} catch (UnhandledException e) {
+	    illegalStateExceptionThrown = e.getCause() instanceof IllegalStateException;
+	}
+	assertTrue(illegalStateExceptionThrown);
+    }
+    
+    @Test
+    public void withdrawingOnceWorksCorrectly() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(BigDecimal.TEN);
+	card.withdraw(BigDecimal.ONE);
+	assertEquals(new BigDecimal(9), card.availableLimit());
+    }
+
+    @Test
+    public void withdrawingTooOftenThrowsException() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(new BigDecimal(100));
+
+	boolean illegalStateExceptionThrown = false;
+	try {
+	    for (int i = 1; i <= 90; i++) {
+		card.withdraw(BigDecimal.ONE);
+	    }
 	} catch (UnhandledException e) {
 	    illegalStateExceptionThrown = e.getCause() instanceof IllegalStateException;
 	}
