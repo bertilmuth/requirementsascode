@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
-import org.requirementsascode.exception.UnhandledException;
 
 /**
  * A model runner is a highly configurable controller that
@@ -192,9 +191,6 @@ public class ModelRunner implements Serializable {
      *         empty optional if none was triggered.
      * @throws MoreThanOneStepCanReact
      *             if more than one step can react
-     * @throws UnhandledException
-     *             if no step can react, and the event is an (in)direct subclass of
-     *             Throwable.
      */
     public <T> Optional<Step> reactTo(T event) {
 	Objects.requireNonNull(event);
@@ -216,8 +212,8 @@ public class ModelRunner implements Serializable {
 	    triggerSystemReactionForStep(event, useCaseStep);
 	} else if (steps.size() > 1) {
 	    throw new MoreThanOneStepCanReact(steps);
-	} else if (event instanceof Throwable) {
-	    throw new UnhandledException((Throwable) event);
+	} else if (event instanceof RuntimeException) {
+	    throw (RuntimeException) event;
 	}
 
 	return useCaseStep != null ? Optional.of(useCaseStep) : Optional.empty();

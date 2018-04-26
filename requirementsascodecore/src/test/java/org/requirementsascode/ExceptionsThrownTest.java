@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import static org.hamcrest.core.Is.isA;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +8,6 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.exception.UnhandledException;
 
 public class ExceptionsThrownTest extends AbstractTestCase {
     @Rule
@@ -148,9 +145,8 @@ public class ExceptionsThrownTest extends AbstractTestCase {
     }
 
     @Test
-    public void throwsUncaughtExceptionIfExceptionIsNotHandled() {
-	thrown.expect(UnhandledException.class);
-	thrown.expectCause(isA(IllegalStateException.class));
+    public void rethrowsExceptionIfExceptionIsNotHandled() {
+	thrown.expect(IllegalStateException.class);
 
 	modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).system(r -> {
 	    throw new IllegalStateException();

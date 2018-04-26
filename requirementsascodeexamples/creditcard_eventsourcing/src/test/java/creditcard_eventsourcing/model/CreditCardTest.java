@@ -1,14 +1,12 @@
 package creditcard_eventsourcing.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.exception.UnhandledException;
 
 public class CreditCardTest {
 
@@ -23,18 +21,11 @@ public class CreditCardTest {
 	assertEquals(BigDecimal.TEN, card.availableLimit());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void assigningLimitTwiceThrowsException() {
 	CreditCard card = new CreditCard(UUID.randomUUID());
 	card.assignLimit(BigDecimal.TEN);
-
-	boolean illegalStateExceptionThrown = false;
-	try {
-	    card.assignLimit(BigDecimal.TEN);
-	} catch (UnhandledException e) {
-	    illegalStateExceptionThrown = e.getCause() instanceof IllegalStateException;
-	}
-	assertTrue(illegalStateExceptionThrown);
+	card.assignLimit(BigDecimal.TEN);
     }
 
     @Test
@@ -45,36 +36,23 @@ public class CreditCardTest {
 	assertEquals(BigDecimal.ZERO, card.availableLimit());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void withdrawingTooMuchThrowsException() {
 	CreditCard card = new CreditCard(UUID.randomUUID());
 	card.assignLimit(BigDecimal.ONE);
-	
-	boolean illegalStateExceptionThrown = false;
-	try {
-	    card.withdraw(new BigDecimal(2));
-	} catch (IllegalStateException e) {
-	    illegalStateExceptionThrown = e instanceof IllegalStateException;
-	}
-	assertTrue(illegalStateExceptionThrown);
+	card.withdraw(new BigDecimal(2));
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void withdrawingTooOftenThrowsException() {
 	CreditCard card = new CreditCard(UUID.randomUUID());
 	card.assignLimit(new BigDecimal(100));
 
-	boolean illegalStateExceptionThrown = false;
-	try {
-	    for (int i = 1; i <= 90; i++) {
-		card.withdraw(BigDecimal.ONE);
-	    }
-	} catch (UnhandledException e) {
-	    illegalStateExceptionThrown = e.getCause() instanceof IllegalStateException;
+	for (int i = 1; i <= 90; i++) {
+	    card.withdraw(BigDecimal.ONE);
 	}
-	assertTrue(illegalStateExceptionThrown);
     }
-    
+
     @Test
     public void repayingOnceWorksCorrectly() {
 	CreditCard card = new CreditCard(UUID.randomUUID());
