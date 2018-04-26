@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.SystemReactionTrigger;
 
 /**
  * Based on code by Jakub Pilimon: 
@@ -38,12 +39,14 @@ public class CreditCard {
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
         this.modelRunner = new ModelRunner();
-        modelRunner.adaptSystemReaction(tr -> {
-            tr.trigger();
-            DomainEvent domainEvent = (DomainEvent)tr.getEvent();
-            pendingEvents.add(domainEvent);
-        });
+        modelRunner.adaptSystemReaction(this::withPendingEvents);
         modelRunner.run(eventHandlingModel);
+    }
+    
+    public void withPendingEvents(SystemReactionTrigger srt) {
+	srt.trigger();
+        DomainEvent domainEvent = (DomainEvent)srt.getEvent();
+        pendingEvents.add(domainEvent);
     }
 
     public void assignLimit(BigDecimal amount) { 
