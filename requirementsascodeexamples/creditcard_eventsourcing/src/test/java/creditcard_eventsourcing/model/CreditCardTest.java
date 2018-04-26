@@ -20,6 +20,13 @@ public class CreditCardTest {
 	card.assignLimit(BigDecimal.TEN);
 	assertEquals(BigDecimal.TEN, card.availableLimit());
     }
+    
+    @Test
+    public void assigningLimitOnceCreatesOneEvent() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(BigDecimal.TEN);
+	assertEquals(1, card.getPendingEvents().size());
+    }
 
     @Test(expected = IllegalStateException.class)
     public void assigningLimitTwiceThrowsException() {
@@ -34,6 +41,14 @@ public class CreditCardTest {
 	card.assignLimit(BigDecimal.ONE);
 	card.withdraw(BigDecimal.ONE);
 	assertEquals(BigDecimal.ZERO, card.availableLimit());
+    }
+    
+    @Test
+    public void assigningAndWithdrawingCreatesTwoEvents() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(BigDecimal.ONE);
+	card.withdraw(BigDecimal.ONE);
+	assertEquals(2, card.getPendingEvents().size());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -60,5 +75,14 @@ public class CreditCardTest {
 	card.withdraw(BigDecimal.ONE);
 	card.repay(BigDecimal.ONE);
 	assertEquals(BigDecimal.TEN, card.availableLimit());
+    }
+    
+    @Test
+    public void assigningWithdrawingAndRepayingCreatesThreeEvents() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(BigDecimal.TEN);
+	card.withdraw(BigDecimal.ONE);
+	card.repay(BigDecimal.ONE);
+	assertEquals(3, card.getPendingEvents().size());
     }
 }

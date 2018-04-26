@@ -38,6 +38,11 @@ public class CreditCard {
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
         this.modelRunner = new ModelRunner();
+        modelRunner.adaptSystemReaction(tr -> {
+            tr.trigger();
+            DomainEvent domainEvent = (DomainEvent)tr.getEvent();
+            pendingEvents.add(domainEvent);
+        });
         modelRunner.run(eventHandlingModel);
     }
 
@@ -47,7 +52,6 @@ public class CreditCard {
 
     private void limitAssigned(LimitAssigned event) {
         this.initialLimit = event.getAmount(); 
-        pendingEvents.add(event);
     }
 
     public void withdraw(BigDecimal amount) {
@@ -60,7 +64,6 @@ public class CreditCard {
     private void cardWithdrawn(CardWithdrawn event) {
         this.usedLimit = usedLimit.add(event.getAmount());
         withdrawals++;
-        pendingEvents.add(event);
     }
 
     public void repay(BigDecimal amount) {
@@ -69,7 +72,6 @@ public class CreditCard {
 
     private void cardRepaid(CardRepaid event) {
         usedLimit = usedLimit.subtract(event.getAmount());
-        pendingEvents.add(event);
     }
 
     public void cycleClosed() {
@@ -78,7 +80,6 @@ public class CreditCard {
 
     private void cycleWasClosed(CycleClosed event) {
         withdrawals = 0;
-        pendingEvents.add(event);
     }
     
     public void throwsException(Object event) {
