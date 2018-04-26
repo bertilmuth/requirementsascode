@@ -74,4 +74,13 @@ public class CreditCardTest {
 	}
 	assertTrue(illegalStateExceptionThrown);
     }
+    
+    @Test
+    public void repayingOnceWorksCorrectly() {
+	CreditCard card = new CreditCard(UUID.randomUUID());
+	card.assignLimit(BigDecimal.TEN);
+	card.withdraw(BigDecimal.ONE);
+	card.repay(BigDecimal.ONE);
+	assertEquals(BigDecimal.TEN, card.availableLimit());
+    }
 }
