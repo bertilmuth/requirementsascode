@@ -13,13 +13,13 @@ import java.util.function.Consumer;
  *
  * @author b_muth
  */
-public class SystemReactionTrigger implements Serializable {
+public class StandardEventHandler implements Serializable {
     private static final long serialVersionUID = -8615677956101523359L;
 
     private Object event;
     private Step step;
 
-    SystemReactionTrigger() {
+    StandardEventHandler() {
     }
 
     /**
@@ -29,7 +29,7 @@ public class SystemReactionTrigger implements Serializable {
      * @see #setupWith(Object, Step)
      */
     @SuppressWarnings("unchecked")
-    public void trigger() {
+    public void handleEvent() {
 	((Consumer<Object>) step.getSystemReaction()).accept(event);
     }
 
@@ -40,7 +40,7 @@ public class SystemReactionTrigger implements Serializable {
 
     /**
      * Returns the event object that will be passed to the system reaction when
-     * {@link #trigger()} is called.
+     * {@link #handleEvent()} is called.
      *
      * @return the event object.
      */
@@ -50,7 +50,7 @@ public class SystemReactionTrigger implements Serializable {
 
     /**
      * Returns the step whose system reaction is performed when
-     * {@link #trigger()} is called.
+     * {@link #handleEvent()} is called.
      *
      * @return the step.
      */

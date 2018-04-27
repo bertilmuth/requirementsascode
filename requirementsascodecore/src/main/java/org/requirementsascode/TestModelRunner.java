@@ -12,7 +12,7 @@ public class TestModelRunner extends ModelRunner {
 
     public TestModelRunner() {
 	runStepNames = new StringBuilder();
-	adaptSystemReaction(this::withStepNameTracking);
+	handleWith(this::withStepNameTracking);
     }
 
     /**
@@ -30,10 +30,10 @@ public class TestModelRunner extends ModelRunner {
 	return runStepNames.toString();
     }
 
-    private void withStepNameTracking(SystemReactionTrigger systemReactionTrigger) {
+    private void withStepNameTracking(StandardEventHandler systemReactionTrigger) {
 	String stepName = systemReactionTrigger.getStep().getName();
 	runStepNames.append(stepName);
 	runStepNames.append(";");
-	systemReactionTrigger.trigger();
+	systemReactionTrigger.handleEvent();
     }
 }

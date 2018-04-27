@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.SystemReactionTrigger;
+import org.requirementsascode.StandardEventHandler;
 
 /**
  * Based on code by Jakub Pilimon: 
@@ -37,13 +37,13 @@ public class CreditCard {
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
         this.modelRunner = new ModelRunner();
-        modelRunner.adaptSystemReaction(this::withPendingEvents);
+        modelRunner.handleWith(this::addedPendingEvents);
         modelRunner.run(eventHandlingModel);
     }
     
-    public void withPendingEvents(SystemReactionTrigger srt) {
-	srt.trigger();
-        DomainEvent domainEvent = (DomainEvent)srt.getEvent();
+    public void addedPendingEvents(StandardEventHandler eventHandler) {
+	eventHandler.handleEvent();
+        DomainEvent domainEvent = (DomainEvent)eventHandler.getEvent();
         pendingEvents.add(domainEvent);
     }
 

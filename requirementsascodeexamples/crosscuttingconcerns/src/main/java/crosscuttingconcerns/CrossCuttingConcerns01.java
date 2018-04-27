@@ -1,6 +1,6 @@
 package crosscuttingconcerns;
 
-import org.requirementsascode.SystemReactionTrigger;
+import org.requirementsascode.StandardEventHandler;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
@@ -20,13 +20,13 @@ public class CrossCuttingConcerns01 {
 			.build();
 		
 		ModelRunner modelRunner = new ModelRunner();
-		modelRunner.adaptSystemReaction(this::measuresPerformance);
+		modelRunner.handleWith(this::measuresPerformance);
 		modelRunner.run(model);
 	}
 	
-	private void measuresPerformance(SystemReactionTrigger systemReactionTrigger) {
+	private void measuresPerformance(StandardEventHandler systemReactionTrigger) {
 			long timeBefore = System.nanoTime();
-			systemReactionTrigger.trigger();
+			systemReactionTrigger.handleEvent();
 			long timeAfter = System.nanoTime();
 			long timeElapsed = timeAfter - timeBefore;
 			

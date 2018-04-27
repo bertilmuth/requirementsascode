@@ -34,8 +34,9 @@ public class ModelRunner implements Serializable {
     private Model model;
     private Step latestStep;
     private boolean isRunning;
-    private SystemReactionTrigger systemReactionTrigger;
-    private Consumer<SystemReactionTrigger> systemReaction;
+    private StandardEventHandler standardEventHandler;
+    private Consumer<StandardEventHandler> eventHandler;
+    private Consumer<Object> unhandledEventHandler;
     private Predicate<Step> stepWithoutAlternativeCondition;
     private LinkedList<UseCase> includedUseCases;
     private LinkedList<FlowStep> includeSteps;
@@ -47,31 +48,41 @@ public class ModelRunner implements Serializable {
      * system reaction, as defined in the step, simply accepts an event.
      */
     public ModelRunner() {
-	this.systemReactionTrigger = new SystemReactionTrigger();
+	this.standardEventHandler = new StandardEventHandler();
 
-	adaptSystemReaction(new DirectSystemReactionTrigger());
+	handleWith(new WithMethodFromModelWithoutExtension());
 	restart();
     }
 
-    private static class DirectSystemReactionTrigger implements Consumer<SystemReactionTrigger>, Serializable {
+    private static class WithMethodFromModelWithoutExtension implements Consumer<StandardEventHandler>, Serializable {
 	private static final long serialVersionUID = 9039056478378482872L;
 
 	@Override
-	public void accept(SystemReactionTrigger t) {
-	    t.trigger();
+	public void accept(StandardEventHandler standardEventHandler) {
+	    standardEventHandler.handleEvent();
 	}
     }
 
     /**
-     * Adapt the system reaction to perform tasks before and/or after triggering the
-     * system reaction. This is useful for cross-cutting concerns, e.g. measuring
-     * performance.
+     * Define a custom event handler. It can perform tasks before/after invoking the standard
+     * event handler which will call the system reaction method defined in the model. 
+     * A custom event handler is useful for cross-cutting concerns, e.g. measuring performance.
      *
-     * @param adaptedSystemReaction
-     *            the system reaction to replace the standard system reaction.
+     * @param eventHandler
+     *            the event handler to replace the standard handler
+     *            (that just calls the with method from the model).
      */
-    public void adaptSystemReaction(Consumer<SystemReactionTrigger> adaptedSystemReaction) {
-	this.systemReaction = adaptedSystemReaction;
+    public void handleWith(Consumer<StandardEventHandler> eventHandler) {
+	this.eventHandler = eventHandler;
+    }
+    
+    /**
+     * Define handler for events that the runner doesn't react to.
+     * 
+     * @param unhandledEventHandler the handler for events not handled by the runner
+     */
+    public void handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
+	this.unhandledEventHandler = unhandledEventHandler;
     }
 
     /**
@@ -171,9 +182,13 @@ public class ModelRunner implements Serializable {
      *
      * <p>
      * If it is running, the runner will then check which steps can react to the
-     * event. If a single step can react, the runner will trigger the system
-     * reaction for that step. If no step can react, the runner will NOT trigger any
-     * system reaction. If more than one step can react, the runner will throw an
+     * event. 
+     * If a single step can react, the runner will call the event handler with it. 
+     * If no step can react, the runner will either call the handler defined with
+     * {@link #handleUnhandledWith(Consumer)}, or if no such handler exists, 
+     * consume the event silently.
+     * 
+     * If more than one step can react, the runner will throw an
      * exception.
      *
      * <p>
@@ -214,9 +229,15 @@ public class ModelRunner implements Serializable {
 	    throw new MoreThanOneStepCanReact(steps);
 	} else if (event instanceof RuntimeException) {
 	    throw (RuntimeException) event;
+	} else if(unhandledEventHandler != null && !isSystemEvent(event)) {
+	    unhandledEventHandler.accept(event);
 	}
 
 	return useCaseStep != null ? Optional.of(useCaseStep) : Optional.empty();
+    }
+
+    private <T> boolean isSystemEvent(T event) {
+	return event instanceof ModelRunner;
     }
 
     private <T> Step triggerSystemReactionForStep(T event, Step step) {
@@ -226,10 +247,10 @@ public class ModelRunner implements Serializable {
 
 	setLatestStep(step);
 	setStepWithoutAlternativeCondition(null);
-	systemReactionTrigger.setupWith(event, step);
+	standardEventHandler.setupWith(event, step);
 
 	try {
-	    systemReaction.accept(systemReactionTrigger);
+	    eventHandler.accept(standardEventHandler);
 	} catch (Exception e) {
 	    handleException(e);
 	}
