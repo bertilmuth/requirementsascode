@@ -37,11 +37,11 @@ public class CreditCard {
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
         this.modelRunner = new ModelRunner();
-        modelRunner.handleWith(this::addedPendingEvents);
+        modelRunner.handleWith(this::addingPendingEvents);
         modelRunner.run(eventHandlingModel);
     }
     
-    public void addedPendingEvents(StandardEventHandler eventHandler) {
+    public void addingPendingEvents(StandardEventHandler eventHandler) {
 	eventHandler.handleEvent();
         DomainEvent domainEvent = (DomainEvent)eventHandler.getEvent();
         pendingEvents.add(domainEvent);
