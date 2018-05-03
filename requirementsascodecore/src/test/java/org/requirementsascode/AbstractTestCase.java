@@ -100,10 +100,6 @@ public abstract class AbstractTestCase {
 	};
     }
 
-    protected String runStepNames() {
-	return modelRunner.getRunStepNames();
-    }
-
     protected String latestStepName() {
 	String latestStepName = modelRunner.getLatestStep().map(step -> step.getName()).orElse(null);
 	return latestStepName;

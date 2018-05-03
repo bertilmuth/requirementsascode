@@ -1,11 +1,11 @@
 package hexagon.usecase;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestModelRunner;
 import org.requirementsascode.Model;
+import org.requirementsascode.TestModelRunner;
 
 import hexagon.adapter.stub.RepositoryStub;
 import hexagon.adapter.stub.WriterStub;
@@ -31,6 +31,6 @@ public class FeelStuffUseCaseTest {
   public void testBasicFlow() {
     testRunner.run(model);
     testRunner.reactTo(new AsksForPoem(), new AsksForPoem(), new AsksForPoem());
-    assertEquals("1;2;3;", testRunner.getRunStepNames());
+    assertTrue(testRunner.hasRun("1", "2", "3"));
   }
 }

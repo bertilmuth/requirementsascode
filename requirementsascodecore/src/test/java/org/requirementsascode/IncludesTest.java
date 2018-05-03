@@ -1,6 +1,6 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +25,9 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
   }  
     
   @Test
@@ -46,12 +44,9 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE,
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));
   }
 
   @Test
@@ -69,9 +64,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";";
-    assertEquals(expectedSteps, runStepNames());
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE));
   }
   
   @Test
@@ -90,11 +83,8 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
   }
   
   @Test
@@ -113,12 +103,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";";
-    assertEquals(expectedSteps, runStepNames());
+
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT,
+	    CUSTOMER_ENTERS_NUMBER));
   }
   
   @Test
@@ -137,11 +125,9 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
   }
     
   @Test
@@ -160,10 +146,8 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
-
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE));
   }
     
   @Test
@@ -182,12 +166,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT));
   }
   
   @Test
@@ -205,14 +186,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));
   }
   
   @Test
@@ -230,11 +207,9 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE));
   }
   
   @Test
@@ -254,13 +229,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT));
   }
     
   @Test
@@ -280,14 +252,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));    
   }
   
   @Test
@@ -307,13 +275,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT));    
   }
   
   @Test
@@ -333,11 +298,9 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-  
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE));
   }
     
   @Test
@@ -356,15 +319,11 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_INCLUDES_USE_CASE_2 + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_INCLUDES_USE_CASE_2, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT));
   }
     
   @Test
@@ -383,15 +342,11 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
-
-    String expectedSteps =
-        CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_DISPLAYS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE_2 + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
+	    SYSTEM_DISPLAYS_TEXT, SYSTEM_INCLUDES_USE_CASE_2,
+	    CUSTOMER_ENTERS_NUMBER));
   }
   
   @Test
@@ -413,17 +368,12 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber(), entersText(), entersNumber(), entersText(), entersNumber());
-
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + SYSTEM_INCLUDES_USE_CASE_2 + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + CUSTOMER_ENTERS_TEXT + ";"
-          + SYSTEM_INCLUDES_USE_CASE_3 + ";"
-          + CUSTOMER_ENTERS_NUMBER + ";"
-          + CUSTOMER_ENTERS_TEXT_AGAIN + ";";
-    assertEquals(expectedSteps, runStepNames());
+    
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_INCLUDES_USE_CASE_2,
+	    CUSTOMER_ENTERS_NUMBER, CUSTOMER_ENTERS_TEXT,
+	    SYSTEM_INCLUDES_USE_CASE_3, CUSTOMER_ENTERS_NUMBER,
+	    CUSTOMER_ENTERS_TEXT_AGAIN));
   }
     
   @Test
@@ -441,7 +391,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber());
 
-    assertEquals(CUSTOMER_ENTERS_NUMBER + ";", runStepNames());
+    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_NUMBER));
   }
   
   @Test
@@ -463,13 +413,10 @@ public class IncludesTest extends AbstractTestCase{
       
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersText());
-    String expectedSteps =
-        SYSTEM_INCLUDES_USE_CASE + ";"
-        + CUSTOMER_ENTERS_TEXT + ";"
-        + SYSTEM_INCLUDES_USE_CASE_2 + ";"
-        + CUSTOMER_ENTERS_NUMBER + ";"
-        + CUSTOMER_ENTERS_TEXT_AGAIN + ";"
-        + SYSTEM_DISPLAYS_TEXT + ";";
-    assertEquals(expectedSteps, runStepNames());
+
+    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE,
+	    CUSTOMER_ENTERS_TEXT, SYSTEM_INCLUDES_USE_CASE_2, 
+	    CUSTOMER_ENTERS_NUMBER, CUSTOMER_ENTERS_TEXT_AGAIN,
+	    SYSTEM_DISPLAYS_TEXT));
   }  
 }

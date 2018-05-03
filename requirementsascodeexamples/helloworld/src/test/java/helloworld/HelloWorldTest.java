@@ -1,12 +1,12 @@
 package helloworld;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestModelRunner;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.TestModelRunner;
 
 import helloworld.userevent.EntersText;
 
@@ -28,7 +28,7 @@ public class HelloWorldTest {
 		
 		modelRunner.run(model);
 
-		assertEquals("S1;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1"));
 	}
 	
 	@Test
@@ -38,7 +38,7 @@ public class HelloWorldTest {
 		
 		modelRunner.run(model);
 
-		assertEquals("S1;S2;S2;S2;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S2", "S2"));
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John Q. Public"));
 
-		assertEquals("S1;S2;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2"));
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertEquals("S1;S2;S3;S4;S5;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5"));
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertEquals("S1;S2;S3;S4;S5;S6;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5", "S6"));
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("1000"));
 
-		assertEquals("S1;S2;S3;S4;S5a_1;S5a_2;S3;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3"));
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("NON-NUMERICAL-AGE"));
 
-		assertEquals("S1;S2;S3;S4;S5b_1;S5b_2;S3;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3"));
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class HelloWorldTest {
 		modelRunner.as(example.normalUser()).run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertEquals("S1;S2;S3;S4;S5;S6;S7;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5", "S6", "S7"));
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ public class HelloWorldTest {
 		modelRunner.as(example.anonymousUser()).run(model);
 		modelRunner.reactTo(new EntersText("39"));
 
-		assertEquals("S1a_1;S3;S4;S5c_1;S6;S7;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1a_1", "S3", "S4", "S5c_1", "S6", "S7"));
 	}
 	
 	@Test
@@ -126,6 +126,6 @@ public class HelloWorldTest {
 		modelRunner.as(example.anonymousUser()).run(model);
 		modelRunner.reactTo(new EntersText("NotANumber"));
 
-		assertEquals("S1a_1;S3;S4;S5b_1;S5b_2;S3;", modelRunner.getRunStepNames());
+		assertTrue(modelRunner.hasRun("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3"));
 	}
 }

@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 
 		modelRunner.run(model);
 
-		assertEquals(SYSTEM_DISPLAYS_TEXT + ";", runStepNames());
+		assertTrue(modelRunner.hasRun(SYSTEM_DISPLAYS_TEXT));
 	}
 	
 	@Test
@@ -39,7 +40,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		
-		assertEquals(SYSTEM_DISPLAYS_TEXT +";", runStepNames());
+		assertTrue(modelRunner.hasRun(SYSTEM_DISPLAYS_TEXT));
 	}
 	
 	@Test
@@ -71,6 +72,6 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		
-		assertEquals(SYSTEM_DISPLAYS_TEXT +";" + SYSTEM_THROWS_EXCEPTION + ";" + SYSTEM_HANDLES_EXCEPTION +";", runStepNames());
+		assertTrue(modelRunner.hasRun(SYSTEM_DISPLAYS_TEXT, SYSTEM_THROWS_EXCEPTION, SYSTEM_HANDLES_EXCEPTION));
 	}
 }
