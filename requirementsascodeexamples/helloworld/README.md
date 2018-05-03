@@ -53,7 +53,7 @@ modelRunner.reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
-# example 04 - user enters name and age, system prints them (UnhandledException thrown if non-numerical age entered)
+# example 04 - user enters name and age, system prints them (exception thrown if non-numerical age entered)
 ``` java
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
