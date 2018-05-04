@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Simple model runner for automated tests.
@@ -14,9 +15,11 @@ public class TestModelRunner extends ModelRunner {
 
     private List<String> runStepNames;
 
+    private Consumer<StandardEventHandler> adaptedEventHandler;
+
     public TestModelRunner() {
 	runStepNames = new ArrayList<>();
-	handleWith(this::withStepNameTracking);
+	super.handleWith(this::stepNameTracking);
     }
 
     /**
@@ -50,10 +53,19 @@ public class TestModelRunner extends ModelRunner {
 	boolean actualEqualsExpected = Arrays.equals(actualSteps, expectedSteps);
 	return actualEqualsExpected;
     }
+    
+    @Override
+    public void handleWith(Consumer<StandardEventHandler> adaptedEventHandler) {
+	this.adaptedEventHandler = adaptedEventHandler;
+    }
 
-    private void withStepNameTracking(StandardEventHandler eventHandler) {
-	String stepName = eventHandler.getStep().getName();
+    private void stepNameTracking(StandardEventHandler standardEventHandler) {
+	String stepName = standardEventHandler.getStep().getName();
 	runStepNames.add(stepName);
-	eventHandler.handleEvent();
+	if(adaptedEventHandler == null) {
+	    standardEventHandler.handleEvent();
+	} else {
+	    adaptedEventHandler.accept(standardEventHandler);
+	}
     }
 }

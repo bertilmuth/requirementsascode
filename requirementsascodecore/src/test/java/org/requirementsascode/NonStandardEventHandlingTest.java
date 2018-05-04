@@ -31,6 +31,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
 	modelRunner.run(model);
 
+	assertTrue(modelRunner.hasRun(SYSTEM_DISPLAYS_TEXT));
 	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 	assertEquals(TestModelRunner.class, event.getClass());
     }
@@ -57,9 +58,6 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
     }
     
     public void errorHandler(Object event) {
-	if(event instanceof ModelRunner) {
-	    throw new IllegalStateException();
-	}
 	this.event = event;
     }
 }
