@@ -1,6 +1,7 @@
 package creditcard_eventsourcing.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -71,6 +72,21 @@ public class CreditCardModelRunnerTest {
 	for (int i = 1; i <= 90; i++) {
 	    cardModelRunner.requestWithdrawal(BigDecimal.ONE);
 	}
+    }
+    
+    @Test
+    public void withdrawingTooOftenOnceProducesCorrectResult() {
+	cardModelRunner.requestToAssignLimit(new BigDecimal(50));
+
+	for (int i = 1; i <= 46; i++) {
+	    try {
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+	    } catch(IllegalStateException e) {
+		assertEquals(new BigDecimal(5), creditCard.availableLimit());
+		return;
+	    }
+	}
+	fail();
     }
     
     @Test

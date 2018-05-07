@@ -20,14 +20,14 @@ import creditcard_eventsourcing.model.request.RequestsWithdrawal;
 
 public class CreditCardModelRunner {
     // Step names
-    private static final String WITHDRAWING_TOO_OFTEN = "Withdrawing too often";
-    private static final String ASSIGNING_LIMIT_SECOND_TIME = "Assigning limit second time";
-    private static final String CLOSING_CYCLE = "Closing cycle";
-    private static final String REPEATING = "Repeating";
-    private static final String WITHDRAWING_ONCE_MORE = "Withdrawing once more";
-    private static final String REPAYING = "Repaying";
-    private static final String WITHDRAWING = "Withdrawing";
-    private static final String ASSIGNING_LIMIT = "Assigning Limit";
+    private static final String ASSIGN = "Assigning Limit";
+    private static final String ASSIGN_TWICE = "Assig twice";
+    private static final String WITHDRAW = "Withdraw";
+    private static final String WITHDRAW_AGAIN = "Withdraw again";
+    private static final String WDRAW_TOO_OFTEN = "Withdraw too often";
+    private static final String CLOSE = "Close cycle";
+    private static final String REPEAT = "Repeat";
+    private static final String REPAY = "Repay";
     
     // Requests
     private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
@@ -64,17 +64,17 @@ public class CreditCardModelRunner {
 	Model model = Model.builder()
 	  .useCase("Use credit card")
 	    .basicFlow()
-	    	.step(ASSIGNING_LIMIT).user(requestsToAssignLimit).system(assignsLimit)
-	    	.step(WITHDRAWING).user(requestsWithdrawal).system(withdraws).reactWhile(anytime)
-	    	.step(REPAYING).user(requestsRepay).system(repays).reactWhile(anytime)
-	    	.step(WITHDRAWING_ONCE_MORE).user(requestsWithdrawal).system(withdraws)
-	    	.step(REPEATING).continuesAt(WITHDRAWING)
+	    	.step(ASSIGN).user(requestsToAssignLimit).system(assignsLimit)
+	    	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(anytime)
+	    	.step(REPAY).user(requestsRepay).system(repays).reactWhile(anytime)
+	    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).system(withdraws)
+	    	.step(REPEAT).continuesAt(WITHDRAW)
 	    .flow("Cycle is over").anytime()
-	    	.step(CLOSING_CYCLE).handles(requestToCloseCycle).system(closesCycle)
+	    	.step(CLOSE).handles(requestToCloseCycle).system(closesCycle)
 	    .flow("Assign limit twice").when(limitAlreadyAssigned)
-	    	.step(ASSIGNING_LIMIT_SECOND_TIME).user(requestsToAssignLimit).system(throwsAssignLimitException)
+	    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
 	    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
-	    	.step(WITHDRAWING_TOO_OFTEN).system(throwsTooManyWithdrawalsException)
+	    	.step(WDRAW_TOO_OFTEN).system(throwsTooManyWithdrawalsException)
 	.build();
 	return model;
     }
