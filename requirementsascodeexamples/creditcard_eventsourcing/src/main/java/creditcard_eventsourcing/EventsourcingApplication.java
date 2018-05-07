@@ -3,12 +3,14 @@ package creditcard_eventsourcing;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import org.requirementsascode.ModelRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import creditcard_eventsourcing.model.CreditCard;
+import creditcard_eventsourcing.model.CreditCardModelRunner;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
@@ -33,9 +35,10 @@ public class EventsourcingApplication {
 
     @Scheduled(fixedRate = 2000)
     public void randomCards() {
-        CreditCard card = new CreditCard(UUID.randomUUID());
-        card.assignLimit(BigDecimal.TEN);
-        card.withdraw(BigDecimal.ONE);
-        creditCardRepository.save(card);
+        CreditCard creditCard = new CreditCard(UUID.randomUUID());
+        CreditCardModelRunner cardModelRunner = new CreditCardModelRunner(creditCard, new ModelRunner());
+        cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
+        cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+        creditCardRepository.save(creditCard);
     }
 }

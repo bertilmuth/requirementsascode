@@ -5,10 +5,16 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StandardEventHandler;
+
+import creditcard_eventsourcing.model.request.RequestToCloseCycle;
+import creditcard_eventsourcing.model.request.RequestsRepay;
+import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
+import creditcard_eventsourcing.model.request.RequestsWithdrawal;
 
 /**
  * Based on code by Jakub Pilimon: 
@@ -30,9 +36,7 @@ public class CreditCard {
         this.eventHandlingModel = 
         	Model.builder()
         		.when(this::limitNotAssigned).handles(LimitAssigned.class).with(this::limitAssigned)
-        		.when(this::limitAlreadyAssigned).handles(LimitAssigned.class).with(this::throwsException)
         		.when(this::notTooManyWithdrawalsInCycle).handles(CardWithdrawn.class).with(this::cardWithdrawn)
-        		.when(this::tooManyWithdrawalsInCycle).handles(CardWithdrawn.class).with(this::throwsException)
         		.handles(CardRepaid.class).with(this::cardRepaid)
         		.handles(CycleClosed.class).with(this::cycleWasClosed)
         	.build();
@@ -41,25 +45,60 @@ public class CreditCard {
         modelRunner.run(eventHandlingModel);
     }
     
-    public void addingPendingEvents(StandardEventHandler eventHandler) {
+    private void addingPendingEvents(StandardEventHandler eventHandler) {
 	eventHandler.handleEvent();
-        DomainEvent domainEvent = (DomainEvent)eventHandler.getEvent();
-        pendingEvents.add(domainEvent);
+	DomainEvent domainEvent = (DomainEvent) eventHandler.getEvent();
+	pendingEvents.add(domainEvent);
     }
 
-    public void assignLimit(BigDecimal amount) { 
-        handle(new LimitAssigned(uuid, amount, Instant.now()));
+    class AssignsLimit implements Consumer<RequestsToAssignLimit> {
+	@Override
+	public void accept(RequestsToAssignLimit request) {
+	    BigDecimal amount = request.getAmount();
+	    handle(new LimitAssigned(uuid, amount, Instant.now()));
+	}
     }
 
+    class Withdraws implements Consumer<RequestsWithdrawal> {
+	@Override
+	public void accept(RequestsWithdrawal request) {
+	    BigDecimal amount = request.getAmount();
+	    if (notEnoughMoneyToWithdraw(amount)) {
+		throw new IllegalStateException();
+	    }
+	    handle(new CardWithdrawn(uuid, amount, Instant.now()));
+	}
+    }
+
+    class Repays implements Consumer<RequestsRepay> {
+	@Override
+	public void accept(RequestsRepay request) {
+	    BigDecimal amount = request.getAmount();
+	    handle(new CardRepaid(uuid, amount, Instant.now()));
+	}
+    }
+
+    class ClosesCycle implements Consumer<RequestToCloseCycle> {
+	@Override
+	public void accept(RequestToCloseCycle request) {
+	    handle(new CycleClosed(uuid, Instant.now()));
+	}
+    }
+
+    class ThrowsAssignLimitException implements Consumer<RequestsToAssignLimit> {
+	public void accept(RequestsToAssignLimit request) {
+	    throw new IllegalStateException();
+	}
+    }
+
+    class ThrowsTooManyWithdrawalsException implements Consumer<ModelRunner> {
+	public void accept(ModelRunner request) {
+	    throw new IllegalStateException();
+	}
+    }
+    
     private void limitAssigned(LimitAssigned event) {
         this.initialLimit = event.getAmount(); 
-    }
-
-    public void withdraw(BigDecimal amount) {
-        if(notEnoughMoneyToWithdraw(amount)) {
-            throw new IllegalStateException();
-        }
-        handle(new CardWithdrawn(uuid, amount, Instant.now()));
     }
 
     private void cardWithdrawn(CardWithdrawn event) {
@@ -67,27 +106,15 @@ public class CreditCard {
         withdrawals++;
     }
 
-    public void repay(BigDecimal amount) {
-        handle(new CardRepaid(uuid, amount, Instant.now()));
-    }
-
     private void cardRepaid(CardRepaid event) {
         usedLimit = usedLimit.subtract(event.getAmount());
-    }
-
-    public void cycleClosed() {
-        handle(new CycleClosed(uuid, Instant.now()));
     }
 
     private void cycleWasClosed(CycleClosed event) {
         withdrawals = 0;
     }
     
-    public void throwsException(Object event) {
-	throw new IllegalStateException(); 
-    }
-    
-    private boolean limitAlreadyAssigned(ModelRunner r) {
+    public boolean limitAlreadyAssigned(ModelRunner r) {
         return initialLimit != null;
     }
 
@@ -95,7 +122,7 @@ public class CreditCard {
         return !limitAlreadyAssigned(r);
     }
 
-    private boolean tooManyWithdrawalsInCycle(ModelRunner r) {
+    public boolean tooManyWithdrawalsInCycle(ModelRunner r) {
         return withdrawals >= 45;
     }
     
