@@ -33,16 +33,19 @@ public class CreditCard {
 
     public CreditCard(UUID uuid) {
         this.uuid = uuid;
-        this.eventHandlingModel = 
-        	Model.builder()
-        		.when(this::limitNotAssigned).handles(LimitAssigned.class).with(this::limitAssigned)
-        		.when(this::notTooManyWithdrawalsInCycle).handles(CardWithdrawn.class).with(this::cardWithdrawn)
-        		.handles(CardRepaid.class).with(this::cardRepaid)
-        		.handles(CycleClosed.class).with(this::cycleWasClosed)
-        	.build();
+        this.eventHandlingModel = model();
         this.modelRunner = new ModelRunner();
         modelRunner.handleWith(this::addingPendingEvents);
         modelRunner.run(eventHandlingModel);
+    }
+
+    private Model model() {
+	return Model.builder()
+	  .handles(LimitAssigned.class).with(this::limitAssigned)
+	  .handles(CardWithdrawn.class).with(this::cardWithdrawn)
+	  .handles(CardRepaid.class).with(this::cardRepaid)
+	  .handles(CycleClosed.class).with(this::cycleWasClosed)
+	.build();
     }
     
     private void addingPendingEvents(StandardEventHandler eventHandler) {
@@ -118,22 +121,13 @@ public class CreditCard {
         return initialLimit != null;
     }
 
-    private boolean limitNotAssigned(ModelRunner r) {
-        return !limitAlreadyAssigned(r);
-    }
-
     public boolean tooManyWithdrawalsInCycle(ModelRunner r) {
         return withdrawals >= 45;
-    }
-    
-    private boolean notTooManyWithdrawalsInCycle(ModelRunner r) {
-        return !tooManyWithdrawalsInCycle(r);
     }
 
     private boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
         return availableLimit().compareTo(amount) < 0;
     }
-
 
     public BigDecimal availableLimit() {
         return initialLimit.subtract(usedLimit);
