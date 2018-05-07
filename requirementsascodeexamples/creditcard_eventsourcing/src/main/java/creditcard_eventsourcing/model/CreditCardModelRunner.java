@@ -20,8 +20,8 @@ import creditcard_eventsourcing.model.request.RequestsWithdrawal;
 
 public class CreditCardModelRunner {
     // Step names
-    private static final String ASSIGN = "Assigning Limit";
-    private static final String ASSIGN_TWICE = "Assig twice";
+    private static final String ASSIGN = "Assign limit";
+    private static final String ASSIGN_TWICE = "Assign limit twice";
     private static final String WITHDRAW = "Withdraw";
     private static final String WITHDRAW_AGAIN = "Withdraw again";
     private static final String WITHDRAW_TOO_OFTEN = "Withdraw too often";
