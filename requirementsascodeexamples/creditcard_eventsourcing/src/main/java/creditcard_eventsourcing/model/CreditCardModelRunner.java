@@ -24,7 +24,7 @@ public class CreditCardModelRunner {
     private static final String ASSIGN_TWICE = "Assig twice";
     private static final String WITHDRAW = "Withdraw";
     private static final String WITHDRAW_AGAIN = "Withdraw again";
-    private static final String WDRAW_TOO_OFTEN = "Withdraw too often";
+    private static final String WITHDRAW_TOO_OFTEN = "Withdraw too often";
     private static final String CLOSE = "Close cycle";
     private static final String REPEAT = "Repeat";
     private static final String REPAY = "Repay";
@@ -67,14 +67,19 @@ public class CreditCardModelRunner {
 	    	.step(ASSIGN).user(requestsToAssignLimit).system(assignsLimit)
 	    	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(anytime)
 	    	.step(REPAY).user(requestsRepay).system(repays).reactWhile(anytime)
+	    	
+	    .flow("Withdraw again").after(REPAY)
 	    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).system(withdraws)
 	    	.step(REPEAT).continuesAt(WITHDRAW)
+	    	
 	    .flow("Cycle is over").anytime()
 	    	.step(CLOSE).handles(requestToCloseCycle).system(closesCycle)
+	    	
 	    .flow("Assign limit twice").when(limitAlreadyAssigned)
 	    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
+	    	
 	    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
-	    	.step(WDRAW_TOO_OFTEN).system(throwsTooManyWithdrawalsException)
+	    	.step(WITHDRAW_TOO_OFTEN).system(throwsTooManyWithdrawalsException)
 	.build();
 	return model;
     }
