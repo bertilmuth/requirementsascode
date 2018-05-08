@@ -1,6 +1,12 @@
 package creditcard_eventsourcing.model;
 
+import static creditcard_eventsourcing.model.CreditCardModelRunner.ASSIGN;
+import static creditcard_eventsourcing.model.CreditCardModelRunner.REPAY;
+import static creditcard_eventsourcing.model.CreditCardModelRunner.REPEAT;
+import static creditcard_eventsourcing.model.CreditCardModelRunner.WITHDRAW;
+import static creditcard_eventsourcing.model.CreditCardModelRunner.WITHDRAW_AGAIN;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
@@ -11,18 +17,21 @@ import org.junit.Test;
 import org.requirementsascode.TestModelRunner;
 
 public class CreditCardModelRunnerTest {
+    private TestModelRunner testModelRunner;
     private CreditCardModelRunner cardModelRunner;
     private CreditCard creditCard;
 
     @Before
     public void setUp() throws Exception {
         creditCard = new CreditCard(UUID.randomUUID());
-	cardModelRunner = new CreditCardModelRunner(creditCard, new TestModelRunner());
+	testModelRunner = new TestModelRunner();
+	cardModelRunner = new CreditCardModelRunner(creditCard, testModelRunner);
     }
 
     @Test
     public void assigningLimitOnceWorksCorrectly() {
 	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
+	assertTrue(testModelRunner.hasRun(ASSIGN));
 	assertEquals(BigDecimal.TEN, creditCard.availableLimit());
     }
     
@@ -42,6 +51,7 @@ public class CreditCardModelRunnerTest {
     public void withdrawingOnceWorksCorrectly() {
 	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
 	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+	assertTrue(testModelRunner.hasRun(ASSIGN, WITHDRAW));
 	assertEquals(BigDecimal.ZERO, creditCard.availableLimit());
     }
     
@@ -109,6 +119,7 @@ public class CreditCardModelRunnerTest {
 	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
 	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
 	cardModelRunner.requestRepay(BigDecimal.ONE);
+	assertTrue(testModelRunner.hasRun(ASSIGN, WITHDRAW, REPAY));
 	assertEquals(BigDecimal.TEN, creditCard.availableLimit());
     }
     
@@ -118,6 +129,7 @@ public class CreditCardModelRunnerTest {
 	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
 	cardModelRunner.requestRepay(BigDecimal.ONE);
 	cardModelRunner.requestRepay(BigDecimal.ONE);
+	assertTrue(testModelRunner.hasRun(ASSIGN, WITHDRAW, REPAY, REPAY));
 	assertEquals(new BigDecimal(11), creditCard.availableLimit());
     }
     
@@ -136,6 +148,7 @@ public class CreditCardModelRunnerTest {
 	cardModelRunner.requestRepay(BigDecimal.ONE);
 	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
 	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+	assertTrue(testModelRunner.hasRun(ASSIGN, WITHDRAW, REPAY, WITHDRAW_AGAIN, REPEAT, WITHDRAW));
 	assertEquals(new BigDecimal(8), creditCard.availableLimit());
     }
 }

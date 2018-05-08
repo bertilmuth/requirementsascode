@@ -20,14 +20,14 @@ import creditcard_eventsourcing.model.request.RequestsWithdrawal;
 
 public class CreditCardModelRunner {
     // Step names
-    private static final String ASSIGN = "Assign limit";
-    private static final String ASSIGN_TWICE = "Assign limit twice";
-    private static final String WITHDRAW = "Withdraw";
-    private static final String WITHDRAW_AGAIN = "Withdraw again";
-    private static final String WITHDRAW_TOO_OFTEN = "Withdraw too often";
-    private static final String CLOSE = "Close cycle";
-    private static final String REPEAT = "Repeat";
-    private static final String REPAY = "Repay";
+    public static final String ASSIGN = "Assign limit";
+    public static final String ASSIGN_TWICE = "Assign limit twice";
+    public static final String WITHDRAW = "Withdraw";
+    public static final String WITHDRAW_AGAIN = "Withdraw again";
+    public static final String WITHDRAW_TOO_OFTEN = "Withdraw too often";
+    public static final String CLOSE = "Close cycle";
+    public static final String REPEAT = "Repeat";
+    public static final String REPAY = "Repay";
     
     // Request types
     private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
