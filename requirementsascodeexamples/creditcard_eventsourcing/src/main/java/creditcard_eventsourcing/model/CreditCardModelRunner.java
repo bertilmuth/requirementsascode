@@ -46,7 +46,7 @@ public class CreditCardModelRunner {
     // Conditions
     private Predicate<ModelRunner> tooManyWithdrawalsInCycle;
     private Predicate<ModelRunner> limitAlreadyAssigned;
-    private static final Predicate<ModelRunner> anytime = r -> true;
+    private Predicate<ModelRunner> accountOpen;
     
     // Other fields
     private CreditCard creditCard;
@@ -60,13 +60,13 @@ public class CreditCardModelRunner {
 	modelRunner.run(model());
     }
 
-    private Model model() {
+    public Model model() {
 	Model model = Model.builder()
 	  .useCase("Use credit card")
 	    .basicFlow()
 	    	.step(ASSIGN).user(requestsToAssignLimit).system(assignsLimit)
-	    	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(anytime)
-	    	.step(REPAY).user(requestsRepay).system(repays).reactWhile(anytime)
+	    	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(accountOpen)
+	    	.step(REPAY).user(requestsRepay).system(repays).reactWhile(accountOpen)
 	    	
 	    .flow("Withdraw again").after(REPAY)
 	    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).system(withdraws)
@@ -112,7 +112,8 @@ public class CreditCardModelRunner {
 	throwsAssignLimitException = creditCard.new ThrowsAssignLimitException();
 	throwsTooManyWithdrawalsException = creditCard.new ThrowsTooManyWithdrawalsException();
 	
-	tooManyWithdrawalsInCycle = r -> creditCard.tooManyWithdrawalsInCycle(r);
-	limitAlreadyAssigned = r -> creditCard.limitAlreadyAssigned(r);
+	tooManyWithdrawalsInCycle = creditCard.new TooManyWithdrawalsInCycle();
+	limitAlreadyAssigned = creditCard.new LimitAlreadyAssigned();
+	accountOpen = creditCard.new AccountOpen();
     }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -54,6 +55,53 @@ public class CreditCard {
 	pendingEvents.add(domainEvent);
     }
 
+    public List<DomainEvent> getPendingEvents() {
+        return pendingEvents;
+    }
+    
+    /*
+     * State changing methods
+     */
+    
+    private void limitAssigned(LimitAssigned event) {
+        this.initialLimit = event.getAmount(); 
+    }
+
+    private void cardWithdrawn(CardWithdrawn event) {
+        this.usedLimit = usedLimit.add(event.getAmount());
+        withdrawals++;
+    }
+
+    private void cardRepaid(CardRepaid event) {
+        usedLimit = usedLimit.subtract(event.getAmount());
+    }
+
+    private void cycleWasClosed(CycleClosed event) {
+        withdrawals = 0;
+    }
+    
+    /*
+     * Getters
+     */
+    public UUID getUuid() {
+        return uuid;
+    }
+    
+    /*
+     * Validation methods
+     */
+    private boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
+        return availableLimit().compareTo(amount) < 0;
+    }
+
+    public BigDecimal availableLimit() {
+        return initialLimit.subtract(usedLimit);
+    }
+
+    /*
+     * Commands
+     */
+    
     class AssignsLimit implements Consumer<RequestsToAssignLimit> {
 	@Override
 	public void accept(RequestsToAssignLimit request) {
@@ -61,7 +109,7 @@ public class CreditCard {
 	    handle(new LimitAssigned(uuid, amount, Instant.now()));
 	}
     }
-
+    
     class Withdraws implements Consumer<RequestsWithdrawal> {
 	@Override
 	public void accept(RequestsWithdrawal request) {
@@ -100,51 +148,35 @@ public class CreditCard {
 	}
     }
     
-    private void limitAssigned(LimitAssigned event) {
-        this.initialLimit = event.getAmount(); 
-    }
-
-    private void cardWithdrawn(CardWithdrawn event) {
-        this.usedLimit = usedLimit.add(event.getAmount());
-        withdrawals++;
-    }
-
-    private void cardRepaid(CardRepaid event) {
-        usedLimit = usedLimit.subtract(event.getAmount());
-    }
-
-    private void cycleWasClosed(CycleClosed event) {
-        withdrawals = 0;
+    /*
+     * Conditions
+     */
+    
+    class TooManyWithdrawalsInCycle implements Predicate<ModelRunner>{
+	@Override
+	public boolean test(ModelRunner r) {
+	    return withdrawals >= 45;
+	}
     }
     
-    public boolean limitAlreadyAssigned(ModelRunner r) {
-        return initialLimit != null;
+    class LimitAlreadyAssigned implements Predicate<ModelRunner> {
+	@Override
+	public boolean test(ModelRunner r) {
+	    return initialLimit != null;
+	}
     }
-
-    public boolean tooManyWithdrawalsInCycle(ModelRunner r) {
-        return withdrawals >= 45;
+    
+    class AccountOpen implements Predicate<ModelRunner>{
+	@Override
+	public boolean test(ModelRunner t) {
+	    return true;
+	}
     }
-
-    private boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
-        return availableLimit().compareTo(amount) < 0;
-    }
-
-    public BigDecimal availableLimit() {
-        return initialLimit.subtract(usedLimit);
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public List<DomainEvent> getPendingEvents() {
-        return pendingEvents;
-    }
-
-    public void flushEvents() {
-        pendingEvents.clear();
-    }
-
+    
+    
+    /*
+     * Event sourcing methods
+     */
     public static CreditCard recreateFrom(UUID uuid, List<DomainEvent> events) {
 	CreditCard creditCard = new CreditCard(uuid);
 	events.forEach(ev -> creditCard.handle(ev));
@@ -153,5 +185,9 @@ public class CreditCard {
 
     private void handle(DomainEvent event) {
 	modelRunner.reactTo(event);
+    }
+    
+    public void flushEvents() {
+        pendingEvents.clear();
     }
 }
