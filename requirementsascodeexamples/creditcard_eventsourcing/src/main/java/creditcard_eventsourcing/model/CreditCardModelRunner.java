@@ -79,7 +79,7 @@ public class CreditCardModelRunner {
 	    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
 	    	
 	    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
-	    	.step(WITHDRAW_TOO_OFTEN).system(throwsTooManyWithdrawalsException)
+	    	.step(WITHDRAW_TOO_OFTEN).user(requestsWithdrawal).system(throwsTooManyWithdrawalsException)
 	.build();
 	return model;
     }

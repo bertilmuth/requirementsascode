@@ -142,8 +142,8 @@ public class CreditCard {
 	}
     }
 
-    class ThrowsTooManyWithdrawalsException implements Consumer<ModelRunner> {
-	public void accept(ModelRunner request) {
+    class ThrowsTooManyWithdrawalsException implements Consumer<RequestsWithdrawal> {
+	public void accept(RequestsWithdrawal request) {
 	    throw new IllegalStateException();
 	}
     }
