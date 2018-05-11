@@ -20,44 +20,12 @@ public class FlowPart {
     private Flow flow;
     private UseCase useCase;
     private UseCasePart useCasePart;
-    private FlowPosition optionalFlowPosition;
-    private Predicate<ModelRunner> optionalWhen;
+    private FlowPositionPart optionalFlowPositionPart;
 
     FlowPart(Flow flow, UseCasePart useCasePart) {
 	this.flow = flow;
 	this.useCasePart = useCasePart;
 	this.useCase = useCasePart.useCase();
-    }
-
-    /**
-     * Creates a new step in this flow, with the specified name.
-     *
-     * @param stepName
-     *            the name of the step to be created
-     * @return the newly created step part, to ease creation of further steps
-     * @throws ElementAlreadyInModel
-     *             if a step with the specified name already exists in the use case
-     */
-    public StepPart step(String stepName) {
-	FlowStep step = createStep(stepName);
-	StepPart stepPart = new StepPart(step, useCasePart, this);
-	return stepPart;
-    }
-
-    FlowStep createStep(String stepName) {
-	FlowStep step;
-
-	if (hasDefinedFlowPositionOrWhen()) {
-	    step = useCase.newInterruptingFlowStep(stepName, flow, optionalFlowPosition, optionalWhen);
-	} else {
-	    step = useCase.newInterruptableFlowStep(stepName, flow);
-	}
-
-	return step;
-    }
-
-    private boolean hasDefinedFlowPositionOrWhen() {
-	return optionalWhen != null || optionalFlowPosition != null;
     }
 
     /**
@@ -75,10 +43,58 @@ public class FlowPart {
      * 		if the specified step is not found in a flow of this use case
      * 		            
      */
-    public FlowPart after(String stepName) {
+    public FlowPositionPart after(String stepName) {
 	Step step = useCase.findStep(stepName);
-	optionalFlowPosition = new After(step);
-	return this;
+	After after = new After(step);
+	optionalFlowPositionPart = new FlowPositionPart(after);
+	return optionalFlowPositionPart;
+    }
+    
+    public class FlowPositionPart {
+	private FlowPosition flowPosition;
+	private Predicate<ModelRunner> optionalWhen;
+
+	public FlowPositionPart(FlowPosition flowPosition) {
+	    this.flowPosition = flowPosition;
+	}
+
+	public FlowPositionPart when(Predicate<ModelRunner> whenCondition) {
+	    optionalWhen = whenCondition;
+	    return this;
+	}
+
+	/**
+	 * Creates the first step of this flow. It can be run when the
+	 * flow's condition is fulfilled.
+	 *
+	 * @param stepName
+	 *            the name of the step to be created
+	 * @return the newly created step part, to ease creation of further steps
+	 * @throws ElementAlreadyInModel
+	 *             if a step with the specified name already exists in the use case
+	 */
+	public StepPart step(String stepName) {
+	    FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, optionalWhen);
+	    StepPart stepPart = new StepPart(step, useCasePart, FlowPart.this);
+	    return stepPart;
+	}
+    }
+
+    /**
+     * Creates the first step of this flow. It can be interrupted by any
+     * other flow that has an explicit condition. It can be run when no
+     * other step has been run before.
+     *
+     * @param stepName
+     *            the name of the step to be created
+     * @return the newly created step part, to ease creation of further steps
+     * @throws ElementAlreadyInModel
+     *             if a step with the specified name already exists in the use case
+     */
+    public StepPart step(String stepName) {
+	FlowStep step = useCase.newInterruptableFlowStep(stepName, flow);
+	StepPart stepPart = new StepPart(step, useCasePart, FlowPart.this);
+	return stepPart;
     }
 
     /**
@@ -92,10 +108,11 @@ public class FlowPart {
      * @throws NoSuchElementInModel
      *             if the specified step is not found in this flow's use case
      */
-    public FlowPart insteadOf(String stepName) {
+    public FlowPositionPart insteadOf(String stepName) {
 	FlowStep step = (FlowStep)useCase.findStep(stepName);
-	optionalFlowPosition = new InsteadOf(step);
-	return this;
+	InsteadOf insteadOf = new InsteadOf(step);
+	optionalFlowPositionPart = new FlowPositionPart(insteadOf);
+	return optionalFlowPositionPart;
     }
 
     /**
@@ -104,9 +121,10 @@ public class FlowPart {
      * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      */
-    public FlowPart anytime() {
-	optionalFlowPosition = new Anytime();
-	return this;
+    public FlowPositionPart anytime() {
+	Anytime anytime = new Anytime();
+	optionalFlowPositionPart = new FlowPositionPart(anytime);
+	return optionalFlowPositionPart;
     }
 
     /**
@@ -118,11 +136,12 @@ public class FlowPart {
      * @return this flow part, to ease creation of the condition and the
      *         first step of the flow
      */
-    public FlowPart when(Predicate<ModelRunner> whenCondition) {
+    public FlowPositionPart when(Predicate<ModelRunner> whenCondition) {
 	Objects.requireNonNull(whenCondition);
 
-	optionalWhen = whenCondition;
-	return this;
+	optionalFlowPositionPart = new FlowPositionPart(new Anytime());
+	FlowPositionPart when = optionalFlowPositionPart.when(whenCondition);
+	return when;
     }
 
     Flow getFlow() {
