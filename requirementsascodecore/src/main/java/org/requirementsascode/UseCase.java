@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.FlowPosition;
 
 /**
@@ -127,9 +126,6 @@ public class UseCase extends ModelElement implements Serializable {
     InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
 	    Predicate<ModelRunner> when) {
 	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
-	if(flowPosition == null) {
-	    flowPosition = new Anytime();
-	}
 	step.setFlowPosition(flowPosition);
 	step.setWhen(when);
 

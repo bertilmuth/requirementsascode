@@ -24,7 +24,7 @@ public class UseCasePart {
      * @return the flow part to create the steps of the basic flow.
      */
     public FlowPart basicFlow() {
-	Flow useCaseFlow = useCase().getBasicFlow();
+	Flow useCaseFlow = getUseCase().getBasicFlow();
 	return new FlowPart(useCaseFlow, this);
     }
 
@@ -37,11 +37,11 @@ public class UseCasePart {
      * @return the flow part to create the steps of the flow.
      */
     public FlowPart flow(String flowName) {
-	Flow useCaseFlow = useCase().newFlow(flowName);
+	Flow useCaseFlow = getUseCase().newFlow(flowName);
 	return new FlowPart(useCaseFlow, this);
     }
 
-    UseCase useCase() {
+    UseCase getUseCase() {
 	return useCase;
     }
 
