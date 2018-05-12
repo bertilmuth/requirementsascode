@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.requirementsascode.FlowPositionPart.WhenPart;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.After;
@@ -36,7 +37,7 @@ public class FlowPart {
      *
      * @param stepName
      *            the name of the step to start the flow after
-     * @return this flow part, to ease creation of the condition and the
+     * @return the flow position part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
      * 		if the specified step is not found in a flow of this use case
@@ -72,7 +73,7 @@ public class FlowPart {
      *
      * @param stepName
      *            the name of the specified step
-     * @return this flow part, to ease creation of the condition and the
+     * @return the flow position part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
      *             if the specified step is not found in this flow's use case
@@ -87,7 +88,7 @@ public class FlowPart {
     /**
      * Starts the flow after any step that has been run, or at the beginning.
      * 
-     * @return this flow part, to ease creation of the condition and the
+     * @return the flow position part, to ease creation of the condition and the
      *         first step of the flow
      */
     public FlowPositionPart anytime() {
@@ -102,15 +103,14 @@ public class FlowPart {
      *
      * @param whenCondition
      *            the condition that constrains when the flow is started
-     * @return this flow part, to ease creation of the condition and the first step
-     *         of the flow
+     * @return the when part, to ease creation of the first step of the flow
      */
-    public FlowPositionPart when(Predicate<ModelRunner> whenCondition) {
+    public WhenPart when(Predicate<ModelRunner> whenCondition) {
 	Objects.requireNonNull(whenCondition);
 
 	optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);
-	FlowPositionPart when = optionalFlowPositionPart.when(whenCondition);
-	return when;
+	WhenPart whenPart = optionalFlowPositionPart.when(whenCondition);
+	return whenPart;
     }
 
     Flow getFlow() {

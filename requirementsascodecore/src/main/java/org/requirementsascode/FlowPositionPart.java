@@ -8,11 +8,12 @@ import org.requirementsascode.flowposition.FlowPosition;
 public class FlowPositionPart {
     private FlowPosition flowPosition;
     private FlowPart flowPart;
-    private Predicate<ModelRunner> optionalWhen;
+    private WhenPart whenPart;
 
-    public FlowPositionPart(FlowPosition flowPosition, FlowPart flowPart) {
+    FlowPositionPart(FlowPosition flowPosition, FlowPart flowPart) {
 	this.flowPosition = flowPosition;
 	this.flowPart = flowPart;
+	this.whenPart = new WhenPart();
     }
 
     /**
@@ -21,17 +22,45 @@ public class FlowPositionPart {
      *
      * @param whenCondition
      *            the condition that constrains when the flow is started
-     * @return this flow part, to ease creation of the condition and the first step
-     *         of the flow
+     * @return this when part, to ease creation of the first step of the flow
      */
-    public FlowPositionPart when(Predicate<ModelRunner> whenCondition) {
-	optionalWhen = whenCondition;
-	return this;
+    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+	whenPart.setCondition(whenCondition);
+	return whenPart;
+    }
+    
+    public class WhenPart {
+	private Predicate<ModelRunner> condition;
+
+	private WhenPart() {
+	}
+	
+	private Predicate<ModelRunner> getCondition() {
+	    return condition;
+	}
+
+	private void setCondition(Predicate<ModelRunner> condition) {
+	    this.condition = condition;	    
+	}
+
+	/**
+	 * Creates the first step of this flow. It can be run when the runner is at the
+	 * right position and the flow's condition is fulfilled.
+	 *
+	 * @param stepName
+	 *            the name of the step to be created
+	 * @return the newly created step part, to ease creation of further steps
+	 * @throws ElementAlreadyInModel
+	 *             if a step with the specified name already exists in the use case
+	 */
+	public StepPart step(String stepName) {
+	    return FlowPositionPart.this.step(stepName);
+	}
     }
 
     /**
      * Creates the first step of this flow. It can be run when the
-     * runner is at the right position and the flow's condition is fulfilled.
+     * runner is at the right position.
      *
      * @param stepName
      *            the name of the step to be created
@@ -43,7 +72,8 @@ public class FlowPositionPart {
 	UseCasePart useCasePart = flowPart.getUseCasePart();
 	UseCase useCase = useCasePart.getUseCase();
 	Flow flow = flowPart.getFlow();
-        FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, optionalWhen);
+	Predicate<ModelRunner> whenCondition = whenPart.getCondition();
+        FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, whenCondition);
         StepPart stepPart = new StepPart(step, useCasePart, flowPart);
         return stepPart;
     }

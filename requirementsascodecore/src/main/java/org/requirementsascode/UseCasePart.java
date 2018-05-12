@@ -73,7 +73,7 @@ public class UseCasePart {
 	private long flowlessStepCounter;
 	private Predicate<ModelRunner> optionalWhenCondition;
 
-	public WhenPart(Predicate<ModelRunner> optionalWhenCondition, long flowlessStepCounter) {
+	private WhenPart(Predicate<ModelRunner> optionalWhenCondition, long flowlessStepCounter) {
 	    this.optionalWhenCondition = optionalWhenCondition;
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
@@ -88,14 +88,14 @@ public class UseCasePart {
 	private StepUserPart<T> userPart;
 	private long flowlessStepCounter;
 
-	public FlowlessUserPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private FlowlessUserPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
 		long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	    StepPart stepPart = createStepPart(optionalWhenCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
 	    this.userPart = stepPart.handles(eventOrExceptionClass);
 	}
 
-	StepPart createStepPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private StepPart createStepPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
 		String stepName) {
 	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
 	    newStep.setWhen(optionalWhenCondition);
@@ -112,7 +112,7 @@ public class UseCasePart {
     public class FlowlessSystemPart<T> {
 	private long flowlessStepCounter;
 
-	public FlowlessSystemPart(long flowlessStepCounter) {
+	private FlowlessSystemPart(long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
