@@ -61,7 +61,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 		    .filter(isInterruptingStep().and(isOtherStepThan(this)));
 
 	    Set<Step> conditionalStepsThatCanReact = modelRunner
-		    .stepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
+		    .getStepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
 	    return conditionalStepsThatCanReact.size() == 0;
 	};
     }

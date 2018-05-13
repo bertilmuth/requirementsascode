@@ -3,7 +3,6 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -195,7 +194,7 @@ public class ModelRunner implements Serializable {
      * After that, the runner will trigger "autonomous system reactions".
      *
      * <p>
-     * See {@link #getStepsThatCanReactTo(Class)} for a description of what "can
+     * See {@link #canReactTo(Class)} for a description of what "can
      * react" means.
      *
      * @param <T>
@@ -283,27 +282,38 @@ public class ModelRunner implements Serializable {
     /**
      * Returns whether at least one step can react to an event of the specified
      * class.
+     * <p>
+     * A step "can react" if all of the following conditions are met: a) the runner
+     * is running b) one of the step's actors matches the actor the runner is run as
+     * c) the step's event class is the same or a superclass of the specified event
+     * class d) the step has a condition that is true
      *
-     * @see #getStepsThatCanReactTo(Class)
      * @param eventClass
      *            the specified class
      * @return true if the runner is running and at least one step can react, false
      *         otherwise
      */
     public boolean canReactTo(Class<? extends Object> eventClass) {
-	boolean canReact = getStepsThatCanReactTo(eventClass).size() > 0;
+	boolean canReact = getReactToTypes().contains(eventClass);
 	return canReact;
     }
 
     /**
-     * Returns the steps in the model that can react to the
-     * specified event class.
-     *
+     * Returns the classes of events the runner can react to.
      * <p>
-     * A step "can react" if all of the following conditions are met: a) the runner
-     * is running b) one of the step's actors matches the actor the runner is run as
-     * c) the step's event class is the same or a superclass of the specified event
-     * class d) the step has a condition that is true
+     * See {@link #canReactTo(Class)} for a description of what "can react" means.
+     * 
+     * @return the collection of classes of events
+     */
+    public Set<Class<?>> getReactToTypes() {
+	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
+	Set<Class<?>> eventsReactedTo = getStepsInStreamThatCanReactStream(stepStream).map(step -> step.getEventClass())
+		.collect(Collectors.toSet());
+	return eventsReactedTo;
+    }
+
+    /**
+     * Returns the steps in the model that can react to the specified event class.
      *
      * @param eventClass
      *            the class of events
@@ -312,35 +322,30 @@ public class ModelRunner implements Serializable {
     public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
 	Objects.requireNonNull(eventClass);
 
-	Set<Step> stepsThatCanReact;
-	if (isRunning) {
-	    Stream<Step> stepStream = model.getModifiableSteps().stream();
-	    stepsThatCanReact = stepsInStreamThatCanReactTo(eventClass, stepStream);
-	} else {
-	    stepsThatCanReact = new HashSet<>();
-	}
-
+	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
+	Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, stepStream);
 	return stepsThatCanReact;
     }
 
-    /**
-     * Gets the steps that can react from the specified stream, rather than from the
-     * whole model.
-     *
-     * @see #getStepsThatCanReactTo(Class)
-     * @param eventClass
-     *            eventClass the class of events
-     * @param stepStream
-     *            the stream of steps
-     * @return the subset of steps that can react to the class of events
-     */
-    Set<Step> stepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-	Set<Step> steps;
-	steps = stepStream.filter(step -> stepActorIsRunActor(step))
+    private Stream<Step> getStepStreamIfRunningElseEmptyStream() {
+	Stream<Step> stepStream = Stream.empty();
+	if (isRunning) {
+	    stepStream = model.getModifiableSteps().stream();
+	}
+	return stepStream;
+    }
+        
+    Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
+	Set<Step> steps = getStepsInStreamThatCanReactStream(stepStream)
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step))
-		.filter(getStepWithoutAlternativeCondition().orElse(s -> true)).collect(Collectors.toSet());
+		.collect(Collectors.toSet());
 	return steps;
+    }
+
+    private Stream<Step> getStepsInStreamThatCanReactStream(Stream<Step> stepStream) {
+	return stepStream.filter(step -> stepActorIsRunActor(step))
+		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step))
+		.filter(getStepWithoutAlternativeCondition().orElse(s -> true));
     }
 
     private boolean stepActorIsRunActor(Step step) {

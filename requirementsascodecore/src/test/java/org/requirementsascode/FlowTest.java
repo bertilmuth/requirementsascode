@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import org.junit.Before;
@@ -106,68 +105,6 @@ public class FlowTest extends AbstractTestCase{
 		assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT));
 	}
 	
-	@Test
-	public void cantReactIfNotRunning() {	
-		modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-			.build();
-						
-		boolean canReact = modelRunner.canReactTo(entersText().getClass());
-		assertFalse(canReact);
-	}
-	
-	@Test
-	public void cantReactIfEventIsWrong() {	
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-			.build();
-				
-		modelRunner.run(model);
-		
-		boolean canReact = modelRunner.canReactTo(entersNumber().getClass());
-		assertFalse(canReact);
-	}
-	
-	@Test
-	public void oneStepCanReactIfEventIsRight() {	
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-			.build();
-				
-		modelRunner.run(model);
-		
-		boolean canReact = modelRunner.canReactTo(entersText().getClass());
-		assertTrue(canReact);
-		
-		Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(entersText().getClass());
-		assertEquals(1, stepsThatCanReact.size());
-		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
-	}
-	
-	@Test
-	public void moreThanOneStepCanReact() { 
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow().anytime()
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-				.flow("Alternative Flow: Could react as well").anytime()
-					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
-			.build();
-		
-		modelRunner.run(model);
-		
-		boolean canReact = modelRunner.canReactTo(entersText().getClass());
-		assertTrue(canReact);
-		
-		Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(entersText().getClass());
-		assertEquals(2, stepsThatCanReact.size());
-	}
 	
 	@Test
 	public void oneStepInFlowReacts() {		
@@ -182,8 +119,6 @@ public class FlowTest extends AbstractTestCase{
 		
 		assertEquals(CUSTOMER_ENTERS_TEXT, latestStepRun.get().getName());
 	}
-	
-
 	
 	@Test
 	public void twoSequentialStepsReactToEventsOfDifferentType() {		
