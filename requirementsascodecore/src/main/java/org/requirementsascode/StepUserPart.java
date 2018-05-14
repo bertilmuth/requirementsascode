@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
-import org.requirementsascode.systemreaction.IgnoreIt;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -48,6 +48,6 @@ public class StepUserPart<T> {
      *             if a step with the specified name already exists in the use case
      */
     public StepPart step(String stepName) {
-	return system(new IgnoreIt<T>()).step(stepName);
+	return system(new IgnoresIt<T>()).step(stepName);
     }
 }

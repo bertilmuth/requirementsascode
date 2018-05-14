@@ -36,7 +36,6 @@ public class ModelRunner implements Serializable {
     private StandardEventHandler standardEventHandler;
     private Consumer<StandardEventHandler> eventHandler;
     private Consumer<Object> unhandledEventHandler;
-    private Predicate<Step> stepWithoutAlternativeCondition;
     private LinkedList<UseCase> includedUseCases;
     private LinkedList<FlowStep> includeSteps;
     private UseCase includedUseCase;
@@ -245,7 +244,6 @@ public class ModelRunner implements Serializable {
 	}
 
 	setLatestStep(step);
-	setStepWithoutAlternativeCondition(null);
 	standardEventHandler.setupWith(event, step);
 
 	try {
@@ -344,8 +342,7 @@ public class ModelRunner implements Serializable {
 
     private Stream<Step> getStepsInStreamThatCanReactStream(Stream<Step> stepStream) {
 	return stepStream.filter(step -> stepActorIsRunActor(step))
-		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step))
-		.filter(getStepWithoutAlternativeCondition().orElse(s -> true));
+		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step));
     }
 
     private boolean stepActorIsRunActor(Step step) {
@@ -421,14 +418,6 @@ public class ModelRunner implements Serializable {
      */
     public Optional<Flow> getLatestFlow() {
 	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
-    }
-
-    public void setStepWithoutAlternativeCondition(Predicate<Step> condition) {
-	stepWithoutAlternativeCondition = condition;
-    }
-
-    private Optional<Predicate<Step>> getStepWithoutAlternativeCondition() {
-	return Optional.ofNullable(stepWithoutAlternativeCondition);
     }
 
     public void includeUseCase(UseCase includedUseCase, FlowStep includeStep) {

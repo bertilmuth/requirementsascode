@@ -4,7 +4,7 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.Flow;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
-import org.requirementsascode.systemreaction.IgnoreIt;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 import freemarker.ext.beans.BeanModel;
 
@@ -35,7 +35,7 @@ public class Steps {
   }
 
   public static boolean hasSystemReaction(Step step) {
-    return !(step.getSystemReaction() instanceof IgnoreIt<?>);
+    return !(step.getSystemReaction() instanceof IgnoresIt<?>);
   }
   
   public static Actor getUserActor(Step step) {

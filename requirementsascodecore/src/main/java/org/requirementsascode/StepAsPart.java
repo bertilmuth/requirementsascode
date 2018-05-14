@@ -70,17 +70,17 @@ public class StepAsPart {
     }
 
     public UseCasePart continuesAt(String stepName) {
-	system(new ContinuesAt(step.getUseCase(), stepName));
+	system(new ContinuesAt(stepName, step.getUseCase()));
 	return stepPart.getUseCasePart();
     }
 
     public UseCasePart continuesAfter(String stepName) {
-	system(new ContinuesAfter(step.getUseCase(), stepName));
+	system(new ContinuesAfter(stepName, step.getUseCase()));
 	return stepPart.getUseCasePart();
     }
 
     public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-	system(new ContinuesWithoutAlternativeAt(step.getUseCase(), stepName));
+	system(new ContinuesWithoutAlternativeAt(stepName, (FlowStep)step));
 	return stepPart.getUseCasePart();
     }
 }

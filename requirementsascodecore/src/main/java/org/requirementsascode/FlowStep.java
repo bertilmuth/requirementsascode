@@ -43,6 +43,10 @@ public abstract class FlowStep extends Step implements Serializable {
 	
 	this.flowPosition = flowPosition;
     }
+    
+    public void orAfter(FlowStep step) {
+	setFlowPosition(flowPosition.orAfter(step));
+    }
 
     public void includeUseCase(UseCase includedUseCase) {
 	Objects.requireNonNull(flowPosition);
@@ -58,7 +62,6 @@ public abstract class FlowStep extends Step implements Serializable {
     }
 
     private void afterThisStepComesIncludedFlow(FlowStep firstStepOfIncludedFlow) {
-	FlowPosition includedFlowPosition = firstStepOfIncludedFlow.getFlowPosition();
-	firstStepOfIncludedFlow.setFlowPosition(includedFlowPosition.orAfter(this));
+	firstStepOfIncludedFlow.orAfter(this);
     }
 }

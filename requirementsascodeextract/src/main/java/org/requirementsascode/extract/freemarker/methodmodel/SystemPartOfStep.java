@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Step;
-import org.requirementsascode.systemreaction.AbstractContinue;
+import org.requirementsascode.systemreaction.AbstractContinues;
 import org.requirementsascode.systemreaction.IncludesUseCase;
 
 import freemarker.template.SimpleScalar;
@@ -63,8 +63,8 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     String stepNameOrIncludedUseCase = "";
     if (hasSystemReaction(step)) {
       Consumer<?> systemReaction = step.getSystemReaction();
-      if (systemReaction instanceof AbstractContinue) {
-        stepNameOrIncludedUseCase = " " + ((AbstractContinue) systemReaction).getStepName();
+      if (systemReaction instanceof AbstractContinues) {
+        stepNameOrIncludedUseCase = " " + ((AbstractContinues) systemReaction).getStepName();
       } else if (systemReaction instanceof IncludesUseCase) {
         stepNameOrIncludedUseCase = " " + ((IncludesUseCase) systemReaction).getIncludedUseCase().getName();
       }

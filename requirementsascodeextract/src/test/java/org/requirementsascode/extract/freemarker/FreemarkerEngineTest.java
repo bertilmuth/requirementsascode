@@ -22,7 +22,7 @@ import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnt
 import org.requirementsascode.extract.freemarker.systemreaction.Quits;
 import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EntersName;
-import org.requirementsascode.systemreaction.IgnoreIt;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;
@@ -55,7 +55,7 @@ public class FreemarkerEngineTest {
       modelBuilder
         .useCase("Included use case")
           .basicFlow()
-            .step("Included step").system(new IgnoreIt<>())
+            .step("Included step").system(new IgnoresIt<>())
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
