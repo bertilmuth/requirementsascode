@@ -177,9 +177,7 @@ public class StepPart {
 	FlowStep flowStep = (FlowStep)step;
 	UseCase includedUseCase = flowStep.getModel().findUseCase(useCaseName);
 	StepSystemPart<ModelRunner> stepSystemPart = system(new IncludesUseCase(includedUseCase, flowStep));
-	
-	flowStep.includeUseCase(includedUseCase);
-	
+		
 	return stepSystemPart;
     }
 

@@ -420,7 +420,7 @@ public class ModelRunner implements Serializable {
 	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
     }
 
-    public void includeUseCase(UseCase includedUseCase, FlowStep includeStep) {
+    public void startIncludedUseCase(UseCase includedUseCase, FlowStep includeStep) {
 	this.includedUseCase = includedUseCase;
 	this.includeStep = includeStep;
 
