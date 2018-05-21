@@ -1,8 +1,6 @@
 # requirements as code extract
 With requirements as code extract, you can generate plain text documentation 
-(e.g HTML pages) from a model inside the code. 
-
-The model is defined with the requirements as code core project.
+(e.g HTML pages) from a model inside the code. The model is defined with the requirements as code core project.
 
 ## Getting started
 If you are using Maven, include the following in your POM:
@@ -29,54 +27,50 @@ This will put the following libraries on the classpath:
 
 ## Using requirements as code extract
 ### Build a model
-Here's how you build a model from scratch. 
-Note: this model does not make too much sense. It is just a comprehensive example.
+First, you need to build a model using the requirements as code core project:
 
 ``` java
-Model model = modelBuilder
-    .useCase("Included use case")
-      .basicFlow()
-        .step("Included step").system(new IgnoreIt<>())
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(promptsUserToEnterName())
-        .step("S2").user(entersName()).system(greetsUser())
-        .step("S3").as(firstActor).user(entersName()).system(greetsUser()).reactWhile(someConditionIsFulfilled())
-        .step("S4").as(firstActor, secondActor).user(decidesToQuit())
-        .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
-        .step("S6").system(quits())
-      .flow("Alternative flow A").insteadOf("S4")
-        .step("S4a_1").system(blowsUp())
-        .step("S4a_2").continuesAt("S1")
-      .flow("Alternative flow B").after("S3")
-        .step("S4b_1").continuesAfter("S2")
-      .flow("Alternative flow C").when(thereIsNoAlternative())
-        .step("S5a").continuesWithoutAlternativeAt("S4")
-      .flow("Alternative flow D").insteadOf("S4").when(thereIsNoAlternative())
-        .step("S4c_1").includesUseCase("Included use case")
-        .step("S4c_2").continuesAt("S1")
-      .flow("EX").anytime()
-      	.step("EX1").handles(Exception.class).system(logsException())
-    .build();  
+Model model = Model.builder()
+  .useCase("Use credit card")
+    .basicFlow()
+    	.step(ASSIGN).user(requestsToAssignLimit).system(assignsLimit)
+	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(accountOpen)
+	.step(REPAY).user(requestsRepay).system(repays).reactWhile(accountOpen)
+    
+    .flow("Withdraw again").after(REPAY)
+	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).system(withdraws)
+	.step(REPEAT).continuesAt(WITHDRAW)
+	    	
+    .flow("Cycle is over").anytime()
+	.step(CLOSE).handles(requestToCloseCycle).system(closesCycle)
+	    	
+    .flow("Assign limit twice").when(limitAlreadyAssigned)
+	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
+	    	
+    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
+         .step(WITHDRAW_TOO_OFTEN).user(requestsWithdrawal).system(throwsTooManyWithdrawalsException)
+ .build();
 ```
 
 You have to use classes with special names in the model,
 as the engine will create documentation from these names.
  
-For example, in step S2, the ```entersName()``` method returns the following class:
+For example, in step `REPAY`, the ```requestsRepay``` constant references the following class:
 ``` java
-public class EntersName {
-	public final String name;
-	
-	public EntersName(String name) {
-		this.name = name;
-	}
+public class RequestsRepay {
+    private BigDecimal amount;
+    public RequestsRepay(BigDecimal amount) {
+        this.amount = amount;
+    }
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }
 ```
 
 The name of the class needs to be of the form _VerbNoun_, in third person singular.
-In the example, it is _EntersName_. 
-The documentation created from step S2 will read: "S2. User _enters name_.System greets user."
+In the example, it is _RequestsRepay_. 
+The documentation created from step ```REPAY``` will read: "REPAY. User _requests repay_.System repays."
 
 ### Use template engine to generate documentation
 You can create the engine like this:
@@ -125,3 +119,27 @@ The template file starts with the ```model``` instance provided by the engine, t
 
 See the [FreeMarker](http://freemarker.org/docs/dgui.html) documentation for details.
 See this [test class](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeextract/src/test/java/org/requirementsascode/extract/freemarker/FreemarkerEngineTest.java) for details on how to use requirements as code extract.
+
+### Example document
+Here's the full document generated from the above model:
+
+<h1>Use Credit Card</h1>
+<h2>Basic flow</h2>
+<div></div>
+<div><b>Assign limit</b>: User requests to assign limit. System assigns limit.</div>
+<div><b>Withdraw</b>: As long as account open: User requests withdrawal. System withdraws.</div>
+<div><b>Repay</b>: As long as account open: User requests repay. System repays.</div>
+<h2>Withdraw again</h2>
+<div>After Repay: </div>
+<div><b>Withdraw again</b>: User requests withdrawal. System withdraws.</div>
+<div><b>Repeat</b>:  System continues at Withdraw.</div>
+<h2>Cycle is over</h2>
+<div>Anytime: </div>
+<div><b>Close cycle</b>:  Handles RequestToCloseCycle: System closes cycle.</div>
+<h2>Assign limit twice</h2>
+<div>Anytime, when limit already assigned: </div>
+<div><b>Assign limit twice</b>: User requests to assign limit. System throws assign limit exception.</div>
+<h2>Too many withdrawals</h2>
+<div>Anytime, when too many withdrawals in cycle: </div>
+<div><b>Withdraw too often</b>:  System throws too many withdrawals exception.</div>
+
