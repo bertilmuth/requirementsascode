@@ -70,7 +70,7 @@ public class RequestsRepay {
 
 The name of the class needs to be of the form _VerbNoun_, in third person singular.
 In the example, it is _RequestsRepay_. 
-The documentation created from step ```REPAY``` will read: "REPAY. User _requests repay_.System repays."
+The documentation created from step ```REPAY``` is: "Repay: As long as account open: User _requests repay_. System repays."
 
 ### Use template engine to generate documentation
 You can create the engine like this:
