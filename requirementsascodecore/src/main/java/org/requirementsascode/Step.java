@@ -46,7 +46,7 @@ public abstract class Step extends ModelElement implements Serializable {
 	return useCase;
     }
 
-    protected void setReactWhile(Predicate<ModelRunner> reactWhile) {
+    void setReactWhile(Predicate<ModelRunner> reactWhile) {
 	this.reactWhile = reactWhile;
     }
 

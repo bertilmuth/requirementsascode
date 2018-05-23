@@ -16,8 +16,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
-     * Creates step with the specified name as the last step of the
-     * specified flow.
+     * Creates step with the specified name as the last step of the specified flow.
      *
      * @param stepName
      *            the name of the step to be created
@@ -57,20 +56,15 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 	    Model model = getModel();
 
 	    Stream<Step> stepsStream = model.getModifiableSteps().stream();
-	    Stream<Step> conditionalStepsStream = stepsStream
-		    .filter(isInterruptingStep().and(isOtherStepThan(this)));
+	    Stream<Step> interruptingStepsStream = stepsStream.filter(isInterruptingStep());
 
-	    Set<Step> conditionalStepsThatCanReact = modelRunner
-		    .getStepsInStreamThatCanReactTo(theStepsEventClass, conditionalStepsStream);
+	    Set<Step> conditionalStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsEventClass,
+		    interruptingStepsStream);
 	    return conditionalStepsThatCanReact.size() == 0;
 	};
     }
 
     private Predicate<Step> isInterruptingStep() {
 	return step -> InterruptingFlowStep.class.equals(step.getClass());
-    }
-
-    private Predicate<Step> isOtherStepThan(FlowStep theStep) {
-	return step -> !step.equals(theStep);
     }
 }

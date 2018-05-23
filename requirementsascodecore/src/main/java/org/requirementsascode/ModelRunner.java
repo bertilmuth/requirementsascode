@@ -48,11 +48,11 @@ public class ModelRunner implements Serializable {
     public ModelRunner() {
 	this.standardEventHandler = new StandardEventHandler();
 
-	handleWith(new WithMethodFromModelWithoutExtension());
+	handleWith(new HandleEventMethodOfStandardEventHandler());
 	restart();
     }
 
-    private static class WithMethodFromModelWithoutExtension implements Consumer<StandardEventHandler>, Serializable {
+    private static class HandleEventMethodOfStandardEventHandler implements Consumer<StandardEventHandler>, Serializable {
 	private static final long serialVersionUID = 9039056478378482872L;
 
 	@Override
