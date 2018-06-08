@@ -30,7 +30,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
     private void appendToLastStepOfFlow() {
 	List<FlowStep> flowSteps = getFlow().getSteps();
-	FlowStep lastFlowStep = flowSteps.size() > 0 ? flowSteps.get(flowSteps.size() - 1) : null;
+	FlowStep lastFlowStep = flowSteps.isEmpty() ? null : flowSteps.get(flowSteps.size() - 1);
 	setPreviousStepInFlow(lastFlowStep);
 	setFlowPosition(new After(lastFlowStep));
     }
