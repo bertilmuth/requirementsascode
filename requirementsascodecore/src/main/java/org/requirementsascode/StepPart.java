@@ -78,7 +78,7 @@ public class StepPart {
      *            the type of the class
      * @return the created user part of this step
      */
-    public <T> StepUserPart<T> handles(Class<T> eventOrExceptionClass) {
+    public <T> StepUserPart<T> on(Class<T> eventOrExceptionClass) {
 	Objects.requireNonNull(eventOrExceptionClass);
 
 	StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);

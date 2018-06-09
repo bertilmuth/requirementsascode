@@ -89,7 +89,7 @@ public class BuildModelTest extends AbstractTestCase {
 
 	Model model = 
 		useCasePart
-			.handles(EntersText.class).with(displaysEnteredText())
+			.on(EntersText.class).system(displaysEnteredText())
 		.build();
 
 	UseCase useCase = useCasePart.getUseCase();
@@ -108,7 +108,7 @@ public class BuildModelTest extends AbstractTestCase {
 
 	Model model = 
 		useCasePart
-			.handles(EntersText.class).with(displaysEnteredText())
+			.on(EntersText.class).system(displaysEnteredText())
 		.build();
 
 	UseCase useCase = useCasePart.getUseCase();
@@ -146,7 +146,7 @@ public class BuildModelTest extends AbstractTestCase {
 
 	Model model = 
 		useCasePart.basicFlow()
-			.step(SYSTEM_DISPLAYS_TEXT).handles(EntersText.class).system(displaysEnteredText())
+			.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
 
 	UseCase useCase = model.findUseCase(USE_CASE);
@@ -284,8 +284,8 @@ public class BuildModelTest extends AbstractTestCase {
 	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 
 	useCasePart
-		.handles(EntersText.class).with(displaysEnteredText())
-		.handles(EntersNumber.class).with(displaysEnteredNumber())
+		.on(EntersText.class).system(displaysEnteredText())
+		.on(EntersNumber.class).system(displaysEnteredNumber())
 	.build();
 
 	Collection<Step> steps = useCasePart.getUseCase().getSteps();

@@ -33,7 +33,7 @@ public class HelloWorld05 extends AbstractHelloWorldExample{
 					.step("S5a_2").continuesAt("S3")
 						
 				.flow("Handle non-numerical age").insteadOf("S5")
-					.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+					.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
 					.step("S5b_2").continuesAt("S3")
 			.build();
 		return model;

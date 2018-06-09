@@ -47,7 +47,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
     @Test
     public void reactsToUnhandledEvent() {
 	Model model = modelBuilder.useCase(USE_CASE)
-		.handles(EntersText.class).with(displaysEnteredText())
+		.on(EntersText.class).system(displaysEnteredText())
 	.build();
 
 	modelRunner.handleUnhandledWith(this::errorHandler); 

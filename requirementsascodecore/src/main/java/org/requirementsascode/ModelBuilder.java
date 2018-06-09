@@ -42,9 +42,9 @@ public class ModelBuilder {
      * @param <T> the type of events/exceptions
      * @return a part of the builder used to create the event handler (the "system reaction")
      */
-    public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {
-	FlowlessUserPart<T> handles = useCase(HANDLES_EVENTS).handles(eventOrExceptionClass);
-	return handles;
+    public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
+	FlowlessUserPart<T> on = useCase(HANDLES_EVENTS).on(eventOrExceptionClass);
+	return on;
     }
     
     /**
@@ -52,7 +52,7 @@ public class ModelBuilder {
      *
      * @param whenCondition
      *            the condition that constrains when the event is handled
-     * @return a part of the builder used to define the event's class ("handles")
+     * @return a part of the builder used to define the event's class
      */
     public WhenPart when(Predicate<ModelRunner> whenCondition) {
 	return useCase(HANDLES_EVENTS).when(whenCondition);

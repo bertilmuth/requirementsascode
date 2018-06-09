@@ -91,7 +91,7 @@ public class ShoppingAppModel {
 				.step("S8a_2").continuesAt("S5")
 			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart)
 				.step("S3a_1").continuesAt("S4")
-			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").handles(anyException).system(logsException)
+			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").on(anyException).system(logsException)
 		.build();
 		
 		return model;

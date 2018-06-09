@@ -42,10 +42,10 @@ public class CreditCard {
 
     private Model model() {
 	return Model.builder()
-	  .handles(LimitAssigned.class).with(this::limitAssigned)
-	  .handles(CardWithdrawn.class).with(this::cardWithdrawn)
-	  .handles(CardRepaid.class).with(this::cardRepaid)
-	  .handles(CycleClosed.class).with(this::cycleWasClosed)
+	  .on(LimitAssigned.class).system(this::limitAssigned)
+	  .on(CardWithdrawn.class).system(this::cardWithdrawn)
+	  .on(CardRepaid.class).system(this::cardRepaid)
+	  .on(CycleClosed.class).system(this::cycleWasClosed)
 	.build();
     }
     

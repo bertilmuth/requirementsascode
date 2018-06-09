@@ -75,7 +75,7 @@ public class FreemarkerEngineTest {
             .step("S4c_1").includesUseCase("Included use case")
             .step("S4c_2").continuesAt("S1")
           .flow("EX").anytime()
-          	.step("EX1").handles(Exception.class).system(logsException())
+          	.step("EX1").on(Exception.class).system(logsException())
         .build();    
     
     String templateFileName = "testextract.ftl";
@@ -105,15 +105,15 @@ public class FreemarkerEngineTest {
               + " Step: S4c_1. System includes use case Included use case."
               + " Step: S4c_2. System continues at S1."
             + " Flow: EX Anytime:"
-              + " Step: EX1. Handles Exception: System logs exception.",
+              + " Step: EX1. On Exception: System logs exception.",
         output);
   }
   
     @Test
     public void extractsFlowlessModel() throws Exception {
 	Model model = Model.builder()
-		.handles(entersName()).with(greetsUser())
-		.handles(Exception.class).with(logsException())
+		.on(entersName()).system(greetsUser())
+		.on(Exception.class).system(logsException())
 	.build();
   
 	String templateFileName = "testextract_flowless.ftl";
@@ -124,8 +124,8 @@ public class FreemarkerEngineTest {
 
           assertEquals(
               "Use case: Handles events."
-                    + " Step: S1. Handles EntersName: System greets user."                 
-                    + " Step: S2. Handles Exception: System logs exception.",
+                    + " Step: S1. On EntersName: System greets user."                 
+                    + " Step: S2. On Exception: System logs exception.",
               output);
   }
 

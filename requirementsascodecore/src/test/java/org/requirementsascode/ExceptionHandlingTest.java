@@ -20,7 +20,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).on(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 
 		modelRunner.run(model);
@@ -35,7 +35,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.basicFlow()
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())		
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
-					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).on(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		modelRunner.run(model);
@@ -50,7 +50,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.basicFlow()
 					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())		
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_THROWS_EXCEPTION)
-					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).on(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		modelRunner.run(model);
@@ -67,7 +67,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())
 				.flow(ALTERNATIVE_FLOW_2).anytime()
-					.step(SYSTEM_HANDLES_EXCEPTION).handles(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).on(ArrayIndexOutOfBoundsException.class).system(e -> {})
 			.build();
 		
 		modelRunner.run(model);

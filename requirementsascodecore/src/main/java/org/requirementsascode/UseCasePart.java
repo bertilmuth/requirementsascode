@@ -58,9 +58,9 @@ public class UseCasePart {
 	return modelBuilder.build();
     }
 
-    public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {
+    public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
 	WhenPart whenPart = when(null);
-	FlowlessUserPart<T> flowlessUserPart = whenPart.handles(eventOrExceptionClass);
+	FlowlessUserPart<T> flowlessUserPart = whenPart.on(eventOrExceptionClass);
 	return flowlessUserPart;
     }
 
@@ -78,7 +78,7 @@ public class UseCasePart {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	public <T> FlowlessUserPart<T> handles(Class<T> eventOrExceptionClass) {
+	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
 	    FlowlessUserPart<T> flowless = new FlowlessUserPart<>(optionalWhenCondition, eventOrExceptionClass, flowlessStepCounter);
 	    return flowless;
 	}
@@ -92,7 +92,7 @@ public class UseCasePart {
 		long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	    StepPart stepPart = createStepPart(optionalWhenCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
-	    this.userPart = stepPart.handles(eventOrExceptionClass);
+	    this.userPart = stepPart.on(eventOrExceptionClass);
 	}
 
 	private StepPart createStepPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
@@ -103,7 +103,7 @@ public class UseCasePart {
 	    return stepPart;
 	}
 
-	public FlowlessSystemPart<T> with(Consumer<T> systemReaction) {
+	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
 	    userPart.system(systemReaction);
 	    return new FlowlessSystemPart<>(flowlessStepCounter);
 	}
@@ -121,8 +121,8 @@ public class UseCasePart {
 	    return whenPart;
 	}
 
-	public <U> FlowlessUserPart<U> handles(Class<U> eventOrExceptionClass) {
-	    FlowlessUserPart<U> flowlessUserPart = when(null).handles(eventOrExceptionClass);
+	public <U> FlowlessUserPart<U> on(Class<U> eventOrExceptionClass) {
+	    FlowlessUserPart<U> flowlessUserPart = when(null).on(eventOrExceptionClass);
 	    return flowlessUserPart;
 	}
 

@@ -19,8 +19,8 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class SystemPartOfStep implements TemplateMethodModelEx {
-  private static final String HANDLES_PREFIX = "Handles ";
-  private static final String HANDLES_POSTFIX = ": ";
+  private static final String ON_PREFIX = "On ";
+  private static final String ON_POSTFIX = ": ";
   private static final String SYSTEM_POSTFIX = ".";
 
   @SuppressWarnings("rawtypes")
@@ -40,23 +40,23 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
   private String getSystemPartOfStep(Step step) {
     String systemPartOfStep = "";
     if (hasSystemReaction(step)) {
-      String handles = getHandles(step);
+      String on = getOn(step);
       String systemActorName = getSystemActor(step).getName();
       String wordsOfSystemReactionClassName = getLowerCaseWordsOfClassName(step.getSystemReaction().getClass());
       String stepNameOrIncludedUseCase = getStepNameOrIncludedUseCase(step);
-      systemPartOfStep = handles + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
+      systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
           + SYSTEM_POSTFIX;
     }
     return systemPartOfStep;
   }
 
-  private String getHandles(Step step) {
-    String handles = "";
+  private String getOn(Step step) {
+    String on = "";
 
     if (hasSystemUser(step) && !hasSystemEvent(step)) {
-      handles = HANDLES_PREFIX + step.getEventClass().getSimpleName() + HANDLES_POSTFIX;
+      on = ON_PREFIX + step.getEventClass().getSimpleName() + ON_POSTFIX;
     }
-    return handles;
+    return on;
   }
 
   private String getStepNameOrIncludedUseCase(Step step) {
