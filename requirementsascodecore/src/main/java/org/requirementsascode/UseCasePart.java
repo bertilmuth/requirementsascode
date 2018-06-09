@@ -82,6 +82,10 @@ public class UseCasePart {
 	    FlowlessUserPart<T> flowless = new FlowlessUserPart<>(optionalWhenCondition, eventOrExceptionClass, flowlessStepCounter);
 	    return flowless;
 	}
+
+	public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
+	    return on(ModelRunner.class).system(systemReaction);
+	}
     }
 
     public class FlowlessUserPart<T> {

@@ -60,7 +60,7 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStep() {
+    public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStepWithEvent() {
 	Model model = modelBuilder.useCase(USE_CASE)
 		.when(r -> true).on(EntersText.class).system(displaysEnteredText())
 		.on(EntersNumber.class).system(displaysEnteredNumber())
@@ -76,7 +76,20 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStep() {
+    public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStepWithoutEvent() {
+	Model model = modelBuilder.useCase(USE_CASE)
+		.when(r -> !r.getLatestStep().isPresent()).system(displaysConstantText())
+		.on(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	modelRunner.run(model);
+
+	Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
+    public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStepWithEvent() {
 	Model model = modelBuilder.useCase(USE_CASE)
 		.on(EntersText.class).system(displaysEnteredText())
 		.when(r -> true).on(EntersNumber.class).system(displaysEnteredNumber())
@@ -89,6 +102,19 @@ public class FlowlessTest extends AbstractTestCase {
 
 	latestStepRun = modelRunner.reactTo(entersNumber());
 	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
+    public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStepWithoutEvent() {
+	Model model = modelBuilder.useCase(USE_CASE)
+		.on(EntersText.class).system(displaysEnteredText())
+		.when(r -> r.getLatestStep().isPresent() && r.getLatestStep().get().getEventClass().equals(EntersText.class)).system(displaysConstantText())
+	.build();
+
+	modelRunner.run(model);
+
+	modelRunner.reactTo(entersText());
+	assertEquals(ModelRunner.class, modelRunner.getLatestStep().get().getEventClass());
     }
     
     @Test
