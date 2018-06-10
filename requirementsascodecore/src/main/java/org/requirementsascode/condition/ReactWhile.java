@@ -11,7 +11,6 @@ import org.requirementsascode.flowposition.FlowPosition;
 public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     private static final long serialVersionUID = -3190093346311188647L;
 
-    private Predicate<ModelRunner> completeCondition;
     private Predicate<ModelRunner> reactWhileCondition;
 
     public ReactWhile(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
@@ -22,11 +21,10 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     
     @Override
     public boolean test(ModelRunner modelRunner) {
-	return completeCondition.test(modelRunner);
+	return reactWhileCondition.test(modelRunner);
     }
 
     private void createReactWhileCondition(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
-	completeCondition = step.getPredicate().and(reactWhileCondition);
 	createLoop(step);
 	this.reactWhileCondition = reactWhileCondition;
     }
@@ -35,10 +33,4 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
 	FlowPosition flowPosition = step.getFlowPosition();
 	flowPosition.orAfter(step);
     }
-
-    public Predicate<ModelRunner> getReactWhileCondition() {
-	return reactWhileCondition;
-    }
-
-
 }

@@ -12,16 +12,15 @@ public class InterruptingFlowStep extends FlowStep {
     }
 
     public Predicate<ModelRunner> getPredicate() {
-	Predicate<ModelRunner> condition;
+	Predicate<ModelRunner> predicate;
 	Predicate<ModelRunner> reactWhile = getReactWhile();
 
+	predicate = isFlowConditionTrueAndRunnerInDifferentFlow();
 	if (reactWhile != null) {
-	    condition = reactWhile;
-	} else {
-	    condition = isFlowConditionTrueAndRunnerInDifferentFlow();
+	    predicate = predicate.and(reactWhile);
 	}
 
-	return condition;
+	return predicate;
     }
 
     private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {

@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.requirementsascode.flowposition.After;
-import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * @author b_muth
@@ -37,14 +36,11 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
     @Override
     public Predicate<ModelRunner> getPredicate() {
-	Predicate<ModelRunner> predicate;
 	Predicate<ModelRunner> reactWhile = getReactWhile();
 
+	Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
 	if (reactWhile != null) {
-	    predicate = reactWhile;
-	} else {
-	    FlowPosition flowPosition = getFlowPosition();
-	    predicate = flowPosition.and(noStepInterrupts());
+	    predicate = predicate.and(reactWhile);
 	}
 
 	return predicate;
