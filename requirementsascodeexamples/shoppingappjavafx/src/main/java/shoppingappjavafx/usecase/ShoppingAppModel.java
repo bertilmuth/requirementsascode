@@ -4,13 +4,12 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 
 import shoppingappjavafx.usecase.userevent.AddsProductToCart;
-import shoppingappjavafx.usecase.userevent.StartsCheckoutProcess;
 import shoppingappjavafx.usecase.userevent.ConfirmsPurchase;
 import shoppingappjavafx.usecase.userevent.EntersPaymentDetails;
 import shoppingappjavafx.usecase.userevent.EntersShippingInformation;
 import shoppingappjavafx.usecase.userevent.SignalsToGoBack;
+import shoppingappjavafx.usecase.userevent.StartsCheckoutProcess;
 import shoppingappjavafx.usecaserealization.BuyProductRealization;
-import shoppingappjavafx.usecaserealization.condition.AnExceptionOccurs;
 import shoppingappjavafx.usecaserealization.condition.AtLeastOneProductIsInCart;
 import shoppingappjavafx.usecaserealization.condition.LessThan10Products;
 import shoppingappjavafx.usecaserealization.systemreaction.AddsProductToPurchaseOrder;
@@ -36,7 +35,6 @@ public class ShoppingAppModel {
    */
   private LessThan10Products lessThan10Products;
   private AtLeastOneProductIsInCart atLeastOneProductIsInCart;
-  private AnExceptionOccurs anExceptionOccurs;
 
   /**
    * User/system events
@@ -91,7 +89,7 @@ public class ShoppingAppModel {
 				.step("S8a_2").continuesAt("S5")
 			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart)
 				.step("S3a_1").continuesAt("S4")
-			.flow("Handle exceptions").when(anExceptionOccurs).step("EX").on(anyException).system(logsException)
+			.flow("Handle exceptions").step("EX").on(anyException).system(logsException)
 		.build();
 		
 		return model;
@@ -106,7 +104,6 @@ public class ShoppingAppModel {
   private void setupConditions(BuyProductRealization bPR) {
     this.lessThan10Products = bPR.lessThan10Products();
     this.atLeastOneProductIsInCart = bPR.atLeastOneProductIsInCart();
-    this.anExceptionOccurs = bPR.anExceptionOccurs();
   }
 
   private void setupEvents() {

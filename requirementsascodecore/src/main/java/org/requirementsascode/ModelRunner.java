@@ -342,7 +342,7 @@ public class ModelRunner implements Serializable {
 
     private Stream<Step> getStepsInStreamThatCanReactStream(Stream<Step> stepStream) {
 	return stepStream.filter(step -> stepActorIsRunActor(step))
-		.filter(step -> hasTrueCondition(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step));
+		.filter(step -> hasTruePredicate(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step));
     }
 
     private boolean stepActorIsRunActor(Step step) {
@@ -359,9 +359,9 @@ public class ModelRunner implements Serializable {
 	return stepEventClass.isAssignableFrom(currentEventClass);
     }
 
-    private boolean hasTrueCondition(Step step) {
-	Predicate<ModelRunner> condition = step.getCondition();
-	boolean result = condition.test(this);
+    private boolean hasTruePredicate(Step step) {
+	Predicate<ModelRunner> predicate = step.getPredicate();
+	boolean result = predicate.test(this);
 	return result;
     }
 

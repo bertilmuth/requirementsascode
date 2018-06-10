@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
-import java.util.function.Predicate;
-
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
@@ -24,23 +23,23 @@ public class FlowPositionPart {
      *            the condition that constrains when the flow is started
      * @return this when part, to ease creation of the first step of the flow
      */
-    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+    public WhenPart when(Condition whenCondition) {
 	whenPart.setCondition(whenCondition);
 	return whenPart;
     }
     
     public class WhenPart {
-	private Predicate<ModelRunner> condition;
+	private Condition condition;
 
 	private WhenPart() {
 	}
 	
-	private Predicate<ModelRunner> getCondition() {
+	private Condition getCondition() {
 	    return condition;
 	}
 
-	private void setCondition(Predicate<ModelRunner> condition) {
-	    this.condition = condition;	    
+	private void setCondition(Condition whenCondition) {
+	    this.condition = whenCondition;	    
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class FlowPositionPart {
 	UseCasePart useCasePart = flowPart.getUseCasePart();
 	UseCase useCase = useCasePart.getUseCase();
 	Flow flow = flowPart.getFlow();
-	Predicate<ModelRunner> whenCondition = whenPart.getCondition();
+	Condition whenCondition = whenPart.getCondition();
         FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, whenCondition);
         StepPart stepPart = new StepPart(step, useCasePart, flowPart);
         return stepPart;

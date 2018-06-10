@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.requirementsascode.condition.Condition;
+
 /**
  * A step is a part of a use case. The steps define the
  * behavior of the use case.
@@ -25,7 +27,7 @@ public abstract class Step extends ModelElement implements Serializable {
     private Actor[] actors;
     private Class<?> eventClass;
     private Consumer<?> systemReaction;
-    private Predicate<ModelRunner> when;
+    private Condition when;
 
     /**
      * Creates a step with the specified name that belongs to the specified
@@ -40,7 +42,7 @@ public abstract class Step extends ModelElement implements Serializable {
 	this.useCase = useCase;
     }
 
-    public abstract Predicate<ModelRunner> getCondition();
+    public abstract Predicate<ModelRunner> getPredicate();
 
     public UseCase getUseCase() {
 	return useCase;
@@ -54,11 +56,11 @@ public abstract class Step extends ModelElement implements Serializable {
 	return reactWhile;
     }
 
-    void setWhen(Predicate<ModelRunner> when) {
-	this.when = when;
+    void setWhen(Condition whenCondition) {
+	this.when = whenCondition;
     }
 
-    public Optional<Predicate<ModelRunner>> getWhen() {
+    public Optional<Condition> getWhen() {
 	return Optional.ofNullable(when);
     }
 
@@ -84,5 +86,9 @@ public abstract class Step extends ModelElement implements Serializable {
 
     void setSystemReaction(Consumer<?> systemReaction) {
 	this.systemReaction = systemReaction;
+    }
+    
+    protected static Predicate<ModelRunner> toPredicate(Condition condition){
+	return modelRunner -> condition.evaluate();
     }
 }

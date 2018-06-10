@@ -262,7 +262,7 @@ public class FlowTest extends AbstractTestCase{
 			.useCase(USE_CASE)		
 				.basicFlow()		
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())			
-				.flow("Alternative Flow: Skipped").when(r -> false)
+				.flow("Alternative Flow: Skipped").when(() -> false)
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
 			.build();
 		
@@ -278,7 +278,7 @@ public class FlowTest extends AbstractTestCase{
 			.useCase(USE_CASE)		
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())			
-				.flow("Alternative Flow: Skipped").when(r -> false)
+				.flow("Alternative Flow: Skipped").when(() -> false)
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).system(r -> {System.out.println("You should not see this!");})
 			.build();
 		
@@ -312,7 +312,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT)
 						.as(secondActor).user(EntersText.class).system(throwsRuntimeException())			
-			.flow(ALTERNATIVE_FLOW).when(textIsNotAvailable())
+			.flow(ALTERNATIVE_FLOW).when(this::textIsNotAvailable)
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 					.as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
@@ -349,7 +349,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.as(secondActor).user(EntersText.class).system(displaysEnteredText())				
-				.flow(ALTERNATIVE_FLOW).when(r -> false)
+				.flow(ALTERNATIVE_FLOW).when(() -> false)
 					.step(THIS_STEP_SHOULD_BE_SKIPPED)
 						.as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
@@ -367,7 +367,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()					
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
 					.step(THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL).user(EntersText.class).system(throwsRuntimeException())		
-			.flow(ALTERNATIVE_FLOW).when(textIsNotAvailable())
+			.flow(ALTERNATIVE_FLOW).when(this::textIsNotAvailable)
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 		
@@ -384,7 +384,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())		
-				.flow(ALTERNATIVE_FLOW).when(r -> CUSTOMER_ENTERS_TEXT.equals(latestStepName()))
+				.flow(ALTERNATIVE_FLOW).when(() -> CUSTOMER_ENTERS_TEXT.equals(latestStepName()))
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
@@ -472,7 +472,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.useCase(USE_CASE_2)
-				.basicFlow().when(textIsAvailable())
+				.basicFlow().when(this::textIsAvailable)
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 		
@@ -696,10 +696,10 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
-				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
+				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsAvailable)
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)		
-				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsNotAvailable())
+				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsNotAvailable)
 					.step("Customer enters alternative number").user(EntersNumber.class).system(displaysEnteredNumber())
 					.step(CONTINUE_2).continuesAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
@@ -793,10 +793,10 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
-				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
+				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsAvailable)
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CONTINUE).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)		
-				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsNotAvailable())
+				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsNotAvailable)
 					.step("Customer enters alternative number").user(EntersNumber.class).system(displaysEnteredNumber())
 					.step(CONTINUE_2).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
@@ -890,10 +890,10 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
-				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsAvailable())
+				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsAvailable)
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CONTINUE).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)		
-				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(textIsNotAvailable())
+				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).when(this::textIsNotAvailable)
 					.step(CUSTOMER_ENTERS_NUMBER_AGAIN).user(EntersNumber.class).system(displaysEnteredNumber())
 					.step(CONTINUE_2).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();

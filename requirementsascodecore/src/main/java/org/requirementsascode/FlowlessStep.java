@@ -2,7 +2,7 @@ package org.requirementsascode;
 
 import java.util.function.Predicate;
 
-import org.requirementsascode.flowposition.Anytime;
+import org.requirementsascode.condition.Condition;
 
 public class FlowlessStep extends Step {
     private static final long serialVersionUID = -5290327128546502292L;
@@ -12,22 +12,21 @@ public class FlowlessStep extends Step {
     }
 
     @Override
-    public Predicate<ModelRunner> getCondition() {
-	Predicate<ModelRunner> condition;
+    public Predicate<ModelRunner> getPredicate() {
+	Predicate<ModelRunner> predicate;
 	Predicate<ModelRunner> reactWhile = getReactWhile();
 
 	if (reactWhile != null) {
-	    condition = reactWhile;
+	    predicate = reactWhile;
 	} else {
-	    condition = getFlowCondition();
+	    predicate = toPredicate(getFlowCondition());
 	}
 
-	return condition;
+	return predicate;
     }
 
-    private Predicate<ModelRunner> getFlowCondition() {
-	Anytime anytime = new Anytime();
-	Predicate<ModelRunner> when = getWhen().orElse(anytime);
+    private Condition getFlowCondition() {
+	Condition when = getWhen().orElse(() -> true);
 	return when;
     }
 }

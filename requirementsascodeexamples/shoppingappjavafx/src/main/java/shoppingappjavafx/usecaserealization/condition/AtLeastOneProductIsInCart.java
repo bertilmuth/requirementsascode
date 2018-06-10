@@ -1,13 +1,11 @@
 package shoppingappjavafx.usecaserealization.condition;
 
-import java.util.function.Predicate;
-
-import org.requirementsascode.ModelRunner;
+import org.requirementsascode.condition.Condition;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;
 
-public class AtLeastOneProductIsInCart implements Predicate<ModelRunner> {
+public class AtLeastOneProductIsInCart implements Condition {
 	private RunContext runContext;
 
 	public AtLeastOneProductIsInCart(RunContext runContext) {
@@ -15,7 +13,7 @@ public class AtLeastOneProductIsInCart implements Predicate<ModelRunner> {
 	}
 	
 	@Override
-	public boolean test(ModelRunner modelRunner) {
+	public boolean evaluate() {
 		PurchaseOrder purchaseOrder = runContext.getPurchaseOrder();
 		return purchaseOrder.findProducts().size() > 0;
 	}

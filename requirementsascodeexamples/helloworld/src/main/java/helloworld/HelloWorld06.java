@@ -77,11 +77,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		System.out.println("You are " + age + " years old.");
 	}
 	
-	private boolean ageIsOk(ModelRunner runner) {
-		return !ageIsOutOfBounds(runner);
+	private boolean ageIsOk() {
+		return !ageIsOutOfBounds();
 	}
 	
-	private boolean ageIsOutOfBounds(ModelRunner runner) {
+	private boolean ageIsOutOfBounds() {
 		return age < MIN_AGE || age > MAX_AGE;
 	}
 	

@@ -2,6 +2,8 @@ package org.requirementsascode;
 
 import java.util.function.Predicate;
 
+import org.requirementsascode.condition.Condition;
+
 public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
@@ -9,7 +11,7 @@ public class InterruptingFlowStep extends FlowStep {
 	super(stepName, useCase, useCaseFlow);
     }
 
-    public Predicate<ModelRunner> getCondition() {
+    public Predicate<ModelRunner> getPredicate() {
 	Predicate<ModelRunner> condition;
 	Predicate<ModelRunner> reactWhile = getReactWhile();
 
@@ -24,9 +26,9 @@ public class InterruptingFlowStep extends FlowStep {
 
     private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
 	Predicate<ModelRunner> flowPosition = getFlowPosition();
-	Predicate<ModelRunner> when = getWhen().orElse(r -> true);
+	Condition when = getWhen().orElse(() -> true);
 
-	Predicate<ModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition).and(when);
+	Predicate<ModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition).and(toPredicate(when));
 	return flowCondition;
     }
 

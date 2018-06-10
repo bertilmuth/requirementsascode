@@ -53,7 +53,7 @@ public class IncludesTest extends AbstractTestCase{
   public void includesUseCaseWithBasicFlowAtFirstStep_withFalseCondition_cantReact() {
     Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
-        .basicFlow().when(r -> false)
+        .basicFlow().when(() -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
@@ -136,7 +136,7 @@ public class IncludesTest extends AbstractTestCase{
         .useCase(INCLUDED_USE_CASE)
           .basicFlow()
             .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-          .flow(ALTERNATIVE_FLOW).when(r -> false)
+          .flow(ALTERNATIVE_FLOW).when(() -> false)
             .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
         .useCase(USE_CASE)
           .basicFlow()
@@ -196,7 +196,7 @@ public class IncludesTest extends AbstractTestCase{
   public void includesUseCaseWithBasicFlowAtSecondStep_withFalseCondition_cantReact() {
     Model model = modelBuilder
       .useCase(INCLUDED_USE_CASE)
-        .basicFlow().when(r -> false)
+        .basicFlow().when(() -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()
@@ -287,7 +287,7 @@ public class IncludesTest extends AbstractTestCase{
       .useCase(INCLUDED_USE_CASE)
         .basicFlow()
           .step(SYSTEM_HANDLES_EXCEPTION).user(Throwable.class).system(e -> e.printStackTrace())
-        .flow(ALTERNATIVE_FLOW).when(r -> false)
+        .flow(ALTERNATIVE_FLOW).when(() -> false)
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
       .useCase(USE_CASE)
         .basicFlow()

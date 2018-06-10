@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.flowposition.FlowPosition;
 
 /**
@@ -108,8 +108,8 @@ public class Flow extends ModelElement implements Serializable {
      *
      * @return the when condition
      */
-    public Optional<Predicate<ModelRunner>> getWhen() {
-	Optional<Predicate<ModelRunner>> when = getFirstStep().flatMap(step -> step.getWhen());
+    public Optional<Condition> getWhen() {
+	Optional<Condition> when = getFirstStep().flatMap(step -> step.getWhen());
 	return when;
     }
 }

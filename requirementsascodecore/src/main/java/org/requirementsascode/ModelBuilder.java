@@ -1,9 +1,8 @@
 package org.requirementsascode;
 
-import java.util.function.Predicate;
-
 import org.requirementsascode.UseCasePart.FlowlessUserPart;
 import org.requirementsascode.UseCasePart.WhenPart;
+import org.requirementsascode.condition.Condition;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -54,7 +53,7 @@ public class ModelBuilder {
      *            the condition that constrains when the event is handled
      * @return a part of the builder used to define the event's class
      */
-    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+    public WhenPart when(Condition whenCondition) {
 	return useCase(HANDLES_EVENTS).when(whenCondition);
     }
 

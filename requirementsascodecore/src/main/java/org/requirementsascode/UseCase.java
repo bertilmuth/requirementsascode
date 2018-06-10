@@ -10,8 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
@@ -119,15 +119,15 @@ public class UseCase extends ModelElement implements Serializable {
      *            the flow the step shall belong to
      * @param flowPosition
      *            the flow position, may be null, meaning: anytime.
-     * @param when
+     * @param whenCondition
      *            the when condition, may be null if there is none.
      * @return the newly created step
      */
     InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
-	    Predicate<ModelRunner> when) {
+	    Condition whenCondition) {
 	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
 	step.setFlowPosition(flowPosition);
-	step.setWhen(when);
+	step.setWhen(whenCondition);
 
 	saveModelElement(step, nameToStepMap);
 

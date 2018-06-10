@@ -1,7 +1,8 @@
 package org.requirementsascode;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
+
+import org.requirementsascode.condition.Condition;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -64,16 +65,16 @@ public class UseCasePart {
 	return flowlessUserPart;
     }
 
-    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+    public WhenPart when(Condition whenCondition) {
 	WhenPart whenPart = new WhenPart(whenCondition, 1);
 	return whenPart;
     }
 
     public class WhenPart {
 	private long flowlessStepCounter;
-	private Predicate<ModelRunner> optionalWhenCondition;
+	private Condition optionalWhenCondition;
 
-	private WhenPart(Predicate<ModelRunner> optionalWhenCondition, long flowlessStepCounter) {
+	private WhenPart(Condition optionalWhenCondition, long flowlessStepCounter) {
 	    this.optionalWhenCondition = optionalWhenCondition;
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
@@ -92,14 +93,14 @@ public class UseCasePart {
 	private StepUserPart<T> userPart;
 	private long flowlessStepCounter;
 
-	private FlowlessUserPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private FlowlessUserPart(Condition optionalWhenCondition, Class<T> eventOrExceptionClass,
 		long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	    StepPart stepPart = createStepPart(optionalWhenCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
 	    this.userPart = stepPart.on(eventOrExceptionClass);
 	}
 
-	private StepPart createStepPart(Predicate<ModelRunner> optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private StepPart createStepPart(Condition optionalWhenCondition, Class<T> eventOrExceptionClass,
 		String stepName) {
 	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
 	    newStep.setWhen(optionalWhenCondition);
@@ -120,7 +121,7 @@ public class UseCasePart {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	public WhenPart when(Predicate<ModelRunner> whenCondition) {
+	public WhenPart when(Condition whenCondition) {
 	    WhenPart whenPart = new WhenPart(whenCondition, ++flowlessStepCounter);
 	    return whenPart;
 	}

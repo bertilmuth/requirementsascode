@@ -1,9 +1,9 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.function.Predicate;
 
 import org.requirementsascode.FlowPositionPart.WhenPart;
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.After;
@@ -105,7 +105,7 @@ public class FlowPart {
      *            the condition that constrains when the flow is started
      * @return the when part, to ease creation of the first step of the flow
      */
-    public WhenPart when(Predicate<ModelRunner> whenCondition) {
+    public WhenPart when(Condition whenCondition) {
 	Objects.requireNonNull(whenCondition);
 
 	optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);

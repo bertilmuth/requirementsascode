@@ -26,7 +26,7 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     }
 
     private void createReactWhileCondition(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
-	completeCondition = step.getCondition().and(reactWhileCondition);
+	completeCondition = step.getPredicate().and(reactWhileCondition);
 	createLoop(step);
 	this.reactWhileCondition = reactWhileCondition;
     }

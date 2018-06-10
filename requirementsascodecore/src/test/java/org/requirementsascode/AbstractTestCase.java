@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public abstract class AbstractTestCase {
 
@@ -49,12 +48,12 @@ public abstract class AbstractTestCase {
 	this.displayedText = null;
     }
 
-    protected Predicate<ModelRunner> textIsAvailable() {
-	return r -> displayedText != null;
+    protected boolean textIsAvailable() {
+	return displayedText != null;
     }
 
-    protected Predicate<ModelRunner> textIsNotAvailable() {
-	return r -> displayedText == null;
+    protected boolean textIsNotAvailable() {
+	return displayedText == null;
     }
 
     protected EntersText entersText() {
