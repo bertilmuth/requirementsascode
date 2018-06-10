@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StandardEventHandler;
-import org.requirementsascode.condition.Condition;
 
 import creditcard_eventsourcing.model.request.RequestToCloseCycle;
 import creditcard_eventsourcing.model.request.RequestsRepay;
@@ -167,9 +166,9 @@ public class CreditCard {
 	}
     }
     
-    class AccountOpen implements Predicate<ModelRunner>{
+    class AccountOpen implements Condition{
 	@Override
-	public boolean test(ModelRunner t) {
+	public boolean evaluate() {
 	    return true;
 	}
     }

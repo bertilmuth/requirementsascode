@@ -3,7 +3,6 @@ package org.requirementsascode;
 import java.util.Objects;
 
 import org.requirementsascode.FlowPositionPart.WhenPart;
-import org.requirementsascode.condition.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.After;

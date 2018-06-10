@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.requirementsascode.condition.ReactWhile;
 import org.requirementsascode.flowposition.After;
 
 /**
@@ -37,7 +36,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
     @Override
     public Predicate<ModelRunner> getPredicate() {
-	ReactWhile reactWhile = getReactWhile();
+	Condition reactWhile = getReactWhile();
 
 	Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
 	if (reactWhile != null) {

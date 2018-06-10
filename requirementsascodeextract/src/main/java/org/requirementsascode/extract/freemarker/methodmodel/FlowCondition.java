@@ -6,8 +6,8 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.g
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
-import org.requirementsascode.condition.Condition;
 import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.FlowPosition;
 

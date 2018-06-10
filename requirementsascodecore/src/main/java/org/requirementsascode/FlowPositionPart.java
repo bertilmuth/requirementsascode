@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import org.requirementsascode.condition.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 

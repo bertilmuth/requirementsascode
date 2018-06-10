@@ -1,11 +1,10 @@
 package creditcard_eventsourcing.model;
 
 import java.math.BigDecimal;
-import java.util.function.Predicate;
 
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.condition.Condition;
 
 import creditcard_eventsourcing.model.CreditCard.AssignsLimit;
 import creditcard_eventsourcing.model.CreditCard.ClosesCycle;
@@ -47,7 +46,7 @@ public class CreditCardModelRunner {
     // Conditions
     private Condition tooManyWithdrawalsInCycle;
     private Condition limitAlreadyAssigned;
-    private Predicate<ModelRunner> accountOpen;
+    private Condition accountOpen;
     
     // Other fields
     private CreditCard creditCard;

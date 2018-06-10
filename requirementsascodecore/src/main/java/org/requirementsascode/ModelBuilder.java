@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import org.requirementsascode.UseCasePart.FlowlessUserPart;
 import org.requirementsascode.UseCasePart.WhenPart;
-import org.requirementsascode.condition.Condition;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.

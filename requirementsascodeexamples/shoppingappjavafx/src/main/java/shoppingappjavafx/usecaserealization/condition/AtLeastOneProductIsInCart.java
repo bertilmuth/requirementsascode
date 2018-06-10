@@ -1,6 +1,6 @@
 package shoppingappjavafx.usecaserealization.condition;
 
-import org.requirementsascode.condition.Condition;
+import org.requirementsascode.Condition;
 
 import shoppingappjavafx.domain.PurchaseOrder;
 import shoppingappjavafx.usecaserealization.RunContext;

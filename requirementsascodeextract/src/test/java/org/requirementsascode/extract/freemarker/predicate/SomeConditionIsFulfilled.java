@@ -1,12 +1,10 @@
 package org.requirementsascode.extract.freemarker.predicate;
 
-import java.util.function.Predicate;
+import org.requirementsascode.Condition;
 
-import org.requirementsascode.ModelRunner;
-
-public class SomeConditionIsFulfilled implements Predicate<ModelRunner> {
+public class SomeConditionIsFulfilled implements Condition {
   @Override
-  public boolean test(ModelRunner runner) {
+  public boolean evaluate() {
     return true;
   }
 }

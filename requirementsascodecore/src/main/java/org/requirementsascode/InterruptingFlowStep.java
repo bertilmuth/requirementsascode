@@ -2,9 +2,6 @@ package org.requirementsascode;
 
 import java.util.function.Predicate;
 
-import org.requirementsascode.condition.Condition;
-import org.requirementsascode.condition.ReactWhile;
-
 public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
@@ -14,7 +11,7 @@ public class InterruptingFlowStep extends FlowStep {
 
     public Predicate<ModelRunner> getPredicate() {
 	Predicate<ModelRunner> predicate;
-	ReactWhile reactWhile = getReactWhile();
+	Condition reactWhile = getReactWhile();
 
 	predicate = isFlowConditionTrueAndRunnerInDifferentFlow();
 	if (reactWhile != null) {

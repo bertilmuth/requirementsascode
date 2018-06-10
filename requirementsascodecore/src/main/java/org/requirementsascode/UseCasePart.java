@@ -2,8 +2,6 @@ package org.requirementsascode;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.condition.Condition;
-
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *

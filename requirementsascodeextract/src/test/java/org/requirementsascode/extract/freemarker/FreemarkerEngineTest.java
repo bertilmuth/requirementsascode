@@ -5,15 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.Actor;
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.condition.Condition;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -146,7 +145,7 @@ public class FreemarkerEngineTest {
     return new GreetsUser();
   }
   
-  private Predicate<ModelRunner> someConditionIsFulfilled() {
+  private Condition someConditionIsFulfilled() {
     return new SomeConditionIsFulfilled();
   }
 

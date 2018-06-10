@@ -14,8 +14,8 @@ public abstract class FlowStep extends Step implements Serializable {
 
     private Flow flow;
     private FlowPosition flowPosition;
-
     private FlowStep previousStepInFlow;
+    private Condition reactWhile;
 
     FlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
 	super(stepName, useCase);
@@ -46,5 +46,17 @@ public abstract class FlowStep extends Step implements Serializable {
     
     public void orAfter(FlowStep step) {
 	setFlowPosition(flowPosition.orAfter(step));
+    }
+    
+    void setReactWhile(Condition reactWhileCondition) {
+	this.reactWhile = reactWhileCondition;
+	createLoop();
+    }    
+    private void createLoop() {
+	getFlowPosition().orAfter(this);
+    }
+
+    public Condition getReactWhile() {
+	return reactWhile;
     }
 }

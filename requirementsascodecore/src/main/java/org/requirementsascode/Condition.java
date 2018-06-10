@@ -1,4 +1,4 @@
-package org.requirementsascode.condition;
+package org.requirementsascode;
 
 @FunctionalInterface
 public interface Condition {
