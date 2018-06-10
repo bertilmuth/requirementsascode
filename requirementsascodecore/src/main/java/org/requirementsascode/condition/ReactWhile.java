@@ -11,9 +11,9 @@ import org.requirementsascode.flowposition.FlowPosition;
 public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     private static final long serialVersionUID = -3190093346311188647L;
 
-    private Predicate<ModelRunner> reactWhileCondition;
+    private Condition reactWhileCondition;
 
-    public ReactWhile(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
+    public ReactWhile(FlowStep step, Condition reactWhileCondition) {
 	Objects.requireNonNull(step);
 	Objects.requireNonNull(reactWhileCondition);
 	createReactWhileCondition(step, reactWhileCondition);
@@ -21,10 +21,10 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     
     @Override
     public boolean test(ModelRunner modelRunner) {
-	return reactWhileCondition.test(modelRunner);
+	return reactWhileCondition.evaluate();
     }
 
-    private void createReactWhileCondition(FlowStep step, Predicate<ModelRunner> reactWhileCondition) {
+    private void createReactWhileCondition(FlowStep step, Condition reactWhileCondition) {
 	createLoop(step);
 	this.reactWhileCondition = reactWhileCondition;
     }

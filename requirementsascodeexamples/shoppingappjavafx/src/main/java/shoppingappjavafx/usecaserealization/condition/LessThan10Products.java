@@ -1,12 +1,10 @@
 package shoppingappjavafx.usecaserealization.condition;
 
-import java.util.function.Predicate;
-
-import org.requirementsascode.ModelRunner;
+import org.requirementsascode.condition.Condition;
 
 import shoppingappjavafx.usecaserealization.RunContext;
 
-public class LessThan10Products implements Predicate<ModelRunner> {
+public class LessThan10Products implements Condition {
 	private RunContext runContext;
 	
 	public LessThan10Products(RunContext runContext) {
@@ -14,7 +12,7 @@ public class LessThan10Products implements Predicate<ModelRunner> {
 	}
 	
 	@Override
-	public boolean test(ModelRunner runner) {
+	public boolean evaluate() {
 		return runContext.getPurchaseOrder().findProducts().size() < 10;
 	}
 

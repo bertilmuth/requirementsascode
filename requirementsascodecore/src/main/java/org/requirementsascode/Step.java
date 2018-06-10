@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.requirementsascode.condition.Condition;
+import org.requirementsascode.condition.ReactWhile;
 
 /**
  * A step is a part of a use case. The steps define the
@@ -22,7 +23,7 @@ public abstract class Step extends ModelElement implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     private UseCase useCase;
-    private Predicate<ModelRunner> reactWhile;
+    private ReactWhile reactWhile;
 
     private Actor[] actors;
     private Class<?> eventClass;
@@ -48,11 +49,11 @@ public abstract class Step extends ModelElement implements Serializable {
 	return useCase;
     }
 
-    void setReactWhile(Predicate<ModelRunner> reactWhile) {
+    void setReactWhile(ReactWhile reactWhile) {
 	this.reactWhile = reactWhile;
     }
 
-    public Predicate<ModelRunner> getReactWhile() {
+    public ReactWhile getReactWhile() {
 	return reactWhile;
     }
 

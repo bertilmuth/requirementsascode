@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.flowposition.Anytime;
 
 public class FlowTest extends AbstractTestCase{
 	private Actor secondActor;
@@ -489,7 +488,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EntersText.class).system(displaysEnteredText())
-							.reactWhile(r -> false)
+							.reactWhile(() -> false)
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
@@ -509,7 +508,7 @@ public class FlowTest extends AbstractTestCase{
 						.user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.user(EntersText.class).system(displaysEnteredText())
-							.reactWhile(new Anytime())
+							.reactWhile(() -> true)
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
@@ -532,7 +531,7 @@ public class FlowTest extends AbstractTestCase{
 						.user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.user(EntersText.class).system(displaysEnteredText())
-							.reactWhile(new Anytime())
+							.reactWhile(() -> true)
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_NUMBER)
@@ -553,7 +552,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EntersText.class).system(displaysEnteredText())
-							.reactWhile(new Anytime())
+							.reactWhile(() -> true)
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
@@ -571,7 +570,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EntersText.class).system(displaysEnteredText())
-							.reactWhile(new Anytime())
+							.reactWhile(() -> true)
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
@@ -591,7 +590,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
 						.user(EntersText.class).system(displaysEnteredTextAndIncrementCounter())
-							.reactWhile(r -> timesDisplayed < 3)
+							.reactWhile(() -> timesDisplayed < 3)
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 				

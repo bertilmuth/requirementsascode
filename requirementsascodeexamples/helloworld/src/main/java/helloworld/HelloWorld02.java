@@ -24,7 +24,7 @@ public class HelloWorld02 {
 		System.out.println("Hello, User.");
 	}
 	
-	private boolean lessThanThreeHooraysHaveBeenPrinted(ModelRunner runner) {
+	private boolean lessThanThreeHooraysHaveBeenPrinted() {
 		return hoorayCounter < 3; 
 	}
 	

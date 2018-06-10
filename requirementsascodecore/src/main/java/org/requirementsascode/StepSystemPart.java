@@ -2,8 +2,8 @@ package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.condition.ReactWhile;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
@@ -100,7 +100,7 @@ public class StepSystemPart<T> {
      *            the condition to check
      * @return the system part
      */
-    public StepSystemPart<T> reactWhile(Predicate<ModelRunner> reactWhileCondition) {
+    public StepSystemPart<T> reactWhile(Condition reactWhileCondition) {
 	Objects.requireNonNull(reactWhileCondition);
 
 	ReactWhile reactWhile = new ReactWhile((FlowStep)step, reactWhileCondition);
