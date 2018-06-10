@@ -41,7 +41,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
 	Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
 	if (reactWhile != null) {
-	    predicate = predicate.and(reactWhile);
+	    predicate = predicate.and(toPredicate(reactWhile));
 	}
 
 	return predicate;

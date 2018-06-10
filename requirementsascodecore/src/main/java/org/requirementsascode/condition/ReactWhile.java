@@ -2,13 +2,11 @@ package org.requirementsascode.condition;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 import org.requirementsascode.FlowStep;
-import org.requirementsascode.ModelRunner;
 import org.requirementsascode.flowposition.FlowPosition;
 
-public class ReactWhile implements Predicate<ModelRunner>, Serializable {
+public class ReactWhile implements Condition, Serializable {
     private static final long serialVersionUID = -3190093346311188647L;
 
     private Condition reactWhileCondition;
@@ -20,7 +18,7 @@ public class ReactWhile implements Predicate<ModelRunner>, Serializable {
     }
     
     @Override
-    public boolean test(ModelRunner modelRunner) {
+    public boolean evaluate() {
 	return reactWhileCondition.evaluate();
     }
 

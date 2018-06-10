@@ -13,15 +13,7 @@ public class FlowlessStep extends Step {
 
     @Override
     public Predicate<ModelRunner> getPredicate() {
-	Predicate<ModelRunner> predicate;
-	Predicate<ModelRunner> reactWhile = getReactWhile();
-
-	if (reactWhile != null) {
-	    predicate = reactWhile;
-	} else {
-	    predicate = toPredicate(getFlowCondition());
-	}
-
+	Predicate<ModelRunner> predicate = toPredicate(getFlowCondition());
 	return predicate;
     }
 

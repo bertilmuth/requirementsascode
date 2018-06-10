@@ -18,7 +18,7 @@ public class InterruptingFlowStep extends FlowStep {
 
 	predicate = isFlowConditionTrueAndRunnerInDifferentFlow();
 	if (reactWhile != null) {
-	    predicate = predicate.and(reactWhile);
+	    predicate = predicate.and(toPredicate(reactWhile));
 	}
 
 	return predicate;
