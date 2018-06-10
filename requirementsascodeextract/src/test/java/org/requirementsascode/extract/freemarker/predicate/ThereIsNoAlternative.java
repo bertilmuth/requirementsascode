@@ -1,12 +1,10 @@
 package org.requirementsascode.extract.freemarker.predicate;
 
-import java.util.function.Predicate;
+import org.requirementsascode.condition.Condition;
 
-import org.requirementsascode.ModelRunner;
-
-public class ThereIsNoAlternative implements Predicate<ModelRunner> {
+public class ThereIsNoAlternative implements Condition {
   @Override
-  public boolean test(ModelRunner runner) {
+  public boolean evaluate() {
     return true;
   }
 }

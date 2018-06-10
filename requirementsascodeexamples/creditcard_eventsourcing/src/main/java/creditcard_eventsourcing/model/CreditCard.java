@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StandardEventHandler;
+import org.requirementsascode.condition.Condition;
 
 import creditcard_eventsourcing.model.request.RequestToCloseCycle;
 import creditcard_eventsourcing.model.request.RequestsRepay;
@@ -152,16 +153,16 @@ public class CreditCard {
      * Conditions
      */
     
-    class TooManyWithdrawalsInCycle implements Predicate<ModelRunner>{
+    class TooManyWithdrawalsInCycle implements Condition{
 	@Override
-	public boolean test(ModelRunner r) {
+	public boolean evaluate() {
 	    return withdrawals >= 45;
 	}
     }
     
-    class LimitAlreadyAssigned implements Predicate<ModelRunner> {
+    class LimitAlreadyAssigned implements Condition {
 	@Override
-	public boolean test(ModelRunner r) {
+	public boolean evaluate() {
 	    return initialLimit != null;
 	}
     }

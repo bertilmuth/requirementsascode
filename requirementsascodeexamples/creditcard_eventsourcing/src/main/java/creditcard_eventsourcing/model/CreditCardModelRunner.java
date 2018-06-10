@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.condition.Condition;
 
 import creditcard_eventsourcing.model.CreditCard.AssignsLimit;
 import creditcard_eventsourcing.model.CreditCard.ClosesCycle;
@@ -44,8 +45,8 @@ public class CreditCardModelRunner {
     private ThrowsTooManyWithdrawalsException throwsTooManyWithdrawalsException;
     
     // Conditions
-    private Predicate<ModelRunner> tooManyWithdrawalsInCycle;
-    private Predicate<ModelRunner> limitAlreadyAssigned;
+    private Condition tooManyWithdrawalsInCycle;
+    private Condition limitAlreadyAssigned;
     private Predicate<ModelRunner> accountOpen;
     
     // Other fields

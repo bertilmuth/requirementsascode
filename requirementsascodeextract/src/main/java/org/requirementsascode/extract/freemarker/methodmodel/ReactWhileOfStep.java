@@ -26,8 +26,8 @@ public class ReactWhileOfStep implements TemplateMethodModelEx {
     Step step = getStep(arguments.get(0));
 
     String reactWhile = "";
-    if (step.getCondition() instanceof ReactWhile) {
-      ReactWhile reactWhilePredicate = (ReactWhile) step.getCondition();
+    if (step.getPredicate() instanceof ReactWhile) {
+      ReactWhile reactWhilePredicate = (ReactWhile) step.getPredicate();
       reactWhile = REACT_WHILE_PREFIX
           + getLowerCaseWordsOfClassName(getReactWhileConditionClass(reactWhilePredicate)) + REACT_WHILE_POSTFIX;
     }

@@ -13,6 +13,7 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -129,7 +130,7 @@ public class FreemarkerEngineTest {
               output);
   }
 
-  private Predicate<ModelRunner> thereIsNoAlternative() {
+  private Condition thereIsNoAlternative() {
     return new ThereIsNoAlternative();
   }
 

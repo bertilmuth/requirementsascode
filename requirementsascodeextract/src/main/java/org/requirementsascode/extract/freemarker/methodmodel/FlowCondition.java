@@ -4,10 +4,10 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.g
 import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
+import org.requirementsascode.condition.Condition;
 import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.FlowPosition;
 
@@ -67,7 +67,7 @@ public class FlowCondition implements TemplateMethodModelEx {
     private String getWhen(Flow flow) {
 	String whenWords = "";
 	if (flow.getWhen().isPresent()) {
-	    Predicate<?> when = flow.getWhen().get();
+	    Condition when = flow.getWhen().get();
 	    whenWords = WHEN + getLowerCaseWordsOfClassName(when.getClass());
 	}
 	return whenWords;
