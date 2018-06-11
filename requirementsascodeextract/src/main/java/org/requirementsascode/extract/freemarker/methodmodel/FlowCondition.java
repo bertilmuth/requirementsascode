@@ -44,13 +44,15 @@ public class FlowCondition implements TemplateMethodModelEx {
     private String getFlowPosition(Flow flow) {
 	FlowPosition flowPosition = flow.getFlowPosition();
 	String result = "";
-	
-	if(flowPosition != null) {
+
+	if (flowPosition != null) {
+	    String stepName = flowPosition.getStepName();
+	    boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
+	    if (isNonDefaultFlowPosition) {
 		String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
-		String stepName = flowPosition.getStepName();
-		boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
-		String flowPositionWithStepName = isNonDefaultFlowPosition? flowPositionWords + " " + stepName : "";
+		String flowPositionWithStepName = flowPositionWords + " " + stepName;
 		result = flowPositionWithStepName.trim();
+	    }
 	}
 	return result;
     }
