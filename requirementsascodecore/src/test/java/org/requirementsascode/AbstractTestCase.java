@@ -1,5 +1,7 @@
 package org.requirementsascode;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.function.Consumer;
 
 public abstract class AbstractTestCase {
@@ -46,6 +48,16 @@ public abstract class AbstractTestCase {
 	this.modelBuilder = Model.builder();
 	this.customer = modelBuilder.actor(CUSTOMER);
 	this.displayedText = null;
+    }
+    
+    protected void assertRecordedStepNames(String... actualStepNames) {
+	String[] expectedStepNames = modelRunner.getRecordedStepNames();
+	assertArrayEquals(expectedStepNames, actualStepNames);
+    }
+
+    protected void reactToAndAssertEvents(Object... events) {
+	modelRunner.reactTo(events);
+	assertArrayEquals(events, modelRunner.getRecordedEvents());
     }
 
     protected boolean textIsAvailable() {
