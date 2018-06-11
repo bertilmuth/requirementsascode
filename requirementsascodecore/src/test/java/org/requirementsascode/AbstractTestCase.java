@@ -50,9 +50,9 @@ public abstract class AbstractTestCase {
 	this.displayedText = null;
     }
     
-    protected void assertRecordedStepNames(String... actualStepNames) {
-	String[] expectedStepNames = modelRunner.getRecordedStepNames();
-	assertArrayEquals(expectedStepNames, actualStepNames);
+    protected void assertRecordedStepNames(String... expectedStepNames) {
+  	String[] actualStepNames = modelRunner.getRecordedStepNames();
+  	assertArrayEquals(expectedStepNames, actualStepNames);
     }
 
     protected void reactToAndAssertEvents(Object... events) {

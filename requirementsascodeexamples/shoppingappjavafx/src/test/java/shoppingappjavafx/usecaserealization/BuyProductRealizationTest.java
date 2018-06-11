@@ -55,8 +55,8 @@ public class BuyProductRealizationTest {
 			"S6", "S7", "S8", "S9", "S10", "S11", "S1", "S2");
 	}
 	
-    protected void assertRecordedStepNames(String... actualStepNames) {
-	String[] expectedStepNames = modelRunner.getRecordedStepNames();
+    protected void assertRecordedStepNames(String... expectedStepNames) {
+	String[] actualStepNames = modelRunner.getRecordedStepNames();
 	assertArrayEquals(expectedStepNames, actualStepNames);
     }
 }

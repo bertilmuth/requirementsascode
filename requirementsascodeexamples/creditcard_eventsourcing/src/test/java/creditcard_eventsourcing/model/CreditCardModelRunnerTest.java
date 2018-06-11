@@ -152,8 +152,8 @@ public class CreditCardModelRunnerTest {
 	assertEquals(new BigDecimal(8), creditCard.availableLimit());
     }
 
-    protected void assertRecordedStepNames(String... actualStepNames) {
-	String[] expectedStepNames = testModelRunner.getRecordedStepNames();
+    protected void assertRecordedStepNames(String... expectedStepNames) {
+	String[] actualStepNames = testModelRunner.getRecordedStepNames();
 	assertArrayEquals(expectedStepNames, actualStepNames);
     }
 }

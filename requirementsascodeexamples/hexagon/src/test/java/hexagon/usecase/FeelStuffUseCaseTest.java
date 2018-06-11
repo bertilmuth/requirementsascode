@@ -34,8 +34,8 @@ public class FeelStuffUseCaseTest {
     assertRecordedStepNames("1", "2", "3");
   }
   
-  protected void assertRecordedStepNames(String... actualStepNames) {
-	String[] expectedStepNames = testRunner.getRecordedStepNames();
+  protected void assertRecordedStepNames(String... expectedStepNames) {
+	String[] actualStepNames = testRunner.getRecordedStepNames();
 	assertArrayEquals(expectedStepNames, actualStepNames);
   }
 }

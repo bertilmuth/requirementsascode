@@ -129,8 +129,8 @@ public class HelloWorldTest {
 		assertRecordedStepNames("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
-    protected void assertRecordedStepNames(String... actualStepNames) {
-	String[] expectedStepNames = modelRunner.getRecordedStepNames();
+    protected void assertRecordedStepNames(String... expectedStepNames) {
+	String[] actualStepNames = modelRunner.getRecordedStepNames();
 	assertArrayEquals(expectedStepNames, actualStepNames);
     }
 }
