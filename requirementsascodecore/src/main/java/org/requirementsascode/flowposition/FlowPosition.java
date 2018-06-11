@@ -29,9 +29,8 @@ public abstract class FlowPosition implements Predicate<ModelRunner>, Serializab
 	return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
     }
 
-    public final String getStepName() {
-	String name = step != null ? step.getName() : "";
-	return name;
+    public final Step getStep() {
+	return step;
     }
 
     public FlowPosition orAfter(FlowStep mergeStep) {

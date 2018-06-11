@@ -8,7 +8,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
-import org.requirementsascode.flowposition.Anytime;
+import org.requirementsascode.Step;
+import org.requirementsascode.flowposition.After;
 import org.requirementsascode.flowposition.FlowPosition;
 
 import freemarker.template.SimpleScalar;
@@ -46,15 +47,20 @@ public class FlowCondition implements TemplateMethodModelEx {
 	String result = "";
 
 	if (flowPosition != null) {
-	    String stepName = flowPosition.getStepName();
-	    boolean isNonDefaultFlowPosition = Anytime.class.equals(flowPosition.getClass()) || !"".equals(stepName);
+	    Step step = flowPosition.getStep();
+	    boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, step);
 	    if (isNonDefaultFlowPosition) {
+		String stepName = step != null? step.getName() : "";
 		String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
 		String flowPositionWithStepName = flowPositionWords + " " + stepName;
 		result = flowPositionWithStepName.trim();
 	    }
 	}
 	return result;
+    }
+
+    boolean isNonDefaultFlowCondition(FlowPosition flowPosition, Step step) {
+	return !After.class.equals(flowPosition.getClass()) || step != null;
     }
 
     private String getFlowPredicateSeparator(Flow flow, String sep) {
