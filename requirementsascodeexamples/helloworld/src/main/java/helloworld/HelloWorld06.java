@@ -53,11 +53,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		return model;
 	}
 
-	private void promptsUserToEnterFirstName(ModelRunner runner) {
+	private void promptsUserToEnterFirstName() {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptsUserToEnterAge(ModelRunner runner) {
+	private void promptsUserToEnterAge() {
 		System.out.print("Please enter your age: ");
 	}
 
@@ -69,11 +69,11 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetsUserWithFirstName(ModelRunner runner) {
+	private void greetsUserWithFirstName() {
 		System.out.println("Hello, " + firstName + ".");
 	}
 	
-	private void greetsUserWithAge(ModelRunner runner) {
+	private void greetsUserWithAge() {
 		System.out.println("You are " + age + " years old.");
 	}
 	
@@ -85,7 +85,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample{
 		return age < MIN_AGE || age > MAX_AGE;
 	}
 	
-	private void informsUserAboutOutOfBoundsAge(ModelRunner runner) {
+	private void informsUserAboutOutOfBoundsAge() {
 		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
 	}
 	

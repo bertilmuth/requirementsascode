@@ -20,7 +20,7 @@ public class HelloWorld02 {
 		return model;
 	}
 
-	private void greetsUser(ModelRunner runner) {
+	private void greetsUser() {
 		System.out.println("Hello, User.");
 	}
 	
@@ -28,7 +28,7 @@ public class HelloWorld02 {
 		return hoorayCounter < 3; 
 	}
 	
-	private void printsHooray(ModelRunner runner) {
+	private void printsHooray() {
 		System.out.println("Hip, hip, hooray!");
 		hoorayCounter++;
 	}

@@ -82,8 +82,9 @@ public class UseCasePart {
 	    return flowless;
 	}
 
-	public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-	    return on(ModelRunner.class).system(systemReaction);
+	public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
+	    AutonomousSystemReaction autonomousSystemReaction = new AutonomousSystemReaction(systemReaction);
+	    return on(ModelRunner.class).system(autonomousSystemReaction);
 	}
     }
 

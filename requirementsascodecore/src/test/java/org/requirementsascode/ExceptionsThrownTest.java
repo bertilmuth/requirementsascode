@@ -148,7 +148,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
     public void rethrowsExceptionIfExceptionIsNotHandled() {
 	thrown.expect(IllegalStateException.class);
 
-	modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).system(r -> {
+	modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).system(() -> {
 	    throw new IllegalStateException();
 	});
 

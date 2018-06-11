@@ -2,8 +2,6 @@ package helloworld;
 
 import java.util.Scanner;
 
-import org.requirementsascode.ModelRunner;
-
 import helloworld.userevent.EntersText;
 
 public class AbstractHelloWorldExample {
@@ -21,7 +19,7 @@ public class AbstractHelloWorldExample {
 		return new EntersText(text);
 	}
 	
-	protected void stops(ModelRunner runner){
+	protected void stops(){
 		isSystemStopped = true;
 	}
 	

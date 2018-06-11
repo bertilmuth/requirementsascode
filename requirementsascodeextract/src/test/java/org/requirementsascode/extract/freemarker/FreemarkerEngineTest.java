@@ -12,7 +12,6 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
-import org.requirementsascode.ModelRunner;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -22,7 +21,6 @@ import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnt
 import org.requirementsascode.extract.freemarker.systemreaction.Quits;
 import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
 import org.requirementsascode.extract.freemarker.userevent.EntersName;
-import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;
@@ -55,7 +53,7 @@ public class FreemarkerEngineTest {
       modelBuilder
         .useCase("Included use case")
           .basicFlow()
-            .step("Included step").system(new IgnoresIt<>())
+            .step("Included step").system(promptsUserToEnterName())
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
@@ -86,7 +84,7 @@ public class FreemarkerEngineTest {
 
     assertEquals(
         "Use case: Included use case. Flow: Basic flow"
-            + " Step: Included step."
+            + " Step: Included step. System prompts user to enter name."
         + " Use case: Get greeted. Flow: Basic flow"
               + " Step: S1. System prompts user to enter name."
               + " Step: S2. User enters name.System greets user."
@@ -133,7 +131,7 @@ public class FreemarkerEngineTest {
     return new ThereIsNoAlternative();
   }
 
-  private Consumer<ModelRunner> promptsUserToEnterName() {
+  private Runnable promptsUserToEnterName() {
     return new PromptsUserToEnterName();
   }
 
@@ -153,11 +151,11 @@ public class FreemarkerEngineTest {
     return DecidesToQuit.class;
   }
 
-  private Consumer<ModelRunner> quits() {
+  private Runnable quits() {
     return new Quits();
   }
 
-  private Consumer<ModelRunner> blowsUp() { 
+  private Runnable blowsUp() { 
 	  return new BlowsUp();
   }
   

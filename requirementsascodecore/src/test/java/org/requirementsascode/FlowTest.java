@@ -278,7 +278,7 @@ public class FlowTest extends AbstractTestCase{
 				.basicFlow()	
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())			
 				.flow("Alternative Flow: Skipped").when(() -> false)
-					.step(THIS_STEP_SHOULD_BE_SKIPPED).system(r -> {System.out.println("You should not see this!");})
+					.step(THIS_STEP_SHOULD_BE_SKIPPED).system(() -> System.out.println("You should not see this!"))
 			.build();
 		
 		modelRunner.run(model);

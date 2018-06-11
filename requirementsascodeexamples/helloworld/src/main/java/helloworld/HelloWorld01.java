@@ -15,7 +15,7 @@ public class HelloWorld01 {
 		return model;
 	}
 
-	private void greetsUser(ModelRunner runner) {
+	private void greetsUser() {
 		System.out.println("Hello, User.");
 	}
 	

@@ -20,7 +20,7 @@ public class HelloWorld03 extends AbstractHelloWorldExample{
 		return model;
 	}
 	
-	private void promptsUserToEnterFirstName(ModelRunner runner) {
+	private void promptsUserToEnterFirstName() {
 		System.out.print("Please enter your first name: ");
 	}
 	

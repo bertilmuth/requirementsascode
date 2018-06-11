@@ -7,7 +7,7 @@ import org.requirementsascode.ModelRunner;
 import helloworld.userevent.EntersText;
 
 public class HelloWorld04 extends AbstractHelloWorldExample{
-	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
+    	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
 	private static final Class<EntersText> ENTERS_AGE = EntersText.class;
 	
 	private String firstName;
@@ -26,11 +26,11 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 		return model;
 	}
 	
-	private void promptsUserToEnterFirstName(ModelRunner runner) {
+	private void promptsUserToEnterFirstName() {
 		System.out.print("Please enter your first name: ");
 	}
 	
-	private void promptsUserToEnterAge(ModelRunner runner) {
+	private void promptsUserToEnterAge() {
 		System.out.print("Please enter your age: ");
 	}
 
@@ -42,7 +42,7 @@ public class HelloWorld04 extends AbstractHelloWorldExample{
 		age = Integer.parseInt(enterText.text);
 	}
 	
-	private void greetsUserWithFirstNameAndAge(ModelRunner runner) {
+	private void greetsUserWithFirstNameAndAge() {
 		System.out.println("Hello, " + firstName + " (" + age + ").");
 	}
 	
