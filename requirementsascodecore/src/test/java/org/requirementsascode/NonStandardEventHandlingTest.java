@@ -31,7 +31,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
 	modelRunner.run(model);
 
-	assertTrue(modelRunner.hasRun(SYSTEM_DISPLAYS_TEXT));
+	assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
 	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
 	assertEquals(TestModelRunner.class, event.getClass());
     }

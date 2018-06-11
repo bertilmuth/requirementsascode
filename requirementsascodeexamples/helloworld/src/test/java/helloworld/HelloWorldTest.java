@@ -1,6 +1,6 @@
 package helloworld;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class HelloWorldTest {
 		
 		modelRunner.run(model);
 
-		assertTrue(modelRunner.hasRun("S1"));
+		assertRecordedStepNames("S1");
 	}
 	
 	@Test
@@ -38,7 +38,7 @@ public class HelloWorldTest {
 		
 		modelRunner.run(model);
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S2", "S2"));
+		assertRecordedStepNames("S1", "S2", "S2", "S2");
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John Q. Public"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2"));
+		assertRecordedStepNames("S1", "S2");
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5");
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5", "S6"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6");
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("1000"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3");
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class HelloWorldTest {
 		modelRunner.run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("NON-NUMERICAL-AGE"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class HelloWorldTest {
 		modelRunner.as(example.normalUser()).run(model);
 		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
 
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5", "S6", "S7"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6", "S7");
 	}
 	
 	@Test
@@ -115,17 +115,22 @@ public class HelloWorldTest {
 		modelRunner.as(example.anonymousUser()).run(model);
 		modelRunner.reactTo(new EntersText("39"));
 
-		assertTrue(modelRunner.hasRun("S1a_1", "S3", "S4", "S5c_1", "S6", "S7"));
+		assertRecordedStepNames("S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
 	}
 	
 	@Test
 	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
-		HelloWorld06 example = new HelloWorld06();
+		HelloWorld06 example = new HelloWorld06(); 
 		model = example.buildWith(modelBuilder);
 		
 		modelRunner.as(example.anonymousUser()).run(model);
 		modelRunner.reactTo(new EntersText("NotANumber"));
 
-		assertTrue(modelRunner.hasRun("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3"));
+		assertRecordedStepNames("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
+	
+    protected void assertRecordedStepNames(String... actualStepNames) {
+	String[] expectedStepNames = modelRunner.getRecordedStepNames();
+	assertArrayEquals(expectedStepNames, actualStepNames);
+    }
 }

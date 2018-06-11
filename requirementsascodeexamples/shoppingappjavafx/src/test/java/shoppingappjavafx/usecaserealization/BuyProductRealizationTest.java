@@ -1,6 +1,6 @@
 package shoppingappjavafx.usecaserealization;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.math.BigDecimal;
 
@@ -51,7 +51,12 @@ public class BuyProductRealizationTest {
 			new EntersPaymentDetails(new PaymentDetails()),
 			new ConfirmsPurchase());
 		
-		assertTrue(modelRunner.hasRun("S1", "S2", "S3", "S4", "S5",
-			"S6", "S7", "S8", "S9", "S10", "S11", "S1", "S2"));
+		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5",
+			"S6", "S7", "S8", "S9", "S10", "S11", "S1", "S2");
 	}
+	
+    protected void assertRecordedStepNames(String... actualStepNames) {
+	String[] expectedStepNames = modelRunner.getRecordedStepNames();
+	assertArrayEquals(expectedStepNames, actualStepNames);
+    }
 }

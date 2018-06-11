@@ -1,7 +1,5 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,8 +24,8 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
-	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
   }  
     
   @Test
@@ -45,8 +43,8 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE,
-	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE,
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER);
   }
 
   @Test
@@ -64,7 +62,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE);
   }
   
   @Test
@@ -84,7 +82,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
   }
   
   @Test
@@ -104,9 +102,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT,
-	    CUSTOMER_ENTERS_NUMBER));
+	    CUSTOMER_ENTERS_NUMBER);
   }
   
   @Test
@@ -126,8 +124,8 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
-	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
+	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
   }
     
   @Test
@@ -147,7 +145,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE));
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE);
   }
     
   @Test
@@ -166,9 +164,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
   
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT));
+	    SYSTEM_DISPLAYS_TEXT);
   }
   
   @Test
@@ -187,9 +185,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));
+	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER);
   }
   
   @Test
@@ -208,8 +206,8 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
-	    SYSTEM_INCLUDES_USE_CASE));
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE);
   }
   
   @Test
@@ -230,9 +228,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT));
+	    SYSTEM_DISPLAYS_TEXT);
   }
     
   @Test
@@ -253,9 +251,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER));    
+	    SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER);    
   }
   
   @Test
@@ -276,9 +274,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT));    
+	    SYSTEM_DISPLAYS_TEXT);    
   }
   
   @Test
@@ -299,8 +297,8 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
-	    SYSTEM_INCLUDES_USE_CASE));
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
+	    SYSTEM_INCLUDES_USE_CASE);
   }
     
   @Test
@@ -320,10 +318,10 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
 	    SYSTEM_INCLUDES_USE_CASE_2, CUSTOMER_ENTERS_NUMBER,
-	    SYSTEM_DISPLAYS_TEXT));
+	    SYSTEM_DISPLAYS_TEXT);
   }
     
   @Test
@@ -343,10 +341,10 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_TEXT, 
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
 	    SYSTEM_DISPLAYS_TEXT, SYSTEM_INCLUDES_USE_CASE_2,
-	    CUSTOMER_ENTERS_NUMBER));
+	    CUSTOMER_ENTERS_NUMBER);
   }
   
   @Test
@@ -369,11 +367,11 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber(), entersNumber(), entersText(), entersNumber(), entersText(), entersNumber());
     
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE, 
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_INCLUDES_USE_CASE_2,
 	    CUSTOMER_ENTERS_NUMBER, CUSTOMER_ENTERS_TEXT,
 	    SYSTEM_INCLUDES_USE_CASE_3, CUSTOMER_ENTERS_NUMBER,
-	    CUSTOMER_ENTERS_TEXT_AGAIN));
+	    CUSTOMER_ENTERS_TEXT_AGAIN);
   }
     
   @Test
@@ -391,7 +389,7 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersNumber());
 
-    assertTrue(modelRunner.hasRun(CUSTOMER_ENTERS_NUMBER));
+    assertRecordedStepNames(CUSTOMER_ENTERS_NUMBER);
   }
   
   @Test
@@ -414,9 +412,9 @@ public class IncludesTest extends AbstractTestCase{
     modelRunner.run(model);
     modelRunner.reactTo(entersText(), entersNumber(), entersText());
 
-    assertTrue(modelRunner.hasRun(SYSTEM_INCLUDES_USE_CASE,
+    assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE,
 	    CUSTOMER_ENTERS_TEXT, SYSTEM_INCLUDES_USE_CASE_2, 
 	    CUSTOMER_ENTERS_NUMBER, CUSTOMER_ENTERS_TEXT_AGAIN,
-	    SYSTEM_DISPLAYS_TEXT));
+	    SYSTEM_DISPLAYS_TEXT);
   }  
 }
