@@ -11,9 +11,7 @@ understandable by developers and business people alike.
 
 Use a ```TestModelRunner``` instance to record events and steps and verify they match your expectations. See the [Hello World tests](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/test/java/helloworld/HelloWorldTest.java) for examples.
 
-For the long term maintenance of your application,
-you [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) 
-from the models inside the code without the need to add comments to it.
+For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
 
 You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for validation in event sourced applications.
 
