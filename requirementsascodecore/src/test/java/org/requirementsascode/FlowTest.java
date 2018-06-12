@@ -97,8 +97,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
@@ -151,8 +150,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, SYSTEM_DISPLAYS_TEXT);
 	}
@@ -168,8 +166,7 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
@@ -185,11 +182,9 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText());
 		
-		modelRunner.as(secondActor).run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.as(secondActor).run(model).reactTo(entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
 	}
@@ -235,11 +230,9 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersNumber.class).system(displaysEnteredNumber())
 				.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText());
 		
-		modelRunner.as(secondActor);
-		modelRunner.reactTo(entersNumber());
+		modelRunner.as(secondActor).reactTo(entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -254,8 +247,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
@@ -270,8 +262,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(THIS_STEP_SHOULD_BE_SKIPPED).system(() -> System.out.println("You should not see this!"))
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
@@ -287,8 +278,7 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersText.class).system(throwsRuntimeException())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
@@ -325,8 +315,7 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersText.class).system(throwsRuntimeException())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
 		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStepName());
 	}
 	
@@ -359,8 +348,7 @@ public class FlowTest extends AbstractTestCase{
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 	}
@@ -376,8 +364,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 	}
@@ -394,8 +381,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner
+		modelRunner.run(model)
 			.reactTo(entersAlternativeText(), entersNumber(), entersAlternativeText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CUSTOMER_ENTERS_NUMBER);
@@ -412,8 +398,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 	}
@@ -478,8 +463,7 @@ public class FlowTest extends AbstractTestCase{
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersNumber());
 		
 		assertRecordedStepNames(new String[0]);
 	}
@@ -501,8 +485,7 @@ public class FlowTest extends AbstractTestCase{
 						.user(EntersText.class).system(displaysEnteredText())
 			.build();
 				
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 	}
@@ -524,8 +507,7 @@ public class FlowTest extends AbstractTestCase{
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 				
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER_AGAIN);
 	}
@@ -576,12 +558,11 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 				
 		// Create way to many events to see if the repeat stops after three events
-		modelRunner.run(model);
-		modelRunner
+		modelRunner.run(model)
 			.reactTo(entersText(), entersText(), entersText(),
-					entersText(), entersText(), entersText(),
-					entersText(), entersText(), entersText(),
-					entersNumber());
+				entersText(), entersText(), entersText(),
+				entersText(), entersText(), entersText(),
+				entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT,
 			CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_NUMBER);
@@ -605,8 +586,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE,
 			CUSTOMER_ENTERS_NUMBER);
@@ -624,8 +604,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CONTINUE, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -642,8 +621,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.as(secondActor).run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.as(secondActor).run(model).reactTo(entersText(), entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -661,8 +639,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CONTINUE,
 			 CUSTOMER_ENTERS_NUMBER);
@@ -684,8 +661,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE_2).continuesAt(CUSTOMER_ENTERS_NUMBER)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CONTINUE,
 			CUSTOMER_ENTERS_NUMBER);
@@ -703,8 +679,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -721,8 +696,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesAfter(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CONTINUE, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -739,8 +713,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesAfter(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		modelRunner.as(secondActor).run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.as(secondActor).run(model).reactTo(entersText(), entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -758,8 +731,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CONTINUE, 
 			 CUSTOMER_ENTERS_NUMBER);
@@ -781,8 +753,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE_2).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CONTINUE, 
 			CUSTOMER_ENTERS_NUMBER);
@@ -800,8 +771,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersText());
+		modelRunner.run(model).reactTo(entersText(), entersText());
 		 
 		assertRecordedStepNames(CONTINUE, CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
 	}
@@ -818,8 +788,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersText(), entersNumber());
 				 
 		assertRecordedStepNames(CONTINUE, CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -836,8 +805,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE).as(customer).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT)
 			.build();
 		
-		modelRunner.as(secondActor).run(model);
-		modelRunner.reactTo(entersText(), entersText(), entersNumber());
+		modelRunner.as(secondActor).run(model).reactTo(entersText(), entersText(), entersNumber());
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);
 	}
@@ -878,8 +846,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CONTINUE_2).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
+		modelRunner.run(model).reactTo(entersText(), entersAlternativeText(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CONTINUE,
 			CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER);

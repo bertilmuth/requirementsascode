@@ -36,7 +36,6 @@ public class HelloWorld03 extends AbstractHelloWorldExample{
 	private void start() {
 		Model model = buildWith(Model.builder());
 		ModelRunner modelRunner = new ModelRunner();
-		modelRunner.run(model);
-		modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
 	}
 }

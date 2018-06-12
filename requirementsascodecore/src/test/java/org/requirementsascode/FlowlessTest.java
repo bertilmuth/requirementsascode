@@ -111,9 +111,7 @@ public class FlowlessTest extends AbstractTestCase {
 		.when(() -> modelRunner.getLatestStep().isPresent() && modelRunner.getLatestStep().get().getEventClass().equals(EntersText.class)).system(displaysConstantText())
 	.build();
 
-	modelRunner.run(model);
-
-	modelRunner.reactTo(entersText());
+	modelRunner.run(model).reactTo(entersText());
 	assertEquals(ModelRunner.class, modelRunner.getLatestStep().get().getEventClass());
     }
     

@@ -50,7 +50,6 @@ public class TestModelRunner extends ModelRunner {
      */
     public Object[] getRecordedEvents() {
 	Object[] events = recordedEvents.toArray();
-	System.out.println(recordedEvents.get(0).equals(events[0]));
 	return events;
     }
 

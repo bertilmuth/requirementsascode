@@ -105,12 +105,14 @@ public class ModelRunner implements Serializable {
      *
      * @param model
      *            the model that defines the runner's behavior
+     * @return the same model runner, for chaing with @see {@link #reactTo(Object...)}
      */
-    public void run(Model model) {
+    public ModelRunner run(Model model) {
 	this.model = model;
 	this.userAndSystem = userAndSystem(user != null ? user : model.getUserActor());
 	this.isRunning = true;
 	triggerAutonomousSystemReaction();
+	return this;
     }
 
     private void triggerAutonomousSystemReaction() {

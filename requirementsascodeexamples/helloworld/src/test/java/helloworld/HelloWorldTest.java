@@ -46,8 +46,7 @@ public class HelloWorldTest {
 		HelloWorld03 example = new HelloWorld03();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(new EntersText("John Q. Public"));
+		modelRunner.run(model).reactTo(new EntersText("John Q. Public"));
 
 		assertRecordedStepNames("S1", "S2");
 	}
@@ -57,8 +56,7 @@ public class HelloWorldTest {
 		HelloWorld04 example = new HelloWorld04();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
+		modelRunner.run(model).reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5");
 	}
@@ -68,8 +66,7 @@ public class HelloWorldTest {
 		HelloWorld05 example = new HelloWorld05();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
+		modelRunner.run(model).reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6");
 	}
@@ -79,8 +76,7 @@ public class HelloWorldTest {
 		HelloWorld05 example = new HelloWorld05();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(new EntersText("John"), new EntersText("1000"));
+		modelRunner.run(model).reactTo(new EntersText("John"), new EntersText("1000"));
 
 		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3");
 	}
@@ -90,8 +86,7 @@ public class HelloWorldTest {
 		HelloWorld05 example = new HelloWorld05();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.run(model);
-		modelRunner.reactTo(new EntersText("John"), new EntersText("NON-NUMERICAL-AGE"));
+		modelRunner.run(model).reactTo(new EntersText("John"), new EntersText("NON-NUMERICAL-AGE"));
 
 		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
@@ -101,8 +96,8 @@ public class HelloWorldTest {
 		HelloWorld06 example = new HelloWorld06();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.as(example.normalUser()).run(model);
-		modelRunner.reactTo(new EntersText("John"), new EntersText("39"));
+		modelRunner.as(example.normalUser()).run(model)
+			.reactTo(new EntersText("John"), new EntersText("39"));
 
 		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6", "S7");
 	}
@@ -112,8 +107,7 @@ public class HelloWorldTest {
 		HelloWorld06 example = new HelloWorld06();
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.as(example.anonymousUser()).run(model);
-		modelRunner.reactTo(new EntersText("39"));
+		modelRunner.as(example.anonymousUser()).run(model).reactTo(new EntersText("39"));
 
 		assertRecordedStepNames("S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
 	}
@@ -123,8 +117,7 @@ public class HelloWorldTest {
 		HelloWorld06 example = new HelloWorld06(); 
 		model = example.buildWith(modelBuilder);
 		
-		modelRunner.as(example.anonymousUser()).run(model);
-		modelRunner.reactTo(new EntersText("NotANumber"));
+		modelRunner.as(example.anonymousUser()).run(model).reactTo(new EntersText("NotANumber"));
 
 		assertRecordedStepNames("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}

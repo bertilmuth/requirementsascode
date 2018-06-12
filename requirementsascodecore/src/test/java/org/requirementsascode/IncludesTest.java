@@ -21,8 +21,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
@@ -40,8 +39,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
     
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE,
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT, CUSTOMER_ENTERS_NUMBER);
@@ -59,8 +57,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE);
   }
@@ -79,8 +76,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
   }
@@ -99,8 +95,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT,
@@ -121,8 +116,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_DISPLAYS_TEXT);
@@ -142,8 +136,7 @@ public class IncludesTest extends AbstractTestCase{
             .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
         .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber());
     
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE);
   }
@@ -161,8 +154,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
   
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -182,8 +174,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -203,8 +194,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE);
@@ -225,8 +215,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -248,8 +237,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -271,8 +259,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -294,8 +281,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE);
@@ -315,8 +301,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -338,8 +323,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE_2).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersNumber());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersNumber());
     
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, 
 	    SYSTEM_INCLUDES_USE_CASE, CUSTOMER_ENTERS_NUMBER,
@@ -364,8 +348,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE_2).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber(), entersNumber(), entersText(), entersNumber(), entersText(), entersNumber());
+    modelRunner.run(model).reactTo(entersNumber(), entersNumber(), entersText(), entersNumber(), entersText(), entersNumber());
     
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE, 
 	    CUSTOMER_ENTERS_NUMBER, SYSTEM_INCLUDES_USE_CASE_2,
@@ -386,8 +369,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_INCLUDES_USE_CASE).includesUseCase(INCLUDED_USE_CASE)
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersNumber());
+    modelRunner.run(model).reactTo(entersNumber());
 
     assertRecordedStepNames(CUSTOMER_ENTERS_NUMBER);
   }
@@ -409,8 +391,7 @@ public class IncludesTest extends AbstractTestCase{
           .step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
       .build();
       
-    modelRunner.run(model);
-    modelRunner.reactTo(entersText(), entersNumber(), entersText());
+    modelRunner.run(model).reactTo(entersText(), entersNumber(), entersText());
 
     assertRecordedStepNames(SYSTEM_INCLUDES_USE_CASE,
 	    CUSTOMER_ENTERS_TEXT, SYSTEM_INCLUDES_USE_CASE_2, 
