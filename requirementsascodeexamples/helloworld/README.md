@@ -47,9 +47,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 }
 ...
 Model model = buildWith(Model.builder());
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);
-modelRunner.reactTo(entersText());
+new ModelRunner().run(model).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
@@ -70,9 +68,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 ...
 Model model = buildWith(Model.builder());
 ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);
-modelRunner.reactTo(entersText());
-modelRunner.reactTo(entersText());	
+modelRunner.run(model).reactTo(entersText(), entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04.java).
 
@@ -94,18 +90,17 @@ public Model buildWith(ModelBuilder modelBuilder) {
 				.step("S5a_2").continuesAt("S3")
 					
 			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+				.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
 				.step("S5b_2").continuesAt("S3")
 		.build();
 	return model;
 }	
 ...
 Model model = buildWith(Model.builder());
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);			
-while(!systemStopped())
-	modelRunner.reactTo(entersText());	
-exitSystem();	
+ModelRunner modelRunner = new ModelRunner().run(model);
+while (!systemStopped())
+    modelRunner.reactTo(entersText());
+exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05.java).
 
@@ -135,7 +130,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 				.step("S5a_2").continuesAt("S3")
 					
 			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").handles(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+				.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
 				.step("S5b_2").continuesAt("S3")
 				
 			.flow("Anonymous greeted with age only").insteadOf("S5").when(this::ageIsOk)

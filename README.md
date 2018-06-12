@@ -1,15 +1,16 @@
 # requirements as code
-Starting to develop an event-driven application can be challenging.
-This project aims to simplify it. 
+This project aims to simplify developing an event-driven application.
 
 The project provides a concise way to create handlers for many types of events at once.
-
 A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
 For more advanced scenarios that depend on the application's state, 
 you create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's an easy alternative to state machines,
 understandable by developers and business people alike.
+
+Use a ```TestModelRunner``` instance to record events and steps and verify they match your expectations
+(see the [Hello World]( requirementsascode/requirementsascodeexamples/helloworld/src/test/java/helloworld/HelloWorldTest.java) tests).
 
 For the long term maintenance of your application,
 you [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) 
@@ -28,14 +29,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>0.8.3</version>
+    <version>0.9.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:0.8.3'
+compile 'org.requirementsascode:requirementsascodecore:0.9.0'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -43,20 +44,21 @@ Here's what you need to do as a developer:
 ## Step 1: Build a model defining the event classes to handle, and the methods that react to events:
 ``` java
 Model model = Model.builder()
-	.handles(<Event Class Name>.class).with(<Reference To Method That Handles Event>)
-	.handles(..).with(...)
+	.on(<event class>).system(<lambda, or reference To method that handles event>)
+	.on(..).system(...)
 	...
 .build()
 ```
 
 The order of the statements has no significance.
 For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
-Use `when` before `handles` to define an additional condition that must be fulfilled.
+Use `when` before `on` to define an additional condition that must be fulfilled.
+You can also use `when` witout `on`, meaning: execute at the beginning of the run, or after a step has been run,
+as soon as the condition is fulfilled.
 
 ## Step 2: Create a runner and run the model:
 ``` java
-ModelRunner runner = new ModelRunner();
-runner.run(model);
+ModelRunner runner = new ModelRunner().run(model);
 ```
 
 ## Step 3: Send events to the runner, and enjoy watching it react:
@@ -79,12 +81,10 @@ import org.requirementsascode.ModelRunner;
 public class HelloUser {
 	public static void main(String[] args) {
 		Model model = Model.builder()
-			.handles(NameEntered.class).with(HelloUser::displayEnteredName)
+			.on(NameEntered.class).system(HelloUser::displayEnteredName)
 		.build();
 
-		ModelRunner runner = new ModelRunner();
-		runner.run(model);
-		runner.reactTo(new NameEntered("Joe"));
+		new ModelRunner().run(model).reactTo(new NameEntered("Joe"));
 	}
 
 	public static void displayEnteredName(NameEntered nameEntered) {
