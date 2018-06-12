@@ -51,7 +51,7 @@ The order of the statements has no significance.
 For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
 Use `when` before `on` to define an additional condition that must be fulfilled.
 You can also use `when` witout `on`, meaning: execute at the beginning of the run, or after a step has been run,
-as soon as the condition is fulfilled.
+if the condition is fulfilled.
 
 ## Step 2: Create a runner and run the model:
 ``` java
