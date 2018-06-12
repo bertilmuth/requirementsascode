@@ -5,8 +5,8 @@ It provides a concise way to create handlers for many types of events at once.
 A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
 For more advanced scenarios that depend on the application's state, 
-you create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
-It's an easy alternative to state machines,
+you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+It's a simple alternative to state machines,
 understandable by developers and business people alike.
 
 Use a ```TestModelRunner``` instance to record events and steps and verify they match your expectations. See the [Hello World tests](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/test/java/helloworld/HelloWorldTest.java) for examples.
