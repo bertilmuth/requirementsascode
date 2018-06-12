@@ -41,7 +41,7 @@ Here's what you need to do as a developer:
 ## Step 1: Build a model defining the event classes to handle, and the methods that react to events:
 ``` java
 Model model = Model.builder()
-	.on(<event class>).system(<lambda, or reference To method that handles event>)
+	.on(<event class>).system(<lambda expression, or reference to method that handles event>)
 	.on(..).system(...)
 	...
 .build()
