@@ -42,7 +42,7 @@ Model model = Model.builder()
 	.step(REPEAT).continuesAt(WITHDRAW)
 	    	
     .flow("Cycle is over").anytime()
-	.step(CLOSE).handles(requestToCloseCycle).system(closesCycle)
+	.step(CLOSE).on(requestToCloseCycle).system(closesCycle)
 	    	
     .flow("Assign limit twice").when(limitAlreadyAssigned)
 	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
