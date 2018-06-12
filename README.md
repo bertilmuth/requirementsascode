@@ -1,7 +1,7 @@
 # requirements as code
-This project aims to simplify developing an event-driven application.
+This project simplifies developing an event-driven application.
 
-The project provides a concise way to create handlers for many types of events at once.
+It provides a concise way to create handlers for many types of events at once.
 A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
 For more advanced scenarios that depend on the application's state, 
