@@ -36,7 +36,6 @@ public class StepPart {
      */
     public StepAsPart as(Actor... actors) {
 	Objects.requireNonNull(actors);
-
 	return new StepAsPart(this, actors);
     }
 
@@ -57,7 +56,6 @@ public class StepPart {
      */
     public <T> StepUserPart<T> user(Class<T> eventClass) {
 	Objects.requireNonNull(eventClass);
-
 	StepUserPart<T> userPart = as(userActor).user(eventClass);
 	return userPart;
     }
@@ -79,7 +77,6 @@ public class StepPart {
      */
     public <T> StepUserPart<T> on(Class<T> eventOrExceptionClass) {
 	Objects.requireNonNull(eventOrExceptionClass);
-
 	StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
 	return userPart;
     }
@@ -94,7 +91,6 @@ public class StepPart {
      */
     public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
 	Objects.requireNonNull(systemReaction);
-
 	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
 	return systemPart;
     }
@@ -112,7 +108,6 @@ public class StepPart {
      */
     public UseCasePart continuesAfter(String stepName) {
 	Objects.requireNonNull(stepName);
-
 	UseCasePart useCasePart = as(systemActor).continuesAfter(stepName);
 	return useCasePart;
     }
@@ -132,7 +127,6 @@ public class StepPart {
      */
     public UseCasePart continuesAt(String stepName) {
 	Objects.requireNonNull(stepName);
-
 	UseCasePart useCasePart = as(systemActor).continuesAt(stepName);
 	return useCasePart;
     }
@@ -151,7 +145,6 @@ public class StepPart {
      */
     public UseCasePart continuesWithoutAlternativeAt(String stepName) {
 	Objects.requireNonNull(stepName);
-
 	UseCasePart useCasePart = as(systemActor).continuesWithoutAlternativeAt(stepName);
 	return useCasePart;
     }
@@ -174,7 +167,6 @@ public class StepPart {
 	UseCase includedUseCase = flowStep.getModel().findUseCase(useCaseName);
 	StepSystemPart<ModelRunner> stepSystemPart = as(systemActor)
 		.system(new IncludesUseCase(includedUseCase, flowStep));
-
 	return stepSystemPart;
     }
 

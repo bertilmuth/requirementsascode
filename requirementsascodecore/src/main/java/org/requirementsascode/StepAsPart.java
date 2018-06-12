@@ -48,7 +48,6 @@ public class StepAsPart {
      */
     public <T> StepUserPart<T> user(Class<T> eventClass) {
 	Objects.requireNonNull(eventClass);
-
 	return new StepUserPart<>(stepPart, eventClass);
     }
 
@@ -63,7 +62,6 @@ public class StepAsPart {
      */
     public StepSystemPart<ModelRunner> system(Runnable autonomousSystemReaction) {
 	Objects.requireNonNull(autonomousSystemReaction);
-
 	AutonomousSystemReaction wrappedSystemReaction = new AutonomousSystemReaction(autonomousSystemReaction);
 	StepSystemPart<ModelRunner> systemPart = system(wrappedSystemReaction);
 	return systemPart;

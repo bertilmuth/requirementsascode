@@ -106,7 +106,6 @@ public class FlowPart {
      */
     public WhenPart when(Condition whenCondition) {
 	Objects.requireNonNull(whenCondition);
-
 	optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);
 	WhenPart whenPart = optionalFlowPositionPart.when(whenCondition);
 	return whenPart;

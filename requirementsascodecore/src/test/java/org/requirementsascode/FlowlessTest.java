@@ -60,6 +60,24 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
+    public void twoFlowlessStepsReactToEventsOfDifferentTypeInDifferentUseCases() {
+	Model model = modelBuilder
+		.useCase(USE_CASE)
+			.on(EntersText.class).system(displaysEnteredText())
+		.useCase(USE_CASE_2)
+			.on(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	modelRunner.run(model);
+
+	Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+
+	latestStepRun = modelRunner.reactTo(entersText());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStepWithEvent() {
 	Model model = modelBuilder.useCase(USE_CASE)
 		.when(() -> true).on(EntersText.class).system(displaysEnteredText())

@@ -18,7 +18,6 @@ public class StepUserPart<T> {
     StepUserPart(StepPart stepPart, Class<T> eventClass) {
 	this.stepPart = stepPart;
 	this.step = stepPart.getStep();
-
 	step.setEventClass(eventClass);
     }
 
@@ -33,7 +32,6 @@ public class StepUserPart<T> {
      */
     public StepSystemPart<T> system(Consumer<T> systemReaction) {
 	Objects.requireNonNull(systemReaction);
-
 	return new StepSystemPart<>(stepPart, systemReaction);
     }
 

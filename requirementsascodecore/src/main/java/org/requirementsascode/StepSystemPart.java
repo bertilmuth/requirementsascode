@@ -38,11 +38,9 @@ public class StepSystemPart<T> {
      */
     public StepPart step(String stepName) {
 	Objects.requireNonNull(stepName);
-
 	FlowPart flowPart = stepPart.getFlowPart();
 	FlowStep trailingStepInFlow = createTrailingStepInFlow(stepName, flowPart);
 	StepPart trailingStepInFlowPart = new StepPart(trailingStepInFlow, stepPart.getUseCasePart(), flowPart);
-
 	return trailingStepInFlowPart;
     }
     
@@ -63,7 +61,6 @@ public class StepSystemPart<T> {
      */
     public FlowPart flow(String flowName) {
 	Objects.requireNonNull(flowName);
-
 	FlowPart useCaseFlowPart = stepPart.getUseCasePart().flow(flowName);
 	return useCaseFlowPart;
     }
@@ -79,7 +76,6 @@ public class StepSystemPart<T> {
      */
     public UseCasePart useCase(String useCaseName) {
 	Objects.requireNonNull(useCaseName);
-
 	UseCasePart useCasePart = stepPart.getModelBuilder().useCase(useCaseName);
 	return useCasePart;
     }
@@ -103,7 +99,6 @@ public class StepSystemPart<T> {
 	Objects.requireNonNull(reactWhileCondition);
 	((FlowStep)step).setReactWhile(reactWhileCondition); 
 	createLoop((FlowStep)step);
-
 	return this;
     }
     

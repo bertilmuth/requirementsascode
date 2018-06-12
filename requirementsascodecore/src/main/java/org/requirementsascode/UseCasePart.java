@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -132,6 +133,12 @@ public class UseCasePart {
 
 	public Model build() {
 	    return UseCasePart.this.build();
+	}
+
+	public UseCasePart useCase(String useCaseName) {
+	    Objects.requireNonNull(useCaseName);
+	    UseCasePart useCasePart = getModelBuilder().useCase(useCaseName);
+	    return useCasePart;
 	}
 
     }
