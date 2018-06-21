@@ -1,19 +1,17 @@
 # requirements as code
-This project simplifies developing an event-driven application.
+This project simplifies the development of event-driven applications.
 
 It provides a concise way to create handlers for many types of events at once.
 A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
 
 For more advanced scenarios that depend on the application's state, 
-you create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
-It's an easy alternative to state machines,
+you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+It's a simple alternative to state machines,
 understandable by developers and business people alike.
 
 Use a ```TestModelRunner``` instance to record events and steps and verify they match your expectations. See the [Hello World tests](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/test/java/helloworld/HelloWorldTest.java) for examples.
 
-For the long term maintenance of your application,
-you [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) 
-from the models inside the code without the need to add comments to it.
+For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
 
 You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for validation in event sourced applications.
 
@@ -43,7 +41,7 @@ Here's what you need to do as a developer:
 ## Step 1: Build a model defining the event classes to handle, and the methods that react to events:
 ``` java
 Model model = Model.builder()
-	.on(<event class>).system(<lambda, or reference To method that handles event>)
+	.on(<event class>).system(<lambda expression, or reference to method that handles event>)
 	.on(..).system(...)
 	...
 .build()
@@ -53,7 +51,7 @@ The order of the statements has no significance.
 For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
 Use `when` before `on` to define an additional condition that must be fulfilled.
 You can also use `when` witout `on`, meaning: execute at the beginning of the run, or after a step has been run,
-as soon as the condition is fulfilled.
+if the condition is fulfilled.
 
 ## Step 2: Create a runner and run the model:
 ``` java
