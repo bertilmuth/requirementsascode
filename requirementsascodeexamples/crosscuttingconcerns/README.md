@@ -4,9 +4,9 @@ ModelBuilder modelBuilder = Model.builder();
 Model model = 
 	modelBuilder.useCase("Measure performance of simple mathematical operations")
 		.basicFlow()
-			.step("S1").system(this::addTwoNumbers)
-			.step("S2").system(this::calculateTwoToThePowerOfAThousand)
-			.step("S3").system(this::displayResults)
+			.step("S1").system(this::addsTwoNumbers)
+			.step("S2").system(this::calculatesTwoToThePowerOfAThousand)
+			.step("S3").system(this::displaysResults)
 	.build();
 
 ModelRunner modelRunner = new ModelRunner();
