@@ -183,30 +183,30 @@ public class ModelRunner implements Serializable {
      *
      * <p>
      * If it is running, the runner will then check which steps can react to the
-     * event. 
-     * If a single step can react, the runner will call the event handler with it. 
-     * If no step can react, the runner will either call the handler defined with
-     * {@link #handleUnhandledWith(Consumer)}, or if no such handler exists, 
-     * consume the event silently.
+     * event. If a single step can react, the runner will call the event handler
+     * with it. If no step can react, the runner will either call the handler
+     * defined with {@link #handleUnhandledWith(Consumer)}, or if no such handler
+     * exists, consume the event silently.
      * 
-     * If more than one step can react, the runner will throw an
-     * exception.
+     * If more than one step can react, the runner will throw an exception.
      *
      * <p>
      * After that, the runner will trigger "autonomous system reactions".
      *
      * <p>
-     * See {@link #canReactTo(Class)} for a description of what "can
-     * react" means.
+     * See {@link #canReactTo(Class)} for a description of what "can react" means.
      *
      * @param <T>
      *            the type of the command or event object
      * @param event
      *            the command or event object
-     * @return the step whose system reaction was triggered, or else an
-     *         empty optional if none was triggered.
+     * @return the step whose system reaction was triggered, or else an empty
+     *         optional if none was triggered.
      * @throws MoreThanOneStepCanReact
-     *             if more than one step can react
+     *             when more than one step can react
+     * @throws InfiniteRepetition
+     *             when a step has an always true condition, or there is an infinite
+     *             loop.
      */
     public <T> Optional<Step> reactTo(T event) {
 	Objects.requireNonNull(event);
