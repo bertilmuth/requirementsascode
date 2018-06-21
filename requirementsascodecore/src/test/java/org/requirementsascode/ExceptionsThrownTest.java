@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -80,6 +81,18 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
 				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText());
+    }
+    
+    @Test
+    public void throwsExceptionWhenConditionIsAlwaysTrue() {
+	thrown.expect(InfiniteRepetition.class);
+	thrown.expectMessage("S1");
+	
+	Model model = modelBuilder
+		.when(() -> true).system(() -> {})
+	.build();
+
+	modelRunner.run(model);
     }
 
     @Test

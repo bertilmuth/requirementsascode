@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
@@ -213,27 +214,32 @@ public class ModelRunner implements Serializable {
 	Optional<Step> latestStepRun = Optional.empty();
 	if (isRunning) {
 	    Class<? extends Object> currentEventClass = event.getClass();
-	    Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
-	    latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
+
+	    try {
+		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
+		latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
+	    } catch (StackOverflowError err) {
+		throw new InfiniteRepetition(latestStep);
+	    }
 	}
 	return latestStepRun;
     }
 
     private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> steps) {
-	Step useCaseStep = null;
+	Step step = null;
 
 	if (steps.size() == 1) {
-	    useCaseStep = steps.iterator().next();
-	    triggerSystemReactionForStep(event, useCaseStep);
+	    step = steps.iterator().next();
+	    triggerSystemReactionForStep(event, step);
 	} else if (steps.size() > 1) {
 	    throw new MoreThanOneStepCanReact(steps);
 	} else if (event instanceof RuntimeException) {
 	    throw (RuntimeException) event;
-	} else if(unhandledEventHandler != null && !isSystemEvent(event)) {
+	} else if (unhandledEventHandler != null && !isSystemEvent(event)) {
 	    unhandledEventHandler.accept(event);
 	}
 
-	return useCaseStep != null ? Optional.of(useCaseStep) : Optional.empty();
+	return step != null ? Optional.of(step) : Optional.empty();
     }
 
     private <T> boolean isSystemEvent(T event) {

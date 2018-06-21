@@ -61,40 +61,36 @@ public class ShoppingAppModel {
   private InitiatesShipping initiatesShipping;
   private LogsException logsException;
 
-  /**
-   * Builds the model using the specified builder.
-   *
-   * @param modelBuilder the builder used
-   * @return the created model
-   */
-  public Model buildWith(ModelBuilder modelBuilder) {
-		Model model = modelBuilder.useCase("Buy product")
-			.basicFlow()
-				.step("S1").system(startsWithEmptyShoppingCart)
-				.step("S2").system(displaysProducts)
-				.step("S3").user(addsProductToCart).system(addsProductToPurchaseOrder).reactWhile(lessThan10Products)
-				.step("S4").user(checksOutPurchase)
-				.step("S5").system(displaysShippingInformationForm)
-				.step("S6").user(entersShippingInformation).system(savesShippingInformation)
-				.step("S7").system(displaysPaymentDetailsForm)
-				.step("S8").user(entersPaymentDetails).system(savesPaymentDetails)
-				.step("S9").system(displaysPurchaseOrderSummary)
-				.step("S10").user(confirmsPurchase).system(initiatesShipping)
-				.step("S11").continuesAt("S1")	
-			.flow("Go back from shipping").insteadOf("S6")
-				.step("S6a_1").user(signalsToGoBack)
-				.step("S6a_2").continuesAt("S2")
-			.flow("Go back from payment").insteadOf("S8")
-				.step("S8a_1").user(signalsToGoBack)
-				.step("S8a_2").continuesAt("S5")
-			.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart)
-				.step("S3a_1").continuesAt("S4")
-			.flow("Handle exceptions").step("EX").on(anyException).system(logsException)
-		.build();
-		
-		return model;
-	}
-  
+    /**
+     * Builds the model using the specified builder.
+     *
+     * @param modelBuilder
+     *            the builder used
+     * @return the created model
+     */
+    public Model buildWith(ModelBuilder modelBuilder) {
+	Model model = modelBuilder.useCase("Buy product")
+		.basicFlow()
+			.step("S1").system(startsWithEmptyShoppingCart)
+			.step("S2").system(displaysProducts)
+			.step("S3").user(addsProductToCart).system(addsProductToPurchaseOrder).reactWhile(lessThan10Products)
+			.step("S4").user(checksOutPurchase)
+			.step("S5").system(displaysShippingInformationForm)
+			.step("S6").user(entersShippingInformation).system(savesShippingInformation)
+			.step("S7").system(displaysPaymentDetailsForm)
+			.step("S8").user(entersPaymentDetails).system(savesPaymentDetails)
+			.step("S9").system(displaysPurchaseOrderSummary)
+			.step("S10").user(confirmsPurchase).system(initiatesShipping)
+			.step("S11").continuesAt("S1")
+		.flow("Go back from shipping").insteadOf("S6").step("S6a_1").user(signalsToGoBack).step("S6a_2").continuesAt("S2")
+		.flow("Go back from payment").insteadOf("S8").step("S8a_1").user(signalsToGoBack).step("S8a_2").continuesAt("S5")
+		.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart).step("S3a_1").continuesAt("S4")
+		.flow("Handle exceptions").step("EX").on(anyException).system(logsException)
+	.build();
+	
+	return model;
+    }
+
   public ShoppingAppModel(BuyProductRealization bPR) {
     setupConditions(bPR);
     setupEvents();

@@ -1,6 +1,6 @@
 allprojects{
 	group = 'org.requirementsascode'
-	version = '0.9.0'
+	version = '0.9.1-SNAPSHOT'
 	
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
