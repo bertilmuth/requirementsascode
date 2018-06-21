@@ -10,7 +10,7 @@ Model model =
 	.build();
 
 ModelRunner modelRunner = new ModelRunner();
-modelRunner.adaptSystemReaction(this::measuresPerformance);
+modelRunner.handleWith(this::measuresPerformance);
 modelRunner.run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/crosscuttingconcerns/src/main/java/crosscuttingconcerns/CrossCuttingConcerns01.java).
