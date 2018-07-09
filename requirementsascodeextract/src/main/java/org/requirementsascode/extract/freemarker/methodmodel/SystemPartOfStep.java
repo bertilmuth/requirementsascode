@@ -57,7 +57,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
 
 	if (systemReaction instanceof AutonomousSystemReaction) {
 	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReaction;
-	    systemReactionClass = autonomousSystemReaction.getWrappedRunnable().getClass();
+	    systemReactionClass = autonomousSystemReaction.getSystemReactionClass();
 	}
 	String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
 	return wordsOfClassName;

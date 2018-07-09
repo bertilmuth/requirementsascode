@@ -3,19 +3,21 @@ package org.requirementsascode;
 import java.util.function.Consumer;
 
 public class AutonomousSystemReaction implements Consumer<ModelRunner>{
-    private Runnable wrappedRunnable;
     private Consumer<ModelRunner> modelRunnerConsumer;
+    private Class<? extends Object> systemReactionClass;
 
     AutonomousSystemReaction(Runnable wrappedRunnable) {
 	this(ignoredRunner -> wrappedRunnable.run());
+	this.systemReactionClass = wrappedRunnable.getClass();
     }
     
     AutonomousSystemReaction(Consumer<ModelRunner> modelRunnerConsumer) {
 	this.modelRunnerConsumer = modelRunnerConsumer;
+	this.systemReactionClass = modelRunnerConsumer.getClass();
     }
     
-    public Runnable getWrappedRunnable() {
-        return wrappedRunnable;
+    public Class<? extends Object> getSystemReactionClass() {
+        return systemReactionClass;
     }
 
     @Override
