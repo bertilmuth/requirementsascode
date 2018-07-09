@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.IncludesUseCase;
@@ -92,6 +93,21 @@ public class StepPart {
     public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
 	Objects.requireNonNull(systemReaction);
 	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
+	return systemPart;
+    }
+    
+    /**
+     * Defines an "autonomous system reaction", meaning the system will react
+     * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+     * Instead, the model runner provides itself as an event to the system reaction.
+     *
+     * @param modelRunnerConsumer
+     *            the autonomous system reaction (that needs information from a model runner to work)
+     * @return the created system part of this step
+     */
+    public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> modelRunnerConsumer) {
+	Objects.requireNonNull(modelRunnerConsumer);
+	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(modelRunnerConsumer);
 	return systemPart;
     }
 

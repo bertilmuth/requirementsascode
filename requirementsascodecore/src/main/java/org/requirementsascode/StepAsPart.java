@@ -54,7 +54,6 @@ public class StepAsPart {
     /**
      * Defines an "autonomous system reaction", meaning the system will react
      * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
-     * Instead, the model runner provides itself as an event to the system reaction.
      *
      * @param autonomousSystemReaction
      *            the autonomous system reaction
@@ -66,6 +65,16 @@ public class StepAsPart {
 	StepSystemPart<ModelRunner> systemPart = system(wrappedSystemReaction);
 	return systemPart;
     }
+    
+    /**
+     * Defines an "autonomous system reaction", meaning the system will react
+     * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+     * Instead, the model runner provides itself as an event to the system reaction.
+     *
+     * @param modelRunnerConsumer
+     *            the autonomous system reaction (that needs information from the model runner to work)
+     * @return the created system part of this step
+     */
     StepSystemPart<ModelRunner> system(Consumer<ModelRunner> autonomousSystemReaction) {
 	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(autonomousSystemReaction);
 	return systemPart;

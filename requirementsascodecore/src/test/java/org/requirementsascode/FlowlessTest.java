@@ -107,6 +107,19 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
+    public void twoFlowlessStepsReactWhenConditionIsTrueInFirstStepWithoutEventButWithModelRunnerArgument() {
+	Model model = modelBuilder.useCase(USE_CASE)
+		.when(() -> !modelRunner.getLatestStep().isPresent()).system(modelRunner -> displaysConstantText())
+		.on(EntersNumber.class).system(displaysEnteredNumber())
+	.build();
+
+	modelRunner.run(model);
+
+	Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
+    }
+    
+    @Test
     public void twoFlowlessStepsReactWhenConditionIsTrueInSecondStepWithEvent() {
 	Model model = modelBuilder.useCase(USE_CASE)
 		.on(EntersText.class).system(displaysEnteredText())

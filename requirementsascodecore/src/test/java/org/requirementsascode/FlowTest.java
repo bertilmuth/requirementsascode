@@ -31,6 +31,19 @@ public class FlowTest extends AbstractTestCase{
 		
 		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
 	}
+	
+	@Test
+	public void printsTextAutonomouslyWithModelRunner() {
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(SYSTEM_DISPLAYS_TEXT).system(modelRunner -> displaysConstantText())
+			.build();
+		
+		modelRunner.run(model);
+		
+		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
+	}
 
 	@Test
 	public void printsTextAutonomouslyOnlyIfActorIsRightInFirstStep() {
