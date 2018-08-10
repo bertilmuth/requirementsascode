@@ -1,11 +1,11 @@
 package org.requirementsascode.flowposition;
 
 import java.io.Serializable;
-
 import java.util.Objects;
 
-import org.requirementsascode.Step;
+import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.Step;
 
 /**
  * Tests whether the specified step was the last step run.
@@ -21,12 +21,12 @@ public class After extends FlowPosition implements Serializable {
      * 
      * @param step, or null to mean: when no step has been run.
      */
-    public After(Step step) {
+    public After(FlowStep step) {
 	super(step);
     }
 
     @Override
-    public boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner) {
+    public boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
 	Step latestStepRun = modelRunner.getLatestStep().orElse(null);
 	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
 	return stepWasRunLast;

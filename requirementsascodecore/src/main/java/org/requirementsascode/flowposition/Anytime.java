@@ -2,7 +2,7 @@ package org.requirementsascode.flowposition;
 
 import java.io.Serializable;
 
-import org.requirementsascode.Step;
+import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
 
 public class Anytime extends FlowPosition implements Serializable {
@@ -14,7 +14,7 @@ public class Anytime extends FlowPosition implements Serializable {
 
 
     @Override
-    protected boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner) {
+    protected boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
 	return true;
     }
 }

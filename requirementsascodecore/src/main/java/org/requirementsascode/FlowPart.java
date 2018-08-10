@@ -44,7 +44,7 @@ public class FlowPart {
      */
     public FlowPositionPart after(String stepName) {
 	Step step = useCase.findStep(stepName);
-	After after = new After(step);
+	After after = new After((FlowStep)step);
 	optionalFlowPositionPart = new FlowPositionPart(after, this);
 	return optionalFlowPositionPart;
     }

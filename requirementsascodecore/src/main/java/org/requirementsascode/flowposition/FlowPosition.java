@@ -13,11 +13,11 @@ public abstract class FlowPosition implements Predicate<ModelRunner>, Serializab
     private static final long serialVersionUID = -8952890128132543927L;
     
     private List<FlowStep> orAfterSteps;
-    private Step step;
+    private FlowStep step;
 
-    protected abstract boolean isRunnerAtRightPositionFor(Step step, ModelRunner modelRunner);
+    protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
 
-    public FlowPosition(Step step) {
+    public FlowPosition(FlowStep step) {
 	this.step = step;
 	this.orAfterSteps = new ArrayList<>();
     }

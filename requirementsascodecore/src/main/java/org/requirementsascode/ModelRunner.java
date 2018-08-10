@@ -233,10 +233,10 @@ public class ModelRunner implements Serializable {
 	    triggerSystemReactionForStep(event, step);
 	} else if (steps.size() > 1) {
 	    throw new MoreThanOneStepCanReact(steps);
-	} else if (event instanceof RuntimeException) {
-	    throw (RuntimeException) event;
 	} else if (unhandledEventHandler != null && !isSystemEvent(event)) {
 	    unhandledEventHandler.accept(event);
+	} else if (event instanceof RuntimeException) {
+	    throw (RuntimeException) event;
 	}
 
 	return step != null ? Optional.of(step) : Optional.empty();

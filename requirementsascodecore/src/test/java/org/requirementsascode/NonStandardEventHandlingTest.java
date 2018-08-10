@@ -57,6 +57,19 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	assertTrue(event instanceof EntersNumber);
     }
     
+    @Test
+    public void reactsToUnhandledException() {
+	Model model = modelBuilder.useCase(USE_CASE)
+		.on(EntersText.class).system(et -> {throw new IllegalStateException();})
+	.build();
+
+	modelRunner.handleUnhandledWith(this::errorHandler); 
+	modelRunner.run(model); 
+	modelRunner.reactTo(entersNumber());
+	
+	assertTrue(event instanceof EntersNumber);
+    }
+    
     public void errorHandler(Object event) {
 	this.event = event;
     }

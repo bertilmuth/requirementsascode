@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
-import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -98,12 +97,6 @@ public class StepSystemPart<T> {
     public StepSystemPart<T> reactWhile(Condition reactWhileCondition) {
 	Objects.requireNonNull(reactWhileCondition);
 	((FlowStep)step).setReactWhile(reactWhileCondition); 
-	createLoop((FlowStep)step);
 	return this;
-    }
-    
-    private void createLoop(FlowStep step) {
-	FlowPosition flowPosition = step.getFlowPosition();
-	flowPosition.orAfter(step);
     }
 }

@@ -178,7 +178,7 @@ public class UseCase extends ModelElement implements Serializable {
      *
      * @param flowName
      *            the name of the flow to look for
-     * @return the flow if found, or else an empty optional
+     * @return the flow if found
      * @throws NoSuchElementInModel
      *             if no flow with the specified flowName is found in the current
      *             use case
@@ -193,7 +193,7 @@ public class UseCase extends ModelElement implements Serializable {
      *
      * @param stepName
      *            the name of the step to look for
-     * @return the step if found, or else an empty optional
+     * @return the step if found
      * @throws NoSuchElementInModel
      *             if no step with the specified stepName is found in the current
      *             use case
