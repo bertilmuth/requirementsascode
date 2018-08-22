@@ -26,14 +26,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:0.9.1'
+compile 'org.requirementsascode:requirementsascodecore:0.9.2'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -78,16 +78,24 @@ import org.requirementsascode.ModelRunner;
 public class HelloUser {
 	public static void main(String[] args) {
 		Model model = Model.builder()
+			.on(DisplayHelloRequested.class).system(HelloUser::displayHello)
 			.on(NameEntered.class).system(HelloUser::displayEnteredName)
 		.build();
 
-		new ModelRunner().run(model).reactTo(new NameEntered("Joe"));
+		new ModelRunner().run(model)
+			.reactTo(new DisplayHelloRequested(), new NameEntered("Joe"));
+	}
+	
+	public static void displayHello(DisplayHelloRequested displayHelloRequested) {
+		System.out.println("Hello!");
 	}
 
 	public static void displayEnteredName(NameEntered nameEntered) {
-		System.out.println("Hello, " + nameEntered.getUserName());
+		System.out.println("Welcome, " + nameEntered.getUserName() + ".");
 	}
 
+	static class DisplayHelloRequested {}
+	
 	static class NameEntered {
 		private String userName;
 
