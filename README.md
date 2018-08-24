@@ -60,7 +60,7 @@ ModelRunner runner = new ModelRunner().run(model);
 
 ## Step 3: Send events to the runner, and enjoy watching it react:
 ``` java
-runner.reactTo(<Event POJO Object>);
+runner.reactTo(<Event POJO Object> [, <Event POJO Object>,...]);
 ```
 If an event's class is not declared in the model, the runner consumes it silently.
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
