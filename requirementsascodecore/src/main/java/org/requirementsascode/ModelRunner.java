@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class ModelRunner implements Serializable {
     private List<Actor> userAndSystem;
 
     private Model model;
-    private AtomicReference<Step> latestStep;
+    private Step latestStep;
     private boolean isRunning;
     private StandardEventHandler standardEventHandler;
     private Consumer<StandardEventHandler> eventHandler;
@@ -48,7 +47,6 @@ public class ModelRunner implements Serializable {
      * system reaction, as defined in the step, simply accepts an event.
      */
     public ModelRunner() {
-	this.latestStep = new AtomicReference<>();
 	this.standardEventHandler = new StandardEventHandler();
 
 	handleWith(new HandleEventMethodOfStandardEventHandler());
@@ -221,7 +219,7 @@ public class ModelRunner implements Serializable {
 		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
 		latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
 	    } catch (StackOverflowError err) {
-		throw new InfiniteRepetition(latestStep.get());
+		throw new InfiniteRepetition(latestStep);
 	    }
 	}
 	return latestStepRun;
@@ -403,7 +401,7 @@ public class ModelRunner implements Serializable {
      * @return the latest step run
      */
     public Optional<Step> getLatestStep() {
-	return Optional.ofNullable(latestStep.get());
+	return Optional.ofNullable(latestStep);
     }
 
     /**
@@ -418,7 +416,7 @@ public class ModelRunner implements Serializable {
      *            the latest step run
      */
     public void setLatestStep(Step latestStep) {
-	this.latestStep.set(latestStep);
+	this.latestStep = latestStep;
     }
 
     /**
