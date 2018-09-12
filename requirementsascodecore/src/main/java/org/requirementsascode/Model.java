@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -148,13 +147,13 @@ public class Model implements Serializable {
      * @return the use steps
      */
     public Collection<Step> getSteps() {
-	Set<Step> modifiableSteps = getModifiableSteps();
+	Collection<Step> modifiableSteps = getModifiableSteps();
 	return Collections.unmodifiableCollection(modifiableSteps);
     }
 
-    Set<Step> getModifiableSteps() {
+    Collection<Step> getModifiableSteps() {
 	return getModifiableUseCases().stream().map(useCase -> useCase.getModifiableSteps())
-		.flatMap(steps -> steps.stream()).collect(Collectors.toSet());
+		.flatMap(steps -> steps.stream()).collect(Collectors.toList());
     }
 
     /**

@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -314,7 +315,7 @@ public class ModelRunner implements Serializable {
     public Set<Class<?>> getReactToTypes() {
 	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
 	Set<Class<?>> eventsReactedTo = getStepsInStreamThatCanReactStream(stepStream).map(step -> step.getEventClass())
-		.collect(Collectors.toSet());
+		.collect(Collectors.toCollection(LinkedHashSet::new));
 	return eventsReactedTo;
     }
 
