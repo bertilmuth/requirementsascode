@@ -51,7 +51,6 @@ public class ModelRunner implements Serializable {
 	this.standardEventHandler = new StandardEventHandler();
 
 	handleWith(new HandleEventMethodOfStandardEventHandler());
-	restart();
     }
 
     private static class HandleEventMethodOfStandardEventHandler implements Consumer<StandardEventHandler>, Serializable {
@@ -91,10 +90,7 @@ public class ModelRunner implements Serializable {
      */
     public void restart() {
 	setLatestStep(null);
-	includedUseCases = new LinkedList<>();
-	includeSteps = new LinkedList<>();
-	includedUseCase = null;
-	includeStep = null;
+	run(model);
     }
 
     /**
@@ -112,7 +108,12 @@ public class ModelRunner implements Serializable {
     public ModelRunner run(Model model) {
 	this.model = model;
 	this.userAndSystem = userAndSystem(user != null ? user : model.getUserActor());
+	this.includedUseCases = new LinkedList<>();
+	this.includeSteps = new LinkedList<>();
+	this.includedUseCase = null;
+	this.includeStep = null;
 	this.isRunning = true;
+	
 	triggerAutonomousSystemReaction();
 	return this;
     }

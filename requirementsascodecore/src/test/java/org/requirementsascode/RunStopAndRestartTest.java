@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RunAndStopTest extends AbstractTestCase {
+public class RunStopAndRestartTest extends AbstractTestCase {
 
     @Before
     public void setUp() throws Exception {
@@ -24,6 +24,14 @@ public class RunAndStopTest extends AbstractTestCase {
 	modelRunner.run(model);
 	assertTrue(modelRunner.isRunning());
     }
+    
+    @Test
+    public void modelRunnerIsRunningAfterRunCallAndRestart() {
+	Model model = modelBuilder.build();
+	modelRunner.run(model);
+	modelRunner.restart();
+	assertTrue(modelRunner.isRunning());
+    }
 
     @Test
     public void modelRunnerIsNotRunningWhenBeingStoppedBeforeRunCall() {
@@ -37,5 +45,14 @@ public class RunAndStopTest extends AbstractTestCase {
 	modelRunner.run(model);
 	modelRunner.stop();
 	assertFalse(modelRunner.isRunning());
+    }
+    
+    @Test
+    public void modelRunnerIsRunningWhenBeingStoppedAndRestartedAfterRunCall() {
+	Model model = modelBuilder.build();
+	modelRunner.run(model);
+	modelRunner.stop();
+	modelRunner.restart();
+	assertTrue(modelRunner.isRunning());
     }
 }
