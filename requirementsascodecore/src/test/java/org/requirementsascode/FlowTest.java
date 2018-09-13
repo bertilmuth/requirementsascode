@@ -1,8 +1,13 @@
 package org.requirementsascode;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -97,8 +102,36 @@ public class FlowTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		modelRunner.stop();
-		modelRunner.reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
 		
+		assertFalse(latestStepRun.isPresent());
+		assertRecordedStepNames(new String[0]);
+	}
+	
+	@Test
+	public void doesNotReactToEmptyEvents() { 	
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		modelRunner.run(model).reactTo();
+		
+		assertRecordedStepNames(new String[0]);
+	}
+	
+	@Test
+	public void doesNotReactToEmptyEventList() { 	
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		Optional<Step> latestStepRun = modelRunner.run(model).reactTo(new ArrayList<Object>());
+		
+		assertFalse(latestStepRun.isPresent());
 		assertRecordedStepNames(new String[0]);
 	}
 	
@@ -142,6 +175,22 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void twoSequentialStepsReactToEventsOfDifferentTypeAsList() {		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+			.build();
+		
+		modelRunner.run(model);
+		Object[] eventArray = new Object[] {entersText(), entersNumber()};
+		List<? extends Object> events = Arrays.asList(eventArray);
+		modelRunner.reactTo(events);
+		assertArrayEquals(eventArray, modelRunner.getRecordedEvents());		
+	}
+	
+	@Test
 	public void twoSequentialStepsReactToEventsOfSameType() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
@@ -155,6 +204,23 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void twoSequentialStepsReactToEventsOfSameTypeAsList() {		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+				.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		modelRunner.run(model);
+		
+		EntersText[] eventArray = new EntersText[] {entersText(), entersText()};
+		List<EntersText> events = Arrays.asList(eventArray);
+		modelRunner.reactTo(events);
+		assertArrayEquals(eventArray, modelRunner.getRecordedEvents());		
+	}
+	
+	@Test
 	public void twoSequentialStepsReactWhenOneIsUserStepAndOtherIsSystemStep() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
@@ -163,8 +229,9 @@ public class FlowTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.build();
 		
-		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.run(model).reactTo(entersText());
 		
+		assertTrue(latestStepRun.map(step -> step.getName().equals(SYSTEM_DISPLAYS_TEXT)).orElse(false));
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, SYSTEM_DISPLAYS_TEXT);
 	}
 	

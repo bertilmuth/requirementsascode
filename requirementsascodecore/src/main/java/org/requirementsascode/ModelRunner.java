@@ -163,20 +163,23 @@ public class ModelRunner implements Serializable {
     public void stop() {
 	isRunning = false;
     }
+   
 
     /**
-     * Call this method from the frontend to provide several event objects to the
-     * runner. For each event object, {@link #reactTo(Object)} is called.
+     * Call this method to provide several event objects to the runner. For each
+     * event object, {@link #reactTo(Object)} is called.
      *
      * @param events
-     *            the events to react to
+     *                   the events to react to
+     * @return the latest step that has been run
      */
-    public void reactTo(Object... events) {
+    public Optional<Step> reactTo(Object... events) {
 	Objects.requireNonNull(events);
-
+	
 	for (Object event : events) {
 	    reactTo(event);
 	}
+	return getLatestStep();
     }
 
     /**
@@ -193,6 +196,10 @@ public class ModelRunner implements Serializable {
      *
      * <p>
      * After that, the runner will trigger "autonomous system reactions".
+     * 
+     * Note that if you provide a collection as the first and only argument, this will
+     * be flattened to the objects in the collection, and for each object {@link #reactTo(Object)} 
+     * is called.
      *
      * <p>
      * See {@link #canReactTo(Class)} for a description of what "can react" means.
@@ -201,8 +208,7 @@ public class ModelRunner implements Serializable {
      *            the type of the command or event object
      * @param event
      *            the command or event object
-     * @return the step whose system reaction was triggered, or else an empty
-     *         optional if none was triggered.
+     * @return the step that was run latest by the model runner
      * @throws MoreThanOneStepCanReact
      *             when more than one step can react
      * @throws InfiniteRepetition
@@ -211,19 +217,23 @@ public class ModelRunner implements Serializable {
      */
     public <T> Optional<Step> reactTo(T event) {
 	Objects.requireNonNull(event);
+	
+	if(event instanceof Collection) {
+	    Object[] events = ((Collection<?>)event).toArray(new Object[0]);
+	    return reactTo(events);
+	}
 
-	Optional<Step> latestStepRun = Optional.empty();
 	if (isRunning) {
 	    Class<? extends Object> currentEventClass = event.getClass();
 
 	    try {
 		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
-		latestStepRun = triggerSystemReactionForSteps(event, stepsThatCanReact);
+		triggerSystemReactionForSteps(event, stepsThatCanReact);
 	    } catch (StackOverflowError err) {
 		throw new InfiniteRepetition(latestStep);
 	    }
 	}
-	return latestStepRun;
+	return getLatestStep();
     }
 
     private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> steps) {

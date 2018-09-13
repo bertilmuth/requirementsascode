@@ -1,7 +1,6 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.util.Optional;
 
@@ -159,7 +158,7 @@ public class FlowlessTest extends AbstractTestCase {
 	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = modelRunner.reactTo(entersText());
-	assertFalse(latestStepRun.isPresent());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
     @Test
@@ -175,7 +174,7 @@ public class FlowlessTest extends AbstractTestCase {
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = modelRunner.reactTo(entersNumber());
-	assertFalse(latestStepRun.isPresent());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
     @Test
@@ -267,7 +266,7 @@ public class FlowlessTest extends AbstractTestCase {
 	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = modelRunner.reactTo(entersText());
-	assertFalse(latestStepRun.isPresent());
+	assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
     @Test
@@ -283,6 +282,6 @@ public class FlowlessTest extends AbstractTestCase {
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 
 	latestStepRun = modelRunner.reactTo(entersNumber());
-	assertFalse(latestStepRun.isPresent());
+	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
 }
