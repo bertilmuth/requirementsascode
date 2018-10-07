@@ -1,8 +1,10 @@
 package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.junit.Before;
@@ -10,7 +12,9 @@ import org.junit.Test;
 
 public class NonStandardEventHandlingTest extends AbstractTestCase {
     private String stepName;
-    private Object event;
+    private Optional<? extends Object> optionalCondition;
+    private Optional<? extends Object> optionalEvent;
+    private Object systemReaction;
 
     @Before
     public void setup() {
@@ -18,59 +22,83 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
     }
 
     @Test
-    public void printsTextAndHandlesWithSavingStepNameAndEvent() {
-	modelRunner.handleWith(savingStepNameAndEvent());
+    public void recordsAutonomousSystemReactionStep() {
 	stepName = "";
 
-	Model model = 
-		modelBuilder.useCase(USE_CASE)
-			.basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT)
-					.system(displaysConstantText())
-		.build();
+	ReactionAsRunnable reactionAsRunnable = new ReactionAsRunnable();
+	Model model = modelBuilder.useCase(USE_CASE).basicFlow().step(SYSTEM_DISPLAYS_TEXT)
+		.system(reactionAsRunnable).build();
 
+	modelRunner.handleWith(recordStepDetails());
 	modelRunner.run(model);
 
 	assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
 	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
-	assertEquals(TestModelRunner.class, event.getClass());
+	assertFalse(optionalEvent.isPresent());
+	assertFalse(optionalCondition.isPresent());
+	assertEquals(reactionAsRunnable, systemReaction);
     }
 
-    private Consumer<StandardEventHandler> savingStepNameAndEvent() {
+    private class ReactionAsRunnable implements Runnable {
+	@Override
+	public void run() {
+	}
+    }
+
+    private Consumer<StandardEventHandler> recordStepDetails() {
 	return standardEventHandler -> {
-	    stepName = standardEventHandler.getStep().getName();
-	    event = standardEventHandler.getEvent();
+	    stepName = standardEventHandler.getStepName();
+	    optionalCondition = standardEventHandler.getCondition();
+	    optionalEvent = standardEventHandler.getEvent();
+	    systemReaction = standardEventHandler.getSystemReaction();
 	    standardEventHandler.handleEvent();
 	};
     }
-    
-    @Test
-    public void reactsToUnhandledEvent() {
-	Model model = modelBuilder.useCase(USE_CASE)
-		.on(EntersText.class).system(displaysEnteredText())
-	.build();
 
-	modelRunner.handleUnhandledWith(this::errorHandler); 
-	modelRunner.run(model); 
-	modelRunner.reactTo(entersNumber());
+    @Test
+    public void recordsStepWithEvent() {
+	ReactionAsConsumer reactionAsConsumer = new ReactionAsConsumer();
+	Model model = modelBuilder.useCase(USE_CASE).when(new AlwaysTrue()).on(EntersText.class)
+		.system(reactionAsConsumer).build();
+
+	modelRunner.handleWith(recordStepDetails());
+	modelRunner.run(model);
+	modelRunner.reactTo(entersText());
+
+	Object condition = optionalCondition.get();
+	assertTrue(condition instanceof AlwaysTrue);
+
+	Object event = optionalEvent.get();
+	assertTrue(event instanceof EntersText);
 	
+	assertEquals(reactionAsConsumer, systemReaction);
+    }
+
+    private class AlwaysTrue implements Condition {
+	@Override
+	public boolean evaluate() {
+	    return true;
+	}
+    }
+    private class ReactionAsConsumer implements Consumer<EntersText> {
+	@Override
+	public void accept(EntersText t) {
+	}
+    }
+
+    @Test
+    public void recordsEventWithUnhandledEventHandler() {
+	Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
+
+	modelRunner.handleUnhandledWith(this::eventRecordingEventHandler);
+	modelRunner.run(model);
+	modelRunner.reactTo(entersNumber());
+
+	Object event = optionalEvent.get();
 	assertTrue(event instanceof EntersNumber);
     }
-    
-    @Test
-    public void reactsToUnhandledException() {
-	Model model = modelBuilder.useCase(USE_CASE)
-		.on(EntersText.class).system(et -> {throw new IllegalStateException();})
-	.build();
 
-	modelRunner.handleUnhandledWith(this::errorHandler); 
-	modelRunner.run(model); 
-	modelRunner.reactTo(entersNumber());
-	
-	assertTrue(event instanceof EntersNumber);
-    }
-    
-    public void errorHandler(Object event) {
-	this.event = event;
+    public void eventRecordingEventHandler(Object event) {
+	this.optionalEvent = Optional.of(event);
     }
 }

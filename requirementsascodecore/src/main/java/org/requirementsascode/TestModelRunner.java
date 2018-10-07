@@ -12,13 +12,13 @@ import java.util.function.Consumer;
 public class TestModelRunner extends ModelRunner {
     private static final long serialVersionUID = 1161211712610795119L;
 
-    private List<Step> recordedSteps;
+    private List<String> recordedStepNames;
     private List<Object> recordedEvents;
 
     private Consumer<StandardEventHandler> adaptedEventHandler;
 
     public TestModelRunner() {
-	recordedSteps = new ArrayList<>();
+	recordedStepNames = new ArrayList<>();
 	recordedEvents = new ArrayList<>();
 	super.handleWith(this::stepNameTracking);
     }
@@ -34,7 +34,7 @@ public class TestModelRunner extends ModelRunner {
      * @return the ordered names of steps run by this runner
      */
     public String[] getRecordedStepNames() {
-	String[] stepNames = recordedSteps.stream().map(step -> step.getName()).toArray(String[]::new);
+	String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
 	return stepNames;
     }
 
@@ -59,8 +59,8 @@ public class TestModelRunner extends ModelRunner {
     }
 
     private void stepNameTracking(StandardEventHandler standardEventHandler) {
-	recordedSteps.add(standardEventHandler.getStep());
-	recordedEvents.add(standardEventHandler.getEvent());
+	recordedStepNames.add(standardEventHandler.getStepName());
+	standardEventHandler.getEvent().ifPresent(event -> recordedEvents.add(event));
 
 	if (adaptedEventHandler == null) {
 	    standardEventHandler.handleEvent();
