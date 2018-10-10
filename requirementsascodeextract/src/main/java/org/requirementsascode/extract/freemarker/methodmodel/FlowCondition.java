@@ -36,7 +36,7 @@ public class FlowCondition implements TemplateMethodModelEx {
     }
 
     private String getFlowPredicate(Flow flow) {
-	String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR) + getWhen(flow);
+	String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR) + getCondition(flow);
 	String sep = "".equals(predicate) ? "" : PREDICATE_POSTFIX;
 	String capitalizedPredicateWithColon = StringUtils.capitalize(predicate) + sep;
 	return capitalizedPredicateWithColon;
@@ -66,18 +66,18 @@ public class FlowCondition implements TemplateMethodModelEx {
     private String getFlowPredicateSeparator(Flow flow, String sep) {
 	String flowPosition = getFlowPosition(flow);
 	String result = "";
-	if (flowPosition != "" && getWhen(flow) != "") {
+	if (flowPosition != "" && getCondition(flow) != "") {
 	    result = sep;
 	}
 	return result;
     }
 
-    private String getWhen(Flow flow) {
-	String whenWords = "";
-	if (flow.getWhen().isPresent()) {
-	    Condition when = flow.getWhen().get();
-	    whenWords = WHEN + getLowerCaseWordsOfClassName(when.getClass());
+    private String getCondition(Flow flow) {
+	String conditionWords = "";
+	if (flow.getCondition().isPresent()) {
+	    Condition condition = flow.getCondition().get();
+	    conditionWords = WHEN + getLowerCaseWordsOfClassName(condition.getClass());
 	}
-	return whenWords;
+	return conditionWords;
     }
 }
