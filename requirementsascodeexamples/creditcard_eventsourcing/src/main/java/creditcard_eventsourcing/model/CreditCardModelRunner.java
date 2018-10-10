@@ -75,10 +75,10 @@ public class CreditCardModelRunner {
 	    .flow("Cycle is over").anytime()
 	    	.step(CLOSE).on(requestToCloseCycle).system(closesCycle)
 	    	
-	    .flow("Assign limit twice").when(limitAlreadyAssigned)
+	    .flow("Assign limit twice").condition(limitAlreadyAssigned)
 	    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
 	    	
-	    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
+	    .flow("Too many withdrawals").condition(tooManyWithdrawalsInCycle) 
 	    	.step(WITHDRAW_TOO_OFTEN).user(requestsWithdrawal).system(throwsTooManyWithdrawalsException)
 	.build();
 	return model;

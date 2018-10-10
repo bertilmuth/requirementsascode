@@ -51,7 +51,7 @@ public class CreditCard {
     
     private void addingPendingEvents(StandardEventHandler eventHandler) {
 	eventHandler.handleEvent();
-	DomainEvent domainEvent = (DomainEvent) eventHandler.getEvent();
+	DomainEvent domainEvent = (DomainEvent) eventHandler.getEvent().get();
 	pendingEvents.add(domainEvent);
     }
 
