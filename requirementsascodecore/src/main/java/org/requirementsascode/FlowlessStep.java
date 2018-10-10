@@ -11,12 +11,12 @@ public class FlowlessStep extends Step {
 
     @Override
     public Predicate<ModelRunner> getPredicate() {
-	Predicate<ModelRunner> predicate = toPredicate(getFlowCondition());
+	Predicate<ModelRunner> predicate = toPredicate(getConditionOrElseTrue());
 	return predicate;
     }
 
-    private Condition getFlowCondition() {
-	Condition when = getWhen().orElse(() -> true);
-	return when;
+    private Condition getConditionOrElseTrue() {
+	Condition condition = getCondition().orElse(() -> true);
+	return condition;
     }
 }

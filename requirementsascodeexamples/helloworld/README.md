@@ -85,7 +85,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 				.step("S5").system(this::greetsUserWithFirstNameAndAge)
 				.step("S6").system(this::stops)
 					
-			.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
+			.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
 				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
 				.step("S5a_2").continuesAt("S3")
 					
@@ -125,7 +125,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 				.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
 				.step("S7").as(normalUser, anonymousUser).system(this::stops)
 					
-			.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
+			.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
 				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
 				.step("S5a_2").continuesAt("S3")
 					
@@ -133,7 +133,7 @@ public Model buildWith(ModelBuilder modelBuilder) {
 				.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
 				.step("S5b_2").continuesAt("S3")
 				
-			.flow("Anonymous greeted with age only").insteadOf("S5").when(this::ageIsOk)
+			.flow("Anonymous greeted with age only").insteadOf("S5").condition(this::ageIsOk)
 				.step("S5c_1").as(anonymousUser).continuesAt("S6")
 				
 			.flow("Anonymous does not enter name").insteadOf("S1")

@@ -58,7 +58,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
     @Test
     public void recordsStepWithEvent() {
 	ReactionAsConsumer reactionAsConsumer = new ReactionAsConsumer();
-	Model model = modelBuilder.useCase(USE_CASE).when(new AlwaysTrue()).on(EntersText.class)
+	Model model = modelBuilder.useCase(USE_CASE).condition(new AlwaysTrue()).on(EntersText.class)
 		.system(reactionAsConsumer).build();
 
 	modelRunner.handleWith(recordStepDetails());

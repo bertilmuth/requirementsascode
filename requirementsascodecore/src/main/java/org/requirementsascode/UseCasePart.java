@@ -59,27 +59,27 @@ public class UseCasePart {
     }
 
     public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
-	WhenPart whenPart = when(null);
-	FlowlessUserPart<T> flowlessUserPart = whenPart.on(eventOrExceptionClass);
+	ConditionPart conditionPart = condition(null);
+	FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
 	return flowlessUserPart;
     }
 
-    public WhenPart when(Condition whenCondition) {
-	WhenPart whenPart = new WhenPart(whenCondition, 1);
-	return whenPart;
+    public ConditionPart condition(Condition condition) {
+	ConditionPart conditionPart = new ConditionPart(condition, 1);
+	return conditionPart;
     }
 
-    public class WhenPart {
+    public class ConditionPart {
 	private long flowlessStepCounter;
-	private Condition optionalWhenCondition;
+	private Condition optionalCondition;
 
-	private WhenPart(Condition optionalWhenCondition, long flowlessStepCounter) {
-	    this.optionalWhenCondition = optionalWhenCondition;
+	private ConditionPart(Condition optionalCondition, long flowlessStepCounter) {
+	    this.optionalCondition = optionalCondition;
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
 	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
-	    FlowlessUserPart<T> flowless = new FlowlessUserPart<>(optionalWhenCondition, eventOrExceptionClass, flowlessStepCounter);
+	    FlowlessUserPart<T> flowless = new FlowlessUserPart<>(optionalCondition, eventOrExceptionClass, flowlessStepCounter);
 	    return flowless;
 	}
 
@@ -98,17 +98,17 @@ public class UseCasePart {
 	private StepUserPart<T> userPart;
 	private long flowlessStepCounter;
 
-	private FlowlessUserPart(Condition optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private FlowlessUserPart(Condition optionalCondition, Class<T> eventOrExceptionClass,
 		long flowlessStepCounter) {
 	    this.flowlessStepCounter = flowlessStepCounter;
-	    StepPart stepPart = createStepPart(optionalWhenCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
+	    StepPart stepPart = createStepPart(optionalCondition, eventOrExceptionClass, "S" + flowlessStepCounter);
 	    this.userPart = stepPart.on(eventOrExceptionClass);
 	}
 
 	private StepPart createStepPart(Condition optionalWhenCondition, Class<T> eventOrExceptionClass,
 		String stepName) {
 	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
-	    newStep.setWhen(optionalWhenCondition);
+	    newStep.setCondition(optionalWhenCondition);
 	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 	    return stepPart;
 	}
@@ -126,13 +126,13 @@ public class UseCasePart {
 	    this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	public WhenPart when(Condition whenCondition) {
-	    WhenPart whenPart = new WhenPart(whenCondition, ++flowlessStepCounter);
-	    return whenPart;
+	public ConditionPart condition(Condition condition) {
+	    ConditionPart conditionPart = new ConditionPart(condition, ++flowlessStepCounter);
+	    return conditionPart;
 	}
 
 	public <U> FlowlessUserPart<U> on(Class<U> eventOrExceptionClass) {
-	    FlowlessUserPart<U> flowlessUserPart = when(null).on(eventOrExceptionClass);
+	    FlowlessUserPart<U> flowlessUserPart = condition(null).on(eventOrExceptionClass);
 	    return flowlessUserPart;
 	}
 

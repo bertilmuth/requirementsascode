@@ -109,8 +109,8 @@ public class UseCase extends ModelElement implements Serializable {
 
     /**
      * Creates a new step that can interrupt other flows. This is the first step of
-     * a flow with a defined flow position and/or when condition. The flow position
-     * and when condition are the same as defined for the flow.
+     * a flow with a defined flow position and/or condition. The flow position
+     * and condition are the same as defined for the flow.
      *
      * @param stepName
      *            the name of the step
@@ -118,15 +118,15 @@ public class UseCase extends ModelElement implements Serializable {
      *            the flow the step shall belong to
      * @param flowPosition
      *            the flow position, may be null, meaning: anytime.
-     * @param whenCondition
-     *            the when condition, may be null if there is none.
+     * @param condition
+     *            the condition, may be null if there is none.
      * @return the newly created step
      */
     InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
-	    Condition whenCondition) {
+	    Condition condition) {
 	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
 	step.setFlowPosition(flowPosition);
-	step.setWhen(whenCondition);
+	step.setCondition(condition);
 
 	saveModelElement(step, nameToStepMap);
 

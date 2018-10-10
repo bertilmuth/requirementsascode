@@ -89,7 +89,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	thrown.expectMessage("S1");
 	
 	Model model = modelBuilder
-		.when(() -> true).system(() -> {})
+		.condition(() -> true).system(() -> {})
 	.build();
 
 	modelRunner.run(model);

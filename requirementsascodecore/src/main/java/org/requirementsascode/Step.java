@@ -23,7 +23,7 @@ public abstract class Step extends ModelElement implements Serializable {
     private Actor[] actors;
     private Class<?> eventClass;
     private Consumer<?> systemReaction;
-    private Condition when;
+    private Condition condition;
 
     /**
      * Creates a step with the specified name that belongs to the specified
@@ -44,12 +44,12 @@ public abstract class Step extends ModelElement implements Serializable {
 	return useCase;
     }
 
-    void setWhen(Condition whenCondition) {
-	this.when = whenCondition;
+    void setCondition(Condition condition) {
+	this.condition = condition;
     }
 
-    public Optional<Condition> getWhen() {
-	return Optional.ofNullable(when);
+    public Optional<Condition> getCondition() {
+	return Optional.ofNullable(condition);
     }
 
     public Actor[] getActors() {

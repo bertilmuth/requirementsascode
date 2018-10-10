@@ -56,7 +56,7 @@ public class StandardEventHandler implements Serializable {
      * @return the condition, or an empty optional when no condition was specified.
      */
     public Optional<? extends Object> getCondition() {
-	Optional<? extends Object> optionalCondition = step.getWhen();
+	Optional<? extends Object> optionalCondition = step.getCondition();
 	return optionalCondition;
     }
 

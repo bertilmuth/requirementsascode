@@ -84,7 +84,7 @@ public class ShoppingAppModel {
 			.step("S11").continuesAt("S1")
 		.flow("Go back from shipping").insteadOf("S6").step("S6a_1").user(signalsToGoBack).step("S6a_2").continuesAt("S2")
 		.flow("Go back from payment").insteadOf("S8").step("S8a_1").user(signalsToGoBack).step("S8a_2").continuesAt("S5")
-		.flow("Checkout after going back").insteadOf("S3").when(atLeastOneProductIsInCart).step("S3a_1").continuesAt("S4")
+		.flow("Checkout after going back").insteadOf("S3").condition(atLeastOneProductIsInCart).step("S3a_1").continuesAt("S4")
 		.flow("Handle exceptions").step("EX").on(anyException).system(logsException)
 	.build();
 	

@@ -26,7 +26,7 @@ public class HelloWorld05 extends AbstractHelloWorldExample {
 			.step("S4").user(ENTERS_AGE).system(this::savesAge)
 			.step("S5").system(this::greetsUserWithFirstNameAndAge)
 			.step("S6").system(this::stops)
-		.flow("Handle out-of-bounds age").insteadOf("S5").when(this::ageIsOutOfBounds)
+		.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
 			.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
 			.step("S5a_2").continuesAt("S3")
 		.flow("Handle non-numerical age").insteadOf("S5")

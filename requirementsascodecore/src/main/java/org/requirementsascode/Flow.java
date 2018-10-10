@@ -99,16 +99,16 @@ public class Flow extends ModelElement implements Serializable {
     }
 
     /**
-     * Convenience method that returns the when condition of the flow.
+     * Convenience method that returns the condition of the flow.
      *
      * <p>
      * Internally this calls the method of the same name of the first step in the
      * flow.
      *
-     * @return the when condition
+     * @return the condition
      */
-    public Optional<Condition> getWhen() {
-	Optional<Condition> when = getFirstStep().flatMap(step -> step.getWhen());
-	return when;
+    public Optional<Condition> getCondition() {
+	Optional<Condition> condition = getFirstStep().flatMap(step -> step.getCondition());
+	return condition;
     }
 }

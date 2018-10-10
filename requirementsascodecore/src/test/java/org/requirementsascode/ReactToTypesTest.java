@@ -86,7 +86,7 @@ public class ReactToTypesTest extends AbstractTestCase {
     @Test
     public void eventTypesReactedOnlyIfConditionFulfilled() {
 	Model model = modelBuilder.useCase(USE_CASE)
-		.basicFlow().when(() -> false)
+		.basicFlow().condition(() -> false)
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.flow("Alternative Flow: Could react as well").anytime()
 			.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())

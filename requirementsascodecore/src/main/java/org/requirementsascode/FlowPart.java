@@ -2,7 +2,7 @@ package org.requirementsascode;
 
 import java.util.Objects;
 
-import org.requirementsascode.FlowPositionPart.WhenPart;
+import org.requirementsascode.FlowPositionPart.ConditionPart;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.After;
@@ -29,36 +29,38 @@ public class FlowPart {
 
     /**
      * Starts the flow after the specified step has been run, in this flow's use
-     * case. 
+     * case.
      * 
-     * Note: You should use after to handle exceptions that occurred in the specified
-     * step.
+     * Note: You should use after to handle exceptions that occurred in the
+     * specified step.
      *
      * @param stepName
-     *            the name of the step to start the flow after
+     *                     the name of the step to start the flow after
      * @return the flow position part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
-     * 		if the specified step is not found in a flow of this use case
-     * 		            
+     *                                  if the specified step is not found in a flow
+     *                                  of this use case
+     * 
      */
     public FlowPositionPart after(String stepName) {
 	Step step = useCase.findStep(stepName);
-	After after = new After((FlowStep)step);
+	After after = new After((FlowStep) step);
 	optionalFlowPositionPart = new FlowPositionPart(after, this);
 	return optionalFlowPositionPart;
     }
 
     /**
-     * Creates the first step of this flow. It can be interrupted by any
-     * other flow that has an explicit condition. It can be run when no
-     * other step has been run before.
+     * Creates the first step of this flow. It can be interrupted by any other flow
+     * that has an explicit condition. It can be run when no other step has been run
+     * before.
      *
      * @param stepName
-     *            the name of the step to be created
+     *                     the name of the step to be created
      * @return the newly created step part, to ease creation of further steps
      * @throws ElementAlreadyInModel
-     *             if a step with the specified name already exists in the use case
+     *                                   if a step with the specified name already
+     *                                   exists in the use case
      */
     public StepPart step(String stepName) {
 	FlowStep step = useCase.newInterruptableFlowStep(stepName, flow);
@@ -71,14 +73,15 @@ public class FlowPart {
      * case.
      *
      * @param stepName
-     *            the name of the specified step
+     *                     the name of the specified step
      * @return the flow position part, to ease creation of the condition and the
      *         first step of the flow
      * @throws NoSuchElementInModel
-     *             if the specified step is not found in this flow's use case
+     *                                  if the specified step is not found in this
+     *                                  flow's use case
      */
     public FlowPositionPart insteadOf(String stepName) {
-	FlowStep step = (FlowStep)useCase.findStep(stepName);
+	FlowStep step = (FlowStep) useCase.findStep(stepName);
 	InsteadOf insteadOf = new InsteadOf(step);
 	optionalFlowPositionPart = new FlowPositionPart(insteadOf, this);
 	return optionalFlowPositionPart;
@@ -100,15 +103,15 @@ public class FlowPart {
      * Constrains the flow's condition: only if the specified condition is true, the
      * flow is started.
      *
-     * @param whenCondition
-     *            the condition that constrains when the flow is started
-     * @return the when part, to ease creation of the first step of the flow
+     * @param condition
+     *                      the condition that constrains when the flow is started
+     * @return the condition part, to ease creation of the first step of the flow
      */
-    public WhenPart when(Condition whenCondition) {
-	Objects.requireNonNull(whenCondition);
+    public ConditionPart condition(Condition condition) {
+	Objects.requireNonNull(condition);
 	optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);
-	WhenPart whenPart = optionalFlowPositionPart.when(whenCondition);
-	return whenPart;
+	ConditionPart conditionPart = optionalFlowPositionPart.condition(condition);
+	return conditionPart;
     }
 
     Flow getFlow() {

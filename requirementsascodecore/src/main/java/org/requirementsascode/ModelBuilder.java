@@ -1,7 +1,7 @@
 package org.requirementsascode;
 
 import org.requirementsascode.UseCasePart.FlowlessUserPart;
-import org.requirementsascode.UseCasePart.WhenPart;
+import org.requirementsascode.UseCasePart.ConditionPart;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -48,12 +48,12 @@ public class ModelBuilder {
     /**
      * Only if the specified condition is true, the event is handled.
      *
-     * @param whenCondition
+     * @param condition
      *            the condition that constrains when the event is handled
      * @return a part of the builder used to define the event's class
      */
-    public WhenPart when(Condition whenCondition) {
-	return useCase(HANDLES_EVENTS).when(whenCondition);
+    public ConditionPart condition(Condition condition) {
+	return useCase(HANDLES_EVENTS).condition(condition);
     }
 
     /**
