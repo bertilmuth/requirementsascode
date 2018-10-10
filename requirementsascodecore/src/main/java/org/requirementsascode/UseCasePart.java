@@ -105,10 +105,10 @@ public class UseCasePart {
 	    this.userPart = stepPart.on(eventOrExceptionClass);
 	}
 
-	private StepPart createStepPart(Condition optionalWhenCondition, Class<T> eventOrExceptionClass,
+	private StepPart createStepPart(Condition optionalCondition, Class<T> eventOrExceptionClass,
 		String stepName) {
 	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
-	    newStep.setCondition(optionalWhenCondition);
+	    newStep.setCondition(optionalCondition);
 	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 	    return stepPart;
 	}
