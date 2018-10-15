@@ -20,7 +20,7 @@ public class FlowTest extends AbstractTestCase{
 		
 	@Before
 	public void setup() {
-		setupWith(new TestModelRunner());
+		setupWith(new ModelRunner());
 		this.secondActor = modelBuilder.actor("Second Actor");
 	}
 	
@@ -263,10 +263,10 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.as(customer).run(model).reactTo(entersText());
+		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 		
-		modelRunner.as(secondActor).run(model).reactTo(entersText());
-		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
+		modelRunner.as(secondActor).run(model).reactTo(entersText());		
+		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT_AGAIN);
 	}
 	
 	@Test

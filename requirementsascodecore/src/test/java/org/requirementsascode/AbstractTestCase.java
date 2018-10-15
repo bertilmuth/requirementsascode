@@ -40,10 +40,10 @@ public abstract class AbstractTestCase {
 
     protected Actor customer;
     protected ModelBuilder modelBuilder;
-    protected TestModelRunner modelRunner;
+    protected ModelRunner modelRunner;
     protected String displayedText;
 
-    protected void setupWith(TestModelRunner modelRunner) {
+    protected void setupWith(ModelRunner modelRunner) {
 	this.modelRunner = modelRunner;
 	this.modelBuilder = Model.builder();
 	this.customer = modelBuilder.actor(CUSTOMER);

@@ -6,18 +6,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
-import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import helloworld.userevent.EntersText;
 
 public class HelloWorldTest {
-	private TestModelRunner modelRunner;
+	private ModelRunner modelRunner;
 	private Model model;
 	private ModelBuilder modelBuilder;
 	
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new TestModelRunner();
+		modelRunner = new ModelRunner();
 		modelBuilder = Model.builder();
 	}
 

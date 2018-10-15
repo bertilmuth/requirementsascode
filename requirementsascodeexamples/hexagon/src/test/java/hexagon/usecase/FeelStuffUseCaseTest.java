@@ -5,7 +5,7 @@ import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.Model;
-import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import hexagon.adapter.stub.RepositoryStub;
 import hexagon.adapter.stub.WriterStub;
@@ -14,7 +14,7 @@ import hexagon.usecaserealization.FeelStuffUseCaseRealization;
 public class FeelStuffUseCaseTest {
 
   private Model model;
-  private TestModelRunner testRunner;
+  private ModelRunner testRunner;
   private FeelStuffUseCaseRealization feelStuffUseCaseRealization;
 
   @Before
@@ -24,7 +24,7 @@ public class FeelStuffUseCaseTest {
     model =
         new HexagonModel(feelStuffUseCaseRealization)
             .buildWith(Model.builder());
-    testRunner = new TestModelRunner();
+    testRunner = new ModelRunner();
   }
 
   @Test

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
-import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.ModelRunner;
 
 import shoppingappjavafx.domain.PaymentDetails;
 import shoppingappjavafx.domain.Product;
@@ -24,12 +24,12 @@ import shoppingappjavafx.usecaserealization.componentinterface.Display;
 import shoppingappjavafx.usecaserealization.stubs.DisplayStub;
 
 public class BuyProductRealizationTest {
-	private TestModelRunner modelRunner;
+	private ModelRunner modelRunner;
 	private Model model;
 
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new TestModelRunner();
+		modelRunner = new ModelRunner();
 		ModelBuilder modelBuilder = Model.builder();
 		
 		Stock stock = new Stock();

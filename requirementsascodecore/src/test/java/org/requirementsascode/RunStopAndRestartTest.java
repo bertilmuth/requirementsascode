@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,7 @@ public class RunStopAndRestartTest extends AbstractTestCase {
 
     @Before
     public void setUp() throws Exception {
-	setupWith(new TestModelRunner());
+	setupWith(new ModelRunner());
 
     }
 

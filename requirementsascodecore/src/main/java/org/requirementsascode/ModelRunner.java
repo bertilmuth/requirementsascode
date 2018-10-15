@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -42,6 +43,8 @@ public class ModelRunner implements Serializable {
     private LinkedList<FlowStep> includeSteps;
     private UseCase includedUseCase;
     private FlowStep includeStep;
+    private List<String> recordedStepNames;
+    private List<Object> recordedEvents;
 
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
@@ -86,7 +89,7 @@ public class ModelRunner implements Serializable {
 
     /**
      * Restarts the runner, resetting it to its original defaults ("no flow has been
-     * run, no step has been run, no use case included").
+     * run, no step has been run, no step has been recorded").
      */
     public void restart() {
 	setLatestStep(null);
@@ -113,6 +116,8 @@ public class ModelRunner implements Serializable {
 	this.includedUseCase = null;
 	this.includeStep = null;
 	this.isRunning = true;
+	this.recordedStepNames = new ArrayList<>();
+	this.recordedEvents = new ArrayList<>();
 	
 	triggerAutonomousSystemReaction();
 	return this;
@@ -263,8 +268,12 @@ public class ModelRunner implements Serializable {
 	    throw new MissingUseCaseStepPart(step, "system");
 	}
 
-	setLatestStep(step);
 	standardEventHandler.setupWith(event, step);
+	recordedStepNames.add(step.getName());
+	if(event != null) {
+	    recordedEvents.add(event);
+	}
+	setLatestStep(step);
 
 	try {
 	    eventHandler.accept(standardEventHandler);
@@ -438,6 +447,36 @@ public class ModelRunner implements Serializable {
      */
     public Optional<Flow> getLatestFlow() {
 	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
+    }
+    
+    /**
+     * Returns the recorded names of the steps that have been run so far.
+     * <p>
+     * If no step has been run, an empty array is returned. For example, this method
+     * can used with the assertArrayEquals method of JUnit to compare the actual
+     * names of steps that have been run (returned by this method) to the expected
+     * step names.
+     *
+     * @return the ordered names of steps run by this runner
+     */
+    public String[] getRecordedStepNames() {
+	String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
+	return stepNames;
+    }
+
+    /**
+     * Returns the recorded events that the runner reacted to so far.
+     * <p>
+     * If no events have caused a system reaction, an empty array is returned. For
+     * example, this method can used with the assertArrayEquals method of JUnit to
+     * compare the actual events that caused a reaction (returned by this method) to
+     * the expected events.
+     *
+     * @return the ordered events that caused a system reaction
+     */
+    public Object[] getRecordedEvents() {
+	Object[] events = recordedEvents.toArray();
+	return events;
     }
 
     public void startIncludedUseCase(UseCase includedUseCase, FlowStep includeStep) {
