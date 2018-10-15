@@ -14,18 +14,18 @@ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.TestModelRunner;
+import org.requirementsascode.ModelRunner;
 
 public class CreditCardModelRunnerTest {
-    private TestModelRunner testModelRunner;
+    private ModelRunner modelRunner;
     private CreditCardModelRunner cardModelRunner;
     private CreditCard creditCard;
 
     @Before
     public void setUp() throws Exception {
 	creditCard = new CreditCard(UUID.randomUUID());
-	testModelRunner = new TestModelRunner();
-	cardModelRunner = new CreditCardModelRunner(creditCard, testModelRunner);
+	modelRunner = new ModelRunner();
+	cardModelRunner = new CreditCardModelRunner(creditCard, modelRunner);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class CreditCardModelRunnerTest {
     }
 
     protected void assertRecordedStepNames(String... expectedStepNames) {
-	String[] actualStepNames = testModelRunner.getRecordedStepNames();
+	String[] actualStepNames = modelRunner.getRecordedStepNames();
 	assertArrayEquals(expectedStepNames, actualStepNames);
     }
 }
