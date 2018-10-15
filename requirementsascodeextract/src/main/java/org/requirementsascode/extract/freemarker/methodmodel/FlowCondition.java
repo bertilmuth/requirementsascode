@@ -6,7 +6,6 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.g
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
 import org.requirementsascode.Step;
 import org.requirementsascode.flowposition.After;
@@ -36,7 +35,8 @@ public class FlowCondition implements TemplateMethodModelEx {
     }
 
     private String getFlowPredicate(Flow flow) {
-	String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR) + getCondition(flow);
+	String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR)
+		+ getCondition(flow);
 	String sep = "".equals(predicate) ? "" : PREDICATE_POSTFIX;
 	String capitalizedPredicateWithColon = StringUtils.capitalize(predicate) + sep;
 	return capitalizedPredicateWithColon;
@@ -50,7 +50,7 @@ public class FlowCondition implements TemplateMethodModelEx {
 	    Step step = flowPosition.getStep();
 	    boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, step);
 	    if (isNonDefaultFlowPosition) {
-		String stepName = step != null? step.getName() : "";
+		String stepName = step != null ? step.getName() : "";
 		String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
 		String flowPositionWithStepName = flowPositionWords + " " + stepName;
 		result = flowPositionWithStepName.trim();
@@ -73,11 +73,8 @@ public class FlowCondition implements TemplateMethodModelEx {
     }
 
     private String getCondition(Flow flow) {
-	String conditionWords = "";
-	if (flow.getCondition().isPresent()) {
-	    Condition condition = flow.getCondition().get();
-	    conditionWords = WHEN + getLowerCaseWordsOfClassName(condition.getClass());
-	}
+	String conditionWords = flow.getCondition()
+		.map(condition -> (WHEN + getLowerCaseWordsOfClassName(condition.getClass()))).orElse("");
 	return conditionWords;
     }
 }
