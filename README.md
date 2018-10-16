@@ -44,7 +44,7 @@ Model model = Model.builder()
 	.on(<event class>).system(<lambda expression, or reference to method that handles event>)
 	.on(..).system(...)
 	...
-.build()
+.build();
 ```
 
 The order of the statements has no significance.
