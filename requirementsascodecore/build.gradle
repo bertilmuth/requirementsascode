@@ -1,4 +1,3 @@
-apply plugin: "jacoco"
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -73,17 +72,5 @@ uploadArchives {
                }
            }
         }
-    }
-}
-
-test {
-	finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
     }
 }

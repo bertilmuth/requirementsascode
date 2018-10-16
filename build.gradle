@@ -4,11 +4,24 @@ allprojects{
 	
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: "jacoco"
 
 	repositories {
 		mavenCentral()
 		maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+	}
+	
+	test {
+		finalizedBy jacocoTestReport
+	}
+
+	jacocoTestReport {
+    	reports {
+        	xml.enabled false
+        	csv.enabled false
+        	html.destination file("${buildDir}/jacocoHtml")
+    	}
 	}
 }
