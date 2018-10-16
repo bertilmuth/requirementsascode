@@ -16,7 +16,7 @@ import org.junit.Test;
 public class BuildModelTest extends AbstractTestCase {
     @Before
     public void setup() {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
     }
 
     @Test

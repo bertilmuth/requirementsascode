@@ -18,7 +18,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
     @Before
     public void setup() {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
     }
 
     @Test

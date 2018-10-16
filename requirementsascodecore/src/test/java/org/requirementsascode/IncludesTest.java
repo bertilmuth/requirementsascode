@@ -6,7 +6,7 @@ import org.junit.Test;
 public class IncludesTest extends AbstractTestCase{
     @Before
     public void setup() {
-      setupWith(new ModelRunner());
+      setupWithRecordingModelRunner();
     }
     
   @Test

@@ -45,6 +45,7 @@ public class ModelRunner implements Serializable {
     private FlowStep includeStep;
     private List<String> recordedStepNames;
     private List<Object> recordedEvents;
+    private boolean isRecording;
 
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
@@ -52,7 +53,8 @@ public class ModelRunner implements Serializable {
      */
     public ModelRunner() {
 	this.standardEventHandler = new StandardEventHandler();
-
+	this.recordedStepNames = new ArrayList<>();
+	this.recordedEvents = new ArrayList<>();
 	handleWith(new HandleEventMethodOfStandardEventHandler());
     }
 
@@ -89,7 +91,7 @@ public class ModelRunner implements Serializable {
 
     /**
      * Restarts the runner, resetting it to its original defaults ("no flow has been
-     * run, no step has been run, no step has been recorded").
+     * run, no step has been run").
      */
     public void restart() {
 	setLatestStep(null);
@@ -116,8 +118,6 @@ public class ModelRunner implements Serializable {
 	this.includedUseCase = null;
 	this.includeStep = null;
 	this.isRunning = true;
-	this.recordedStepNames = new ArrayList<>();
-	this.recordedEvents = new ArrayList<>();
 	
 	triggerAutonomousSystemReaction();
 	return this;
@@ -269,10 +269,8 @@ public class ModelRunner implements Serializable {
 	}
 
 	standardEventHandler.setupWith(event, step);
-	recordedStepNames.add(step.getName());
-	if(event != null) {
-	    recordedEvents.add(event);
-	}
+	recordStepNameAndEvent(step, event);
+
 	setLatestStep(step);
 
 	try {
@@ -284,6 +282,15 @@ public class ModelRunner implements Serializable {
 	continueAfterIncludeStepWhenEndOfIncludedFlowIsReached();
 	triggerAutonomousSystemReaction();
 	return step;
+    }
+
+    <T> void recordStepNameAndEvent(Step step, T event) {
+	if (isRecording) {
+	    recordedStepNames.add(step.getName());
+	    if (event != null) {
+		recordedEvents.add(event);
+	    }
+	}
     }
 
     private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
@@ -447,6 +454,33 @@ public class ModelRunner implements Serializable {
      */
     public Optional<Flow> getLatestFlow() {
 	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
+    }
+    
+    /**
+     * After calling this method, until recording is stopped, events and step names
+     * are recorded. 
+     * If step names/events have been recorded before calling this method, these
+     * are discarded.
+     * 
+     * @return this model runner for method chaining
+     */
+    public ModelRunner startRecording() {
+	recordedStepNames.clear();
+	recordedEvents.clear();
+	isRecording = true;
+	return this;
+    }
+
+    /**
+     * When calling this method, recording is stopped. No events and step names are
+     * recorded until {@link #startRecording()} is called again.
+     * @return 
+     * 
+     * @return this model runner for method chaining
+     */
+    public ModelRunner stopRecording() {
+	isRecording = false;
+	return this;
     }
     
     /**

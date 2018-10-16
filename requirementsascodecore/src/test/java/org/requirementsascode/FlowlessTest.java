@@ -11,7 +11,7 @@ public class FlowlessTest extends AbstractTestCase {
 
     @Before
     public void setUp() throws Exception {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
     }
 
     @Test

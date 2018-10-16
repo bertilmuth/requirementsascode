@@ -13,7 +13,7 @@ public class CanReactToTest extends AbstractTestCase {
 
     @Before
     public void setup() {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
     }
 
     @Test

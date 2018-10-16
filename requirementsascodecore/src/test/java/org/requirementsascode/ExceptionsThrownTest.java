@@ -16,7 +16,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 
     @Before
     public void setup() {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
     }
 
     @Test

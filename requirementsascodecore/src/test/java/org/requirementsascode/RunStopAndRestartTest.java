@@ -10,7 +10,7 @@ public class RunStopAndRestartTest extends AbstractTestCase {
 
     @Before
     public void setUp() throws Exception {
-	setupWith(new ModelRunner());
+	setupWithRecordingModelRunner();
 
     }
 
