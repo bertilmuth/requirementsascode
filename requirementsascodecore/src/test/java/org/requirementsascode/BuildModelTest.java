@@ -63,7 +63,7 @@ public class BuildModelTest extends AbstractTestCase {
     }
 
     @Test
-    public void implicitlyCreatesBasicFlow() {
+    public void implicitlyCreatesEmptyBasicFlow() {
 	modelBuilder.useCase(USE_CASE);
 	Model model = modelBuilder.build();
 
@@ -71,6 +71,8 @@ public class BuildModelTest extends AbstractTestCase {
 	Collection<Flow> flows = useCase.getFlows();
 
 	assertEquals(1, flows.size());
+	assertEquals(useCase.getBasicFlow(), flows.iterator().next());	
+	assertFalse(useCase.getBasicFlow().getFirstStep().isPresent());
     }
 
     @Test
@@ -127,6 +129,8 @@ public class BuildModelTest extends AbstractTestCase {
 		.build();
 
 	UseCase useCase = useCasePart.getUseCase();
+	assertFalse(useCase.getBasicFlow().getCondition().isPresent());
+	
 	Collection<Step> steps = useCase.getSteps();
 	assertEquals(1, steps.size());
 
@@ -134,6 +138,18 @@ public class BuildModelTest extends AbstractTestCase {
 	assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 	assertEquals(USE_CASE, step.getUseCase().getName());
 	assertEquals(model.getUserActor(), step.getActors()[0]);
+    }
+    
+    @Test
+    public void createsSingleStepThatHandlesUserCommandWithCondition() {
+	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+
+	useCasePart.basicFlow().condition(() -> textIsAvailable())
+		.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+	.build();
+
+	UseCase useCase = useCasePart.getUseCase();
+	assertTrue(useCase.getBasicFlow().getCondition().isPresent());
     }
 
     @Test
