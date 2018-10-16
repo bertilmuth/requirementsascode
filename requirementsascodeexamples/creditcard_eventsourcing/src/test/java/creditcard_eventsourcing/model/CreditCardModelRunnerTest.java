@@ -24,7 +24,7 @@ public class CreditCardModelRunnerTest {
     @Before
     public void setUp() throws Exception {
 	creditCard = new CreditCard(UUID.randomUUID());
-	modelRunner = new ModelRunner();
+	modelRunner = new ModelRunner().startRecording();
 	cardModelRunner = new CreditCardModelRunner(creditCard, modelRunner);
     }
 

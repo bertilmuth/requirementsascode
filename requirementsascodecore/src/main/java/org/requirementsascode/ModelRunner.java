@@ -474,7 +474,6 @@ public class ModelRunner implements Serializable {
     /**
      * When calling this method, recording is stopped. No events and step names are
      * recorded until {@link #startRecording()} is called again.
-     * @return 
      * 
      * @return this model runner for method chaining
      */

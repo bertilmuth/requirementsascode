@@ -17,7 +17,7 @@ public class HelloWorldTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new ModelRunner();
+		modelRunner = new ModelRunner().startRecording();
 		modelBuilder = Model.builder();
 	}
 

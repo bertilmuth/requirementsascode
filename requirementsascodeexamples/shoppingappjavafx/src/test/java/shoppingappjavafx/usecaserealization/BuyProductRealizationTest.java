@@ -29,7 +29,7 @@ public class BuyProductRealizationTest {
 
 	@Before
 	public void setUp() throws Exception {
-		modelRunner = new ModelRunner();
+		modelRunner = new ModelRunner().startRecording();
 		ModelBuilder modelBuilder = Model.builder();
 		
 		Stock stock = new Stock();

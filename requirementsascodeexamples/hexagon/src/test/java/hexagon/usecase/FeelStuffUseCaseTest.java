@@ -24,7 +24,7 @@ public class FeelStuffUseCaseTest {
     model =
         new HexagonModel(feelStuffUseCaseRealization)
             .buildWith(Model.builder());
-    testRunner = new ModelRunner();
+    testRunner = new ModelRunner().startRecording();
   }
 
   @Test
