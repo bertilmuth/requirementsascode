@@ -36,8 +36,8 @@ public class ModelRunner implements Serializable {
     private Model model;
     private Step latestStep;
     private boolean isRunning;
-    private StandardEventHandler standardEventHandler;
-    private Consumer<StandardEventHandler> eventHandler;
+    private StepToBeRun stepToBeRun;
+    private Consumer<StepToBeRun> eventHandler;
     private Consumer<Object> unhandledEventHandler;
     private LinkedList<UseCase> includedUseCases;
     private LinkedList<FlowStep> includeSteps;
@@ -52,34 +52,35 @@ public class ModelRunner implements Serializable {
      * system reaction, as defined in the step, simply accepts an event.
      */
     public ModelRunner() {
-	this.standardEventHandler = new StandardEventHandler();
+	this.stepToBeRun = new StepToBeRun();
 	this.recordedStepNames = new ArrayList<>();
 	this.recordedEvents = new ArrayList<>();
-	handleWith(new HandleEventMethodOfStandardEventHandler());
+	handleWith(new DirectCallToRunMethodOfStepToBeRun());
     }
 
-    private static class HandleEventMethodOfStandardEventHandler implements Consumer<StandardEventHandler>, Serializable {
+    private static class DirectCallToRunMethodOfStepToBeRun implements Consumer<StepToBeRun>, Serializable {
 	private static final long serialVersionUID = 9039056478378482872L;
 
 	@Override
-	public void accept(StandardEventHandler standardEventHandler) {
-	    standardEventHandler.handleEvent();
+	public void accept(StepToBeRun stepToBeRun) {
+	    stepToBeRun.run();
 	}
     }
 
     /**
-     * Define a custom event handler. It can perform tasks before/after invoking the standard
-     * event handler which will call the system reaction method defined in the model. 
-     * A custom event handler is useful for cross-cutting concerns, e.g. measuring performance.
+     * Define a custom event handler. It can perform tasks before/after running the
+     * step (which will trigger the system reaction method defined in the model).
+     * 
+     * A custom event handler is useful for cross-cutting concerns, e.g. measuring
+     * performance.
      *
      * @param eventHandler
-     *            the event handler to replace the standard handler
-     *            (that just calls the with method from the model).
+     *                         the custom event handler
      */
-    public void handleWith(Consumer<StandardEventHandler> eventHandler) {
+    public void handleWith(Consumer<StepToBeRun> eventHandler) {
 	this.eventHandler = eventHandler;
     }
-    
+
     /**
      * Define handler for events that the runner doesn't react to.
      * 
@@ -268,13 +269,13 @@ public class ModelRunner implements Serializable {
 	    throw new MissingUseCaseStepPart(step, "system");
 	}
 
-	standardEventHandler.setupWith(event, step);
+	stepToBeRun.setupWith(event, step);
 	recordStepNameAndEvent(step, event);
 
 	setLatestStep(step);
 
 	try {
-	    eventHandler.accept(standardEventHandler);
+	    eventHandler.accept(stepToBeRun);
 	} catch (Exception e) {
 	    handleException(e);
 	}

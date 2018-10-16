@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.StandardEventHandler;
+import org.requirementsascode.StepToBeRun;
 
 import creditcard_eventsourcing.model.request.RequestToCloseCycle;
 import creditcard_eventsourcing.model.request.RequestsRepay;
@@ -49,9 +49,9 @@ public class CreditCard {
 	.build();
     }
     
-    private void addingPendingEvents(StandardEventHandler eventHandler) {
-	eventHandler.handleEvent();
-	DomainEvent domainEvent = (DomainEvent) eventHandler.getEvent().get();
+    private void addingPendingEvents(StepToBeRun stepToBeRun) {
+	stepToBeRun.run();
+	DomainEvent domainEvent = (DomainEvent) stepToBeRun.getEvent().get();
 	pendingEvents.add(domainEvent);
     }
 

@@ -3,7 +3,7 @@ package crosscuttingconcerns;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.StandardEventHandler;
+import org.requirementsascode.StepToBeRun;
 
 public class CrossCuttingConcerns01 {
     private int resultOfAddition;
@@ -22,13 +22,13 @@ public class CrossCuttingConcerns01 {
 	modelRunner.run(model);
     }
 
-    private void measuresPerformance(StandardEventHandler systemReactionTrigger) {
+    private void measuresPerformance(StepToBeRun stepToBeRun) {
 	long timeBefore = System.nanoTime();
-	systemReactionTrigger.handleEvent();
+	stepToBeRun.run();
 	long timeAfter = System.nanoTime();
 	long timeElapsed = timeAfter - timeBefore;
 
-	System.out.println("Step " + systemReactionTrigger.getStepName() + " took " + timeElapsed + " nanoseconds.");
+	System.out.println("Step " + stepToBeRun.getStepName() + " took " + timeElapsed + " nanoseconds.");
     }
 
     private void addsTwoNumbers() {

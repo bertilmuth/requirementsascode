@@ -45,13 +45,13 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	}
     }
 
-    private Consumer<StandardEventHandler> recordStepDetails() {
-	return standardEventHandler -> {
-	    stepName = standardEventHandler.getStepName();
-	    optionalCondition = standardEventHandler.getCondition();
-	    optionalEvent = standardEventHandler.getEvent();
-	    systemReaction = standardEventHandler.getSystemReaction();
-	    standardEventHandler.handleEvent();
+    private Consumer<StepToBeRun> recordStepDetails() {
+	return stepToBeRun -> {
+	    stepName = stepToBeRun.getStepName();
+	    optionalCondition = stepToBeRun.getCondition();
+	    optionalEvent = stepToBeRun.getEvent();
+	    systemReaction = stepToBeRun.getSystemReaction();
+	    stepToBeRun.run();
 	};
     }
 

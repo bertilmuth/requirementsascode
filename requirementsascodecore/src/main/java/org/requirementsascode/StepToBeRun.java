@@ -5,32 +5,26 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Class used to trigger a system reaction.
+ * Use an instance of this class if you want to find out the details about the step
+ * to be run in a custom event handler, and to trigger the system reaction.
  *
- * <p>
- * Use an instance of this class only if you want to adapt the system reaction,
- * in order to call the standard system reaction from your adapted system
- * reaction.
- *
+ * @see ModelRunner#handleWith(Consumer)
  * @author b_muth
  */
-public class StandardEventHandler implements Serializable {
+public class StepToBeRun implements Serializable {
     private static final long serialVersionUID = -8615677956101523359L;
 
     private Object event;
     private Step step;
 
-    StandardEventHandler() {
+    StepToBeRun() {
     }
 
     /**
-     * The system reaction of the step accepts the event (both event and step passed
-     * in earlier).
-     *
-     * @see #setupWith(Object, Step)
+     * Triggers the system reaction of this step.
      */
     @SuppressWarnings("unchecked")
-    public void handleEvent() {
+    public void run() {
 	((Consumer<Object>) step.getSystemReaction()).accept(event);
     }
 
@@ -41,7 +35,7 @@ public class StandardEventHandler implements Serializable {
 
     /**
      * Returns the name of the step whose system reaction is performed when
-     * {@link #handleEvent()} is called.
+     * {@link #run()} is called.
      *
      * @return the step name.
      */
@@ -50,8 +44,8 @@ public class StandardEventHandler implements Serializable {
     }
 
     /**
-     * Returns the precondition that needs to be true to cause the 
-     * system reaction when {@link #handleEvent()} is called.
+     * Returns the precondition that needs to be true to trigger the system reaction
+     * when {@link #run()} is called.
      *
      * @return the condition, or an empty optional when no condition was specified.
      */
@@ -62,7 +56,7 @@ public class StandardEventHandler implements Serializable {
 
     /**
      * Returns the event object that will be passed to the system reaction when
-     * {@link #handleEvent()} is called.
+     * {@link #run()} is called.
      *
      * @return the event object, or an empty optional when no event was specified.
      */
@@ -77,15 +71,15 @@ public class StandardEventHandler implements Serializable {
     }
 
     /**
-    * Returns the system reaction to be executed when
-    * {@link #handleEvent()} is called.
-    *
-    * @return the event object.
-    */
+     * Returns the system reaction to be executed when {@link #run()} is
+     * called.
+     *
+     * @return the event object.
+     */
     public Object getSystemReaction() {
 	Object systemReaction = step.getSystemReaction();
-	if(systemReaction instanceof AutonomousSystemReaction) {
-	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction)systemReaction;
+	if (systemReaction instanceof AutonomousSystemReaction) {
+	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReaction;
 	    systemReaction = autonomousSystemReaction.getSystemReaction();
 	}
 	return systemReaction;
