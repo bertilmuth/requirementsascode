@@ -2,18 +2,18 @@
 This project simplifies the development of event-driven applications.
 
 It provides a concise way to create handlers for many types of events at once.
-A single runner receives events, and dispatches them to the handlers. That can be used for replay in event sourced applications.
+A single runner receives events, and dispatches them to handlers. 
+When activated, the runner also records the events.
+That can be used for replay in event sourced applications.
+
+You can also [customize the event handler](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
 
 For more advanced scenarios that depend on the application's state, 
 you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines,
 understandable by developers and business people alike.
 
-Use a ```TestModelRunner``` instance to record events and steps and verify they match your expectations. See the [Hello World tests](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/test/java/helloworld/HelloWorldTest.java) for examples.
-
 For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
-
-You can also handle [cross-cutting concerns](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for validation in event sourced applications.
 
 # getting started
 At least Java 8 is required, download and install it if necessary.
@@ -26,14 +26,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>0.9.3</version>
+    <version>1.0.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:0.9.3'
+compile 'org.requirementsascode:requirementsascodecore:1.0.0'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -49,8 +49,8 @@ Model model = Model.builder()
 
 The order of the statements has no significance.
 For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
-Use `when` before `on` to define an additional condition that must be fulfilled.
-You can also use `when` witout `on`, meaning: execute at the beginning of the run, or after a step has been run,
+Use `condition` before `on` to define an additional precondition that must be fulfilled.
+You can also use `condition` without `on`, meaning: execute at the beginning of the run, or after a step has been run,
 if the condition is fulfilled.
 
 ## Step 2: Create a runner and run the model:

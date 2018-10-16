@@ -9,14 +9,14 @@ If you are using Maven, include the following in your POM:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodeextract</artifactId>
-    <version>0.9.3</version>
+    <version>1.0.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle:
 
 ```
-compile 'org.requirementsascode:requirementsascodeextract:0.9.3'
+compile 'org.requirementsascode:requirementsascodeextract:1.0.0'
 ```
 
 This will put the following libraries on the classpath:
@@ -44,10 +44,10 @@ Model model = Model.builder()
     .flow("Cycle is over").anytime()
 	.step(CLOSE).on(requestToCloseCycle).system(closesCycle)
 	    	
-    .flow("Assign limit twice").when(limitAlreadyAssigned)
+    .flow("Assign limit twice").condition(limitAlreadyAssigned)
 	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
 	    	
-    .flow("Too many withdrawals").when(tooManyWithdrawalsInCycle) 
+    .flow("Too many withdrawals").condition(tooManyWithdrawalsInCycle) 
          .step(WITHDRAW_TOO_OFTEN).user(requestsWithdrawal).system(throwsTooManyWithdrawalsException)
  .build();
 ```
