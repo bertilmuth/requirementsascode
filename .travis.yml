@@ -1,7 +1,6 @@
 language: java
 before_install:
  - chmod +x gradlew
- - openssl aes-256-cbc -K $encrypted_95381cea8cc3_key -iv $encrypted_95381cea8cc3_iv -in .travis/secring.gpg.enc -out .travis/secring.gpg -d
 env:
   global:
     - # SONATYPE_USERNAME
