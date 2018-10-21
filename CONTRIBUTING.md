@@ -1,4 +1,4 @@
-# How to contribute to requirementsascode
+# How to contribute to requirements as code
 
 Do you want to report a bug, implement a new feature or support the project by creating documentation?
 
