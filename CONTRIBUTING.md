@@ -21,6 +21,6 @@ Once your issue is accepted, you can suggest changes by creating a branch first,
 
 Apart from the code you write, please write JUnit tests to ensure quality.
 
-Note that requirementsascodecore uses Gradle as a build tool.
+Note that requirements as code core uses Gradle as a build tool.
 So if you can use it, please use it, as it simplifies multi project builds.
 This is not mandatory, though.
