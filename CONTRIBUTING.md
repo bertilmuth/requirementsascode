@@ -17,7 +17,8 @@ Please create a GitHub issue, that contains at least the following information:
   * What is the documentation that you want to contribute?
   * What is the benefit for the users of requirementsascode?
   
-Once your issue is accepted, you can make changes to requirementsascode using pull requests.
+Once your issue is accepted, you can suggest changes by creating a branch first, and then a pull request.
+
 Apart from the code you write, please write JUnit tests to ensure quality.
 
 Note that requirementsascodecore uses Gradle as a build tool.
