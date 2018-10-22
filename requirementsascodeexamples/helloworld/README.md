@@ -68,7 +68,9 @@ public Model buildWith(ModelBuilder modelBuilder) {
 ...
 Model model = buildWith(Model.builder());
 ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model).reactTo(entersText(), entersText());
+modelRunner.run(model);
+modelRunner.reactTo(entersText());
+modelRunner.reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04.java).
 
