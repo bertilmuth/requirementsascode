@@ -1,4 +1,4 @@
-# How to contribute to requirementsascode
+# How to contribute to requirements as code
 
 Do you want to report a bug, implement a new feature or support the project by creating documentation?
 
@@ -17,9 +17,10 @@ Please create a GitHub issue, that contains at least the following information:
   * What is the documentation that you want to contribute?
   * What is the benefit for the users of requirementsascode?
   
-Once your issue is accepted, you can make changes to requirementsascode using pull requests.
+Once your issue is accepted, you can suggest changes by creating a branch first, and then a pull request.
+
 Apart from the code you write, please write JUnit tests to ensure quality.
 
-Note that requirementsascodecore uses Gradle as a build tool.
+Note that requirements as code core uses Gradle as a build tool.
 So if you can use it, please use it, as it simplifies multi project builds.
 This is not mandatory, though.
