@@ -116,14 +116,14 @@ public class ModelRunner implements Serializable {
     public ModelRunner run(Model model) {
 	this.model = model;
 	this.steps = model.getModifiableSteps();
-	this.userAndSystem = userAndSystem(user != null ? user : model.getUserActor());
 	this.includedUseCases = new LinkedList<>();
 	this.includeSteps = new LinkedList<>();
 	this.includedUseCase = null;
 	this.includeStep = null;
-
 	this.isRunning = true;
-	triggerAutonomousSystemReaction();
+	
+	Actor actor = user != null ? user : model.getUserActor();
+	as(actor).triggerAutonomousSystemReaction();
 	return this;
     }
 
@@ -381,8 +381,8 @@ public class ModelRunner implements Serializable {
     Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
 	Set<Step> steps = stepStream
 		.filter(step -> stepActorIsRunActor(step))
-		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
+		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
 		.filter(step -> hasTruePredicate(step))
 		.collect(Collectors.toSet());
 	return steps;
@@ -393,8 +393,13 @@ public class ModelRunner implements Serializable {
 	if (stepActors == null) {
 	    throw (new MissingUseCaseStepPart(step, "actor"));
 	}
-	boolean stepActorIsRunActor = Stream.of(stepActors).anyMatch(stepActor -> userAndSystem.contains(stepActor));
-	return stepActorIsRunActor;
+	
+	for(Actor stepActor : stepActors) {
+	    if(userAndSystem.contains(stepActor)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
