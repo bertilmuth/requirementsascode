@@ -47,6 +47,8 @@ public class ModelRunner implements Serializable {
     private List<Object> recordedEvents;
     private boolean isRecording;
 
+    private Collection<Step> steps;
+
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
      * system reaction, as defined in the step, simply accepts an event.
@@ -113,13 +115,14 @@ public class ModelRunner implements Serializable {
      */
     public ModelRunner run(Model model) {
 	this.model = model;
+	this.steps = model.getModifiableSteps();
 	this.userAndSystem = userAndSystem(user != null ? user : model.getUserActor());
 	this.includedUseCases = new LinkedList<>();
 	this.includeSteps = new LinkedList<>();
 	this.includedUseCase = null;
 	this.includeStep = null;
+
 	this.isRunning = true;
-	
 	triggerAutonomousSystemReaction();
 	return this;
     }
@@ -342,7 +345,11 @@ public class ModelRunner implements Serializable {
      */
     public Set<Class<?>> getReactToTypes() {
 	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
-	Set<Class<?>> eventsReactedTo = getStepsInStreamThatCanReactStream(stepStream).map(step -> step.getEventClass())
+	Set<Class<?>> eventsReactedTo = stepStream
+		.filter(step -> stepActorIsRunActor(step))
+		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
+		.filter(step -> hasTruePredicate(step))
+		.map(step -> step.getEventClass())
 		.collect(Collectors.toCollection(LinkedHashSet::new));
 	return eventsReactedTo;
     }
@@ -359,27 +366,26 @@ public class ModelRunner implements Serializable {
 
 	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
 	Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, stepStream);
+				
 	return stepsThatCanReact;
     }
 
     private Stream<Step> getStepStreamIfRunningElseEmptyStream() {
 	Stream<Step> stepStream = Stream.empty();
 	if (isRunning) {
-	    stepStream = model.getModifiableSteps().stream();
+	    stepStream = steps.stream();
 	}
 	return stepStream;
     }
         
     Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-	Set<Step> steps = getStepsInStreamThatCanReactStream(stepStream)
+	Set<Step> steps = stepStream
+		.filter(step -> stepActorIsRunActor(step))
+		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
+		.filter(step -> hasTruePredicate(step))
 		.collect(Collectors.toSet());
 	return steps;
-    }
-
-    private Stream<Step> getStepsInStreamThatCanReactStream(Stream<Step> stepStream) {
-	return stepStream.filter(step -> stepActorIsRunActor(step))
-		.filter(step -> hasTruePredicate(step)).filter(step -> isStepInIncludedUseCaseIfPresent(step));
     }
 
     private boolean stepActorIsRunActor(Step step) {
