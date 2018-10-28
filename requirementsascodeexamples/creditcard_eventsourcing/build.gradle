@@ -19,7 +19,7 @@ jar {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-rest")
-	compile 'org.requirementsascode:requirementsascodeextract:1.0.0-SNAPSHOT'
+	compile 'org.requirementsascode:requirementsascodeextract:1.0.1'
   	testCompile 'junit:junit:4.12'
 }
 
