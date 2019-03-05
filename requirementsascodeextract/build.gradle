@@ -1,5 +1,4 @@
 apply plugin: 'maven'
-apply plugin: 'signing'
 
 jar {
     manifest {
@@ -33,58 +32,53 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-signing {
-    sign configurations.archives
-}
+if (project.hasProperty("signing.keyId")) {
+	apply plugin: 'signing'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-			if (project.hasProperty('sonatypeUsername')){
+	signing {
+	    sign configurations.archives
+	}
+	
+	uploadArchives {
+	    repositories {
+	        mavenDeployer {
+	            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	
 				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              		authentication(userName: sonatypeUsername, password: sonatypePassword)
-            	}
-            	snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-              		authentication(userName: sonatypeUsername, password: sonatypePassword)
-            	}
-            } else{
-                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-             		authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
-            	}
-            	snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-              		authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
-            	}
-            }
-            
-            pom.project {
-               name 'requirementsascodeextract'
-               packaging 'jar'
-               description 'Enables you to generate documentation from use case specifications in your code.'
-               url 'http://requirementsascode.org/'
-
-               scm {
-                   url 'scm:git@github.com:bertilmuth/requirementsascode.git'
-                   connection 'scm:git@github.com:bertilmuth/requirementsascode.git'
-                   developerConnection 'scm:git@github.com:bertilmuth/requirementsascode.git'
-               }
-
-               licenses {
-                   license {
-                       name 'The Apache Software License, Version 2.0'
-                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                       distribution 'repo'
-                   }
-               }
-
-               developers {
-                   developer {
-                       id 'bertilmuth'
-                       name 'Bertil Muth'
-                   }
-               }
-           }
-        }
-    }
+	          		authentication(userName: sonatypeUsername, password: sonatypePassword)
+	        	}
+	        	snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+	          		authentication(userName: sonatypeUsername, password: sonatypePassword)
+	        	} 
+	            
+	            pom.project {
+	               name 'requirementsascodeextract'
+	               packaging 'jar'
+	               description 'Enables you to generate documentation from use case specifications in your code.'
+	               url 'http://requirementsascode.org/'
+	
+	               scm {
+	                   url 'scm:git@github.com:bertilmuth/requirementsascode.git'
+	                   connection 'scm:git@github.com:bertilmuth/requirementsascode.git'
+	                   developerConnection 'scm:git@github.com:bertilmuth/requirementsascode.git'
+	               }
+	
+	               licenses {
+	                   license {
+	                       name 'The Apache Software License, Version 2.0'
+	                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+	                       distribution 'repo'
+	                   }
+	               }
+	
+	               developers {
+	                   developer {
+	                       id 'bertilmuth'
+	                       name 'Bertil Muth'
+	                   }
+	               }
+	           }
+	        }
+	    }
+	}
 }
