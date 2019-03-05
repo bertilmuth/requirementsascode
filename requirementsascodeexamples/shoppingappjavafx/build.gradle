@@ -1,4 +1,11 @@
-apply plugin: 'application'
+plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
 
 mainClassName = 'shoppingappjavafx.gui.JavafxMain'
 
