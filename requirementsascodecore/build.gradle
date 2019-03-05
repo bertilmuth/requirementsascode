@@ -43,11 +43,11 @@ uploadArchives {
               		authentication(userName: sonatypeUsername, password: sonatypePassword)
             	}
             } else{
-            	repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              		authentication(userName: '', password: '')
+                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+             		authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
             	}
             	snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-              		authentication(userName: '', password: '')
+              		authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
             	}
             }
           
