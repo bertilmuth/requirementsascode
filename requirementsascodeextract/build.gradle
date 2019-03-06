@@ -46,7 +46,7 @@ if (project.hasProperty("signing.keyId")) {
 	            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
 	               authentication(userName: sonatypeUsername, password: sonatypePassword)
 	            }
-	        	snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+	            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
 	               authentication(userName: sonatypeUsername, password: sonatypePassword)
 	            } 
 	            
