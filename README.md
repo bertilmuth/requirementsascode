@@ -18,7 +18,7 @@ understandable by developers and business people alike.
 For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
 
 # getting started
-At least Java 8 is required, download and install it if necessary.
+At least Java 8 is required to use requirements as code, download and install it if necessary.
 
 Requirements as code is available on Maven Central.
 
@@ -126,6 +126,9 @@ public class HelloUser {
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run models. 
 * [requirements as code extract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): generate documentation from the models (or any other textual artifact).
 * [requirements as code examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirements as code.
+
+# building from sources
+Use Java >=11 and the latest Gradle version to build from sources.
 
 # related topics
 * The work of Ivar Jacobson on Use Cases. As an example, have a look at [Use Case 2.0](https://www.ivarjacobson.com/publications/white-papers/use-case-ebook).
