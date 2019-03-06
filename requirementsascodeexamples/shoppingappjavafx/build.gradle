@@ -1,7 +1,10 @@
 plugins {
+  id 'java'
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.0.7'
 }
+
+sourceCompatibility = 11
 
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
