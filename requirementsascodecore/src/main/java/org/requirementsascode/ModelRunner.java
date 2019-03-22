@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -30,8 +29,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 public class ModelRunner implements Serializable {
     private static final long serialVersionUID = 1787451244764017381L;
 
-    private Actor user;
-    private List<Actor> userAndSystem;
+    private Actor actor;
 
     private Model model;
     private Step latestStep;
@@ -122,8 +120,8 @@ public class ModelRunner implements Serializable {
 	this.includeStep = null;
 	this.isRunning = true;
 	
-	Actor actor = user != null ? user : model.getUserActor();
-	as(actor).triggerAutonomousSystemReaction();
+	Actor actorOrDefaultUser = actor != null ? actor : model.getUserActor();
+	as(actorOrDefaultUser).triggerAutonomousSystemReaction();
 	return this;
     }
 
@@ -131,18 +129,10 @@ public class ModelRunner implements Serializable {
 	reactTo(this);
     }
 
-    private List<Actor> userAndSystem(Actor userActor) {
-	return Arrays.asList(userActor, userActor.getModel().getSystemActor());
-    }
-
     /**
      * After you called this method, the runner will only react to steps that have
      * explicitly set the specified actor as one of its actors, or that are declared
      * as "autonomous system reactions".
-     *
-     * <p>
-     * As a side effect, calling this method triggers immediately triggers
-     * "autonomous system reactions".
      *
      * @param actor
      *            the actor to run as
@@ -151,8 +141,7 @@ public class ModelRunner implements Serializable {
     public ModelRunner as(Actor actor) {
 	Objects.requireNonNull(actor);
 
-	this.user = actor;
-	this.userAndSystem = userAndSystem(user);
+	this.actor = actor;
 	return this;
     }
 
@@ -260,7 +249,7 @@ public class ModelRunner implements Serializable {
 	    throw (RuntimeException) event;
 	}
 
-	return step != null ? Optional.of(step) : Optional.empty();
+	return Optional.ofNullable(step);
     }
 
     private <T> boolean isSystemEvent(T event) {
@@ -371,10 +360,7 @@ public class ModelRunner implements Serializable {
     }
 
     private Stream<Step> getStepStreamIfRunningElseEmptyStream() {
-	Stream<Step> stepStream = Stream.empty();
-	if (isRunning) {
-	    stepStream = steps.stream();
-	}
+	Stream<Step> stepStream = isRunning ? steps.stream() : Stream.empty();
 	return stepStream;
     }
         
@@ -394,8 +380,9 @@ public class ModelRunner implements Serializable {
 	    throw (new MissingUseCaseStepPart(step, "actor"));
 	}
 	
+	Actor systemActor = step.getModel().getSystemActor();
 	for(Actor stepActor : stepActors) {
-	    if(userAndSystem.contains(stepActor)) {
+	    if(stepActor.equals(systemActor) || stepActor.equals(actor)) {
 		return true;
 	    }
 	}
