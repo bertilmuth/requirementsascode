@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,12 +18,12 @@ import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
 /**
- * A model runner is a highly configurable controller that
- * receives events and conditionally calls methods that handle them (the "system reactions").
+ * A model runner is a highly configurable controller that receives events and
+ * conditionally calls methods that handle them (the "system reactions").
  *
  * <p>
- * The runner is configured by the model it owns. Each real user needs an instance of a runner, as the runner determines
- * the user journey.
+ * The runner is configured by the model it owns. Each real user needs an
+ * instance of a runner, as the runner determines the user journey.
  */
 public class ModelRunner implements Serializable {
     private static final long serialVersionUID = 1787451244764017381L;
@@ -37,13 +36,10 @@ public class ModelRunner implements Serializable {
     private StepToBeRun stepToBeRun;
     private Consumer<StepToBeRun> eventHandler;
     private Consumer<Object> unhandledEventHandler;
-    private LinkedList<UseCase> includedUseCases;
-    private LinkedList<FlowStep> includeSteps;
-    private UseCase includedUseCase;
-    private FlowStep includeStep;
     private List<String> recordedStepNames;
     private List<Object> recordedEvents;
     private boolean isRecording;
+    private IncludedUseCases includedUseCases;
 
     private Collection<Step> steps;
 
@@ -84,7 +80,9 @@ public class ModelRunner implements Serializable {
     /**
      * Define handler for events that the runner doesn't react to.
      * 
-     * @param unhandledEventHandler the handler for events not handled by the runner
+     * @param unhandledEventHandler
+     *                                  the handler for events not handled by the
+     *                                  runner
      */
     public void handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
 	this.unhandledEventHandler = unhandledEventHandler;
@@ -100,26 +98,24 @@ public class ModelRunner implements Serializable {
     }
 
     /**
-     * Configures the runner to use the specified model. After you called
-     * this method, the runner will accept events via {@link #reactTo(Object)}.
+     * Configures the runner to use the specified model. After you called this
+     * method, the runner will accept events via {@link #reactTo(Object)}.
      *
      * <p>
      * As a side effect, this method immediately triggers "autonomous system
      * reactions".
      *
      * @param model
-     *            the model that defines the runner's behavior
-     * @return the same model runner, for chaing with @see {@link #reactTo(Object...)}
+     *                  the model that defines the runner's behavior
+     * @return the same model runner, for chaing with @see
+     *         {@link #reactTo(Object...)}
      */
     public ModelRunner run(Model model) {
 	this.model = model;
 	this.steps = model.getModifiableSteps();
-	this.includedUseCases = new LinkedList<>();
-	this.includeSteps = new LinkedList<>();
-	this.includedUseCase = null;
-	this.includeStep = null;
+	this.includedUseCases = new IncludedUseCases();
 	this.isRunning = true;
-	
+
 	Actor actorOrDefaultUser = actor != null ? actor : model.getUserActor();
 	as(actorOrDefaultUser).triggerAutonomousSystemReaction();
 	return this;
@@ -135,7 +131,7 @@ public class ModelRunner implements Serializable {
      * as "autonomous system reactions".
      *
      * @param actor
-     *            the actor to run as
+     *                  the actor to run as
      * @return this runner, for method chaining with {@link #run(Model)}
      */
     public ModelRunner as(Actor actor) {
@@ -162,7 +158,6 @@ public class ModelRunner implements Serializable {
     public void stop() {
 	isRunning = false;
     }
-   
 
     /**
      * Call this method to provide several event objects to the runner. For each
@@ -174,7 +169,7 @@ public class ModelRunner implements Serializable {
      */
     public Optional<Step> reactTo(Object... events) {
 	Objects.requireNonNull(events);
-	
+
 	for (Object event : events) {
 	    reactTo(event);
 	}
@@ -196,29 +191,29 @@ public class ModelRunner implements Serializable {
      * <p>
      * After that, the runner will trigger "autonomous system reactions".
      * 
-     * Note that if you provide a collection as the first and only argument, this will
-     * be flattened to the objects in the collection, and for each object {@link #reactTo(Object)} 
-     * is called.
+     * Note that if you provide a collection as the first and only argument, this
+     * will be flattened to the objects in the collection, and for each object
+     * {@link #reactTo(Object)} is called.
      *
      * <p>
      * See {@link #canReactTo(Class)} for a description of what "can react" means.
      *
-     * @param <T>
-     *            the type of the command or event object
+     * @param       <T>
+     *                  the type of the command or event object
      * @param event
-     *            the command or event object
+     *                  the command or event object
      * @return the step that was run latest by the model runner
      * @throws MoreThanOneStepCanReact
-     *             when more than one step can react
+     *                                     when more than one step can react
      * @throws InfiniteRepetition
-     *             when a step has an always true condition, or there is an infinite
-     *             loop.
+     *                                     when a step has an always true condition,
+     *                                     or there is an infinite loop.
      */
     public <T> Optional<Step> reactTo(T event) {
 	Objects.requireNonNull(event);
-	
-	if(event instanceof Collection) {
-	    Object[] events = ((Collection<?>)event).toArray(new Object[0]);
+
+	if (event instanceof Collection) {
+	    Object[] events = ((Collection<?>) event).toArray(new Object[0]);
 	    return reactTo(events);
 	}
 
@@ -270,7 +265,7 @@ public class ModelRunner implements Serializable {
 	    handleException(e);
 	}
 
-	continueAfterIncludeStepWhenEndOfIncludedFlowIsReached();
+	continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(this);
 	triggerAutonomousSystemReaction();
     }
 
@@ -283,24 +278,8 @@ public class ModelRunner implements Serializable {
 	}
     }
 
-    private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached() {
-	if (includedUseCase != null && includeStep != null && isAtEndOfIncludedFlow()) {
-	    setLatestStep(includeStep);
-	    includedUseCase = getUseCaseIncludedBefore();
-	    includeStep = getIncludeStepBefore();
-	}
-    }
-
-    private UseCase getUseCaseIncludedBefore() {
-	includedUseCases.pop();
-	UseCase includedUseCase = includedUseCases.peek();
-	return includedUseCase;
-    }
-
-    private FlowStep getIncludeStepBefore() {
-	includeSteps.pop();
-	FlowStep includeStep = includeSteps.peek();
-	return includeStep;
+    private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(ModelRunner modelRunner) {
+	includedUseCases.continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(modelRunner);
     }
 
     /**
@@ -313,7 +292,7 @@ public class ModelRunner implements Serializable {
      * class d) the step has a condition that is true
      *
      * @param eventClass
-     *            the specified class
+     *                       the specified class
      * @return true if the runner is running and at least one step can react, false
      *         otherwise
      */
@@ -331,11 +310,9 @@ public class ModelRunner implements Serializable {
      */
     public Set<Class<?>> getReactToTypes() {
 	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
-	Set<Class<?>> eventsReactedTo = stepStream
-		.filter(step -> stepActorIsRunActor(step))
-		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
-		.filter(step -> hasTruePredicate(step))
-		.map(step -> step.getEventClass())
+	Set<Class<?>> eventsReactedTo = stepStream.filter(step -> stepActorIsRunActor(step))
+		.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step))
+		.filter(step -> hasTruePredicate(step)).map(step -> step.getEventClass())
 		.collect(Collectors.toCollection(LinkedHashSet::new));
 	return eventsReactedTo;
     }
@@ -344,7 +321,7 @@ public class ModelRunner implements Serializable {
      * Returns the steps in the model that can react to the specified event class.
      *
      * @param eventClass
-     *            the class of events
+     *                       the class of events
      * @return the steps that can react to the class of events
      */
     public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
@@ -352,7 +329,7 @@ public class ModelRunner implements Serializable {
 
 	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
 	Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, stepStream);
-				
+
 	return stepsThatCanReact;
     }
 
@@ -360,13 +337,11 @@ public class ModelRunner implements Serializable {
 	Stream<Step> stepStream = isRunning ? steps.stream() : Stream.empty();
 	return stepStream;
     }
-        
+
     Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-	Set<Step> steps = stepStream
-		.filter(step -> stepActorIsRunActor(step))
+	Set<Step> steps = stepStream.filter(step -> stepActorIsRunActor(step))
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-		.filter(step -> isStepInIncludedUseCaseIfPresent(step))
-		.filter(step -> hasTruePredicate(step))
+		.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step)).filter(step -> hasTruePredicate(step))
 		.collect(Collectors.toSet());
 	return steps;
     }
@@ -376,10 +351,10 @@ public class ModelRunner implements Serializable {
 	if (stepActors == null) {
 	    throw (new MissingUseCaseStepPart(step, "actor"));
 	}
-	
+
 	Actor systemActor = step.getModel().getSystemActor();
-	for(Actor stepActor : stepActors) {
-	    if(stepActor.equals(systemActor) || stepActor.equals(actor)) {
+	for (Actor stepActor : stepActors) {
+	    if (stepActor.equals(systemActor) || stepActor.equals(actor)) {
 		return true;
 	    }
 	}
@@ -397,14 +372,6 @@ public class ModelRunner implements Serializable {
 	return result;
     }
 
-    private boolean isStepInIncludedUseCaseIfPresent(Step step) {
-	boolean result = true;
-	if (includedUseCase != null) {
-	    result = includedUseCase.equals(step.getUseCase());
-	}
-	return result;
-    }
-
     /**
      * Overwrite this method to control what happens exactly when an exception is
      * thrown by a system reaction. The behavior implemented in runner: the
@@ -413,7 +380,7 @@ public class ModelRunner implements Serializable {
      * behavior, that for example involves some kind of logging.
      *
      * @param e
-     *            the exception that has been thrown by the system reaction
+     *              the exception that has been thrown by the system reaction
      */
     protected void handleException(Exception e) {
 	reactTo(e);
@@ -437,7 +404,7 @@ public class ModelRunner implements Serializable {
      * {@link #reactTo(Object)}.
      *
      * @param latestStep
-     *            the latest step run
+     *                       the latest step run
      */
     public void setLatestStep(Step latestStep) {
 	this.latestStep = latestStep;
@@ -449,14 +416,13 @@ public class ModelRunner implements Serializable {
      * @return the latest flow run
      */
     public Optional<Flow> getLatestFlow() {
-	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep)step).getFlow());
+	return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep) step).getFlow());
     }
-    
+
     /**
      * After calling this method, until recording is stopped, events and step names
-     * are recorded. 
-     * If step names/events have been recorded before calling this method, these
-     * are discarded.
+     * are recorded. If step names/events have been recorded before calling this
+     * method, these are discarded.
      * 
      * @return this model runner for method chaining
      */
@@ -477,7 +443,7 @@ public class ModelRunner implements Serializable {
 	isRecording = false;
 	return this;
     }
-    
+
     /**
      * Returns the recorded names of the steps that have been run so far.
      * <p>
@@ -509,25 +475,6 @@ public class ModelRunner implements Serializable {
     }
 
     public void startIncludedUseCase(UseCase includedUseCase, FlowStep includeStep) {
-	this.includedUseCase = includedUseCase;
-	this.includeStep = includeStep;
-
-	includedUseCases.push(includedUseCase);
-	includeSteps.push(includeStep);
-    }
-
-    private boolean isAtEndOfIncludedFlow() {
-	Optional<FlowStep> lastStepOfRunningFlow = getLatestStep().map(ls -> getLastStepOf(((FlowStep)ls).getFlow()));
-	boolean result = getLatestStep()
-		.map(ls -> ls.getUseCase().equals(includedUseCase) && ls.equals(lastStepOfRunningFlow.get()))
-		.orElse(false);
-	return result;
-    }
-
-    private FlowStep getLastStepOf(Flow flow) {
-	List<FlowStep> stepsOfFlow = flow.getSteps();
-	int lastStepIndex = stepsOfFlow.size() - 1;
-	FlowStep lastStepOfFlow = stepsOfFlow.get(lastStepIndex);
-	return lastStepOfFlow;
+	includedUseCases.startIncludedUseCase(includedUseCase, includeStep);
     }
 }
