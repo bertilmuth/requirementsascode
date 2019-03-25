@@ -265,7 +265,7 @@ public class ModelRunner implements Serializable {
 	    handleException(e);
 	}
 
-	continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(this);
+	includedUseCases.continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(this);
 	triggerAutonomousSystemReaction();
     }
 
@@ -276,10 +276,6 @@ public class ModelRunner implements Serializable {
 		recordedEvents.add(event);
 	    }
 	}
-    }
-
-    private void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(ModelRunner modelRunner) {
-	includedUseCases.continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(modelRunner);
     }
 
     /**

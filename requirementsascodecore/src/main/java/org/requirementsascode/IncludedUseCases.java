@@ -34,43 +34,36 @@ class IncludedUseCases {
 
     void continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(ModelRunner modelRunner) {
 	if (includeStep != null) {
-	    Step latestStep = modelRunner.getLatestStep().get();
-	    if (isAtEndOfIncludedFlow(latestStep)) {
-		modelRunner.setLatestStep(includeStep);
-		returnToIncludeStep();
-	    }
+	    modelRunner.getLatestStep().ifPresent(latestStepRun -> {
+		if (isAtEndOfIncludedFlow(latestStepRun)) {
+		    returnToIncludeStep(modelRunner);
+		}
+	    });
 	}
     }
 
-    UseCase getUseCaseIncludedBefore() {
-	includedUseCases.pop();
-	UseCase includedUseCase = includedUseCases.peek();
-	return includedUseCase;
-    }
-
-    FlowStep getIncludeStep() {
-	return includeStep;
-    }
-
-    FlowStep getIncludeStepBefore() {
+    private FlowStep getIncludeStepBefore() {
 	includeSteps.pop();
 	FlowStep includeStep = includeSteps.peek();
 	return includeStep;
     }
 
-    boolean isAtEndOfIncludedFlow(Step latestStep) {
-	if (includedUseCase == null || includeStep == null) {
-	    return false;
-	}
-
+    private boolean isAtEndOfIncludedFlow(Step latestStep) {
 	FlowStep lastStepOfRunningFlow = getLastStepOf(((FlowStep) latestStep).getFlow());
 	boolean result = latestStep.getUseCase().equals(includedUseCase) && latestStep.equals(lastStepOfRunningFlow);
 	return result;
     }
 
-    void returnToIncludeStep() {
+    private void returnToIncludeStep(ModelRunner modelRunner) {
+	modelRunner.setLatestStep(includeStep);
 	includedUseCase = getUseCaseIncludedBefore();
 	includeStep = getIncludeStepBefore();
+    }
+
+    private UseCase getUseCaseIncludedBefore() {
+	includedUseCases.pop();
+	UseCase includedUseCase = includedUseCases.peek();
+	return includedUseCase;
     }
 
     private FlowStep getLastStepOf(Flow flow) {
