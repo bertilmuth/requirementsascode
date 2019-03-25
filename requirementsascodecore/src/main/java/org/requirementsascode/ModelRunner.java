@@ -235,7 +235,7 @@ public class ModelRunner implements Serializable {
 	return getLatestStep();
     }
 
-    private <T> Optional<Step> triggerSystemReactionForSteps(T event, Collection<Step> steps) {
+    private void triggerSystemReactionForSteps(Object event, Collection<Step> steps) {
 	Step step = null;
 
 	if (steps.size() == 1) {
@@ -248,15 +248,13 @@ public class ModelRunner implements Serializable {
 	} else if (event instanceof RuntimeException) {
 	    throw (RuntimeException) event;
 	}
-
-	return Optional.ofNullable(step);
     }
 
     private <T> boolean isSystemEvent(T event) {
 	return event instanceof ModelRunner;
     }
 
-    private <T> Step triggerSystemReactionForStep(T event, Step step) {
+    private void triggerSystemReactionForStep(Object event, Step step) {
 	if (step.getSystemReaction() == null) {
 	    throw new MissingUseCaseStepPart(step, "system");
 	}
@@ -274,10 +272,9 @@ public class ModelRunner implements Serializable {
 
 	continueAfterIncludeStepWhenEndOfIncludedFlowIsReached();
 	triggerAutonomousSystemReaction();
-	return step;
     }
 
-    <T> void recordStepNameAndEvent(Step step, T event) {
+    void recordStepNameAndEvent(Step step, Object event) {
 	if (isRecording) {
 	    recordedStepNames.add(step.getName());
 	    if (event != null) {

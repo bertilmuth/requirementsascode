@@ -65,7 +65,7 @@ public class StepToBeRun implements Serializable {
 	if (event instanceof ModelRunner) {
 	    optionalEvent = Optional.empty();
 	} else {
-	    optionalEvent = Optional.ofNullable(event);
+	    optionalEvent = Optional.of(event);
 	}
 	return optionalEvent;
     }
@@ -74,7 +74,7 @@ public class StepToBeRun implements Serializable {
      * Returns the system reaction to be executed when {@link #run()} is
      * called.
      *
-     * @return the event object.
+     * @return the system reaction.
      */
     public Object getSystemReaction() {
 	Object systemReaction = step.getSystemReaction();
