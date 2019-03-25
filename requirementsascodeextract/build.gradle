@@ -8,7 +8,7 @@ jar {
 }
 
 dependencies {
-    compile 'org.freemarker:freemarker:2.3.26-incubating'
+    compile 'org.freemarker:freemarker:2.3.28'
     compile 'org.apache.commons:commons-lang3:3.5'
 	compile 'org.requirementsascode:requirementsascodecore:' + version
   	testCompile 'junit:junit:4.12'
