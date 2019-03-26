@@ -2,6 +2,8 @@ apply plugin: 'application'
 
 mainClassName = 'shoppingappextract.extract.ShoppingAppExtract'
 
+sourceCompatibility = 11
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirements as code - shopping app JavaFX extract',
