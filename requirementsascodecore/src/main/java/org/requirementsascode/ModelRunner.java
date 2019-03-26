@@ -28,7 +28,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 public class ModelRunner implements Serializable {
     private static final long serialVersionUID = 1787451244764017381L;
 
-    private Actor actor;
+    private Actor runActor;
 
     private Model model;
     private Step latestStep;
@@ -74,7 +74,7 @@ public class ModelRunner implements Serializable {
      *                         the custom event handler
      */
     public void handleWith(Consumer<StepToBeRun> eventHandler) {
-	this.eventHandler = eventHandler;
+	this.eventHandler = Objects.requireNonNull(eventHandler);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ModelRunner implements Serializable {
      *                                  runner
      */
     public void handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
-	this.unhandledEventHandler = unhandledEventHandler;
+	this.unhandledEventHandler = Objects.requireNonNull(unhandledEventHandler);
     }
 
     /**
@@ -107,17 +107,16 @@ public class ModelRunner implements Serializable {
      *
      * @param model
      *                  the model that defines the runner's behavior
-     * @return the same model runner, for chaing with @see
+     * @return the same model runner, for chaining with @see
      *         {@link #reactTo(Object...)}
      */
     public ModelRunner run(Model model) {
-	this.model = model;
-	this.steps = model.getModifiableSteps();
+	this.model = Objects.requireNonNull(model);
 	this.includedUseCases = new IncludedUseCases();
 	this.isRunning = true;
 
-	Actor actorOrDefaultUser = actor != null ? actor : model.getUserActor();
-	as(actorOrDefaultUser).triggerAutonomousSystemReaction();
+	Actor runActorOrDefaultUser = runActor != null ? runActor : model.getUserActor();
+	as(runActorOrDefaultUser).triggerAutonomousSystemReaction();
 	return this;
     }
 
@@ -130,15 +129,22 @@ public class ModelRunner implements Serializable {
      * explicitly set the specified actor as one of its actors, or that are declared
      * as "autonomous system reactions".
      *
-     * @param actor
+     * @param runActor
      *                  the actor to run as
      * @return this runner, for method chaining with {@link #run(Model)}
      */
-    public ModelRunner as(Actor actor) {
-	Objects.requireNonNull(actor);
-
-	this.actor = actor;
+    public ModelRunner as(Actor runActor) {
+	this.runActor = Objects.requireNonNull(runActor);
+	if(model != null) {
+	    this.steps = getActorSteps(runActor, model);
+	}
 	return this;
+    }
+    private Collection<Step> getActorSteps(Actor actor, Model model) {
+	Set<Step> actorSteps = model.getModifiableSteps().stream()
+		.filter(step -> anyStepActorIsRunActor(step, actor))
+		.collect(Collectors.toSet());
+	return actorSteps;
     }
 
     /**
@@ -293,6 +299,7 @@ public class ModelRunner implements Serializable {
      *         otherwise
      */
     public boolean canReactTo(Class<? extends Object> eventClass) {
+	Objects.requireNonNull(eventClass);
 	boolean canReact = getReactToTypes().contains(eventClass);
 	return canReact;
     }
@@ -303,10 +310,9 @@ public class ModelRunner implements Serializable {
      * See {@link #canReactTo(Class)} for a description of what "can react" means.
      * 
      * @return the collection of classes of events
-     */
+     */ 
     public Set<Class<?>> getReactToTypes() {
-	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
-	Set<Class<?>> eventsReactedTo = stepStream.filter(step -> stepActorIsRunActor(step))
+	Set<Class<?>> eventsReactedTo = getRunningStepStream()
 		.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step))
 		.filter(step -> hasTruePredicate(step)).map(step -> step.getEventClass())
 		.collect(Collectors.toCollection(LinkedHashSet::new));
@@ -323,26 +329,25 @@ public class ModelRunner implements Serializable {
     public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
 	Objects.requireNonNull(eventClass);
 
-	Stream<Step> stepStream = getStepStreamIfRunningElseEmptyStream();
-	Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, stepStream);
-
+	Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, getRunningStepStream());
 	return stepsThatCanReact;
     }
 
-    private Stream<Step> getStepStreamIfRunningElseEmptyStream() {
+    Stream<Step> getRunningStepStream() {
 	Stream<Step> stepStream = isRunning ? steps.stream() : Stream.empty();
 	return stepStream;
     }
 
     Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-	Set<Step> steps = stepStream.filter(step -> stepActorIsRunActor(step))
+	Set<Step> steps = stepStream
 		.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-		.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step)).filter(step -> hasTruePredicate(step))
+		.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step))
+		.filter(step -> hasTruePredicate(step))
 		.collect(Collectors.toSet());
 	return steps;
     }
 
-    private boolean stepActorIsRunActor(Step step) {
+    private boolean anyStepActorIsRunActor(Step step, Actor runActor) {
 	Actor[] stepActors = step.getActors();
 	if (stepActors == null) {
 	    throw (new MissingUseCaseStepPart(step, "actor"));
@@ -350,7 +355,7 @@ public class ModelRunner implements Serializable {
 
 	Actor systemActor = step.getModel().getSystemActor();
 	for (Actor stepActor : stepActors) {
-	    if (stepActor.equals(systemActor) || stepActor.equals(actor)) {
+	    if (stepActor.equals(systemActor) || stepActor.equals(runActor)) {
 		return true;
 	    }
 	}
@@ -359,7 +364,8 @@ public class ModelRunner implements Serializable {
 
     private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
 	Class<?> stepEventClass = useCaseStep.getEventClass();
-	return stepEventClass.isAssignableFrom(currentEventClass);
+	boolean result = stepEventClass.isAssignableFrom(currentEventClass);
+	return result;
     }
 
     private boolean hasTruePredicate(Step step) {
