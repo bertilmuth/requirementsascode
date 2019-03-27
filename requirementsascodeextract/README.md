@@ -20,7 +20,7 @@ compile 'org.requirementsascode:requirementsascodeextract:1.0.2'
 ```
 
 This will put the following libraries on the classpath:
-* freemarker-2.3.26-incubating.jar (FreeMarker)
+* freemarker-2.3.28.jar (FreeMarker)
 * commons-lang3-3.5.jar (Apache Commons)
 * The current requirements as code extract jar
 * The current requirements as code core jar
