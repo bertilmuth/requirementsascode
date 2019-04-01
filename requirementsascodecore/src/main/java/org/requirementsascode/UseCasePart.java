@@ -12,10 +12,12 @@ import java.util.function.Consumer;
 public class UseCasePart {
     private UseCase useCase;
     private ModelBuilder modelBuilder;
+    private Actor defaultActor;
 
     UseCasePart(UseCase useCase, ModelBuilder modelBuilder) {
 	this.useCase = useCase;
 	this.modelBuilder = modelBuilder;
+	this.defaultActor = modelBuilder.build().getUserActor();
     }
 
     /**
@@ -40,6 +42,18 @@ public class UseCasePart {
 	Flow useCaseFlow = getUseCase().newFlow(flowName);
 	return new FlowPart(useCaseFlow, this);
     }
+    
+    /**
+     * Define a default actor that will be used for each step of the use case,
+     * unless it is overwritten by specific actors for the steps (with <code>as</code>).
+     * 
+     * @param defaultActor the actor to use as a default for the use case's steps
+     * @return this use case part
+     */
+    public UseCasePart as(Actor defaultActor) {
+	this.defaultActor = defaultActor;
+	return this;
+    }
 
     UseCase getUseCase() {
 	return useCase;
@@ -47,6 +61,10 @@ public class UseCasePart {
 
     ModelBuilder getModelBuilder() {
 	return modelBuilder;
+    }
+    
+    Actor getDefaultActor() {
+	return defaultActor;
     }
 
     /**

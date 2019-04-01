@@ -16,14 +16,12 @@ public class StepPart {
     private Step step;
     private FlowPart flowPart;
     private ModelBuilder modelBuilder;
-    private Actor userActor;
     private Actor systemActor;
 
     StepPart(Step step, UseCasePart useCasePart, FlowPart useCaseFlowPart) {
 	this.step = step;
 	this.flowPart = useCaseFlowPart;
 	this.modelBuilder = useCasePart.getModelBuilder();
-	this.userActor = modelBuilder.build().getUserActor();
 	this.systemActor = modelBuilder.build().getSystemActor();
     }
 
@@ -57,7 +55,8 @@ public class StepPart {
      */
     public <T> StepUserPart<T> user(Class<T> eventClass) {
 	Objects.requireNonNull(eventClass);
-	StepUserPart<T> userPart = as(userActor).user(eventClass);
+	Actor defaultActor = getUseCasePart().getDefaultActor();
+	StepUserPart<T> userPart = as(defaultActor).user(eventClass);
 	return userPart;
     }
 

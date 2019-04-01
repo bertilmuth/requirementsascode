@@ -154,10 +154,8 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void createsSingleStepThatHandlesSystemEvent() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
 	Model model = 
-		useCasePart.basicFlow()
+		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
 
@@ -216,11 +214,24 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void createsSingleActorWithSingleUseCase() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
 	Model model = 
-		useCasePart.basicFlow()
+		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
+		.build();
+
+	Actor customerActor = model.findActor(CUSTOMER);
+	Set<UseCase> useCases = customerActor.getUseCases();
+	assertEquals(1, useCases.size());
+
+	UseCase actualUseCase = useCases.iterator().next();
+	assertEquals(USE_CASE, actualUseCase.getName());
+    }
+    
+    @Test
+    public void createsSingleDefaultActorWithSingleUseCase() {
+	Model model = 
+		modelBuilder.useCase(USE_CASE).as(customer).basicFlow()
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 
 	Actor customerActor = model.findActor(CUSTOMER);
@@ -434,10 +445,8 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void useCasesAreUniquelyIdentifiedByName() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
 	Model model = 
-		useCasePart.basicFlow()
+		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.flow(ALTERNATIVE_FLOW)
 			.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText()).build();
@@ -448,9 +457,7 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void flowsAreUniquelyIdentifiedByName() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
-	UseCase useCase = useCasePart.getUseCase();
+	UseCase useCase = modelBuilder.useCase(USE_CASE).getUseCase();
 	useCase.newFlow(ALTERNATIVE_FLOW);
 	Flow existingFlow = useCase.findFlow(ALTERNATIVE_FLOW);
 
@@ -472,10 +479,8 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void actorsCanBeReusedInUseCase() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
 	Model model = 
-		useCasePart.basicFlow()
+		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 			.step(CUSTOMER_ENTERS_TEXT_AGAIN).as(customer).user(EntersText.class).system(displaysEnteredText())
 		.build();
@@ -493,14 +498,31 @@ public class BuildModelTest extends AbstractTestCase {
 
     @Test
     public void actorsCanBeReusedBetweenUseCases() {
-	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-
 	Model model = 
-		useCasePart.basicFlow()
+		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 		.useCase(USE_CASE_2)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN).as(customer).user(EntersText.class).system(displaysEnteredText())
+		.build();
+
+	Collection<Step> steps = model.getSteps();
+	assertEquals(2, steps.size());
+
+	Iterator<Step> stepsIt = steps.iterator();
+	Actor actor1 = stepsIt.next().getActors()[0];
+	Actor actor2 = stepsIt.next().getActors()[0];
+
+	assertTrue(actor1 == actor2);
+	assertEquals(customer, actor1);
+    }
+    
+    @Test
+    public void defaultActorIsUsedForSeveralSteps() {
+	Model model = 
+		modelBuilder.useCase(USE_CASE).as(customer).basicFlow()
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 		.build();
 
 	Collection<Step> steps = model.getSteps();

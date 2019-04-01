@@ -252,6 +252,22 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void twoSequentialStepsReactOnlyWhenDefaultActorIsRight() {		
+		Model model = modelBuilder
+			.useCase(USE_CASE).as(customer)			
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT)
+						.user(EntersText.class).system(displaysEnteredText())
+					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
+						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
+		
+		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
+	}
+	
+	@Test
 	public void twoSequentialStepsReactWhenActorIsChanged() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)			
@@ -347,22 +363,6 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void onlyStepWithRightActorReacts() { 		
-		Model model = modelBuilder
-			.useCase(USE_CASE)		
-				.basicFlow()	
-					.step(CUSTOMER_ENTERS_TEXT)
-						.as(customer).user(EntersText.class).system(displaysEnteredText())
-					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
-						.as(secondActor).user(EntersText.class).system(throwsRuntimeException())
-			.build();
-		
-		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
-		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
-	}
-	
-	@Test
 	public void onlyStepWithRightActorInDifferentFlowReacts() { 
 		Model model = modelBuilder
 			.useCase(USE_CASE)		
@@ -372,6 +372,24 @@ public class FlowTest extends AbstractTestCase{
 			.flow(ALTERNATIVE_FLOW).condition(this::textIsNotAvailable)
 				.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 					.as(customer).user(EntersText.class).system(displaysEnteredText())
+			.build();
+		
+		modelRunner.as(customer).run(model);
+		Optional<Step> lastStepRun = modelRunner.reactTo(entersText());
+		
+		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().getName());
+	}
+	
+	@Test
+	public void onlyStepWithDefaultActorInDifferentFlowReacts() { 
+		Model model = modelBuilder
+			.useCase(USE_CASE).as(customer)	
+				.basicFlow()	
+					.step(CUSTOMER_ENTERS_TEXT)
+						.as(secondActor).user(EntersText.class).system(throwsRuntimeException())			
+			.flow(ALTERNATIVE_FLOW).condition(this::textIsNotAvailable)
+				.step(CUSTOMER_ENTERS_TEXT_AGAIN)
+					.user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
 		modelRunner.as(customer).run(model);
