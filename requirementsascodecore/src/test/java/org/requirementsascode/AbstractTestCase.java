@@ -3,6 +3,7 @@ package org.requirementsascode;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class AbstractTestCase {
 
@@ -88,14 +89,20 @@ public abstract class AbstractTestCase {
     }
 
     protected Consumer<EntersText> displaysEnteredText() {
-	return enterText -> {
-	    displayedText = enterText.toString();
+	return enteredText -> {
+	    displayedText = enteredText.toString();
+	};
+    }
+    
+    protected Function<EntersText, Object[]> publishEnteredText() {
+	return enteredText -> {
+	    return new EntersText[]{enteredText};
 	};
     }
 
     protected Consumer<EntersNumber> displaysEnteredNumber() {
-	return enterNumber -> {
-	    displayedText = enterNumber.toString();
+	return enteredNumber -> {
+	    displayedText = enteredNumber.toString();
 	};
     }
 

@@ -15,7 +15,7 @@ public class StepSystemPart<T> {
     private StepPart stepPart;
     private Step step;
 
-    StepSystemPart(StepPart stepPart, Consumer<T> systemReaction) {
+    StepSystemPart(StepPart stepPart, SystemReaction<T> systemReaction) {
 	this.stepPart = stepPart;
 	this.step = stepPart.getStep();
 	step.setSystemReaction(systemReaction);

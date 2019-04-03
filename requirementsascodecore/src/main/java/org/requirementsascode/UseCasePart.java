@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -131,8 +132,12 @@ public class UseCasePart {
 	    return stepPart;
 	}
 
-	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
-	    userPart.system(systemReaction);
+	public FlowlessSystemPart<T> system(Consumer<T> systemReactionObject) {
+	    userPart.system(systemReactionObject);	    
+	    return new FlowlessSystemPart<>(flowlessStepCounter);
+	}
+	public FlowlessSystemPart<T> system(Function<T, Object[]> systemReactionObject) {
+	    userPart.system(systemReactionObject);	    
 	    return new FlowlessSystemPart<>(flowlessStepCounter);
 	}
     }

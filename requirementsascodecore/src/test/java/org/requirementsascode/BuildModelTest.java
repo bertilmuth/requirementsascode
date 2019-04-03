@@ -116,6 +116,21 @@ public class BuildModelTest extends AbstractTestCase {
 
 	Step step = steps.iterator().next();
 	assertEquals("S1", step.getName());
+	assertEquals(model.getSystemActor(), step.getActors()[0]); 
+    }
+    
+    @Test
+    public void createsSingleStepThatHandlesEventWithoutUseCaseAndWithoutFlow() {
+	Model model = 
+		modelBuilder
+			.on(EntersText.class).system(publishEnteredText())
+		.build();
+
+	Collection<Step> steps = model.getSteps();
+	assertEquals(1, steps.size());
+
+	Step step = steps.iterator().next();
+	assertEquals("S1", step.getName());
 	assertEquals(model.getSystemActor(), step.getActors()[0]);
     }
 

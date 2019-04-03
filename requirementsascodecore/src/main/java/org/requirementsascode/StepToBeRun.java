@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Use an instance of this class if you want to find out the details about the step
@@ -25,7 +26,7 @@ public class StepToBeRun implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public void run() {
-	((Consumer<Object>) step.getSystemReaction()).accept(event);
+	((Function<Object, Object[]>) step.getSystemReaction()).apply(event);
     }
 
     void setupWith(Object event, Step useCaseStep) {
@@ -77,11 +78,11 @@ public class StepToBeRun implements Serializable {
      * @return the system reaction.
      */
     public Object getSystemReaction() {
-	Object systemReaction = step.getSystemReaction();
-	if (systemReaction instanceof AutonomousSystemReaction) {
-	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReaction;
-	    systemReaction = autonomousSystemReaction.getSystemReaction();
-	}
-	return systemReaction;
+	Object systemReactionObject = ((SystemReaction)step.getSystemReaction()).getSystemReactionObject();
+	if (systemReactionObject instanceof AutonomousSystemReaction) {
+	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReactionObject;
+	    systemReactionObject = autonomousSystemReaction.getSystemReaction();
+	} 
+	return systemReactionObject;
     }
 }
