@@ -79,10 +79,6 @@ public class StepToBeRun implements Serializable {
      */
     public Object getSystemReaction() {
 	Object systemReactionObject = ((SystemReaction)step.getSystemReaction()).getSystemReactionObject();
-	if (systemReactionObject instanceof AutonomousSystemReaction) {
-	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReactionObject;
-	    systemReactionObject = autonomousSystemReaction.getSystemReaction();
-	} 
 	return systemReactionObject;
     }
 }

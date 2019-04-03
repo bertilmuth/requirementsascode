@@ -103,13 +103,11 @@ public class UseCasePart {
 	}
 
 	public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-	    AutonomousSystemReaction autonomousSystemReaction = new AutonomousSystemReaction(systemReaction);
-	    return on(ModelRunner.class).system(autonomousSystemReaction);
+	    return on(ModelRunner.class).system(systemReaction);
 	}
 	
-	public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> modelRunnerConsumer) {
-	    AutonomousSystemReaction autonomousSystemReaction = new AutonomousSystemReaction(modelRunnerConsumer);
-	    return on(ModelRunner.class).system(autonomousSystemReaction);
+	public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
+	    return on(ModelRunner.class).system(systemReaction);
 	}
     }
 
@@ -132,6 +130,10 @@ public class UseCasePart {
 	    return stepPart;
 	}
 
+	public FlowlessSystemPart<T> system(Runnable systemReactionObject) {
+	    userPart.system(systemReactionObject);	    
+	    return new FlowlessSystemPart<>(flowlessStepCounter);
+	}
 	public FlowlessSystemPart<T> system(Consumer<T> systemReactionObject) {
 	    userPart.system(systemReactionObject);	    
 	    return new FlowlessSystemPart<>(flowlessStepCounter);

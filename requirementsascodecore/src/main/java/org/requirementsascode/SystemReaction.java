@@ -18,6 +18,11 @@ public class SystemReaction<T> implements Function<T, Object[]>{
 	this.internalSystemReaction = nonPublishingReaction;
     }
     
+    SystemReaction(Runnable runnable) {
+	this(ignoredRunner -> runnable.run());
+	this.systemReaction = runnable;
+    }
+    
     SystemReaction(Function<T, Object[]> systemReaction) {
 	Objects.requireNonNull(systemReaction);
 	this.systemReaction = systemReaction;

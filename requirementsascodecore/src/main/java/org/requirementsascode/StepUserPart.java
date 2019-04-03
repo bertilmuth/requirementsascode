@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -34,11 +35,16 @@ public class StepUserPart<T> {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }
+    public StepSystemPart<T> system(Runnable systemReaction) {
+	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+	return createStepSystemPart(systemReactionObject);
+    }
     public StepSystemPart<T> system(Function<T, Object[]> systemReaction) {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }
     private StepSystemPart<T> createStepSystemPart(SystemReaction<T> systemReactionObject) {
+	Objects.requireNonNull(systemReactionObject);
 	return new StepSystemPart<>(stepPart, systemReactionObject);
     }
 
