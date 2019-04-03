@@ -1,14 +1,12 @@
 package org.requirementsascode;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
- * @see FlowStep#setSystemReaction(Consumer)
  * @author b_muth
  */
 public class StepSystemPart<T> {

@@ -138,8 +138,8 @@ public class UseCasePart {
 	    userPart.system(systemReactionObject);	    
 	    return new FlowlessSystemPart<>(flowlessStepCounter);
 	}
-	public FlowlessSystemPart<T> system(Function<T, Object[]> systemReactionObject) {
-	    userPart.system(systemReactionObject);	    
+	public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReactionObject) {
+	    userPart.systemPublish(systemReactionObject);	    
 	    return new FlowlessSystemPart<>(flowlessStepCounter);
 	}
     }

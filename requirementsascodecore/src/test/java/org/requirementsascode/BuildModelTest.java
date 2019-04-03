@@ -123,7 +123,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesEventWithoutUseCaseAndWithoutFlow() {
 	Model model = 
 		modelBuilder
-			.on(EntersText.class).system(publishEnteredText())
+			.on(EntersText.class).systemPublish(publishEnteredText())
 		.build();
 
 	Collection<Step> steps = model.getSteps();

@@ -8,9 +8,7 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.h
 import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-import org.requirementsascode.AutonomousSystemReaction;
 import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.AbstractContinues;
 import org.requirementsascode.systemreaction.IncludesUseCase;
@@ -52,13 +50,8 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     }
 
     private String getWordsOfSystemReactionClassName(Step step) {
-	Consumer<?> systemReaction = step.getSystemReaction();
+	Object systemReaction = step.getSystemReaction().getModelObject();
 	Class<?> systemReactionClass = systemReaction.getClass();
-
-	if (systemReaction instanceof AutonomousSystemReaction) {
-	    AutonomousSystemReaction autonomousSystemReaction = (AutonomousSystemReaction) systemReaction;
-	    systemReactionClass = autonomousSystemReaction.getSystemReactionClass();
-	}
 	String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
 	return wordsOfClassName;
     }
@@ -75,7 +68,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     private String getStepNameOrIncludedUseCase(Step step) {
 	String stepNameOrIncludedUseCase = "";
 	if (hasSystemReaction(step)) {
-	    Consumer<?> systemReaction = step.getSystemReaction();
+	    Object systemReaction = step.getSystemReaction().getModelObject();
 	    if (systemReaction instanceof AbstractContinues) {
 		stepNameOrIncludedUseCase = " " + ((AbstractContinues) systemReaction).getStepName();
 	    } else if (systemReaction instanceof IncludesUseCase) {

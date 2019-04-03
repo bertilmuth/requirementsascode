@@ -35,7 +35,7 @@ public class Steps {
   }
 
   public static boolean hasSystemReaction(Step step) {
-    return !(step.getSystemReaction() instanceof IgnoresIt<?>);
+    return !(step.getSystemReaction().getModelObject() instanceof IgnoresIt<?>);
   }
   
   public static Actor getUserActor(Step step) {

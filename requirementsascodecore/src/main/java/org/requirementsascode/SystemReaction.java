@@ -19,7 +19,7 @@ public class SystemReaction<T> implements Function<T, Object[]>{
     }
     
     SystemReaction(Runnable modelObject) {
-	this(ignoredRunner -> modelObject.run());
+	this((Consumer<T>)ignoredRunner -> modelObject.run());
 	this.modelObject = modelObject;
     }
     

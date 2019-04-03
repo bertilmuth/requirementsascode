@@ -39,7 +39,7 @@ public class StepUserPart<T> {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }
-    public StepSystemPart<T> system(Function<T, Object[]> systemReaction) {
+    public StepSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }
