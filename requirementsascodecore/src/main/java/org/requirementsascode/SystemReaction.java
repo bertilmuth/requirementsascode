@@ -5,40 +5,36 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class SystemReaction<T> implements Function<T, Object[]>{
-    private Object systemReaction;
-    private Function<T, Object[]> internalSystemReaction;
+    private Object modelObject;
+    private Function<T, Object[]> internalFunction;
     
-    SystemReaction(Consumer<T> systemReaction) {
-	Objects.requireNonNull(systemReaction);
+    SystemReaction(Consumer<T> modelObject) {
+	Objects.requireNonNull(modelObject);
 	Function<T, Object[]> nonPublishingReaction = message -> {
-	    systemReaction.accept(message);
+	    modelObject.accept(message);
 	    return new Object[] {};
 	};
-	this.systemReaction = systemReaction;
-	this.internalSystemReaction = nonPublishingReaction;
+	this.modelObject = modelObject;
+	this.internalFunction = nonPublishingReaction;
     }
     
-    SystemReaction(Runnable runnable) {
-	this(ignoredRunner -> runnable.run());
-	this.systemReaction = runnable;
+    SystemReaction(Runnable modelObject) {
+	this(ignoredRunner -> modelObject.run());
+	this.modelObject = modelObject;
     }
     
-    SystemReaction(Function<T, Object[]> systemReaction) {
-	Objects.requireNonNull(systemReaction);
-	this.systemReaction = systemReaction;
-	this.internalSystemReaction = systemReaction;
+    SystemReaction(Function<T, Object[]> modelObject) {
+	Objects.requireNonNull(modelObject);
+	this.modelObject = modelObject;
+	this.internalFunction = modelObject;
     }
     
-    public Object getSystemReactionObject() {
-	return systemReaction;
-    }
-    
-    Function<T, Object[]> getInternalSystemReaction() {
-        return internalSystemReaction;
+    public Object getModelObject() {
+	return modelObject;
     }
 
     @Override
     public Object[] apply(T event) {
-	return internalSystemReaction.apply(event);
+	return internalFunction.apply(event);
     }
 }

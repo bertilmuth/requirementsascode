@@ -75,10 +75,10 @@ public class StepToBeRun implements Serializable {
      * Returns the system reaction to be executed when {@link #run()} is
      * called.
      *
-     * @return the system reaction.
+     * @return the system reaction object, as specified in the model.
      */
     public Object getSystemReaction() {
-	Object systemReactionObject = ((SystemReaction)step.getSystemReaction()).getSystemReactionObject();
+	Object systemReactionObject = step.getSystemReaction().getModelObject();
 	return systemReactionObject;
     }
 }

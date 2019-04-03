@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import java.io.Serializable;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -22,7 +21,7 @@ public abstract class Step extends ModelElement implements Serializable {
     private UseCase useCase;
     private Actor[] actors;
     private Class<?> eventClass;
-    private Function<?, Object[]> systemReaction;
+    private SystemReaction<?> systemReaction;
     private Condition condition;
 
     /**
@@ -68,11 +67,11 @@ public abstract class Step extends ModelElement implements Serializable {
 	this.eventClass = eventClass;
     }
 
-    public Function<?, Object[]> getSystemReaction() {
+    public SystemReaction<?> getSystemReaction() {
 	return systemReaction;
     }
 
-    void setSystemReaction(Function<?, Object[]> systemReaction) {
+    void setSystemReaction(SystemReaction<?> systemReaction) {
 	this.systemReaction = systemReaction;
     }
     
