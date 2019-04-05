@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
@@ -56,17 +57,22 @@ public class StepAsPart {
      * Defines an "autonomous system reaction", meaning the system will react
      * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
      *
-     * @param runnable
+     * @param autonomousSystemReaction
      *            the autonomous system reaction
      * @return the created system part of this step
      */
-    public StepSystemPart<ModelRunner> system(Runnable runnable) {
-	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(runnable);
+    public StepSystemPart<ModelRunner> system(Runnable autonomousSystemReaction) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(autonomousSystemReaction);
 	return systemPart;
     }
     
-    public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> systemReactionObject) {
-	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(systemReactionObject);
+    public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> autonomousSystemReaction) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
+	return systemPart;
+    }
+    
+    public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> autonomousSystemReaction) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
 	return systemPart;
     }
     

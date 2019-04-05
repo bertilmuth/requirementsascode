@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class AbstractTestCase {
 
@@ -88,8 +89,8 @@ public abstract class AbstractTestCase {
 	};
     }
     
-    protected Function<ModelRunner, Object[]> publishConstantText() {
-	return modelRunner -> {
+    protected Supplier<Object[]> publishConstantText() {
+	return () -> {
 	    return new String[] {"Hello, Basic Flow!"};
 	};
     }
@@ -102,7 +103,7 @@ public abstract class AbstractTestCase {
     
     protected Function<EntersText, Object[]> publishEnteredText() {
 	return enteredText -> {
-	    return new EntersText[]{enteredText};
+	    return new String[]{enteredText.value()};
 	};
     }
 

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FlowlessTest extends AbstractTestCase {
 
@@ -74,6 +75,20 @@ public class FlowlessTest extends AbstractTestCase {
 
 	latestStepRun = modelRunner.reactTo(entersText());
 	assertEquals(EntersText.class, latestStepRun.get().getEventClass());
+    }
+    
+    
+    @Test
+    public void secondFlowlessStepReactsWhenFirstStepPublishes() {
+	Model model = modelBuilder.useCase(USE_CASE)
+		.on(EntersText.class).systemPublish(publishEnteredText())
+		.on(String.class).system(new IgnoresIt<>())
+	.build();
+
+	modelRunner.run(model);
+
+	Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+	assertEquals(String.class, latestStepRun.get().getEventClass());
     }
     
     @Test

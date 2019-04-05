@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.IncludesUseCase;
@@ -92,7 +93,13 @@ public class StepPart {
     public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
 	Objects.requireNonNull(systemReaction);
 	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
-	return systemPart;
+	return systemPart; 
+    }
+    
+    StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) { 
+	Objects.requireNonNull(systemReaction);
+	StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
+	return systemPart; 
     }
     
     /**
@@ -108,7 +115,7 @@ public class StepPart {
 	Objects.requireNonNull(modelRunnerConsumer);
 	StepSystemPart<ModelRunner> systemPart = as(systemActor).system(modelRunnerConsumer);
 	return systemPart;
-    }
+    }    
 
     /**
      * Makes the model runner continue after the specified step.

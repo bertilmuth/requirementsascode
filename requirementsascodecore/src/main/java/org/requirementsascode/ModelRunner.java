@@ -51,15 +51,27 @@ public class ModelRunner implements Serializable {
 	this.stepToBeRun = new StepToBeRun();
 	this.recordedStepNames = new ArrayList<>();
 	this.recordedEvents = new ArrayList<>();
-	handleWith(new DirectCallToRunMethodOfStepToBeRun());
+	handleWith(new CallRunMethodOfStepToBeRunAndPublishEvents(this));
     }
 
-    private static class DirectCallToRunMethodOfStepToBeRun implements Consumer<StepToBeRun>, Serializable {
+    private static class CallRunMethodOfStepToBeRunAndPublishEvents implements Consumer<StepToBeRun>, Serializable {
+	private ModelRunner modelRunner;
 	private static final long serialVersionUID = 9039056478378482872L;
+	
+	public CallRunMethodOfStepToBeRunAndPublishEvents(ModelRunner modelRunner) {
+	    this.modelRunner = modelRunner;
+	}
 
 	@Override
 	public void accept(StepToBeRun stepToBeRun) {
-	    stepToBeRun.run();
+	    Object[] eventsToBePublished = stepToBeRun.run();
+	    publishEvents(eventsToBePublished);
+	}
+
+	private void publishEvents(Object[] eventsToBePublished) {
+	    for (Object event : eventsToBePublished) {
+		modelRunner.reactTo(event);
+	    }
 	}
     }
 

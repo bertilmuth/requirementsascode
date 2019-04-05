@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Use an instance of this class if you want to find out the details about the step
- * to be run in a custom event handler, and to trigger the system reaction.
+ * Use an instance of this class if you want to find out the details about the
+ * step to be run in a custom event handler, and to trigger the system reaction.
  *
  * @see ModelRunner#handleWith(Consumer)
  * @author b_muth
@@ -23,15 +23,13 @@ public class StepToBeRun implements Serializable {
 
     /**
      * Triggers the system reaction of this step.
+     * 
+     * @return the events to be published, resulting from the system reaction
      */
     @SuppressWarnings("unchecked")
-    public void run() {
-	((Function<Object, Object[]>) step.getSystemReaction()).apply(event);
-    }
-
-    void setupWith(Object event, Step useCaseStep) {
-	this.event = event;
-	this.step = useCaseStep;
+    public Object[] run() {
+	Function<Object, Object[]> systemReactionFunction = (Function<Object, Object[]>) step.getSystemReaction();
+	return systemReactionFunction.apply(event);
     }
 
     /**
@@ -72,13 +70,17 @@ public class StepToBeRun implements Serializable {
     }
 
     /**
-     * Returns the system reaction to be executed when {@link #run()} is
-     * called.
+     * Returns the system reaction to be executed when {@link #run()} is called.
      *
      * @return the system reaction object, as specified in the model.
      */
     public Object getSystemReaction() {
 	Object systemReactionObject = step.getSystemReaction().getModelObject();
 	return systemReactionObject;
+    }
+    
+    void setupWith(Object event, Step useCaseStep) {
+	this.event = event;
+	this.step = useCaseStep;
     }
 }

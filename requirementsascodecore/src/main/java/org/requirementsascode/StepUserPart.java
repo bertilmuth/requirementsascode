@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoresIt;
@@ -40,6 +41,10 @@ public class StepUserPart<T> {
 	return createStepSystemPart(systemReactionObject);
     }
     public StepSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
+	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+	return createStepSystemPart(systemReactionObject);
+    }
+    public StepSystemPart<T> systemPublish(Supplier<Object[]> systemReaction) {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }

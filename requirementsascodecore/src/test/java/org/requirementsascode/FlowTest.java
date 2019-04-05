@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FlowTest extends AbstractTestCase{
 	private Actor secondActor;
@@ -172,6 +173,21 @@ public class FlowTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		reactToAndAssertEvents(entersText(), entersNumber());		
+	}
+	
+	@Test
+	public void secondStepReactsWhenFirstStepPublishes() {
+		final String PROCESS_PUBLISHED_EVENT = "Process published event";
+	    
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredText())
+					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<>())
+			.build();
+		
+		modelRunner.run(model).reactTo(entersText());		
+		assertEquals(PROCESS_PUBLISHED_EVENT, modelRunner.getLatestStep().get().getName());
 	}
 	
 	@Test

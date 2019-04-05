@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class SystemReaction<T> implements Function<T, Object[]>{
     private Object modelObject;
@@ -22,6 +23,13 @@ public class SystemReaction<T> implements Function<T, Object[]>{
 	this((Consumer<T>)ignoredRunner -> modelObject.run());
 	this.modelObject = modelObject;
     }
+    
+    SystemReaction(Supplier<Object[]> modelObject) {
+ 	Objects.requireNonNull(modelObject);
+ 	Function<T, Object[]> publishingReaction = (Function<T, Object[]>)message -> modelObject.get();
+ 	this.modelObject = modelObject;
+ 	this.internalFunction = publishingReaction;
+     }
     
     SystemReaction(Function<T, Object[]> modelObject) {
 	Objects.requireNonNull(modelObject);
