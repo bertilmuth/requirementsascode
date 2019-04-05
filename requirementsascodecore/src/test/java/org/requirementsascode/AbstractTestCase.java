@@ -87,6 +87,12 @@ public abstract class AbstractTestCase {
 	    displayedText = "Hello, Basic Flow!";
 	};
     }
+    
+    protected Function<ModelRunner, Object[]> publishConstantText() {
+	return modelRunner -> {
+	    return new String[] {"Hello, Basic Flow!"};
+	};
+    }
 
     protected Consumer<EntersText> displaysEnteredText() {
 	return enteredText -> {

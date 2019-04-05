@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
@@ -61,6 +62,11 @@ public class StepAsPart {
      */
     public StepSystemPart<ModelRunner> system(Runnable runnable) {
 	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(runnable);
+	return systemPart;
+    }
+    
+    public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> systemReactionObject) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(systemReactionObject);
 	return systemPart;
     }
     
