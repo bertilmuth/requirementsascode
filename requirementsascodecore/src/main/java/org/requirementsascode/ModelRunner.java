@@ -57,7 +57,7 @@ public class ModelRunner implements Serializable {
     private static class CallRunMethodOfStepToBeRunAndPublishEvents implements Consumer<StepToBeRun>, Serializable {
 	private ModelRunner modelRunner;
 	private static final long serialVersionUID = 9039056478378482872L;
-	
+
 	public CallRunMethodOfStepToBeRunAndPublishEvents(ModelRunner modelRunner) {
 	    this.modelRunner = modelRunner;
 	}
@@ -65,13 +65,13 @@ public class ModelRunner implements Serializable {
 	@Override
 	public void accept(StepToBeRun stepToBeRun) {
 	    Object[] eventsToBePublished = stepToBeRun.run();
-	    modelRunner.publishEvents(eventsToBePublished);
+	    publishEvents(eventsToBePublished);
 	}
-    }
 
-    private void publishEvents(Object... eventsToBePublished) {
-	for (Object event : eventsToBePublished) {
-	    reactTo(event);
+	private void publishEvents(Object... eventsToBePublished) {
+	    for (Object event : eventsToBePublished) {
+		modelRunner.reactTo(event);
+	    }
 	}
     }
 
@@ -133,7 +133,7 @@ public class ModelRunner implements Serializable {
     }
 
     private void triggerAutonomousSystemReaction() {
-	publishEvents(this);
+	reactTo(this);
     }
 
     /**
@@ -389,7 +389,7 @@ public class ModelRunner implements Serializable {
     /**
      * Overwrite this method to control what happens exactly when an exception is
      * thrown by a system reaction. The behavior implemented in runner: the
-     * exception is published as an event.
+     * exception is handled as an event.
      * You may replace this with a more sophisticated
      * behavior, that for example involves some kind of logging.
      *
@@ -397,7 +397,7 @@ public class ModelRunner implements Serializable {
      *              the exception that has been thrown by the system reaction
      */
     protected void handleException(Exception e) {
-	publishEvents(e);
+	reactTo(e);
     }
 
     /**
