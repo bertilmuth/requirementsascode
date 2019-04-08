@@ -65,13 +65,13 @@ public class ModelRunner implements Serializable {
 	@Override
 	public void accept(StepToBeRun stepToBeRun) {
 	    Object[] eventsToBePublished = stepToBeRun.run();
-	    publishEvents(eventsToBePublished);
+	    modelRunner.publishEvents(eventsToBePublished);
 	}
+    }
 
-	private void publishEvents(Object[] eventsToBePublished) {
-	    for (Object event : eventsToBePublished) {
-		modelRunner.reactTo(event);
-	    }
+    private void publishEvents(Object... eventsToBePublished) {
+	for (Object event : eventsToBePublished) {
+	    reactTo(event);
 	}
     }
 
@@ -133,7 +133,7 @@ public class ModelRunner implements Serializable {
     }
 
     private void triggerAutonomousSystemReaction() {
-	reactTo(this);
+	publishEvents(this);
     }
 
     /**
@@ -389,15 +389,15 @@ public class ModelRunner implements Serializable {
     /**
      * Overwrite this method to control what happens exactly when an exception is
      * thrown by a system reaction. The behavior implemented in runner: the
-     * exception is provided as an event object to the runner, by calling
-     * {@link #reactTo(Object)}. You may replace this with a more sophisticated
+     * exception is published as an event.
+     * You may replace this with a more sophisticated
      * behavior, that for example involves some kind of logging.
      *
      * @param e
      *              the exception that has been thrown by the system reaction
      */
     protected void handleException(Exception e) {
-	reactTo(e);
+	publishEvents(e);
     }
 
     /**
