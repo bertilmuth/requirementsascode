@@ -65,17 +65,7 @@ public class StepAsPart {
 	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(autonomousSystemReaction);
 	return systemPart;
     }
-    
-    public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> autonomousSystemReaction) {
-	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
-	return systemPart;
-    }
-    
-    public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> autonomousSystemReaction) {
-	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
-	return systemPart;
-    }
-    
+   
     /**
      * Defines an "autonomous system reaction", meaning the system will react
      * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
@@ -87,6 +77,16 @@ public class StepAsPart {
      */
     StepSystemPart<ModelRunner> system(Consumer<ModelRunner> autonomousSystemReaction) {
 	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(autonomousSystemReaction);
+	return systemPart;
+    }
+    
+    public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> autonomousSystemReaction) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
+	return systemPart;
+    }
+    
+    public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> autonomousSystemReaction) {
+	StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
 	return systemPart;
     }
 

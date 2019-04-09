@@ -4,11 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class NonStandardEventHandlingTest extends AbstractTestCase {
     private String stepName;
@@ -26,8 +29,11 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	stepName = "";
 
 	ReactionAsRunnable reactionAsRunnable = new ReactionAsRunnable();
-	Model model = modelBuilder.useCase(USE_CASE).basicFlow().step(SYSTEM_DISPLAYS_TEXT)
-		.system(reactionAsRunnable).build();
+	Model model = modelBuilder
+    		.useCase(USE_CASE)
+    			.basicFlow()
+    				.step(SYSTEM_DISPLAYS_TEXT).system(reactionAsRunnable)
+    				.build();
 
 	modelRunner.handleWith(recordStepDetails());
 	modelRunner.run(model);
@@ -88,17 +94,42 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
     @Test
     public void recordsEventWithUnhandledEventHandler() {
-	Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
+	Model model = modelBuilder
+		.useCase(USE_CASE)
+			.on(EntersText.class).system(displaysEnteredText())
+	.build();
 
 	modelRunner.handleUnhandledWith(this::eventRecordingEventHandler);
-	modelRunner.run(model);
-	modelRunner.reactTo(entersNumber());
+	modelRunner.run(model).reactTo(entersNumber());
 
 	Object event = optionalEvent.get();
 	assertTrue(event instanceof EntersNumber);
     }
 
-    public void eventRecordingEventHandler(Object event) {
+    private void eventRecordingEventHandler(Object event) {
 	this.optionalEvent = Optional.of(event);
+    }
+    
+    @Test
+    public void publishesEventToList() {
+	List<Object> publishedEvents = new ArrayList<>();
+	
+	Model model = modelBuilder
+		.useCase(USE_CASE)
+			.basicFlow()
+				.step("S1").on(EntersText.class).systemPublish(publishEnteredText())
+				.step("S2").on(String.class).system(new IgnoresIt<>())
+				.step("S3").system(new IgnoresIt<>())
+	.build();
+
+	modelRunner.publishWith(event -> publishedEvents.add(event));
+	modelRunner.run(model).reactTo(entersText(), "Some String");
+	
+	assertEquals(4, publishedEvents.size());
+	assertEquals(ModelRunner.class, publishedEvents.get(0).getClass());
+	assertEquals(String.class, publishedEvents.get(1).getClass());
+	assertEquals(ModelRunner.class, publishedEvents.get(2).getClass());
+	assertEquals(ModelRunner.class, publishedEvents.get(3).getClass());
+
     }
 }

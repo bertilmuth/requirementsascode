@@ -48,6 +48,7 @@ public class StepUserPart<T> {
 	SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 	return createStepSystemPart(systemReactionObject);
     }
+    
     private StepSystemPart<T> createStepSystemPart(SystemReaction<T> systemReactionObject) {
 	Objects.requireNonNull(systemReactionObject);
 	return new StepSystemPart<>(stepPart, systemReactionObject);

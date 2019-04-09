@@ -183,7 +183,7 @@ public class FlowTest extends AbstractTestCase{
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredText())
-					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<>())
+					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
 			.build();
 		
 		modelRunner.run(model).reactTo(entersText());		

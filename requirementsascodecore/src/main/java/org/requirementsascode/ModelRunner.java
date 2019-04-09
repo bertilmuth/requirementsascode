@@ -36,12 +36,14 @@ public class ModelRunner implements Serializable {
     private StepToBeRun stepToBeRun;
     private Consumer<StepToBeRun> eventHandler;
     private Consumer<Object> unhandledEventHandler;
+    private Consumer<Object> eventPublisher;
     private List<String> recordedStepNames;
     private List<Object> recordedEvents;
     private boolean isRecording;
     private IncludedUseCases includedUseCases;
 
     private Collection<Step> steps;
+
 
     /**
      * Constructor for creating a runner with standard system reaction, that is: the
@@ -51,28 +53,8 @@ public class ModelRunner implements Serializable {
 	this.stepToBeRun = new StepToBeRun();
 	this.recordedStepNames = new ArrayList<>();
 	this.recordedEvents = new ArrayList<>();
-	handleWith(new CallRunMethodOfStepToBeRunAndPublishEvents(this));
-    }
-
-    private static class CallRunMethodOfStepToBeRunAndPublishEvents implements Consumer<StepToBeRun>, Serializable {
-	private ModelRunner modelRunner;
-	private static final long serialVersionUID = 9039056478378482872L;
-
-	public CallRunMethodOfStepToBeRunAndPublishEvents(ModelRunner modelRunner) {
-	    this.modelRunner = modelRunner;
-	}
-
-	@Override
-	public void accept(StepToBeRun stepToBeRun) {
-	    Object[] eventsToBePublished = stepToBeRun.run();
-	    publishEvents(eventsToBePublished);
-	}
-
-	private void publishEvents(Object... eventsToBePublished) {
-	    for (Object event : eventsToBePublished) {
-		modelRunner.reactTo(event);
-	    }
-	}
+	handleWith(stepToBeRun -> stepToBeRun.run());
+	publishWith(event -> reactTo(event));
     }
 
     /**
@@ -98,6 +80,18 @@ public class ModelRunner implements Serializable {
      */
     public void handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
 	this.unhandledEventHandler = Objects.requireNonNull(unhandledEventHandler);
+    }
+    
+    /**
+     * Define a custom publisher for events. It will be called after a
+     * system reaction has been run, for each of the returned event objects of
+     * the system reaction.
+     *
+     * @param eventPublisher
+     *                         the custom event eventPublisher
+     */
+    public void publishWith(Consumer<Object> eventPublisher) {
+	this.eventPublisher = Objects.requireNonNull(eventPublisher);
     }
 
     /**
@@ -133,7 +127,7 @@ public class ModelRunner implements Serializable {
     }
 
     private void triggerAutonomousSystemReaction() {
-	reactTo(this);
+	eventPublisher.accept(this);
     }
 
     /**
@@ -272,7 +266,7 @@ public class ModelRunner implements Serializable {
 	    throw new MissingUseCaseStepPart(step, "system");
 	}
 
-	stepToBeRun.setupWith(event, step);
+	stepToBeRun.setupWith(step, event, eventPublisher);
 	recordStepNameAndEvent(step, event);
 
 	setLatestStep(step);
@@ -389,7 +383,7 @@ public class ModelRunner implements Serializable {
     /**
      * Overwrite this method to control what happens exactly when an exception is
      * thrown by a system reaction. The behavior implemented in runner: the
-     * exception is handled as an event.
+     * exception is published as an event.
      * You may replace this with a more sophisticated
      * behavior, that for example involves some kind of logging.
      *
@@ -397,7 +391,7 @@ public class ModelRunner implements Serializable {
      *              the exception that has been thrown by the system reaction
      */
     protected void handleException(Exception e) {
-	reactTo(e);
+	eventPublisher.accept(e);
     }
 
     /**

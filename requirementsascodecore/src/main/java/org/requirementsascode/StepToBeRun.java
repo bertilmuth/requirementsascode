@@ -15,21 +15,33 @@ import java.util.function.Function;
 public class StepToBeRun implements Serializable {
     private static final long serialVersionUID = -8615677956101523359L;
 
-    private Object event;
     private Step step;
+    private Object event;
+    private Consumer<Object> eventPublisher;
 
     StepToBeRun() {
     }
 
     /**
-     * Triggers the system reaction of this step.
-     * 
-     * @return the events to be published, resulting from the system reaction
+     * Triggers the system reaction of this step,
+     * and publishes the resulting events.
      */
-    @SuppressWarnings("unchecked")
-    public Object[] run() {
+    public void run() {
+	Object[] eventsToBePublished = runSystemReactionOfStep();
+	publishEvents(eventsToBePublished);
+    }
+
+    private Object[] runSystemReactionOfStep() {
+	@SuppressWarnings("unchecked")
 	Function<Object, Object[]> systemReactionFunction = (Function<Object, Object[]>) step.getSystemReaction();
-	return systemReactionFunction.apply(event);
+	Object[] eventsToBePublished = systemReactionFunction.apply(event);
+	return eventsToBePublished;
+    }
+
+    private void publishEvents(Object[] eventsToBePublished) {
+	for (Object eventToBePublished : eventsToBePublished) {
+	    eventPublisher.accept(eventToBePublished);
+	}
     }
 
     /**
@@ -79,8 +91,9 @@ public class StepToBeRun implements Serializable {
 	return systemReactionObject;
     }
     
-    void setupWith(Object event, Step useCaseStep) {
-	this.event = event;
+    void setupWith(Step useCaseStep, Object event, Consumer<Object> eventPublisher) {
 	this.step = useCaseStep;
+	this.event = event;
+	this.eventPublisher = eventPublisher;
     }
 }

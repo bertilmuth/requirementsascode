@@ -19,6 +19,18 @@ public class SystemReaction<T> implements Function<T, Object[]>{
 	this.internalFunction = nonPublishingReaction;
     }
     
+    SystemReaction(Consumer<T> modelObject, Function<T, Object[]> returnEventsForMessage) {
+	Objects.requireNonNull(modelObject);
+	Function<T, Object[]> nonPublishingReaction = message -> {
+	    modelObject.accept(message);
+	    Object[] returnedEvents = returnEventsForMessage.apply(message);
+	    return returnedEvents;
+	};
+	this.modelObject = modelObject;
+	this.internalFunction = nonPublishingReaction;
+    }
+    
+    
     SystemReaction(Runnable modelObject) {
 	this((Consumer<T>)ignoredRunner -> modelObject.run());
 	this.modelObject = modelObject;
