@@ -124,7 +124,7 @@ public class UseCase extends ModelElement implements Serializable {
      */
     InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
 	    Condition condition) {
-	InterruptingFlowStep step = new InterruptingFlowStep(stepName, this, flow);
+	InterruptingFlowStep step = new InterruptingFlowStep(stepName, flow);
 	step.setFlowPosition(flowPosition);
 	step.setCondition(condition);
 
