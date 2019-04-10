@@ -2,11 +2,15 @@ package org.requirementsascode;
 
 import java.util.function.Predicate;
 
+import org.requirementsascode.flowposition.FlowPosition;
+
 public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
-    InterruptingFlowStep(String stepName, Flow useCaseFlow) {
+    InterruptingFlowStep(String stepName, Flow useCaseFlow, FlowPosition flowPosition, Condition condition) {
 	super(stepName, useCaseFlow);
+	setFlowPosition(flowPosition);
+	setCondition(condition);
     }
 
     public Predicate<ModelRunner> getPredicate() {
