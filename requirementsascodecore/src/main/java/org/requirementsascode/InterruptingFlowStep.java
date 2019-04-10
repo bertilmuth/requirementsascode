@@ -6,7 +6,7 @@ public class InterruptingFlowStep extends FlowStep {
     private static final long serialVersionUID = 7204738737376844201L;
 
     InterruptingFlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
-	super(stepName, useCase, useCaseFlow);
+	super(stepName, useCaseFlow);
     }
 
     public Predicate<ModelRunner> getPredicate() {

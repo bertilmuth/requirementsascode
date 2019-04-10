@@ -17,9 +17,9 @@ public abstract class FlowStep extends Step implements Serializable {
     private FlowStep previousStepInFlow;
     private Condition reactWhile;
 
-    FlowStep(String stepName, UseCase useCase, Flow useCaseFlow) {
-	super(stepName, useCase);
-	this.flow = useCaseFlow;
+    FlowStep(String stepName, Flow flow) {
+	super(stepName, flow.getUseCase());
+	this.flow = flow;
     }
 
     public Flow getFlow() {

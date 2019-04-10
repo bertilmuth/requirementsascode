@@ -23,7 +23,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
      *            the flow that will contain the new step
      */
     InterruptableFlowStep(String stepName, UseCase useCase, Flow flow) {
-	super(stepName, useCase, flow);
+	super(stepName, flow);
 	appendToLastStepOfFlow();
     }
 
