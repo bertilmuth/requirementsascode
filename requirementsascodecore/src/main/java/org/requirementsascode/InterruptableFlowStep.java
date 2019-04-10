@@ -9,13 +9,21 @@ import java.util.stream.Stream;
 import org.requirementsascode.flowposition.After;
 
 /**
+ * An interruptable flow step is either the first step of a flow without a user specified condition,
+ * or a step that is not the first step (in any flow).
+ * 
+ * This kind of step can be "interrupted" by the first step of a different flow, that has a 
+ * user specified condition.
+ * 
+ * So an interruptable flow step can be considered the [else] case, if no other flow starts.
+ * 
  * @author b_muth
  */
 public class InterruptableFlowStep extends FlowStep implements Serializable {
     private static final long serialVersionUID = -2926490717985964131L;
 
     /**
-     * Creates step with the specified name as the last step of the specified flow.
+     * Creates unconditional step with the specified name as the last step of the specified flow.
      *
      * @param stepName
      *            the name of the step to be created
@@ -23,7 +31,7 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
      *            the flow that will contain the new step
      */
     InterruptableFlowStep(String stepName, Flow flow) {
-	super(stepName, flow);
+	super(stepName, flow, null);
 	appendToLastStepOfFlow();
     }
 

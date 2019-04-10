@@ -123,8 +123,7 @@ public class UseCasePart {
 	}
 
 	private StepPart createStepPart(Condition optionalCondition, String stepName) {
-	    FlowlessStep newStep = useCase.newFlowlessStep(stepName);
-	    newStep.setCondition(optionalCondition);
+	    FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
 	    StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 	    return stepPart;
 	}

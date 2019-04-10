@@ -31,20 +31,18 @@ public abstract class Step extends ModelElement implements Serializable {
      * @param useCase the use case this step belongs to
      * @param stepName
      *            the name of the step to be created
+     * @param condition 
      */
-    Step(String stepName, UseCase useCase) {
+    Step(String stepName, UseCase useCase, Condition condition) {
 	super(stepName, useCase.getModel());
 	this.useCase = useCase;
+	this.condition = condition;
     }
 
     public abstract Predicate<ModelRunner> getPredicate();
 
     public UseCase getUseCase() {
 	return useCase;
-    }
-
-    void setCondition(Condition condition) {
-	this.condition = condition;
     }
 
     public Optional<Condition> getCondition() {
