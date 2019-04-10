@@ -153,7 +153,7 @@ public class UseCase extends ModelElement implements Serializable {
      * @return the newly created step
      */
     InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {
-	InterruptableFlowStep step = new InterruptableFlowStep(stepName, this, flow);
+	InterruptableFlowStep step = new InterruptableFlowStep(stepName, flow);
 	saveModelElement(step, nameToStepMap);
 
 	return step;
