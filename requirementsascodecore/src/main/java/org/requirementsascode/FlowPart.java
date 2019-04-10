@@ -51,9 +51,9 @@ public class FlowPart {
     }
 
     /**
-     * Creates the first step of this flow. It can be interrupted by any other flow
-     * that has an explicit condition. It can be run when no other step has been run
-     * before.
+     * Creates the first step of this flow, without specifying position or condition. 
+     * It can be interrupted by any other flow that has an explicit position and/or condition. 
+     * It can be run when no other step has been run before.
      *
      * @param stepName
      *                     the name of the step to be created
