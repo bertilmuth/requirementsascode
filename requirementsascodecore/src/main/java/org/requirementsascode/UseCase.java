@@ -159,7 +159,8 @@ public class UseCase extends ModelElement implements Serializable {
 
     /**
      * Creates a step that is independent of a flow.
-     * @param optionalCondition 
+     * 
+     * @param optionalCondition the condition of the flow, or null if the step is unconditional.
      *
      * @param stepName
      *            the name of the step
