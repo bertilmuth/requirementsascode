@@ -125,12 +125,12 @@ EventQueue queue = new EventQueue(modelRunner::reactTo);
 queue.put(new String("I'm an event, react to me!"));
 ```
 
-The constructor argument of `EventQueue` specifies that each call to `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
+The constructor argument of `EventQueue` specifies that each event that's `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
 Note that you can forward events to any other consumer of an object as well.
 
 # publishing events
 When you use the `system()` method, you are restricted to just consuming events.
-But ýou can also publish events with `systemPublish()`, like so:
+But Ã½ou can also publish events with `systemPublish()`, like so:
 
 ``` java
 	Model model = modelBuilder
