@@ -51,9 +51,6 @@ public class FreemarkerEngineTest {
     
     Model model = 
       modelBuilder
-        .useCase("Included use case")
-          .basicFlow()
-            .step("Included step").system(promptsUserToEnterName())
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
@@ -82,9 +79,7 @@ public class FreemarkerEngineTest {
     String output = outputWriter.toString();
 
     assertEquals(
-        "Use case: Included use case. Flow: Basic flow"
-            + " Step: Included step. System prompts user to enter name."
-        + " Use case: Get greeted. Flow: Basic flow"
+        "Use case: Get greeted. Flow: Basic flow"
               + " Step: S1. System prompts user to enter name."
               + " Step: S2. User enters name.System greets user."
               + " Step: S3. As long as some condition is fulfilled: As First actor: User enters name.System greets user."

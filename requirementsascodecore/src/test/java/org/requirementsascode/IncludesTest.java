@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class IncludesTest extends AbstractTestCase{
+    protected static final String INCLUDED_USE_CASE = "Included use case";
+    protected static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
+
     @Before
     public void setup() {
       setupWithRecordingModelRunner();

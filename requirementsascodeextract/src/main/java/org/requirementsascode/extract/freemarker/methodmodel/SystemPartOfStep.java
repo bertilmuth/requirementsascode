@@ -41,8 +41,8 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
 		    String on = getOn(step);
 		    String systemActorName = getSystemActor(step).getName();
 		    String wordsOfSystemReactionClassName = getWordsOfSystemReactionClassName(step);
-		    String stepNameOrIncludedUseCase = getStepNameOrIncludedUseCase(step);
-		    systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
+		    String stepName = getStepName(step);
+		    systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepName
 			    + SYSTEM_POSTFIX;
 		}
 		return systemPartOfStep;
@@ -64,14 +64,14 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
 		return on;
     }
 
-    private String getStepNameOrIncludedUseCase(Step step) {
-		String stepNameOrIncludedUseCase = "";
+    private String getStepName(Step step) {
+		String stepName = "";
 		if (hasSystemReaction(step)) {
 		    Object systemReaction = step.getSystemReaction().getModelObject();
 		    if (systemReaction instanceof AbstractContinues) {
-			stepNameOrIncludedUseCase = " " + ((AbstractContinues) systemReaction).getStepName();
+			stepName = " " + ((AbstractContinues) systemReaction).getStepName();
 		    } 
 		}
-		return stepNameOrIncludedUseCase;
+		return stepName;
     }
 }
