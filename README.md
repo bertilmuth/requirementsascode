@@ -28,14 +28,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.0.2'
+compile 'org.requirementsascode:requirementsascodecore:1.0.3'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -111,6 +111,45 @@ public class HelloUser {
 	}
 }
 ```
+
+# event queue for non-blocking handling
+The default mode for the ModelRunner is to handle events in a blocking way. 
+Instead, you can use a simple event queue that processes events one by one in its own thread:
+
+``` java
+Model model = ...;
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.run(model);
+
+EventQueue queue = new EventQueue(modelRunner::reactTo);
+queue.put(new String("I'm an event, react to me!"));
+```
+
+The constructor argument of `EventQueue` specifies that each call to `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
+Note that you can forward events to any other consumer of an object as well.
+
+# publishing events
+When you use the `system()` method, you are restricted to just consuming events.
+But ýou can also publish events with `systemPublish()`, like so:
+
+``` java
+	Model model = modelBuilder
+		.useCase("Use Case UC1")
+			.basicFlow()
+				.step("S1").on(EntersText.class).systemPublish(this::publishEnteredTextAsString) 
+	.build();
+	
+	...
+	
+	private String[] publishEnteredTextAsString(EnteredText enteredText) {
+		return new String[] { enteredText.value() };
+	}
+```
+
+As you can see, the publishing method has an event object as input parameter, and returns an object array of events to be published (not necessarily strings).
+By default, the model runner takes the returned events and sends them to its own `reactTo()` method. 
+This behavior can be overriden by specifying a custom event handler with `publishWith()`.
+For example, you can use `modelRunner.publishWith(queue::put)` to publish the events to an event queue.
 
 # documentation
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)

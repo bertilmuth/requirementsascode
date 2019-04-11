@@ -117,7 +117,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-					.step("S1").on(EntersText.class).systemPublish(publishEnteredTextAsString())
+					.step("S1").on(EntersText.class).systemPublish(super::publishEnteredTextAsString)
 					.step("S2").on(String.class).system(new IgnoresIt<>())
 					.step("S3").system(new IgnoresIt<>())
 		.build();
