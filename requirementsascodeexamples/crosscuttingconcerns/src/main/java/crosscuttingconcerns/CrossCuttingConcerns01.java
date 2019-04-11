@@ -10,16 +10,15 @@ public class CrossCuttingConcerns01 {
     private double resultOfPower;
 
     public void start() {
-	ModelBuilder modelBuilder = Model.builder();
-	Model model = modelBuilder.useCase("Measure performance of simple mathematical operations")
-		.basicFlow()
-			.step("S1").system(this::addsTwoNumbers)
-			.step("S2").system(this::calculatesTwoToThePowerOfAThousand)
-			.step("S3").system(this::displaysResults).build();
-
-	ModelRunner modelRunner = new ModelRunner();
-	modelRunner.handleWith(this::measuresPerformance);
-	modelRunner.run(model);
+		ModelBuilder modelBuilder = Model.builder();
+		Model model = modelBuilder.useCase("Measure performance of simple mathematical operations")
+			.basicFlow()
+				.step("S1").system(this::addsTwoNumbers)
+				.step("S2").system(this::calculatesTwoToThePowerOfAThousand)
+				.step("S3").system(this::displaysResults).build();
+	
+		ModelRunner modelRunner = new ModelRunner();
+		modelRunner.handleWith(this::measuresPerformance).run(model);
     }
 
     private void measuresPerformance(StepToBeRun stepToBeRun) {

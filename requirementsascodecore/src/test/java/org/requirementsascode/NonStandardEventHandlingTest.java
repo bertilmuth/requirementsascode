@@ -21,115 +21,112 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
     @Before
     public void setup() {
-	setupWithRecordingModelRunner();
+		setupWithRecordingModelRunner();
     }
 
     @Test
     public void recordsAutonomousSystemReactionStep() {
-	stepName = "";
-
-	ReactionAsRunnable reactionAsRunnable = new ReactionAsRunnable();
-	Model model = modelBuilder
-    		.useCase(USE_CASE)
-    			.basicFlow()
-    				.step(SYSTEM_DISPLAYS_TEXT).system(reactionAsRunnable)
-    				.build();
-
-	modelRunner.handleWith(recordStepDetails());
-	modelRunner.run(model);
-
-	assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
-	assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
-	assertFalse(optionalEvent.isPresent());
-	assertFalse(optionalCondition.isPresent());
-	assertEquals(reactionAsRunnable, systemReaction);
+		stepName = "";
+	
+		ReactionAsRunnable reactionAsRunnable = new ReactionAsRunnable();
+		Model model = modelBuilder
+	    		.useCase(USE_CASE)
+	    			.basicFlow()
+	    				.step(SYSTEM_DISPLAYS_TEXT).system(reactionAsRunnable)
+	    		.build();
+	
+		modelRunner.handleWith(recordStepDetails());
+		modelRunner.run(model);
+	
+		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
+		assertEquals(SYSTEM_DISPLAYS_TEXT, stepName);
+		assertFalse(optionalEvent.isPresent());
+		assertFalse(optionalCondition.isPresent());
+		assertEquals(reactionAsRunnable, systemReaction);
     }
 
     private class ReactionAsRunnable implements Runnable {
-	@Override
-	public void run() {
-	}
+		@Override
+		public void run() {
+		}
     }
 
     private Consumer<StepToBeRun> recordStepDetails() {
-	return stepToBeRun -> {
-	    stepName = stepToBeRun.getStepName();
-	    optionalCondition = stepToBeRun.getCondition();
-	    optionalEvent = stepToBeRun.getEvent();
-	    systemReaction = stepToBeRun.getSystemReaction();
-	    stepToBeRun.run();
-	};
+		return stepToBeRun -> {
+		    stepName = stepToBeRun.getStepName();
+		    optionalCondition = stepToBeRun.getCondition();
+		    optionalEvent = stepToBeRun.getEvent();
+		    systemReaction = stepToBeRun.getSystemReaction();
+		    stepToBeRun.run();
+		};
     }
 
     @Test
     public void recordsStepWithEvent() {
-	ReactionAsConsumer reactionAsConsumer = new ReactionAsConsumer();
-	Model model = modelBuilder.useCase(USE_CASE).condition(new AlwaysTrue()).on(EntersText.class)
-		.system(reactionAsConsumer).build();
-
-	modelRunner.handleWith(recordStepDetails());
-	modelRunner.run(model);
-	modelRunner.reactTo(entersText());
-
-	Object condition = optionalCondition.get();
-	assertTrue(condition instanceof AlwaysTrue);
-
-	Object event = optionalEvent.get();
-	assertTrue(event instanceof EntersText);
+		ReactionAsConsumer reactionAsConsumer = new ReactionAsConsumer();
+		Model model = modelBuilder.useCase(USE_CASE).condition(new AlwaysTrue())
+				.on(EntersText.class).system(reactionAsConsumer).build();
 	
-	assertEquals(reactionAsConsumer, systemReaction);
+		modelRunner.handleWith(recordStepDetails());
+		modelRunner.run(model);
+		modelRunner.reactTo(entersText());
+	
+		Object condition = optionalCondition.get();
+		assertTrue(condition instanceof AlwaysTrue);
+	
+		Object event = optionalEvent.get();
+		assertTrue(event instanceof EntersText);
+		
+		assertEquals(reactionAsConsumer, systemReaction);
     }
 
     private class AlwaysTrue implements Condition {
-	@Override
-	public boolean evaluate() {
-	    return true;
-	}
+		@Override
+		public boolean evaluate() {
+		    return true;
+		}
     }
     private class ReactionAsConsumer implements Consumer<EntersText> {
-	@Override
-	public void accept(EntersText t) {
-	}
+		@Override
+		public void accept(EntersText t) {
+		}
     }
 
     @Test
     public void recordsEventWithUnhandledEventHandler() {
-	Model model = modelBuilder
-		.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-	.build();
-
-	modelRunner.handleUnhandledWith(this::eventRecordingEventHandler);
-	modelRunner.run(model).reactTo(entersNumber());
-
-	Object event = optionalEvent.get();
-	assertTrue(event instanceof EntersNumber);
-    }
-
-    private void eventRecordingEventHandler(Object event) {
-	this.optionalEvent = Optional.of(event);
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.on(EntersText.class).system(displaysEnteredText())
+		.build();
+	
+		modelRunner.handleUnhandledWith(this::eventRecordingEventHandler);
+		modelRunner.run(model).reactTo(entersNumber());
+	
+		Object event = optionalEvent.get();
+		assertTrue(event instanceof EntersNumber);
+	    }
+	
+	    private void eventRecordingEventHandler(Object event) {
+		this.optionalEvent = Optional.of(event);
     }
     
     @Test
     public void publishesEventToList() {
-	List<Object> publishedEvents = new ArrayList<>();
+		List<Object> publishedEvents = new ArrayList<>();
+		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step("S1").on(EntersText.class).systemPublish(publishEnteredTextAsString())
+					.step("S2").on(String.class).system(new IgnoresIt<>())
+					.step("S3").system(new IgnoresIt<>())
+		.build();
 	
-	Model model = modelBuilder
-		.useCase(USE_CASE)
-			.basicFlow()
-				.step("S1").on(EntersText.class).systemPublish(publishEnteredText())
-				.step("S2").on(String.class).system(new IgnoresIt<>())
-				.step("S3").system(new IgnoresIt<>())
-	.build();
-
-	modelRunner.publishWith(event -> publishedEvents.add(event));
-	modelRunner.run(model).reactTo(entersText(), "Some String");
-	
-	assertEquals(4, publishedEvents.size());
-	assertEquals(ModelRunner.class, publishedEvents.get(0).getClass());
-	assertEquals(String.class, publishedEvents.get(1).getClass());
-	assertEquals(ModelRunner.class, publishedEvents.get(2).getClass());
-	assertEquals(ModelRunner.class, publishedEvents.get(3).getClass());
-
+		modelRunner.publishWith(event -> publishedEvents.add(event));
+		modelRunner.run(model).reactTo(entersText(), "Some String");
+		
+		assertEquals(1, publishedEvents.size());
+		assertEquals(String.class, publishedEvents.get(0).getClass());
+		assertEquals("S3", modelRunner.getLatestStep().get().getName());
     }
 }

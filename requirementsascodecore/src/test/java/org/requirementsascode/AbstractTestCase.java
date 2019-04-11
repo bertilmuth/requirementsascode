@@ -101,7 +101,7 @@ public abstract class AbstractTestCase {
 	};
     }
     
-    protected Function<EntersText, Object[]> publishEnteredText() {
+    protected Function<EntersText, Object[]> publishEnteredTextAsString() {
 	return enteredText -> {
 	    return new String[]{enteredText.value()};
 	};

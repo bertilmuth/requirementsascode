@@ -81,7 +81,7 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void secondFlowlessStepReactsWhenFirstStepPublishes() {
 	Model model = modelBuilder.useCase(USE_CASE)
-		.on(EntersText.class).systemPublish(publishEnteredText())
+		.on(EntersText.class).systemPublish(publishEnteredTextAsString())
 		.on(String.class).system(new IgnoresIt<>())
 	.build();
 
