@@ -74,9 +74,11 @@ public class ModelRunner implements Serializable {
 	 * Define handler for events that the runner doesn't react to.
 	 * 
 	 * @param unhandledEventHandler the handler for events not handled by the runner
+	 * @return this model runner, for chaining
 	 */
-	public void handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
+	public ModelRunner handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
 		this.unhandledEventHandler = Objects.requireNonNull(unhandledEventHandler);
+		return this;
 	}
 
 	/**

@@ -99,8 +99,8 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 				.on(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		modelRunner.handleUnhandledWith(this::eventRecordingEventHandler);
-		modelRunner.run(model).reactTo(entersNumber());
+		modelRunner.handleUnhandledWith(this::eventRecordingEventHandler)
+			.run(model).reactTo(entersNumber());
 	
 		Object event = optionalEvent.get();
 		assertTrue(event instanceof EntersNumber);
