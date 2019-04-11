@@ -40,7 +40,6 @@ public class ModelRunner implements Serializable {
 	private List<String> recordedStepNames;
 	private List<Object> recordedEvents;
 	private boolean isRecording;
-	private IncludedUseCases includedUseCases;
 
 	private Collection<Step> steps;
 
@@ -115,7 +114,6 @@ public class ModelRunner implements Serializable {
 	 */
 	public ModelRunner run(Model model) {
 		this.model = Objects.requireNonNull(model);
-		this.includedUseCases = new IncludedUseCases();
 		this.isRunning = true;
 
 		Actor runActorOrDefaultUser = runActor != null ? runActor : model.getUserActor();
@@ -268,7 +266,6 @@ public class ModelRunner implements Serializable {
 			handleException(e);
 		}
 
-		includedUseCases.continueAfterIncludeStepWhenEndOfIncludedFlowIsReached(this);
 		triggerAutonomousSystemReaction();
 	}
 
@@ -309,7 +306,6 @@ public class ModelRunner implements Serializable {
 	 */
 	public Set<Class<?>> getReactToTypes() {
 		Set<Class<?>> eventsReactedTo = getRunningStepStream()
-				.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step))
 				.filter(step -> hasTruePredicate(step)).map(step -> step.getEventClass())
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 		return eventsReactedTo;
@@ -334,8 +330,8 @@ public class ModelRunner implements Serializable {
 	}
 
 	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
-				.filter(step -> includedUseCases.isStepInIncludedUseCaseIfPresent(step))
+		Set<Step> steps = stepStream
+				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
 		return steps;
 	}
@@ -464,9 +460,5 @@ public class ModelRunner implements Serializable {
 	public Object[] getRecordedEvents() {
 		Object[] events = recordedEvents.toArray();
 		return events;
-	}
-
-	public void startIncludedUseCase(UseCase includedUseCase, FlowStep includeStep) {
-		includedUseCases.startIncludedUseCase(includedUseCase, includeStep);
 	}
 }

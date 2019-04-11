@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.AbstractContinues;
-import org.requirementsascode.systemreaction.IncludesUseCase;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
@@ -25,56 +24,54 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     @SuppressWarnings("rawtypes")
     @Override
     public Object exec(List arguments) throws TemplateModelException {
-	if (arguments.size() != 1) {
-	    throw new TemplateModelException("Wrong number of arguments. Must be 1.");
-	}
-
-	Step step = getStepFromFreemarker(arguments.get(0));
-
-	String systemPartOfStep = getSystemPartOfStep(step);
-
-	return new SimpleScalar(systemPartOfStep);
+		if (arguments.size() != 1) {
+		    throw new TemplateModelException("Wrong number of arguments. Must be 1.");
+		}
+	
+		Step step = getStepFromFreemarker(arguments.get(0));
+	
+		String systemPartOfStep = getSystemPartOfStep(step);
+	
+		return new SimpleScalar(systemPartOfStep);
     }
 
     private String getSystemPartOfStep(Step step) {
-	String systemPartOfStep = "";
-	if (hasSystemReaction(step)) {
-	    String on = getOn(step);
-	    String systemActorName = getSystemActor(step).getName();
-	    String wordsOfSystemReactionClassName = getWordsOfSystemReactionClassName(step);
-	    String stepNameOrIncludedUseCase = getStepNameOrIncludedUseCase(step);
-	    systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
-		    + SYSTEM_POSTFIX;
-	}
-	return systemPartOfStep;
+		String systemPartOfStep = "";
+		if (hasSystemReaction(step)) {
+		    String on = getOn(step);
+		    String systemActorName = getSystemActor(step).getName();
+		    String wordsOfSystemReactionClassName = getWordsOfSystemReactionClassName(step);
+		    String stepNameOrIncludedUseCase = getStepNameOrIncludedUseCase(step);
+		    systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepNameOrIncludedUseCase
+			    + SYSTEM_POSTFIX;
+		}
+		return systemPartOfStep;
     }
 
     private String getWordsOfSystemReactionClassName(Step step) {
-	Object systemReaction = step.getSystemReaction().getModelObject();
-	Class<?> systemReactionClass = systemReaction.getClass();
-	String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
-	return wordsOfClassName;
+		Object systemReaction = step.getSystemReaction().getModelObject();
+		Class<?> systemReactionClass = systemReaction.getClass();
+		String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
+		return wordsOfClassName;
     }
 
     private String getOn(Step step) {
-	String on = "";
-
-	if (hasSystemUser(step) && !hasSystemEvent(step)) {
-	    on = ON_PREFIX + step.getEventClass().getSimpleName() + ON_POSTFIX;
-	}
-	return on;
+		String on = "";
+	
+		if (hasSystemUser(step) && !hasSystemEvent(step)) {
+		    on = ON_PREFIX + step.getEventClass().getSimpleName() + ON_POSTFIX;
+		}
+		return on;
     }
 
     private String getStepNameOrIncludedUseCase(Step step) {
-	String stepNameOrIncludedUseCase = "";
-	if (hasSystemReaction(step)) {
-	    Object systemReaction = step.getSystemReaction().getModelObject();
-	    if (systemReaction instanceof AbstractContinues) {
-		stepNameOrIncludedUseCase = " " + ((AbstractContinues) systemReaction).getStepName();
-	    } else if (systemReaction instanceof IncludesUseCase) {
-		stepNameOrIncludedUseCase = " " + ((IncludesUseCase) systemReaction).getIncludedUseCase().getName();
-	    }
-	}
-	return stepNameOrIncludedUseCase;
+		String stepNameOrIncludedUseCase = "";
+		if (hasSystemReaction(step)) {
+		    Object systemReaction = step.getSystemReaction().getModelObject();
+		    if (systemReaction instanceof AbstractContinues) {
+			stepNameOrIncludedUseCase = " " + ((AbstractContinues) systemReaction).getStepName();
+		    } 
+		}
+		return stepNameOrIncludedUseCase;
     }
 }

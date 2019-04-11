@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.systemreaction.IncludesUseCase;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -169,27 +168,6 @@ public class StepPart {
 	Objects.requireNonNull(stepName);
 	UseCasePart useCasePart = as(systemActor).continuesWithoutAlternativeAt(stepName);
 	return useCasePart;
-    }
-
-    /**
-     * Includes the use case with the specified name.
-     * 
-     * The runner starts the included use case right after the current step. The
-     * runner returns to the current flow when it reaches the end of an included
-     * flow. The runner then continues after the current step of the current flow.
-     * 
-     * @param useCaseName
-     *            the name of the use case to include
-     * @return the step system part, to ease creation of further steps and flows
-     * @throws NoSuchElementInModel
-     *             if the included use case has not been specified before
-     */
-    public StepSystemPart<ModelRunner> includesUseCase(String useCaseName) {
-	FlowStep flowStep = (FlowStep) step;
-	UseCase includedUseCase = flowStep.getModel().findUseCase(useCaseName);
-	StepSystemPart<ModelRunner> stepSystemPart = as(systemActor)
-		.system(new IncludesUseCase(includedUseCase, flowStep));
-	return stepSystemPart;
     }
 
     Step getStep() {

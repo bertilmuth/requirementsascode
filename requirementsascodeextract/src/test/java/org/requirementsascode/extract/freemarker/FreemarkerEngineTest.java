@@ -70,7 +70,6 @@ public class FreemarkerEngineTest {
           .flow("Alternative flow C").condition(thereIsNoAlternative())
             .step("S5a").continuesWithoutAlternativeAt("S4")
           .flow("Alternative flow D").insteadOf("S4").condition(thereIsNoAlternative())
-            .step("S4c_1").includesUseCase("Included use case")
             .step("S4c_2").continuesAt("S1")
           .flow("EX").anytime()
           	.step("EX1").on(Exception.class).system(logsException())
@@ -100,7 +99,6 @@ public class FreemarkerEngineTest {
             + " Flow: Alternative flow C Anytime, when there is no alternative:"
               + " Step: S5a. System continues without alternative at S4."
             + " Flow: Alternative flow D Instead of S4, when there is no alternative:"
-              + " Step: S4c_1. System includes use case Included use case."
               + " Step: S4c_2. System continues at S1."
             + " Flow: EX Anytime:"
               + " Step: EX1. On Exception: System logs exception.",
