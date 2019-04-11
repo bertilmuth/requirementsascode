@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -25,9 +24,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  * The runner is configured by the model it owns. Each real user needs an
  * instance of a runner, as the runner determines the user journey.
  */
-public class ModelRunner implements Serializable {
-	private static final long serialVersionUID = 1787451244764017381L;
-
+public class ModelRunner{
 	private Actor runActor;
 
 	private Model model;

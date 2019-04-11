@@ -2,7 +2,6 @@ package akka;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -20,9 +19,7 @@ public class Akka {
 	public static void main(String[] args) {
 		ActorSystem actorSystem = ActorSystem.create("modelBasedActorSystem");
 		
-		ModelRunner modelRunner = runnerOf(model());
-
-		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class, modelRunner);
+		ActorRef sayHelloActor = spawn("sayHelloActor", actorSystem, SayHelloActor.class);
 		
 		sayHelloActor.tell(new AsksForHelloWorld(), ActorRef.noSender());
 		sayHelloActor.tell(new AsksForHelloToUser("Sandra"), ActorRef.noSender());
@@ -31,29 +28,10 @@ public class Akka {
 
 		actorSystem.terminate();
 	}
-
-	static ModelRunner runnerOf(Model model) {
-		ModelRunner modelRunner = new ModelRunner();
-		modelRunner.run(model);
-		return modelRunner;
-	}
 	
-	static <T> ActorRef spawn(String actorName, ActorSystem system, Class<? extends AbstractActor> actorClass,
-			Object... constructorParams) {
-		Props props = Props.create(actorClass, constructorParams);
+	static <T> ActorRef spawn(String actorName, ActorSystem system, Class<? extends AbstractActor> actorClass) {
+		Props props = Props.create(actorClass);
 		return system.actorOf(props, actorName);
-	}
-
-	static Model model() {
-		SaysHelloWorld saysHelloWorld = new SaysHelloWorld();
-		SaysHelloToUser saysHelloToUser = new SaysHelloToUser();
-		
-		Model model = Model.builder().useCase("Say hello to world, then user")
-			.basicFlow()
-				.step("S1").user(ASKS_FOR_HELLO_WORLD).system(saysHelloWorld)
-				.step("S2").user(ASKS_FOR_HELLO_TO_USER).system(saysHelloToUser)
-			.build();
-		return model;
 	}
 	
 	static class AsksForHelloWorld implements Serializable{
@@ -70,36 +48,26 @@ public class Akka {
 			return name;
 		}
 	}
-	
-	static class SaysHelloWorld implements Consumer<AsksForHelloWorld>, Serializable{
-		private static final long serialVersionUID = 5717637483302189546L;
-
-		@Override
-		public void accept(AsksForHelloWorld t) {
-			System.out.println("Hello, World.");
-		}
-	}
-	
-	static class SaysHelloToUser implements Consumer<AsksForHelloToUser>, Serializable{
-		private static final long serialVersionUID = 5090421774929433206L;
-
-		@Override
-		public void accept(AsksForHelloToUser t) {
-			System.out.println("Hello, " + t.getName() + ".");
-		}
-	}
 
 	static class SayHelloActor extends UntypedAbstractActor {
 		private ModelRunner modelRunner;
 
-		public SayHelloActor(ModelRunner modelRunner) {
-			this.modelRunner = modelRunner;
+		public SayHelloActor() {
+			this.modelRunner = new ModelRunner().run(model());
 		}
 
 		@Override
 		public void onReceive(Object msg) throws Exception {
 		    modelRunner.reactTo(msg);
 		}
+	}
+	static Model model() {
+		Model model = Model.builder().useCase("Say hello to world, then user")
+			.basicFlow()
+				.step("S1").user(ASKS_FOR_HELLO_WORLD).system(() -> System.out.println("Hello, World!"))
+				.step("S2").user(ASKS_FOR_HELLO_TO_USER).system(message -> System.out.println("Hello, " + message.getName() + "."))
+			.build();
+		return model;
 	}
 
 	static void waitForReturnKeyPressed() {
