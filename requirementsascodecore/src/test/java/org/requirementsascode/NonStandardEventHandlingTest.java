@@ -104,9 +104,9 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	
 		Object event = optionalEvent.get();
 		assertTrue(event instanceof EntersNumber);
-	    }
+    }
 	
-	    private void eventRecordingEventHandler(Object event) {
+	private void eventRecordingEventHandler(Object event) {
 		this.optionalEvent = Optional.of(event);
     }
     
