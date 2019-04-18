@@ -51,6 +51,19 @@ public class HelloWorldTest {
 		assertRecordedStepNames("S1", "S2");
 	}
 	
+	@Test 
+	public void testHelloWorld03a() {
+		HelloWorld03a example = new HelloWorld03a();
+		model = example.buildWith(modelBuilder);
+		
+		modelRunner.run(model);
+		
+		modelRunner.as(example.invalidUser()).reactTo(new EntersText("Ignored"));
+		modelRunner.as(example.validUser()).reactTo(new EntersText("John Q. Public"));
+
+		assertRecordedStepNames("S1", "S2");
+	}
+	
 	@Test
 	public void testHelloWorld04() {
 		HelloWorld04 example = new HelloWorld04();

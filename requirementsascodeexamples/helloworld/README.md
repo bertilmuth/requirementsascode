@@ -51,6 +51,32 @@ new ModelRunner().run(model).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
+# example 03a - user enters first name, system prints it only if actor is right
+``` java
+public Model buildWith(ModelBuilder modelBuilder) {
+	validUser = modelBuilder.actor("Valid User");
+	invalidUser = modelBuilder.actor("Invalid User");
+	
+	Model model = modelBuilder.useCase("Get greeted")
+		.as(validUser).basicFlow()
+			.step("S1").system(this::promptsUserToEnterFirstName)
+			.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
+		.build();
+	return model;
+}
+...
+Model model = buildWith(Model.builder());
+ModelRunner modelRunner = new ModelRunner().run(model);
+
+// The next event will not be handled, because the actor is wrong
+modelRunner.as(invalidUser).reactTo(new EntersText("Ignored Event"));
+
+// This event will be handled
+modelRunner.as(validUser).reactTo(entersText());
+```
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03a.java).
+
+
 # example 04 - user enters name and age, system prints them (exception thrown if non-numerical age entered)
 ``` java
 public Model buildWith(ModelBuilder modelBuilder) {
