@@ -292,7 +292,8 @@ public class ModelRunner{
 	 */
 	public boolean canReactTo(Class<? extends Object> eventClass) {
 		Objects.requireNonNull(eventClass);
-		boolean canReact = getReactToTypes().contains(eventClass);
+		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(eventClass);
+		boolean canReact = !stepsThatCanReact.isEmpty();
 		return canReact;
 	}
 
