@@ -18,38 +18,49 @@ public class CanReactToTest extends AbstractTestCase {
 
     @Test
     public void cantReactIfNotRunning() {
-	boolean canReact = modelRunner.canReactTo(entersText().getClass());
-	assertFalse(canReact);
+		boolean canReact = modelRunner.canReactTo(entersText().getClass());
+		assertFalse(canReact);
     }
 
     @Test
     public void cantReactIfEventIsWrong() {
-	Model model = modelBuilder.useCase(USE_CASE)
-		.basicFlow()
-			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-	.build();
-
-	modelRunner.run(model);
-
-	boolean canReact = modelRunner.canReactTo(entersNumber().getClass());
-	assertFalse(canReact);
+		Model model = modelBuilder.useCase(USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+		.build();
+	
+		modelRunner.run(model);
+	
+		boolean canReact = modelRunner.canReactTo(entersNumber().getClass());
+		assertFalse(canReact);
     }
     
+    @Test
+    public void cantReactIfConditionIsWrong() {
+		Model model = modelBuilder.useCase(USE_CASE)
+			.basicFlow().condition(() -> false)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText()).build();
+	
+		modelRunner.run(model);
+	
+		boolean canReact = modelRunner.canReactTo(entersText().getClass());
+		assertFalse(canReact);
+	}
 
     @Test
     public void oneStepCanReactIfEventIsRight() {
-	Model model = modelBuilder.useCase(USE_CASE)
-		.basicFlow()
-			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText()).build();
-
-	modelRunner.run(model);
-
-	boolean canReact = modelRunner.canReactTo(entersText().getClass());
-	assertTrue(canReact);
-
-	Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(entersText().getClass());
-	assertEquals(1, stepsThatCanReact.size());
-	assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
+		Model model = modelBuilder.useCase(USE_CASE)
+			.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText()).build();
+	
+		modelRunner.run(model);
+	
+		boolean canReact = modelRunner.canReactTo(entersText().getClass());
+		assertTrue(canReact);
+	
+		Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(entersText().getClass());
+		assertEquals(1, stepsThatCanReact.size());
+		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
     }
 
     @Test
