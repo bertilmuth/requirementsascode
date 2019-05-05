@@ -10,6 +10,25 @@ import hexagon.domain.RandomPoemPicker;
 import hexagon.port.IObtainPoems;
 import hexagon.port.IWriteLines;
 
+/**
+ * The application is the only point of communication with left-side driver
+ * adapters. It accepts commands, and triggers the appropriate system reaction.
+ * 
+ * On creation, the application wires up the dependencies between command
+ * objects and command handlers, by injecting the command handlers into a use
+ * case model. (The command handlers are located in the systemreaction sub
+ * package.)
+ * 
+ * After creation, the application sends each command it receives to the runner
+ * of the use case model. The model runner then dispatches the command to the
+ * appropriate command handler.
+ * 
+ * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
+ * https://www.youtube.com/watch?v=th4AgBcrEHA
+ * 
+ * @author b_muth
+ *
+ */
 public class Application implements Consumer<Object> {
 
 	private ModelRunner modelRunner;

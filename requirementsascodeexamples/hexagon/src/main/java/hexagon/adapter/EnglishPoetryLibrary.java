@@ -2,6 +2,15 @@ package hexagon.adapter;
 
 import hexagon.port.IObtainPoems;
 
+/**
+ * Right-side, driven adapter that acts as repository for English poems.
+ * 
+ * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
+ * https://www.youtube.com/watch?v=th4AgBcrEHA
+ * 
+ * @author b_muth
+ *
+ */
 public class EnglishPoetryLibrary implements IObtainPoems {
 	public String[] getMePoems() {
 		return new String[] {

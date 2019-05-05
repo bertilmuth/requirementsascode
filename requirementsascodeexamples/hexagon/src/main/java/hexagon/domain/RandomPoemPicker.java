@@ -2,7 +2,16 @@ package hexagon.domain;
 
 import java.util.Random;
 
-public class RandomPoemPicker{
+/**
+ * Picks a random poem from a list of poems.
+ * 
+ * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
+ * https://www.youtube.com/watch?v=th4AgBcrEHA
+ * 
+ * @author b_muth
+ *
+ */
+public class RandomPoemPicker {
 	private Random random;
 
 	public RandomPoemPicker() {
@@ -16,10 +25,10 @@ public class RandomPoemPicker{
 	 * @return a poem from the list, or an empty string if the list is empty
 	 */
 	public String pickPoem(String[] poems) {
-		if(poems.length == 0) {
+		if (poems.length == 0) {
 			return "";
 		}
-		
+
 		String randomPoem = poems[random.nextInt(poems.length)];
 		return randomPoem;
 	}
