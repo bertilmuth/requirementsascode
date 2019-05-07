@@ -106,16 +106,20 @@ public class UseCasePart {
 
 		public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
 			StepUserPart<T> stepUserPart = stepPart.on(eventOrExceptionClass);
-			FlowlessUserPart<T> flowless = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
-			return flowless;
+			FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+			return flowlessUserPart;
 		}
 
 		public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-			return on(ModelRunner.class).system(systemReaction);
+			stepPart.system(systemReaction);
+			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(flowlessStepCounter);
+			return flowlessSystemPart;
 		}
 
 		public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-			return on(ModelRunner.class).system(systemReaction);
+			stepPart.system(systemReaction);
+			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(flowlessStepCounter);
+			return flowlessSystemPart;
 		}
 	}
 
