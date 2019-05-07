@@ -88,16 +88,11 @@ public class UseCasePart {
 		return conditionPart;
 	}
 
-	private ConditionPart createConditionPart(Condition condition, long flowlessStepCounter) {
-		StepPart stepPart = createStepPart(condition, "S" + flowlessStepCounter);
+	private ConditionPart createConditionPart(Condition optionalCondition, long flowlessStepCounter) {
+		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
+		StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 		ConditionPart conditionPart = new ConditionPart(stepPart, flowlessStepCounter);
 		return conditionPart;
-	}
-
-	private StepPart createStepPart(Condition optionalCondition, String stepName) {
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
-		StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
-		return stepPart;
 	}
 
 	public class ConditionPart {
