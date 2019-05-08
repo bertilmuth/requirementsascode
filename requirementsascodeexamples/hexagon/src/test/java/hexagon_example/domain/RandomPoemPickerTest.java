@@ -1,4 +1,4 @@
-package hexagon.domain;
+package hexagon_example.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import hexagonal_architecture.hexagon.domain.RandomPoemPicker;
+import hexagon_example.hexagon.domain.RandomPoemPicker;
 
 public class RandomPoemPickerTest {
 	private RandomPoemPicker randomPoemPicker;

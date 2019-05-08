@@ -1,4 +1,4 @@
-package hexagonal_architecture.hexagon.port.driver;
+package hexagon_example.hexagon.port.driver;
 
 import java.util.function.Consumer;
 
