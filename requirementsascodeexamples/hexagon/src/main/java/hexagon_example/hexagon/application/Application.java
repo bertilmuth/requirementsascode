@@ -4,10 +4,10 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
 import hexagon_example.hexagon.application.domain.RandomPoemPicker;
-import hexagon_example.hexagon.application.systemreaction.DisplayPoem;
-import hexagon_example.hexagon.port.driven.IObtainPoems;
-import hexagon_example.hexagon.port.driven.IWriteLines;
-import hexagon_example.hexagon.port.driver.IReactToCommands;
+import hexagon_example.hexagon.application.system_reaction.DisplayPoem;
+import hexagon_example.hexagon.driven_port.IObtainPoems;
+import hexagon_example.hexagon.driven_port.IWriteLines;
+import hexagon_example.hexagon.driver_port.IReactToCommands;
 
 /**
  * The application is the only point of communication with left-side driver

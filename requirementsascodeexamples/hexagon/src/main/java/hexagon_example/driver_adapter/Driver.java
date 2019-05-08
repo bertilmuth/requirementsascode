@@ -1,8 +1,8 @@
-package hexagon_example.adapter.driver;
+package hexagon_example.driver_adapter;
 
 import hexagon_example.hexagon.application.AskForEnglishPoem;
 import hexagon_example.hexagon.application.AskForGermanPoem;
-import hexagon_example.hexagon.port.driver.IReactToCommands;
+import hexagon_example.hexagon.driver_port.IReactToCommands;
 
 /**
  * The driver adapter of the application. It's on the left side of the hexagon.

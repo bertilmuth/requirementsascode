@@ -1,12 +1,12 @@
 package hexagon_example;
 
-import hexagon_example.adapter.driven.ConsolePublisher;
-import hexagon_example.adapter.driven.EnglishPoetryLibrary;
-import hexagon_example.adapter.driven.GermanPoetryLibrary;
-import hexagon_example.adapter.driver.Driver;
+import hexagon_example.driven_adapter.ConsolePublisher;
+import hexagon_example.driven_adapter.EnglishPoetryLibrary;
+import hexagon_example.driven_adapter.GermanPoetryLibrary;
+import hexagon_example.driver_adapter.Driver;
 import hexagon_example.hexagon.application.Application;
-import hexagon_example.hexagon.port.driven.IObtainPoems;
-import hexagon_example.hexagon.port.driven.IWriteLines;
+import hexagon_example.hexagon.driven_port.IObtainPoems;
+import hexagon_example.hexagon.driven_port.IWriteLines;
 
 /**
  * Main class that starts the hexagon example application.
