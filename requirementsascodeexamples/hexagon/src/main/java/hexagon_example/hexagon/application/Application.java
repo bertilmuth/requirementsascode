@@ -3,8 +3,8 @@ package hexagon_example.hexagon.application;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
+import hexagon_example.hexagon.application.domain.RandomPoemPicker;
 import hexagon_example.hexagon.application.systemreaction.DisplayPoem;
-import hexagon_example.hexagon.domain.RandomPoemPicker;
 import hexagon_example.hexagon.port.driven.IObtainPoems;
 import hexagon_example.hexagon.port.driven.IWriteLines;
 import hexagon_example.hexagon.port.driver.IReactToCommands;

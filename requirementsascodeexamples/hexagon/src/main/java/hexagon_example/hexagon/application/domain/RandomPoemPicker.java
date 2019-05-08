@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.domain;
+package hexagon_example.hexagon.application.domain;
 
 import java.util.Random;
 

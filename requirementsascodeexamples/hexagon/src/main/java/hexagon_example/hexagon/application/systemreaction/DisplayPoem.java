@@ -1,6 +1,6 @@
 package hexagon_example.hexagon.application.systemreaction;
 
-import hexagon_example.hexagon.domain.RandomPoemPicker;
+import hexagon_example.hexagon.application.domain.RandomPoemPicker;
 import hexagon_example.hexagon.port.driven.IObtainPoems;
 import hexagon_example.hexagon.port.driven.IWriteLines;
 
