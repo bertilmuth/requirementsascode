@@ -1,8 +1,8 @@
-package hexagon_example.hexagon.application.system_reaction;
+package hexagon_example.hexagon.internal.system_reaction;
 
-import hexagon_example.hexagon.application.domain.RandomPoemPicker;
-import hexagon_example.hexagon.driven_port.IObtainPoems;
-import hexagon_example.hexagon.driven_port.IWriteLines;
+import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
+import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
+import hexagon_example.hexagon.internal.domain.RandomPoemPicker;
 
 /**
  * The command handler for displaying a poem.

@@ -1,7 +1,7 @@
-package hexagon_example.hexagon.application;
+package hexagon_example.hexagon.boundary;
 
 /**
- * Command object representing the user request for an English poem.
+ * Command object representing the user request for a German poem.
  * 
  * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
  * https://www.youtube.com/watch?v=th4AgBcrEHA
@@ -9,5 +9,5 @@ package hexagon_example.hexagon.application;
  * @author b_muth
  *
  */
-public class AskForEnglishPoem {
+public class AskForGermanPoem {
 }

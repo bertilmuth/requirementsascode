@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.driven_port;
+package hexagon_example.hexagon.boundary.driven_port;
 
 /**
  * Driven, right side port for writing the lines of a poem to an output device

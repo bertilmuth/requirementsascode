@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.application;
+package hexagon_example.hexagon.boundary;
 
 import org.requirementsascode.Model;
 

@@ -4,9 +4,9 @@ import hexagon_example.driven_adapter.ConsolePublisher;
 import hexagon_example.driven_adapter.EnglishPoetryLibrary;
 import hexagon_example.driven_adapter.GermanPoetryLibrary;
 import hexagon_example.driver_adapter.Driver;
-import hexagon_example.hexagon.application.Application;
-import hexagon_example.hexagon.driven_port.IObtainPoems;
-import hexagon_example.hexagon.driven_port.IWriteLines;
+import hexagon_example.hexagon.boundary.Boundary;
+import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
+import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
 
 /**
  * Main class that starts the hexagon example application.
@@ -29,7 +29,7 @@ public class Main {
 		IWriteLines consolePublisher = new ConsolePublisher();
 
 		// Inject driven adapters into application
-		Application application = new Application(englishLibrary, germanLibrary, consolePublisher);
+		Boundary application = new Boundary(englishLibrary, germanLibrary, consolePublisher);
 		
 		// Start the driver adapter for the application
 		Driver driver = new Driver(application);

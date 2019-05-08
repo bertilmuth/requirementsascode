@@ -1,12 +1,12 @@
 package hexagon_example.driver_adapter;
 
-import hexagon_example.hexagon.application.AskForEnglishPoem;
-import hexagon_example.hexagon.application.AskForGermanPoem;
-import hexagon_example.hexagon.driver_port.IReactToCommands;
+import hexagon_example.hexagon.boundary.AskForEnglishPoem;
+import hexagon_example.hexagon.boundary.AskForGermanPoem;
+import hexagon_example.hexagon.boundary.driver_port.IReactToCommands;
 
 /**
- * The driver adapter of the application. It's on the left side of the hexagon.
- * It sends user requests as command objects to the hexagon. (For simplicitly,
+ * The driver adapter. It's on the left side of the hexagon. It sends user
+ * requests as command objects to the hexagon boundary. (For simplicitly,
  * sending is done autonomously without user interaction.)
  * 
  * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
@@ -16,14 +16,14 @@ import hexagon_example.hexagon.driver_port.IReactToCommands;
  *
  */
 public class Driver {
-	private IReactToCommands application;
+	private IReactToCommands hexagonBoundary;
 
-	public Driver(IReactToCommands application) {
-		this.application = application;
+	public Driver(IReactToCommands hexagonBoundary) {
+		this.hexagonBoundary = hexagonBoundary;
 	}
 
 	public void run() {
-		application.reactTo(new AskForEnglishPoem());
-		application.reactTo(new AskForGermanPoem());
+		hexagonBoundary.reactTo(new AskForEnglishPoem());
+		hexagonBoundary.reactTo(new AskForGermanPoem());
 	}
 }
