@@ -1,6 +1,6 @@
 package hexagonal_architecture.adapter.driven;
 
-import hexagonal_architecture.port.driven.IObtainPoems;
+import hexagonal_architecture.hexagon.port.driven.IObtainPoems;
 
 /**
  * Right-side, driven adapter that acts as repository for German poems.

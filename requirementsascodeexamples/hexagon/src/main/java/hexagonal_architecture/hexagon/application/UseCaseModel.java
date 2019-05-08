@@ -1,4 +1,4 @@
-package hexagonal_architecture.application;
+package hexagonal_architecture.hexagon.application;
 
 import org.requirementsascode.Model;
 

@@ -1,4 +1,4 @@
-package hexagonal_architecture.port.driven;
+package hexagonal_architecture.hexagon.port.driven;
 
 /**
  * Driven, right side port for obtaining poems, e.g. from a repository outside

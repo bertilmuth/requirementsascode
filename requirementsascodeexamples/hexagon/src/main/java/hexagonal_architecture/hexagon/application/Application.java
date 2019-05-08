@@ -1,13 +1,13 @@
-package hexagonal_architecture.application;
+package hexagonal_architecture.hexagon.application;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-import hexagonal_architecture.application.systemreaction.DisplayPoem;
-import hexagonal_architecture.domain.RandomPoemPicker;
-import hexagonal_architecture.port.driven.IObtainPoems;
-import hexagonal_architecture.port.driven.IWriteLines;
-import hexagonal_architecture.port.driver.IReactToCommands;
+import hexagonal_architecture.hexagon.application.systemreaction.DisplayPoem;
+import hexagonal_architecture.hexagon.domain.RandomPoemPicker;
+import hexagonal_architecture.hexagon.port.driven.IObtainPoems;
+import hexagonal_architecture.hexagon.port.driven.IWriteLines;
+import hexagonal_architecture.hexagon.port.driver.IReactToCommands;
 
 /**
  * The application is the only point of communication with left-side driver

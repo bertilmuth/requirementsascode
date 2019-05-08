@@ -1,8 +1,8 @@
-package hexagonal_architecture.application.systemreaction;
+package hexagonal_architecture.hexagon.application.systemreaction;
 
-import hexagonal_architecture.domain.RandomPoemPicker;
-import hexagonal_architecture.port.driven.IObtainPoems;
-import hexagonal_architecture.port.driven.IWriteLines;
+import hexagonal_architecture.hexagon.domain.RandomPoemPicker;
+import hexagonal_architecture.hexagon.port.driven.IObtainPoems;
+import hexagonal_architecture.hexagon.port.driven.IWriteLines;
 
 /**
  * The command handler for displaying a poem.

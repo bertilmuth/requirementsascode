@@ -4,9 +4,9 @@ import hexagonal_architecture.adapter.driven.ConsolePublisher;
 import hexagonal_architecture.adapter.driven.EnglishPoetryLibrary;
 import hexagonal_architecture.adapter.driven.GermanPoetryLibrary;
 import hexagonal_architecture.adapter.driver.Driver;
-import hexagonal_architecture.application.Application;
-import hexagonal_architecture.port.driven.IObtainPoems;
-import hexagonal_architecture.port.driven.IWriteLines;
+import hexagonal_architecture.hexagon.application.Application;
+import hexagonal_architecture.hexagon.port.driven.IObtainPoems;
+import hexagonal_architecture.hexagon.port.driven.IWriteLines;
 
 /**
  * Main class that starts the hexagon example application.

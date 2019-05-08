@@ -2,8 +2,8 @@ package hexagonal_architecture.adapter.driver;
 
 import java.util.function.Consumer;
 
-import hexagonal_architecture.application.AskForEnglishPoem;
-import hexagonal_architecture.application.AskForGermanPoem;
+import hexagonal_architecture.hexagon.application.AskForEnglishPoem;
+import hexagonal_architecture.hexagon.application.AskForGermanPoem;
 
 /**
  * The driver adapter of the application. It's on the left side of the hexagon.
