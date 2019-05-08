@@ -44,7 +44,7 @@ public class Application implements IReactToCommands {
 		return model;
 	}
 
-	public void accept(Object commandObject) {
+	public void reactTo(Object commandObject) {
 		modelRunner.reactTo(commandObject);
 	}
 }

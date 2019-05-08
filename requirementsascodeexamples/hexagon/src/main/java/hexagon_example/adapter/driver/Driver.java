@@ -1,9 +1,8 @@
 package hexagon_example.adapter.driver;
 
-import java.util.function.Consumer;
-
 import hexagon_example.hexagon.application.AskForEnglishPoem;
 import hexagon_example.hexagon.application.AskForGermanPoem;
+import hexagon_example.hexagon.port.driver.IReactToCommands;
 
 /**
  * The driver adapter of the application. It's on the left side of the hexagon.
@@ -17,14 +16,14 @@ import hexagon_example.hexagon.application.AskForGermanPoem;
  *
  */
 public class Driver {
-	private Consumer<Object> application;
+	private IReactToCommands application;
 
-	public Driver(Consumer<Object> application) {
+	public Driver(IReactToCommands application) {
 		this.application = application;
 	}
 
 	public void run() {
-		application.accept(new AskForEnglishPoem());
-		application.accept(new AskForGermanPoem());
+		application.reactTo(new AskForEnglishPoem());
+		application.reactTo(new AskForGermanPoem());
 	}
 }
