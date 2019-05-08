@@ -1,4 +1,4 @@
-package hexagon_example.domain;
+package hexagon_example.hexagon.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
