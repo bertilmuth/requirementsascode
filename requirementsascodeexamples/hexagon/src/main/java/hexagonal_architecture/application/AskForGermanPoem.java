@@ -1,4 +1,4 @@
-package hexagon.application;
+package hexagonal_architecture.application;
 
 /**
  * Command object representing the user request for a German poem.

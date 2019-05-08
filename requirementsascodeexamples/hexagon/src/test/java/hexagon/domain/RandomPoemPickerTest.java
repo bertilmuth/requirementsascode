@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import hexagonal_architecture.domain.RandomPoemPicker;
+
 public class RandomPoemPickerTest {
 	private RandomPoemPicker randomPoemPicker;
 

@@ -1,4 +1,4 @@
-package hexagon.domain;
+package hexagonal_architecture.domain;
 
 import java.util.Random;
 

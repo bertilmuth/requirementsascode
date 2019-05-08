@@ -1,4 +1,4 @@
-package hexagon.port;
+package hexagonal_architecture.port.driven;
 
 /**
  * Driven, right side port for writing the lines of a poem to an output device

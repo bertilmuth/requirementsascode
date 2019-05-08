@@ -1,14 +1,13 @@
-package hexagon.application;
-
-import java.util.function.Consumer;
+package hexagonal_architecture.application;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-import hexagon.application.systemreaction.DisplayPoem;
-import hexagon.domain.RandomPoemPicker;
-import hexagon.port.IObtainPoems;
-import hexagon.port.IWriteLines;
+import hexagonal_architecture.application.systemreaction.DisplayPoem;
+import hexagonal_architecture.domain.RandomPoemPicker;
+import hexagonal_architecture.port.driven.IObtainPoems;
+import hexagonal_architecture.port.driven.IWriteLines;
+import hexagonal_architecture.port.driver.IReactToCommands;
 
 /**
  * The application is the only point of communication with left-side driver
@@ -29,7 +28,7 @@ import hexagon.port.IWriteLines;
  * @author b_muth
  *
  */
-public class Application implements Consumer<Object> {
+public class Application implements IReactToCommands {
 
 	private ModelRunner modelRunner;
 
