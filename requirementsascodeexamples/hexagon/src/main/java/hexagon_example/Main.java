@@ -7,6 +7,7 @@ import hexagon_example.driver_adapter.Driver;
 import hexagon_example.hexagon.boundary.Boundary;
 import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
 import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
+import hexagon_example.hexagon.boundary.driver_port.IReactToCommands;
 
 /**
  * Main class that starts the hexagon example application.
@@ -28,11 +29,10 @@ public class Main {
 		IObtainPoems germanLibrary = new GermanPoetryLibrary();
 		IWriteLines consolePublisher = new ConsolePublisher();
 
-		// Inject driven adapters into application
-		Boundary application = new Boundary(englishLibrary, germanLibrary, consolePublisher);
+		// Inject driven adapters into boundary
+		IReactToCommands boundary = new Boundary(englishLibrary, germanLibrary, consolePublisher);
 		
 		// Start the driver adapter for the application
-		Driver driver = new Driver(application);
-		driver.run();
+		new Driver(boundary).run();
 	}
 }
