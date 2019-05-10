@@ -10,7 +10,7 @@ import hexagon_example.hexagon.internal.commandhandler.DisplayPoem;
 
 /**
  * The boundary class is the only point of communication with left-side driver
- * adapters. It accepts commands, and triggers the appropriate system reaction.
+ * adapters. It accepts commands, and calls the appropriate command handler.
  * 
  * On creation, this class wires up the dependencies between command objects and
  * command handlers, by injecting the command handlers into a use case model.
