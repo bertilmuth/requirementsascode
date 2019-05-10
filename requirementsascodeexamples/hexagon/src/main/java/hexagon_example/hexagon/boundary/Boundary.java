@@ -15,7 +15,6 @@ import hexagon_example.hexagon.internal.domain.RandomPoemPicker;
  * 
  * On creation, this class wires up the dependencies between command objects and
  * command handlers, by injecting the command handlers into a use case model.
- * (The command handlers are located in the system_reaction package.)
  * 
  * After creation, this class sends each command it receives to the runner
  * of the use case model. The model runner then dispatches the command to the
