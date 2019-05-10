@@ -18,9 +18,9 @@ public class DisplayPoem implements Runnable {
 	private RandomPoemPicker poemPicker;
 	private IWriteLines publishingDevice;
 
-	public DisplayPoem(IObtainPoems poetryLibrary, RandomPoemPicker poemPicker, IWriteLines publishingDevice) {
+	public DisplayPoem(IObtainPoems poetryLibrary, IWriteLines publishingDevice) {
 		this.poetryLibrary = poetryLibrary;
-		this.poemPicker = poemPicker;
+		this.poemPicker = new RandomPoemPicker();
 		this.publishingDevice = publishingDevice;
 	}
 

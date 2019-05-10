@@ -7,7 +7,6 @@ import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
 import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
 import hexagon_example.hexagon.boundary.driver_port.IReactToCommands;
 import hexagon_example.hexagon.internal.commandhandler.DisplayPoem;
-import hexagon_example.hexagon.internal.domain.RandomPoemPicker;
 
 /**
  * The boundary class is the only point of communication with left-side driver
@@ -36,8 +35,8 @@ public class Boundary implements IReactToCommands {
 	}
 
 	private Model buildModel(IObtainPoems englishLibrary, IObtainPoems germanLibrary, IWriteLines publishingDevice) {
-		Runnable displayEnglishPoem = new DisplayPoem(englishLibrary, new RandomPoemPicker(), publishingDevice);
-		Runnable displayGermanPoem = new DisplayPoem(germanLibrary, new RandomPoemPicker(), publishingDevice);
+		Runnable displayEnglishPoem = new DisplayPoem(englishLibrary, publishingDevice);
+		Runnable displayGermanPoem = new DisplayPoem(germanLibrary, publishingDevice);
 		Model model = UseCaseModel.build(displayEnglishPoem, displayGermanPoem);
 		return model;
 	}
