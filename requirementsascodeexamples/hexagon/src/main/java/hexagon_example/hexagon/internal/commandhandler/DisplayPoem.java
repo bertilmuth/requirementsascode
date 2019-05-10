@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.internal.system_reaction;
+package hexagon_example.hexagon.internal.commandhandler;
 
 import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
 import hexagon_example.hexagon.boundary.driven_port.IWriteLines;

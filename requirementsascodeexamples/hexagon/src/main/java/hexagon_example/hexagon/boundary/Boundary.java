@@ -6,8 +6,8 @@ import org.requirementsascode.ModelRunner;
 import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
 import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
 import hexagon_example.hexagon.boundary.driver_port.IReactToCommands;
+import hexagon_example.hexagon.internal.commandhandler.DisplayPoem;
 import hexagon_example.hexagon.internal.domain.RandomPoemPicker;
-import hexagon_example.hexagon.internal.system_reaction.DisplayPoem;
 
 /**
  * The boundary class is the only point of communication with left-side driver
