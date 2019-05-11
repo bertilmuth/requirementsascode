@@ -1,9 +1,5 @@
 package org.requirementsascode;
 
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -77,105 +73,14 @@ public class UseCasePart {
 		return modelBuilder.build();
 	}
 
-	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
-		ConditionPart conditionPart = condition(null);
-		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
+	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
+		FlowlessConditionPart conditionPart = condition(null);
+		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(messageClass);
 		return flowlessUserPart;
 	}
 
-	public ConditionPart condition(Condition condition) {
-		ConditionPart conditionPart = createConditionPart(condition, 1);
+	public FlowlessConditionPart condition(Condition condition) {
+		FlowlessConditionPart conditionPart = new FlowlessConditionPart(this, condition, 1);
 		return conditionPart;
-	}
-
-	ConditionPart createConditionPart(Condition optionalCondition, long flowlessStepCounter) {
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
-		StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
-		ConditionPart conditionPart = new ConditionPart(stepPart, flowlessStepCounter);
-		return conditionPart;
-	}
-
-	public class ConditionPart {
-		private long flowlessStepCounter;
-		private StepPart stepPart;
-
-		private ConditionPart(StepPart stepPart, long flowlessStepCounter) {
-			this.stepPart = stepPart;
-			this.flowlessStepCounter = flowlessStepCounter;
-		}
-
-		public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
-			StepUserPart<T> stepUserPart = stepPart.on(eventOrExceptionClass);
-			FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
-			return flowlessUserPart;
-		}
-
-		public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-			StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
-			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-			return flowlessSystemPart;
-		}
-
-		public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-			StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
-			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-			return flowlessSystemPart;
-		}
-	}
-
-	public class FlowlessUserPart<T> {
-		private StepUserPart<T> stepUserPart;
-		private long flowlessStepCounter;
-
-		private FlowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
-			this.stepUserPart = stepUserPart;
-			this.flowlessStepCounter = flowlessStepCounter;
-		}
-
-		public FlowlessSystemPart<T> system(Runnable systemReactionObject) {
-			StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
-			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-		}
-
-		public FlowlessSystemPart<T> system(Consumer<T> systemReactionObject) {
-			StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
-			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-		}
-
-		public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReactionObject) {
-			StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReactionObject);
-			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-		}
-	}
-
-	public class FlowlessSystemPart<T> {
-		private long flowlessStepCounter;
-		private UseCasePart useCasePart;
-
-		private FlowlessSystemPart(StepSystemPart<T> stepSystemPart, long flowlessStepCounter) {
-			this.flowlessStepCounter = flowlessStepCounter;
-			this.useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		}
-
-		public ConditionPart condition(Condition condition) {
-			ConditionPart conditionPart = useCasePart.createConditionPart(condition, ++flowlessStepCounter);
-			return conditionPart;
-		}
-
-		public <U> FlowlessUserPart<U> on(Class<U> messageClass) {
-			FlowlessUserPart<U> flowlessUserPart = condition(null).on(messageClass);
-			return flowlessUserPart;
-		}
-
-		public Model build() {
-			return useCasePart.build();
-		}
-
-		public UseCasePart useCase(String useCaseName) {
-			Objects.requireNonNull(useCaseName);
-			UseCasePart useCasePart = getModelBuilder().useCase(useCaseName);
-			return useCasePart;
-		}
-
 	}
 }

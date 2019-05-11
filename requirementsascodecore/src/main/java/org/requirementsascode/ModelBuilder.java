@@ -1,8 +1,5 @@
 package org.requirementsascode;
 
-import org.requirementsascode.UseCasePart.FlowlessUserPart;
-import org.requirementsascode.UseCasePart.ConditionPart;
-
 /**
  * Class that builds a {@link Model}, in a fluent way.
  *
@@ -52,7 +49,7 @@ public class ModelBuilder {
      *            the condition that constrains when the event is handled
      * @return a part of the builder used to define the event's class
      */
-    public ConditionPart condition(Condition condition) {
+    public FlowlessConditionPart condition(Condition condition) {
 	return useCase(HANDLES_EVENTS).condition(condition);
     }
 
