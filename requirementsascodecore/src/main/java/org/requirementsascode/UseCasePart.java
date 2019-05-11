@@ -88,7 +88,7 @@ public class UseCasePart {
 		return conditionPart;
 	}
 
-	private ConditionPart createConditionPart(Condition optionalCondition, long flowlessStepCounter) {
+	ConditionPart createConditionPart(Condition optionalCondition, long flowlessStepCounter) {
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
 		StepPart stepPart = new StepPart(newStep, UseCasePart.this, null);
 		ConditionPart conditionPart = new ConditionPart(stepPart, flowlessStepCounter);
@@ -111,14 +111,14 @@ public class UseCasePart {
 		}
 
 		public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-			stepPart.system(systemReaction);
-			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(flowlessStepCounter);
+			StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
+			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 			return flowlessSystemPart;
 		}
 
 		public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-			stepPart.system(systemReaction);
-			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(flowlessStepCounter);
+			StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
+			FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 			return flowlessSystemPart;
 		}
 	}
@@ -133,40 +133,42 @@ public class UseCasePart {
 		}
 
 		public FlowlessSystemPart<T> system(Runnable systemReactionObject) {
-			stepUserPart.system(systemReactionObject);
-			return new FlowlessSystemPart<>(flowlessStepCounter);
+			StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
+			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		}
 
 		public FlowlessSystemPart<T> system(Consumer<T> systemReactionObject) {
-			stepUserPart.system(systemReactionObject);
-			return new FlowlessSystemPart<>(flowlessStepCounter);
+			StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
+			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		}
 
 		public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReactionObject) {
-			stepUserPart.systemPublish(systemReactionObject);
-			return new FlowlessSystemPart<>(flowlessStepCounter);
+			StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReactionObject);
+			return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		}
 	}
 
 	public class FlowlessSystemPart<T> {
 		private long flowlessStepCounter;
+		private UseCasePart useCasePart;
 
-		private FlowlessSystemPart(long flowlessStepCounter) {
+		private FlowlessSystemPart(StepSystemPart<T> stepSystemPart, long flowlessStepCounter) {
 			this.flowlessStepCounter = flowlessStepCounter;
+			this.useCasePart = stepSystemPart.getStepPart().getUseCasePart();
 		}
 
 		public ConditionPart condition(Condition condition) {
-			ConditionPart conditionPart = createConditionPart(condition, ++flowlessStepCounter);
+			ConditionPart conditionPart = useCasePart.createConditionPart(condition, ++flowlessStepCounter);
 			return conditionPart;
 		}
 
-		public <U> FlowlessUserPart<U> on(Class<U> eventOrExceptionClass) {
-			FlowlessUserPart<U> flowlessUserPart = condition(null).on(eventOrExceptionClass);
+		public <U> FlowlessUserPart<U> on(Class<U> messageClass) {
+			FlowlessUserPart<U> flowlessUserPart = condition(null).on(messageClass);
 			return flowlessUserPart;
 		}
 
 		public Model build() {
-			return UseCasePart.this.build();
+			return useCasePart.build();
 		}
 
 		public UseCasePart useCase(String useCaseName) {
