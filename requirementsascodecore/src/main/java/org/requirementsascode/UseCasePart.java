@@ -80,7 +80,7 @@ public class UseCasePart {
 	}
 
 	public FlowlessConditionPart condition(Condition condition) {
-		FlowlessConditionPart conditionPart = new FlowlessConditionPart(this, condition, 1);
+		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, this, 1);
 		return conditionPart;
 	}
 }

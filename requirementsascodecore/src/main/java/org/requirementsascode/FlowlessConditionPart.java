@@ -6,7 +6,7 @@ public class FlowlessConditionPart {
 	private long flowlessStepCounter;
 	private StepPart stepPart;
 	
-	FlowlessConditionPart(UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
+	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		UseCase useCase = useCasePart.getUseCase();
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
 		this.stepPart = new StepPart(newStep, useCasePart, null);

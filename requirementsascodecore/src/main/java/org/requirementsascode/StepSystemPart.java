@@ -13,7 +13,7 @@ public class StepSystemPart<T> {
 	private StepPart stepPart;
 	private Step step;
 
-	StepSystemPart(StepPart stepPart, SystemReaction<T> systemReaction) {
+	StepSystemPart(SystemReaction<T> systemReaction, StepPart stepPart) {
 		this.stepPart = stepPart;
 		this.step = stepPart.getStep();
 		step.setSystemReaction(systemReaction);

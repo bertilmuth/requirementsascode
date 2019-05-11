@@ -36,7 +36,7 @@ public class StepPart {
 	 */
 	public StepAsPart as(Actor... actors) {
 		Objects.requireNonNull(actors);
-		return new StepAsPart(this, actors);
+		return new StepAsPart(actors, this);
 	}
 
 	/**

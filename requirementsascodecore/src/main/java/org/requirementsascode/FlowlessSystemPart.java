@@ -12,7 +12,7 @@ public class FlowlessSystemPart<T> {
 	}
 
 	public FlowlessConditionPart condition(Condition condition) {
-		FlowlessConditionPart conditionPart = new FlowlessConditionPart(useCasePart, condition, ++flowlessStepCounter);
+		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, useCasePart, ++flowlessStepCounter);
 		return conditionPart;
 	}
 
