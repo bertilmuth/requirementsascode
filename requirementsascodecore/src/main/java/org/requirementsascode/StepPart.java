@@ -48,14 +48,14 @@ public class StepPart {
 	 * reacts to objects that are instances of the specified class or instances of
 	 * any direct or indirect subclass of the specified class.
 	 *
-	 * @param eventClass the class of commands the system reacts to in this step
+	 * @param commandClass the class of commands the system reacts to in this step
 	 * @param <T>        the type of the class
 	 * @return the created user part of this step
 	 */
-	public <T> StepUserPart<T> user(Class<T> eventClass) {
-		Objects.requireNonNull(eventClass);
+	public <T> StepUserPart<T> user(Class<T> commandClass) {
+		Objects.requireNonNull(commandClass);
 		Actor defaultActor = getUseCasePart().getDefaultActor();
-		StepUserPart<T> userPart = as(defaultActor).user(eventClass);
+		StepUserPart<T> userPart = as(defaultActor).user(commandClass);
 		return userPart;
 	}
 

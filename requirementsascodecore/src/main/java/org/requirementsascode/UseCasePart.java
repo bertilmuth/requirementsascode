@@ -66,7 +66,24 @@ public class UseCasePart {
 	}
 
 	/**
-	 * Defines the type of system event objects or exceptions that will cause a
+	 * Defines the type of command objects that will cause a system reaction.
+	 *
+	 * <p>
+	 * The system reacts to objects that are instances of the specified class or
+	 * instances of any direct or indirect subclass of the specified class.
+	 *
+	 * @param commandClass the class of commands the system reacts to
+	 * @param <T>          the type of the class
+	 * @return the created user part
+	 */
+	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
+		FlowlessConditionPart conditionPart = condition(null);
+		FlowlessUserPart<T> flowlessUserPart = conditionPart.user(commandClass);
+		return flowlessUserPart;
+	}
+
+	/**
+	 * Defines the type of event objects or exceptions that will cause a
 	 * system reaction.
 	 *
 	 * <p>
@@ -82,7 +99,7 @@ public class UseCasePart {
 		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
 		return flowlessUserPart;
 	}
-	
+
 	/**
 	 * Returns the model that has been built.
 	 * 
@@ -91,7 +108,7 @@ public class UseCasePart {
 	public Model build() {
 		return modelBuilder.build();
 	}
-	
+
 	UseCase getUseCase() {
 		return useCase;
 	}

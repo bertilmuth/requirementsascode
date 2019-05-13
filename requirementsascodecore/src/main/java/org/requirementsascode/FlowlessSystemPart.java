@@ -3,7 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 
 /**
- * Part used by the {@link ModelBuilder} to build a {@link Model}. 
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
  * 
  * @author b_muth
  */
@@ -30,19 +30,38 @@ public class FlowlessSystemPart<T> {
 	}
 
 	/**
-	 * Defines the type of messages that will cause a system reaction.
+	 * Defines the type of command objects that will cause a system
+	 * reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or
 	 * instances of any direct or indirect subclass of the specified class.
 	 *
-	 * @param messageClass the class of messages the system reacts to
-	 * @param <U>          the type of the class
+	 * @param commandClass the class of commands the system reacts to
+	 * @param <U>                   the type of the class
 	 * @return the created user part
 	 */
-	public <U> FlowlessUserPart<U> on(Class<U> messageClass) {
-		Objects.requireNonNull(messageClass);
-		FlowlessUserPart<U> flowlessUserPart = condition(null).on(messageClass);
+	public <U> FlowlessUserPart<U> user(Class<U> commandClass) {
+		Objects.requireNonNull(commandClass);
+		FlowlessUserPart<U> flowlessUserPart = condition(null).user(commandClass);
+		return flowlessUserPart;
+	}
+
+	/**
+	 * Defines the type of event objects or exceptions that will cause a system
+	 * reaction.
+	 *
+	 * <p>
+	 * The system reacts to objects that are instances of the specified class or
+	 * instances of any direct or indirect subclass of the specified class.
+	 *
+	 * @param eventOrExceptionClass the class of events the system reacts to
+	 * @param <U>                   the type of the class
+	 * @return the created user part
+	 */
+	public <U> FlowlessUserPart<U> on(Class<U> eventOrExceptionClass) {
+		Objects.requireNonNull(eventOrExceptionClass);
+		FlowlessUserPart<U> flowlessUserPart = condition(null).on(eventOrExceptionClass);
 		return flowlessUserPart;
 	}
 
