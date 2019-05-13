@@ -52,6 +52,46 @@ public class UseCasePart {
 		return this;
 	}
 
+	/**
+	 * Constrains the condition for triggering a system reaction: only if the
+	 * specified condition is true, a system reaction can be triggered.
+	 *
+	 * @param condition the condition that constrains when the system reaction is
+	 *                  triggered
+	 * @return the created condition part
+	 */
+	public FlowlessConditionPart condition(Condition condition) {
+		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, this, 1);
+		return conditionPart;
+	}
+
+	/**
+	 * Defines the type of system event objects or exceptions that will cause a
+	 * system reaction.
+	 *
+	 * <p>
+	 * The system reacts to objects that are instances of the specified class or
+	 * instances of any direct or indirect subclass of the specified class.
+	 *
+	 * @param eventOrExceptionClass the class of events the system reacts to
+	 * @param <T>                   the type of the class
+	 * @return the created user part
+	 */
+	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
+		FlowlessConditionPart conditionPart = condition(null);
+		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
+		return flowlessUserPart;
+	}
+	
+	/**
+	 * Returns the model that has been built.
+	 * 
+	 * @return the model
+	 */
+	public Model build() {
+		return modelBuilder.build();
+	}
+	
 	UseCase getUseCase() {
 		return useCase;
 	}
@@ -62,25 +102,5 @@ public class UseCasePart {
 
 	Actor getDefaultActor() {
 		return defaultActor;
-	}
-
-	/**
-	 * Returns the model that has been built.
-	 * 
-	 * @return the model
-	 */
-	public Model build() {
-		return modelBuilder.build();
-	}
-
-	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
-		FlowlessConditionPart conditionPart = condition(null);
-		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(messageClass);
-		return flowlessUserPart;
-	}
-
-	public FlowlessConditionPart condition(Condition condition) {
-		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, this, 1);
-		return conditionPart;
 	}
 }

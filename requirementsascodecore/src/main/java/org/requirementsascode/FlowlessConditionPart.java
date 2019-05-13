@@ -21,8 +21,8 @@ public class FlowlessConditionPart {
 	}
 
 	/**
-	 * Defines the type of system event objects or exceptions that this step
-	 * handles. Events of the specified type can cause a system reaction.
+	 * Defines the type of system event objects or exceptions that will cause a
+	 * system reaction, given that the condition is fulfilled.
 	 *
 	 * <p>
 	 * Given that the step's condition is true, the system reacts to objects that
