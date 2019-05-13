@@ -2,11 +2,17 @@ package org.requirementsascode;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
-public class ConditionPart {
+/**
+ * Part used by the {@link ModelBuilder} to build a {@link Model}.
+ *
+ * @see Flow#getCondition()
+ * @author b_muth
+ */
+public class FlowConditionPart {
 	private FlowPositionPart flowPositionPart;
 	private Condition condition;
 
-	ConditionPart(FlowPositionPart flowPositionPart, Condition condition) {
+	FlowConditionPart(FlowPositionPart flowPositionPart, Condition condition) {
 		this.flowPositionPart = flowPositionPart;
 		this.condition = condition;
 	}

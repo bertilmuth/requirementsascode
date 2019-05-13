@@ -6,7 +6,7 @@ import org.requirementsascode.flowposition.FlowPosition;
 public class FlowPositionPart {
 	private FlowPosition flowPosition;
 	private FlowPart flowPart;
-	private ConditionPart conditionPart;
+	private FlowConditionPart conditionPart;
 
 	FlowPositionPart(FlowPosition flowPosition, FlowPart flowPart) {
 		this.flowPosition = flowPosition;
@@ -21,8 +21,8 @@ public class FlowPositionPart {
 	 * @param condition the condition that constrains when the flow is started
 	 * @return this condition part, to ease creation of the first step of the flow
 	 */
-	public ConditionPart condition(Condition condition) {
-		this.conditionPart = new ConditionPart(this, condition);
+	public FlowConditionPart condition(Condition condition) {
+		this.conditionPart = new FlowConditionPart(this, condition);
 		return conditionPart;
 	}
 

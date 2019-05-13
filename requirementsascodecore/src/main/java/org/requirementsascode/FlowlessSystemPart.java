@@ -2,6 +2,11 @@ package org.requirementsascode;
 
 import java.util.Objects;
 
+/**
+ * Part used by the {@link ModelBuilder} to build a {@link Model}. 
+ * 
+ * @author b_muth
+ */
 public class FlowlessSystemPart<T> {
 	private long flowlessStepCounter;
 	private UseCasePart useCasePart;

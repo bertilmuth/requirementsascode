@@ -100,10 +100,10 @@ public class FlowPart {
 	 * @param condition the condition that constrains when the flow is started
 	 * @return the condition part, to ease creation of the first step of the flow
 	 */
-	public ConditionPart condition(Condition condition) {
+	public FlowConditionPart condition(Condition condition) {
 		Objects.requireNonNull(condition);
 		optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);
-		ConditionPart conditionPart = optionalFlowPositionPart.condition(condition);
+		FlowConditionPart conditionPart = optionalFlowPositionPart.condition(condition);
 		return conditionPart;
 	}
 

@@ -3,6 +3,12 @@ package org.requirementsascode;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps
+ * {@link StepUserPart}.
+ * 
+ * @author b_muth
+ */
 public class FlowlessUserPart<T> {
 	private StepUserPart<T> stepUserPart;
 	private long flowlessStepCounter;
@@ -25,9 +31,11 @@ public class FlowlessUserPart<T> {
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned events.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @param systemReaction the autonomous system reaction, that returns events to
+	 *                       be published.
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
