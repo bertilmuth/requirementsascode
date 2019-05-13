@@ -114,7 +114,7 @@ public class FreemarkerEngineTest {
 	String output = outputWriter.toString();
 
           assertEquals(
-              "Use case: Handles events."
+              "Use case: Handles messages."
                     + " Step: S1. On EntersName: System greets user."                 
                     + " Step: S2. On Exception: System logs exception.",
               output);
