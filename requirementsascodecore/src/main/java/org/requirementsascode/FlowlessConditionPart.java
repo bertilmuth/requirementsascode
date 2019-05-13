@@ -2,10 +2,16 @@ package org.requirementsascode;
 
 import java.util.function.Consumer;
 
+/**
+ * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps
+ * {@link StepPart}.
+ * 
+ * @author b_muth
+ */
 public class FlowlessConditionPart {
 	private long flowlessStepCounter;
 	private StepPart stepPart;
-	
+
 	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		UseCase useCase = useCasePart.getUseCase();
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
@@ -13,20 +19,49 @@ public class FlowlessConditionPart {
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
+	/**
+	 * Defines the type of system event objects or exceptions that this step
+	 * handles. Events of the specified type can cause a system reaction.
+	 *
+	 * <p>
+	 * Given that the step's condition is true, the system reacts to objects that
+	 * are instances of the specified class or instances of any direct or indirect
+	 * subclass of the specified class.
+	 *
+	 * @param eventOrExceptionClass the class of events the system reacts to
+	 * @param <T>                   the type of the class
+	 * @return the created user part of this step
+	 */
 	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
 		StepUserPart<T> stepUserPart = stepPart.on(eventOrExceptionClass);
 		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
-	public <T> FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 *
+	 * @param systemReaction the autonomous system reaction
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
 		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
 				flowlessStepCounter);
 		return flowlessSystemPart;
 	}
 
-	public <T> FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * Instead, the model runner provides itself as an event to the system reaction.
+	 *
+	 * @param systemReaction the autonomous system reaction (that needs
+	 *                            information from a model runner to work)
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
 		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
 				flowlessStepCounter);

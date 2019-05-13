@@ -61,7 +61,7 @@ public class StepPart {
 
 	/**
 	 * Defines the type of system event objects or exceptions that this step
-	 * handles. Events of this type can cause a system reaction.
+	 * handles. Events of the specified type can cause a system reaction.
 	 *
 	 * <p>
 	 * Given that the step's condition is true, and the actor is right, the system
@@ -92,24 +92,32 @@ public class StepPart {
 		return systemPart;
 	}
 
-	StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
-		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
-		return systemPart;
-	}
-
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
 	 * Instead, the model runner provides itself as an event to the system reaction.
 	 *
-	 * @param modelRunnerConsumer the autonomous system reaction (that needs
+	 * @param systemReaction the autonomous system reaction (that needs
 	 *                            information from a model runner to work)
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> modelRunnerConsumer) {
-		Objects.requireNonNull(modelRunnerConsumer);
-		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(modelRunnerConsumer);
+	public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
+		Objects.requireNonNull(systemReaction);
+		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
+		return systemPart;
+	}
+	
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned events.
+	 *
+	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @return the created system part of this step
+	 */
+	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
+		Objects.requireNonNull(systemReaction);
+		StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
 		return systemPart;
 	}
 
