@@ -1,8 +1,8 @@
-package hexagon_example.driver_adapter;
+package hexagonexample.driveradapter;
 
-import hexagon_example.hexagon.boundary.AskForEnglishPoem;
-import hexagon_example.hexagon.boundary.AskForGermanPoem;
-import hexagon_example.hexagon.boundary.driver_port.IReactToCommands;
+import hexagonexample.hexagon.boundary.AskForEnglishPoem;
+import hexagonexample.hexagon.boundary.AskForGermanPoem;
+import hexagonexample.hexagon.boundary.driverport.IReactToCommands;
 
 /**
  * The driver adapter. It's on the left side of the hexagon. It sends user

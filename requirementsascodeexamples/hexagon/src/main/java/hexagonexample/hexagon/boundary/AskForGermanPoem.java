@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.boundary;
+package hexagonexample.hexagon.boundary;
 
 /**
  * Command object representing the user request for a German poem.

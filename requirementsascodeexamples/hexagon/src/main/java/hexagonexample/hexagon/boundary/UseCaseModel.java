@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.boundary;
+package hexagonexample.hexagon.boundary;
 
 import org.requirementsascode.Model;
 
@@ -22,8 +22,8 @@ class UseCaseModel {
 	public static Model build(Runnable displayEnglishPoem, Runnable displayGermanPoem) {
 		Model model = Model.builder()
 			.useCase("Read a poem")
-				.on(askForEnglishPoem).system(displayEnglishPoem)
-				.on(askForGermanPoem).system(displayGermanPoem)
+				.user(askForEnglishPoem).system(displayEnglishPoem)
+				.user(askForGermanPoem).system(displayGermanPoem)
 		.build();
 
 		return model;

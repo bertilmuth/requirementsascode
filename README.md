@@ -1,14 +1,14 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-This project simplifies the development of event-driven applications.
+This project simplifies the development of message-driven applications.
 
-It provides a concise way to create handlers for many types of events at once.
-A single runner receives events, and dispatches them to handlers. 
-When activated, the runner also records the events.
+It provides a concise way to create handlers for many types of messages at once.
+A single runner receives messages, and dispatches them to handlers. 
+When activated, the runner also records the messages.
 That can be used for replay in event sourced applications.
 
-You can also [customize the event handler](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
+You can [customize the message handler](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
 
 For more advanced scenarios that depend on the application's state, 
 you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
@@ -28,31 +28,32 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.1'
+compile 'org.requirementsascode:requirementsascodecore:1.1.1'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
 
-## Step 1: Build a model defining the event classes to handle, and the methods that react to events:
+## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
 ``` java
 Model model = Model.builder()
-	.on(<event class>).system(<lambda expression, or reference to method that handles event>)
-	.on(..).system(...)
+	.user(<command class>).system(<command handler, i.e. lambda, method reference, consumer or runnable)>)
+	.user(..).system(...)
 	...
 .build();
 ```
 
 The order of the statements has no significance.
-For handling exceptions instead of events, use the specific exception's class or `Throwable.class`.
-Use `condition` before `on` to define an additional precondition that must be fulfilled.
-You can also use `condition` without `on`, meaning: execute at the beginning of the run, or after a step has been run,
+For handling events instead of commands, use `.on()` instead of `.user()`.
+For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
+Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
+You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after a step has been run,
 if the condition is fulfilled.
 
 ## Step 2: Create a runner and run the model:
@@ -60,11 +61,11 @@ if the condition is fulfilled.
 ModelRunner runner = new ModelRunner().run(model);
 ```
 
-## Step 3: Send events to the runner, and enjoy watching it react:
+## Step 3: Send messages to the runner, and enjoy watching it react:
 ``` java
-runner.reactTo(<Event POJO Object> [, <Event POJO Object>,...]);
+runner.reactTo(<Message POJO Object> [, <Message POJO Object>,...]);
 ```
-If an event's class is not declared in the model, the runner consumes it silently.
+If a message's class is not declared in the model, the runner consumes it silently.
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
 other handler method, the runner will rethrow it.
 
@@ -79,29 +80,33 @@ import org.requirementsascode.ModelRunner;
 
 public class HelloUser {
 	public static void main(String[] args) {
+		new HelloUser().buildAndRunModel();
+	}
+	
+	private void buildAndRunModel() {
 		Model model = Model.builder()
-			.on(DisplayHelloRequested.class).system(HelloUser::displayHello)
-			.on(NameEntered.class).system(HelloUser::displayEnteredName)
+			.user(RequestHello.class).system(this::displayHello)
+			.user(EnterName.class).system(this::displayName)
 		.build();
 
 		new ModelRunner().run(model)
-			.reactTo(new DisplayHelloRequested(), new NameEntered("Joe"));
+			.reactTo(new RequestHello(), new EnterName("Joe"));		
 	}
-	
-	public static void displayHello(DisplayHelloRequested displayHelloRequested) {
+
+	public void displayHello(RequestHello requestHello) {
 		System.out.println("Hello!");
 	}
 
-	public static void displayEnteredName(NameEntered nameEntered) {
-		System.out.println("Welcome, " + nameEntered.getUserName() + ".");
+	public void displayName(EnterName enterName) {
+		System.out.println("Welcome, " + enterName.getUserName() + ".");
 	}
 
-	static class DisplayHelloRequested {}
+	class RequestHello {}
 	
-	static class NameEntered {
+	class EnterName {
 		private String userName;
 
-		public NameEntered(String userName) {
+		public EnterName(String userName) {
 			this.userName = userName;
 		}
 
@@ -113,7 +118,7 @@ public class HelloUser {
 ```
 
 # event queue for non-blocking handling
-The default mode for the ModelRunner is to handle events in a blocking way. 
+The default mode for the ModelRunner is to handle messages in a blocking way. 
 Instead, you can use a simple event queue that processes events one by one in its own thread:
 
 ``` java
@@ -129,25 +134,31 @@ The constructor argument of `EventQueue` specifies that each event that's `put()
 Note that you can forward events to any other consumer of an object as well.
 
 # publishing events
-When you use the `system()` method, you are restricted to just consuming events.
-But ýou can also publish events with `systemPublish()`, like so:
+When you use the `system()` method, you are restricted to just consuming messages.
+But you can also publish events with `systemPublish()`, like so:
 
 ``` java
-	Model model = modelBuilder
-		.useCase("Use Case UC1")
-			.basicFlow()
-				.step("S1").on(EntersText.class).systemPublish(this::publishEnteredTextAsString) 
-	.build();
+	private void buildAndRunModel() {
+		Model model = Model.builder()
+			.on(EnterName.class).systemPublish(this::publishNameAsString) 
+			.on(String.class).system(this::displayNameString) 
+		.build();		
+		
+		new ModelRunner().run(model)
+			.reactTo(new EnterName("Joe"));	
+	}
 	
-	...
+	private Object[] publishNameAsString(EnterName enterName) {
+		return new Object[] {enterName.getUserName()};
+	}
 	
-	private String[] publishEnteredTextAsString(EnteredText enteredText) {
-		return new String[] { enteredText.value() };
+	public void displayNameString(String nameString) {
+		System.out.println("Welcome, " + nameString + ".");
 	}
 ```
 
-As you can see, the publishing method has an event object as input parameter, and returns an object array of events to be published (not necessarily strings).
-By default, the model runner takes the returned events and sends them to its own `reactTo()` method. 
+As you can see, the publishing method has a command object as input parameter, and returns an object array of events to be published (not necessarily strings).
+By default, as in the example, the model runner takes the returned events and sends each of them to its own `reactTo()` method. 
 This behavior can be overriden by specifying a custom event handler with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish the events to an event queue.
 

@@ -1,6 +1,6 @@
-package hexagon_example.driven_adapter;
+package hexagonexample.drivenadapter;
 
-import hexagon_example.hexagon.boundary.driven_port.IObtainPoems;
+import hexagonexample.hexagon.boundary.drivenport.IObtainPoems;
 
 /**
  * Right-side, driven adapter that acts as repository for English poems.

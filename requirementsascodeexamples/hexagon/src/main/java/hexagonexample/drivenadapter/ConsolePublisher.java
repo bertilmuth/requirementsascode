@@ -1,6 +1,6 @@
-package hexagon_example.driven_adapter;
+package hexagonexample.drivenadapter;
 
-import hexagon_example.hexagon.boundary.driven_port.IWriteLines;
+import hexagonexample.hexagon.boundary.drivenport.IWriteLines;
 
 /**
  * Right-side, driven adapter for writing text to the console.

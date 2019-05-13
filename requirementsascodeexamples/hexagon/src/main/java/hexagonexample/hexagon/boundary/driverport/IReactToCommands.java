@@ -1,4 +1,4 @@
-package hexagon_example.hexagon.boundary.driver_port;
+package hexagonexample.hexagon.boundary.driverport;
 
 public interface IReactToCommands{
 	void reactTo(Object command);
