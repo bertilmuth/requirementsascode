@@ -18,13 +18,27 @@ public class FlowlessUserPart<T> {
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	public FlowlessSystemPart<T> system(Runnable systemReactionObject) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 *
+	 * @param systemReaction the autonomous system reaction
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<T> system(Runnable systemReaction) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 
-	public FlowlessSystemPart<T> system(Consumer<T> systemReactionObject) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReactionObject);
+	/**
+	 * Defines the system reaction. The system will react as specified, when
+	 * {@link ModelRunner#reactTo(Object)} is called.
+	 *
+	 * @param systemReaction the specified system reaction
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 

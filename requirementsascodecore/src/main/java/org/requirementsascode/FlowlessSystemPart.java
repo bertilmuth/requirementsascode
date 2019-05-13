@@ -30,15 +30,14 @@ public class FlowlessSystemPart<T> {
 	}
 
 	/**
-	 * Defines the type of command objects that will cause a system
-	 * reaction.
+	 * Defines the type of commands that will cause a system reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or
 	 * instances of any direct or indirect subclass of the specified class.
 	 *
 	 * @param commandClass the class of commands the system reacts to
-	 * @param <U>                   the type of the class
+	 * @param <U>          the type of the class
 	 * @return the created user part
 	 */
 	public <U> FlowlessUserPart<U> user(Class<U> commandClass) {
@@ -48,8 +47,7 @@ public class FlowlessSystemPart<T> {
 	}
 
 	/**
-	 * Defines the type of event objects or exceptions that will cause a system
-	 * reaction.
+	 * Defines the type of events or exceptions that will cause a system reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or

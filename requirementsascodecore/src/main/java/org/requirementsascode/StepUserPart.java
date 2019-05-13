@@ -25,7 +25,7 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines the system reaction. The system will react as specified to the
-	 * current step's events, when you call {@link ModelRunner#reactTo(Object)}.
+	 * current step's events, when {@link ModelRunner#reactTo(Object)} is called.
 	 *
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step

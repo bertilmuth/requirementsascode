@@ -21,7 +21,7 @@ public class FlowlessConditionPart {
 	}
 	
 	/**
-	 * Defines the type of user command objects that this step accepts. Commands of
+	 * Defines the type of user commands that this step accepts. Commands of
 	 * this type can cause a system reaction.
 	 *
 	 * <p>
@@ -40,7 +40,7 @@ public class FlowlessConditionPart {
 	}
 
 	/**
-	 * Defines the type of system event objects or exceptions that will cause a
+	 * Defines the type of events or exceptions that will cause a
 	 * system reaction, given that the condition is fulfilled.
 	 *
 	 * <p>

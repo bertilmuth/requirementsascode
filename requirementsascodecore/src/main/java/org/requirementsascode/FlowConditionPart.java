@@ -17,7 +17,7 @@ public class FlowConditionPart {
 		this.condition = condition;
 	}
 
-	public Condition getCondition() {
+	Condition getCondition() {
 		return condition;
 	}
 

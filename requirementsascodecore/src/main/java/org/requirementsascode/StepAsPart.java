@@ -34,21 +34,21 @@ public class StepAsPart {
 	}
 
 	/**
-	 * Defines the type of user command objects that this step accepts. Commands of
-	 * this type can cause a system reaction.
+	 * Defines the type of user commands that this step accepts. Commands of this
+	 * type can cause a system reaction.
 	 *
 	 * <p>
 	 * Given that the step's condition is true, and the actor is right, the system
 	 * reacts to objects that are instances of the specified class or instances of
 	 * any direct or indirect subclass of the specified class.
 	 *
-	 * @param eventClass the class of commands the system reacts to in this step
-	 * @param <T>        the type of the class
+	 * @param commandClass the class of commands the system reacts to in this step
+	 * @param <T>          the type of the class
 	 * @return the created user part of this step
 	 */
-	public <T> StepUserPart<T> user(Class<T> eventClass) {
-		Objects.requireNonNull(eventClass);
-		return new StepUserPart<>(eventClass, stepPart);
+	public <T> StepUserPart<T> user(Class<T> commandClass) {
+		Objects.requireNonNull(commandClass);
+		return new StepUserPart<>(commandClass, stepPart);
 	}
 
 	/**
@@ -68,8 +68,8 @@ public class StepAsPart {
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
 	 * Instead, the model runner provides itself as an event to the system reaction.
 	 *
-	 * @param systemReaction the autonomous system reaction (that needs
-	 *                                 information from the model runner to work)
+	 * @param systemReaction the autonomous system reaction (that needs information
+	 *                       from the model runner to work)
 	 * @return the created system part of this step
 	 */
 	StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
@@ -80,9 +80,11 @@ public class StepAsPart {
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned events.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @param systemReaction the autonomous system reaction, that returns events to
+	 *                       be published.
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
@@ -103,7 +105,7 @@ public class StepAsPart {
 		system(new ContinuesAfter(stepName, step.getUseCase()));
 		return stepPart.getUseCasePart();
 	}
-	
+
 	/**
 	 * Makes the model runner continue at the specified step. If there are
 	 * alternative flows starting at the specified step, one may be entered if its

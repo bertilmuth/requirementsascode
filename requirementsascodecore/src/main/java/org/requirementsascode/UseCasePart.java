@@ -66,7 +66,7 @@ public class UseCasePart {
 	}
 
 	/**
-	 * Defines the type of command objects that will cause a system reaction.
+	 * Defines the type of commands that will cause a system reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or
@@ -83,7 +83,7 @@ public class UseCasePart {
 	}
 
 	/**
-	 * Defines the type of event objects or exceptions that will cause a
+	 * Defines the type of events or exceptions that will cause a
 	 * system reaction.
 	 *
 	 * <p>

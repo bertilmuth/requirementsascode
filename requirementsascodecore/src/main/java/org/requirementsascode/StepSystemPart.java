@@ -19,10 +19,6 @@ public class StepSystemPart<T> {
 		step.setSystemReaction(systemReaction);
 	}
 
-	public Model build() {
-		return stepPart.getModelBuilder().build();
-	}
-
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
 	 * current step in sequence.
@@ -96,5 +92,14 @@ public class StepSystemPart<T> {
 
 	StepPart getStepPart() {
 		return stepPart;
+	}
+
+	/**
+	 * Returns the model built so far.
+	 *
+	 * @return the model
+	 */
+	public Model build() {
+		return stepPart.getModelBuilder().build();
 	}
 }
