@@ -2,9 +2,9 @@ package org.requirementsascode;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
 import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
@@ -77,26 +77,59 @@ public class StepAsPart {
 		return systemPart;
 	}
 
-	public StepSystemPart<ModelRunner> systemPublish(Function<ModelRunner, Object[]> autonomousSystemReaction) {
-		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned events.
+	 *
+	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @return the created system part of this step
+	 */
+	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
+		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(systemReaction);
 		return systemPart;
 	}
 
-	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> autonomousSystemReaction) {
-		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(autonomousSystemReaction);
-		return systemPart;
+	/**
+	 * Makes the model runner continue after the specified step.
+	 *
+	 * @param stepName name of the step to continue after, in this use case.
+	 * @return the use case part this step belongs to, to ease creation of further
+	 *         flows
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found
+	 *                              in the current use case
+	 */
+	public UseCasePart continuesAfter(String stepName) {
+		system(new ContinuesAfter(stepName, step.getUseCase()));
+		return stepPart.getUseCasePart();
 	}
-
+	
+	/**
+	 * Makes the model runner continue at the specified step. If there are
+	 * alternative flows starting at the specified step, one may be entered if its
+	 * condition is enabled.
+	 *
+	 * @param stepName name of the step to continue at, in this use case.
+	 * @return the use case part this step belongs to, to ease creation of further
+	 *         flows
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found
+	 *                              in the current use case
+	 */
 	public UseCasePart continuesAt(String stepName) {
 		system(new ContinuesAt(stepName, step.getUseCase()));
 		return stepPart.getUseCasePart();
 	}
 
-	public UseCasePart continuesAfter(String stepName) {
-		system(new ContinuesAfter(stepName, step.getUseCase()));
-		return stepPart.getUseCasePart();
-	}
-
+	/**
+	 * Makes the model runner continue at the specified step. No alternative flow
+	 * starting at the specified step is entered, even if its condition is enabled.
+	 *
+	 * @param stepName name of the step to continue at, in this use case.
+	 * @return the use case part this step belongs to, to ease creation of further
+	 *         flows
+	 * @throws NoSuchElementInModel if no step with the specified stepName is found
+	 *                              in the current use case
+	 */
 	public UseCasePart continuesWithoutAlternativeAt(String stepName) {
 		system(new ContinuesWithoutAlternativeAt(stepName, (FlowStep) step));
 		return stepPart.getUseCasePart();

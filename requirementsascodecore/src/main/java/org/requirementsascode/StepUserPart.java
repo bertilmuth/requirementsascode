@@ -35,24 +35,51 @@ public class StepUserPart<T> {
 		return createStepSystemPart(systemReactionObject);
 	}
 
+	private StepSystemPart<T> createStepSystemPart(SystemReaction<T> systemReactionObject) {
+		Objects.requireNonNull(systemReactionObject);
+		return new StepSystemPart<>(systemReactionObject, stepPart);
+	}
+
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 *
+	 * @param systemReaction the autonomous system reaction
+	 * @return the created system part of this step
+	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
 
+	/**
+	 * Defines the system reaction. The system will react as specified to the
+	 * current step's events, when you call {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
+	 *
+	 * @param systemReaction the specified system reaction, that returns events to
+	 *                       be published.
+	 * @return the created system part of this step
+	 */
 	public StepSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
 
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
+	 *
+	 * @param systemReaction the autonomous system reaction, that returns events to
+	 *                       be published.
+	 * @return the created system part of this step
+	 */
 	public StepSystemPart<T> systemPublish(Supplier<Object[]> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
-	}
-
-	private StepSystemPart<T> createStepSystemPart(SystemReaction<T> systemReactionObject) {
-		Objects.requireNonNull(systemReactionObject);
-		return new StepSystemPart<>(systemReactionObject, stepPart);
 	}
 
 	/**

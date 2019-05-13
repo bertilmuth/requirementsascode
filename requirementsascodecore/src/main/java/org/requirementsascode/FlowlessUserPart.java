@@ -22,8 +22,16 @@ public class FlowlessUserPart<T> {
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 
-	public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReactionObject) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReactionObject);
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned events.
+	 *
+	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 }
