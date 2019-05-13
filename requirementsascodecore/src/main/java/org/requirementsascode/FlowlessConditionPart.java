@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps
@@ -57,12 +58,29 @@ public class FlowlessConditionPart {
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
 	 * Instead, the model runner provides itself as an event to the system reaction.
 	 *
-	 * @param systemReaction the autonomous system reaction (that needs
-	 *                            information from a model runner to work)
+	 * @param systemReaction the autonomous system reaction (that needs information
+	 *                       from a model runner to work)
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
 		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
+				flowlessStepCounter);
+		return flowlessSystemPart;
+	}
+
+	/**
+	 * Defines an "autonomous system reaction", meaning the system will react
+	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
+	 *
+	 * @param systemReaction the autonomous system reaction, that returns events to
+	 *                       be published.
+	 * @return the created system part of this step
+	 */
+	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
+		StepSystemPart<ModelRunner> stepSystemPart = stepPart.systemPublish(systemReaction);
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
 				flowlessStepCounter);
 		return flowlessSystemPart;
