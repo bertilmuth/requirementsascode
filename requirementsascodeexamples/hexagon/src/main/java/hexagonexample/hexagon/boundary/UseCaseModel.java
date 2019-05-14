@@ -16,14 +16,14 @@ import org.requirementsascode.Model;
  *
  */
 class UseCaseModel {	
-	private static final Class<AskForGermanPoem> askForGermanPoem = AskForGermanPoem.class;
-	private static final Class<AskForEnglishPoem> askForEnglishPoem = AskForEnglishPoem.class;
+	private static final Class<AskForGermanPoem> asksForGermanPoem = AskForGermanPoem.class;
+	private static final Class<AskForEnglishPoem> asksForEnglishPoem = AskForEnglishPoem.class;
 
-	public static Model build(Runnable displayEnglishPoem, Runnable displayGermanPoem) {
+	public static Model build(Runnable displaysEnglishPoem, Runnable displaysGermanPoem) {
 		Model model = Model.builder()
 			.useCase("Read a poem")
-				.user(askForEnglishPoem).system(displayEnglishPoem)
-				.user(askForGermanPoem).system(displayGermanPoem)
+				.user(asksForEnglishPoem).system(displaysEnglishPoem)
+				.user(asksForGermanPoem).system(displaysGermanPoem)
 		.build();
 
 		return model;
