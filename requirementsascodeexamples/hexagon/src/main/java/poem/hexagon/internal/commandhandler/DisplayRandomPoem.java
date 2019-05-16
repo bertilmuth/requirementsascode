@@ -1,10 +1,14 @@
 package poem.hexagon.internal.commandhandler;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import poem.hexagon.boundary.AskForPoem;
 import poem.hexagon.boundary.drivenport.IObtainPoems;
 import poem.hexagon.boundary.drivenport.IWriteLines;
+import poem.hexagon.internal.domain.Poem;
 import poem.hexagon.internal.domain.RandomPoemPicker;
 
 /**
@@ -30,7 +34,8 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 	@Override
 	public void accept(AskForPoem askForPoem) {
 		String[] poems = obtainPoems(askForPoem);
-		String poem = pickRandomPoem(poems);
+		List<Poem> poemList = createDomainObjects(poems);
+		String poem = pickRandomPoemFromList(poemList);
 		displayPoem(poem);		
 	}
 
@@ -40,8 +45,15 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 		return poems;
 	}
 	
-	private String pickRandomPoem(String[] poems) {
-		return randomPoemPicker.pickPoem(poems);
+	private List<Poem> createDomainObjects(String[] poems) {
+		List<Poem> poemList = Arrays.stream(poems)
+			.map(Poem::new)
+			.collect(Collectors.toList());
+		return poemList;
+	}
+	
+	private String pickRandomPoemFromList(List<Poem> poemList) {
+		return randomPoemPicker.pickPoem(poemList);
 	}
 	
 	private void displayPoem(String poem) {
