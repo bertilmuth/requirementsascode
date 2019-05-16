@@ -11,5 +11,5 @@ package poem.hexagon.boundary.drivenport;
  *
  */
 public interface IWriteLines {
-	void writeLines(String text);
+	void writeLines(String[] strings);
 }

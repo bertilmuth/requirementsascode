@@ -23,6 +23,7 @@ public class Driver {
 
 	public void run() {
 		driverPort.reactTo(new AskForPoem("en"));
+		System.out.println("");
 		driverPort.reactTo(new AskForPoem("de"));
 	}
 }

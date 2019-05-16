@@ -1,7 +1,7 @@
 package poem.simple;
 
 import poem.hexagon.boundary.Boundary;
-import poem.simple.drivenadapter.ConsolePublisher;
+import poem.simple.drivenadapter.ConsoleWriter;
 import poem.simple.drivenadapter.PoetryLibrary;
 import poem.simple.driveradapter.Driver;
 
@@ -22,10 +22,10 @@ public class Main {
 	private void startApplication() {
 		// Instantiate driven, right-side adapters
 		PoetryLibrary poetryLibrary = new PoetryLibrary();
-		ConsolePublisher consolePublisher = new ConsolePublisher();
+		ConsoleWriter consoleWriter = new ConsoleWriter();
 
 		// Inject driven adapters into boundary
-		Boundary boundary = new Boundary(poetryLibrary, consolePublisher);
+		Boundary boundary = new Boundary(poetryLibrary, consoleWriter);
 
 		// Start the driver adapter for the application
 		new Driver(boundary).run();

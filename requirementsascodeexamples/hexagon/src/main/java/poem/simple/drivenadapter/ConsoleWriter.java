@@ -1,5 +1,7 @@
 package poem.simple.drivenadapter;
 
+import java.util.Objects;
+
 import poem.hexagon.boundary.drivenport.IWriteLines;
 
 /**
@@ -11,10 +13,11 @@ import poem.hexagon.boundary.drivenport.IWriteLines;
  * @author b_muth
  *
  */
-public class ConsolePublisher implements IWriteLines {
-	public void writeLines(String text) {
-		System.out.println(text);
-		System.out.println();
-		System.out.println();
+public class ConsoleWriter implements IWriteLines {
+	public void writeLines(String[] lines) {
+		Objects.requireNonNull(lines);
+		for (String line : lines) {
+			System.out.println(line);
+		}
 	}
 }
