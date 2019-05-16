@@ -33,23 +33,19 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 
 	@Override
 	public void accept(AskForPoem askForPoem) {
-		String[] poems = obtainPoems(askForPoem);
-		List<Poem> poemList = createDomainObjects(poems);
-		String poem = pickRandomPoemFromList(poemList);
+		List<Poem> poems = obtainPoems(askForPoem);
+		String poem = pickRandomPoemFromList(poems);
 		displayPoem(poem);		
 	}
 
-	private String[] obtainPoems(AskForPoem askForPoem) {
+	private List<Poem> obtainPoems(AskForPoem askForPoem) {
 		String language = askForPoem.getLanguage();
 		String[] poems = poemObtainer.getMePoems(language);
-		return poems;
-	}
-	
-	private List<Poem> createDomainObjects(String[] poems) {
-		List<Poem> poemList = Arrays.stream(poems)
-			.map(Poem::new)
-			.collect(Collectors.toList());
-		return poemList;
+		List<Poem> poemDomainObjects = 
+			Arrays.stream(poems)
+				.map(Poem::new)
+				.collect(Collectors.toList());
+		return poemDomainObjects;
 	}
 	
 	private String pickRandomPoemFromList(List<Poem> poemList) {
