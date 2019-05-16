@@ -34,7 +34,7 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 	@Override
 	public void accept(AskForPoem askForPoem) {
 		List<Poem> poems = obtainPoems(askForPoem);
-		String poem = pickRandomPoemFromList(poems);
+		String poem = pickRandomPoem(poems);
 		displayPoem(poem);		
 	}
 
@@ -48,7 +48,7 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 		return poemDomainObjects;
 	}
 	
-	private String pickRandomPoemFromList(List<Poem> poemList) {
+	private String pickRandomPoem(List<Poem> poemList) {
 		return randomPoemPicker.pickPoem(poemList);
 	}
 	
