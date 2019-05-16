@@ -29,9 +29,9 @@ public class Boundary implements IReactToCommands {
 
 	private ModelRunner modelRunner;
 
-	public Boundary(IObtainPoems poetryLibrary, IWriteLines publishingDevice) {
+	public Boundary(IObtainPoems poemObtainer, IWriteLines lineWriter) {
 		// Create a use case model
-		Model model = buildModel(poetryLibrary, publishingDevice);
+		Model model = buildModel(poemObtainer, lineWriter);
 		
 		// Run the use case model
 		modelRunner = new ModelRunner().run(model);
