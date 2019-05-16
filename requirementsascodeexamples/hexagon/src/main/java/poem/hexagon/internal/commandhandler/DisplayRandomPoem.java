@@ -2,6 +2,7 @@ package poem.hexagon.internal.commandhandler;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 	@Override
 	public void accept(AskForPoem askForPoem) {
 		List<Poem> poems = obtainPoems(askForPoem);
-		String poem = pickRandomPoem(poems);
+		Optional<Poem> poem = pickRandomPoem(poems);
 		displayPoem(poem);		
 	}
 
@@ -48,11 +49,12 @@ public class DisplayRandomPoem implements Consumer<AskForPoem> {
 		return poemDomainObjects;
 	}
 	
-	private String pickRandomPoem(List<Poem> poemList) {
-		return randomPoemPicker.pickPoem(poemList);
+	private Optional<Poem> pickRandomPoem(List<Poem> poemList) {
+		Optional<Poem> randomPoem = randomPoemPicker.pickPoem(poemList);
+		return randomPoem;
 	}
 	
-	private void displayPoem(String poem) {
-		lineWriter.writeLines(poem);
+	private void displayPoem(Optional<Poem> poem) {
+		poem.ifPresent(p -> lineWriter.writeLines(p.toString()));
 	}
 }

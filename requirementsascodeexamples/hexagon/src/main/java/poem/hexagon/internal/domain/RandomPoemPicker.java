@@ -1,6 +1,8 @@
 package poem.hexagon.internal.domain;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -22,16 +24,18 @@ public class RandomPoemPicker {
 	/**
 	 * Picks a random poem from the specified list of poems.
 	 * 
-	 * @param poemObjects the poems to pick from
-	 * @return a poem from the list, or an empty string if the list is empty
+	 * @param poems the poems to pick from
+	 * @return a poem from the list, or an empty optional if the input list was empty
 	 */
-	public String pickPoem(List<Poem> poemObjects) {
-		if (poemObjects.size() == 0) {
-			return "";
+	public Optional<Poem> pickPoem(List<Poem> poems) {
+		Objects.requireNonNull(poems);
+		
+		if (poems.size() == 0) {
+			return Optional.empty();
 		}
 
-		int randomIndex = random.nextInt(poemObjects.size());
-		String randomPoemText = poemObjects.get(randomIndex).toString();
-		return randomPoemText;
+		int randomIndex = random.nextInt(poems.size());
+		Poem randomPoem = poems.get(randomIndex);
+		return Optional.of(randomPoem);
 	}
 }
