@@ -1,14 +1,34 @@
 package poem.hexagon.internal.domain;
 
-public class Poem {
-	private String verses;
+import java.util.Objects;
 
-	public Poem(String verses) {
-		this.verses = verses;
+public class Poem {
+	private String[] verses;
+
+	/**
+	 * Constructs a poem with verses by splitting the specified text using 
+	 * newline characters.
+	 * 
+	 * @param text the text of the poem
+	 */
+	public Poem(String text) {
+		Objects.requireNonNull(text);
+		this.verses = text.split("\\r?\\n");
 	}
 
-	public String getVerses() {
+	/**
+	 * Returns the individual verses of the poem.
+	 * 
+	 * @return the verses
+	 */
+	public String[] getVerses() {
 		return verses;
+	}
+	
+	@Override
+	public String toString() {
+		final String newline = System.getProperty("line.separator");
+		return String.join(newline, verses);
 	}
 
 	@Override
@@ -34,10 +54,5 @@ public class Poem {
 		} else if (!verses.equals(other.verses))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return verses;
 	}
 }
