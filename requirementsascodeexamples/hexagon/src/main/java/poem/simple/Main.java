@@ -1,4 +1,4 @@
-package poem;
+package poem.simple;
 
 import poem.hexagon.boundary.Boundary;
 import poem.simple.drivenadapter.ConsolePublisher;
