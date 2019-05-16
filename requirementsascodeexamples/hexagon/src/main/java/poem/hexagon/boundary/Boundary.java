@@ -37,9 +37,9 @@ public class Boundary implements IReactToCommands {
 		modelRunner = new ModelRunner().run(model);
 	}
 
-	private Model buildModel(IObtainPoems poetryLibrary, IWriteLines publishingDevice) {
+	private Model buildModel(IObtainPoems poemObtainer, IWriteLines lineWriter) {
 		// Create the command handler(s)
-		DisplayRandomPoem displayRandomPoem = new DisplayRandomPoem(poetryLibrary, publishingDevice);
+		DisplayRandomPoem displayRandomPoem = new DisplayRandomPoem(poemObtainer, lineWriter);
 		
 		// Inject command handler(s) into use case model, to wire them up with command types.
 		Model model = UseCaseModel.build(displayRandomPoem); 
