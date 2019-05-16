@@ -1,12 +1,12 @@
-package hexagonexample.hexagon.boundary;
+package poem.hexagon.boundary;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-import hexagonexample.hexagon.boundary.drivenport.IObtainPoems;
-import hexagonexample.hexagon.boundary.drivenport.IWriteLines;
-import hexagonexample.hexagon.boundary.driverport.IReactToCommands;
-import hexagonexample.hexagon.internal.commandhandler.DisplayPoem;
+import poem.hexagon.boundary.drivenport.IObtainPoems;
+import poem.hexagon.boundary.drivenport.IWriteLines;
+import poem.hexagon.boundary.driverport.IReactToCommands;
+import poem.hexagon.internal.commandhandler.DisplayPoem;
 
 /**
  * The boundary class is the only point of communication with left-side driver

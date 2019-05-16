@@ -1,4 +1,4 @@
-package hexagonexample.hexagon.boundary;
+package poem.hexagon.boundary;
 
 import org.requirementsascode.Model;
 

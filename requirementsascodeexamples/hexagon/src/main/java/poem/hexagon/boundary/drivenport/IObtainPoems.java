@@ -1,4 +1,4 @@
-package hexagonexample.hexagon.boundary.drivenport;
+package poem.hexagon.boundary.drivenport;
 
 /**
  * Driven, right side port for obtaining poems, e.g. from a repository outside
