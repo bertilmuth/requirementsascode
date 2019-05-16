@@ -11,5 +11,5 @@ package poem.hexagon.boundary.drivenport;
  *
  */
 public interface IObtainPoems {
-	String[] getMePoems();
+	String[] getMePoems(String language);
 }

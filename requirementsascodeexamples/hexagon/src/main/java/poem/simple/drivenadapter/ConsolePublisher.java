@@ -12,7 +12,7 @@ import poem.hexagon.boundary.drivenport.IWriteLines;
  *
  */
 public class ConsolePublisher implements IWriteLines {
-	public void writeLine(String text) {
+	public void writeLines(String text) {
 		System.out.println(text);
 		System.out.println();
 		System.out.println();

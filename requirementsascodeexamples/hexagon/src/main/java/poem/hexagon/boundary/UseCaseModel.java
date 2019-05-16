@@ -1,29 +1,26 @@
 package poem.hexagon.boundary;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.Model;
 
 /**
- * The use case model ties each type of command to its appropriate command handler interface.
+ * The use case model ties each type of command to its appropriate command
+ * handler interface.
  * 
  * In business terms, this example model means:
  * 
- * Either
- * 	Alternative A. The user asks for an English poem. The system displays the English poem.
- * Or
- * 	Alternative B. The user asks for a German poem. The system displays the German poem.
+ * The user asks for a poem. The system displays a random poem.
  * 
  * @author b_muth
  *
  */
-class UseCaseModel {	
-	private static final Class<AskForGermanPoem> asksForGermanPoem = AskForGermanPoem.class;
-	private static final Class<AskForEnglishPoem> asksForEnglishPoem = AskForEnglishPoem.class;
+class UseCaseModel {
+	private static final Class<AskForPoem> asksForPoem = AskForPoem.class;
 
-	public static Model build(Runnable displaysEnglishPoem, Runnable displaysGermanPoem) {
+	public static Model build(Consumer<AskForPoem> displaysRandomPoem) {
 		Model model = Model.builder()
-			.useCase("Read a poem")
-				.user(asksForEnglishPoem).system(displaysEnglishPoem)
-				.user(asksForGermanPoem).system(displaysGermanPoem)
+			.user(asksForPoem).system(displaysRandomPoem)
 		.build();
 
 		return model;

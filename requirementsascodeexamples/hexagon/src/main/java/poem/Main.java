@@ -1,12 +1,8 @@
 package poem;
 
 import poem.hexagon.boundary.Boundary;
-import poem.hexagon.boundary.drivenport.IObtainPoems;
-import poem.hexagon.boundary.drivenport.IWriteLines;
-import poem.hexagon.boundary.driverport.IReactToCommands;
 import poem.simple.drivenadapter.ConsolePublisher;
-import poem.simple.drivenadapter.EnglishPoetryLibrary;
-import poem.simple.drivenadapter.GermanPoetryLibrary;
+import poem.simple.drivenadapter.PoetryLibrary;
 import poem.simple.driveradapter.Driver;
 
 /**
@@ -25,13 +21,12 @@ public class Main {
 
 	private void startApplication() {
 		// Instantiate driven, right-side adapters
-		IObtainPoems englishLibrary = new EnglishPoetryLibrary();
-		IObtainPoems germanLibrary = new GermanPoetryLibrary();
-		IWriteLines consolePublisher = new ConsolePublisher();
+		PoetryLibrary poetryLibrary = new PoetryLibrary();
+		ConsolePublisher consolePublisher = new ConsolePublisher();
 
 		// Inject driven adapters into boundary
-		IReactToCommands boundary = new Boundary(englishLibrary, germanLibrary, consolePublisher);
-		
+		Boundary boundary = new Boundary(poetryLibrary, consolePublisher);
+
 		// Start the driver adapter for the application
 		new Driver(boundary).run();
 	}

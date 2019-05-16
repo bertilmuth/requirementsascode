@@ -1,12 +1,11 @@
 package poem.simple.driveradapter;
 
-import poem.hexagon.boundary.AskForEnglishPoem;
-import poem.hexagon.boundary.AskForGermanPoem;
+import poem.hexagon.boundary.AskForPoem;
 import poem.hexagon.boundary.driverport.IReactToCommands;
 
 /**
  * The driver adapter. It's on the left side of the hexagon. It sends user
- * requests as command objects to the hexagon boundary. (For simplicitly,
+ * requests as command objects to a driver port on the hexagon boundary. (For simplicitly,
  * sending is done autonomously without user interaction.)
  * 
  * Inspired by a talk by A. Cockburn and T. Pierrain on hexagonal architecture:
@@ -16,14 +15,14 @@ import poem.hexagon.boundary.driverport.IReactToCommands;
  *
  */
 public class Driver {
-	private IReactToCommands hexagonBoundary;
+	private IReactToCommands driverPort;
 
-	public Driver(IReactToCommands hexagonBoundary) {
-		this.hexagonBoundary = hexagonBoundary;
+	public Driver(IReactToCommands driverPort) {
+		this.driverPort = driverPort;
 	}
 
 	public void run() {
-		hexagonBoundary.reactTo(new AskForEnglishPoem());
-		hexagonBoundary.reactTo(new AskForGermanPoem());
+		driverPort.reactTo(new AskForPoem("en"));
+		driverPort.reactTo(new AskForPoem("de"));
 	}
 }
