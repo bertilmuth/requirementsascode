@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import poem.hexagon.boundary.AskForPoem;
+import poem.hexagon.boundary.command.AskForPoem;
 import poem.hexagon.boundary.drivenport.IObtainPoems;
 import poem.hexagon.boundary.drivenport.IWriteLines;
 import poem.hexagon.internal.domain.Poem;

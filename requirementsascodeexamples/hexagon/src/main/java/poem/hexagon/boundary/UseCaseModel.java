@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
 
+import poem.hexagon.boundary.command.AskForPoem;
+
 /**
  * The use case model ties each type of command to its appropriate command
  * handler interface.

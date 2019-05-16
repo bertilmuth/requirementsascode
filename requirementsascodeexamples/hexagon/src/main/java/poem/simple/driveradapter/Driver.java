@@ -1,6 +1,6 @@
 package poem.simple.driveradapter;
 
-import poem.hexagon.boundary.AskForPoem;
+import poem.hexagon.boundary.command.AskForPoem;
 import poem.hexagon.boundary.driverport.IReactToCommands;
 
 /**
