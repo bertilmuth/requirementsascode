@@ -10,7 +10,7 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = 'shoppingappjavafx.gui.JavafxMain'
+mainClassName = 'shoppingapp.javafx.JavafxMain'
 
 jar {
     manifest {

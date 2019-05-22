@@ -1,9 +1,9 @@
 package shoppingappjavafx.usecaserealization.stubs;
 
-import shoppingappjavafx.domain.Products;
-import shoppingappjavafx.domain.PurchaseOrder;
-import shoppingappjavafx.domain.ShippingInformation;
-import shoppingappjavafx.usecaserealization.componentinterface.Display;
+import shoppingapp.boundary.driven_port.Display;
+import shoppingapp.boundary.internal.domain.Products;
+import shoppingapp.boundary.internal.domain.PurchaseOrder;
+import shoppingapp.boundary.internal.domain.ShippingInformation;
 
 public class DisplayStub implements Display {
 	public void displayProductsAndShoppingCartSize(Products products, PurchaseOrder purchaseOrder){
