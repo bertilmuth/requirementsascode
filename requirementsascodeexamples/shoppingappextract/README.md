@@ -5,3 +5,4 @@ and transforms it to a HTML page.
 As a result of running shoppingappextract, it will print the path to the HTML page 
 to the console. 
 
+Run the application via the Gradle run task.
