@@ -11,7 +11,7 @@ Run the application via the Gradle run task.
 The main class of this application is ```shoppingapp.javafx.JavafxMain```.
 
 This application illustrates how a use case can be represented with 
-requirementsascode in the ```shoppingapp.boundar.UseCaseModel``` class.
+requirementsascode in the ```shoppingapp.boundary.UseCaseModel``` class.
 
 This is also an example of how requirementsascode separates the frontend
 (JavaFX user interface in the ```shoppingapp.javafx``` package)
