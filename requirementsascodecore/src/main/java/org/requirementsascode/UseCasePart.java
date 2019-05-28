@@ -83,8 +83,7 @@ public class UseCasePart {
 	}
 
 	/**
-	 * Defines the type of events or exceptions that will cause a
-	 * system reaction.
+	 * Defines the type of events or exceptions that will cause a system reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or

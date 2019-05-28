@@ -14,21 +14,21 @@ import org.requirementsascode.Step;
  *
  */
 public class After extends FlowPosition implements Serializable {
-    private static final long serialVersionUID = -4951912635216926005L;
+	private static final long serialVersionUID = -4951912635216926005L;
 
-    /**
-     * Tests whether the specified step was the last step run.
-     * 
-     * @param step, or null to mean: when no step has been run.
-     */
-    public After(FlowStep step) {
-	super(step);
-    }
+	/**
+	 * Tests whether the specified step was the last step run.
+	 * 
+	 * @param step, or null to mean: when no step has been run.
+	 */
+	public After(FlowStep step) {
+		super(step);
+	}
 
-    @Override
-    public boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
-	Step latestStepRun = modelRunner.getLatestStep().orElse(null);
-	boolean stepWasRunLast = Objects.equals(step, latestStepRun);
-	return stepWasRunLast;
-    }
+	@Override
+	public boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
+		Step latestStepRun = modelRunner.getLatestStep().orElse(null);
+		boolean stepWasRunLast = Objects.equals(step, latestStepRun);
+		return stepWasRunLast;
+	}
 }

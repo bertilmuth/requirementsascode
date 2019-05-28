@@ -49,7 +49,7 @@ public class StepPart {
 	 * any direct or indirect subclass of the specified class.
 	 *
 	 * @param commandClass the class of commands the system reacts to in this step
-	 * @param <T>        the type of the class
+	 * @param <T>          the type of the class
 	 * @return the created user part of this step
 	 */
 	public <T> StepUserPart<T> user(Class<T> commandClass) {
@@ -97,8 +97,8 @@ public class StepPart {
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
 	 * Instead, the model runner provides itself as an event to the system reaction.
 	 *
-	 * @param systemReaction the autonomous system reaction (that needs
-	 *                            information from a model runner to work)
+	 * @param systemReaction the autonomous system reaction (that needs information
+	 *                       from a model runner to work)
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
@@ -106,13 +106,15 @@ public class StepPart {
 		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
 		return systemPart;
 	}
-	
+
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
 	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned events.
+	 * After executing the system reaction, the runner will publish the returned
+	 * events.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to be published.
+	 * @param systemReaction the autonomous system reaction, that returns events to
+	 *                       be published.
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {

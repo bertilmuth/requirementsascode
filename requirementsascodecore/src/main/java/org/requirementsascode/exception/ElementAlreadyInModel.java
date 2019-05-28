@@ -9,10 +9,10 @@ import java.io.Serializable;
  * @author b_muth
  *
  */
-public class ElementAlreadyInModel extends RuntimeException implements Serializable{
+public class ElementAlreadyInModel extends RuntimeException implements Serializable {
 	private static final long serialVersionUID = -510216736346192818L;
 
-	public ElementAlreadyInModel(String elementName) {		
+	public ElementAlreadyInModel(String elementName) {
 		super(exceptionMessage(elementName));
 	}
 

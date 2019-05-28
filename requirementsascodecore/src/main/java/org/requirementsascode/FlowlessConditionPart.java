@@ -19,18 +19,18 @@ public class FlowlessConditionPart {
 		this.stepPart = new StepPart(newStep, useCasePart, null);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
-	
+
 	/**
-	 * Defines the type of user commands that this step accepts. Commands of
-	 * this type can cause a system reaction.
+	 * Defines the type of user commands that this step accepts. Commands of this
+	 * type can cause a system reaction.
 	 *
 	 * <p>
-	 * Given that the step's condition is true, the system
-	 * reacts to objects that are instances of the specified class or instances of
-	 * any direct or indirect subclass of the specified class.
+	 * Given that the step's condition is true, the system reacts to objects that
+	 * are instances of the specified class or instances of any direct or indirect
+	 * subclass of the specified class.
 	 *
 	 * @param commandClass the class of commands the system reacts to in this step
-	 * @param <T>        the type of the class
+	 * @param <T>          the type of the class
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
@@ -40,8 +40,8 @@ public class FlowlessConditionPart {
 	}
 
 	/**
-	 * Defines the type of events or exceptions that will cause a
-	 * system reaction, given that the condition is fulfilled.
+	 * Defines the type of events or exceptions that will cause a system reaction,
+	 * given that the condition is fulfilled.
 	 *
 	 * <p>
 	 * Given that the step's condition is true, the system reacts to objects that

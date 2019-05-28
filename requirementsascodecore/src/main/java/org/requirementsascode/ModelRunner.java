@@ -24,7 +24,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  * The runner is configured by the model it owns. Each real user needs an
  * instance of a runner, as the runner determines the user journey.
  */
-public class ModelRunner{
+public class ModelRunner {
 	private Actor runActor;
 
 	private Model model;
@@ -202,7 +202,7 @@ public class ModelRunner{
 	 * <p>
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 *
-	 * @param       <T> the type of the command or event object
+	 * @param <T>   the type of the command or event object
 	 * @param event the command or event object
 	 * @return the step that was run latest by the model runner
 	 * @throws MoreThanOneStepCanReact when more than one step can react
@@ -305,9 +305,8 @@ public class ModelRunner{
 	 * @return the collection of classes of events
 	 */
 	public Set<Class<?>> getReactToTypes() {
-		Set<Class<?>> eventsReactedTo = getRunningStepStream()
-				.filter(step -> hasTruePredicate(step)).map(step -> step.getEventClass())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+		Set<Class<?>> eventsReactedTo = getRunningStepStream().filter(step -> hasTruePredicate(step))
+				.map(step -> step.getEventClass()).collect(Collectors.toCollection(LinkedHashSet::new));
 		return eventsReactedTo;
 	}
 
@@ -330,8 +329,7 @@ public class ModelRunner{
 	}
 
 	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream
-				.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
+		Set<Step> steps = stepStream.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
 				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
 		return steps;
 	}
@@ -365,8 +363,8 @@ public class ModelRunner{
 
 	/**
 	 * Overwrite this method to control what happens exactly when an exception is
-	 * thrown by a system reaction. The behavior implemented in runner: the
-	 * model runner reacts to the exception. You may replace this with a more
+	 * thrown by a system reaction. The behavior implemented in runner: the model
+	 * runner reacts to the exception. You may replace this with a more
 	 * sophisticated behavior, that for example involves some kind of logging.
 	 *
 	 * @param e the exception that has been thrown by the system reaction

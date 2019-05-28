@@ -9,64 +9,64 @@ import java.util.stream.Stream;
 import org.requirementsascode.flowposition.After;
 
 /**
- * An interruptable flow step is either the first step of a flow without a user specified condition,
- * or a step that is not the first step (in any flow).
+ * An interruptable flow step is either the first step of a flow without a user
+ * specified condition, or a step that is not the first step (in any flow).
  * 
- * This kind of step can be "interrupted" by the first step of a different flow, that has a 
- * user specified condition.
+ * This kind of step can be "interrupted" by the first step of a different flow,
+ * that has a user specified condition.
  * 
- * So an interruptable flow step can be considered the [else] case, if no other flow starts.
+ * So an interruptable flow step can be considered the [else] case, if no other
+ * flow starts.
  * 
  * @author b_muth
  */
 public class InterruptableFlowStep extends FlowStep implements Serializable {
-    private static final long serialVersionUID = -2926490717985964131L;
+	private static final long serialVersionUID = -2926490717985964131L;
 
-    /**
-     * Creates unconditional step with the specified name as the last step of the specified flow.
-     *
-     * @param stepName
-     *            the name of the step to be created
-     * @param flow
-     *            the flow that will contain the new step
-     */
-    InterruptableFlowStep(String stepName, Flow flow) {
-	super(stepName, flow, null);
-	appendToLastStepOfFlow();
-    }
-
-    private void appendToLastStepOfFlow() {
-	List<FlowStep> flowSteps = getFlow().getSteps();
-	FlowStep lastFlowStep = flowSteps.isEmpty() ? null : flowSteps.get(flowSteps.size() - 1);
-	setPreviousStepInFlow(lastFlowStep);
-	setFlowPosition(new After(lastFlowStep));
-    }
-
-    @Override
-    public Predicate<ModelRunner> getPredicate() {
-	Condition reactWhile = getReactWhile();
-
-	Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
-	if (reactWhile != null) {
-	    predicate = predicate.and(toPredicate(reactWhile));
+	/**
+	 * Creates unconditional step with the specified name as the last step of the
+	 * specified flow.
+	 *
+	 * @param stepName the name of the step to be created
+	 * @param flow     the flow that will contain the new step
+	 */
+	InterruptableFlowStep(String stepName, Flow flow) {
+		super(stepName, flow, null);
+		appendToLastStepOfFlow();
 	}
 
-	return predicate;
-    }
+	private void appendToLastStepOfFlow() {
+		List<FlowStep> flowSteps = getFlow().getSteps();
+		FlowStep lastFlowStep = flowSteps.isEmpty() ? null : flowSteps.get(flowSteps.size() - 1);
+		setPreviousStepInFlow(lastFlowStep);
+		setFlowPosition(new After(lastFlowStep));
+	}
 
-    private Predicate<ModelRunner> noStepInterrupts() {
-	return modelRunner -> {
-	    Class<?> theStepsEventClass = getEventClass();
+	@Override
+	public Predicate<ModelRunner> getPredicate() {
+		Condition reactWhile = getReactWhile();
 
-	    Stream<Step> interruptingStepsStream = modelRunner.getRunningStepStream().filter(isInterruptingStep());
-	    Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsEventClass,
-		    interruptingStepsStream);
+		Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
+		if (reactWhile != null) {
+			predicate = predicate.and(toPredicate(reactWhile));
+		}
 
-	    return interruptingStepsThatCanReact.isEmpty();
-	};
-    }
+		return predicate;
+	}
 
-    private Predicate<Step> isInterruptingStep() {
-	return step -> InterruptingFlowStep.class.equals(step.getClass());
-    }
+	private Predicate<ModelRunner> noStepInterrupts() {
+		return modelRunner -> {
+			Class<?> theStepsEventClass = getEventClass();
+
+			Stream<Step> interruptingStepsStream = modelRunner.getRunningStepStream().filter(isInterruptingStep());
+			Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsEventClass,
+					interruptingStepsStream);
+
+			return interruptingStepsThatCanReact.isEmpty();
+		};
+	}
+
+	private Predicate<Step> isInterruptingStep() {
+		return step -> InterruptingFlowStep.class.equals(step.getClass());
+	}
 }

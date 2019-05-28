@@ -5,75 +5,74 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * A step is a part of a use case. The steps define the
- * behavior of the use case.
+ * A step is a part of a use case. The steps define the behavior of the use
+ * case.
  *
  * <p>
- * A step is the core class of requirementsascode, providing all the
- * necessary configuration information to the {@link ModelRunner} to
- * cause the system to react to events.
+ * A step is the core class of requirementsascode, providing all the necessary
+ * configuration information to the {@link ModelRunner} to cause the system to
+ * react to events.
  *
  * @author b_muth
  */
 public abstract class Step extends ModelElement implements Serializable {
-    private static final long serialVersionUID = -2926490717985964131L;
+	private static final long serialVersionUID = -2926490717985964131L;
 
-    private UseCase useCase;
-    private Actor[] actors;
-    private Class<?> eventClass;
-    private SystemReaction<?> systemReaction;
-    private Condition condition;
+	private UseCase useCase;
+	private Actor[] actors;
+	private Class<?> eventClass;
+	private SystemReaction<?> systemReaction;
+	private Condition condition;
 
-    /**
-     * Creates a step with the specified name that belongs to the specified
-     * use case.
-     *
-     * @param useCase the use case this step belongs to
-     * @param stepName
-     *            the name of the step to be created
-     * @param condition 
-     */
-    Step(String stepName, UseCase useCase, Condition condition) {
-	super(stepName, useCase.getModel());
-	this.useCase = useCase;
-	this.condition = condition;
-    }
+	/**
+	 * Creates a step with the specified name that belongs to the specified use
+	 * case.
+	 *
+	 * @param useCase   the use case this step belongs to
+	 * @param stepName  the name of the step to be created
+	 * @param condition
+	 */
+	Step(String stepName, UseCase useCase, Condition condition) {
+		super(stepName, useCase.getModel());
+		this.useCase = useCase;
+		this.condition = condition;
+	}
 
-    public abstract Predicate<ModelRunner> getPredicate();
+	public abstract Predicate<ModelRunner> getPredicate();
 
-    public UseCase getUseCase() {
-	return useCase;
-    }
+	public UseCase getUseCase() {
+		return useCase;
+	}
 
-    public Optional<Condition> getCondition() {
-	return Optional.ofNullable(condition);
-    }
+	public Optional<Condition> getCondition() {
+		return Optional.ofNullable(condition);
+	}
 
-    public Actor[] getActors() {
-	return actors;
-    }
+	public Actor[] getActors() {
+		return actors;
+	}
 
-    void setActors(Actor[] actors) {
-	this.actors = actors;
-    }
+	void setActors(Actor[] actors) {
+		this.actors = actors;
+	}
 
-    public Class<?> getEventClass() {
-	return eventClass;
-    }
+	public Class<?> getEventClass() {
+		return eventClass;
+	}
 
-    void setEventClass(Class<?> eventClass) {
-	this.eventClass = eventClass;
-    }
+	void setEventClass(Class<?> eventClass) {
+		this.eventClass = eventClass;
+	}
 
-    public SystemReaction<?> getSystemReaction() {
-	return systemReaction;
-    }
+	public SystemReaction<?> getSystemReaction() {
+		return systemReaction;
+	}
 
-    void setSystemReaction(SystemReaction<?> systemReaction) {
-	this.systemReaction = systemReaction;
-    }
-    
-    protected static Predicate<ModelRunner> toPredicate(Condition condition){
-	return modelRunner -> condition.evaluate();
-    }
+	void setSystemReaction(SystemReaction<?> systemReaction) {
+		this.systemReaction = systemReaction;
+	}
+
+	protected static Predicate<ModelRunner> toPredicate(Condition condition) {
+		return modelRunner -> condition.evaluate();
+	}
 }

@@ -25,7 +25,7 @@ public class ModelBuilder {
 		Actor actor = model.hasActor(actorName) ? model.findActor(actorName) : model.newActor(actorName);
 		return actor;
 	}
-	
+
 	/**
 	 * Creates a handler for commands of the specified type.
 	 * <p>
@@ -33,7 +33,7 @@ public class ModelBuilder {
 	 * </p>
 	 * 
 	 * @param commandClass the specified command class
-	 * @param <T>                   the type of events/exceptions
+	 * @param <T>          the type of events/exceptions
 	 * @return a part of the builder used to create the event handler (the "system
 	 *         reaction")
 	 */
