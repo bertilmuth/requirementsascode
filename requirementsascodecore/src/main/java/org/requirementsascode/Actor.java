@@ -20,59 +20,63 @@ import java.util.Set;
  * @author b_muth
  */
 public class Actor extends ModelElement implements Serializable {
-	private static final long serialVersionUID = 2441478758595877661L;
+    private static final long serialVersionUID = 2441478758595877661L;
 
-	private Map<UseCase, List<Step>> useCaseToStepMap;
+    private Map<UseCase, List<Step>> useCaseToStepMap;
 
-	/**
-	 * Creates an actor with the specified name that is part of the specified use
-	 * case model.
-	 *
-	 * @param name  the name of the actor
-	 * @param model the model
-	 */
-	Actor(String name, Model model) {
-		super(name, model);
-		this.useCaseToStepMap = new HashMap<>();
-	}
+    /**
+     * Creates an actor with the specified name that is part of the specified use
+     * case model.
+     *
+     * @param name
+     *            the name of the actor
+     * @param model
+     *            the model
+     */
+    Actor(String name, Model model) {
+	super(name, model);
+	this.useCaseToStepMap = new HashMap<>();
+    }
 
-	/**
-	 * Returns the use cases this actor is associated with.
-	 *
-	 * <p>
-	 * The actor is associated to a use case if it is connected to at least one of
-	 * its steps.
-	 *
-	 * @return the use cases the actor is associated with
-	 */
-	public Set<UseCase> getUseCases() {
-		Set<UseCase> useCases = useCaseToStepMap.keySet();
-		return Collections.unmodifiableSet(useCases);
-	}
+    /**
+     * Returns the use cases this actor is associated with.
+     *
+     * <p>
+     * The actor is associated to a use case if it is connected to at least one of
+     * its steps.
+     *
+     * @return the use cases the actor is associated with
+     */
+    public Set<UseCase> getUseCases() {
+	Set<UseCase> useCases = useCaseToStepMap.keySet();
+	return Collections.unmodifiableSet(useCases);
+    }
 
-	/**
-	 * Returns the steps this actor is connected with, for the specified use case.
-	 *
-	 * @param useCase the use case to query for steps the actor is connected with
-	 * @return the steps the actor is connected with
-	 */
-	public List<Step> getStepsOf(UseCase useCase) {
-		Objects.requireNonNull(useCase);
+    /**
+     * Returns the steps this actor is connected with, for the specified
+     * use case.
+     *
+     * @param useCase
+     *            the use case to query for steps the actor is connected with
+     * @return the steps the actor is connected with
+     */
+    public List<Step> getStepsOf(UseCase useCase) {
+	Objects.requireNonNull(useCase);
 
-		List<Step> steps = getModifiableStepsOf(useCase);
-		return Collections.unmodifiableList(steps);
-	}
+	List<Step> steps = getModifiableStepsOf(useCase);
+	return Collections.unmodifiableList(steps);
+    }
 
-	void newStep(Step step) {
-		Objects.requireNonNull(step.getUseCase());
-		Objects.requireNonNull(step);
+    void newStep(Step step) {
+	Objects.requireNonNull(step.getUseCase());
+	Objects.requireNonNull(step);
 
-		List<Step> steps = getModifiableStepsOf(step.getUseCase());
-		steps.add(step);
-	}
+	List<Step> steps = getModifiableStepsOf(step.getUseCase());
+	steps.add(step);
+    }
 
-	private List<Step> getModifiableStepsOf(UseCase useCase) {
-		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
-		return useCaseToStepMap.get(useCase);
-	}
+    private List<Step> getModifiableStepsOf(UseCase useCase) {
+	useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
+	return useCaseToStepMap.get(useCase);
+    }
 }
