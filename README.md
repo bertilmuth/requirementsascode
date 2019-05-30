@@ -168,12 +168,12 @@ For example, you can use `modelRunner.publishWith(queue::put)` to publish the ev
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
-* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 
 # publications
 * [Simplifying an event sourced application](https://dev.to/bertilmuth/simplifying-an-event-sourced-application-1klp)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
+* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 
 # subprojects
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run models. 
