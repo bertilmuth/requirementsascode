@@ -166,6 +166,7 @@ For example, you can use `modelRunner.publishWith(queue::put)` to publish the ev
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
+* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 
 # publications
 * [Simplifying an event sourced application](https://dev.to/bertilmuth/simplifying-an-event-sourced-application-1klp)
