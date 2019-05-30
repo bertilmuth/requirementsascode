@@ -65,7 +65,9 @@ ModelRunner runner = new ModelRunner().run(model);
 ``` java
 runner.reactTo(<Message POJO Object> [, <Message POJO Object>,...]);
 ```
-If a message's class is not declared in the model, the runner consumes it silently.
+To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()`.
+By default, if a message's class is not declared in the model, the runner consumes it silently.
+To customize that behavior, use `modelRunner.handleUnhandledWith()`.
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
 other handler method, the runner will rethrow it.
 
