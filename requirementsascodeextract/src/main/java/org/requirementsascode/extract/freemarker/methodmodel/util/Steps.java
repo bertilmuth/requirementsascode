@@ -31,14 +31,14 @@ public class Steps {
   }
   
   public static boolean hasSystemEvent(Step step) {
-    return ModelRunner.class.equals(step.getEventClass());
+    return ModelRunner.class.equals(step.getMessageClass());
   }
 
   public static boolean hasSystemReaction(Step step) {
     return !(step.getSystemReaction().getModelObject() instanceof IgnoresIt<?>);
   }
   
-  public static Actor getUserActor(Step step) {
+  public static Actor getUserActor(Step step) { 
     return step.getModel().getUserActor();
   }
   

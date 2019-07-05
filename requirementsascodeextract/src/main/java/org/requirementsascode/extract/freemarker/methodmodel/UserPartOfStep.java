@@ -28,7 +28,7 @@ public class UserPartOfStep implements TemplateMethodModelEx {
     Step step = getStepFromFreemarker(arguments.get(0));
     if (hasUser(step)) {
       String userActorName = getUserActor(step).getName();
-      String wordsOfUserEventClassName = getLowerCaseWordsOfClassName(step.getEventClass());
+      String wordsOfUserEventClassName = getLowerCaseWordsOfClassName(step.getMessageClass());
       userPartOfStep = userActorName + " " + wordsOfUserEventClassName + USER_POSTFIX;
     }
     

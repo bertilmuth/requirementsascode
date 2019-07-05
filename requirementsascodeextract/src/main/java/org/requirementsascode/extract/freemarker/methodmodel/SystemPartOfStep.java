@@ -59,7 +59,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
 		String on = "";
 	
 		if (hasSystemUser(step) && !hasSystemEvent(step)) {
-		    on = ON_PREFIX + step.getEventClass().getSimpleName() + ON_POSTFIX;
+		    on = ON_PREFIX + step.getMessageClass().getSimpleName() + ON_POSTFIX;
 		}
 		return on;
     }
