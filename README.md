@@ -28,14 +28,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.1.1</version>
+    <version>1.2</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.1.1'
+compile 'org.requirementsascode:requirementsascodecore:1.2'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -150,8 +150,8 @@ But you can also publish events with `systemPublish()`, like so:
 			.reactTo(new EnterName("Joe"));	
 	}
 	
-	private Object[] publishNameAsString(EnterName enterName) {
-		return new Object[] {enterName.getUserName()};
+	private String publishNameAsString(EnterName enterName) {
+		return enterName.getUserName();
 	}
 	
 	public void displayNameString(String nameString) {
@@ -159,10 +159,10 @@ But you can also publish events with `systemPublish()`, like so:
 	}
 ```
 
-As you can see, the publishing method has a command object as input parameter, and returns an object array of events to be published (not necessarily strings).
-By default, as in the example, the model runner takes the returned events and sends each of them to its own `reactTo()` method. 
+As you can see, the publishing method has a command object as input parameter, and returns an event to be published (in this case, a String).
+By default, as in the example, the model runner takes the returned event and sends it to its own `reactTo()` method. 
 This behavior can be overriden by specifying a custom event handler with `publishWith()`.
-For example, you can use `modelRunner.publishWith(queue::put)` to publish the events to an event queue.
+For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
 # documentation
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
