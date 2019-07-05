@@ -11,7 +11,7 @@ import java.util.function.Predicate;
  * <p>
  * A step is the core class of requirementsascode, providing all the necessary
  * configuration information to the {@link ModelRunner} to cause the system to
- * react to events.
+ * react to messages.
  *
  * @author b_muth
  */
@@ -20,7 +20,7 @@ public abstract class Step extends ModelElement implements Serializable {
 
 	private UseCase useCase;
 	private Actor[] actors;
-	private Class<?> eventClass;
+	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
 	private Condition condition;
 
@@ -56,12 +56,12 @@ public abstract class Step extends ModelElement implements Serializable {
 		this.actors = actors;
 	}
 
-	public Class<?> getEventClass() {
-		return eventClass;
+	public Class<?> getMessageClass() {
+		return messageClass;
 	}
 
-	void setEventClass(Class<?> eventClass) {
-		this.eventClass = eventClass;
+	void setMessageClass(Class<?> eventClass) {
+		this.messageClass = eventClass;
 	}
 
 	public SystemReaction<?> getSystemReaction() {

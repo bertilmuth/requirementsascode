@@ -327,7 +327,7 @@ public class ModelRunner {
 	 */
 	public Set<Class<?>> getReactToTypes() {
 		Set<Class<?>> reactToTypes = getRunningStepStream().filter(step -> hasTruePredicate(step))
-				.map(step -> step.getEventClass()).collect(Collectors.toCollection(LinkedHashSet::new));
+				.map(step -> step.getMessageClass()).collect(Collectors.toCollection(LinkedHashSet::new));
 		return reactToTypes;
 	}
 
@@ -356,7 +356,7 @@ public class ModelRunner {
 	}
 
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.getEventClass();
+		Class<?> stepEventClass = useCaseStep.getMessageClass();
 		boolean result = stepEventClass.isAssignableFrom(currentEventClass);
 		return result;
 	}

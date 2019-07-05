@@ -17,10 +17,10 @@ public class StepUserPart<T> {
 	private StepPart stepPart;
 	private Step step;
 
-	StepUserPart(Class<T> eventClass, StepPart stepPart) {
+	StepUserPart(Class<T> messageClass, StepPart stepPart) {
 		this.stepPart = stepPart;
 		this.step = stepPart.getStep();
-		step.setEventClass(eventClass);
+		step.setMessageClass(messageClass);
 	}
 
 	/**
