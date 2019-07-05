@@ -55,7 +55,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		return stepToBeRun -> {
 		    stepName = stepToBeRun.getStepName();
 		    optionalCondition = stepToBeRun.getCondition();
-		    optionalEvent = stepToBeRun.getEvent();
+		    optionalEvent = stepToBeRun.getMessage();
 		    systemReaction = stepToBeRun.getSystemReaction();
 		    stepToBeRun.run();
 		};

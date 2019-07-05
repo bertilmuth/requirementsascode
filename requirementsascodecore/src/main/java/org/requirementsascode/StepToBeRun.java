@@ -16,7 +16,7 @@ public class StepToBeRun implements Serializable {
 	private static final long serialVersionUID = -8615677956101523359L;
 
 	private Step step; 
-	private Object event;
+	private Object message;
 	private Consumer<Object> eventPublisher;
 
 	StepToBeRun() {
@@ -24,7 +24,7 @@ public class StepToBeRun implements Serializable {
 
 	/**
 	 * Triggers the system reaction of this step, and publishes the resulting
-	 * events.
+	 * event.
 	 */
 	public void run() {
 		Object eventToBePublished = runSystemReactionOfStep();
@@ -36,7 +36,7 @@ public class StepToBeRun implements Serializable {
 	private Object runSystemReactionOfStep() {
 		@SuppressWarnings("unchecked")
 		Function<Object, Object> systemReactionFunction = (Function<Object, Object>) step.getSystemReaction();
-		Object eventToBePublished = systemReactionFunction.apply(event);
+		Object eventToBePublished = systemReactionFunction.apply(message);
 		return eventToBePublished;
 	}
 
@@ -62,19 +62,19 @@ public class StepToBeRun implements Serializable {
 	}
 
 	/**
-	 * Returns the event object that will be passed to the system reaction when
+	 * Returns the message object that will be passed to the system reaction when
 	 * {@link #run()} is called.
 	 *
-	 * @return the event object, or an empty optional when no event was specified.
+	 * @return the message, or an empty optional when no message was specified.
 	 */
-	public Optional<? extends Object> getEvent() {
-		Optional<? extends Object> optionalEvent = null;
-		if (event instanceof ModelRunner) {
-			optionalEvent = Optional.empty();
+	public Optional<? extends Object> getMessage() {
+		Optional<? extends Object> optionalMessage = null;
+		if (message instanceof ModelRunner) {
+			optionalMessage = Optional.empty();
 		} else {
-			optionalEvent = Optional.of(event);
+			optionalMessage = Optional.of(message);
 		}
-		return optionalEvent;
+		return optionalMessage;
 	}
 
 	/**
@@ -87,9 +87,9 @@ public class StepToBeRun implements Serializable {
 		return systemReactionObject;
 	}
 
-	void setupWith(Step useCaseStep, Object event, Consumer<Object> eventPublisher) {
+	void setupWith(Step useCaseStep, Object message, Consumer<Object> eventPublisher) {
 		this.step = useCaseStep;
-		this.event = event;
+		this.message = message;
 		this.eventPublisher = eventPublisher;
 	}
 }
