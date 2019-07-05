@@ -17,7 +17,7 @@ import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
 /**
- * A model runner is a highly configurable controller that receives events and
+ * A model runner is a highly configurable controller that receives messages and
  * conditionally calls methods that handle them (the "system reactions").
  *
  * <p>
@@ -33,7 +33,7 @@ public class ModelRunner {
 	private boolean isRunning;
 	private StepToBeRun stepToBeRun;
 	private Consumer<StepToBeRun> messageHandler;
-	private Consumer<Object> unhandledEventHandler;
+	private Consumer<Object> unhandledMessageHandler;
 	private Consumer<Object> eventPublisher;
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
@@ -41,15 +41,14 @@ public class ModelRunner {
 	private Collection<Step> steps;
 
 	/**
-	 * Constructor for creating a runner with standard system reaction, that is: the
-	 * system reaction, as defined in the step, simply accepts an event.
+	 * Constructor for creating a model runner.
 	 */
 	public ModelRunner() {
 		this.stepToBeRun = new StepToBeRun();
 		this.recordedStepNames = new ArrayList<>();
 		this.recordedMessages = new ArrayList<>();
 		handleWith(stepToBeRun -> stepToBeRun.run());
-		publishWith(event -> handleMessage(event));
+		publishWith(this::handleMessage);
 	}
 
 	/**
@@ -74,7 +73,7 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner handleUnhandledWith(Consumer<Object> unhandledMessageHandler) {
-		this.unhandledEventHandler = Objects.requireNonNull(unhandledMessageHandler);
+		this.unhandledMessageHandler = Objects.requireNonNull(unhandledMessageHandler);
 		return this;
 	}
 
@@ -187,7 +186,7 @@ public class ModelRunner {
 	 * Call this method to provide several messages to the runner. For each
 	 * message, {@link #reactTo(Object)} is called.
 	 *
-	 * @param messages the command or event objects
+	 * @param messages the message objects
 	 * @return the event that was published (latest) if the system reacted. Null otherwise.
 	 */
 	public Optional<Object> reactTo(Object... messages) {
@@ -207,7 +206,7 @@ public class ModelRunner {
 	 * If a single step can react, the runner will call the message handler
 	 * with it. If no step can react, the runner will either call the handler
 	 * defined with {@link #handleUnhandledWith(Consumer)}, or if no such handler
-	 * exists, consume the event silently.
+	 * exists, consume the message silently.
 	 * 
 	 * If more than one step can react, the runner will throw an exception.
 	 *
@@ -222,7 +221,7 @@ public class ModelRunner {
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 *
 	 * @param <T>   the type of message
-	 * @param message the command or event object
+	 * @param message the message object
 	 * @return the event that was published (latest) if the system reacted. Null otherwise.
 	 * @throws MoreThanOneStepCanReact when more than one step can react
 	 * @throws InfiniteRepetition      when a step has an always true condition, or
@@ -260,8 +259,8 @@ public class ModelRunner {
 			triggerSystemReactionForStep(message, step);
 		} else if (steps.size() > 1) {
 			throw new MoreThanOneStepCanReact(steps);
-		} else if (unhandledEventHandler != null && !isSystemEvent(message)) {
-			unhandledEventHandler.accept(message);
+		} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
+			unhandledMessageHandler.accept(message);
 		} else if (message instanceof RuntimeException) {
 			throw (RuntimeException) message;
 		}
@@ -324,12 +323,12 @@ public class ModelRunner {
 	 * <p>
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 * 
-	 * @return the collection of classes of messages
+	 * @return the collection of message types
 	 */
 	public Set<Class<?>> getReactToTypes() {
-		Set<Class<?>> eventsReactedTo = getRunningStepStream().filter(step -> hasTruePredicate(step))
+		Set<Class<?>> reactToTypes = getRunningStepStream().filter(step -> hasTruePredicate(step))
 				.map(step -> step.getEventClass()).collect(Collectors.toCollection(LinkedHashSet::new));
-		return eventsReactedTo;
+		return reactToTypes;
 	}
 
 	/**
@@ -413,9 +412,9 @@ public class ModelRunner {
 	}
 
 	/**
-	 * After calling this method, until recording is stopped, events and step names
-	 * are recorded. If step names/events have been recorded before calling this
-	 * method, these are discarded.
+	 * After calling this method, until recording is stopped, messages and step names
+	 * are recorded. If messages/step names have been recorded before calling this
+	 * method, they are discarded.
 	 * 
 	 * @return this model runner for method chaining
 	 */
@@ -427,7 +426,7 @@ public class ModelRunner {
 	}
 
 	/**
-	 * When calling this method, recording is stopped. No events and step names are
+	 * When calling this method, recording is stopped. No messages and step names are
 	 * recorded until {@link #startRecording()} is called again.
 	 * 
 	 * @return this model runner for method chaining
@@ -453,17 +452,17 @@ public class ModelRunner {
 	}
 
 	/**
-	 * Returns the recorded events that the runner reacted to so far.
+	 * Returns the recorded messages that the runner reacted to so far.
 	 * <p>
-	 * If no events have caused a system reaction, an empty array is returned. For
+	 * If no messages have caused a system reaction, an empty array is returned. For
 	 * example, this method can used with the assertArrayEquals method of JUnit to
-	 * compare the actual events that caused a reaction (returned by this method) to
-	 * the expected events.
+	 * compare the actual messages that caused a reaction (returned by this method) to
+	 * the expected messages.
 	 *
-	 * @return the ordered events that caused a system reaction
+	 * @return the messages that caused a system reaction, in order of occurrence
 	 */
-	public Object[] getRecordedEvents() {
-		Object[] events = recordedMessages.toArray();
-		return events;
+	public Object[] getRecordedMessages() {
+		Object[] messages = recordedMessages.toArray();
+		return messages;
 	}
 }

@@ -71,11 +71,11 @@ public class StepSystemPart<T> {
 	}
 
 	/**
-	 * React to this step's event as long as the condition is fulfilled.
+	 * React to this step's message as long as the condition is fulfilled.
 	 *
 	 * <p>
 	 * Even when the condition is fulfilled, the flow can advance given that the
-	 * event of the next step is received.
+	 * message of the next step is received.
 	 *
 	 * <p>
 	 * Note that if the condition is not fulfilled after the previous step has been

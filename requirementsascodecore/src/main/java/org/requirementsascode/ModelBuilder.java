@@ -33,8 +33,8 @@ public class ModelBuilder {
 	 * </p>
 	 * 
 	 * @param commandClass the specified command class
-	 * @param <T>          the type of events/exceptions
-	 * @return a part of the builder used to create the event handler (the "system
+	 * @param <T>          the type of command
+	 * @return a part of the builder used to create the message handler (the "system
 	 *         reaction")
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
@@ -43,26 +43,26 @@ public class ModelBuilder {
 	}
 
 	/**
-	 * Creates a handler for events or exceptions of the specified type.
+	 * Creates a handler for messages or exceptions of the specified type.
 	 * <p>
 	 * Internally, a default use case ("Handles messages") is created in the model.
 	 * </p>
 	 * 
-	 * @param eventOrExceptionClass the specified event / exception class
-	 * @param <T>                   the type of events/exceptions
-	 * @return a part of the builder used to create the event handler (the "system
+	 * @param messageClass the specified type of messages
+	 * @param <T>                   the type of messages
+	 * @return a part of the builder used to create the message handler (the "system
 	 *         reaction")
 	 */
-	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
-		FlowlessUserPart<T> userPart = useCase(HANDLES_MESSAGES).on(eventOrExceptionClass);
+	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
+		FlowlessUserPart<T> userPart = useCase(HANDLES_MESSAGES).on(messageClass);
 		return userPart;
 	}
 
 	/**
-	 * Only if the specified condition is true, the event is handled.
+	 * Only if the specified condition is true, the message is handled.
 	 *
-	 * @param condition the condition that constrains when the event is handled
-	 * @return a part of the builder used to define the event's class
+	 * @param condition the condition that constrains when the message is handled
+	 * @return a part of the builder used to define the message class
 	 */
 	public FlowlessConditionPart condition(Condition condition) {
 		return useCase(HANDLES_MESSAGES).condition(condition);

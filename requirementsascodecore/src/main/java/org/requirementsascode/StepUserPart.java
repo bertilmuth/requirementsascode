@@ -25,7 +25,7 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines the system reaction. The system will react as specified to the
-	 * current step's events, when {@link ModelRunner#reactTo(Object)} is called.
+	 * current step's messages, when {@link ModelRunner#reactTo(Object)} is called.
 	 *
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step
@@ -42,7 +42,7 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 *
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
@@ -54,11 +54,11 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines the system reaction. The system will react as specified to the
-	 * current step's events, when you call {@link ModelRunner#reactTo(Object)}.
+	 * current step's messages, when you call {@link ModelRunner#reactTo(Object)}.
 	 * After executing the system reaction, the runner will publish the returned
 	 * events.
 	 *
-	 * @param systemReaction the specified system reaction, that returns events to
+	 * @param systemReaction the specified system reaction, that returns an event to
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
@@ -69,11 +69,11 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 * After executing the system reaction, the runner will publish the returned
 	 * events.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to
+	 * @param systemReaction the autonomous system reaction, that returns an event to
 	 *                       be published.
 	 * @return the created system part of this step
 	 */

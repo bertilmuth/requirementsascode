@@ -4,7 +4,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.userevent.EntersText;
+import helloworld.usercommand.EntersText;
 
 public class HelloWorld05 extends AbstractHelloWorldExample {
     private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;

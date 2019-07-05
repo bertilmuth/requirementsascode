@@ -19,7 +19,7 @@ public class RecordingTest extends AbstractTestCase{
 	.build();
 
 	modelRunner.run(model);
-	assertEquals(0, modelRunner.getRecordedEvents().length);
+	assertEquals(0, modelRunner.getRecordedMessages().length);
 	assertEquals(0, modelRunner.getRecordedStepNames().length);
     }
     
@@ -31,7 +31,7 @@ public class RecordingTest extends AbstractTestCase{
 
 	modelRunner.run(model).stopRecording();
 	
-	assertEquals(0, modelRunner.getRecordedEvents().length);
+	assertEquals(0, modelRunner.getRecordedMessages().length);
 	assertEquals(0, modelRunner.getRecordedStepNames().length);
     }
     
@@ -44,8 +44,8 @@ public class RecordingTest extends AbstractTestCase{
 	modelRunner.run(model).startRecording();
 	modelRunner.reactTo(entersText());
 	
-	assertEquals(1, modelRunner.getRecordedEvents().length);
-	assertEquals(EntersText.class, modelRunner.getRecordedEvents()[0].getClass());
+	assertEquals(1, modelRunner.getRecordedMessages().length);
+	assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 	
 	assertEquals(1, modelRunner.getRecordedStepNames().length);
 	assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
@@ -61,9 +61,9 @@ public class RecordingTest extends AbstractTestCase{
 	modelRunner.run(model).startRecording();
 	modelRunner.reactTo(entersText(), entersNumber());
 	
-	assertEquals(2, modelRunner.getRecordedEvents().length);
-	assertEquals(EntersText.class, modelRunner.getRecordedEvents()[0].getClass());
-	assertEquals(EntersNumber.class, modelRunner.getRecordedEvents()[1].getClass());
+	assertEquals(2, modelRunner.getRecordedMessages().length);
+	assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+	assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 	
 	assertEquals(2, modelRunner.getRecordedStepNames().length);
 	assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
@@ -80,9 +80,9 @@ public class RecordingTest extends AbstractTestCase{
 	modelRunner.startRecording().run(model);
 	modelRunner.reactTo(entersText(), entersNumber());
 	
-	assertEquals(2, modelRunner.getRecordedEvents().length);
-	assertEquals(EntersText.class, modelRunner.getRecordedEvents()[0].getClass());
-	assertEquals(EntersNumber.class, modelRunner.getRecordedEvents()[1].getClass());
+	assertEquals(2, modelRunner.getRecordedMessages().length);
+	assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+	assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 	
 	assertEquals(2, modelRunner.getRecordedStepNames().length);
 	assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
@@ -101,8 +101,8 @@ public class RecordingTest extends AbstractTestCase{
 	modelRunner.stopRecording();
 	modelRunner.reactTo(entersNumber());
 	
-	assertEquals(1, modelRunner.getRecordedEvents().length);
-	assertEquals(EntersText.class, modelRunner.getRecordedEvents()[0].getClass());
+	assertEquals(1, modelRunner.getRecordedMessages().length);
+	assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 	
 	assertEquals(1, modelRunner.getRecordedStepNames().length);
 	assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
@@ -120,9 +120,9 @@ public class RecordingTest extends AbstractTestCase{
 	modelRunner.restart();
 	modelRunner.reactTo(entersNumber());
 	
-	assertEquals(2, modelRunner.getRecordedEvents().length);
-	assertEquals(EntersText.class, modelRunner.getRecordedEvents()[0].getClass());
-	assertEquals(EntersNumber.class, modelRunner.getRecordedEvents()[1].getClass());
+	assertEquals(2, modelRunner.getRecordedMessages().length);
+	assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+	assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 	
 	assertEquals(2, modelRunner.getRecordedStepNames().length);
 	assertEquals("S1", modelRunner.getRecordedStepNames()[0]);

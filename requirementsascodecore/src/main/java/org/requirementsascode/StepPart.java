@@ -29,7 +29,7 @@ public class StepPart {
 
 	/**
 	 * Defines which actors (i.e. user groups) can cause the system to react to the
-	 * event of this step.
+	 * message of this step.
 	 *
 	 * @param actors the actors that define the user groups
 	 * @return the created as part of this step
@@ -81,7 +81,7 @@ public class StepPart {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 *
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
@@ -94,7 +94,7 @@ public class StepPart {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 * Instead, the model runner provides itself as an event to the system reaction.
 	 *
 	 * @param systemReaction the autonomous system reaction (that needs information

@@ -47,19 +47,19 @@ public class FlowlessSystemPart<T> {
 	}
 
 	/**
-	 * Defines the type of events or exceptions that will cause a system reaction.
+	 * Defines the type of messages or exceptions that will cause a system reaction.
 	 *
 	 * <p>
 	 * The system reacts to objects that are instances of the specified class or
 	 * instances of any direct or indirect subclass of the specified class.
 	 *
-	 * @param eventOrExceptionClass the class of events the system reacts to
-	 * @param <U>                   the type of the class
+	 * @param messageClass the class of messages the system reacts to
+	 * @param <U>          the type of the class
 	 * @return the created user part
 	 */
-	public <U> FlowlessUserPart<U> on(Class<U> eventOrExceptionClass) {
-		Objects.requireNonNull(eventOrExceptionClass);
-		FlowlessUserPart<U> flowlessUserPart = condition(null).on(eventOrExceptionClass);
+	public <U> FlowlessUserPart<U> on(Class<U> messageClass) {
+		Objects.requireNonNull(messageClass);
+		FlowlessUserPart<U> flowlessUserPart = condition(null).on(messageClass);
 		return flowlessUserPart;
 	}
 

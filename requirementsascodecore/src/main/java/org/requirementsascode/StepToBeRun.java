@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 /**
  * Use an instance of this class if you want to find out the details about the
- * step to be run in a custom event handler, and to trigger the system reaction.
+ * step to be run in a custom message handler, and to trigger the system reaction.
  *
  * @see ModelRunner#handleWith(Consumer)
  * @author b_muth

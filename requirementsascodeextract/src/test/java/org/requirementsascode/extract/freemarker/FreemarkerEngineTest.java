@@ -19,8 +19,8 @@ import org.requirementsascode.extract.freemarker.systemreaction.GreetsUser;
 import org.requirementsascode.extract.freemarker.systemreaction.LogsException;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quits;
-import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
-import org.requirementsascode.extract.freemarker.userevent.EntersName;
+import org.requirementsascode.extract.freemarker.usercommand.DecidesToQuit;
+import org.requirementsascode.extract.freemarker.usercommand.EntersName;
 
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;

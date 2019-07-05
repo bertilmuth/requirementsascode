@@ -4,7 +4,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.userevent.EntersText;
+import helloworld.usercommand.EntersText;
 
 public class HelloWorld03 extends AbstractHelloWorldExample {
 

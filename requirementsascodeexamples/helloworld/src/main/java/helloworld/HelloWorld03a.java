@@ -5,7 +5,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.userevent.EntersText;
+import helloworld.usercommand.EntersText;
 
 public class HelloWorld03a extends AbstractHelloWorldExample {
 
@@ -42,10 +42,10 @@ public class HelloWorld03a extends AbstractHelloWorldExample {
 		Model model = buildWith(Model.builder());
 		ModelRunner modelRunner = new ModelRunner().run(model);
 		
-		// The next event will not be handled, because the actor is wrong
-		modelRunner.as(invalidUser).reactTo(new EntersText("Ignored Event"));
+		// The next command will not be handled, because the actor is wrong
+		modelRunner.as(invalidUser).reactTo(new EntersText("Ignored Command"));
 		
-		// This event will be handled
+		// This command will be handled
 		modelRunner.as(validUser).reactTo(entersText());
 	}
 

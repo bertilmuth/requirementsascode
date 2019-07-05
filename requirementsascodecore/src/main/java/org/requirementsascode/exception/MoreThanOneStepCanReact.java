@@ -8,7 +8,7 @@ import org.requirementsascode.Step;
 
 /**
  * Exception that is thrown when more than one step could react to a certain
- * event.
+ * message.
  * 
  * @author b_muth
  *

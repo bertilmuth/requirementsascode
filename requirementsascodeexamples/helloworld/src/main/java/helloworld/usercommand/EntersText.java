@@ -1,4 +1,4 @@
-package helloworld.userevent;
+package helloworld.usercommand;
 
 public class EntersText {	
 	public final String text;

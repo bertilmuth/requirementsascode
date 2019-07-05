@@ -223,7 +223,7 @@ public class FlowTest extends AbstractTestCase{
 		Object[] eventArray = new Object[] {entersText(), entersNumber()};
 		List<? extends Object> events = Arrays.asList(eventArray);
 		modelRunner.reactTo(events);
-		assertArrayEquals(eventArray, modelRunner.getRecordedEvents());		
+		assertArrayEquals(eventArray, modelRunner.getRecordedMessages());		
 	}
 	
 	@Test
@@ -253,7 +253,7 @@ public class FlowTest extends AbstractTestCase{
 		EntersText[] eventArray = new EntersText[] {entersText(), entersText()};
 		List<EntersText> events = Arrays.asList(eventArray);
 		modelRunner.reactTo(events);
-		assertArrayEquals(eventArray, modelRunner.getRecordedEvents());		
+		assertArrayEquals(eventArray, modelRunner.getRecordedMessages());		
 	}
 	
 	@Test

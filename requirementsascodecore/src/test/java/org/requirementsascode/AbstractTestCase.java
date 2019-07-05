@@ -56,7 +56,7 @@ public abstract class AbstractTestCase {
 
 	protected void reactToAndAssertEvents(Object... events) {
 		modelRunner.reactTo(events);
-		assertArrayEquals(events, modelRunner.getRecordedEvents());
+		assertArrayEquals(events, modelRunner.getRecordedMessages());
 	}
 
 	protected boolean textIsAvailable() {

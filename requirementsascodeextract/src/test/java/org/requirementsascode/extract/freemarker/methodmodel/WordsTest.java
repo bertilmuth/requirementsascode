@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.requirementsascode.extract.freemarker.methodmodel.util.Words;
-import org.requirementsascode.extract.freemarker.userevent.DecidesToQuit;
-import org.requirementsascode.extract.freemarker.userevent.EntersName;
+import org.requirementsascode.extract.freemarker.usercommand.DecidesToQuit;
+import org.requirementsascode.extract.freemarker.usercommand.EntersName;
 
 import freemarker.template.TemplateModelException;
 

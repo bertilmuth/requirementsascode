@@ -20,7 +20,7 @@ public class FlowlessUserPart<T> {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 *
 	 * @param systemReaction the autonomous system reaction
 	 * @return the created system part of this step
@@ -44,11 +44,11 @@ public class FlowlessUserPart<T> {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 * After executing the system reaction, the runner will publish the returned
-	 * events.
+	 * event.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to
+	 * @param systemReaction the autonomous system reaction, that returns an event to
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
