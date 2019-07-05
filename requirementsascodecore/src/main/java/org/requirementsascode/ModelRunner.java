@@ -31,11 +31,11 @@ public class ModelRunner {
 	private Step latestStep;
 	private boolean isRunning;
 	private StepToBeRun stepToBeRun;
-	private Consumer<StepToBeRun> eventHandler;
+	private Consumer<StepToBeRun> messageHandler;
 	private Consumer<Object> unhandledEventHandler;
 	private Consumer<Object> eventPublisher;
 	private List<String> recordedStepNames;
-	private List<Object> recordedEvents;
+	private List<Object> recordedMessages;
 	private boolean isRecording;
 
 	private Collection<Step> steps;
@@ -47,40 +47,40 @@ public class ModelRunner {
 	public ModelRunner() {
 		this.stepToBeRun = new StepToBeRun();
 		this.recordedStepNames = new ArrayList<>();
-		this.recordedEvents = new ArrayList<>();
+		this.recordedMessages = new ArrayList<>();
 		handleWith(stepToBeRun -> stepToBeRun.run());
 		publishWith(event -> reactTo(event));
 	}
 
 	/**
-	 * Define a custom event handler. It can perform tasks before/after running the
+	 * Define a custom message handler. It can perform tasks before/after running the
 	 * step (which will trigger the system reaction method defined in the model).
 	 * 
-	 * A custom event handler is useful for cross-cutting concerns, e.g. measuring
+	 * A custom message handler is useful for cross-cutting concerns, e.g. measuring
 	 * performance.
 	 *
-	 * @param eventHandler the custom event handler
+	 * @param messageHandler the custom message handler
 	 * @return this model runner, for chaining
 	 */
-	public ModelRunner handleWith(Consumer<StepToBeRun> eventHandler) {
-		this.eventHandler = Objects.requireNonNull(eventHandler);
+	public ModelRunner handleWith(Consumer<StepToBeRun> messageHandler) {
+		this.messageHandler = Objects.requireNonNull(messageHandler);
 		return this;
 	}
 
 	/**
-	 * Define handler for events that the runner doesn't react to.
+	 * Define handler for messages that the runner doesn't react to.
 	 * 
-	 * @param unhandledEventHandler the handler for events not handled by the runner
+	 * @param unhandledMessageHandler the handler for messages not handled by the runner
 	 * @return this model runner, for chaining
 	 */
-	public ModelRunner handleUnhandledWith(Consumer<Object> unhandledEventHandler) {
-		this.unhandledEventHandler = Objects.requireNonNull(unhandledEventHandler);
+	public ModelRunner handleUnhandledWith(Consumer<Object> unhandledMessageHandler) {
+		this.unhandledEventHandler = Objects.requireNonNull(unhandledMessageHandler);
 		return this;
 	}
 
 	/**
 	 * Define a custom publisher for events. It will be called after a system
-	 * reaction has been run, for each of the returned event objects of the system
+	 * reaction has been run, for the returned event objects of the system
 	 * reaction.
 	 *
 	 * @param eventPublisher the custom event eventPublisher
@@ -102,7 +102,7 @@ public class ModelRunner {
 
 	/**
 	 * Configures the runner to use the specified model. After you called this
-	 * method, the runner will accept events via {@link #reactTo(Object)}.
+	 * method, the runner will accept messages via {@link #reactTo(Object)}.
 	 *
 	 * <p>
 	 * As a side effect, this method immediately triggers "autonomous system
@@ -125,7 +125,7 @@ public class ModelRunner {
 	}
 
 	/**
-	 * After you called this method, the runner will only react to steps that have
+	 * After you called this method, the runner will only react in steps that have
 	 * explicitly set the specified actor as one of its actors, or that are declared
 	 * as "autonomous system reactions".
 	 *
@@ -145,6 +145,21 @@ public class ModelRunner {
 				.collect(Collectors.toSet());
 		return actorSteps;
 	}
+	
+	private boolean anyStepActorIsRunActor(Step step, Actor runActor) {
+		Actor[] stepActors = step.getActors();
+		if (stepActors == null) {
+			throw (new MissingUseCaseStepPart(step, "actor"));
+		}
+
+		Actor systemActor = step.getModel().getSystemActor();
+		for (Actor stepActor : stepActors) {
+			if (stepActor.equals(systemActor) || stepActor.equals(runActor)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Returns whether the runner is currently running.
@@ -157,7 +172,7 @@ public class ModelRunner {
 	}
 
 	/**
-	 * Stops the runner. It will not be reacting to events, until
+	 * Stops the runner. It will not be reacting to messages, until
 	 * {@link #run(Model)} is called again.
 	 */
 	public void stop() {
@@ -165,27 +180,27 @@ public class ModelRunner {
 	}
 
 	/**
-	 * Call this method to provide several event objects to the runner. For each
-	 * event object, {@link #reactTo(Object)} is called.
+	 * Call this method to provide several messages to the runner. For each
+	 * message, {@link #reactTo(Object)} is called.
 	 *
-	 * @param events the events to react to
+	 * @param messages the command or event objects
 	 * @return the latest step that has been run
 	 */
-	public Optional<Step> reactTo(Object... events) {
-		Objects.requireNonNull(events);
+	public Optional<Step> reactTo(Object... messages) {
+		Objects.requireNonNull(messages);
 
-		for (Object event : events) {
-			reactTo(event);
+		for (Object message : messages) {
+			reactTo(message);
 		}
 		return getLatestStep();
 	}
 
 	/**
-	 * Call this method to provide a command or event object to the runner.
+	 * Call this method to provide a message (i.e. command or event object) to the runner.
 	 *
 	 * <p>
-	 * If it is running, the runner will then check which steps can react to the
-	 * event. If a single step can react, the runner will call the event handler
+	 * If it is running, the runner will then check which steps can react.
+	 * If a single step can react, the runner will call the message handler
 	 * with it. If no step can react, the runner will either call the handler
 	 * defined with {@link #handleUnhandledWith(Consumer)}, or if no such handler
 	 * exists, consume the event silently.
@@ -202,27 +217,27 @@ public class ModelRunner {
 	 * <p>
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 *
-	 * @param <T>   the type of the command or event object
-	 * @param event the command or event object
+	 * @param <T>   the type of message
+	 * @param message the command or event object
 	 * @return the step that was run latest by the model runner
 	 * @throws MoreThanOneStepCanReact when more than one step can react
 	 * @throws InfiniteRepetition      when a step has an always true condition, or
 	 *                                 there is an infinite loop.
 	 */
-	public <T> Optional<Step> reactTo(T event) {
-		Objects.requireNonNull(event);
+	public <T> Optional<Step> reactTo(T message) {
+		Objects.requireNonNull(message);
 
-		if (event instanceof Collection) {
-			Object[] events = ((Collection<?>) event).toArray(new Object[0]);
-			return reactTo(events);
+		if (message instanceof Collection) {
+			Object[] messages = ((Collection<?>) message).toArray(new Object[0]);
+			return reactTo(messages);
 		}
 
 		if (isRunning) {
-			Class<? extends Object> currentEventClass = event.getClass();
+			Class<? extends Object> currentMessageClass = message.getClass();
 
 			try {
-				Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentEventClass);
-				triggerSystemReactionForSteps(event, stepsThatCanReact);
+				Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentMessageClass);
+				triggerSystemReactionForSteps(message, stepsThatCanReact);
 			} catch (StackOverflowError err) {
 				throw new InfiniteRepetition(latestStep);
 			}
@@ -230,37 +245,37 @@ public class ModelRunner {
 		return getLatestStep();
 	}
 
-	private void triggerSystemReactionForSteps(Object event, Collection<Step> steps) {
+	private void triggerSystemReactionForSteps(Object message, Collection<Step> steps) {
 		Step step = null;
 
 		if (steps.size() == 1) {
 			step = steps.iterator().next();
-			triggerSystemReactionForStep(event, step);
+			triggerSystemReactionForStep(message, step);
 		} else if (steps.size() > 1) {
 			throw new MoreThanOneStepCanReact(steps);
-		} else if (unhandledEventHandler != null && !isSystemEvent(event)) {
-			unhandledEventHandler.accept(event);
-		} else if (event instanceof RuntimeException) {
-			throw (RuntimeException) event;
+		} else if (unhandledEventHandler != null && !isSystemEvent(message)) {
+			unhandledEventHandler.accept(message);
+		} else if (message instanceof RuntimeException) {
+			throw (RuntimeException) message;
 		}
 	}
 
-	private <T> boolean isSystemEvent(T event) {
-		return event instanceof ModelRunner;
+	private <T> boolean isSystemEvent(T message) {
+		return message instanceof ModelRunner;
 	}
 
-	private void triggerSystemReactionForStep(Object event, Step step) {
+	private void triggerSystemReactionForStep(Object message, Step step) {
 		if (step.getSystemReaction() == null) {
 			throw new MissingUseCaseStepPart(step, "system");
 		}
 
-		stepToBeRun.setupWith(step, event, eventPublisher);
-		recordStepNameAndEvent(step, event);
+		stepToBeRun.setupWith(step, message, eventPublisher);
+		recordStepNameAndMessage(step, message);
 
 		setLatestStep(step);
 
 		try {
-			eventHandler.accept(stepToBeRun);
+			messageHandler.accept(stepToBeRun);
 		} catch (Exception e) {
 			handleException(e);
 		}
@@ -268,41 +283,41 @@ public class ModelRunner {
 		triggerAutonomousSystemReaction();
 	}
 
-	void recordStepNameAndEvent(Step step, Object event) {
+	void recordStepNameAndMessage(Step step, Object message) {
 		if (isRecording) {
 			recordedStepNames.add(step.getName());
-			if (event != null) {
-				recordedEvents.add(event);
+			if (message != null) {
+				recordedMessages.add(message);
 			}
 		}
 	}
 
 	/**
-	 * Returns whether at least one step can react to an event of the specified
+	 * Returns whether at least one step can react to a message of the specified
 	 * class.
 	 * <p>
 	 * A step "can react" if all of the following conditions are met: a) the runner
 	 * is running b) one of the step's actors matches the actor the runner is run as
-	 * c) the step's event class is the same or a superclass of the specified event
+	 * c) the step's message class is the same or a superclass of the specified message
 	 * class d) the step has a condition that is true
 	 *
-	 * @param eventClass the specified class
+	 * @param messageClass the type of message to check steps for
 	 * @return true if the runner is running and at least one step can react, false
 	 *         otherwise
 	 */
-	public boolean canReactTo(Class<? extends Object> eventClass) {
-		Objects.requireNonNull(eventClass);
-		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(eventClass);
+	public boolean canReactTo(Class<? extends Object> messageClass) {
+		Objects.requireNonNull(messageClass);
+		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(messageClass);
 		boolean canReact = !stepsThatCanReact.isEmpty();
 		return canReact;
 	}
 
 	/**
-	 * Returns the classes of events the runner can react to.
+	 * Returns the classes of messages the runner can react to.
 	 * <p>
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 * 
-	 * @return the collection of classes of events
+	 * @return the collection of classes of messages
 	 */
 	public Set<Class<?>> getReactToTypes() {
 		Set<Class<?>> eventsReactedTo = getRunningStepStream().filter(step -> hasTruePredicate(step))
@@ -311,15 +326,15 @@ public class ModelRunner {
 	}
 
 	/**
-	 * Returns the steps in the model that can react to the specified event class.
+	 * Returns the steps in the model that can react to the specified message class.
 	 *
-	 * @param eventClass the class of events
-	 * @return the steps that can react to the class of events
+	 * @param messageClass the class of messages
+	 * @return the steps that can react to the class of messages
 	 */
-	public Set<Step> getStepsThatCanReactTo(Class<? extends Object> eventClass) {
-		Objects.requireNonNull(eventClass);
+	public Set<Step> getStepsThatCanReactTo(Class<? extends Object> messageClass) {
+		Objects.requireNonNull(messageClass);
 
-		Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(eventClass, getRunningStepStream());
+		Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(messageClass, getRunningStepStream());
 		return stepsThatCanReact;
 	}
 
@@ -328,25 +343,10 @@ public class ModelRunner {
 		return stepStream;
 	}
 
-	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> eventClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, eventClass))
+	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> messageClass, Stream<Step> stepStream) {
+		Set<Step> steps = stepStream.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, messageClass))
 				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
 		return steps;
-	}
-
-	private boolean anyStepActorIsRunActor(Step step, Actor runActor) {
-		Actor[] stepActors = step.getActors();
-		if (stepActors == null) {
-			throw (new MissingUseCaseStepPart(step, "actor"));
-		}
-
-		Actor systemActor = step.getModel().getSystemActor();
-		for (Actor stepActor : stepActors) {
-			if (stepActor.equals(systemActor) || stepActor.equals(runActor)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
@@ -414,7 +414,7 @@ public class ModelRunner {
 	 */
 	public ModelRunner startRecording() {
 		recordedStepNames.clear();
-		recordedEvents.clear();
+		recordedMessages.clear();
 		isRecording = true;
 		return this;
 	}
@@ -456,7 +456,7 @@ public class ModelRunner {
 	 * @return the ordered events that caused a system reaction
 	 */
 	public Object[] getRecordedEvents() {
-		Object[] events = recordedEvents.toArray();
+		Object[] events = recordedMessages.toArray();
 		return events;
 	}
 }
