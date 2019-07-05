@@ -29,6 +29,7 @@ public class ModelRunner {
 
 	private Model model;
 	private Step latestStep;
+	private Object latestPublishedEvent;
 	private boolean isRunning;
 	private StepToBeRun stepToBeRun;
 	private Consumer<StepToBeRun> messageHandler;
@@ -37,7 +38,6 @@ public class ModelRunner {
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
 	private boolean isRecording;
-
 	private Collection<Step> steps;
 
 	/**
@@ -49,7 +49,7 @@ public class ModelRunner {
 		this.recordedStepNames = new ArrayList<>();
 		this.recordedMessages = new ArrayList<>();
 		handleWith(stepToBeRun -> stepToBeRun.run());
-		publishWith(event -> reactTo(event));
+		publishWith(event -> handleMessage(event));
 	}
 
 	/**
@@ -87,7 +87,11 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner publishWith(Consumer<Object> eventPublisher) {
-		this.eventPublisher = Objects.requireNonNull(eventPublisher);
+		Objects.requireNonNull(eventPublisher);
+		this.eventPublisher = event -> {
+			eventPublisher.accept(event);
+			latestPublishedEvent = event;
+		};
 		return this;
 	}
 
@@ -121,7 +125,7 @@ public class ModelRunner {
 	}
 
 	private void triggerAutonomousSystemReaction() {
-		reactTo(this);
+		handleMessage(this);
 	}
 
 	/**
@@ -184,15 +188,15 @@ public class ModelRunner {
 	 * message, {@link #reactTo(Object)} is called.
 	 *
 	 * @param messages the command or event objects
-	 * @return the latest step that has been run
+	 * @return the event that was published (latest) if the system reacted. Null otherwise.
 	 */
-	public Optional<Step> reactTo(Object... messages) {
+	public Optional<Object> reactTo(Object... messages) {
 		Objects.requireNonNull(messages);
 
 		for (Object message : messages) {
-			reactTo(message);
+			handleMessage(message);
 		}
-		return getLatestStep();
+		return Optional.ofNullable(latestPublishedEvent);
 	}
 
 	/**
@@ -219,12 +223,12 @@ public class ModelRunner {
 	 *
 	 * @param <T>   the type of message
 	 * @param message the command or event object
-	 * @return the step that was run latest by the model runner
+	 * @return the event that was published (latest) if the system reacted. Null otherwise.
 	 * @throws MoreThanOneStepCanReact when more than one step can react
 	 * @throws InfiniteRepetition      when a step has an always true condition, or
 	 *                                 there is an infinite loop.
 	 */
-	public <T> Optional<Step> reactTo(T message) {
+	public <T> Optional<Object> reactTo(T message) {
 		Objects.requireNonNull(message);
 
 		if (message instanceof Collection) {
@@ -232,17 +236,20 @@ public class ModelRunner {
 			return reactTo(messages);
 		}
 
-		if (isRunning) {
-			Class<? extends Object> currentMessageClass = message.getClass();
+		latestPublishedEvent = null;
+		handleMessage(message);
+		return Optional.ofNullable(latestPublishedEvent);
+	}
 
-			try {
-				Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentMessageClass);
-				triggerSystemReactionForSteps(message, stepsThatCanReact);
-			} catch (StackOverflowError err) {
-				throw new InfiniteRepetition(latestStep);
-			}
+	private <T> void handleMessage(T message) {
+		Class<? extends Object> currentMessageClass = message.getClass();
+
+		try {
+			Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentMessageClass);
+			triggerSystemReactionForSteps(message, stepsThatCanReact);
+		} catch (StackOverflowError err) {
+			throw new InfiniteRepetition(latestStep);
 		}
-		return getLatestStep();
 	}
 
 	private void triggerSystemReactionForSteps(Object message, Collection<Step> steps) {
@@ -370,7 +377,7 @@ public class ModelRunner {
 	 * @param e the exception that has been thrown by the system reaction
 	 */
 	protected void handleException(Exception e) {
-		reactTo(e);
+		handleMessage(e);
 	}
 
 	/**

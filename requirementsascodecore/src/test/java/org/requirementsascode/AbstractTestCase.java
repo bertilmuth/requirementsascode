@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 public abstract class AbstractTestCase {
 
+	public static final String TEXT = "Hello, Basic Flow!";
+
 	protected static final String CUSTOMER = "Customer";
 
 	protected static final String USE_CASE = "Use case";
@@ -66,7 +68,7 @@ public abstract class AbstractTestCase {
 	}
 
 	protected EntersText entersText() {
-		return new EntersText("Hello, Basic Flow!");
+		return new EntersText(TEXT);
 	}
 
 	protected EntersText entersAlternativeText() {
@@ -80,7 +82,7 @@ public abstract class AbstractTestCase {
 
 	protected Runnable displaysConstantText() {
 		return () -> {
-			displayedText = "Hello, Basic Flow!";
+			displayedText = TEXT;
 		};
 	}
 
@@ -96,7 +98,7 @@ public abstract class AbstractTestCase {
 	
 	protected Supplier<Object> publishConstantTextAsString() {
 		return () -> {
-			return "Hello, Basic Flow!";
+			return TEXT;
 		};
 	}
 	

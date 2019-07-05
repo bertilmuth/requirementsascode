@@ -101,9 +101,28 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model);
-		modelRunner.stop();
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).stop();
+		modelRunner.reactTo(entersText());
+		
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
+		
+		assertFalse(latestStepRun.isPresent());
+		assertRecordedStepNames(new String[0]);
+	}
+	
+	@Test
+	public void doesNotReactToMultipleEventsIfNotRunning() { 	
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+			.build();
+		
+		modelRunner.run(model).stop();
+		modelRunner.reactTo(entersText(), entersNumber());
+		
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
 		assertFalse(latestStepRun.isPresent());
 		assertRecordedStepNames(new String[0]);
@@ -130,8 +149,9 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		Optional<Step> latestStepRun = modelRunner.run(model).reactTo(new ArrayList<Object>());
-		
+		modelRunner.run(model).reactTo(new ArrayList<Object>());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
+
 		assertFalse(latestStepRun.isPresent());
 		assertRecordedStepNames(new String[0]);
 	}
@@ -186,8 +206,8 @@ public class FlowTest extends AbstractTestCase{
 					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
 			.build();
 		
-		modelRunner.run(model).reactTo(entersText());		
-		assertEquals(PROCESS_PUBLISHED_EVENT, modelRunner.getLatestStep().get().getName());
+		String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();		
+		assertEquals(TEXT, actualText);
 	}
 	
 	@Test
@@ -245,8 +265,9 @@ public class FlowTest extends AbstractTestCase{
 					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.build();
 		
-		Optional<Step> latestStepRun = modelRunner.run(model).reactTo(entersText());
-		
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
+
 		assertTrue(latestStepRun.map(step -> step.getName().equals(SYSTEM_DISPLAYS_TEXT)).orElse(false));
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, SYSTEM_DISPLAYS_TEXT);
 	}
@@ -390,10 +411,10 @@ public class FlowTest extends AbstractTestCase{
 					.as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		Optional<Step> lastStepRun = modelRunner.reactTo(entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
-		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, latestStepRun.get().getName());
 	}
 	
 	@Test
@@ -408,10 +429,10 @@ public class FlowTest extends AbstractTestCase{
 					.user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.as(customer).run(model);
-		Optional<Step> lastStepRun = modelRunner.reactTo(entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
-		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, lastStepRun.get().getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT_AGAIN, latestStepRun.get().getName());
 	}
 	
 	@Test
@@ -444,10 +465,10 @@ public class FlowTest extends AbstractTestCase{
 						.as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
 				
-		modelRunner.as(customer).run(model);
-		Optional<Step> lastStepRun = modelRunner.reactTo(entersText());
+		modelRunner.as(customer).run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
-		assertFalse(lastStepRun.isPresent());
+		assertFalse(latestStepRun.isPresent());
 	}
 	
 	@Test
@@ -527,10 +548,10 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model);
-		Optional<Step> latestStep = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
-		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStep.get().getName());
+		assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, latestStepRun.get().getName());
 		assertRecordedStepNames(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 	}
 	

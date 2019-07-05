@@ -22,8 +22,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		modelRunner.run(model);
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 	
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
@@ -34,8 +34,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		modelRunner.run(model);
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 	
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
@@ -47,12 +47,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -63,12 +63,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -79,12 +79,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -95,12 +95,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText()); 
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -113,12 +113,12 @@ public class FlowlessTest extends AbstractTestCase {
 				.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -131,12 +131,12 @@ public class FlowlessTest extends AbstractTestCase {
 				.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -147,12 +147,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-		
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -163,12 +163,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-		
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -179,9 +179,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -192,9 +191,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -205,9 +203,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -218,12 +215,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.condition(() -> true).on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -235,7 +232,8 @@ public class FlowlessTest extends AbstractTestCase {
 		.build();
 	
 		modelRunner.run(model).reactTo(entersText());
-		assertEquals(ModelRunner.class, modelRunner.getLatestStep().get().getEventClass());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
+		assertEquals(ModelRunner.class, latestStepRun.get().getEventClass());
     }
     
     @Test
@@ -245,12 +243,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -261,12 +259,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.condition(() -> false).on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -276,9 +274,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		modelRunner.run(model);
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
-	
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -288,9 +285,8 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		modelRunner.run(model);
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
-	
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
 
@@ -301,12 +297,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -317,12 +313,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -333,12 +329,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -349,12 +345,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.user(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -365,12 +361,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-		
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -381,12 +377,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-		
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -397,12 +393,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.condition(() -> true).on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -413,12 +409,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.run(model).reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.reactTo(entersText());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getEventClass());
     }
     
@@ -429,12 +425,12 @@ public class FlowlessTest extends AbstractTestCase {
 			.condition(() -> false).on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
 	
-		latestStepRun = modelRunner.reactTo(entersNumber());
+		modelRunner.reactTo(entersNumber());
+		latestStepRun = modelRunner.getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getEventClass());
     }
     
@@ -445,23 +441,30 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(String.class).system(new IgnoresIt<>())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
-		assertEquals(String.class, latestStepRun.get().getEventClass());
+		String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();
+		assertEquals(TEXT, actualText);
     }
     
     @Test
-    public void publishEnteredTextAsEventWithUserInFirstStep() {
+    public void publishEnteredTextAsStringWithUserInFirstStep() {
 		Model model = modelBuilder.useCase(USE_CASE)
 			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
 			.on(String.class).system(new IgnoresIt<>())
 		.build();
 	
-		modelRunner.run(model);
+		String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();
+		assertEquals(TEXT, actualText);
+    }
+    
+    @Test
+    public void publishEnteredTextAsStringAfterMultipleEvents() {
+		Model model = modelBuilder.useCase(USE_CASE)
+			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+			.on(EntersNumber.class).system(new IgnoresIt<>())
+		.build();
 	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersText());
-		assertEquals(String.class, latestStepRun.get().getEventClass());
+		String actualText = (String)modelRunner.run(model).reactTo(entersText(), entersNumber()).get();
+		assertEquals(TEXT, actualText);
     }
     
     @Test
@@ -472,8 +475,7 @@ public class FlowlessTest extends AbstractTestCase {
 		.build();
 	
 		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(String.class, latestStepRun.get().getEventClass());
     }
     
@@ -485,8 +487,7 @@ public class FlowlessTest extends AbstractTestCase {
 		.build();
 	
 		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
+		Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		assertEquals(String.class, latestStepRun.get().getEventClass());
     }
     
@@ -497,9 +498,7 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(String.class).system(new IgnoresIt<>())
 		.build();
 	
-		modelRunner.run(model);
-	
-		Optional<Step> latestStepRun = modelRunner.reactTo(entersNumber());
-		assertFalse(latestStepRun.isPresent());
+		Optional<Object> optionalEventObject = modelRunner.run(model).reactTo(entersNumber());
+		assertFalse(optionalEventObject.isPresent());
     }
 }
