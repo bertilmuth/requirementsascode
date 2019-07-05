@@ -109,15 +109,15 @@ public class StepPart {
 
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing an event provided via {@link ModelRunner#reactTo(Object)}.
+	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 * After executing the system reaction, the runner will publish the returned
-	 * events.
+	 * event.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns events to
-	 *                       be published.
+	 * @param systemReaction the autonomous system reaction, that returns a single
+	 *                       event to be published.
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object[]> systemReaction) {
+	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object> systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
 		return systemPart;

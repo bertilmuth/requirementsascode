@@ -62,7 +62,7 @@ public class StepUserPart<T> {
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
+	public StepSystemPart<T> systemPublish(Function<T, Object> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
@@ -77,7 +77,7 @@ public class StepUserPart<T> {
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<T> systemPublish(Supplier<Object[]> systemReaction) {
+	public StepSystemPart<T> systemPublish(Supplier<Object> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}

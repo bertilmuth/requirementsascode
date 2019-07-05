@@ -25,7 +25,7 @@ public class IncludesTest extends AbstractTestCase{
 		Model seaLevelModel = Model.builder()
 		    .useCase(INCLUDED_USE_CASE)
 		    	.basicFlow()
-		    		.step(SYSTEM_INCLUDES_USE_CASE).user(EntersNumber.class).systemPublish(en -> new Object[] {en})
+		    		.step(SYSTEM_INCLUDES_USE_CASE).user(EntersNumber.class).systemPublish(en -> en)
 		.build();
 
 		ModelRunner fishLevelModelRunner = new ModelRunner().run(fishLevelModel);
@@ -46,7 +46,7 @@ public class IncludesTest extends AbstractTestCase{
 
 		Model seaLevelModel = Model.builder()
 			.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_INCLUDES_USE_CASE).user(EntersNumber.class).systemPublish(en -> new Object[] { en })
+				.step(SYSTEM_INCLUDES_USE_CASE).user(EntersNumber.class).systemPublish(en -> en)
 				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.build();
 
@@ -68,7 +68,7 @@ public class IncludesTest extends AbstractTestCase{
 
 		Model seaLevelModel = Model.builder()
 			.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_INCLUDES_USE_CASE).systemPublish(() -> new Object[] { entersNumber() })
+				.step(SYSTEM_INCLUDES_USE_CASE).systemPublish(() -> entersNumber())
 				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 		.build();
 

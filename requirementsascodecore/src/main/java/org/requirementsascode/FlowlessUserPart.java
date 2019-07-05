@@ -52,7 +52,7 @@ public class FlowlessUserPart<T> {
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
-	public FlowlessSystemPart<T> systemPublish(Function<T, Object[]> systemReaction) {
+	public FlowlessSystemPart<T> systemPublish(Function<T, Object> systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}

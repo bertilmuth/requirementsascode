@@ -138,7 +138,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatPublishesEventWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.on(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.on(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -153,7 +153,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatPublishesCommandWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -191,7 +191,7 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
 			.build();
 	
 		UseCase useCase = useCasePart.getUseCase();
@@ -239,7 +239,7 @@ public class BuildModelTest extends AbstractTestCase {
     public void createsSingleStepThatHandlesEventWithFlowAndPublishesEvent() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
 			.build();
 	
 		UseCase useCase = model.findUseCase(USE_CASE);
@@ -259,24 +259,6 @@ public class BuildModelTest extends AbstractTestCase {
 		Model model = 
 			useCasePart.basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-			.build();
-	
-		Collection<Step> steps = useCasePart.getUseCase().getSteps();
-		assertEquals(1, steps.size());
-	
-		Step step = steps.iterator().next();
-		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
-		assertEquals(USE_CASE, step.getUseCase().getName());
-		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
-    
-    @Test
-    public void createsSingleStepThatPerformsSystemReactionAutomaticallyAndPublishesEvent() {
-		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-	
-		Model model = 
-			useCasePart.basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).systemPublish(publishConstantText())
 			.build();
 	
 		Collection<Step> steps = useCasePart.getUseCase().getSteps();

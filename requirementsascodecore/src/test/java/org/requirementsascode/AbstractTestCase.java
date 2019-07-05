@@ -90,14 +90,18 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Supplier<Object[]> publishConstantText() {
+	protected String publishEnteredTextAsString(EntersText enteredText) {
+		return enteredText.value();
+}
+	
+	protected Supplier<Object> publishConstantTextAsString() {
 		return () -> {
-			return new String[] { "Hello, Basic Flow!" };
+			return "Hello, Basic Flow!";
 		};
 	}
-
-	protected String[] publishEnteredTextAsString(EntersText enteredText) {
-		return new String[] { enteredText.value() };
+	
+	protected EntersText publishEnteredTextAsEvent(EntersText enteredText) {
+		return enteredText;
 	}
 
 	protected Consumer<EntersNumber> displaysEnteredNumber() {

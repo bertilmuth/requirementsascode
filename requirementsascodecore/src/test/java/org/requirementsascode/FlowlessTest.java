@@ -439,7 +439,7 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void secondFlowlessStepReactsWhenFirstStepPublishesOnEvent() {
+    public void publishEnteredTextAsStringWithOnInFirstStep() {
 		Model model = modelBuilder.useCase(USE_CASE)
 			.on(EntersText.class).systemPublish(super::publishEnteredTextAsString)
 			.on(String.class).system(new IgnoresIt<>())
@@ -452,7 +452,7 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void secondFlowlessStepReactsWhenFirstStepPublishesOnCommand() {
+    public void publishEnteredTextAsEventWithUserInFirstStep() {
 		Model model = modelBuilder.useCase(USE_CASE)
 			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
 			.on(String.class).system(new IgnoresIt<>())
@@ -465,9 +465,9 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void secondFlowlessStepsReactsToEventWhenConditionIsTrueInFirstPublishingStepWithoutEvent() {
+    public void publishConstantTextAsStringWithConditionAndOnInSecondStep() {
 		Model model = modelBuilder.useCase(USE_CASE)
-			.condition(() -> !modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantText())
+			.condition(() -> !modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantTextAsString())
 			.on(String.class).system(new IgnoresIt<>())
 		.build();
 	
@@ -478,9 +478,9 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void secondFlowlessStepsReactsToCommandWhenConditionIsTrueInFirstPublishingStepWithoutEvent() {
+    public void publishConstantTextAsStringWithConditionAndUserInSecondStep() {
 		Model model = modelBuilder.useCase(USE_CASE)
-			.condition(() -> !modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantText())
+			.condition(() -> !modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantTextAsString())
 			.user(String.class).system(new IgnoresIt<>())
 		.build();
 	
@@ -491,9 +491,9 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void secondFlowlessStepDoesntReactWhenConditionIsFalseInFirstPublishingStepWithoutEvent() {
+    public void dontPublishConstantTextAsStringWhenConditionFalse() {
 		Model model = modelBuilder.useCase(USE_CASE)
-			.condition(() -> modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantText())
+			.condition(() -> modelRunner.getLatestStep().isPresent()).systemPublish(publishConstantTextAsString())
 			.on(String.class).system(new IgnoresIt<>())
 		.build();
 	
