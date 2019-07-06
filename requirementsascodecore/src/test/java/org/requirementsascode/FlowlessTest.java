@@ -463,7 +463,7 @@ public class FlowlessTest extends AbstractTestCase {
 			.on(EntersNumber.class).system(new IgnoresIt<>())
 		.build();
 	
-		String actualText = (String)modelRunner.run(model).reactTo(entersText(), entersNumber()).get();
+		String actualText = (String)modelRunner.run(model).reactTo(entersNumber(), entersText()).get();
 		assertEquals(TEXT, actualText);
     }
     
@@ -500,5 +500,29 @@ public class FlowlessTest extends AbstractTestCase {
 	
 		Optional<Object> optionalEventObject = modelRunner.run(model).reactTo(entersNumber());
 		assertFalse(optionalEventObject.isPresent());
+    }
+    
+    @Test
+    public void dontPublishFirstEnteredTextWhenReactToIsCalledTheSecondTime() {
+		Model model = modelBuilder.useCase(USE_CASE)
+			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+			.on(String.class).system(new IgnoresIt<>())
+		.build();
+	
+		modelRunner.run(model).reactTo(entersText());
+		Optional<Object> publishedEvent = modelRunner.reactTo(TEXT);
+		assertFalse(publishedEvent.isPresent());
+    }
+    
+    @Test
+    public void dontPublishOneOfTheEnteredTextsWhenReactToIsCalledTheSecondTime() {
+		Model model = modelBuilder.useCase(USE_CASE)
+			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+			.on(String.class).system(new IgnoresIt<>())
+		.build();
+	
+		modelRunner.run(model).reactTo(entersNumber(), entersText());
+		Optional<Object> publishedEvent = modelRunner.reactTo(entersNumber(), entersNumber());
+		assertFalse(publishedEvent.isPresent());
     }
 }

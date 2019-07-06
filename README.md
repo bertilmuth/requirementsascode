@@ -28,14 +28,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.2'
+compile 'org.requirementsascode:requirementsascodecore:1.2.1'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer:
@@ -146,7 +146,7 @@ But you can also publish events with `systemPublish()`, like so:
 			.on(String.class).system(this::displayNameString) 
 		.build();		
 		
-		new ModelRunner().run(model)
+		Optional<Object> userName = new ModelRunner().run(model)
 			.reactTo(new EnterName("Joe"));	
 	}
 	
@@ -159,9 +159,11 @@ But you can also publish events with `systemPublish()`, like so:
 	}
 ```
 
-As you can see, the publishing method has a command object as input parameter, and returns an event to be published (in this case, a String).
-By default, as in the example, the model runner takes the returned event and sends it to its own `reactTo()` method. 
-This behavior can be overriden by specifying a custom event handler with `publishWith()`.
+As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
+By default, the model runner takes the returned event and publishes it to the model. 
+In the example, this will print "Welcome, Joe."
+
+This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
 # documentation

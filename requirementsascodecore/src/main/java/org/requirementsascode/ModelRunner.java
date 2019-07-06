@@ -192,6 +192,7 @@ public class ModelRunner {
 	public Optional<Object> reactTo(Object... messages) {
 		Objects.requireNonNull(messages);
 
+		latestPublishedEvent = null;
 		for (Object message : messages) {
 			handleMessage(message);
 		}
