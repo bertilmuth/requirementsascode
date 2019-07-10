@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import shoppingapp.boundary.Boundary;
 import shoppingapp.boundary.internal.domain.Stock;
 import shoppingapp.javafx.driven_adapter.JavafxDisplay;
-import shoppingapp.javafx.driver_adapter.JavafxDriver;
 
 public class JavafxMain extends Application {
 	@Override
@@ -15,8 +14,7 @@ public class JavafxMain extends Application {
 		Stock stock = new Stock();
 		JavafxDisplay javafxDisplay = new JavafxDisplay(primaryStage);
 		Boundary boundary = new Boundary(stock, javafxDisplay);
-		JavafxDriver javafxDriver = new JavafxDriver(boundary, javafxDisplay);
-		javafxDisplay.setJavafxDriver(javafxDriver);
+		javafxDisplay.setBoundary(boundary);
 
 		primaryStage.setTitle("Shopping Application (JavaFX) - Requirements as Code");
 		primaryStage.show();

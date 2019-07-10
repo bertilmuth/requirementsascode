@@ -42,13 +42,13 @@ public class DisplayShippingInformationFormController extends AbstractController
     @FXML
     void onConfirm(ActionEvent event) {
     	EntersShippingInformation enterShippingInformation =  new EntersShippingInformation(shippingInformation);
-    	javafxDriver().reactTo(enterShippingInformation);
+    	boundary().reactTo(enterShippingInformation);
     }
     
 	@FXML
     void onBack(ActionEvent event) {
 		SignalsToGoBack goBack = new SignalsToGoBack();
-    	javafxDriver().reactTo(goBack);
+    	boundary().reactTo(goBack);
     }
     
 	public void displayShippingInformationForm(ShippingInformation shippingInformation) {

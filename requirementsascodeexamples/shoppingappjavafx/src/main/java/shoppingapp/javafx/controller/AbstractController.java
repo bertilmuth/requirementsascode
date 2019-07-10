@@ -1,15 +1,15 @@
 package shoppingapp.javafx.controller;
 
-import shoppingapp.javafx.driver_adapter.JavafxDriver;
+import shoppingapp.boundary.driver_port.IReactToCommands;
 
 public abstract class AbstractController {
-	private JavafxDriver javafxDriver;
+	private IReactToCommands boundary;
 
-	public JavafxDriver javafxDriver() {
-		return javafxDriver;
+	public IReactToCommands boundary() {
+		return boundary;
 	}
 
-	public void setJavafxDriver(JavafxDriver javafxDriver) {
-		this.javafxDriver = javafxDriver;		
+	public void setBoundary(IReactToCommands boundary) {
+		this.boundary = boundary;		
 	}
 }

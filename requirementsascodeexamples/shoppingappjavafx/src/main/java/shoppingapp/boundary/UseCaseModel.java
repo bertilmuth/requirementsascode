@@ -16,11 +16,11 @@ import shoppingapp.boundary.internal.command_handler.StartsWithEmptyShoppingCart
 import shoppingapp.boundary.internal.rule.AtLeastOneProductIsInCart;
 import shoppingapp.boundary.internal.rule.LessThan10Products;
 import shoppingapp.command.AddsProductToCart;
+import shoppingapp.command.ChecksOutPurchase;
 import shoppingapp.command.ConfirmsPurchase;
 import shoppingapp.command.EntersPaymentDetails;
 import shoppingapp.command.EntersShippingInformation;
 import shoppingapp.command.SignalsToGoBack;
-import shoppingapp.command.StartsCheckoutProcess;
 
 /**
  * Responsible for building the model of the shopping app. 
@@ -32,7 +32,7 @@ class UseCaseModel {
 	 * User/system command classes
 	 */
 	private static final Class<AddsProductToCart> addsProductToCart = AddsProductToCart.class;
-	private static final Class<StartsCheckoutProcess> checksOutPurchase = StartsCheckoutProcess.class;
+	private static final Class<ChecksOutPurchase> checksOutPurchase = ChecksOutPurchase.class;
 	private static final Class<EntersShippingInformation> entersShippingInformation = EntersShippingInformation.class;
 	private static final Class<EntersPaymentDetails> entersPaymentDetails = EntersPaymentDetails.class;
 	private static final Class<ConfirmsPurchase> confirmsPurchase = ConfirmsPurchase.class;

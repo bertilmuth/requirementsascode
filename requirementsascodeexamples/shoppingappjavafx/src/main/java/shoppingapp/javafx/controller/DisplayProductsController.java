@@ -16,7 +16,7 @@ import shoppingapp.boundary.internal.domain.Product;
 import shoppingapp.boundary.internal.domain.Products;
 import shoppingapp.boundary.internal.domain.PurchaseOrder;
 import shoppingapp.command.AddsProductToCart;
-import shoppingapp.command.StartsCheckoutProcess;
+import shoppingapp.command.ChecksOutPurchase;
 
 public class DisplayProductsController extends AbstractController {
 	@FXML
@@ -30,8 +30,8 @@ public class DisplayProductsController extends AbstractController {
 
 	@FXML
 	void onCheckout(ActionEvent event) {
-		StartsCheckoutProcess checkoutPurchase = new StartsCheckoutProcess();
-		javafxDriver().reactTo(checkoutPurchase);
+		ChecksOutPurchase checkoutPurchase = new ChecksOutPurchase();
+		boundary().reactTo(checkoutPurchase);
 	}
 
 	private class ProductListItem extends ListCell<Product> {
@@ -50,7 +50,7 @@ public class DisplayProductsController extends AbstractController {
 
 		private void buyProduct() {
 			AddsProductToCart addProductToCart = new AddsProductToCart(product);
-			javafxDriver().reactTo(addProductToCart);
+			boundary().reactTo(addProductToCart);
 			productsListView.refresh();
 		}
 
@@ -75,16 +75,13 @@ public class DisplayProductsController extends AbstractController {
 		}
 
 		private boolean whenNoMoreProductsCanBeBought() {
-			return !javafxDriver().canReactTo(AddsProductToCart.class);
+			return !boundary().canReactTo(AddsProductToCart.class);
 		}
 	}
 
-	public void displayProducts(Products products) {
+	public void displayProducts(Products products, PurchaseOrder purchaseOrder) {
 		productsListView.setCellFactory(listView -> new ProductListItem());
 		productsListView.setItems(products.get());
-	}
-
-	public void displayShoppingCartSize(PurchaseOrder purchaseOrder) {
 		shoppingCartItemCountLabel.textProperty().bind(convert(size(purchaseOrder.findProducts())));
 	}
 
@@ -93,6 +90,6 @@ public class DisplayProductsController extends AbstractController {
 	}
 
 	private boolean whenCheckoutIsNotPossible() {
-		return !javafxDriver().canReactTo(StartsCheckoutProcess.class);
+		return !boundary().canReactTo(ChecksOutPurchase.class);
 	}
 }

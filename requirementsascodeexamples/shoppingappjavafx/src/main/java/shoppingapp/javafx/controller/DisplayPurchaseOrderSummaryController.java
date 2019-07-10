@@ -21,7 +21,7 @@ public class DisplayPurchaseOrderSummaryController extends AbstractController{
 	
     @FXML
     void onFinish(ActionEvent event) {
-    	javafxDriver().reactTo(new ConfirmsPurchase());
+    	boundary().reactTo(new ConfirmsPurchase());
     }
     
 	public void displayPurchaseOrderSummary(PurchaseOrder purchaseOrder) {

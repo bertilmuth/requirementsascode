@@ -19,7 +19,6 @@ public class DisplaysProducts implements Runnable {
 	@Override
 	public void run() {
 		Products products = new Products(productContainer.findProducts());
-		display.displayProductsAndShoppingCartSize(products, runContext.getPurchaseOrder());
+		display.displayProducts(products, runContext.getPurchaseOrder());
 	}
-
 }

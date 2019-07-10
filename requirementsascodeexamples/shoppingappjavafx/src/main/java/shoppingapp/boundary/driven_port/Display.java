@@ -5,7 +5,7 @@ import shoppingapp.boundary.internal.domain.PurchaseOrder;
 import shoppingapp.boundary.internal.domain.ShippingInformation;
 
 public interface Display {
-	void displayProductsAndShoppingCartSize(Products products, PurchaseOrder purchaseOrder);
+	void displayProducts(Products products, PurchaseOrder purchaseOrder);
 	
 	void displayShippingInformationForm(ShippingInformation shippingInformation);
 	

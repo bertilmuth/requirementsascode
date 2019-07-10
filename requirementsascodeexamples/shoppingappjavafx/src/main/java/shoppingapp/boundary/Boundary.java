@@ -4,6 +4,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
 import shoppingapp.boundary.driven_port.Display;
+import shoppingapp.boundary.driver_port.IReactToCommands;
 import shoppingapp.boundary.internal.command_handler.AddsProductToPurchaseOrder;
 import shoppingapp.boundary.internal.command_handler.DisplaysPaymentDetailsForm;
 import shoppingapp.boundary.internal.command_handler.DisplaysProducts;
@@ -18,7 +19,7 @@ import shoppingapp.boundary.internal.domain.ProductContainer;
 import shoppingapp.boundary.internal.rule.AtLeastOneProductIsInCart;
 import shoppingapp.boundary.internal.rule.LessThan10Products;
 
-public class Boundary {
+public class Boundary implements IReactToCommands {
 	private ModelRunner modelRunner;
 	private Model model;
 
@@ -55,10 +56,12 @@ public class Boundary {
 		modelRunner.startRecording().run(model);
 	}
 	
+	@Override
 	public boolean canReactTo(Class<? extends Object> command) {
 		return modelRunner.canReactTo(command);
 	}
 	
+	@Override
 	public void reactTo(Object... commandObjects) {
 		modelRunner.reactTo(commandObjects);
 	}
