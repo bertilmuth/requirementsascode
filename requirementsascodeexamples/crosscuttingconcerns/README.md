@@ -1,4 +1,4 @@
-# cross-cutting concerns example 01 - measure performance of system reactions
+# cross-cutting concerns example - measure performance of system reactions
 ``` java
 	public void start() {
 		Model model = Model.builder()
