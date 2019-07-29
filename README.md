@@ -3,17 +3,13 @@
 
 This project simplifies the development of message-driven applications.
 
-It provides a concise way to create handlers for many types of messages at once.
-A single runner receives messages, and dispatches them to handlers. 
-When activated, the runner also records the messages.
-That can be used for replay in event sourced applications.
+It provides a builder API to create handlers for many types of messages at once.
 
-You can [customize the message handler](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
+You can [customize message handling](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
 
-For more advanced scenarios that depend on the application's state, 
-you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
-It's a simple alternative to state machines,
-understandable by developers and business people alike.
+For more advanced scenarios that depend on the application's state, like Sagas,
+you can create a [model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+It's a simple alternative to state machines, understandable by developers and business people alike.
 
 For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
 
@@ -38,7 +34,7 @@ If you are using Gradle, include the following in your build.gradle, to use the 
 compile 'org.requirementsascode:requirementsascodecore:1.2.1'
 ```
 # how to use requirements as code
-Here's what you need to do as a developer:
+Here's what you need to do as a developer.
 
 ## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
 ``` java
