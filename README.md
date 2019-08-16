@@ -7,7 +7,7 @@ It provides a builder API to create handlers for many types of messages at once.
 
 You can [customize message handling](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
 
-For more advanced scenarios that depend on the application's state, like Sagas,
+For more advanced cases that depend on the application's state, like Process Managers and Sagas,
 you can create a [model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
