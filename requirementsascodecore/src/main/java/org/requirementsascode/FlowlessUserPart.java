@@ -17,43 +17,43 @@ public class FlowlessUserPart<T> {
 		this.stepUserPart = stepUserPart;
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
-
+	
 	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 *
-	 * @param systemReaction the autonomous system reaction
-	 * @return the created system part of this step
-	 */
-	public FlowlessSystemPart<T> system(Runnable systemReaction) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
-		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-	}
-
-	/**
-	 * Defines the system reaction. The system will react as specified, when
-	 * {@link ModelRunner#reactTo(Object)} is called.
+	 * Defines the system reaction. The system will react as specified to the
+	 * message passed in, when {@link ModelRunner#reactTo(Object)} is called.
 	 *
 	 * @param systemReaction the specified system reaction
-	 * @return the created system part of this step
+	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
-
+	
 	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned
-	 * event.
+	 * Defines the system reaction. The system will react as specified to the
+	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
+	 * executing the system reaction, the runner will publish the returned events.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns an event to
+	 * @param systemReaction the specified system reaction, that returns an event to
 	 *                       be published.
-	 * @return the created system part of this step
+	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> systemPublish(Function<T, Object> systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
+		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+	}
+	
+	/**
+	 * Defines the system reaction. The system will react as specified, but it will
+	 * ignore the message passed in, when {@link ModelRunner#reactTo(Object)} is
+	 * called.
+	 *
+	 * @param systemReaction the specified system reaction
+	 * @return the created flowless system part
+	 */
+	public FlowlessSystemPart<T> system(Runnable systemReaction) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 }

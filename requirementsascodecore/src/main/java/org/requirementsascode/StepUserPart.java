@@ -25,7 +25,7 @@ public class StepUserPart<T> {
 
 	/**
 	 * Defines the system reaction. The system will react as specified to the
-	 * current step's messages, when {@link ModelRunner#reactTo(Object)} is called.
+	 * message passed in, when {@link ModelRunner#reactTo(Object)} is called.
 	 *
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step
@@ -41,22 +41,9 @@ public class StepUserPart<T> {
 	}
 
 	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 *
-	 * @param systemReaction the autonomous system reaction
-	 * @return the created system part of this step
-	 */
-	public StepSystemPart<T> system(Runnable systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return createStepSystemPart(systemReactionObject);
-	}
-
-	/**
 	 * Defines the system reaction. The system will react as specified to the
-	 * current step's messages, when you call {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned
-	 * events.
+	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
+	 * executing the system reaction, the runner will publish the returned events.
 	 *
 	 * @param systemReaction the specified system reaction, that returns an event to
 	 *                       be published.
@@ -66,18 +53,21 @@ public class StepUserPart<T> {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
-
+	
+	StepSystemPart<T> systemPublish(Supplier<Object> systemReaction) {
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		return createStepSystemPart(systemReactionObject);
+	}
+	
 	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned
-	 * events.
+	 * Defines the system reaction. The system will react as specified, but it will
+	 * ignore the message passed in, when {@link ModelRunner#reactTo(Object)} is
+	 * called.
 	 *
-	 * @param systemReaction the autonomous system reaction, that returns an event to
-	 *                       be published.
+	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<T> systemPublish(Supplier<Object> systemReaction) {
+	public StepSystemPart<T> system(Runnable systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}

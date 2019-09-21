@@ -94,7 +94,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToEventIfNotRunning() { 	
+	public void doesNotReactToCommandIfNotRunning() { 	
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -111,7 +111,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToMultipleEventsIfNotRunning() { 	
+	public void doesNotReactToMultipleCommandsIfNotRunning() { 	
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -129,7 +129,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToEmptyEvents() { 	
+	public void doesNotReactToEmptyCommands() { 	
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -142,7 +142,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void doesNotReactToEmptyEventList() { 	
+	public void doesNotReactToEmptyCommandList() { 	
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -171,11 +171,23 @@ public class FlowTest extends AbstractTestCase{
 	
 	
 	@Test
-	public void oneStepInFlowReacts() {		
+	public void oneStepInFlowReactsWithEnteredText() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.build();
+				
+		modelRunner.run(model);
+		reactToAndAssertEvents(entersText());		
+	}
+	
+	@Test
+	public void oneStepInFlowReactsWithConstantText() {		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysConstantText())
 			.build();
 				
 		modelRunner.run(model);
