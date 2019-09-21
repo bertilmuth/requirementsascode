@@ -51,7 +51,7 @@ public class CreditCard {
     
     private void addingPendingEvents(StepToBeRun stepToBeRun) {
 	stepToBeRun.run();
-	DomainEvent domainEvent = (DomainEvent) stepToBeRun.getEvent().get();
+	DomainEvent domainEvent = (DomainEvent) stepToBeRun.getMessage().get();
 	pendingEvents.add(domainEvent);
     }
 
