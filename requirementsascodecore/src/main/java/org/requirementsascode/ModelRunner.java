@@ -45,8 +45,6 @@ public class ModelRunner {
 	 */
 	public ModelRunner() {
 		this.stepToBeRun = new StepToBeRun();
-		this.recordedStepNames = new ArrayList<>();
-		this.recordedMessages = new ArrayList<>();
 		handleWith(stepToBeRun -> stepToBeRun.run());
 		publishWith(this::handleMessage);
 	}
@@ -420,8 +418,8 @@ public class ModelRunner {
 	 * @return this model runner for method chaining
 	 */
 	public ModelRunner startRecording() {
-		recordedStepNames.clear();
-		recordedMessages.clear();
+		recordedStepNames = new ArrayList<>();
+		recordedMessages = new ArrayList<>();
 		isRecording = true;
 		return this;
 	}
@@ -448,6 +446,9 @@ public class ModelRunner {
 	 * @return the ordered names of steps run by this runner
 	 */
 	public String[] getRecordedStepNames() {
+		if(recordedStepNames == null) {
+			recordedStepNames = new ArrayList<>();
+		}
 		String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
 		return stepNames;
 	}
@@ -463,6 +464,9 @@ public class ModelRunner {
 	 * @return the messages that caused a system reaction, in order of occurrence
 	 */
 	public Object[] getRecordedMessages() {
+		if(recordedMessages == null) {
+			recordedMessages = new ArrayList<>();
+		}
 		Object[] messages = recordedMessages.toArray();
 		return messages;
 	}
