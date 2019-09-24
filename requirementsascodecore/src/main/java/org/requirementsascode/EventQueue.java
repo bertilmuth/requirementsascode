@@ -34,7 +34,8 @@ public class EventQueue {
 	}
 
 	/**
-	 * Puts an event in the queue, that will be provided to the consumer.
+	 * Puts an event in the queue, that will be provided to the consumer
+	 * (if the event queue hasn't been stopped).
 	 * 
 	 * @param event the event for the queue
 	 */
@@ -53,6 +54,7 @@ public class EventQueue {
 	public void stop() {
 		eventProducer.stopProviding();
 		try {
+			eventProducerThread.interrupt();
 			eventProducerThread.join();
 		} catch (InterruptedException e) {
 		}
@@ -67,13 +69,20 @@ public class EventQueue {
 		return events.isEmpty();
 	}
 
+	public int getSize() {
+		return events.size();
+	}
+
 	private class EventProducer implements Runnable {
 		private boolean isRunning = true;
 
 		@Override
 		public void run() {
 			while (isRunning) {
-				consume(take());
+				final Object eventObject = take();
+				if (eventObject != null) {
+					consume(eventObject);
+				}
 			}
 		}
 
@@ -86,6 +95,7 @@ public class EventQueue {
 			try {
 				event = events.take();
 			} catch (InterruptedException e) {
+				stopProviding();
 			}
 			return event;
 		}

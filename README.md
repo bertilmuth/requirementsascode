@@ -24,14 +24,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.2.2'
+compile 'org.requirementsascode:requirementsascodecore:1.2.3'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer.
@@ -130,6 +130,7 @@ queue.put(new String("I'm an event, react to me!"));
 
 The constructor argument of `EventQueue` specifies that each event that's `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
 Note that you can forward events to any other consumer of an object as well.
+You have to call `queue.stop()` to terminate the event queue thread before exiting your application.
 
 # publishing events
 When you use the `system()` method, you are restricted to just consuming messages.
