@@ -86,8 +86,8 @@ public class ModelRunner {
 	public ModelRunner publishWith(Consumer<Object> eventPublisher) {
 		Objects.requireNonNull(eventPublisher);
 		this.eventPublisher = event -> {
-			eventPublisher.accept(event);
 			latestPublishedEvent = event;
+			eventPublisher.accept(event);
 		};
 		return this;
 	}

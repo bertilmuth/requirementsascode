@@ -25,6 +25,11 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+}
+
 if (project.hasProperty("signing.keyId")) {
 	apply plugin: 'signing'
 

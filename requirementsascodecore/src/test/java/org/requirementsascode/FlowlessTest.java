@@ -457,7 +457,20 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
-    public void publishEnteredTextAsStringAfterMultipleEvents() {
+    public void publishIntegerInsteadOfEnteredText() {
+    	final Integer EXPECTED_INTEGER = 1234;
+    	
+		Model model = modelBuilder.useCase(USE_CASE)
+			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+			.on(String.class).systemPublish(text ->  EXPECTED_INTEGER)
+		.build();
+	
+		Integer actualInteger = (Integer)modelRunner.run(model).reactTo(entersText()).get();
+		assertEquals(EXPECTED_INTEGER, actualInteger);
+    }
+    
+    @Test
+    public void publishEnteredTextAsStringAfterDifferentEvent() {
 		Model model = modelBuilder.useCase(USE_CASE)
 			.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
 			.on(EntersNumber.class).system(new IgnoresIt<>())

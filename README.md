@@ -28,14 +28,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-compile 'org.requirementsascode:requirementsascodecore:1.2.3'
+compile 'org.requirementsascode:requirementsascodecore:1.2.4'
 ```
 # how to use requirements as code
 Here's what you need to do as a developer.
