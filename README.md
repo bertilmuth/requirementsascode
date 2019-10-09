@@ -13,10 +13,6 @@ It's a simple alternative to state machines, understandable by developers and bu
 
 For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
 
-If you want to light up my day and support my development efforts, please buy me a coffee.
-<div><a href="https://www.buymeacoffee.com/fcDl09Q" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a></div>.
-
-
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
 
