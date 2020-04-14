@@ -2,10 +2,10 @@
 ``` java		
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(this::greetsUser)
-		.build();
+	  modelBuilder.useCase("Get greeted")
+	    .basicFlow()
+	       .step("S1").system(this::greetsUser)
+	  .build();
 	return model;
 }
 ...
@@ -18,12 +18,12 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java		
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(this::greetsUser)
-				.step("S2").system(this::printsHooray)
-					.reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
-		.build();
+	  modelBuilder.useCase("Get greeted")
+	   .basicFlow()
+	     .step("S1").system(this::greetsUser)
+	     .step("S2").system(this::printsHooray)
+	       .reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
+	 .build();
 	
 	return model;
 }
@@ -38,11 +38,11 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(this::promptsUserToEnterFirstName)
-				.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
-		.build();
+	  modelBuilder.useCase("Get greeted")
+	   .basicFlow()
+	     .step("S1").system(this::promptsUserToEnterFirstName)
+	     .step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
+	  .build();
 	return model;
 }
 ...
@@ -57,11 +57,12 @@ public Model buildWith(ModelBuilder modelBuilder) {
 	validUser = modelBuilder.actor("Valid User");
 	invalidUser = modelBuilder.actor("Invalid User");
 	
-	Model model = modelBuilder.useCase("Get greeted")
-		.as(validUser).basicFlow()
-			.step("S1").system(this::promptsUserToEnterFirstName)
-			.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
-		.build();
+	Model model = modelBuilder
+	  .useCase("Get greeted").as(validUser)
+	    .basicFlow()
+	      .step("S1").system(this::promptsUserToEnterFirstName)
+	      .step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
+	 .build();
 	return model;
 }
 ...
@@ -81,14 +82,14 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(this::promptsUserToEnterFirstName)
-				.step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-				.step("S3").system(this::promptsUserToEnterAge)
-				.step("S4").user(ENTERS_AGE).system(this::savesAge)
-				.step("S5").system(this::greetsUserWithFirstNameAndAge)
-		.build();
+	  modelBuilder.useCase("Get greeted")
+	    .basicFlow()
+	      .step("S1").system(this::promptsUserToEnterFirstName)
+	      .step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+	      .step("S3").system(this::promptsUserToEnterAge)
+	      .step("S4").user(ENTERS_AGE).system(this::savesAge)
+	      .step("S5").system(this::greetsUserWithFirstNameAndAge)
+	  .build();
 	return model;
 }
 ...
@@ -104,23 +105,23 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 public Model buildWith(ModelBuilder modelBuilder) {
 	Model model = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").system(this::promptsUserToEnterFirstName)
-				.step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-				.step("S3").system(this::promptsUserToEnterAge)
-				.step("S4").user(ENTERS_AGE).system(this::savesAge)
-				.step("S5").system(this::greetsUserWithFirstNameAndAge)
-				.step("S6").system(this::stops)
+	  modelBuilder.useCase("Get greeted")
+	    .basicFlow()
+	      .step("S1").system(this::promptsUserToEnterFirstName)
+	      .step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+	      .step("S3").system(this::promptsUserToEnterAge)
+	      .step("S4").user(ENTERS_AGE).system(this::savesAge)
+	      .step("S5").system(this::greetsUserWithFirstNameAndAge)
+	      .step("S6").system(this::stops)
 					
-			.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
-				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
-				.step("S5a_2").continuesAt("S3")
+	    .flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
+	      .step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
+	      .step("S5a_2").continuesAt("S3")
 					
-			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
-				.step("S5b_2").continuesAt("S3")
-		.build();
+	    .flow("Handle non-numerical age").insteadOf("S5")
+	      .step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+	      .step("S5b_2").continuesAt("S3")
+	  .build();
 	return model;
 }	
 ...
@@ -143,30 +144,30 @@ public Model buildWith(ModelBuilder modelBuilder) {
 	anonymousUser = modelBuilder.actor("Anonymous User");
 			
 	Model useCaseModel = 
-		modelBuilder.useCase("Get greeted")
-			.basicFlow()
-				.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
-				.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-				.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
-				.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
-				.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
-				.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
-				.step("S7").as(normalUser, anonymousUser).system(this::stops)
+	  modelBuilder.useCase("Get greeted")
+	    .basicFlow()
+		.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
+		.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
+		.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
+		.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
+		.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
+		.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
+		.step("S7").as(normalUser, anonymousUser).system(this::stops)
 					
-			.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
-				.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
-				.step("S5a_2").continuesAt("S3")
+	    .flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
+		.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
+		.step("S5a_2").continuesAt("S3")
 					
-			.flow("Handle non-numerical age").insteadOf("S5")
-				.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
-				.step("S5b_2").continuesAt("S3")
+	    .flow("Handle non-numerical age").insteadOf("S5")
+		.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
+		.step("S5b_2").continuesAt("S3")
 				
-			.flow("Anonymous greeted with age only").insteadOf("S5").condition(this::ageIsOk)
-				.step("S5c_1").as(anonymousUser).continuesAt("S6")
+	    .flow("Anonymous greeted with age only").insteadOf("S5").condition(this::ageIsOk)
+		.step("S5c_1").as(anonymousUser).continuesAt("S6")
 				
-			.flow("Anonymous does not enter name").insteadOf("S1")
-				.step("S1a_1").as(anonymousUser).continuesAt("S3")
-		.build();
+	    .flow("Anonymous does not enter name").insteadOf("S1")
+		.step("S1a_1").as(anonymousUser).continuesAt("S3")
+	  .build();
 	return useCaseModel;
 }
 ...
