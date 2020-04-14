@@ -1,17 +1,20 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-This project simplifies the development of message-driven applications.
+This small library (<64 kByte jar size) provides a straight forward way to translate business requirements into code.
+With a use case model, you define the interactions between the users and the system.
+You specify a command class or query class, and a function that defines how the system reacts to it.
+The function can just consume the command, it can return a query result, or publish an event.
+Optionally, you can specify a precondition that must be fulfilled.
 
-It provides a builder API to create handlers for many types of messages at once.
-
-You can [customize message handling](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns) in a simple way, for example for measuring performance, or for logging purposes.
-
-For more advanced cases that depend on the application's state, like Process Managers and Sagas,
-you can create a [model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+For more advanced cases that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
-For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code without the need to add comments to it.
+For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
+
+Requirements as code is not intended to replace technical infrastructure like event stores or streaming platforms.
+Instead, it provides a small builder API to be used inside your domain code, with very limited buy in required.
+Using architectural styles like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. 
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
@@ -146,7 +149,7 @@ In the example, this will print "Welcome, Joe."
 This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
-# event queue for non-blocking handling
+# event queue for non-blocking handling (experimental)
 The default mode for the ModelRunner is to handle messages in a blocking way. 
 Instead, you can use a simple event queue that processes events one by one in its own thread:
 
@@ -169,10 +172,9 @@ You have to call `queue.stop()` to terminate the event queue thread before exiti
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
 # publications
-* [Simplifying an event sourced application](https://dev.to/bertilmuth/simplifying-an-event-sourced-application-1klp)
+* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
-* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 
 # subprojects
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run models. 
