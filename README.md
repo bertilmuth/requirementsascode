@@ -4,7 +4,7 @@
 This small library (<64 kByte jar size) provides a straight forward way to translate business requirements into code.
 With a use case model, you define the interactions between the users and the system.
 You specify a command class or query class, and a function that defines how the system reacts to it.
-The function can just consume the command, it can return a query result, or publish an event.
+The function can just consume the command, return a query result, or publish an event.
 Optionally, you can specify a precondition that must be fulfilled.
 
 For more advanced cases that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
