@@ -1,11 +1,12 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-This small library (<64 kByte jar size) provides a straight forward way to translate business requirements into code.
-With a use case model, you define the interactions between the users and the system.
-You specify a command class or query class, and a function that defines how the system reacts to it.
+With this small library (<64 kByte jar size), you can translate your functional business requirements into code with very little effort.
+
+Specify a use case model with a builder API: the interactions between a user and the system.
+An interaction is a command class or query class, plus and a function that defines how the system reacts to it.
 The function can just consume the command, return a query result, or publish an event.
-Optionally, you can specify a precondition that must be fulfilled.
+Optionally, you can specify a precondition that must be fulfilled for the system to react.
 
 For more advanced cases that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
@@ -13,8 +14,7 @@ It's a simple alternative to state machines, understandable by developers and bu
 For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
 Requirements as code is not intended to replace technical infrastructure like event stores or streaming platforms.
-Instead, it provides a small builder API to be used inside your domain code, with very limited buy in required.
-Using architectural styles like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. You can find more about that [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+Instead, it lives alongside your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. Using an architectural style like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. You can find more about that [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
