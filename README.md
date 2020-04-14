@@ -4,7 +4,7 @@
 With this small library (<64 kByte jar size), you can translate your functional business requirements into code with very little effort.
 
 Specify a use case model with a builder API: the interactions between a user and the system.
-An interaction is a command class or query class, plus and a function that defines how the system reacts to it.
+An interaction is a command class or query class, plus a function that defines how the system reacts to it.
 The function can consume the command, return a query result, or publish an event.
 Optionally, you can specify a precondition that must be fulfilled.
 
