@@ -5,16 +5,20 @@ With this small library (<64 kByte jar size), you can translate your functional 
 
 Specify a use case model with a builder API: the interactions between a user and the system.
 An interaction is a command class or query class, plus and a function that defines how the system reacts to it.
-The function can just consume the command, return a query result, or publish an event.
-Optionally, you can specify a precondition that must be fulfilled for the system to react.
+The function can consume the command, return a query result, or publish an event.
+Optionally, you can specify a precondition that must be fulfilled.
 
-For more advanced cases that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+For more advanced scenarios that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
-For the long term maintenance of your application, you can [generate documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
+For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
 Requirements as code is not intended to replace technical infrastructure like event stores or streaming platforms.
-Instead, it lives alongside your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. Using an architectural style like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. You can find more about that [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+Instead, the use case models live alongside your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. 
+
+You will be able to test your business requirements without going through the UI or framework code. Combined with an architectural style like a hexagonal architecture, this library will make it easy for you to change your technical infrastructure later in development. 
+
+For a concrete application example, look [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
