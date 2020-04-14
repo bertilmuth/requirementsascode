@@ -14,7 +14,7 @@ For the long term maintenance of your application, you can [generate documentati
 
 Requirements as code is not intended to replace technical infrastructure like event stores or streaming platforms.
 Instead, it provides a small builder API to be used inside your domain code, with very limited buy in required.
-Using architectural styles like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. 
+Using architectural styles like a hexagonal architecture, it will make it easier for you to change your technical infrastructure later in development. You can find more about that [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
