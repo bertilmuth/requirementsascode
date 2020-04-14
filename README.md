@@ -115,23 +115,6 @@ public class HelloUser {
 }
 ```
 
-# event queue for non-blocking handling
-The default mode for the ModelRunner is to handle messages in a blocking way. 
-Instead, you can use a simple event queue that processes events one by one in its own thread:
-
-``` java
-Model model = ...;
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);
-
-EventQueue queue = new EventQueue(modelRunner::reactTo);
-queue.put(new String("I'm an event, react to me!"));
-```
-
-The constructor argument of `EventQueue` specifies that each event that's `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
-Note that you can forward events to any other consumer of an object as well.
-You have to call `queue.stop()` to terminate the event queue thread before exiting your application.
-
 # publishing events
 When you use the `system()` method, you are restricted to just consuming messages.
 But you can also publish events with `systemPublish()`, like so:
@@ -162,6 +145,23 @@ In the example, this will print "Welcome, Joe."
 
 This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
+
+# event queue for non-blocking handling
+The default mode for the ModelRunner is to handle messages in a blocking way. 
+Instead, you can use a simple event queue that processes events one by one in its own thread:
+
+``` java
+Model model = ...;
+ModelRunner modelRunner = new ModelRunner();
+modelRunner.run(model);
+
+EventQueue queue = new EventQueue(modelRunner::reactTo);
+queue.put(new String("I'm an event, react to me!"));
+```
+
+The constructor argument of `EventQueue` specifies that each event that's `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
+Note that you can forward events to any other consumer of an object as well.
+You have to call `queue.stop()` to terminate the event queue thread before exiting your application.
 
 # documentation
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
