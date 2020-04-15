@@ -85,57 +85,61 @@ import java.util.function.Consumer;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-public class Main {
-  public static void main(String[] args) {
-    Boundary boundary = new Boundary();
-    boundary.reactTo(new RequestHello(), new EnterName("Joe"));
-  }
+public class MessageSender {
+	public static void main(String[] args) {
+		Boundary boundary = new Boundary();
+		boundary.reactTo(new RequestHello(), new EnterName("Joe"));
+	}
 }
 
 class Boundary{
-  private final Class<RequestHello> requestsHello = RequestHello.class;
-  private final Class<EnterName> entersName = EnterName.class;
-  private final Consumer<RequestHello> displaysHello = this::displayHello;
-  private final Consumer<EnterName> displaysName = this::displayName;
-  
-  private Model model;
+	private final Class<RequestHello> requestsHello = RequestHello.class;
+	private final Class<EnterName> entersName = EnterName.class;
+	private final Consumer<RequestHello> displaysHello = new DisplayHello();
+	private final Consumer<EnterName> displaysName = new DisplayName();
+	
+	private Model model;
 
-  public Boundary() {
-    buildModel();
-  }
-  
-  private void buildModel() {
-    model = Model.builder()
-      .user(requestsHello).system(displaysHello)
-      .user(entersName).system(displaysName)
-     .build();
-  }
-
-  public void reactTo(Object... messages) {
-    new ModelRunner().run(model).reactTo(messages);
-  }
-
-  private void displayHello(RequestHello requestHello) {
-    System.out.println("Hello!");
-  }
-
-  private void displayName(EnterName enterName) {
-    System.out.println("Welcome, " + enterName.getUserName() + ".");
-  }
+	public Boundary() {
+		buildModel();
+	}
+	
+	private void buildModel() {
+		model = Model.builder()
+			.user(requestsHello).system(displaysHello)
+			.user(entersName).system(displaysName)
+		.build();
+	}
+	
+	public void reactTo(Object... messages) {
+		new ModelRunner().run(model).reactTo(messages);
+	}
 }
 
 class RequestHello {}
 
 class EnterName {
-  private String userName;
+	private String userName;
 
-  public EnterName(String userName) {
-    this.userName = userName;
-  }
-  
-  public String getUserName() {
-    return userName;
-  }
+	public EnterName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+}
+
+class DisplayHello implements Consumer<RequestHello>{
+	public void accept(RequestHello requestHello) {
+		System.out.println("Hello!");
+	}
+}
+
+class DisplayName implements Consumer<EnterName>{
+	public void accept(EnterName enterName) {
+		System.out.println("Welcome, " + enterName.getUserName() + ".");
+	}
 }
 ```
 
