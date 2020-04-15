@@ -1,112 +1,128 @@
 package helloworld;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.Actor;
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.usercommand.EntersText;
+import helloworld.usercommand.EnterText;
 
 public class HelloWorld06 extends AbstractHelloWorldExample {
-    private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
-    private static final Class<EntersText> ENTERS_AGE = EntersText.class;
-    private static final Class<NumberFormatException> NON_NUMERICAL_AGE = NumberFormatException.class;
+	private final Runnable asksForName = this::askForName;
+	private final Class<EnterText> entersName = EnterText.class;
+	private final Consumer<EnterText> savesName = this::saveName;
+	private final Runnable asksForAge = this::askForAge;
+	private final Class<EnterText> entersAge = EnterText.class;
+	private final Consumer<EnterText> savesAge = this::saveAge;
+	private final Runnable greetsUserWithName = this::greetUserWithName;
+	private final Runnable greetsUserWithAge = this::greetUserWithAge;
+	private final Runnable stops = super::stop;
+	private final Condition ageIsOutOfBounds = this::ageIsOutOfBounds;
+	private final Runnable displaysAgeIsOutOfBounds = this::displaysAgeIsOutOfBounds;
+	private final Consumer<NumberFormatException> displaysAgeIsNonNumerical = this::displayAgeIsNonNumerical;
+	private final Class<NumberFormatException> numberFormatException = NumberFormatException.class;
+	private final Condition ageIsOk = this::ageIsOk;
 
-    private static final int MIN_AGE = 5;
-    private static final int MAX_AGE = 130;
+  private static final int MIN_AGE = 5;
+  private static final int MAX_AGE = 130;
 
-    private String firstName;
-    private int age;
+  private String firstName;
+  private int age;
 
-    private Actor normalUser;
-    private Actor anonymousUser;
+  private Actor normalUser;
+  private Actor anonymousUser;
 
-    public Model buildWith(ModelBuilder modelBuilder) {
-	normalUser = modelBuilder.actor("Normal User");
-	anonymousUser = modelBuilder.actor("Anonymous User");
+  public Model buildModel() {
+		ModelBuilder builder = Model.builder();
+		normalUser = builder.actor("Normal User");
+		anonymousUser = builder.actor("Anonymous User");
+	
+		Model model = builder
+			.useCase("Get greeted")
+				.basicFlow()
+					.step("S1").as(normalUser).system(asksForName)
+					.step("S2").as(normalUser).user(entersName).system(savesName)
+					.step("S3").as(normalUser, anonymousUser).system(asksForAge)
+					.step("S4").as(normalUser, anonymousUser).user(entersAge).system(savesAge)
+					.step("S5").as(normalUser).system(greetsUserWithName)
+					.step("S6").as(normalUser, anonymousUser).system(greetsUserWithAge)
+					.step("S7").as(normalUser, anonymousUser).system(stops)
+				.flow("Handle out-of-bounds age").insteadOf("S5").condition(ageIsOutOfBounds)
+					.step("S5a_1").system(displaysAgeIsOutOfBounds)
+					.step("S5a_2").continuesAt("S3")
+				.flow("Handle non-numerical age").insteadOf("S5")
+					.step("S5b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
+					.step("S5b_2").continuesAt("S3")
+				.flow("Anonymous greeted with age only").insteadOf("S5").condition(ageIsOk)
+					.step("S5c_1").as(anonymousUser).continuesAt("S6")
+				.flow("Anonymous does not enter name").insteadOf("S1")
+					.step("S1a_1").as(anonymousUser).continuesAt("S3")
+			.build();
+		
+		return model;
+  }
 
-	Model model = modelBuilder.useCase("Get greeted")
-		.basicFlow()
-			.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
-			.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-			.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
-			.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
-			.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
-			.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
-			.step("S7").as(normalUser, anonymousUser).system(this::stops)
-		.flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
-			.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
-			.step("S5a_2").continuesAt("S3")
-		.flow("Handle non-numerical age").insteadOf("S5")
-			.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
-			.step("S5b_2").continuesAt("S3")
-		.flow("Anonymous greeted with age only").insteadOf("S5").condition(this::ageIsOk)
-			.step("S5c_1").as(anonymousUser).continuesAt("S6")
-		.flow("Anonymous does not enter name").insteadOf("S1")
-			.step("S1a_1").as(anonymousUser).continuesAt("S3")
-		.build();
-	return model;
-    }
+	private void askForName() {
+		System.out.print("Please enter your name: ");
+	}
 
-    private void promptsUserToEnterFirstName() {
-	System.out.print("Please enter your first name: ");
-    }
+	private void saveName(EnterText enterText) {
+		firstName = enterText.text;
+	}
 
-    private void promptsUserToEnterAge() {
-	System.out.print("Please enter your age: ");
-    }
+	private void askForAge() {
+		System.out.print("Please enter your age: ");
+	}
 
-    private void savesFirstName(EntersText enterText) {
-	firstName = enterText.text;
-    }
+	private void saveAge(EnterText enterText) {
+		age = Integer.parseInt(enterText.text);
+	}
 
-    private void savesAge(EntersText enterText) {
-	age = Integer.parseInt(enterText.text);
-    }
+	private void greetUserWithName() {
+		System.out.println("Hello, " + firstName + " (" + age + ").");
+	}
 
-    private void greetsUserWithFirstName() {
-	System.out.println("Hello, " + firstName + ".");
-    }
+	private void greetUserWithAge() {
+		System.out.println("You are " + age + " years old.");
+	}
 
-    private void greetsUserWithAge() {
-	System.out.println("You are " + age + " years old.");
-    }
+	private boolean ageIsOutOfBounds() {
+		return age < MIN_AGE || age > MAX_AGE;
+	}
 
-    private boolean ageIsOk() {
-	return !ageIsOutOfBounds();
-    }
+	private void displaysAgeIsOutOfBounds() {
+		System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
+	}
 
-    private boolean ageIsOutOfBounds() {
-	return age < MIN_AGE || age > MAX_AGE;
-    }
+	private void displayAgeIsNonNumerical(NumberFormatException exception) {
+		System.out.println("You entered a non-numerical age.");
+	}
 
-    private void informsUserAboutOutOfBoundsAge() {
-	System.out.println("Please enter your real age, between " + MIN_AGE + " and " + MAX_AGE);
-    }
+	private boolean ageIsOk() {
+		return !ageIsOutOfBounds();
+	}
 
-    private void informsUserAboutNonNumericalAge(NumberFormatException exception) {
-	System.out.println("You entered a non-numerical age.");
-    }
+	public static void main(String[] args) {
+		HelloWorld06 example = new HelloWorld06();
+		example.start();
+	}
 
-    public static void main(String[] args) {
-	HelloWorld06 example = new HelloWorld06();
-	example.start();
-    }
+	private void start() {
+		Model model = buildModel();
+		ModelRunner modelRunner = new ModelRunner().as(anonymousUser()).run(model);
+		while (!systemStopped())
+			modelRunner.reactTo(entersText());
+		exitSystem();
+	}
 
-    private void start() {
-	Model model = buildWith(Model.builder());
-	ModelRunner modelRunner = new ModelRunner();
-	modelRunner.as(anonymousUser()).run(model);
-	while (!systemStopped())
-	    modelRunner.reactTo(entersText());
-	exitSystem();
-    }
+	public Actor normalUser() {
+		return normalUser;
+	}
 
-    public Actor normalUser() {
-	return normalUser;
-    }
-
-    public Actor anonymousUser() {
-	return anonymousUser;
-    }
+	public Actor anonymousUser() {
+		return anonymousUser;
+	}
 }

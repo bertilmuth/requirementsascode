@@ -1,35 +1,42 @@
 package helloworld;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.Actor;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.usercommand.EntersText;
+import helloworld.usercommand.EnterText;
 
 public class HelloWorld03a extends AbstractHelloWorldExample {
+	private final Runnable asksForName = this::askForName;
+	private final Class<EnterText> entersName = EnterText.class;
+	private final Consumer<EnterText> greetsUser = this::greetUser;
 
-	private static final Class<EntersText> ENTERS_FIRST_NAME = EntersText.class;
 	private Actor validUser;
 	private Actor invalidUser;
 
-    public Model buildWith(ModelBuilder modelBuilder) {
-    	validUser = modelBuilder.actor("Valid User");
-    	invalidUser = modelBuilder.actor("Invalid User");
-    	
-		Model model = modelBuilder.useCase("Get greeted")
-			.as(validUser).basicFlow()
-				.step("S1").system(this::promptsUserToEnterFirstName)
-				.step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
-			.build();
-		return model;
-    }
+	public Model buildModel() {
+		ModelBuilder builder = Model.builder();
+		validUser = builder.actor("Valid User");
+		invalidUser = builder.actor("Invalid User");
 
-	private void promptsUserToEnterFirstName() {
-		System.out.print("Please enter your first name: ");
+		Model model = builder
+			.useCase("Get greeted").as(validUser)
+				.basicFlow()
+					.step("S1").system(asksForName)
+					.step("S2").user(entersName).system(greetsUser)
+			.build();
+		
+		return model;
 	}
 
-	private void greetsUserWithFirstName(EntersText enterText) {
+	private void askForName() {
+		System.out.print("Please enter your name: ");
+	}
+
+	private void greetUser(EnterText enterText) {
 		System.out.println("Hello, " + enterText.text + ".");
 	}
 
@@ -39,12 +46,12 @@ public class HelloWorld03a extends AbstractHelloWorldExample {
 	}
 
 	private void start() {
-		Model model = buildWith(Model.builder());
+		Model model = buildModel();
 		ModelRunner modelRunner = new ModelRunner().run(model);
-		
+
 		// The next command will not be handled, because the actor is wrong
-		modelRunner.as(invalidUser).reactTo(new EntersText("Ignored Command"));
-		
+		modelRunner.as(invalidUser).reactTo(new EnterText("Ignored Command"));
+
 		// This command will be handled
 		modelRunner.as(validUser).reactTo(entersText());
 	}

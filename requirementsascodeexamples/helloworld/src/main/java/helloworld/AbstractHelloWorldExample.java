@@ -2,7 +2,7 @@ package helloworld;
 
 import java.util.Scanner;
 
-import helloworld.usercommand.EntersText;
+import helloworld.usercommand.EnterText;
 
 public class AbstractHelloWorldExample {
 	private Scanner scanner;
@@ -13,12 +13,12 @@ public class AbstractHelloWorldExample {
 		isSystemStopped = false;
 	}
 
-	protected EntersText entersText() {
+	protected EnterText entersText() {
 		String text = scanner.next();
-		return new EntersText(text);
+		return new EnterText(text);
 	}
 
-	protected void stops() {
+	protected void stop() {
 		isSystemStopped = true;
 	}
 
