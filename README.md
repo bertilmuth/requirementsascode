@@ -74,8 +74,8 @@ To customize that behavior, use `modelRunner.handleUnhandledWith()`.
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
 other handler method, the runner will rethrow it.
 
-# hello world
-Here's a complete Hello World example:
+# Example
+Here's a complete example:
 
 ``` java
 package hello;
@@ -85,61 +85,81 @@ import java.util.function.Consumer;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
+/**
+ * This is the sender of the message, external to the boundary
+ */
 public class MessageSender {
-	public static void main(String[] args) {
-		Boundary boundary = new Boundary();
-		boundary.reactTo(new RequestHello(), new EnterName("Joe"));
-	}
+  public static void main(String[] args) {
+    Boundary boundary = new Boundary(new DisplayHello(), new DisplayName());
+    boundary.reactTo(new RequestHello(), new EnterName("Joe"));
+  }
 }
 
-class Boundary{
-	private final Class<RequestHello> requestsHello = RequestHello.class;
-	private final Class<EnterName> entersName = EnterName.class;
-	private final Consumer<RequestHello> displaysHello = new DisplayHello();
-	private final Consumer<EnterName> displaysName = new DisplayName();
-	
-	private Model model;
-
-	public Boundary() {
-		buildModel();
-	}
-	
-	private void buildModel() {
-		model = Model.builder()
-			.user(requestsHello).system(displaysHello)
-			.user(entersName).system(displaysName)
-		.build();
-	}
-	
-	public void reactTo(Object... messages) {
-		new ModelRunner().run(model).reactTo(messages);
-	}
+/**
+ * These are the command classes
+ */
+class RequestHello {
 }
-
-class RequestHello {}
 
 class EnterName {
-	private String userName;
+  private String userName;
+  
+ public EnterName(String userName) {
+   this.userName = userName;
+ }
 
-	public EnterName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
+ public String getUserName() {
+   return userName;
+ }
 }
 
-class DisplayHello implements Consumer<RequestHello>{
-	public void accept(RequestHello requestHello) {
-		System.out.println("Hello!");
-	}
+/**
+ * This is the boundary class that sets up the use case model and runs it.
+ */
+class Boundary {
+  // The command types
+  private final Class<RequestHello> requestsHello = RequestHello.class;
+  private final Class<EnterName> entersName = EnterName.class;
+
+  // The command handlers
+  private final Consumer<RequestHello> displaysHello;
+  private final Consumer<EnterName> displaysName;
+
+  // The model that will be built and run here
+  private Model model;
+
+  public Boundary(Consumer<RequestHello> displaysHello, Consumer<EnterName> displaysName) {
+    this.displaysHello = displaysHello;
+    this.displaysName = displaysName;
+    buildModel();
+  }
+
+  private void buildModel() {
+    model = Model.builder()
+      .user(requestsHello).system(displaysHello)
+      .user(entersName).system(displaysName)
+     .build();
+  }
+  
+  public void reactTo(Object... messages) {
+    new ModelRunner().run(model).reactTo(messages);
+  }
 }
 
-class DisplayName implements Consumer<EnterName>{
-	public void accept(EnterName enterName) {
-		System.out.println("Welcome, " + enterName.getUserName() + ".");
-	}
+/**
+ * These are the command handlers
+ *
+ */
+class DisplayHello implements Consumer<RequestHello> {
+  public void accept(RequestHello requestHello) {
+    System.out.println("Hello!");
+  }
+}
+
+class DisplayName implements Consumer<EnterName> {
+  public void accept(EnterName enterName) {
+    System.out.println("Welcome, " + enterName.getUserName() + ".");
+  }
 }
 ```
 
