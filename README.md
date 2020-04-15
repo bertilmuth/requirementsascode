@@ -80,45 +80,62 @@ Here's a complete Hello World example:
 ``` java
 package hello;
 
+import java.util.function.Consumer;
+
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-public class HelloUser {
-	public static void main(String[] args) {
-		new HelloUser().buildAndRunModel();
-	}
-	
-	private void buildAndRunModel() {
-		Model model = Model.builder()
-			.user(RequestHello.class).system(this::displayHello)
-			.user(EnterName.class).system(this::displayName)
-		.build();
+public class Main {
+  public static void main(String[] args) {
+    Boundary boundary = new Boundary();
+    boundary.reactTo(new RequestHello(), new EnterName("Joe"));
+  }
+}
 
-		new ModelRunner().run(model)
-			.reactTo(new RequestHello(), new EnterName("Joe"));		
-	}
+class Boundary{
+  private final Class<RequestHello> requestsHello = RequestHello.class;
+  private final Class<EnterName> entersName = EnterName.class;
+  private final Consumer<RequestHello> displaysHello = this::displayHello;
+  private final Consumer<EnterName> displaysName = this::displayName;
+  
+  private Model model;
 
-	public void displayHello(RequestHello requestHello) {
-		System.out.println("Hello!");
-	}
+  public Boundary() {
+    buildModel();
+  }
+  
+  private void buildModel() {
+    model = Model.builder()
+      .user(requestsHello).system(displaysHello)
+      .user(entersName).system(displaysName)
+     .build();
+  }
 
-	public void displayName(EnterName enterName) {
-		System.out.println("Welcome, " + enterName.getUserName() + ".");
-	}
+  public void reactTo(Object... messages) {
+    new ModelRunner().run(model).reactTo(messages);
+  }
 
-	class RequestHello {}
-	
-	class EnterName {
-		private String userName;
+  private void displayHello(RequestHello requestHello) {
+    System.out.println("Hello!");
+  }
 
-		public EnterName(String userName) {
-			this.userName = userName;
-		}
+  private void displayName(EnterName enterName) {
+    System.out.println("Welcome, " + enterName.getUserName() + ".");
+  }
+}
 
-		public String getUserName() {
-			return userName;
-		}
-	}
+class RequestHello {}
+
+class EnterName {
+  private String userName;
+
+  public EnterName(String userName) {
+    this.userName = userName;
+  }
+  
+  public String getUserName() {
+    return userName;
+  }
 }
 ```
 
@@ -127,28 +144,24 @@ When you use the `system()` method, you are restricted to just consuming message
 But you can also publish events with `systemPublish()`, like so:
 
 ``` java
-	private void buildAndRunModel() {
-		Model model = Model.builder()
-			.on(EnterName.class).systemPublish(this::publishNameAsString) 
-			.on(String.class).system(this::displayNameString) 
-		.build();		
-		
-		Optional<Object> userName = new ModelRunner().run(model)
-			.reactTo(new EnterName("Joe"));	
-	}
-	
-	private String publishNameAsString(EnterName enterName) {
-		return enterName.getUserName();
-	}
-	
-	public void displayNameString(String nameString) {
-		System.out.println("Welcome, " + nameString + ".");
-	}
+private void buildModel() {
+  Model model = Model.builder()
+    .on(EnterName.class).systemPublish(this::publishNameAsString) 
+    .on(String.class).system(this::displayNameString) 
+   .build();			
+}
+
+private String publishNameAsString(EnterName enterName) {
+  return enterName.getUserName();
+}
+
+public void displayNameString(String nameString) {
+  System.out.println("Welcome, " + nameString + ".");
+}
 ```
 
 As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
 By default, the model runner takes the returned event and publishes it to the model. 
-In the example, this will print "Welcome, Joe."
 
 This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
