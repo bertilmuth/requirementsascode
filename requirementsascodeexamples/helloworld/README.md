@@ -1,78 +1,80 @@
 # example 01 - system prints 'Hello, User.'
 ``` java		
-public Model buildWith(ModelBuilder modelBuilder) {
-	Model model = 
-	  modelBuilder.useCase("Get greeted")
-	    .basicFlow()
-	       .step("S1").system(this::greetsUser)
-	  .build();
-	return model;
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(greetsUser)
+    .build();
+
+  return model;
 }
 ...
-Model model = buildWith(Model.builder());
+Model model = buildModel();
 new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01.java).
 
-# example 02 - system prints 'Hello, User.' and 'Hip, hip, hooray!' three times
+# example 02 - system prints 'Hello, User.' three times
 ``` java		
-public Model buildWith(ModelBuilder modelBuilder) {
-	Model model = 
-	  modelBuilder.useCase("Get greeted")
-	   .basicFlow()
-	     .step("S1").system(this::greetsUser)
-	     .step("S2").system(this::printsHooray)
-	       .reactWhile(this::lessThanThreeHooraysHaveBeenPrinted)
-	 .build();
-	
-	return model;
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(greetsUser).reactWhile(lessThan3)
+    .build();
+
+  return model;
 }
 ...
-Model model = buildWith(Model.builder());
+Model model = buildModel();
 new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02.java).
 
 
-# example 03 - user enters first name, system prints it
+# example 03 - user enters name, system prints it
 ``` java
-public Model buildWith(ModelBuilder modelBuilder) {
-	Model model = 
-	  modelBuilder.useCase("Get greeted")
-	   .basicFlow()
-	     .step("S1").system(this::promptsUserToEnterFirstName)
-	     .step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
-	  .build();
-	return model;
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(asksForName)
+	.step("S2").user(entersName).system(greetsUser)
+    .build();
+
+  return model;
 }
 ...
-Model model = buildWith(Model.builder());
+Model model = buildModel();
 new ModelRunner().run(model).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
 # example 03a - user enters first name, system prints it only if actor is right
 ``` java
-public Model buildWith(ModelBuilder modelBuilder) {
-	validUser = modelBuilder.actor("Valid User");
-	invalidUser = modelBuilder.actor("Invalid User");
-	
-	Model model = modelBuilder
-	  .useCase("Get greeted").as(validUser)
-	    .basicFlow()
-	      .step("S1").system(this::promptsUserToEnterFirstName)
-	      .step("S2").user(ENTERS_FIRST_NAME).system(this::greetsUserWithFirstName)
-	 .build();
-	return model;
+public Model buildModel() {
+  ModelBuilder builder = Model.builder();
+  validUser = builder.actor("Valid User");
+  invalidUser = builder.actor("Invalid User");
+  
+  Model model = builder
+    .useCase("Get greeted").as(validUser)
+      .basicFlow()
+        .step("S1").system(asksForName)
+	.step("S2").user(entersName).system(greetsUser)
+    .build();
+
+  return model;
 }
 ...
-Model model = buildWith(Model.builder());
+Model model = buildModel();
 ModelRunner modelRunner = new ModelRunner().run(model);
 
-// The next event will not be handled, because the actor is wrong
-modelRunner.as(invalidUser).reactTo(new EntersText("Ignored Event"));
+// The next command will not be handled, because the actor is wrong
+modelRunner.as(invalidUser).reactTo(new EnterText("Ignored Command"));
 
-// This event will be handled
+// This command will be handled
 modelRunner.as(validUser).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03a.java).
@@ -80,22 +82,22 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 04 - user enters name and age, system prints them (exception thrown if non-numerical age entered)
 ``` java
-public Model buildWith(ModelBuilder modelBuilder) {
-	Model model = 
-	  modelBuilder.useCase("Get greeted")
-	    .basicFlow()
-	      .step("S1").system(this::promptsUserToEnterFirstName)
-	      .step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-	      .step("S3").system(this::promptsUserToEnterAge)
-	      .step("S4").user(ENTERS_AGE).system(this::savesAge)
-	      .step("S5").system(this::greetsUserWithFirstNameAndAge)
-	  .build();
-	return model;
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(asksForName)
+	.step("S2").user(entersName).system(savesName)
+	.step("S3").system(asksForAge)
+	.step("S4").user(entersAge).system(savesAge)
+	.step("S5").system(greetsUser)
+    .build();
+  
+  return model;
 }
 ...
-Model model = buildWith(Model.builder());
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);
+Model model = buildModel();
+ModelRunner modelRunner = new ModelRunner().run(model);
 modelRunner.reactTo(entersText());
 modelRunner.reactTo(entersText());
 ```
@@ -103,79 +105,71 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 05 - user enters name and age, system prints them (with validation)
 ``` java
-public Model buildWith(ModelBuilder modelBuilder) {
-	Model model = 
-	  modelBuilder.useCase("Get greeted")
-	    .basicFlow()
-	      .step("S1").system(this::promptsUserToEnterFirstName)
-	      .step("S2").user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-	      .step("S3").system(this::promptsUserToEnterAge)
-	      .step("S4").user(ENTERS_AGE).system(this::savesAge)
-	      .step("S5").system(this::greetsUserWithFirstNameAndAge)
-	      .step("S6").system(this::stops)
-					
-	    .flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
-	      .step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
-	      .step("S5a_2").continuesAt("S3")
-					
-	    .flow("Handle non-numerical age").insteadOf("S5")
-	      .step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
-	      .step("S5b_2").continuesAt("S3")
-	  .build();
-	return model;
-}	
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").system(asksForName)
+	.step("S2").user(entersName).system(savesName)
+	.step("S3").system(asksForAge)
+	.step("S4").user(entersAge).system(savesAge)
+	.step("S5").system(greetsUser)
+	.step("S6").system(stops)
+      .flow("Handle out-of-bounds age").insteadOf("S5").condition(ageIsOutOfBounds)
+        .step("S5a_1").system(displaysAgeIsOutOfBounds)
+	.step("S5a_2").continuesAt("S3")
+      .flow("Handle non-numerical age").insteadOf("S5")
+	.step("S5b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
+	.step("S5b_2").continuesAt("S3")
+    .build();
+
+  return model;
+}
 ...
-Model model = buildWith(Model.builder());
+Model model = buildModel();
 ModelRunner modelRunner = new ModelRunner().run(model);
 while (!systemStopped())
-    modelRunner.reactTo(entersText());
+  modelRunner.reactTo(entersText());
 exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05.java).
 
 # example 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
 ``` java
-Model model = buildWith(Model.builder());
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.as(anonymousUser()).run(model); 
-...
-public Model buildWith(ModelBuilder modelBuilder) {
-	normalUser = modelBuilder.actor("Normal User");
-	anonymousUser = modelBuilder.actor("Anonymous User");
-			
-	Model useCaseModel = 
-	  modelBuilder.useCase("Get greeted")
-	    .basicFlow()
-		.step("S1").as(normalUser).system(this::promptsUserToEnterFirstName)
-		.step("S2").as(normalUser).user(ENTERS_FIRST_NAME).system(this::savesFirstName)
-		.step("S3").as(normalUser, anonymousUser).system(this::promptsUserToEnterAge)
-		.step("S4").as(normalUser, anonymousUser).user(ENTERS_AGE).system(this::savesAge)
-		.step("S5").as(normalUser).system(this::greetsUserWithFirstName)
-		.step("S6").as(normalUser, anonymousUser).system(this::greetsUserWithAge)
-		.step("S7").as(normalUser, anonymousUser).system(this::stops)
-					
-	    .flow("Handle out-of-bounds age").insteadOf("S5").condition(this::ageIsOutOfBounds)
-		.step("S5a_1").system(this::informsUserAboutOutOfBoundsAge)
-		.step("S5a_2").continuesAt("S3")
-					
-	    .flow("Handle non-numerical age").insteadOf("S5")
-		.step("S5b_1").on(NON_NUMERICAL_AGE).system(this::informsUserAboutNonNumericalAge)
-		.step("S5b_2").continuesAt("S3")
-				
-	    .flow("Anonymous greeted with age only").insteadOf("S5").condition(this::ageIsOk)
-		.step("S5c_1").as(anonymousUser).continuesAt("S6")
-				
-	    .flow("Anonymous does not enter name").insteadOf("S1")
-		.step("S1a_1").as(anonymousUser).continuesAt("S3")
-	  .build();
-	return useCaseModel;
+  public Model buildModel() {
+    ModelBuilder builder = Model.builder();
+    normalUser = builder.actor("Normal User");
+    anonymousUser = builder.actor("Anonymous User");
+    
+    Model model = builder
+    .useCase("Get greeted")
+      .basicFlow()
+        .step("S1").as(normalUser).system(asksForName)
+	.step("S2").as(normalUser).user(entersName).system(savesName)
+	.step("S3").as(normalUser, anonymousUser).system(asksForAge)
+	.step("S4").as(normalUser, anonymousUser).user(entersAge).system(savesAge)
+	.step("S5").as(normalUser).system(greetsUserWithName)
+	.step("S6").as(normalUser, anonymousUser).system(greetsUserWithAge)
+	.step("S7").as(normalUser, anonymousUser).system(stops)
+      .flow("Handle out-of-bounds age").insteadOf("S5").condition(ageIsOutOfBounds)
+	.step("S5a_1").system(displaysAgeIsOutOfBounds)
+	.step("S5a_2").continuesAt("S3")
+      .flow("Handle non-numerical age").insteadOf("S5")
+	.step("S5b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
+	.step("S5b_2").continuesAt("S3")
+      .flow("Anonymous greeted with age only").insteadOf("S5").condition(ageIsOk)
+	.step("S5c_1").as(anonymousUser).continuesAt("S6")
+      .flow("Anonymous does not enter name").insteadOf("S1")
+	.step("S1a_1").as(anonymousUser).continuesAt("S3")
+    .build();
+
+  return model;
 }
 ...
-Model useCaseModel = buildWith(Model.builder());
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.as(anonymousUser()).run(useCaseModel);			
-while(!systemStopped())
-	modelRunner.reactTo(entersText());	
-exitSystem();	
+Model model = buildModel();
+ModelRunner modelRunner = new ModelRunner().as(anonymousUser()).run(model);
+while (!systemStopped())
+	modelRunner.reactTo(entersText());
+exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld06.java).
