@@ -51,7 +51,7 @@ new ModelRunner().run(model).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
-# example 03a - user enters first name, system prints it only if actor is right
+# example 03a - user enters name, system prints it only if actor is right
 ``` java
 public Model buildModel() {
   ModelBuilder builder = Model.builder();
