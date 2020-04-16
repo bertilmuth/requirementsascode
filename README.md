@@ -7,7 +7,7 @@ In use case theory, use cases document a set of interactions between users and t
 In requirements as code, an interaction is a message class, plus a function that defines how the system reacts to it. The function can 
 * consume the message, 
 * return a query result, or 
-* an event to be published.
+* return an event to be published.
 
 For scenarios that depend on the application's state, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
