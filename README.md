@@ -50,7 +50,7 @@ Here's what you need to do as a developer.
 ## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
 ``` java
 Model model = Model.builder()
-	.user(<message class>).system(<message handler, i.e. lambda, method reference, consumer or runnable)>)
+	.user(<message class>).system(<message handler)>)
 	.user(..).system(...)
 	...
 .build();
