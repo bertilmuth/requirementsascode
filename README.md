@@ -8,6 +8,7 @@ In requirements as code, an interaction is a message class and a function that d
 * consume the message, 
 * return a query result, or 
 * return an event to be published.
+
 For scenarios that depend on application state, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
