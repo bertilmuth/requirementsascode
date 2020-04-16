@@ -1,7 +1,7 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-Requirements as code does not replace the conversation with stakeholders. Instead, it offers a formal way to document the results of these conversations at the place where it matters: in the code. Translate your use cases into code with this small library (<64 kByte jar size). 
+Requirements as code does not replace the conversation with stakeholders. Instead, it offers a formal way to record the results of these conversations at the place where it matters: in the code. Translate your use cases into code with this small library (<64 kByte jar size) to improve the long term maintenance of your application.
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
@@ -24,7 +24,7 @@ In requirements as code, use case models are technology free as well. They call 
 Nothing from outside of the boundary may access domain code. The domain code must not access anything outside the boundary, like a database. Not even through an interface. The domain code stays side effect free.
 This enables you to test your domain logic without going through the UI or framework code, and _without mocking_.
 
-For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
+You can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case models inside the code.
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
