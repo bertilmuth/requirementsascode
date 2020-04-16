@@ -4,8 +4,7 @@
 Translate your use cases into code with this small library (<64 kByte jar size).
 
 In use case theory, a use case documents interactions between users and the system.
-
-In requirements as code, an interaction is a message class, plus a function that defines how the system reacts to it. The function can 
+In requirements as code, an interaction is a message class and a function that defines how the system reacts to it. The function can 
 * consume the message, 
 * return a query result, or 
 * return an event to be published.
