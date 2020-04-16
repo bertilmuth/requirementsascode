@@ -9,7 +9,7 @@ In requirements as code, an interaction is a message class and a function that d
 * return a query result, or 
 * return an event to be published.
 
-For scenarios that depend on the application's state, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+For scenarios that depend on application state, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
