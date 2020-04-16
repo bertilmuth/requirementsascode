@@ -46,7 +46,7 @@ If you are using Gradle, include the following in your build.gradle, to use the 
 ```
 compile 'org.requirementsascode:requirementsascodecore:1.2.4'
 ```
-# how to use requirements as code
+# how to build and run a use case model
 Here's what you need to do as a developer.
 
 ## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
