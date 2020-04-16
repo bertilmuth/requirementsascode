@@ -4,7 +4,7 @@
 Translate your use cases into code with this small library (<64 kByte jar size).
 
 In use case theory, a use case documents interactions between users and the system.
-In requirements as code, an interaction is a message class and a function that defines how the system reacts to instances of it. The function can 
+In requirements as code, an interaction is a message class and a function that defines how the system reacts to instances of that class. The function can 
 * consume the message, 
 * return a query result, or 
 * return an event to be published.
@@ -13,7 +13,7 @@ For scenarios that depend on application state, create a [use case model with fl
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
-In requirements as code, use case models live at the boundary of your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. This will make it easier for you to change your technical infrastructure later in development, and enable you to test your use cases without going through the UI or framework code. 
+In requirements as code, use case models live at the boundary of your domain code. The message handlers orchestrate the calls to the domain and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development, and enable you to test your use cases without going through the UI or framework code. 
 
 For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
