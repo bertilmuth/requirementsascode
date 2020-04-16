@@ -15,9 +15,7 @@ It's a simple alternative to state machines, understandable by developers and bu
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
 In requirements as code, use case models live at the boundary of your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. 
 
-You will be able to test your business requirements without going through the UI or framework code. Combined with an architectural style like a hexagonal architecture, this library will make it easy for you to change your technical infrastructure later in development. 
-
-For a concrete application example, look [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+This enables you to test your use cases without going through the UI or framework code. And tt will be easier for you to change your technical infrastructure later in development. 
 
 For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
@@ -47,14 +45,15 @@ Here's what you need to do as a developer.
 ## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
 ``` java
 Model model = Model.builder()
-	.user(<command class>).system(<command handler, i.e. lambda, method reference, consumer or runnable)>)
+	.user(<message class>).system(<message handler, i.e. lambda, method reference, consumer or runnable)>)
 	.user(..).system(...)
 	...
 .build();
 ```
 
-The order of the statements has no significance.
-For handling events instead of commands, use `.on()` instead of `.user()`.
+For handling commands, the message handler has a `Consumer<message class>` or `Runnable` type.
+For handling queries or publishing events, the message handler has a `Function<message class, Object` type.
+For handling events, use `.on()` instead of `.user()`.
 For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
 Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
 You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after a step has been run,
