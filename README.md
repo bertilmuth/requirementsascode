@@ -13,6 +13,7 @@ The message handler can
 * return a query result, or 
 * return an event to be published.
 
+Optionally, you can specify a precondition. 
 If your interactions are independent from each other, that's it. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
