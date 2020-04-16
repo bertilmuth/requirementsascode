@@ -47,7 +47,7 @@ compile 'org.requirementsascode:requirementsascodecore:1.2.4'
 # how to build and run a use case model
 Here's what you need to do as a developer.
 
-## Step 1: Build a model defining the message types to handle, and the methods that react to a message:
+## Step 1: Build a use case model
 ``` java
 Model model = Model.builder()
 	.user(<message class>).system(<message handler)>)
@@ -64,16 +64,16 @@ Use `.condition()` before `.user()`/`.on()` to define an additional precondition
 You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after a step has been run,
 if the condition is fulfilled.
 
-## Step 2: Create a runner and run the model:
+## Step 2: Create a runner, and run the model
 ``` java
 ModelRunner runner = new ModelRunner().run(model);
 ```
 
-## Step 3: Send messages to the runner, and it will react to each one:
+## Step 3: Send a message to the runner
 ``` java
-runner.reactTo(<Message POJO Object> [, <Message POJO Object>,...]);
+Optional<Object> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
 ```
-To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()`.
+To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()` (example [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)).
 By default, if a message's class is not declared in the model, the runner consumes it silently.
 To customize that behavior, use `modelRunner.handleUnhandledWith()`.
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
@@ -85,85 +85,79 @@ Here's a complete example:
 ``` java
 package hello;
 
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-/**
- * This is the sender of the message, external to the boundary
- */
-public class MessageSender {
+public class Main {
   public static void main(String[] args) {
-    Boundary boundary = new Boundary(new DisplayHello(), new DisplayName());
-    boundary.reactTo(new RequestHello(), new EnterName("Joe"));
+    Boundary boundary = new Boundary(new DisplayHello());
+    new MessageSender(boundary).run();
   }
 }
 
 /**
- * These are the command classes
+ * Sender of the message, external to the boundary
+ */
+class MessageSender {
+  private Function<Object, Optional<Object>> boundary;
+
+  public MessageSender(Function<Object, Optional<Object>> boundary) {
+    this.boundary = boundary;
+  }
+
+  public void run() {
+    boundary.apply(new RequestHello("Joe"));
+  }
+}
+
+/**
+ * Command class
  */
 class RequestHello {
-}
-
-class EnterName {
   private String userName;
-  
- public EnterName(String userName) {
-   this.userName = userName;
- }
 
- public String getUserName() {
-   return userName;
- }
+  public RequestHello(String userName) {
+    this.userName = userName;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
 }
 
 /**
- * This is the boundary class that sets up the use case model and runs it.
+ * Boundary class that sets up the use case model, and reacts to messages by
+ * dispatching them to message handlers.
  */
-class Boundary {
-  // The command types
-  private final Class<RequestHello> requestsHello = RequestHello.class;
-  private final Class<EnterName> entersName = EnterName.class;
-
-  // The command handlers
-  private final Consumer<RequestHello> displaysHello;
-  private final Consumer<EnterName> displaysName;
-
-  // The model that will be built and run here
+class Boundary implements Function<Object, Optional<Object>> {
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
   private Model model;
 
-  public Boundary(Consumer<RequestHello> displaysHello, Consumer<EnterName> displaysName) {
-    this.displaysHello = displaysHello;
-    this.displaysName = displaysName;
-    buildModel();
+  public Boundary(Consumer<RequestHello> displaysHello) {
+    buildModel(displaysHello);
   }
 
-  private void buildModel() {
+  private void buildModel(Consumer<RequestHello> displaysHello) {
     model = Model.builder()
       .user(requestsHello).system(displaysHello)
-      .user(entersName).system(displaysName)
      .build();
   }
-  
-  public void reactTo(Object... messages) {
-    new ModelRunner().run(model).reactTo(messages);
+
+  public Optional<Object> apply(Object message) {
+    return new ModelRunner().run(model).reactTo(message);
   }
 }
 
 /**
- * These are the command handlers
- *
+ * Command handler
  */
 class DisplayHello implements Consumer<RequestHello> {
   public void accept(RequestHello requestHello) {
-    System.out.println("Hello!");
-  }
-}
-
-class DisplayName implements Consumer<EnterName> {
-  public void accept(EnterName enterName) {
-    System.out.println("Welcome, " + enterName.getUserName() + ".");
+    System.out.println("Hello, " + requestHello.getUserName() + ".");
   }
 }
 ```
