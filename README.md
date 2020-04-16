@@ -14,11 +14,11 @@ The message handler can
 * return an event to be published.
 
 Optionally, you can specify a precondition. 
-If your interactions are independent from each other, that's it. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
+If your interactions are independent from each other, that's your use case model. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
-In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
-In requirements as code, use case models live at the boundary of your domain code. Message handlers orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions to the _use case realization_.
+In requirements as code, use case models are technology free as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
 Nothing from outside of the boundary may access domain code. The domain code must not access anything outside the boundary, like a database. Not even through an interface. The domain code stays side effect free.
 This enables you to test your domain logic without going through the UI or framework code, and _without mocking_.
