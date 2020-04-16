@@ -1,24 +1,25 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-With this small library (<64 kByte jar size), you can translate your functional business requirements into code with very little effort.
+Translate your use cases into code with this small library (<64 kByte jar size).
 
-Specify a use case model with a builder API: the interactions between a user and the system.
-An interaction is a command class or query class, plus a function that defines how the system reacts to it.
-The function can consume the command, return a query result, or publish an event.
-Optionally, you can specify a precondition that must be fulfilled.
+In use case theory, use cases document a set of interactions between users and the system.
+In requirements as code, an interaction is a message class, plus a function that defines how the system reacts to it. The function can 
+* consume the message, 
+* return a query result, or 
+* an event to be published.
 
-For more advanced scenarios that depend on the application's state, you can create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+For scenarios that depend on the application's state, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
-For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
-
-Requirements as code is not intended to replace technical infrastructure like event stores or streaming platforms.
-Instead, the use case models live alongside your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. 
+In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
+In requirements as code, use case models live at the boundary of your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. 
 
 You will be able to test your business requirements without going through the UI or framework code. Combined with an architectural style like a hexagonal architecture, this library will make it easy for you to change your technical infrastructure later in development. 
 
 For a concrete application example, look [here](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+
+For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
