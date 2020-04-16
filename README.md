@@ -9,7 +9,7 @@ In requirements as code, an interaction is:
 * a message handler.  It defines how the system reacts when receiving an instance of the message class. 
 
 The message handler can 
-* consume the message, 
+* consume the message without returning anything, 
 * return a query result, or 
 * return an event to be published.
 
