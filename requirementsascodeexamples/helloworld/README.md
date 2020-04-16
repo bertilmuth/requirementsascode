@@ -1,4 +1,4 @@
-# example 01 - system prints 'Hello, User.'
+# example 01 - system greets user
 ``` java		
 public Model buildModel() {
   Model model = Model.builder()
@@ -15,7 +15,7 @@ new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01.java).
 
-# example 02 - system prints 'Hello, User.' three times
+# example 02 - system greets user three times
 ``` java		
 public Model buildModel() {
   Model model = Model.builder()
