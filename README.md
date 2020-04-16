@@ -13,9 +13,7 @@ For scenarios that depend on the application's state, create a [use case model w
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
-In requirements as code, use case models live at the boundary of your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. 
-
-This enables you to test your use cases without going through the UI or framework code. And tt will be easier for you to change your technical infrastructure later in development. 
+In requirements as code, use case models live at the boundary of your domain code, orchestrating the calls to it and keeping the technical and user interface details out of it. This will make it easier for you to change your technical infrastructure later in development, and enable you to test your use cases without going through the UI or framework code. 
 
 For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
