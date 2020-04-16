@@ -65,7 +65,7 @@ if the condition is fulfilled.
 ModelRunner runner = new ModelRunner().run(model);
 ```
 
-## Step 3: Send messages to the runner, and enjoy watching it react:
+## Step 3: Send messages to the runner, and it will react to each one:
 ``` java
 runner.reactTo(<Message POJO Object> [, <Message POJO Object>,...]);
 ```
