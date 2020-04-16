@@ -1,7 +1,7 @@
 # requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
-Translate your use cases into code with this small library (<64 kByte jar size).
+Requirements as code does not replace the conversation with stakeholders. Instead, it offers a formal way to document the results of these conversations at the place where it matters: in the code. Translate your use cases into code with this small library (<64 kByte jar size). 
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
