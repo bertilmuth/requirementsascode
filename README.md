@@ -22,9 +22,6 @@ In use case theory, use cases look at the system from a user's perspective. Tech
 
 In requirements as code, use case models are technology free as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
-Nothing from outside of the boundary may access domain code. The domain code must not access anything outside the boundary, like a database. Not even through an interface. The domain code stays side effect free.
-This enables you to test your domain logic without going through the UI or framework code, and _without mocking_.
-
 You can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case models inside the code.
 
 # getting started
