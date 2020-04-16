@@ -5,8 +5,8 @@ Translate your use cases into code with this small library (<64 kByte jar size).
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
-* a message class
-* a message handler that defines how the system reacts when receiving an instance of that class. 
+* a message class, and
+* a message handler.  It defines how the system reacts when receiving an instance of the message class. 
 
 The message handler can 
 * consume the message, 
