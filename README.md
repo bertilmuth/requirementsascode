@@ -13,7 +13,7 @@ The message handler can
 * return a query result, or 
 * return an event to be published.
 
-For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
+If your interactions are independent from each other, that's it. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
