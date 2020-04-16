@@ -4,7 +4,11 @@
 Translate your use cases into code with this small library (<64 kByte jar size).
 
 In use case theory, a use case specifies interactions between users and the system.
-In requirements as code, an interaction is a message class and a message handler that defines how the system reacts when receiving an instance of that class. The message handler can 
+In requirements as code, an interaction is:
+* a message class
+* a message handler that defines how the system reacts when receiving an instance of that class. 
+
+The message handler can 
 * consume the message, 
 * return a query result, or 
 * return an event to be published.
@@ -13,8 +17,10 @@ For scenarios that depend on application state, create a [use case model with fl
 It's a simple alternative to state machines, understandable by developers and business people alike.
 
 In use case theory, use cases look at the system from a black box perspective. This enables postponing implementation decisions.
-In requirements as code, use case models live at the boundary of your domain code. The message handlers orchestrate the calls to the domain code and the technical infrastructure external to the boundary. Direct access to the domain code from outside of the boundary doesn't happen.
-This makes it easier for you to change your technical infrastructure later in development, and enables you to test your domain code without going through the UI or framework code. 
+In requirements as code, use case models live at the boundary of your domain code. Message handlers orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+
+Nothing from outside of the boundary may access domain code. The domain code must not access anything outside the boundary, like a database. Not even through an interface. The domain code stays side effect free.
+This enables you to test your domain logic without going through the UI or framework code, and _without mocking_.
 
 For the long term maintenance of your application, you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the models inside the code.
 
