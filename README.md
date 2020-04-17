@@ -5,6 +5,10 @@
 
 Requirements as code does not replace conversations. It offers a formal way to record results of conversations where it matters: in the code. Translate your use cases into code to improve the long term maintenance of your application.
 
+In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the _use case realization_. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
+
+In requirements as code, use case models are technology free as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
 * a message class, and
@@ -19,10 +23,6 @@ Optionally, you can specify a precondition.
 
 If your interactions are independent from each other, that's your use case model. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
 It's a simple alternative to state machines, understandable by developers and business people alike.
-
-In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the _use case realization_. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
-
-In requirements as code, use case models are technology free as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
