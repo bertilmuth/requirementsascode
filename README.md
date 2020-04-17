@@ -56,7 +56,8 @@ compile 'org.requirementsascode:requirementsascodecore:1.2.4'
 At least Java 8 is required to use requirements as code, download and install it if necessary.
 
 # how to build and run a use case model
-Here's what you need to do as a developer.
+Let's look at the general steps to building and running a model first.
+After that, you'll see a concrete code example.
 
 ## Step 1: Build a use case model
 ``` java
