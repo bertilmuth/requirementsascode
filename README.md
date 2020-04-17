@@ -32,9 +32,9 @@ When you follow the design principles of requirements as code, you will end up w
 The use case model at the boundary represents the single source of truth for interactions started by the user. You can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent an always up to date information about how the system works from a user's perspective.
 
 # getting started
-At least Java 8 is required to use requirements as code, download and install it if necessary.
-
 Requirements as code is available on Maven Central.
+
+The size of the core jar file is less than 64 kBytes. It has no further dependencies.
 
 If you are using Maven, include the following in your POM, to use the core:
 
@@ -51,6 +51,9 @@ If you are using Gradle, include the following in your build.gradle, to use the 
 ```
 compile 'org.requirementsascode:requirementsascodecore:1.2.4'
 ```
+
+At least Java 8 is required to use requirements as code, download and install it if necessary.
+
 # how to build and run a use case model
 Here's what you need to do as a developer.
 
