@@ -3,7 +3,7 @@
 
 ![requirements as code logo](./requirementsascode_logo.png)
 
-Requirements as code does not replace conversations. It offers a formal way to record results of conversations where it matters: in the code. Translate your use cases into code with this small library (<64 kByte jar) to improve the long term maintenance of your application.
+Requirements as code does not replace conversations. It offers a formal way to record results of conversations where it matters: in the code. Translate your use cases into code to improve the long term maintenance of your application.
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
