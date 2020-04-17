@@ -26,7 +26,7 @@ It's a simple alternative to state machines, understandable by developers and bu
 
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
-Using this small library (<64 kByte), you don't have to implement port interfaces to change technologies. And when you use message handlers to orchestrate the calls, you will end up with a pure domain model. That domain model doesn't depend on technical infrastructure like e.g. a database at all, not even by interface. That's why you can test the domain code without going through a framework an UI, and _without mocking anything_.
+Using this small library (<64 kByte), you don't have to implement port interfaces to change technologies. And when you use message handlers to orchestrate the calls, you will end up with a pure domain model. That domain model doesn't depend on technical infrastructure like e.g. a database at all, not even by interface. That's why you can test the domain code without going through a framework an UI, and without mocking anything.
 
 You can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case models inside the code.
 
