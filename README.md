@@ -217,19 +217,51 @@ class RequestHello {
 ```
 
 ## Message handlers
-Message handlers that just consume the message implement the `Consumer` interface. That's the case in the example (`Consumer<RequestHello>`).
-
-If the message was a query instead, the message handler would implement the `Function` interface to be able to return the query result. In the example, that would mean that the class would implement `Function<RequestHello, Object>`.
+Message handlers orchestrate the calls to the infrastructure and domain code.
+They are 'dumb' in the sense that they don't contain business logic themselves.
 
 ``` java
 class DisplayHello implements Consumer<RequestHello> {
+  private MessageGenerator messageGenerator;
+  private OutputAdapter outputAdapter;
+
+  public DisplayHello() {
+    this.messageGenerator = new MessageGenerator();
+    this.outputAdapter = new OutputAdapter();
+  }
+  
   public void accept(RequestHello requestHello) {
-    System.out.println("Hello, " + requestHello.getUserName() + ".");
+    String message = messageGenerator.userNameToMessage(requestHello.getUserName());
+    outputAdapter.showMessage(message);
   }
 }
 ```
 
-## Complete example for applying the design priciples
+## Infrastructure classes
+These are classes that connect to external services or the infrastructure.
+In the example, this is the class that prints the message to the console.
+
+``` java
+class OutputAdapter{
+  public void showMessage(String message) {
+    System.out.println(message);
+  }
+}
+```
+
+## Pure domain code
+These are the domain classes. They are side effect free, since all communication with the infrastructure happens in the message handler.
+
+In the example, there is only a single domain function: taking the user name and converting it to a message to display.
+
+``` java
+class MessageGenerator{
+  public String userNameToMessage(String userName) {
+    return "Hello, " + userName + ".";
+  }
+```
+
+# Complete example code for applying the design priciples
 Here's the complete example as a single file for convenience.
 
 ``` java
@@ -319,11 +351,38 @@ class RequestHello {
 }
 
 /**
- * Command handler
+ * Message handler
  */
 class DisplayHello implements Consumer<RequestHello> {
+  private MessageGenerator messageGenerator;
+  private OutputAdapter outputAdapter;
+
+  public DisplayHello() {
+    this.messageGenerator = new MessageGenerator();
+    this.outputAdapter = new OutputAdapter();
+  }
+  
   public void accept(RequestHello requestHello) {
-    System.out.println("Hello, " + requestHello.getUserName() + ".");
+    String message = messageGenerator.userNameToMessage(requestHello.getUserName());
+    outputAdapter.showMessage(message);
+  }
+}
+
+/**
+ * Infrastructure classes
+ */
+class OutputAdapter{
+  public void showMessage(String message) {
+    System.out.println(message);
+  }
+}
+
+/**
+ * Domain classes
+ */
+class MessageGenerator{
+  public String userNameToMessage(String userName) {
+    return "Hello, " + userName + ".";
   }
 }
 ```
