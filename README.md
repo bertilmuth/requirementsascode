@@ -26,9 +26,9 @@ It's a simple alternative to state machines, understandable by developers and bu
 
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
-Using this small library (<64 kByte), the use case model at the boundary replaces driver ports as the single source of truth for interactions started by the user. And when you follow the design principles, you will end up with pure domain code. That domain code doesn't communicate with technical infrastructure, not even through interfaces. That's why you can test the domain code without mocking anything.
+When you follow the design principles of requirements as code, you will end up with pure domain code. The domain code doesn't communicate with technical infrastructure, not even through interfaces. That's why you can test the domain code without mocking anything.
 
-You can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case models inside the code.
+The use case model at the boundary represents the single source of truth for interactions started by the user. You can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent an always up to date information about how the system works from a user's perspective.
 
 # getting started
 At least Java 8 is required to use requirements as code, download and install it if necessary.
