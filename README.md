@@ -128,6 +128,18 @@ class ModelBuilder {
     return model;
   }
 }
+
+class RequestHello {
+  private String userName;
+
+  public RequestHello(String userName) {
+    this.userName = userName;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+}
 ```
 
 # Example for applying the design principles
