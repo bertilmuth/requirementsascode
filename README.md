@@ -5,9 +5,9 @@
 
 Requirements as code does not replace conversations. It offers a formal way to record results of conversations where it matters: in the code. Translate use cases into code to improve the long term maintenance of your application.
 
-In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the _use case realization_. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
+In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
-In requirements as code, use case models are technology free as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the technical infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+In requirements as code, use case models are free of technical infrastructure as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
@@ -26,7 +26,7 @@ It's a simple alternative to state machines, understandable by developers and bu
 
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
-With this small library (<64 kByte), you don't have to create port interfaces to change technologies anymore. And when you follow the design principles, you will end up with a pure domain model. That domain model doesn't depend on technical infrastructure, not even by interface. That's why you can test the domain code without mocking anything.
+Using this small library (<64 kByte), you don't have to create port interfaces to change technologies anymore. And when you follow the design principles, you will end up with a pure domain model. That domain model doesn't depend on technical infrastructure, not even by interface. That's why you can test the domain code without mocking anything.
 
 You can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case models inside the code.
 
