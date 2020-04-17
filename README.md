@@ -15,7 +15,7 @@ In requirements as code, an interaction is:
 * a message class, and
 * a message handler that defines how the system reacts when receiving an instance of the message class. 
 
-The message handler calls the domain/infrastructure and then:
+The message handler calls the domain/infrastructure code and then:
 * doesn't return anything,
 * returns a query result, or 
 * returns an event to be published.
