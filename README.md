@@ -259,6 +259,7 @@ class MessageGenerator{
   public String userNameToMessage(String userName) {
     return "Hello, " + userName + ".";
   }
+}
 ```
 
 # Complete example code for applying the design priciples
