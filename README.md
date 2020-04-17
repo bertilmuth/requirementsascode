@@ -7,7 +7,7 @@ Requirements as code does not replace conversations with stakeholders. It's a fo
  
 In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
-In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary.
+In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary. By switching method handlers, or by injecting different dependencies into them, you can switch your application's technical infrastructure.
 
 In use case theory, a use case specifies interactions between users and the system.
 
@@ -233,11 +233,11 @@ Message handlers orchestrate the calls to the infrastructure and domain code.
 They are 'dumb' in the sense that they don't contain business logic themselves.
 
 ``` java
-class DisplayHello implements Consumer<RequestHello> {
+class SayHello implements Consumer<RequestHello> {
   private MessageGenerator messageGenerator;
   private OutputAdapter outputAdapter;
 
-  public DisplayHello() {
+  public SayHello() {
     this.messageGenerator = new MessageGenerator();
     this.outputAdapter = new OutputAdapter();
   }
@@ -364,13 +364,13 @@ class RequestHello {
 }
 
 /**
- * Message handler
+ * Message handlers
  */
-class DisplayHello implements Consumer<RequestHello> {
+class SayHello implements Consumer<RequestHello> {
   private MessageGenerator messageGenerator;
   private OutputAdapter outputAdapter;
 
-  public DisplayHello() {
+  public SayHello() {
     this.messageGenerator = new MessageGenerator();
     this.outputAdapter = new OutputAdapter();
   }
