@@ -7,7 +7,7 @@ Requirements as code does not replace conversations. It offers a formal way to r
 
 In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
-In requirements as code, use case models are free of technical infrastructure as well. They call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+In requirements as code, use case models are free of technical infrastructure as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
