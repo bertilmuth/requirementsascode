@@ -3,11 +3,11 @@
 
 ![requirements as code logo](./requirementsascode_logo.png)
 
-Requirements as code does not replace conversations. It offers a formal way to record conversation results where it matters: in the code. Translate use cases into code to improve the long term maintenance of your application.
+Requirements as code does not replace conversations. It's a formal way to record conversation results where it matters: in the code. Translate use cases into code to improve the long term maintenance of your application.
 
 In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
-In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
+In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary.
 
 In use case theory, a use case specifies interactions between users and the system.
 
@@ -71,8 +71,9 @@ For handling queries or publishing events, the message handler has a `Function<X
 For handling events, use `.on()` instead of `.user()`.
 For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
 Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
-You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after a step has been run,
-if the condition is fulfilled.
+You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after an interaction, if the condition is fulfilled.
+
+The order of `user(..).system(...)` statements has no significance here.
 
 ## Step 2: Create a runner, and run the model
 ``` java
@@ -84,13 +85,150 @@ ModelRunner runner = new ModelRunner().run(model);
 Optional<Object> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
 ```
 To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()` (example [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)).
+
 By default, if a message's class is not declared in the model, the runner consumes it silently.
-To customize that behavior, use `modelRunner.handleUnhandledWith()`.
+To customize that behavior, use `modelRunner.handleUnhandledWith()`. 
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
 other handler method, the runner will rethrow it.
 
-# Example
-Here's a complete example:
+# Example for building and running a use case model
+There's a single use case with a single interaction.
+
+The user sends a request with the user name ("Joe"). The system says hello ("Hello, Joe.")
+
+``` java
+package hello;
+
+import java.util.function.Consumer;
+
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
+
+public class HelloUser {
+  public static void main(String[] args) {
+    Model model = new ModelBuilder().build(HelloUser::sayHello);
+    ModelRunner modelRunner = new ModelRunner().run(model);
+    modelRunner.reactTo(new RequestHello("Joe"));
+  }
+  
+  public static void sayHello(RequestHello requestHello) {
+    System.out.println("Hello, " + requestHello.getUserName() + ".");
+  }
+}
+
+class ModelBuilder {
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+
+  public Model build(Consumer<RequestHello> saysHello) {
+    Model model = Model.builder()
+      .user(requestsHello).system(saysHello)
+     .build();
+    return model;
+  }
+}
+```
+
+# Example for applying the design principles
+The example above has shown how to build and run a use case model. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
+To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to change as follows.
+
+## Boundary
+There needs to be a boundary that creates and runs the use case model, and reacts to messages.
+It gets the message handlers injected into its constructor as interfaces, and builds the model based on them.
+The boundary is implemented as a function that transforms an input (i.e. the message) to an output (the optional query result or published event). That's why the `Boundary` class implements `Function<Object, Optional<Object>>`.
+
+``` java
+class Boundary implements Function<Object, Optional<Object>> {
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private Model model;
+
+  /**
+   * The constructor that builds the model by using the injected message handlers.
+   * 
+   * @param saysHello the message handler for saying hello to the user
+   */
+  public Boundary(Consumer<RequestHello> saysHello) {
+    buildModel(saysHello);
+  }
+
+  private void buildModel(Consumer<RequestHello> saysHello) {
+    model = Model.builder()
+      .user(requestsHello).system(saysHello)
+     .build();
+  }
+
+  /**
+   * Reacts to the specified message by dispatching it to a message handler.
+   * 
+   * @param message the message to dispatch
+   * @return the result of a query, a published event, or an empty Optional.
+   */
+  public Optional<Object> apply(Object message) {
+    return new ModelRunner().run(model).reactTo(message);
+  }
+}
+```
+
+## Message senders
+There needs to be someone outside of the boundary who's sending messages to the boundary.
+In practice, this could be a Spring Controller, or a desktop GUI, for example.
+The message sender gets the boundary injected into its constructor as interface.
+After that, it can send messages to the boundary.
+
+``` java
+class MessageSender {
+  private Function<Object, Optional<Object>> boundary;
+
+  public MessageSender(Function<Object, Optional<Object>> boundary) {
+    this.boundary = boundary;
+  }
+
+  /**
+   * Send messages to the boundary. In this example, we don't care 
+   * about the return value of the call, because we don't send a query
+   * or publish events.
+   */
+  public void sendMessages() {
+    boundary.apply(new RequestHello("Joe"));
+  }
+}
+```
+
+## Messages
+Messages should be simple and immutable POJOs. 
+They just carry the information needed to be processed by the message handler.
+No domain logic is allowed here.
+In the example, the `RequestHello` class represents a command that carries the user name.
+
+``` java
+class RequestHello {
+  private String userName;
+
+  public RequestHello(String userName) {
+    this.userName = userName;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+}
+```
+
+## Message handlers
+Message handlers that just consume the message implement the `Consumer` interface. That's the case in the example (`Consumer<RequestHello>`).
+
+If the message was a query instead, the message handler would implement the `Function` interface to be able to return the query result. In the example, that would mean that the class would implement `Function<RequestHello, Object>`.
+
+``` java
+class DisplayHello implements Consumer<RequestHello> {
+  public void accept(RequestHello requestHello) {
+    System.out.println("Hello, " + requestHello.getUserName() + ".");
+  }
+}
+```
+
+## Complete example for applying the design priciples
+Here's the complete example as a single file for convenience.
 
 ``` java
 package hello;
@@ -105,7 +243,41 @@ import org.requirementsascode.ModelRunner;
 public class Main {
   public static void main(String[] args) {
     Boundary boundary = new Boundary(new DisplayHello());
-    new MessageSender(boundary).run();
+    new MessageSender(boundary).sendMessages();
+  }
+}
+
+/**
+ * Boundary class that builds and runs the use case model, and reacts to messages by
+ * dispatching them to message handlers.
+ */
+class Boundary implements Function<Object, Optional<Object>> {
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private Model model;
+
+  /**
+   * The constructor that builds the model by using the injected message handlers.
+   * 
+   * @param saysHello the message handler for saying hello to the user
+   */
+  public Boundary(Consumer<RequestHello> saysHello) {
+    buildModel(saysHello);
+  }
+
+  private void buildModel(Consumer<RequestHello> saysHello) {
+    model = Model.builder()
+      .user(requestsHello).system(saysHello)
+     .build();
+  }
+
+  /**
+   * Reacts to the specified message by dispatching it to a message handler.
+   * 
+   * @param message the message to dispatch
+   * @return the result of a query, a published event, or an empty Optional.
+   */
+  public Optional<Object> apply(Object message) {
+    return new ModelRunner().run(model).reactTo(message);
   }
 }
 
@@ -119,7 +291,12 @@ class MessageSender {
     this.boundary = boundary;
   }
 
-  public void run() {
+  /**
+   * Send messages to the boundary. In this example, we don't care 
+   * about the return value of the call, because we don't send a query
+   * or publish events.
+   */
+  public void sendMessages() {
     boundary.apply(new RequestHello("Joe"));
   }
 }
@@ -136,29 +313,6 @@ class RequestHello {
 
   public String getUserName() {
     return userName;
-  }
-}
-
-/**
- * Boundary class that sets up the use case model, and reacts to messages by
- * dispatching them to message handlers.
- */
-class Boundary implements Function<Object, Optional<Object>> {
-  private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Model model;
-
-  public Boundary(Consumer<RequestHello> displaysHello) {
-    buildModel(displaysHello);
-  }
-
-  private void buildModel(Consumer<RequestHello> displaysHello) {
-    model = Model.builder()
-      .user(requestsHello).system(displaysHello)
-     .build();
-  }
-
-  public Optional<Object> apply(Object message) {
-    return new ModelRunner().run(model).reactTo(message);
   }
 }
 
@@ -199,24 +353,7 @@ By default, the model runner takes the returned event and publishes it to the mo
 This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
-# event queue for non-blocking handling (experimental)
-The default mode for the ModelRunner is to handle messages in a blocking way. 
-Instead, you can use a simple event queue that processes events one by one in its own thread:
-
-``` java
-Model model = ...;
-ModelRunner modelRunner = new ModelRunner();
-modelRunner.run(model);
-
-EventQueue queue = new EventQueue(modelRunner::reactTo);
-queue.put(new String("I'm an event, react to me!"));
-```
-
-The constructor argument of `EventQueue` specifies that each event that's `put()` will be placed in the queue, and then forwarded to `ModelRunner.reactTo()`.
-Note that you can forward events to any other consumer of an object as well.
-You have to call `queue.stop()` to terminate the event queue thread before exiting your application.
-
-# documentation
+# documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
