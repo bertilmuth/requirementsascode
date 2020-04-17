@@ -12,7 +12,7 @@ In requirements as code, use case models are free of technical infrastructure as
 In use case theory, a use case specifies interactions between users and the system.
 In requirements as code, an interaction is:
 * a message class, and
-* a message handler.  It defines how the system reacts when receiving an instance of the message class. 
+* a message handler that defines how the system reacts when receiving an instance of the message class. 
 
 The message handler handles the message 
 * without returning anything, 
