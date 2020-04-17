@@ -22,7 +22,7 @@ The message handler calls the domain/infrastructure code and then:
 
 You can also specify a precondition. 
 
-If your interactions are independent from each other, that's your use case model. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead.
+If your interactions are independent from each other, that's your use case model. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead. 
 It's a simple alternative to state machines.
 
 # influences and special features
