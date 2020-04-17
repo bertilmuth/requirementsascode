@@ -60,14 +60,14 @@ Here's what you need to do as a developer.
 ## Step 1: Build a use case model
 ``` java
 Model model = Model.builder()
-	.user(<message class>).system(<message handler)>)
+	.user(/* message class */).system(/* message handler*/)
 	.user(..).system(...)
 	...
 .build();
 ```
 
-For handling commands, the message handler has a `Consumer<message class>` or `Runnable` type.
-For handling queries or publishing events, the message handler has a `Function<message class, Object>` type.
+For handling commands, the message handler has a `Consumer<X>` or `Runnable` type, where X is the message class.
+For handling queries or publishing events, the message handler has a `Function<X, Object>` type.
 For handling events, use `.on()` instead of `.user()`.
 For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
 Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
