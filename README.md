@@ -4,7 +4,7 @@
 ![requirements as code logo](./requirementsascode_logo.png)
 
 Requirements as code does not replace conversations with stakeholders. It's a formal way to record conversation results where it matters: in the code. Translate use cases into code to improve the long term maintenance of your application.
-
+ 
 In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
 In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary.
