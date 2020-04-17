@@ -10,6 +10,7 @@ In use case theory, use cases look at the system from a user's perspective. Tech
 In requirements as code, use case models are free of technical infrastructure as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and the infrastructure external to the boundary. This makes it easier for you to change your technical infrastructure later in development.
 
 In use case theory, a use case specifies interactions between users and the system.
+
 In requirements as code, an interaction is:
 * a message class, and
 * a message handler that defines how the system reacts when receiving an instance of the message class. 
