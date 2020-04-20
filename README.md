@@ -32,6 +32,8 @@ When you follow the design principles of requirements as code, you will end up w
 
 The use case model at the boundary represents the single source of truth for interactions started by the user. You can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
+And since [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) are processes, you can use this library to implement [process managers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html) as well.
+
 # getting started
 Requirements as code is available on Maven Central.
 
