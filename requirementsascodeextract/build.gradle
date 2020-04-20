@@ -1,4 +1,7 @@
-apply plugin: 'maven'
+plugins {
+    id 'java-library'
+    id 'maven'
+}
 
 jar {
     manifest {
@@ -8,14 +11,10 @@ jar {
 }
 
 dependencies {
-    compile 'org.freemarker:freemarker:2.3.28'
-    compile 'org.apache.commons:commons-lang3:3.5'
-	compile 'org.requirementsascode:requirementsascodecore:' + version
-  	testCompile 'junit:junit:4.12'
-}
-
-dependencies {
-  	testCompile 'junit:junit:4.12'
+    implementation 'org.freemarker:freemarker:2.3.28'
+    implementation 'org.apache.commons:commons-lang3:3.5'
+	api ('org.requirementsascode:requirementsascodecore:' + version)
+	testImplementation 'junit:junit:4.12'
 }
 
 task javadocJar(type: Jar) {

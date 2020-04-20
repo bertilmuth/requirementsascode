@@ -1,4 +1,6 @@
-apply plugin: 'maven'
+plugins {
+    id 'maven'
+}
 
 jar {
     manifest {
@@ -8,7 +10,7 @@ jar {
 }
 
 dependencies {
-  	testImplementation 'junit:junit:4.12'
+	testImplementation 'junit:junit:4.12'
 }
 
 task javadocJar(type: Jar) {

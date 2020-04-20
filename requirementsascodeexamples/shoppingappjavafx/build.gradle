@@ -21,6 +21,6 @@ jar {
 }
 
 dependencies {
-	compile project(':requirementsascodecore')
-  	testCompile 'junit:junit:4.12'
+	implementation project(':requirementsascodecore')
+	testImplementation 'junit:junit:4.12'
 }
