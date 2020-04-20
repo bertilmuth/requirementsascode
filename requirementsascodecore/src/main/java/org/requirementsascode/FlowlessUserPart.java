@@ -25,7 +25,7 @@ public class FlowlessUserPart<T> {
 	 * @param systemReaction the specified system reaction
 	 * @return the created flowless system part
 	 */
-	public FlowlessSystemPart<T> system(Consumer<T> systemReaction) {
+	public FlowlessSystemPart<T> system(Consumer<? super T> systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
@@ -39,7 +39,7 @@ public class FlowlessUserPart<T> {
 	 *                       be published.
 	 * @return the created flowless system part
 	 */
-	public FlowlessSystemPart<T> systemPublish(Function<T, Object> systemReaction) {
+	public FlowlessSystemPart<T> systemPublish(Function<? super T, Object> systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}

@@ -85,8 +85,8 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(0, steps.size());
 	}
     
-    @Test
-    public void createsSingleStepThatHandlesEventWithUseCaseButWithoutFlow() {
+  @Test
+  public void createsSingleStepThatHandlesEventWithUseCaseButWithoutFlow() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -102,10 +102,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals("S1", step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatHandlesEventWithoutUseCaseAndWithoutFlow() {
+  @Test
+	public void createsSingleStepThatHandlesEventWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
 				.on(EntersText.class).system(displaysEnteredText())
@@ -117,10 +117,25 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]); 
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatHandlesCommandWithoutUseCaseAndWithoutFlow() {
+  @Test
+  public void createsSingleStepThatHandlesAnyMessageWithoutUseCaseAndWithoutFlow() {
+		Model model = 
+			modelBuilder
+				.on(EntersText.class).system(consumesAnyMessage())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]); 
+  }
+    
+  @Test
+  public void createsSingleStepThatHandlesCommandWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
 				.user(EntersText.class).system(displaysEnteredText())
@@ -132,13 +147,13 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]); 
-    }
-    
-    @Test
-    public void createsSingleStepThatPublishesEventWithoutUseCaseAndWithoutFlow() {
+  }
+  
+  @Test
+  public void createsSingleStepThatPublishesAnyEventWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.on(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
+				.on(EntersText.class).systemPublish(super.publishAnyMessageAsEvent())
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -147,13 +162,28 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatPublishesCommandWithoutUseCaseAndWithoutFlow() {
+  @Test
+  public void createsSingleStepThatPublishesEventWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
+				.on(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]);
+  }
+    
+  @Test
+  public void createsSingleStepThatPublishesCommandWithoutUseCaseAndWithoutFlow() {
+		Model model = 
+			modelBuilder
+				.user(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -162,10 +192,10 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
-    }
+  }
 
-    @Test
-    public void createsSingleStepThatHandlesCommandWithFlow() {
+  @Test
+  public void createsSingleStepThatHandlesCommandWithFlow() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -183,15 +213,15 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatHandlesCommandWithFlowAndPublishesEvent() {
+  @Test
+  public void createsSingleStepThatHandlesCommandWithFlowAndPublishesEvent() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
 			useCasePart.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
 			.build();
 	
 		UseCase useCase = useCasePart.getUseCase();
@@ -204,10 +234,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatHandlesCommandWithCondition() {
+  @Test
+  public void createsSingleStepThatHandlesCommandWithCondition() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow().condition(() -> textIsAvailable())
@@ -216,10 +246,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		UseCase useCase = useCasePart.getUseCase();
 		assertTrue(useCase.getBasicFlow().getCondition().isPresent());
-    }
+  }
 
-    @Test
-    public void createsSingleStepThatHandlesEventWithFlow() {
+  @Test
+  public void createsSingleStepThatHandlesEventWithFlow() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).system(displaysEnteredText())
@@ -233,13 +263,13 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
+  }
     
-    @Test
-    public void createsSingleStepThatHandlesEventWithFlowAndPublishesEvent() {
+  @Test
+  public void createsSingleStepThatHandlesEventWithFlowAndPublishesEvent() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super::publishEnteredTextAsEvent)
+				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
 			.build();
 	
 		UseCase useCase = model.findUseCase(USE_CASE);
@@ -250,10 +280,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
+  }
 
-    @Test
-    public void createsSingleStepThatPerformsSystemReactionAutomatically() {
+  @Test
+  public void createsSingleStepThatPerformsSystemReactionAutomatically() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -268,10 +298,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-    }
+  }
 
-    @Test
-    public void createsSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
+  @Test
+  public void createsSingleStepThatPerformsSystemReactionAutomaticallyForSpecificActor() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -287,16 +317,16 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertTrue(model.hasActor(customer.getName()));
 		assertEquals(customer, step.getActors()[0]);
-    }
+  }
 
-    @Test
-    public void accessesExistingCustomerActor() {
+  @Test
+  public void accessesExistingCustomerActor() {
 		Actor actualCustomer = modelBuilder.actor(CUSTOMER);
 		assertEquals(customer, actualCustomer);
-    }
+  }
 
-    @Test
-    public void createsSingleActorWithSingleUseCase() {
+  @Test
+  public void createsSingleActorWithSingleUseCase() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
@@ -308,10 +338,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		UseCase actualUseCase = useCases.iterator().next();
 		assertEquals(USE_CASE, actualUseCase.getName());
-    }
+  }
     
-    @Test
-    public void createsSingleDefaultActorWithSingleUseCase() {
+  @Test
+  public void createsSingleDefaultActorWithSingleUseCase() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).as(customer).basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -323,10 +353,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		UseCase actualUseCase = useCases.iterator().next();
 		assertEquals(USE_CASE, actualUseCase.getName());
-    }
+  }
 
-    @Test
-    public void createsSingleActorWithSingleUseCaseStep() {
+  @Test
+  public void createsSingleActorWithSingleUseCaseStep() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -342,10 +372,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(customer, step.getActors()[0]);
-    }
+  }
 
-    @Test
-    public void createsTwoActorsWithSingleUseCaseStep() {
+  @Test
+  public void createsTwoActorsWithSingleUseCaseStep() {
 		Actor anotherActor = modelBuilder.actor("Another Actor");
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
@@ -368,10 +398,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(anotherActor, step.getActors()[1]);
-    }
+  }
 
-    @Test
-    public void createsSingleStepWithNoPreviousStep() {
+  @Test
+  public void createsSingleStepWithNoPreviousStep() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow()
@@ -383,10 +413,10 @@ public class BuildModelTest extends AbstractTestCase {
 		Optional<FlowStep> previousStep = ((FlowStep) steps.iterator().next()).getPreviousStepInFlow();
 	
 		assertFalse(previousStep.isPresent());
-    }
+  }
     
-    @Test
-    public void createsTwoStepsWithEventsAndWithoutFlow() {
+  @Test
+  public void createsTwoStepsWithEventsAndWithoutFlow() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart
@@ -405,10 +435,10 @@ public class BuildModelTest extends AbstractTestCase {
 		step = stepIt.next();
 		assertEquals("S2", step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
-    }
+  }
     
-    @Test
-    public void createsTwoStepsWithCommandsAndWithoutFlow() {
+  @Test
+  public void createsTwoStepsWithCommandsAndWithoutFlow() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart
@@ -427,10 +457,10 @@ public class BuildModelTest extends AbstractTestCase {
 		step = stepIt.next();
 		assertEquals("S2", step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
-    }
+  }
 
-    @Test
-    public void createsTwoStepsWithActorAndFlow() {
+  @Test
+  public void createsTwoStepsWithActorAndFlow() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -453,10 +483,10 @@ public class BuildModelTest extends AbstractTestCase {
 		step = stepIt.next();
 		assertEquals(SYSTEM_DISPLAYS_NUMBER, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
-    }
+  }
 
-    @Test
-    public void createsTwoStepsAndCheckIfTheyExistInUseCaseByName() {
+  @Test
+  public void createsTwoStepsAndCheckIfTheyExistInUseCaseByName() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow()
@@ -471,10 +501,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertTrue(firstUseCaseStepExists);
 		assertTrue(secondUseCaseStepExists);
-    }
+  }
 
-    @Test
-    public void createsTwoStepsInBasicFlowAndCheckIfTheyExistByIndex() {
+  @Test
+  public void createsTwoStepsInBasicFlowAndCheckIfTheyExistByIndex() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow()
@@ -486,10 +516,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertEquals(SYSTEM_DISPLAYS_TEXT, steps.get(0).getName());
 		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(1).getName());
-    }
+  }
 
-    @Test
-    public void createsOneStepInAlternativeFlowAndCheckIfItExistsByIndex() {
+  @Test
+  public void createsOneStepInAlternativeFlowAndCheckIfItExistsByIndex() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow()
@@ -500,10 +530,10 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(1, steps.size());
 	
 		assertEquals(SYSTEM_DISPLAYS_TEXT_AGAIN, steps.get(0).getName());
-    }
+  }
 
-    @Test
-    public void createsTwoStepsAndPreviousStepOfSecondOneIsFirstOne() {
+  @Test
+  public void createsTwoStepsAndPreviousStepOfSecondOneIsFirstOne() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.basicFlow()
@@ -514,10 +544,10 @@ public class BuildModelTest extends AbstractTestCase {
 		FlowStep secondUseCaseStep = (FlowStep)useCasePart.getUseCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 	
 		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
-    }
+  }
 
-    @Test
-    public void createsTwoStepsIncrementally() {
+  @Test
+  public void createsTwoStepsIncrementally() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 		modelBuilder.useCase(USE_CASE).basicFlow().step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
 	
@@ -529,10 +559,10 @@ public class BuildModelTest extends AbstractTestCase {
 		FlowStep secondUseCaseStep = (FlowStep)useCasePart.getUseCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
 	
 		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
-    }
+  }
 
-    @Test
-    public void createsTwoStepsInDifferentFlowsThatBothHaveNoPreviousSteps() {
+  @Test
+  public void createsTwoStepsInDifferentFlowsThatBothHaveNoPreviousSteps() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart
@@ -546,10 +576,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertFalse(firstUseCaseStep.getPreviousStepInFlow().isPresent());
 		assertFalse(secondUseCaseStep.getPreviousStepInFlow().isPresent());
-    }
+  }
 
-    @Test
-    public void useCasesAreUniquelyIdentifiedByName() {
+  @Test
+  public void useCasesAreUniquelyIdentifiedByName() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
 				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
@@ -558,10 +588,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertEquals(1, model.getUseCases().size());
 		assertEquals(model.findUseCase(USE_CASE), model.getUseCases().iterator().next());
-    }
+  }
 
-    @Test
-    public void flowsAreUniquelyIdentifiedByName() {
+  @Test
+  public void flowsAreUniquelyIdentifiedByName() {
 		UseCase useCase = modelBuilder.useCase(USE_CASE).getUseCase();
 		useCase.newFlow(ALTERNATIVE_FLOW);
 		Flow existingFlow = useCase.findFlow(ALTERNATIVE_FLOW);
@@ -571,19 +601,19 @@ public class BuildModelTest extends AbstractTestCase {
 		Iterator<Flow> flowIt = useCase.getFlows().iterator();
 		assertEquals(useCase.getBasicFlow(), flowIt.next());
 		assertEquals(existingFlow, flowIt.next());
-    }
+  }
 
-    @Test
-    public void thereIsOnlyOneBasicFlowPerUseCase() {
+  @Test
+  public void thereIsOnlyOneBasicFlowPerUseCase() {
 		modelBuilder.useCase(USE_CASE);
 	
 		Model model = modelBuilder.build();
 		UseCase uc = model.findUseCase(USE_CASE);
 		assertEquals(1, uc.getFlows().size());
-    }
+  }
 
-    @Test
-    public void actorsCanBeReusedInUseCase() {
+  @Test
+  public void actorsCanBeReusedInUseCase() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
@@ -599,10 +629,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
-    }
+  }
 
-    @Test
-    public void actorsCanBeReusedBetweenUseCases() {
+  @Test
+  public void actorsCanBeReusedBetweenUseCases() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
@@ -620,10 +650,10 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
-    }
+  }
     
-    @Test
-    public void defaultActorIsUsedForSeveralSteps() {
+  @Test
+  public void defaultActorIsUsedForSeveralSteps() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).as(customer).basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
@@ -639,5 +669,5 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
-    }
+  }
 }

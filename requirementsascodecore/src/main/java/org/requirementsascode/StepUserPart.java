@@ -30,7 +30,7 @@ public class StepUserPart<T> {
 	 * @param systemReaction the specified system reaction
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<T> system(Consumer<T> systemReaction) {
+	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
@@ -49,7 +49,7 @@ public class StepUserPart<T> {
 	 *                       be published.
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<T> systemPublish(Function<T, Object> systemReaction) {
+	public StepSystemPart<T> systemPublish(Function<? super T, Object> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
 		return createStepSystemPart(systemReactionObject);
 	}
@@ -82,6 +82,6 @@ public class StepUserPart<T> {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		return system(new IgnoresIt<T>()).step(stepName);
+		return system(new IgnoresIt<>()).step(stepName);
 	}
 }
