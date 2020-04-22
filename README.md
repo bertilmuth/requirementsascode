@@ -6,15 +6,12 @@
 Requirements as code is a small library and a set of design principles to build maintainable Java applications.
 It builds on use case theory to record user requirements in the code and make their realization exchangable.
  
-In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
+In use case theory, use cases describe the interactions of users with the system as a black box. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
-In requirements as code, use case models are free of technical concerns as well. Models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary. By switching method handlers, or by injecting different dependencies into them, you can switch your application's technical infrastructure.
+In requirements as code, you build use case models that define interactions. They are free of technical concerns as well. The models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary. By switching method handlers, or by injecting different dependencies into them, you can switch your application's technical infrastructure.
 
-In use case theory, a use case specifies interactions between users and the system.
-
-In requirements as code, an interaction is:
-* a message class, and
-* a message handler that defines how the system reacts when receiving an instance of the message class. 
+In requirements as code, an interaction is defined as a message class, and a message handler.
+The message handler specifies how the system reacts when receiving an instance of the message class, or an instance of a subclass. 
 
 The message handler calls the domain/infrastructure code and then:
 * doesn't return anything,
@@ -91,7 +88,7 @@ Optional<Object> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
 ```
 To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()` (example [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)).
 
-By default, if a message's class is not declared in the model, the runner consumes it silently.
+By default, if a message's class (or superclass) is not declared in the model, the runner consumes the message silently.
 To customize that behavior, use `modelRunner.handleUnhandledWith()`. 
 If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
 other handler method, the runner will rethrow it.
