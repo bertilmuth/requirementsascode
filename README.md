@@ -69,9 +69,10 @@ Model model = Model.builder()
 ```
 
 For handling commands, the message handler has a `Consumer<X>` or `Runnable` type, where X is the message class.
-For handling queries or publishing events, the message handler has a `Function<X, Object>` type.
+For handling queries, use `.systemPublish` instead of `.system`, and the message handler has a `Function<X, Object>` type.
 For handling events, use `.on()` instead of `.user()`.
 For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
+
 Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
 You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after an interaction, if the condition is fulfilled.
 
