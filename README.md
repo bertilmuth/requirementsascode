@@ -3,7 +3,8 @@
 
 ![requirements as code logo](./requirementsascode_logo.png)
 
-Requirements as code does not replace conversations with stakeholders. It's a formal way to record conversation results where it matters: in the code. Translate use cases into code to improve the long term maintenance of your application.
+Requirements as code is a small library and a set of design principles to build maintainable Java applications.
+It builds on use case theory to record user requirements in the code and make their realization exchangable.
  
 In use case theory, use cases look at the system from a user's perspective. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
