@@ -235,17 +235,15 @@ They are 'dumb' in the sense that they don't contain business logic themselves.
 
 ``` java
 class SayHello implements Consumer<RequestHello> {
-  private MessageGenerator messageGenerator;
   private OutputAdapter outputAdapter;
 
   public SayHello() {
-    this.messageGenerator = new MessageGenerator();
     this.outputAdapter = new OutputAdapter();
   }
   
   public void accept(RequestHello requestHello) {
-    String message = messageGenerator.userNameToMessage(requestHello.getUserName());
-    outputAdapter.showMessage(message);
+    String greeting = Greeting.forUser(requestHello.getUserName());
+    outputAdapter.showMessage(greeting);
   }
 }
 ```
@@ -265,11 +263,11 @@ class OutputAdapter{
 ## Pure domain code
 These are the domain classes. They are side effect free, since all communication with the infrastructure happens in the message handler.
 
-In the example, there is only a single domain function: taking the user name and converting it to a message to display.
+In the example, there is only a single domain function: for creating a greeting, based on the user name.
 
 ``` java
-class MessageGenerator{
-  public String userNameToMessage(String userName) {
+class Greeting{
+  public static String forUser(String userName) {
     return "Hello, " + userName + ".";
   }
 }
@@ -368,17 +366,15 @@ class RequestHello {
  * Message handlers
  */
 class SayHello implements Consumer<RequestHello> {
-  private MessageGenerator messageGenerator;
   private OutputAdapter outputAdapter;
 
   public SayHello() {
-    this.messageGenerator = new MessageGenerator();
     this.outputAdapter = new OutputAdapter();
   }
   
   public void accept(RequestHello requestHello) {
-    String message = messageGenerator.userNameToMessage(requestHello.getUserName());
-    outputAdapter.showMessage(message);
+    String greeting = Greeting.forUser(requestHello.getUserName());
+    outputAdapter.showMessage(greeting);
   }
 }
 
@@ -394,8 +390,8 @@ class OutputAdapter{
 /**
  * Domain classes
  */
-class MessageGenerator{
-  public String userNameToMessage(String userName) {
+class Greeting{
+  public static String forUser(String userName) {
     return "Hello, " + userName + ".";
   }
 }
