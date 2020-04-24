@@ -99,7 +99,7 @@ public class CreditCard {
     }
 
     /*
-     * Commands
+     * Command handlers
      */
     
     class AssignsLimit implements Consumer<RequestsToAssignLimit> {

@@ -29,13 +29,13 @@ public class CreditCardModelRunner {
     public static final String REPEAT = "Repeat";
     public static final String REPAY = "Repay";
     
-    // Request types
+    // Command types
     private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
     private static final Class<RequestsWithdrawal> requestsWithdrawal = RequestsWithdrawal.class;
     private static final Class<RequestsRepay> requestsRepay = RequestsRepay.class;
     private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
     
-    // Commands
+    // Command handlers
     private AssignsLimit assignsLimit;
     private Withdraws withdraws;
     private Repays repays;
@@ -84,24 +84,24 @@ public class CreditCardModelRunner {
 	return model;
     }
     
-    public void request(Object request) {
-	modelRunner.reactTo(request);
+    public void handleCommand(Object command) {
+	modelRunner.reactTo(command);
     }
     
     public void requestToAssignLimit(BigDecimal amount) {
-	request(new RequestsToAssignLimit(amount));
+	handleCommand(new RequestsToAssignLimit(amount));
     }
     
     public void requestWithdrawal(BigDecimal amount) {
-	request(new RequestsWithdrawal(amount));
+	handleCommand(new RequestsWithdrawal(amount));
     }
     
     public void requestRepay(BigDecimal amount) {
-	request(new RequestsRepay(amount));
+	handleCommand(new RequestsRepay(amount));
     }
     
     public void requestToCloseCycle() {
-	request(new RequestToCloseCycle());
+	handleCommand(new RequestToCloseCycle());
     }
     
     private void assignCardDependentFields() {
