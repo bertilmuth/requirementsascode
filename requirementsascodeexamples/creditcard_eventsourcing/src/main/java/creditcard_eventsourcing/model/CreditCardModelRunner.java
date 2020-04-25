@@ -30,13 +30,13 @@ public class CreditCardModelRunner {
 	private static final Class<RequestsRepay> requestsRepay = RequestsRepay.class;
 	private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
 
-	// Command handlers
-	private Consumer<RequestsToAssignLimit> assignsLimit;
-	private Consumer<RequestsWithdrawal> withdraws;
-	private Consumer<RequestsRepay> repays;
-	private Consumer<RequestToCloseCycle> closesCycle;
-	private Consumer<RequestsToAssignLimit> throwsAssignLimitException;
-	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException;
+	// Command handling methods
+	private Consumer<RequestsToAssignLimit> assignsLimit = this::assignLimit;
+	private Consumer<RequestsWithdrawal> withdraws = this::withdraw;
+	private Consumer<RequestsRepay> repays = this::repay;
+	private Consumer<RequestToCloseCycle> closesCycle = this::closeCycle;
+	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
+	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
 	// Conditions
 	private Condition tooManyWithdrawalsInCycle;
@@ -83,14 +83,7 @@ public class CreditCardModelRunner {
 		modelRunner.reactTo(command);
 	}
 
-	private void assignCardDependentFields() { 
-		this.assignsLimit = this::assignLimit;
-		this.withdraws = this::withdraw;
-		this.repays = this::repay;
-		this.closesCycle = this::closeCycle;
-		this.throwsAssignLimitException = this::throwAssignLimitException;
-		this.throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
- 
+	private void assignCardDependentFields() {  
 		this.tooManyWithdrawalsInCycle = creditCard::tooManyWithdrawalsInCycle;
 		this.limitAlreadyAssigned = creditCard::limitAlreadyAssigned;
 		this.accountOpen = creditCard::accountOpen;
