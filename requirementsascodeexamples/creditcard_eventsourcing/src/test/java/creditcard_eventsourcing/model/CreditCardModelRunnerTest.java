@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.ModelRunner;
 
+import creditcard_eventsourcing.model.request.RequestsRepay;
 import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.request.RequestsWithdrawal;
 
@@ -121,7 +122,7 @@ public class CreditCardModelRunnerTest {
 	public void repayingOnceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		cardModelRunner.requestRepay(BigDecimal.ONE);
+		requestRepay(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY);
 		assertEquals(BigDecimal.TEN, creditCard.availableLimit());
 	}
@@ -130,8 +131,8 @@ public class CreditCardModelRunnerTest {
 	public void repayingTwiceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		cardModelRunner.requestRepay(BigDecimal.ONE);
-		cardModelRunner.requestRepay(BigDecimal.ONE);
+		requestRepay(BigDecimal.ONE);
+		requestRepay(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, REPAY);
 		assertEquals(new BigDecimal(11), creditCard.availableLimit());
 	}
@@ -140,7 +141,7 @@ public class CreditCardModelRunnerTest {
 	public void assigningWithdrawingAndRepayingCreatesThreeEvents() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		cardModelRunner.requestRepay(BigDecimal.ONE);
+		requestRepay(BigDecimal.ONE);
 		assertEquals(3, creditCard.getPendingEvents().size());
 	}
 
@@ -148,7 +149,7 @@ public class CreditCardModelRunnerTest {
 	public void withdrawingWorksAfterRepaying() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		cardModelRunner.requestRepay(BigDecimal.ONE);
+		requestRepay(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, WITHDRAW_AGAIN, REPEAT, WITHDRAW);
@@ -166,5 +167,9 @@ public class CreditCardModelRunnerTest {
 
 	public void requestWithdrawal(BigDecimal amount) {
 		cardModelRunner.handleCommand(new RequestsWithdrawal(amount));
+	}
+
+	public void requestRepay(BigDecimal amount) {
+		cardModelRunner.handleCommand(new RequestsRepay(amount));
 	}
 }

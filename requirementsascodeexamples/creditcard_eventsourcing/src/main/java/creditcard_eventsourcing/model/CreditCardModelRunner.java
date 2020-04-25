@@ -1,7 +1,5 @@
 package creditcard_eventsourcing.model;
 
-import java.math.BigDecimal;
-
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -86,10 +84,6 @@ public class CreditCardModelRunner {
     
     public void handleCommand(Object command) {
 	modelRunner.reactTo(command);
-    }
-    
-    public void requestRepay(BigDecimal amount) {
-	handleCommand(new RequestsRepay(amount));
     }
     
     public void requestToCloseCycle() {
