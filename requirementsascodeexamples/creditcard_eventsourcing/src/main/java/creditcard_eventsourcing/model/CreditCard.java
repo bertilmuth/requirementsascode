@@ -33,9 +33,12 @@ public class CreditCard {
 	}
 
 	private Model model() {
-		return Model.builder().on(LimitAssigned.class).system(this::limitAssigned).on(CardWithdrawn.class).system(
-			this::cardWithdrawn).on(CardRepaid.class).system(this::cardRepaid).on(CycleClosed.class).system(
-				this::cycleWasClosed).build();
+		return Model.builder()
+			.on(LimitAssigned.class).system(this::limitAssigned)
+			.on(CardWithdrawn.class).system(this::cardWithdrawn)
+			.on(CardRepaid.class).system(this::cardRepaid)
+			.on(CycleClosed.class).system(this::cycleWasClosed)
+		.build();
 	}
 
 	private void addingPendingEvents(StepToBeRun stepToBeRun) {
