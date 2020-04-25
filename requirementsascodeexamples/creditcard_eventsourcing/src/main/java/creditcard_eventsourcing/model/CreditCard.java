@@ -9,8 +9,6 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StepToBeRun;
 
-import creditcard_eventsourcing.model.command.RequestsWithdrawal;
-
 /**
  * Based on code by Jakub Pilimon:
  * https://gitlab.com/pilloPl/eventsourced-credit-cards/blob/4329a0aac283067f1376b3802e13f5a561f18753
