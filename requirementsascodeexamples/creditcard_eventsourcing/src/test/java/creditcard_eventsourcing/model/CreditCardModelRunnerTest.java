@@ -16,144 +16,150 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.ModelRunner;
 
+import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
+
 public class CreditCardModelRunnerTest {
-    private ModelRunner modelRunner;
-    private CreditCardModelRunner cardModelRunner;
-    private CreditCard creditCard;
+	private ModelRunner modelRunner;
+	private CreditCardModelRunner cardModelRunner;
+	private CreditCard creditCard;
 
-    @Before
-    public void setUp() throws Exception {
-	creditCard = new CreditCard(UUID.randomUUID());
-	modelRunner = new ModelRunner().startRecording();
-	cardModelRunner = new CreditCardModelRunner(creditCard, modelRunner);
-    }
-
-    @Test
-    public void assigningLimitOnceWorksCorrectly() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	assertRecordedStepNames(ASSIGN);
-	assertEquals(BigDecimal.TEN, creditCard.availableLimit());
-    }
-
-    @Test
-    public void assigningLimitOnceCreatesOneEvent() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	assertEquals(1, creditCard.getPendingEvents().size());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void assigningLimitTwiceThrowsException() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-    }
-
-    @Test
-    public void withdrawingOnceWorksCorrectly() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	assertRecordedStepNames(ASSIGN, WITHDRAW);
-	assertEquals(BigDecimal.ZERO, creditCard.availableLimit());
-    }
-
-    @Test
-    public void assigningAndWithdrawingCreatesTwoEvents() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	assertEquals(2, creditCard.getPendingEvents().size());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void assigningAndWithdrawingAndAssigningThrowsException() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void withdrawingTooMuchThrowsException() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(new BigDecimal(2));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void withdrawingTooOftenThrowsException() {
-	cardModelRunner.requestToAssignLimit(new BigDecimal(100));
-
-	for (int i = 1; i <= 90; i++) {
-	    cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+	@Before
+	public void setUp() throws Exception {
+		creditCard = new CreditCard(UUID.randomUUID());
+		modelRunner = new ModelRunner().startRecording();
+		cardModelRunner = new CreditCardModelRunner(creditCard, modelRunner);
 	}
-    }
 
-    @Test
-    public void withdrawingTooOftenOnceProducesCorrectResult() {
-	cardModelRunner.requestToAssignLimit(new BigDecimal(50));
+	@Test
+	public void assigningLimitOnceWorksCorrectly() {
+		requestToAssignLimit(BigDecimal.TEN);
+		assertRecordedStepNames(ASSIGN);
+		assertEquals(BigDecimal.TEN, creditCard.availableLimit());
+	}
 
-	for (int i = 1; i <= 46; i++) {
-	    try {
+	@Test
+	public void assigningLimitOnceCreatesOneEvent() {
+		requestToAssignLimit(BigDecimal.TEN);
+		assertEquals(1, creditCard.getPendingEvents().size());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void assigningLimitTwiceThrowsException() {
+		requestToAssignLimit(BigDecimal.TEN);
+		requestToAssignLimit(BigDecimal.TEN);
+	}
+
+	@Test
+	public void withdrawingOnceWorksCorrectly() {
+		requestToAssignLimit(BigDecimal.ONE);
 		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	    } catch (IllegalStateException e) {
-		assertEquals(new BigDecimal(5), creditCard.availableLimit());
-		return;
-	    }
-	}
-	fail();
-    }
-
-    @Test
-    public void withdrawingOftenWorksWhenCycleIsClosed() {
-	cardModelRunner.requestToAssignLimit(new BigDecimal(100));
-
-	for (int i = 1; i <= 44; i++) {
-	    cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		assertRecordedStepNames(ASSIGN, WITHDRAW);
+		assertEquals(BigDecimal.ZERO, creditCard.availableLimit());
 	}
 
-	cardModelRunner.requestToCloseCycle();
-
-	for (int i = 1; i <= 44; i++) {
-	    cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+	@Test
+	public void assigningAndWithdrawingCreatesTwoEvents() {
+		requestToAssignLimit(BigDecimal.ONE);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		assertEquals(2, creditCard.getPendingEvents().size());
 	}
-    }
 
-    @Test
-    public void repayingOnceWorksCorrectly() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestRepay(BigDecimal.ONE);
-	assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY);
-	assertEquals(BigDecimal.TEN, creditCard.availableLimit());
-    }
+	@Test(expected = IllegalStateException.class)
+	public void assigningAndWithdrawingAndAssigningThrowsException() {
+		requestToAssignLimit(BigDecimal.ONE);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		requestToAssignLimit(BigDecimal.ONE);
+	}
 
-    @Test
-    public void repayingTwiceWorksCorrectly() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestRepay(BigDecimal.ONE);
-	cardModelRunner.requestRepay(BigDecimal.ONE);
-	assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, REPAY);
-	assertEquals(new BigDecimal(11), creditCard.availableLimit());
-    }
+	@Test(expected = IllegalStateException.class)
+	public void withdrawingTooMuchThrowsException() {
+		requestToAssignLimit(BigDecimal.ONE);
+		cardModelRunner.requestWithdrawal(new BigDecimal(2));
+	}
 
-    @Test
-    public void assigningWithdrawingAndRepayingCreatesThreeEvents() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestRepay(BigDecimal.ONE);
-	assertEquals(3, creditCard.getPendingEvents().size());
-    }
+	@Test(expected = IllegalStateException.class)
+	public void withdrawingTooOftenThrowsException() {
+		requestToAssignLimit(new BigDecimal(100));
 
-    @Test
-    public void withdrawingWorksAfterRepaying() {
-	cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestRepay(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	cardModelRunner.requestWithdrawal(BigDecimal.ONE);
-	assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, WITHDRAW_AGAIN, REPEAT, WITHDRAW);
-	assertEquals(new BigDecimal(8), creditCard.availableLimit());
-    }
+		for (int i = 1; i <= 90; i++) {
+			cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		}
+	}
 
-    protected void assertRecordedStepNames(String... expectedStepNames) {
-	String[] actualStepNames = modelRunner.getRecordedStepNames();
-	assertArrayEquals(expectedStepNames, actualStepNames);
-    }
+	@Test
+	public void withdrawingTooOftenOnceProducesCorrectResult() {
+		requestToAssignLimit(new BigDecimal(50));
+
+		for (int i = 1; i <= 46; i++) {
+			try {
+				cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+			} catch (IllegalStateException e) {
+				assertEquals(new BigDecimal(5), creditCard.availableLimit());
+				return;
+			}
+		}
+		fail();
+	}
+
+	@Test
+	public void withdrawingOftenWorksWhenCycleIsClosed() {
+		requestToAssignLimit(new BigDecimal(100));
+
+		for (int i = 1; i <= 44; i++) {
+			cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		}
+
+		cardModelRunner.requestToCloseCycle();
+
+		for (int i = 1; i <= 44; i++) {
+			cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		}
+	}
+
+	@Test
+	public void repayingOnceWorksCorrectly() {
+		requestToAssignLimit(BigDecimal.TEN);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		cardModelRunner.requestRepay(BigDecimal.ONE);
+		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY);
+		assertEquals(BigDecimal.TEN, creditCard.availableLimit());
+	}
+
+	@Test
+	public void repayingTwiceWorksCorrectly() {
+		requestToAssignLimit(BigDecimal.TEN);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		cardModelRunner.requestRepay(BigDecimal.ONE);
+		cardModelRunner.requestRepay(BigDecimal.ONE);
+		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, REPAY);
+		assertEquals(new BigDecimal(11), creditCard.availableLimit());
+	}
+
+	@Test
+	public void assigningWithdrawingAndRepayingCreatesThreeEvents() {
+		requestToAssignLimit(BigDecimal.TEN);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		cardModelRunner.requestRepay(BigDecimal.ONE);
+		assertEquals(3, creditCard.getPendingEvents().size());
+	}
+
+	@Test
+	public void withdrawingWorksAfterRepaying() {
+		requestToAssignLimit(BigDecimal.TEN);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		cardModelRunner.requestRepay(BigDecimal.ONE);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		cardModelRunner.requestWithdrawal(BigDecimal.ONE);
+		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, WITHDRAW_AGAIN, REPEAT, WITHDRAW);
+		assertEquals(new BigDecimal(8), creditCard.availableLimit());
+	}
+
+	protected void assertRecordedStepNames(String... expectedStepNames) {
+		String[] actualStepNames = modelRunner.getRecordedStepNames();
+		assertArrayEquals(expectedStepNames, actualStepNames);
+	}
+
+	private void requestToAssignLimit(BigDecimal amount) {
+		cardModelRunner.handleCommand(new RequestsToAssignLimit(amount));
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import creditcard_eventsourcing.model.CreditCard;
 import creditcard_eventsourcing.model.CreditCardModelRunner;
+import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
@@ -37,7 +38,7 @@ public class EventsourcingApplication {
     public void randomCards() {
         CreditCard creditCard = new CreditCard(UUID.randomUUID());
         CreditCardModelRunner cardModelRunner = new CreditCardModelRunner(creditCard, new ModelRunner());
-        cardModelRunner.requestToAssignLimit(BigDecimal.TEN);
+    		cardModelRunner.handleCommand(new RequestsToAssignLimit(BigDecimal.TEN));
         cardModelRunner.requestWithdrawal(BigDecimal.ONE);
         creditCardRepository.save(creditCard);
     }

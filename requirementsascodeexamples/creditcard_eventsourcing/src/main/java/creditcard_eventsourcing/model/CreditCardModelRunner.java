@@ -88,10 +88,6 @@ public class CreditCardModelRunner {
 	modelRunner.reactTo(command);
     }
     
-    public void requestToAssignLimit(BigDecimal amount) {
-	handleCommand(new RequestsToAssignLimit(amount));
-    }
-    
     public void requestWithdrawal(BigDecimal amount) {
 	handleCommand(new RequestsWithdrawal(amount));
     }
