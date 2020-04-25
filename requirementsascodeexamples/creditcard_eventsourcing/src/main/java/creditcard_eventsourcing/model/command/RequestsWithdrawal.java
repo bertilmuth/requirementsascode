@@ -1,4 +1,4 @@
-package creditcard_eventsourcing.model.request;
+package creditcard_eventsourcing.model.command;
 
 import java.math.BigDecimal;
 

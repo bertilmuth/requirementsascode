@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import creditcard_eventsourcing.model.CreditCard;
 import creditcard_eventsourcing.model.CreditCardModelRunner;
-import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.request.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**

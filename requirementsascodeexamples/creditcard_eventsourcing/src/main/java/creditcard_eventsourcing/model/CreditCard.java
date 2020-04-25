@@ -12,10 +12,10 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StepToBeRun;
 
-import creditcard_eventsourcing.model.request.RequestToCloseCycle;
-import creditcard_eventsourcing.model.request.RequestsRepay;
-import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.request.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestToCloseCycle;
+import creditcard_eventsourcing.model.command.RequestsRepay;
+import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 
 /**
  * Based on code by Jakub Pilimon: 

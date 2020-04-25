@@ -16,9 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.ModelRunner;
 
-import creditcard_eventsourcing.model.request.RequestsRepay;
-import creditcard_eventsourcing.model.request.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.request.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestsRepay;
+import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 
 public class CreditCardModelRunnerTest {
 	private ModelRunner modelRunner;

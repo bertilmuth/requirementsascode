@@ -1,10 +1,10 @@
-package creditcard_eventsourcing.model.request;
+package creditcard_eventsourcing.model.command;
 
 import java.math.BigDecimal;
 
-public class RequestsRepay {
+public class RequestsToAssignLimit {
     private BigDecimal amount;
-    public RequestsRepay(BigDecimal amount) {
+    public RequestsToAssignLimit(BigDecimal amount) {
         this.amount = amount;
     }
     public BigDecimal getAmount() {
