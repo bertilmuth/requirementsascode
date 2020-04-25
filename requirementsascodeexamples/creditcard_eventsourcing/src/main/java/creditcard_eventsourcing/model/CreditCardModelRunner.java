@@ -1,5 +1,7 @@
 package creditcard_eventsourcing.model;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Condition;
@@ -81,20 +83,47 @@ public class CreditCardModelRunner {
 		modelRunner.reactTo(command);
 	}
 
-	public void requestToCloseCycle() {
-		handleCommand(new RequestToCloseCycle());
-	}
-
 	private void assignCardDependentFields() { 
-		this.assignsLimit = creditCard::assignLimit;
-		this.withdraws = creditCard::withdraw;
-		this.repays = creditCard::repay;
-		this.closesCycle = creditCard::closeCycle;
-		this.throwsAssignLimitException = creditCard::throwAssignLimitException;
-		this.throwsTooManyWithdrawalsException = creditCard::throwTooManyWithdrawalsException;
+		this.assignsLimit = this::assignLimit;
+		this.withdraws = this::withdraw;
+		this.repays = this::repay;
+		this.closesCycle = this::closeCycle;
+		this.throwsAssignLimitException = this::throwAssignLimitException;
+		this.throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
  
 		this.tooManyWithdrawalsInCycle = creditCard::tooManyWithdrawalsInCycle;
 		this.limitAlreadyAssigned = creditCard::limitAlreadyAssigned;
 		this.accountOpen = creditCard::accountOpen;
+	}
+	
+	// Command handling methods
+	private void assignLimit(RequestsToAssignLimit request) {
+		BigDecimal amount = request.getAmount();
+		creditCard.handle(new LimitAssigned(creditCard.uuid(), amount, Instant.now()));
+	}
+	
+	private void withdraw(RequestsWithdrawal request) {
+		BigDecimal amount = request.getAmount();
+		if (creditCard.notEnoughMoneyToWithdraw(amount)) {
+			throw new IllegalStateException();
+		}
+		creditCard.handle(new CardWithdrawn(creditCard.uuid(), amount, Instant.now()));
+	}
+	
+	private void repay(RequestsRepay request) {
+		BigDecimal amount = request.getAmount();
+		creditCard.handle(new CardRepaid(creditCard.uuid(), amount, Instant.now()));
+	}
+	
+	private void closeCycle(RequestToCloseCycle request) {
+		creditCard.handle(new CycleClosed(creditCard.uuid(), Instant.now()));
+	}
+	
+	private void throwAssignLimitException(RequestsToAssignLimit request) {
+		throw new IllegalStateException();
+	}
+
+	private void throwTooManyWithdrawalsException(RequestsWithdrawal request) {
+		throw new IllegalStateException();
 	}
 }

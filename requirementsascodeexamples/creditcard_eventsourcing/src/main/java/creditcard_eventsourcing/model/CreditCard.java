@@ -1,7 +1,6 @@
 package creditcard_eventsourcing.model;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,9 +9,6 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StepToBeRun;
 
-import creditcard_eventsourcing.model.command.RequestToCloseCycle;
-import creditcard_eventsourcing.model.command.RequestsRepay;
-import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 
 /**
@@ -78,52 +74,19 @@ public class CreditCard {
 	/*
 	 * Getters
 	 */
-	public UUID getUuid() {
+	public UUID uuid() {
 		return uuid;
 	}
 
 	/*
 	 * Validation methods
 	 */
-	private boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
+	boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
 		return availableLimit().compareTo(amount) < 0;
 	}
 
 	public BigDecimal availableLimit() {
 		return initialLimit.subtract(usedLimit);
-	}
-
-	/*
-	 * Command handling methods
-	 */
-	void assignLimit(RequestsToAssignLimit request) {
-		BigDecimal amount = request.getAmount();
-		handle(new LimitAssigned(uuid, amount, Instant.now()));
-	}
-
-	void withdraw(RequestsWithdrawal request) {
-		BigDecimal amount = request.getAmount();
-		if (notEnoughMoneyToWithdraw(amount)) {
-			throw new IllegalStateException();
-		}
-		handle(new CardWithdrawn(uuid, amount, Instant.now()));
-	}
-
-	void repay(RequestsRepay request) {
-		BigDecimal amount = request.getAmount();
-		handle(new CardRepaid(uuid, amount, Instant.now()));
-	}
-
-	void closeCycle(RequestToCloseCycle request) {
-		handle(new CycleClosed(uuid, Instant.now()));
-	}
-
-	void throwAssignLimitException(RequestsToAssignLimit request) {
-		throw new IllegalStateException();
-	}
-
-	void throwTooManyWithdrawalsException(RequestsWithdrawal request) {
-		throw new IllegalStateException();
 	}
 
 	/*
@@ -151,7 +114,7 @@ public class CreditCard {
 		return creditCard;
 	}
 
-	private void handle(DomainEvent event) {
+	void handle(DomainEvent event) {
 		modelRunner.reactTo(event);
 	}
 

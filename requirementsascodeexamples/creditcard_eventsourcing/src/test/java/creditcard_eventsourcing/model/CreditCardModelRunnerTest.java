@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.requirementsascode.ModelRunner;
 
+import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestsRepay;
 import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
@@ -111,7 +112,7 @@ public class CreditCardModelRunnerTest {
 			requestWithdrawal(BigDecimal.ONE);
 		}
 
-		cardModelRunner.requestToCloseCycle();
+		cardModelRunner.handleCommand(new RequestToCloseCycle());
 
 		for (int i = 1; i <= 44; i++) {
 			requestWithdrawal(BigDecimal.ONE);
