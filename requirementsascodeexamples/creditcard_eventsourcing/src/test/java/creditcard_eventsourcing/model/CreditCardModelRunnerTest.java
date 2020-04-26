@@ -20,30 +20,31 @@ import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestsRepay;
 import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardModelRunnerTest {
 	private ModelRunner modelRunner;
 	private CreditCardModelRunner cardModelRunner;
-	private CreditCard creditCard;
+	private CreditCardRepository repository;
 
 	@Before
 	public void setUp() throws Exception {
-		creditCard = new CreditCard(UUID.randomUUID());
 		modelRunner = new ModelRunner().startRecording();
-		cardModelRunner = new CreditCardModelRunner(creditCard, modelRunner);
+		repository = new CreditCardRepository();
+		cardModelRunner = new CreditCardModelRunner(UUID.randomUUID(), modelRunner, repository);
 	}
 
 	@Test
 	public void assigningLimitOnceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.TEN);
 		assertRecordedStepNames(ASSIGN);
-		assertEquals(BigDecimal.TEN, creditCard.availableLimit());
+		assertEquals(BigDecimal.TEN, creditCard().availableLimit());
 	}
 
 	@Test
-	public void assigningLimitOnceCreatesOneEvent() {
+	public void assigningLimitOnceWorks() {
 		requestToAssignLimit(BigDecimal.TEN);
-		assertEquals(1, creditCard.getPendingEvents().size());
+		assertEquals(BigDecimal.TEN, creditCard().availableLimit());
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -57,14 +58,14 @@ public class CreditCardModelRunnerTest {
 		requestToAssignLimit(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW);
-		assertEquals(BigDecimal.ZERO, creditCard.availableLimit());
+		assertEquals(BigDecimal.ZERO, creditCard().availableLimit());
 	}
 
 	@Test
-	public void assigningAndWithdrawingCreatesTwoEvents() {
+	public void assigningAndWithdrawingTheSameEqualsZero() {
 		requestToAssignLimit(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
-		assertEquals(2, creditCard.getPendingEvents().size());
+		assertEquals(BigDecimal.ZERO, creditCard().availableLimit());
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -97,7 +98,7 @@ public class CreditCardModelRunnerTest {
 			try {
 				requestWithdrawal(BigDecimal.ONE);
 			} catch (IllegalStateException e) {
-				assertEquals(new BigDecimal(5), creditCard.availableLimit());
+				assertEquals(new BigDecimal(5), creditCard().availableLimit());
 				return;
 			}
 		}
@@ -125,7 +126,7 @@ public class CreditCardModelRunnerTest {
 		requestWithdrawal(BigDecimal.ONE);
 		requestRepay(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY);
-		assertEquals(BigDecimal.TEN, creditCard.availableLimit());
+		assertEquals(BigDecimal.TEN, creditCard().availableLimit());
 	}
 
 	@Test
@@ -135,15 +136,15 @@ public class CreditCardModelRunnerTest {
 		requestRepay(BigDecimal.ONE);
 		requestRepay(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, REPAY);
-		assertEquals(new BigDecimal(11), creditCard.availableLimit());
+		assertEquals(new BigDecimal(11), creditCard().availableLimit());
 	}
 
 	@Test
-	public void assigningWithdrawingAndRepayingCreatesThreeEvents() {
+	public void assigningWithdrawingAndRepayingWorks() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		requestRepay(BigDecimal.ONE);
-		assertEquals(3, creditCard.getPendingEvents().size());
+		requestRepay(BigDecimal.TEN);
+		assertEquals(new BigDecimal(19), creditCard().availableLimit());
 	}
 
 	@Test
@@ -154,7 +155,7 @@ public class CreditCardModelRunnerTest {
 		requestWithdrawal(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
 		assertRecordedStepNames(ASSIGN, WITHDRAW, REPAY, WITHDRAW_AGAIN, REPEAT, WITHDRAW);
-		assertEquals(new BigDecimal(8), creditCard.availableLimit());
+		assertEquals(new BigDecimal(8), creditCard().availableLimit());
 	}
 
 	protected void assertRecordedStepNames(String... expectedStepNames) {
@@ -172,5 +173,9 @@ public class CreditCardModelRunnerTest {
 
 	public void requestRepay(BigDecimal amount) {
 		cardModelRunner.handleCommand(new RequestsRepay(amount));
+	}
+	
+	private CreditCard creditCard() {
+		return cardModelRunner.creditCard();
 	}
 }

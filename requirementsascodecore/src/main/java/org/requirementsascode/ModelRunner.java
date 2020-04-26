@@ -116,9 +116,16 @@ public class ModelRunner {
 		this.model = Objects.requireNonNull(model);
 		this.isRunning = true;
 
-		Actor runActorOrDefaultUser = runActor != null ? runActor : model.getUserActor();
-		as(runActorOrDefaultUser).triggerAutonomousSystemReaction();
+		as(specifiedActorOrDefaultUserOf(model)).triggerAutonomousSystemReaction();
 		return this;
+	}
+	private Actor specifiedActorOrDefaultUserOf(Model model) {
+		Actor actor = runActor;
+		Actor userActor = model.getUserActor();
+		if(runActor == null || runActor.getName().equals(userActor.getName())) {
+			actor = userActor;
+		} 
+		return actor;
 	}
 
 	private void triggerAutonomousSystemReaction() {

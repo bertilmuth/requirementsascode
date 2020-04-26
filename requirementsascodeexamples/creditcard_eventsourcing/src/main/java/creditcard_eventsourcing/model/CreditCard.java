@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.StepToBeRun;
 
 /**
  * Based on code by Jakub Pilimon:
@@ -28,7 +27,6 @@ public class CreditCard {
 		this.uuid = uuid;
 		this.eventHandlingModel = model();
 		this.modelRunner = new ModelRunner();
-		modelRunner.handleWith(this::addingPendingEvents);
 		modelRunner.run(eventHandlingModel);
 	}
 
@@ -39,12 +37,6 @@ public class CreditCard {
 			.on(CardRepaid.class).system(this::cardRepaid)
 			.on(CycleClosed.class).system(this::cycleWasClosed)
 		.build();
-	}
-
-	private void addingPendingEvents(StepToBeRun stepToBeRun) {
-		stepToBeRun.run();
-		DomainEvent domainEvent = (DomainEvent) stepToBeRun.getMessage().get();
-		pendingEvents.add(domainEvent);
 	}
 
 	public List<DomainEvent> getPendingEvents() {
@@ -111,12 +103,17 @@ public class CreditCard {
 	 */
 	public static CreditCard recreateFrom(UUID uuid, List<DomainEvent> events) {
 		CreditCard creditCard = new CreditCard(uuid);
-		events.forEach(ev -> creditCard.handle(ev));
+		events.forEach(ev -> creditCard.mutate(ev));
 		return creditCard;
 	}
-
-	void handle(DomainEvent event) {
+	
+	private void mutate(DomainEvent event) {
 		modelRunner.reactTo(event);
+	}
+	
+	void apply(DomainEvent event) {
+		modelRunner.reactTo(event);
+		pendingEvents.add(event);
 	}
 
 	public void flushEvents() {

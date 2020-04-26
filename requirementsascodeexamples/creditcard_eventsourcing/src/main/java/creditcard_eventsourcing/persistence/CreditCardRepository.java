@@ -24,10 +24,6 @@ public class CreditCardRepository {
 
     private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
 
-    public CreditCardRepository() {
-    }
-
-
     public void save(CreditCard creditCard) {
         List<DomainEvent> currentStream = eventStream.getOrDefault(creditCard.uuid(), new ArrayList<>());
         currentStream.addAll(creditCard.getPendingEvents());

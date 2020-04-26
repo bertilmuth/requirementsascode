@@ -2,16 +2,21 @@ package creditcard_eventsourcing.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.Step;
 
 import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestsRepay;
 import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardModelRunner {
 	// Step names
@@ -31,10 +36,10 @@ public class CreditCardModelRunner {
 	private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
 
 	// Command handling methods
-	private Consumer<RequestsToAssignLimit> assignsLimit = this::assignLimit;
-	private Consumer<RequestsWithdrawal> withdraws = this::withdraw;
-	private Consumer<RequestsRepay> repays = this::repay;
-	private Consumer<RequestToCloseCycle> closesCycle = this::closeCycle;
+	private Function<RequestsToAssignLimit, Object> assignsLimit = this::assignLimit;
+	private Function<RequestsWithdrawal, Object> withdraws = this::withdraw;
+	private Function<RequestsRepay, Object> repays = this::repay;
+	private Function<RequestToCloseCycle, Object> closesCycle = this::closeCycle;
 	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
 	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
@@ -44,31 +49,34 @@ public class CreditCardModelRunner {
 	private Condition accountOpen;
 
 	// Other fields
-	private CreditCard creditCard;
+	private UUID uuid;
 	private ModelRunner modelRunner;
+	private CreditCardRepository repository;
 
-	public CreditCardModelRunner(CreditCard creditCard, ModelRunner modelRunner) {
-		this.creditCard = creditCard;
+	public CreditCardModelRunner(UUID uuid, ModelRunner modelRunner, CreditCardRepository creditCardRepository) {
+		this.uuid = uuid;
 		this.modelRunner = modelRunner;
-
-		assignCardDependentFields();
-		modelRunner.run(model());
+		this.repository = creditCardRepository;
 	}
 
-	public Model model() {
+	public Model createModelFor(CreditCard creditCard) {
+		this.tooManyWithdrawalsInCycle = creditCard::tooManyWithdrawalsInCycle;
+		this.limitAlreadyAssigned = creditCard::limitAlreadyAssigned;
+		this.accountOpen = creditCard::accountOpen;
+		
 		Model model = Model.builder()
 		  .useCase("Use credit card")
 		    .basicFlow()
-		    	.step(ASSIGN).user(requestsToAssignLimit).system(assignsLimit)
-		    	.step(WITHDRAW).user(requestsWithdrawal).system(withdraws).reactWhile(accountOpen)
-		    	.step(REPAY).user(requestsRepay).system(repays).reactWhile(accountOpen)
+		    	.step(ASSIGN).user(requestsToAssignLimit).systemPublish(assignsLimit)
+		    	.step(WITHDRAW).user(requestsWithdrawal).systemPublish(withdraws).reactWhile(accountOpen)
+		    	.step(REPAY).user(requestsRepay).systemPublish(repays).reactWhile(accountOpen)
 		    	
 		    .flow("Withdraw again").after(REPAY)
-		    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).system(withdraws)
+		    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).systemPublish(withdraws)
 		    	.step(REPEAT).continuesAt(WITHDRAW)
 		    	
 		    .flow("Cycle is over").anytime()
-		    	.step(CLOSE).on(requestToCloseCycle).system(closesCycle)
+		    	.step(CLOSE).on(requestToCloseCycle).systemPublish(closesCycle)
 		    	
 		    .flow("Assign limit twice").condition(limitAlreadyAssigned)
 		    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
@@ -80,38 +88,59 @@ public class CreditCardModelRunner {
 	}
 
 	public void handleCommand(Object command) {
-		modelRunner.reactTo(command);
+		CreditCard creditCard = repository.load(uuid);
+
+		String latestStepName = saveLatestStepName();
+		Model model = createModelFor(creditCard);
+		modelRunner.run(model);
+		restoreLatestStep(model, latestStepName);
+		
+		Optional<Object> event = modelRunner.reactTo(command);		
+		event.ifPresent(ev -> creditCard.apply((DomainEvent) ev));
+		
+		repository.save(creditCard);
+	}
+	private String saveLatestStepName() {
+		Optional<Step> latestStep = modelRunner.getLatestStep();
+		String stepName = latestStep.map(s->s.getName()).orElse(null);
+		return stepName;
 	}
 
-	private void assignCardDependentFields() {  
-		this.tooManyWithdrawalsInCycle = creditCard::tooManyWithdrawalsInCycle;
-		this.limitAlreadyAssigned = creditCard::limitAlreadyAssigned;
-		this.accountOpen = creditCard::accountOpen;
+	private void restoreLatestStep(Model model, String stepName) {
+		if(stepName != null) {
+			Optional<Step> step = model.getSteps().stream().filter(s -> stepName.equals(s.getName())).findAny();
+			step.ifPresent(modelRunner::setLatestStep);
+		} 
 	}
-	
+
+	CreditCard creditCard() {
+		CreditCard creditCard = repository.load(uuid);
+		return creditCard;
+	}
+
 	// Command handling methods
-	private void assignLimit(RequestsToAssignLimit request) {
+	private Object assignLimit(RequestsToAssignLimit request) {
 		BigDecimal amount = request.getAmount();
-		creditCard.handle(new LimitAssigned(creditCard.uuid(), amount, Instant.now()));
+		return new LimitAssigned(uuid, amount, Instant.now());
 	}
-	
-	private void withdraw(RequestsWithdrawal request) {
+
+	private Object withdraw(RequestsWithdrawal request) {
 		BigDecimal amount = request.getAmount();
-		if (creditCard.notEnoughMoneyToWithdraw(amount)) {
+		if (creditCard().notEnoughMoneyToWithdraw(amount)) {
 			throw new IllegalStateException();
 		}
-		creditCard.handle(new CardWithdrawn(creditCard.uuid(), amount, Instant.now()));
+		return new CardWithdrawn(uuid, amount, Instant.now());
 	}
-	
-	private void repay(RequestsRepay request) {
+
+	private Object repay(RequestsRepay request) {
 		BigDecimal amount = request.getAmount();
-		creditCard.handle(new CardRepaid(creditCard.uuid(), amount, Instant.now()));
+		return new CardRepaid(uuid, amount, Instant.now());
 	}
-	
-	private void closeCycle(RequestToCloseCycle request) {
-		creditCard.handle(new CycleClosed(creditCard.uuid(), Instant.now()));
+
+	private Object closeCycle(RequestToCloseCycle request) {
+		return new CycleClosed(uuid, Instant.now());
 	}
-	
+
 	private void throwAssignLimitException(RequestsToAssignLimit request) {
 		throw new IllegalStateException();
 	}

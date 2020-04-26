@@ -184,14 +184,27 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void oneStepInFlowReactsWithConstantText() {		
-		Model model = modelBuilder
+		Model model = buildModel();
+				
+		modelRunner.run(model);
+		reactToAndAssertEvents(entersText());		
+	}
+	
+	@Test
+	public void oneStepInFlowReactsWithConstantTextWhenModelIsRebuiltAndRerun() {		
+		Model model = buildModel();
+		modelRunner.run(model);
+		
+		model = buildModel();
+		modelRunner.run(model);
+		reactToAndAssertEvents(entersText());		
+	}
+	private Model buildModel() {
+		return Model.builder()
 			.useCase(USE_CASE)
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysConstantText())
 			.build();
-				
-		modelRunner.run(model);
-		reactToAndAssertEvents(entersText());		
 	}
 	
 	@Test
