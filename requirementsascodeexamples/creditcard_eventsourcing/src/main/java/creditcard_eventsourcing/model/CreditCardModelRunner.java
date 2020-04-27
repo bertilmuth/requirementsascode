@@ -44,26 +44,25 @@ public class CreditCardModelRunner {
 	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
 	// Conditions
-	private Condition tooManyWithdrawalsInCycle;
-	private Condition limitAlreadyAssigned;
-	private Condition accountOpen;
+	private Condition tooManyWithdrawalsInCycle = this::tooManyWithdrawalsInCycle;
+	private Condition limitAlreadyAssigned = this::limitAlreadyAssigned;
+	private Condition accountOpen = this::accountOpen;
 
 	// Other fields
 	private UUID uuid;
+	private Model model;
 	private ModelRunner modelRunner;
 	private CreditCardRepository repository;
+	private CreditCard creditCard;
 
 	public CreditCardModelRunner(UUID uuid, ModelRunner modelRunner, CreditCardRepository creditCardRepository) {
 		this.uuid = uuid;
-		this.modelRunner = modelRunner;
+		this.model = createModel();
+		this.modelRunner = modelRunner.run(model);
 		this.repository = creditCardRepository;
 	}
 
-	public Model createModelFor(CreditCard creditCard) {
-		this.tooManyWithdrawalsInCycle = creditCard::tooManyWithdrawalsInCycle;
-		this.limitAlreadyAssigned = creditCard::limitAlreadyAssigned;
-		this.accountOpen = creditCard::accountOpen;
-		
+	private Model createModel() {
 		Model model = Model.builder()
 		  .useCase("Use credit card")
 		    .basicFlow()
@@ -88,12 +87,7 @@ public class CreditCardModelRunner {
 	}
 
 	public void handleCommand(Object command) {
-		CreditCard creditCard = repository.load(uuid);
-
-		String latestStepName = saveLatestStepName();
-		Model model = createModelFor(creditCard);
-		modelRunner.run(model);
-		restoreLatestStep(model, latestStepName);
+		creditCard = repository.load(uuid);
 		
 		Optional<Object> event = modelRunner.reactTo(command);		
 		event.ifPresent(ev -> creditCard.apply((DomainEvent) ev));
@@ -147,5 +141,17 @@ public class CreditCardModelRunner {
 
 	private void throwTooManyWithdrawalsException(RequestsWithdrawal request) {
 		throw new IllegalStateException();
+	}
+	
+	boolean tooManyWithdrawalsInCycle() {
+		return creditCard.tooManyWithdrawalsInCycle();
+	}
+
+	boolean limitAlreadyAssigned() {
+		return creditCard.limitAlreadyAssigned();
+	}
+
+	boolean accountOpen() {
+		return creditCard.accountOpen();
 	}
 }
