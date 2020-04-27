@@ -32,7 +32,7 @@ public class CreditCardRepository {
     }
 
     public CreditCard load(UUID uuid) {
-        return CreditCard.recreateFrom(uuid, eventStream.getOrDefault(uuid, new ArrayList<>()));
+        return new CreditCard(uuid, eventStream.getOrDefault(uuid, new ArrayList<>()));
     }
     
     public Set<UUID> getUuids(){
