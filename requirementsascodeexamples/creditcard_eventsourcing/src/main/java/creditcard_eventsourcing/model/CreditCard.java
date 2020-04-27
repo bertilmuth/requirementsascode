@@ -3,6 +3,7 @@ package creditcard_eventsourcing.model;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.requirementsascode.Model;
@@ -22,12 +23,12 @@ public class CreditCard {
 	private List<DomainEvent> pendingEvents = new ArrayList<>();
 	private Model eventHandlingModel;
 	private ModelRunner modelRunner;
+	private Object latestEvent;
 
 	public CreditCard(UUID uuid) {
 		this.uuid = uuid;
 		this.eventHandlingModel = model();
-		this.modelRunner = new ModelRunner();
-		modelRunner.run(eventHandlingModel);
+		this.modelRunner = new ModelRunner().run(eventHandlingModel);
 	}
 
 	private Model model() {
@@ -104,7 +105,18 @@ public class CreditCard {
 	public static CreditCard recreateFrom(UUID uuid, List<DomainEvent> events) {
 		CreditCard creditCard = new CreditCard(uuid);
 		events.forEach(ev -> creditCard.mutate(ev));
+		setLatestEvent(creditCard, events);
 		return creditCard;
+	}
+	
+	private static void setLatestEvent(CreditCard creditCard, List<DomainEvent> events) {
+		creditCard.latestEvent = null;
+		if(events.size() > 0) {
+			creditCard.latestEvent = events.get(events.size()-1);
+		}
+	}
+	public Optional<Object> latestEvent() {
+		return Optional.ofNullable(latestEvent);
 	}
 	
 	private void mutate(DomainEvent event) {

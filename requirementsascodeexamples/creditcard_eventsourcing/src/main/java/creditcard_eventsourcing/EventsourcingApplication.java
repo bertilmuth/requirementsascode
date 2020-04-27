@@ -3,7 +3,6 @@ package creditcard_eventsourcing;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.requirementsascode.ModelRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -36,8 +35,8 @@ public class EventsourcingApplication {
 
     @Scheduled(fixedRate = 2000)
     public void randomCards() {
-        CreditCardModelRunner cardModelRunner = new CreditCardModelRunner(UUID.randomUUID(), new ModelRunner(), creditCardRepository);
-    		cardModelRunner.handleCommand(new RequestsToAssignLimit(BigDecimal.TEN));
-    		cardModelRunner.handleCommand(new RequestsWithdrawal(BigDecimal.ONE));
+        CreditCardModelRunner cardModelRunner = new CreditCardModelRunner(UUID.randomUUID(), creditCardRepository);
+    		cardModelRunner.accept(new RequestsToAssignLimit(BigDecimal.TEN));
+    		cardModelRunner.accept(new RequestsWithdrawal(BigDecimal.ONE));
     }
 }

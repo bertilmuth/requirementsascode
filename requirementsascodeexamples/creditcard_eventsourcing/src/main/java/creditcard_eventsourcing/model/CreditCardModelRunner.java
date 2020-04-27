@@ -50,19 +50,15 @@ public class CreditCardModelRunner {
 
 	// Other fields
 	private UUID uuid;
-	private Model model;
-	private ModelRunner modelRunner;
 	private CreditCardRepository repository;
 	private CreditCard creditCard;
 
-	public CreditCardModelRunner(UUID uuid, ModelRunner modelRunner, CreditCardRepository creditCardRepository) {
+	public CreditCardModelRunner(UUID uuid, CreditCardRepository creditCardRepository) {
 		this.uuid = uuid;
-		this.model = createModel();
-		this.modelRunner = modelRunner.run(model);
 		this.repository = creditCardRepository;
 	}
 
-	private Model createModel() {
+	private Model model() {
 		Model model = Model.builder()
 		  .useCase("Use credit card")
 		    .basicFlow()
@@ -86,33 +82,72 @@ public class CreditCardModelRunner {
 		return model;
 	}
 
-	public void handleCommand(Object command) {
+	/**
+	 * This is the method to be called by clients for handling commands.
+	 * Each command that is accepted will cause an event to be published to the credit card.
+	 * 
+	 * @param command the command to handle.
+	 */
+	public void accept(Object command) {
+		loadCreditCard();
+		Optional<Object> event = handle(command);		
+		applyEventToCreditCardIfPresent(event);
+		saveCreditCard();
+	}
+	
+	// Loads the credit card from the repository, replaying all saved events
+	private void loadCreditCard() {
 		creditCard = repository.load(uuid);
-		
-		Optional<Object> event = modelRunner.reactTo(command);		
+	}
+	
+	// Creates a new model runner and restores the previous state (based on the
+	// step that caused the latest event).
+	// The runner handles the command and returns an event.
+	private Optional<Object> handle(Object command) {
+		Model model = model();
+		ModelRunner modelRunner = new ModelRunner().run(model);
+		restorePreviousState(modelRunner, model);
+		return modelRunner.reactTo(command);
+	}
+
+	private void restorePreviousState(ModelRunner modelRunner, Model model) {
+		Optional<Object> latestEvent = creditCard.latestEvent();
+		if (latestEvent.isPresent()) {
+			Class<?> latestMessageClass = messageClassThatCausesEvent(latestEvent.get());
+			Optional<Step> latestStep = model.getSteps().stream().filter(
+				step -> latestMessageClass.equals(step.getMessageClass())).findFirst();
+			latestStep.ifPresent(step -> modelRunner.setLatestStep(step));
+		}
+	}
+
+	private Class<?> messageClassThatCausesEvent(Object object) {
+		if (object instanceof LimitAssigned) {
+			return RequestsToAssignLimit.class;
+		}
+		if (object instanceof CardWithdrawn) {
+			return RequestsWithdrawal.class;
+		}
+		if (object instanceof CardRepaid) {
+			return RequestsRepay.class;
+		}
+		if (object instanceof CycleClosed) {
+			return RequestToCloseCycle.class;
+		}
+		return null;
+	}
+
+	// If a command handler returned an event, apply it to the credit card 
+	private void applyEventToCreditCardIfPresent(Optional<Object> event) {
 		event.ifPresent(ev -> creditCard.apply((DomainEvent) ev));
-		
+	}
+	
+	// Save all pending events of the credit card to the repository
+	private void saveCreditCard() {
 		repository.save(creditCard);
 	}
-	private String saveLatestStepName() {
-		Optional<Step> latestStep = modelRunner.getLatestStep();
-		String stepName = latestStep.map(s->s.getName()).orElse(null);
-		return stepName;
-	}
 
-	private void restoreLatestStep(Model model, String stepName) {
-		if(stepName != null) {
-			Optional<Step> step = model.getSteps().stream().filter(s -> stepName.equals(s.getName())).findAny();
-			step.ifPresent(modelRunner::setLatestStep);
-		} 
-	}
-
-	CreditCard creditCard() {
-		CreditCard creditCard = repository.load(uuid);
-		return creditCard;
-	}
-
-	// Command handling methods
+	// Command handling methods (that return events)
+	
 	private Object assignLimit(RequestsToAssignLimit request) {
 		BigDecimal amount = request.getAmount();
 		return new LimitAssigned(uuid, amount, Instant.now());
@@ -120,7 +155,7 @@ public class CreditCardModelRunner {
 
 	private Object withdraw(RequestsWithdrawal request) {
 		BigDecimal amount = request.getAmount();
-		if (creditCard().notEnoughMoneyToWithdraw(amount)) {
+		if (creditCard.notEnoughMoneyToWithdraw(amount)) {
 			throw new IllegalStateException();
 		}
 		return new CardWithdrawn(uuid, amount, Instant.now());
@@ -143,15 +178,22 @@ public class CreditCardModelRunner {
 		throw new IllegalStateException();
 	}
 	
+	// Conditions
+	
 	boolean tooManyWithdrawalsInCycle() {
-		return creditCard.tooManyWithdrawalsInCycle();
+		return creditCard().tooManyWithdrawalsInCycle();
 	}
 
 	boolean limitAlreadyAssigned() {
-		return creditCard.limitAlreadyAssigned();
+		return creditCard().limitAlreadyAssigned();
 	}
 
 	boolean accountOpen() {
-		return creditCard.accountOpen();
+		return creditCard().accountOpen();
+	}
+
+	public CreditCard creditCard() {
+		loadCreditCard();
+		return creditCard;
 	}
 }
