@@ -22,8 +22,8 @@ public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
 	
 	// Step names
-	public static final String assigningLimit = "Assign limit";
-	public static final String assigningLimitTwice = "Assign limit twice";
+	public static final String assigningLimit = "Assigning limit";
+	public static final String assigningLimitTwice = "Assigning limit twice";
 	public static final String withdrawingCard = "Withdrawing card";
 	public static final String withdrawingCardAgain = "Withdrawing card again";
 	public static final String withdrawingCardTooOften = "Withdrawing card too often";
