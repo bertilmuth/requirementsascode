@@ -166,11 +166,11 @@ public class CreditCardAggregateRoot {
 	}
 
 	boolean limitAlreadyAssigned() {
-		return creditCard.limitAlreadyAssigned();
+		return creditCard.isLimitAlreadyAssigned();
 	}
 
 	boolean accountIsOpen() {
-		return creditCard.accountOpen();
+		return creditCard.isAccountOpen();
 	}
 
 	public CreditCard creditCard() {

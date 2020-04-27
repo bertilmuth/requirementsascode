@@ -31,37 +31,38 @@ public class CreditCard {
 		this.modelRunner = new ModelRunner().run(eventHandlingModel);
 	}
 
+	/**
+	 * Builds a model that maps received events to method calls
+	 * 
+	 * @return the event to method call mapping model
+	 */
 	private Model model() {
 		return Model.builder()
-			.on(LimitAssigned.class).system(this::limitAssigned)
-			.on(CardWithdrawn.class).system(this::cardWithdrawn)
-			.on(CardRepaid.class).system(this::cardRepaid)
-			.on(CycleClosed.class).system(this::cycleWasClosed)
+			.on(LimitAssigned.class).system(event -> assignLimit(event.getAmount()))
+			.on(CardWithdrawn.class).system(event -> withdraw(event.getAmount()))
+			.on(CardRepaid.class).system(event -> repay(event.getAmount()))
+			.on(CycleClosed.class).system(event -> closeCycle())
 		.build();
-	}
-
-	public List<DomainEvent> getPendingEvents() {
-		return pendingEvents;
 	}
 
 	/*
 	 * State changing methods
 	 */
 
-	private void limitAssigned(LimitAssigned event) {
-		this.initialLimit = event.getAmount();
+	private void assignLimit(BigDecimal amount) {
+		this.initialLimit = amount;
 	}
 
-	private void cardWithdrawn(CardWithdrawn event) {
-		this.usedLimit = usedLimit.add(event.getAmount());
+	private void withdraw(BigDecimal amount) {
+		this.usedLimit = usedLimit.add(amount);
 		withdrawals++;
 	}
 
-	private void cardRepaid(CardRepaid event) {
-		usedLimit = usedLimit.subtract(event.getAmount());
+	private void repay(BigDecimal amount) {
+		usedLimit = usedLimit.subtract(amount);
 	}
 
-	private void cycleWasClosed(CycleClosed event) {
+	private void closeCycle() {
 		withdrawals = 0;
 	}
 
@@ -91,17 +92,21 @@ public class CreditCard {
 		return withdrawals >= 45;
 	}
 
-	boolean limitAlreadyAssigned() {
+	boolean isLimitAlreadyAssigned() {
 		return initialLimit != null;
 	}
 
-	boolean accountOpen() {
+	boolean isAccountOpen() {
 		return true;
 	}
 
 	/*
 	 * Event sourcing methods
 	 */
+	public List<DomainEvent> getPendingEvents() {
+		return pendingEvents;
+	}
+	
 	public static CreditCard recreateFrom(UUID uuid, List<DomainEvent> events) {
 		CreditCard creditCard = new CreditCard(uuid);
 		events.forEach(ev -> creditCard.mutate(ev));
