@@ -100,40 +100,13 @@ public class CreditCardModelRunner {
 		creditCard = repository.load(uuid);
 	}
 	
-	// Creates a new model runner and restores the previous state (based on the
-	// step that caused the latest event).
+	// Creates a new model runner and restores the previous state.
 	// The runner handles the command and returns an event.
 	private Optional<Object> handle(Object command) {
 		Model model = model();
 		ModelRunner modelRunner = new ModelRunner().run(model);
 		restorePreviousState(modelRunner, model);
 		return modelRunner.reactTo(command);
-	}
-
-	private void restorePreviousState(ModelRunner modelRunner, Model model) {
-		Optional<Object> latestEvent = creditCard.latestEvent();
-		if (latestEvent.isPresent()) {
-			Class<?> latestMessageClass = messageClassThatCausesEvent(latestEvent.get());
-			Optional<Step> latestStep = model.getSteps().stream().filter(
-				step -> latestMessageClass.equals(step.getMessageClass())).findFirst();
-			latestStep.ifPresent(step -> modelRunner.setLatestStep(step));
-		}
-	}
-
-	private Class<?> messageClassThatCausesEvent(Object object) {
-		if (object instanceof LimitAssigned) {
-			return RequestsToAssignLimit.class;
-		}
-		if (object instanceof CardWithdrawn) {
-			return RequestsWithdrawal.class;
-		}
-		if (object instanceof CardRepaid) {
-			return RequestsRepay.class;
-		}
-		if (object instanceof CycleClosed) {
-			return RequestToCloseCycle.class;
-		}
-		return null;
 	}
 
 	// If a command handler returned an event, apply it to the credit card 
@@ -195,5 +168,35 @@ public class CreditCardModelRunner {
 	public CreditCard creditCard() {
 		loadCreditCard();
 		return creditCard;
+	}
+	
+	// Methods for restoring the previous state of the ModelRunner
+	
+	private void restorePreviousState(ModelRunner modelRunner, Model model) {
+		Optional<Object> latestEvent = creditCard.latestEvent();
+		latestEvent.ifPresent(event -> {
+			Optional<Step> latestStep = stepThatCausedEvent(model, event);
+			latestStep.ifPresent(step -> modelRunner.setLatestStep(step));
+		});
+	}
+
+	private Optional<Step> stepThatCausedEvent(Model model, Object event) {
+		String stepName = null;
+		if (event instanceof LimitAssigned) {
+			stepName = ASSIGN;
+		} else if (event instanceof CardWithdrawn) {
+			stepName = WITHDRAW;
+		} else if (event instanceof CardRepaid) {
+			stepName = REPAY;
+		} else if (event instanceof CycleClosed) {
+			stepName = CLOSE;
+		}
+		Optional<Step> step = findNamedStep(model, stepName);
+		return step;
+	}
+
+	private Optional<Step> findNamedStep(Model model, final String stepName) {
+		Optional<Step> step = model.getSteps().stream().filter(s -> s.getName().equals(stepName)).findAny();
+		return step;
 	}
 }
