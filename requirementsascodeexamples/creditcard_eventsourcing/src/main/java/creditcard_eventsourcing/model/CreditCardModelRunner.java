@@ -84,7 +84,8 @@ public class CreditCardModelRunner {
 
 	/**
 	 * This is the method to be called by clients for handling commands.
-	 * Each command that is accepted will cause an event to be published to the credit card.
+	 * Each command that is accepted will cause an event to be applied to the credit card.
+	 * After that, the events are saved to the repository.
 	 * 
 	 * @param command the command to handle.
 	 */
@@ -154,15 +155,15 @@ public class CreditCardModelRunner {
 	// Conditions
 	
 	boolean tooManyWithdrawalsInCycle() {
-		return creditCard().tooManyWithdrawalsInCycle();
+		return creditCard.tooManyWithdrawalsInCycle();
 	}
 
 	boolean limitAlreadyAssigned() {
-		return creditCard().limitAlreadyAssigned();
+		return creditCard.limitAlreadyAssigned();
 	}
 
 	boolean accountOpen() {
-		return creditCard().accountOpen();
+		return creditCard.accountOpen();
 	}
 
 	public CreditCard creditCard() {
