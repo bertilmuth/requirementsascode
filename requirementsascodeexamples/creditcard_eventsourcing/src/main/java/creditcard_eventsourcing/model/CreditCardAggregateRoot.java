@@ -48,7 +48,7 @@ public class CreditCardAggregateRoot {
 	// Conditions
 	private Condition tooManyWithdrawalsInCycle = this::tooManyWithdrawalsInCycle;
 	private Condition limitAlreadyAssigned = this::limitAlreadyAssigned;
-	private Condition accountIsOpen = this::accountOpen;
+	private Condition accountIsOpen = this::accountIsOpen;
 
 	// Other fields
 	private UUID uuid;
@@ -169,7 +169,7 @@ public class CreditCardAggregateRoot {
 		return creditCard.limitAlreadyAssigned();
 	}
 
-	boolean accountOpen() {
+	boolean accountIsOpen() {
 		return creditCard.accountOpen();
 	}
 
