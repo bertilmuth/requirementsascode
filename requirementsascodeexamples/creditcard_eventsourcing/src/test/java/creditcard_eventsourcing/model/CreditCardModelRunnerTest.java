@@ -24,8 +24,8 @@ public class CreditCardModelRunnerTest {
 		this.repository = new CreditCardRepository();
 		this.uuid = uuid();
 	}
-	private CreditCardModelRunner cardModelRunner() {
-		CreditCardModelRunner cardModelRunner = new CreditCardModelRunner(uuid, repository);
+	private CreditCardAggregateRoot cardModelRunner() {
+		CreditCardAggregateRoot cardModelRunner = new CreditCardAggregateRoot(uuid, repository);
 		return cardModelRunner;
 	}
 	
@@ -35,13 +35,13 @@ public class CreditCardModelRunnerTest {
 
 	@Test
 	public void assigningLimitOnceWorksCorrectly() {
-		CreditCardModelRunner cardModelRunner = requestToAssignLimit(BigDecimal.TEN);
+		CreditCardAggregateRoot cardModelRunner = requestToAssignLimit(BigDecimal.TEN);
 		assertEquals(BigDecimal.TEN, cardModelRunner.creditCard().availableLimit());
 	}
 
 	@Test
 	public void assigningLimitOnceWorks() {
-		CreditCardModelRunner cardModelRunner = requestToAssignLimit(BigDecimal.TEN);
+		CreditCardAggregateRoot cardModelRunner = requestToAssignLimit(BigDecimal.TEN);
 		assertEquals(BigDecimal.TEN, cardModelRunner.creditCard().availableLimit());
 	}
 
@@ -54,14 +54,14 @@ public class CreditCardModelRunnerTest {
 	@Test
 	public void withdrawingOnceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestWithdrawal(BigDecimal.ONE);
+		CreditCardAggregateRoot cardModelRunner = requestWithdrawal(BigDecimal.ONE);
 		assertEquals(BigDecimal.ZERO, cardModelRunner.creditCard().availableLimit());
 	}
 
 	@Test
 	public void assigningAndWithdrawingTheSameEqualsZero() {
 		requestToAssignLimit(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestWithdrawal(BigDecimal.ONE);
+		CreditCardAggregateRoot cardModelRunner = requestWithdrawal(BigDecimal.ONE);
 		assertEquals(BigDecimal.ZERO, cardModelRunner.creditCard().availableLimit());
 	}
 
@@ -89,7 +89,7 @@ public class CreditCardModelRunnerTest {
 
 	@Test
 	public void withdrawingTooOftenOnceProducesCorrectResult() {
-		CreditCardModelRunner cardModelRunner = requestToAssignLimit(new BigDecimal(50));
+		CreditCardAggregateRoot cardModelRunner = requestToAssignLimit(new BigDecimal(50));
 
 		for (int i = 1; i <= 46; i++) {
 			try {
@@ -121,7 +121,7 @@ public class CreditCardModelRunnerTest {
 	public void repayingOnceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestRepay(BigDecimal.ONE);
+		CreditCardAggregateRoot cardModelRunner = requestRepay(BigDecimal.ONE);
 		assertEquals(BigDecimal.TEN, cardModelRunner.creditCard().availableLimit());
 	}
 
@@ -130,7 +130,7 @@ public class CreditCardModelRunnerTest {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
 		requestRepay(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestRepay(BigDecimal.ONE);
+		CreditCardAggregateRoot cardModelRunner = requestRepay(BigDecimal.ONE);
 		assertEquals(new BigDecimal(11), cardModelRunner.creditCard().availableLimit());
 	}
 
@@ -138,7 +138,7 @@ public class CreditCardModelRunnerTest {
 	public void assigningWithdrawingAndRepayingWorks() {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestRepay(BigDecimal.TEN);
+		CreditCardAggregateRoot cardModelRunner = requestRepay(BigDecimal.TEN);
 		assertEquals(new BigDecimal(19), cardModelRunner.creditCard().availableLimit());
 	}
 
@@ -148,24 +148,24 @@ public class CreditCardModelRunnerTest {
 		requestWithdrawal(BigDecimal.ONE);
 		requestRepay(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
-		CreditCardModelRunner cardModelRunner = requestWithdrawal(BigDecimal.ONE);
+		CreditCardAggregateRoot cardModelRunner = requestWithdrawal(BigDecimal.ONE);
 		assertEquals(new BigDecimal(8), cardModelRunner.creditCard().availableLimit());
 	}
 
-	private CreditCardModelRunner requestToAssignLimit(BigDecimal amount) {
-		CreditCardModelRunner cardModelRunner = cardModelRunner();
+	private CreditCardAggregateRoot requestToAssignLimit(BigDecimal amount) {
+		CreditCardAggregateRoot cardModelRunner = cardModelRunner();
 		cardModelRunner.accept(new RequestsToAssignLimit(amount));
 		return cardModelRunner;
 	}
 
-	public CreditCardModelRunner requestWithdrawal(BigDecimal amount) {
-		CreditCardModelRunner cardModelRunner = cardModelRunner();
+	public CreditCardAggregateRoot requestWithdrawal(BigDecimal amount) {
+		CreditCardAggregateRoot cardModelRunner = cardModelRunner();
 		cardModelRunner.accept(new RequestsWithdrawal(amount));
 		return cardModelRunner;
 	}
 
-	public CreditCardModelRunner requestRepay(BigDecimal amount) {
-		CreditCardModelRunner cardModelRunner = cardModelRunner();
+	public CreditCardAggregateRoot requestRepay(BigDecimal amount) {
+		CreditCardAggregateRoot cardModelRunner = cardModelRunner();
 		cardModelRunner.accept(new RequestsRepay(amount));
 		return cardModelRunner;
 	}

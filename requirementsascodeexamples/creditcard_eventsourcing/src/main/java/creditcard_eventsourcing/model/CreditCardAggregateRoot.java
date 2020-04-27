@@ -18,7 +18,7 @@ import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
-public class CreditCardModelRunner {
+public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
 	
 	// Step names
@@ -55,7 +55,7 @@ public class CreditCardModelRunner {
 	private CreditCardRepository repository;
 	private CreditCard creditCard;
 
-	public CreditCardModelRunner(UUID uuid, CreditCardRepository creditCardRepository) {
+	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository creditCardRepository) {
 		this.uuid = uuid;
 		this.repository = creditCardRepository;
 	}
