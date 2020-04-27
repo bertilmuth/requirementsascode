@@ -19,6 +19,8 @@ import creditcard_eventsourcing.model.command.RequestsWithdrawal;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardModelRunner {
+	private static final String useCreditCard = "Use credit card";
+	
 	// Step names
 	public static final String ASSIGN = "Assign limit";
 	public static final String ASSIGN_TWICE = "Assign limit twice";
@@ -58,9 +60,14 @@ public class CreditCardModelRunner {
 		this.repository = creditCardRepository;
 	}
 
+	/**
+	 * Builds the model that defines the credit card behavior.
+	 * 
+	 * @return the use case model
+	 */
 	private Model model() {
 		Model model = Model.builder()
-		  .useCase("Use credit card")
+		  .useCase(useCreditCard)
 		    .basicFlow()
 		    	.step(ASSIGN).user(requestsToAssignLimit).systemPublish(assignsLimit)
 		    	.step(WITHDRAW).user(requestsWithdrawal).systemPublish(withdraws).reactWhile(accountOpen)
@@ -192,12 +199,12 @@ public class CreditCardModelRunner {
 		} else if (event instanceof CycleClosed) {
 			stepName = CLOSE;
 		}
-		Optional<Step> step = findNamedStep(model, stepName);
-		return step;
+		Step step = findNamedStep(model, stepName);
+		return Optional.ofNullable(step);
 	}
 
-	private Optional<Step> findNamedStep(Model model, final String stepName) {
-		Optional<Step> step = model.getSteps().stream().filter(s -> s.getName().equals(stepName)).findAny();
+	private Step findNamedStep(Model model, final String stepName) {
+		Step step = model.findUseCase(useCreditCard).findStep(stepName);
 		return step;
 	}
 }
