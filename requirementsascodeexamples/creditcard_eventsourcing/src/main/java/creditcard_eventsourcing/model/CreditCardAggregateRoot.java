@@ -41,7 +41,7 @@ public class CreditCardAggregateRoot {
 	private Function<RequestsToAssignLimit, Object> assignedLimit = this::assignedLimit;
 	private Function<RequestsWithdrawal, Object> withdrawnCard = this::withdrawnCard;
 	private Function<RequestsRepay, Object> repay = this::repay;
-	private Function<RequestToCloseCycle, Object> closesCycle = this::closesCycle;
+	private Function<RequestToCloseCycle, Object> closedCycle = this::closedCycle;
 	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
 	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
@@ -78,7 +78,7 @@ public class CreditCardAggregateRoot {
 		    	.step(repeating).continuesAt(withdrawingCard)
 		    	
 		    .flow("Cycle is over").anytime()
-		    	.step(closingCycle).on(requestToCloseCycle).systemPublish(closesCycle)
+		    	.step(closingCycle).on(requestToCloseCycle).systemPublish(closedCycle)
 		    	
 		    .flow("Limit can only be assigned once").condition(limitAlreadyAssigned)
 		    	.step(assigningLimitTwice).user(requestsToAssignLimit).system(throwsAssignLimitException)
@@ -147,7 +147,7 @@ public class CreditCardAggregateRoot {
 		return new CardRepaid(uuid, amount, Instant.now());
 	}
 
-	private Object closesCycle(RequestToCloseCycle request) {
+	private Object closedCycle(RequestToCloseCycle request) {
 		return new CycleClosed(uuid, Instant.now());
 	}
 
