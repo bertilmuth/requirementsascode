@@ -22,33 +22,33 @@ public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
 	
 	// Step names
-	public static final String ASSIGN = "Assign limit";
-	public static final String ASSIGN_TWICE = "Assign limit twice";
-	public static final String WITHDRAW = "Withdraw";
-	public static final String WITHDRAW_AGAIN = "Withdraw again";
-	public static final String WITHDRAW_TOO_OFTEN = "Withdraw too often";
-	public static final String CLOSE = "Close cycle";
-	public static final String REPEAT = "Repeat";
-	public static final String REPAY = "Repay";
+	public static final String assigningLimit = "Assign limit";
+	public static final String assigningLimitTwice = "Assign limit twice";
+	public static final String withdrawingCard = "Withdrawing card";
+	public static final String withdrawingCardAgain = "Withdrawing card again";
+	public static final String withdrawingCardTooOften = "Withdrawing card too often";
+	public static final String closingCycle = "Closing cycle";
+	public static final String repaying = "Repaying";
+	public static final String repeating = "Repeating";
 
 	// Command types
 	private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
-	private static final Class<RequestsWithdrawal> requestsWithdrawal = RequestsWithdrawal.class;
+	private static final Class<RequestsWithdrawal> requestsWithdrawingCard = RequestsWithdrawal.class;
 	private static final Class<RequestsRepay> requestsRepay = RequestsRepay.class;
 	private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
 
 	// Command handling methods
-	private Function<RequestsToAssignLimit, Object> assignsLimit = this::assignLimit;
-	private Function<RequestsWithdrawal, Object> withdraws = this::withdraw;
-	private Function<RequestsRepay, Object> repays = this::repay;
-	private Function<RequestToCloseCycle, Object> closesCycle = this::closeCycle;
+	private Function<RequestsToAssignLimit, Object> assignedLimit = this::assignedLimit;
+	private Function<RequestsWithdrawal, Object> withdrawnCard = this::withdrawnCard;
+	private Function<RequestsRepay, Object> repay = this::repay;
+	private Function<RequestToCloseCycle, Object> closesCycle = this::closesCycle;
 	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
 	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
 	// Conditions
 	private Condition tooManyWithdrawalsInCycle = this::tooManyWithdrawalsInCycle;
 	private Condition limitAlreadyAssigned = this::limitAlreadyAssigned;
-	private Condition accountOpen = this::accountOpen;
+	private Condition accountIsOpen = this::accountOpen;
 
 	// Other fields
 	private UUID uuid;
@@ -69,22 +69,22 @@ public class CreditCardAggregateRoot {
 		Model model = Model.builder()
 		  .useCase(useCreditCard)
 		    .basicFlow()
-		    	.step(ASSIGN).user(requestsToAssignLimit).systemPublish(assignsLimit)
-		    	.step(WITHDRAW).user(requestsWithdrawal).systemPublish(withdraws).reactWhile(accountOpen)
-		    	.step(REPAY).user(requestsRepay).systemPublish(repays).reactWhile(accountOpen)
+		    	.step(assigningLimit).user(requestsToAssignLimit).systemPublish(assignedLimit)
+		    	.step(withdrawingCard).user(requestsWithdrawingCard).systemPublish(withdrawnCard).reactWhile(accountIsOpen)
+		    	.step(repaying).user(requestsRepay).systemPublish(repay).reactWhile(accountIsOpen)
 		    	
-		    .flow("Withdraw again").after(REPAY)
-		    	.step(WITHDRAW_AGAIN).user(requestsWithdrawal).systemPublish(withdraws)
-		    	.step(REPEAT).continuesAt(WITHDRAW)
+		    .flow("Withdraw again").after(repaying)
+		    	.step(withdrawingCardAgain).user(requestsWithdrawingCard).systemPublish(withdrawnCard)
+		    	.step(repeating).continuesAt(withdrawingCard)
 		    	
 		    .flow("Cycle is over").anytime()
-		    	.step(CLOSE).on(requestToCloseCycle).systemPublish(closesCycle)
+		    	.step(closingCycle).on(requestToCloseCycle).systemPublish(closesCycle)
 		    	
-		    .flow("Assign limit twice").condition(limitAlreadyAssigned)
-		    	.step(ASSIGN_TWICE).user(requestsToAssignLimit).system(throwsAssignLimitException)
+		    .flow("Limit can only be assigned once").condition(limitAlreadyAssigned)
+		    	.step(assigningLimitTwice).user(requestsToAssignLimit).system(throwsAssignLimitException)
 		    	
 		    .flow("Too many withdrawals").condition(tooManyWithdrawalsInCycle) 
-		    	.step(WITHDRAW_TOO_OFTEN).user(requestsWithdrawal).system(throwsTooManyWithdrawalsException)
+		    	.step(withdrawingCardTooOften).user(requestsWithdrawingCard).system(throwsTooManyWithdrawalsException)
 		.build();
 		return model;
 	}
@@ -129,12 +129,12 @@ public class CreditCardAggregateRoot {
 
 	// Command handling methods (that return events)
 	
-	private Object assignLimit(RequestsToAssignLimit request) {
+	private Object assignedLimit(RequestsToAssignLimit request) {
 		BigDecimal amount = request.getAmount();
 		return new LimitAssigned(uuid, amount, Instant.now());
 	}
 
-	private Object withdraw(RequestsWithdrawal request) {
+	private Object withdrawnCard(RequestsWithdrawal request) {
 		BigDecimal amount = request.getAmount();
 		if (creditCard.notEnoughMoneyToWithdraw(amount)) {
 			throw new IllegalStateException();
@@ -147,7 +147,7 @@ public class CreditCardAggregateRoot {
 		return new CardRepaid(uuid, amount, Instant.now());
 	}
 
-	private Object closeCycle(RequestToCloseCycle request) {
+	private Object closesCycle(RequestToCloseCycle request) {
 		return new CycleClosed(uuid, Instant.now());
 	}
 
@@ -191,13 +191,13 @@ public class CreditCardAggregateRoot {
 	private Optional<Step> stepThatCausedEvent(Model model, Object event) {
 		String stepName = null;
 		if (event instanceof LimitAssigned) {
-			stepName = ASSIGN;
+			stepName = assigningLimit;
 		} else if (event instanceof CardWithdrawn) {
-			stepName = WITHDRAW;
+			stepName = withdrawingCard;
 		} else if (event instanceof CardRepaid) {
-			stepName = REPAY;
+			stepName = repaying;
 		} else if (event instanceof CycleClosed) {
-			stepName = CLOSE;
+			stepName = closingCycle;
 		}
 		Step step = findNamedStep(model, stepName);
 		return Optional.ofNullable(step);
