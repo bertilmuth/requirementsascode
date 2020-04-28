@@ -261,7 +261,7 @@ class OutputAdapter{
 ```
 
 ## Pure domain code
-These are the domain classes. They are side effect free, since all communication with the infrastructure happens in the message handler.
+These are the domain classes. They don't communicate with the technical infrastructure, since all communication with the infrastructure happens in the message handler.
 
 In the example, there is only a single domain function: for creating a greeting, based on the user name.
 
