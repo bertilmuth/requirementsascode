@@ -98,7 +98,7 @@ public class FlowlessConditionPart {
 	 *                       event to be published.
 	 * @return the created system part of this step
 	 */
-	public <T> FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
+	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
 		StepSystemPart<ModelRunner> stepSystemPart = stepPart.systemPublish(systemReaction);
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
 				flowlessStepCounter);

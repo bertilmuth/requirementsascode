@@ -188,11 +188,14 @@ public class ModelRunner {
 	}
 
 	/**
-	 * Call this method to provide several messages to the runner. For each
-	 * message, {@link #reactTo(Object)} is called.
+	 * Call this method to provide several messages to the runner. For each message,
+	 * {@link #reactTo(Object)} is called.
 	 *
+	 * @param <U>      the return type that you as the user expects.
+	 * 
 	 * @param messages the message objects
-	 * @return the event that was published (latest) if the system reacted, or an empty Optional.
+	 * @return the event that was published (latest) if the system reacted, or an
+	 *         empty Optional.
 	 */
 	@SuppressWarnings("unchecked")
 	public <U> Optional<U> reactTo(Object... messages) {
@@ -202,7 +205,7 @@ public class ModelRunner {
 		for (Object message : messages) {
 			handleMessage(message);
 		}
-		return Optional.ofNullable((U)latestPublishedEvent);
+		return Optional.ofNullable((U) latestPublishedEvent);
 	}
 
 	/**

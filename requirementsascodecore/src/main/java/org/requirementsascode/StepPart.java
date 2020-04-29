@@ -117,7 +117,7 @@ public class StepPart {
 	 *                       event to be published.
 	 * @return the created system part of this step
 	 */
-	public <T> StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
+	public StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
 		return systemPart;
