@@ -461,22 +461,24 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void publishEnteredTextAsStringWithOnInFirstStep() {
 			Model model = modelBuilder.useCase(USE_CASE)
-				.on(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.on(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(String.class).system(new IgnoresIt<>())
 			.build();
 		
-			String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();
+			Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+			String actualText = optionalActualText.get();
 			assertEquals(TEXT, actualText);
     }
     
     @Test
     public void publishEnteredTextAsStringWithUserInFirstStep() {
 			Model model = modelBuilder.useCase(USE_CASE)
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(String.class).system(new IgnoresIt<>())
 			.build();
 		
-			String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();
+			Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+			String actualText = optionalActualText.get();
 			assertEquals(TEXT, actualText);
     }
     
@@ -485,22 +487,24 @@ public class FlowlessTest extends AbstractTestCase {
 	    final Integer EXPECTED_INTEGER = 1234;
 	    	
 			Model model = modelBuilder.useCase(USE_CASE)
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(String.class).systemPublish(text ->  EXPECTED_INTEGER)
 			.build();
 		
-			Integer actualInteger = (Integer)modelRunner.run(model).reactTo(entersText()).get();
+			Optional<Integer> optionalInteger = modelRunner.run(model).reactTo(entersText());
+			Integer actualInteger = optionalInteger.get();
 			assertEquals(EXPECTED_INTEGER, actualInteger);
     }
     
     @Test
     public void publishEnteredTextAsStringAfterDifferentEvent() {
 			Model model = modelBuilder.useCase(USE_CASE)
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(EntersNumber.class).system(new IgnoresIt<>())
 			.build();
 		
-			String actualText = (String)modelRunner.run(model).reactTo(entersNumber(), entersText()).get();
+			Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+			String actualText = optionalActualText.get();
 			assertEquals(TEXT, actualText);
     }
     
@@ -542,7 +546,7 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void dontPublishFirstEnteredTextWhenReactToIsCalledTheSecondTime() {
 			Model model = modelBuilder.useCase(USE_CASE)
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(String.class).system(new IgnoresIt<>())
 			.build();
 		
@@ -554,7 +558,7 @@ public class FlowlessTest extends AbstractTestCase {
     @Test
     public void dontPublishOneOfTheEnteredTextsWhenReactToIsCalledTheSecondTime() {
 			Model model = modelBuilder.useCase(USE_CASE)
-				.user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+				.user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 				.on(String.class).system(new IgnoresIt<>())
 			.build();
 		

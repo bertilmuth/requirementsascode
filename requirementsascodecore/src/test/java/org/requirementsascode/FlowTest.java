@@ -231,7 +231,8 @@ public class FlowTest extends AbstractTestCase{
 					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
 			.build();
 		
-		String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();		
+		Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+		String actualText = optionalActualText.get();		
 		assertEquals(TEXT, actualText);
 	}
 	
@@ -242,11 +243,12 @@ public class FlowTest extends AbstractTestCase{
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishEnteredTextAsString)
+					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
 			.build();
 		
-		String actualText = (String)modelRunner.run(model).reactTo(entersText()).get();		
+		Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+		String actualText = optionalActualText.get();		
 		assertEquals(TEXT, actualText);
 	}
 	

@@ -192,27 +192,29 @@ public class ModelRunner {
 	 * message, {@link #reactTo(Object)} is called.
 	 *
 	 * @param messages the message objects
-	 * @return the event that was published (latest) if the system reacted. Null otherwise.
+	 * @return the event that was published (latest) if the system reacted, or an empty Optional.
 	 */
-	public Optional<Object> reactTo(Object... messages) {
+	@SuppressWarnings("unchecked")
+	public <U> Optional<U> reactTo(Object... messages) {
 		Objects.requireNonNull(messages);
 
 		latestPublishedEvent = null;
 		for (Object message : messages) {
 			handleMessage(message);
 		}
-		return Optional.ofNullable(latestPublishedEvent);
+		return Optional.ofNullable((U)latestPublishedEvent);
 	}
 
 	/**
-	 * Call this method to provide a message (i.e. command or event object) to the runner.
+	 * Call this method to provide a message (i.e. command or event object) to the
+	 * runner.
 	 *
 	 * <p>
-	 * If it is running, the runner will then check which steps can react.
-	 * If a single step can react, the runner will call the message handler
-	 * with it. If no step can react, the runner will either call the handler
-	 * defined with {@link #handleUnhandledWith(Consumer)}, or if no such handler
-	 * exists, consume the message silently.
+	 * If it is running, the runner will then check which steps can react. If a
+	 * single step can react, the runner will call the message handler with it. If
+	 * no step can react, the runner will either call the handler defined with
+	 * {@link #handleUnhandledWith(Consumer)}, or if no such handler exists, consume
+	 * the message silently.
 	 * 
 	 * If more than one step can react, the runner will throw an exception.
 	 *
@@ -226,14 +228,17 @@ public class ModelRunner {
 	 * <p>
 	 * See {@link #canReactTo(Class)} for a description of what "can react" means.
 	 *
-	 * @param <T>   the type of message
+	 * @param <T>     the type of message
+	 * @param <U>     the return type that you as the user expects.
 	 * @param message the message object
-	 * @return the event that was published (latest) if the system reacted. Null otherwise.
+	 * @return the event that was published (latest) if the system reacted, or an empty Optional.
 	 * @throws MoreThanOneStepCanReact when more than one step can react
 	 * @throws InfiniteRepetition      when a step has an always true condition, or
 	 *                                 there is an infinite loop.
+	 * @throws ClassCastException      when type of the returned instance isn't U
 	 */
-	public <T> Optional<Object> reactTo(T message) {
+	@SuppressWarnings("unchecked")
+	public <T, U> Optional<U> reactTo(T message) {
 		Objects.requireNonNull(message);
 
 		if (message instanceof Collection) {
@@ -243,7 +248,7 @@ public class ModelRunner {
 
 		latestPublishedEvent = null;
 		handleMessage(message);
-		return Optional.ofNullable(latestPublishedEvent);
+		return Optional.ofNullable((U)latestPublishedEvent);
 	}
 
 	private <T> void handleMessage(T message) {

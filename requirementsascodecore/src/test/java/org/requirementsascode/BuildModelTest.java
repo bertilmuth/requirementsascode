@@ -168,7 +168,7 @@ public class BuildModelTest extends AbstractTestCase {
   public void createsSingleStepThatPublishesEventWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.on(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
+				.on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -183,7 +183,7 @@ public class BuildModelTest extends AbstractTestCase {
   public void createsSingleStepThatPublishesCommandWithoutUseCaseAndWithoutFlow() {
 		Model model = 
 			modelBuilder
-				.user(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
+				.user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -221,7 +221,7 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 			.build();
 	
 		UseCase useCase = useCasePart.getUseCase();
@@ -269,7 +269,7 @@ public class BuildModelTest extends AbstractTestCase {
   public void createsSingleStepThatHandlesEventWithFlowAndPublishesEvent() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super::publishesEnteredTextAsEvent)
+				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 			.build();
 	
 		UseCase useCase = model.findUseCase(USE_CASE);

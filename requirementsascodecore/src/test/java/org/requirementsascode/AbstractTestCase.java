@@ -97,15 +97,15 @@ public abstract class AbstractTestCase {
 		};
 	}
 	
-	protected Function<Object, Object> publishAnyMessageAsString() {
+	protected Function<Object, String> publishAnyMessageAsString() {
 		return message -> message.toString();
 	}
 	
-	protected String publishEnteredTextAsString(EntersText enteredText) {
-		return enteredText.value();
+	protected Function<EntersText, String> publishEnteredTextAsString() {
+		return enteredText -> enteredText.value();
   }
 	
-	protected Supplier<Object> publishConstantTextAsString() {
+	protected Supplier<String> publishConstantTextAsString() {
 		return () -> {
 			return TEXT;
 		};
@@ -115,8 +115,8 @@ public abstract class AbstractTestCase {
 		return message -> message;
 	}
 	
-	protected EntersText publishesEnteredTextAsEvent(EntersText enteredText) {
-		return enteredText;
+	protected Function<EntersText, EntersText> publishesEnteredTextAsEvent() {
+		return message -> message;
 	}
 
 	protected Consumer<EntersNumber> displaysEnteredNumber() {

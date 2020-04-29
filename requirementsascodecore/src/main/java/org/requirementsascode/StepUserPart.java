@@ -32,31 +32,12 @@ public class StepUserPart<T> {
 	 */
 	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return createStepSystemPart(systemReactionObject);
+		return stepSystemPart(systemReactionObject);
 	}
 
-	private StepSystemPart<T> createStepSystemPart(SystemReaction<T> systemReactionObject) {
+	private StepSystemPart<T> stepSystemPart(SystemReaction<T> systemReactionObject) {
 		Objects.requireNonNull(systemReactionObject);
 		return new StepSystemPart<>(systemReactionObject, stepPart);
-	}
-
-	/**
-	 * Defines the system reaction. The system will react as specified to the
-	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
-	 * executing the system reaction, the runner will publish the returned events.
-	 *
-	 * @param systemReaction the specified system reaction, that returns an event to
-	 *                       be published.
-	 * @return the created system part of this step
-	 */
-	public StepSystemPart<T> systemPublish(Function<? super T, Object> systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return createStepSystemPart(systemReactionObject);
-	}
-	
-	StepSystemPart<T> systemPublish(Supplier<Object> systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return createStepSystemPart(systemReactionObject);
 	}
 	
 	/**
@@ -69,7 +50,26 @@ public class StepUserPart<T> {
 	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
 		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return createStepSystemPart(systemReactionObject);
+		return stepSystemPart(systemReactionObject);
+	}
+
+	/**
+	 * Defines the system reaction. The system will react as specified to the
+	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
+	 * executing the system reaction, the runner will publish the returned events.
+	 *
+	 * @param systemReaction the specified system reaction, that returns an event to
+	 *                       be published.
+	 * @return the created system part of this step
+	 */
+	public StepSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		return stepSystemPart(systemReactionObject);
+	}
+	
+	StepSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		return stepSystemPart(systemReactionObject);
 	}
 
 	/**

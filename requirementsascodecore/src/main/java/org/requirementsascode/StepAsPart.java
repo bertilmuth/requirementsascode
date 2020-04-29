@@ -87,8 +87,9 @@ public class StepAsPart {
 	 *                       event to be published.
 	 * @return the created system part of this step
 	 */
-	public StepSystemPart<ModelRunner> systemPublish(Supplier<Object> systemReaction) {
-		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish(systemReaction);
+	public StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
+		@SuppressWarnings("unchecked")
+		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).systemPublish((Supplier<Object>)systemReaction);
 		return systemPart;
 	}
 

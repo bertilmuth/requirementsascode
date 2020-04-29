@@ -31,20 +31,6 @@ public class FlowlessUserPart<T> {
 	}
 	
 	/**
-	 * Defines the system reaction. The system will react as specified to the
-	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
-	 * executing the system reaction, the runner will publish the returned events.
-	 *
-	 * @param systemReaction the specified system reaction, that returns an event to
-	 *                       be published.
-	 * @return the created flowless system part
-	 */
-	public FlowlessSystemPart<T> systemPublish(Function<? super T, Object> systemReaction) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
-		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-	}
-	
-	/**
 	 * Defines the system reaction. The system will react as specified, but it will
 	 * ignore the message passed in, when {@link ModelRunner#reactTo(Object)} is
 	 * called.
@@ -54,6 +40,20 @@ public class FlowlessUserPart<T> {
 	 */
 	public FlowlessSystemPart<T> system(Runnable systemReaction) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
+		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+	}
+	
+	/**
+	 * Defines the system reaction. The system will react as specified to the
+	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
+	 * executing the system reaction, the runner will publish the returned events.
+	 *
+	 * @param systemReaction the specified system reaction, that returns an event to
+	 *                       be published.
+	 * @return the created flowless system part
+	 */
+	public FlowlessSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 	}
 }

@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  */
 public class SystemReaction<T> implements Function<T, Object> {
 	private Object modelObject;
-	private Function<? super T, Object> internalFunction;
+	private Function<? super T, ?> internalFunction;
 
 	SystemReaction(Consumer<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
@@ -35,14 +35,14 @@ public class SystemReaction<T> implements Function<T, Object> {
 		this.modelObject = modelObject;
 	}
 
-	SystemReaction(Supplier<Object> modelObject) {
+	SystemReaction(Supplier<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> publishingReaction = (Function<? super T, Object>) message -> modelObject.get();
 		this.internalFunction = publishingReaction;
 	}
 
-	SystemReaction(Function<? super T, Object> modelObject) {
+	SystemReaction(Function<? super T, ?> modelObject) {
 		Objects.requireNonNull(modelObject);
 		this.modelObject = modelObject;
 		this.internalFunction = modelObject;
