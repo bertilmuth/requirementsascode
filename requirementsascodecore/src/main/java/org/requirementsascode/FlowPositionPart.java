@@ -4,12 +4,12 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
 public class FlowPositionPart {
-	private FlowPosition flowPosition;
+	private FlowPosition optionalFlowPosition;
 	private FlowPart flowPart;
 	private FlowConditionPart conditionPart;
 
-	FlowPositionPart(FlowPosition flowPosition, FlowPart flowPart) {
-		this.flowPosition = flowPosition;
+	FlowPositionPart(FlowPosition optionalFlowPosition, FlowPart flowPart) {
+		this.optionalFlowPosition = optionalFlowPosition;
 		this.flowPart = flowPart;
 	}
 
@@ -42,7 +42,7 @@ public class FlowPositionPart {
 		return flowPart;
 	}
 
-	FlowPosition getFlowPosition() {
-		return flowPosition;
+	FlowPosition getOptionalFlowPosition() {
+		return optionalFlowPosition;
 	}
 }
