@@ -11,7 +11,6 @@ public class FlowPositionPart {
 	FlowPositionPart(FlowPosition flowPosition, FlowPart flowPart) {
 		this.flowPosition = flowPosition;
 		this.flowPart = flowPart;
-		this.conditionPart = condition(null);
 	}
 
 	/**
@@ -36,12 +35,14 @@ public class FlowPositionPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		UseCasePart useCasePart = flowPart.getUseCasePart();
-		UseCase useCase = useCasePart.getUseCase();
-		Flow flow = flowPart.getFlow();
-		Condition condition = conditionPart.getCondition();
-		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, condition);
-		StepPart stepPart = new StepPart(step, useCasePart, flowPart);
-		return stepPart;
+		return condition(null).step(stepName);
+	}
+
+	FlowPart getFlowPart() {
+		return flowPart;
+	}
+
+	FlowPosition getFlowPosition() {
+		return flowPosition;
 	}
 }

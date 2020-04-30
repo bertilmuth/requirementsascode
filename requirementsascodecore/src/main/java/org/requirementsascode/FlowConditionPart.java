@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -16,14 +17,10 @@ public class FlowConditionPart {
 		this.flowPositionPart = flowPositionPart;
 		this.condition = condition;
 	}
-
-	Condition getCondition() {
-		return condition;
-	}
-
+	
 	/**
 	 * Creates the first step of this flow. It can be run when the runner is at the
-	 * right position and the flow's condition is fulfilled.
+	 * right position.
 	 *
 	 * @param stepName the name of the step to be created
 	 * @return the newly created step part, to ease creation of further steps
@@ -31,6 +28,17 @@ public class FlowConditionPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		return flowPositionPart.step(stepName);
+		FlowPart flowPart = flowPositionPart.getFlowPart();
+		UseCasePart useCasePart = flowPart.getUseCasePart();
+		UseCase useCase = useCasePart.getUseCase();
+		Flow flow = flowPart.getFlow();
+		FlowPosition flowPosition = flowPositionPart.getFlowPosition();
+		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getCondition());
+		StepPart stepPart = new StepPart(step, useCasePart, flowPart);
+		return stepPart;
+	}
+	
+	Condition getCondition() {
+		return condition;
 	}
 }
