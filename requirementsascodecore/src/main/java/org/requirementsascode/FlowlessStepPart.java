@@ -3,31 +3,13 @@ package org.requirementsascode;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps
- * {@link StepPart}.
- * 
- * @author b_muth
- */
-public class FlowlessConditionPart {
-	private UseCasePart useCasePart;
-	private Condition optionalCondition;
-	private long flowlessStepCounter;
+public class FlowlessStepPart {
 	private StepPart stepPart;
-	private final String autoIncrementedStepName;
+	private long flowlessStepCounter;
 
-	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
-		this.optionalCondition = optionalCondition;
-		this.useCasePart = useCasePart;
-		autoIncrementedStepName = "S" + flowlessStepCounter;
-		this.stepPart = step(autoIncrementedStepName);
+	FlowlessStepPart(StepPart stepPart, long flowlessStepCounter) {
+		this.stepPart = stepPart;
 		this.flowlessStepCounter = flowlessStepCounter;
-	}
-
-	private StepPart step(final String stepName) {
-		UseCase useCase = useCasePart.getUseCase();
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
-		return new StepPart(newStep, useCasePart, null);
 	}
 
 	/**
@@ -110,9 +92,5 @@ public class FlowlessConditionPart {
 		StepSystemPart<ModelRunner> stepSystemPart = stepPart.systemPublish(systemReaction);
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		return flowlessSystemPart;
-	}
-
-	Condition getOptionalCondition() {
-		return optionalCondition;
 	}
 }
