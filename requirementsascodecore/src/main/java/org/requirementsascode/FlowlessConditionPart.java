@@ -13,21 +13,23 @@ public class FlowlessConditionPart {
 	private UseCasePart useCasePart;
 	private Condition optionalCondition;
 	private long flowlessStepCounter;
-	private StepPart stepPart;
+	private FlowlessStepPart flowlessStepPart;
 	private final String autoIncrementedStepName;
 
 	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		this.optionalCondition = optionalCondition;
 		this.useCasePart = useCasePart;
-		autoIncrementedStepName = "S" + flowlessStepCounter;
-		this.stepPart = step(autoIncrementedStepName);
 		this.flowlessStepCounter = flowlessStepCounter;
+		autoIncrementedStepName = "S" + flowlessStepCounter;
+		this.flowlessStepPart = step(autoIncrementedStepName);
 	}
 
-	private StepPart step(final String stepName) {
+	private FlowlessStepPart step(final String stepName) {
 		UseCase useCase = useCasePart.getUseCase();
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
-		return new StepPart(newStep, useCasePart, null);
+		StepPart stepPart = new StepPart(newStep, useCasePart, null);
+		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepPart, flowlessStepCounter);
+		return flowlessStepPart;
 	}
 
 	/**
@@ -44,8 +46,7 @@ public class FlowlessConditionPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
-		StepUserPart<T> stepUserPart = stepPart.user(commandClass);
-		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessStepPart.user(commandClass);
 		return flowlessUserPart;
 	}
 
@@ -63,8 +64,7 @@ public class FlowlessConditionPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
-		StepUserPart<T> stepUserPart = stepPart.on(messageClass);
-		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessStepPart.on(messageClass);
 		return flowlessUserPart;
 	}
 
@@ -76,8 +76,7 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessStepPart.system(systemReaction);
 		return flowlessSystemPart;
 	}
 
@@ -91,8 +90,7 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessStepPart.system(systemReaction);
 		return flowlessSystemPart;
 	}
 
@@ -107,8 +105,7 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		StepSystemPart<ModelRunner> stepSystemPart = stepPart.systemPublish(systemReaction);
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessStepPart.systemPublish(systemReaction);
 		return flowlessSystemPart;
 	}
 
