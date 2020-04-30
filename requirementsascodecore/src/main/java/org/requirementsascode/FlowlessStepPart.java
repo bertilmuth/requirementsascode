@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class FlowlessStepPart {
-	private StepPart stepPart;
-	private long flowlessStepCounter;
+	private final StepPart stepPart;
+	private final long flowlessStepCounter;
 
 	FlowlessStepPart(StepPart stepPart, long flowlessStepCounter) {
 		this.stepPart = stepPart;
