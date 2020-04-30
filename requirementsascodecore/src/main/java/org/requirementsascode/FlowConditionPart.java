@@ -11,11 +11,11 @@ import org.requirementsascode.flowposition.FlowPosition;
  */
 public class FlowConditionPart {
 	private FlowPositionPart flowPositionPart;
-	private Condition condition;
+	private Condition optionalCondition;
 
 	FlowConditionPart(FlowPositionPart flowPositionPart, Condition condition) {
 		this.flowPositionPart = flowPositionPart;
-		this.condition = condition;
+		this.optionalCondition = condition;
 	}
 	
 	/**
@@ -33,12 +33,12 @@ public class FlowConditionPart {
 		UseCase useCase = useCasePart.getUseCase();
 		Flow flow = flowPart.getFlow();
 		FlowPosition flowPosition = flowPositionPart.getFlowPosition();
-		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getCondition());
+		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getOptionalCondition());
 		StepPart stepPart = new StepPart(step, useCasePart, flowPart);
 		return stepPart;
 	}
 	
-	Condition getCondition() {
-		return condition;
+	Condition getOptionalCondition() {
+		return optionalCondition;
 	}
 }

@@ -10,14 +10,21 @@ import java.util.function.Supplier;
  * @author b_muth
  */
 public class FlowlessConditionPart {
+	private Condition optionalCondition;
 	private long flowlessStepCounter;
 	private StepPart stepPart;
 
 	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
-		UseCase useCase = useCasePart.getUseCase();
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, "S" + flowlessStepCounter);
-		this.stepPart = new StepPart(newStep, useCasePart, null);
+		this.optionalCondition = optionalCondition;
+		final String stepName = "S" + flowlessStepCounter;
+		step(useCasePart, optionalCondition, stepName);
 		this.flowlessStepCounter = flowlessStepCounter;
+	}
+
+	private void step(UseCasePart useCasePart, Condition optionalCondition, final String stepName) {
+		UseCase useCase = useCasePart.getUseCase();
+		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
+		this.stepPart = new StepPart(newStep, useCasePart, null);
 	}
 
 	/**
@@ -103,5 +110,9 @@ public class FlowlessConditionPart {
 		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart,
 				flowlessStepCounter);
 		return flowlessSystemPart;
+	}
+	
+	Condition getOptionalCondition() {
+		return optionalCondition;
 	}
 }
