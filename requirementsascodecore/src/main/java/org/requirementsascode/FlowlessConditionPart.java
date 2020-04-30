@@ -10,18 +10,20 @@ import java.util.function.Supplier;
  * @author b_muth
  */
 public class FlowlessConditionPart {
+	private UseCasePart useCasePart;
 	private Condition optionalCondition;
 	private long flowlessStepCounter;
 	private StepPart stepPart;
 
 	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		this.optionalCondition = optionalCondition;
+		this.useCasePart = useCasePart;
 		final String stepName = "S" + flowlessStepCounter;
-		step(useCasePart, optionalCondition, stepName);
+		step(stepName);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	private void step(UseCasePart useCasePart, Condition optionalCondition, final String stepName) {
+	private void step(final String stepName) {
 		UseCase useCase = useCasePart.getUseCase();
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
 		this.stepPart = new StepPart(newStep, useCasePart, null);
