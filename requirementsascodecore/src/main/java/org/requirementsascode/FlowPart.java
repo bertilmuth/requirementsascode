@@ -41,8 +41,8 @@ public class FlowPart {
 	 * 
 	 */
 	public FlowPositionPart after(String stepName) {
-		Step step = useCase.findStep(stepName);
-		After after = new After((FlowStep) step);
+		FlowStep flowStep = (FlowStep)useCase.findStep(stepName);
+		After after = new After(flowStep);
 		optionalFlowPositionPart = new FlowPositionPart(after, this);
 		return optionalFlowPositionPart;
 	}
@@ -75,8 +75,8 @@ public class FlowPart {
 	 *                              flow's use case
 	 */
 	public FlowPositionPart insteadOf(String stepName) {
-		FlowStep step = (FlowStep) useCase.findStep(stepName);
-		InsteadOf insteadOf = new InsteadOf(step);
+		FlowStep flowStep = (FlowStep) useCase.findStep(stepName);
+		InsteadOf insteadOf = new InsteadOf(flowStep);
 		optionalFlowPositionPart = new FlowPositionPart(insteadOf, this);
 		return optionalFlowPositionPart;
 	}
