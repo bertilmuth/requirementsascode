@@ -43,14 +43,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.3.1</version>
+    <version>1.4</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-implementation 'org.requirementsascode:requirementsascodecore:1.3.1'
+implementation 'org.requirementsascode:requirementsascodecore:1.4'
 ```
 
 At least Java 8 is required to use requirements as code, download and install it if necessary.
@@ -68,13 +68,14 @@ Model model = Model.builder()
 .build();
 ```
 
-For handling commands, the message handler has a `Consumer<X>` or `Runnable` type, where X is the message class.
-For handling queries, use `.systemPublish` instead of `.system`, and the message handler has a `Function<X, Object>` type.
+For handling commands, the message handler has a `Consumer<T>` or `Runnable` type, where T is the message class.
+For handling queries, use `.systemPublish` instead of `.system`, and the message handler has a `Function<T, U>` type.
 For handling events, use `.on()` instead of `.user()`.
 For handling exceptions, use the specific exception's class or `Throwable.class` as parameter of `.on()`.
 
 Use `.condition()` before `.user()`/`.on()` to define an additional precondition that must be fulfilled.
 You can also use `condition(...)` without `.user()`/`.on()`, meaning: execute at the beginning of the run, or after an interaction, if the condition is fulfilled.
+Use `.step(...)` before `.user()`/`.on()` to explicitly name the step - otherwise the steps are named S1, S2, S3...
 
 The order of `user(..).system(...)` statements has no significance here.
 
@@ -85,8 +86,10 @@ ModelRunner runner = new ModelRunner().run(model);
 
 ## Step 3: Send a message to the runner
 ``` java
-Optional<Object> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
+Optional<T> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
 ```
+
+Instead of T, use the type you expect to be published. Note that the runner casts to that type, so if you don't know it, use `Object` for T.
 To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()` (example [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)).
 
 By default, if a message's class (or superclass) is not declared in the model, the runner consumes the message silently.
