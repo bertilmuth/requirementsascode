@@ -180,13 +180,13 @@ public class CreditCardAggregateRoot {
 	private void restorePreviousStateOf(ModelRunner modelRunner) {
 		Optional<Step> latestStepOfEventModel = creditCard().latestStep();
 		latestStepOfEventModel.ifPresent(step -> {
-			Step latestStepOfCommandModel = findNamedStep(model(), step.getName());
+			Step latestStepOfCommandModel = findNamedStep(step.getName());
 			modelRunner.setLatestStep(latestStepOfCommandModel);
 		});
 	}
 
-	private Step findNamedStep(Model model, final String stepName) {
-		Step step = model.findUseCase(useCreditCard).findStep(stepName);
+	private Step findNamedStep(final String stepName) {
+		Step step = model().findUseCase(useCreditCard).findStep(stepName);
 		return step;
 	}
 
