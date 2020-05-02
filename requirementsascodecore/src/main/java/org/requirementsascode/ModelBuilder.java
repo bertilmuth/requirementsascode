@@ -25,6 +25,27 @@ public class ModelBuilder {
 		Actor actor = model.hasActor(actorName) ? model.findActor(actorName) : model.newActor(actorName);
 		return actor;
 	}
+	
+	/**
+	 * Only if the specified condition is true, the message is handled.
+	 *
+	 * @param condition the condition that constrains when the message is handled
+	 * @return a part of the builder used to define the message class
+	 */
+	public FlowlessConditionPart condition(Condition condition) {
+		return useCase(HANDLES_MESSAGES).condition(condition);
+	}
+	
+	/**
+	 * Creates a named step.
+	 * 
+	 * @param stepName the name of the created step
+	 * @return the created step part
+	 */
+	public FlowlessStepPart step(String stepName) {
+		FlowlessStepPart stepPart = useCase(HANDLES_MESSAGES).step(stepName);
+		return stepPart;
+	}
 
 	/**
 	 * Creates a handler for commands of the specified type.
@@ -56,16 +77,6 @@ public class ModelBuilder {
 	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
 		FlowlessUserPart<T> userPart = useCase(HANDLES_MESSAGES).on(messageClass);
 		return userPart;
-	}
-
-	/**
-	 * Only if the specified condition is true, the message is handled.
-	 *
-	 * @param condition the condition that constrains when the message is handled
-	 * @return a part of the builder used to define the message class
-	 */
-	public FlowlessConditionPart condition(Condition condition) {
-		return useCase(HANDLES_MESSAGES).condition(condition);
 	}
 
 	/**

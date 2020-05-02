@@ -22,7 +22,13 @@ public class FlowlessConditionPart {
 		this.autoIncrementedStepName = "S" + flowlessStepCounter;
 	}
 
-	private FlowlessStepPart step(final String stepName) {
+	/**
+	 * Creates a named step.
+	 * 
+	 * @param stepName the name of the created step
+	 * @return the created step part
+	 */
+	public FlowlessStepPart step(final String stepName) {
 		UseCase useCase = useCasePart.getUseCase();
 		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
 		StepPart stepPart = new StepPart(newStep, useCasePart, null);

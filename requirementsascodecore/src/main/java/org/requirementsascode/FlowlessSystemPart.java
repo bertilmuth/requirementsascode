@@ -28,6 +28,18 @@ public class FlowlessSystemPart<T> {
 		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, useCasePart, ++flowlessStepCounter);
 		return conditionPart;
 	}
+	
+	/**
+	 * Creates a named step.
+	 * 
+	 * @param stepName the name of the created step
+	 * @return the created step part
+	 */
+	public FlowlessStepPart step(String stepName) {
+		Objects.requireNonNull(stepName);
+		FlowlessStepPart stepPart = condition(null).step(stepName);
+		return stepPart;
+	}
 
 	/**
 	 * Defines the type of commands that will cause a system reaction.

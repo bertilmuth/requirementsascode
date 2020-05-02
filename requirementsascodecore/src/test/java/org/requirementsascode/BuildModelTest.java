@@ -94,9 +94,9 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Collection<Step> steps = model.getSteps();
 		assertEquals(1, steps.size());
-	
+	 
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]); 
   }
     
@@ -111,7 +111,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]); 
   }
     
@@ -119,14 +119,14 @@ public class BuildModelTest extends AbstractTestCase {
   public void flowless_noUseCase_createsSingleNamedStepThatPublishesEvent() {
 		Model model = 
 			modelBuilder
-				.step(CUSTOMER_ENTERS_TEXT).step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
 		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
   }
     
@@ -141,7 +141,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
   }
   
@@ -160,11 +160,11 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Iterator<Step> stepIt = steps.iterator();
 		Step step = stepIt.next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 	
 		step = stepIt.next();
-		assertEquals("S2", step.getName());
+		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 	}
   
@@ -182,11 +182,11 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Iterator<Step> stepIt = steps.iterator();
 		Step step = stepIt.next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 	
 		step = stepIt.next();
-		assertEquals("S2", step.getName());
+		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 	}
 	
@@ -204,7 +204,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
   }
@@ -223,7 +223,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
   }

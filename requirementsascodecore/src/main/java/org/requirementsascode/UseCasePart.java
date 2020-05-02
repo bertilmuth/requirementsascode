@@ -1,5 +1,7 @@
 package org.requirementsascode;
 
+import java.util.Objects;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -35,6 +37,7 @@ public class UseCasePart {
 	 * @return the flow part to create the steps of the flow.
 	 */
 	public FlowPart flow(String flowName) {
+		Objects.requireNonNull(flowName);
 		Flow useCaseFlow = getUseCase().newFlow(flowName);
 		return new FlowPart(useCaseFlow, this);
 	}
@@ -48,6 +51,7 @@ public class UseCasePart {
 	 * @return this use case part
 	 */
 	public UseCasePart as(Actor defaultActor) {
+		Objects.requireNonNull(defaultActor);
 		this.defaultActor = defaultActor;
 		return this;
 	}
@@ -64,6 +68,17 @@ public class UseCasePart {
 		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, this, 1);
 		return conditionPart;
 	}
+	
+	/**
+	 * Creates a named step.
+	 * 
+	 * @param stepName the name of the created step
+	 * @return the created step part
+	 */
+	public FlowlessStepPart step(String stepName) {
+		FlowlessStepPart stepPart = condition(null).step(stepName);
+		return stepPart;
+	}
 
 	/**
 	 * Defines the type of commands that will cause a system reaction.
@@ -77,6 +92,7 @@ public class UseCasePart {
 	 * @return the created user part
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
+		Objects.requireNonNull(commandClass);
 		FlowlessConditionPart conditionPart = condition(null);
 		FlowlessUserPart<T> flowlessUserPart = conditionPart.user(commandClass);
 		return flowlessUserPart;
@@ -94,6 +110,7 @@ public class UseCasePart {
 	 * @return the created user part
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
+		Objects.requireNonNull(eventOrExceptionClass);
 		FlowlessConditionPart conditionPart = condition(null);
 		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
 		return flowlessUserPart;
