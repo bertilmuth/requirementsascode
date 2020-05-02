@@ -1,5 +1,7 @@
 package creditcard_eventsourcing.model;
 
+import static creditcard_eventsourcing.model.CreditCard.*;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
@@ -20,16 +22,6 @@ import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
-	
-	// Step names
-	public static final String assigningLimit = "Assigning limit";
-	public static final String assigningLimitTwice = "Assigning limit twice";
-	public static final String withdrawingCard = "Withdrawing card";
-	public static final String withdrawingCardAgain = "Withdrawing card again";
-	public static final String withdrawingCardTooOften = "Withdrawing card too often";
-	public static final String closingCycle = "Closing cycle";
-	public static final String repaying = "Repaying";
-	public static final String repeating = "Repeating";
 
 	// Command types
 	private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
@@ -51,13 +43,15 @@ public class CreditCardAggregateRoot {
 	private Condition accountIsOpen = this::accountIsOpen;
 
 	// Other fields
-	private UUID uuid;
-	private CreditCardRepository repository;
+	private final UUID uuid;
+	private final CreditCardRepository repository;
 	private CreditCard creditCard;
+	private final Model model;
 
 	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository creditCardRepository) {
 		this.uuid = uuid;
 		this.repository = creditCardRepository;
+		this.model = buildModel();
 	}
 
 	/**
@@ -65,7 +59,7 @@ public class CreditCardAggregateRoot {
 	 * 
 	 * @return the use case model
 	 */
-	private Model model() {
+	private Model buildModel() {
 		Model model = Model.builder()
 		  .useCase(useCreditCard)
 		    .basicFlow()
@@ -111,7 +105,6 @@ public class CreditCardAggregateRoot {
 	// Creates a new model runner and restores the previous state.
 	// The runner handles the command and returns an event.
 	private Optional<Object> handle(Object command) {
-		Model model = model();
 		ModelRunner modelRunner = new ModelRunner().run(model);
 		restorePreviousState(modelRunner, model);
 		return modelRunner.reactTo(command);
@@ -181,26 +174,11 @@ public class CreditCardAggregateRoot {
 	// Methods for restoring the previous state of the ModelRunner
 	
 	private void restorePreviousState(ModelRunner modelRunner, Model model) {
-		Optional<Object> latestEvent = creditCard.latestEvent();
-		latestEvent.ifPresent(event -> {
-			Optional<Step> latestStep = stepThatCausedEvent(model, event);
-			latestStep.ifPresent(step -> modelRunner.setLatestStep(step));
+		Optional<Step> latestStepOfEventModel = creditCard.latestStep();
+		latestStepOfEventModel.ifPresent(step -> {
+			Step latestStepOfCommandModel = findNamedStep(model, step.getName());
+			modelRunner.setLatestStep(latestStepOfCommandModel);
 		});
-	}
-
-	private Optional<Step> stepThatCausedEvent(Model model, Object event) {
-		String stepName = null;
-		if (event instanceof LimitAssigned) {
-			stepName = assigningLimit;
-		} else if (event instanceof CardWithdrawn) {
-			stepName = withdrawingCard;
-		} else if (event instanceof CardRepaid) {
-			stepName = repaying;
-		} else if (event instanceof CycleClosed) {
-			stepName = closingCycle;
-		}
-		Step step = findNamedStep(model, stepName);
-		return Optional.ofNullable(step);
 	}
 
 	private Step findNamedStep(Model model, final String stepName) {

@@ -8,14 +8,24 @@ import java.util.UUID;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.Step;
 
 /**
  * Based on code by Jakub Pilimon:
  * https://gitlab.com/pilloPl/eventsourced-credit-cards/blob/4329a0aac283067f1376b3802e13f5a561f18753
  *
  */
-public class CreditCard {
-
+public class CreditCard 
+{
+	public static final String assigningLimit = "Assigning limit";
+	public static final String assigningLimitTwice = "Assigning limit twice";
+	public static final String withdrawingCard = "Withdrawing card";
+	public static final String withdrawingCardAgain = "Withdrawing card again";
+	public static final String withdrawingCardTooOften = "Withdrawing card too often";
+	public static final String closingCycle = "Closing cycle";
+	public static final String repaying = "Repaying";
+	public static final String repeating = "Repeating";
+	
 	private UUID uuid;
 	private BigDecimal initialLimit;
 	private BigDecimal usedLimit = BigDecimal.ZERO;
@@ -23,7 +33,6 @@ public class CreditCard {
 	private List<DomainEvent> pendingEvents = new ArrayList<>();
 	private Model eventHandlingModel;
 	private ModelRunner modelRunner;
-	private Object latestEvent;
 
 	public CreditCard(UUID uuid, List<DomainEvent> events) {
 		this.uuid = uuid;
@@ -39,10 +48,10 @@ public class CreditCard {
 	 */
 	private Model model() {
 		return Model.builder()
-			.on(LimitAssigned.class).system(event -> assignLimit(event.getAmount()))
-			.on(CardWithdrawn.class).system(event -> withdraw(event.getAmount()))
-			.on(CardRepaid.class).system(event -> repay(event.getAmount()))
-			.on(CycleClosed.class).system(event -> closeCycle())
+			.step(assigningLimit).on(LimitAssigned.class).system(event -> assignLimit(event.getAmount()))
+			.step(withdrawingCard).on(CardWithdrawn.class).system(event -> withdraw(event.getAmount()))
+			.step(repaying).on(CardRepaid.class).system(event -> repay(event.getAmount()))
+			.step(closingCycle).on(CycleClosed.class).system(event -> closeCycle())
 		.build();
 	}
 
@@ -110,7 +119,6 @@ public class CreditCard {
 	
 	private void replay(UUID uuid, List<DomainEvent> events) {
 		events.forEach(this::mutate);
-		saveLatestEventOf(events);
 	}
 	
 	private void mutate(DomainEvent event) {
@@ -126,14 +134,8 @@ public class CreditCard {
 		pendingEvents.clear();
 	}
 	
-	private void saveLatestEventOf(List<DomainEvent> events) {
-		latestEvent = null;
-		if(events.size() > 0) {
-			latestEvent = events.get(events.size()-1);
-		}
-	}
-	
-	public Optional<Object> latestEvent() {
-		return Optional.ofNullable(latestEvent);
+	public Optional<Step> latestStep() {
+		Optional<Step> latestStep = modelRunner.getLatestStep();
+		return latestStep;
 	}
 }
