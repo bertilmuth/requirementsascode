@@ -26,17 +26,18 @@ public class CreditCard
 	public static final String repaying = "Repaying";
 	public static final String repeating = "Repeating";
 	
-	private UUID uuid;
 	private BigDecimal initialLimit;
 	private BigDecimal usedLimit = BigDecimal.ZERO;
 	private int withdrawals;
+	
+	private final UUID uuid;
+	private final Model eventHandlingModel;
 	private List<DomainEvent> pendingEvents = new ArrayList<>();
-	private Model eventHandlingModel;
 	private ModelRunner modelRunner;
 
 	public CreditCard(UUID uuid, List<DomainEvent> events) {
 		this.uuid = uuid;
-		this.eventHandlingModel = model();
+		this.eventHandlingModel = buildModel();
 		this.modelRunner = new ModelRunner().run(eventHandlingModel);
 		replay(uuid, events);
 	}
@@ -46,7 +47,7 @@ public class CreditCard
 	 * 
 	 * @return the event to method call mapping model
 	 */
-	private Model model() {
+	private Model buildModel() {
 		return Model.builder()
 			.step(assigningLimit).on(LimitAssigned.class).system(event -> assignLimit(event.getAmount()))
 			.step(withdrawingCard).on(CardWithdrawn.class).system(event -> withdraw(event.getAmount()))
