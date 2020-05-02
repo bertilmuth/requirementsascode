@@ -86,10 +86,6 @@ public abstract class AbstractTestCase {
 			displayedText = TEXT;
 		};
 	}
-
-	protected Consumer<Object> consumesAnyMessage(){
-		return object -> {};
-	}
 	
 	protected Consumer<EntersText> displaysEnteredText() {
 		return enteredText -> {
