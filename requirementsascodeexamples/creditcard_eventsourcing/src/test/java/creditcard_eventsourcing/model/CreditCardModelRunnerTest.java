@@ -36,13 +36,13 @@ public class CreditCardModelRunnerTest {
 	@Test
 	public void assigningLimitOnceWorksCorrectly() {
 		CreditCardAggregateRoot aggregateRoot = requestToAssignLimit(BigDecimal.TEN);
-		assertEquals(BigDecimal.TEN, aggregateRoot.creditCard().availableLimit());
+		assertEquals(BigDecimal.TEN, aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test
 	public void assigningLimitOnceWorks() {
 		CreditCardAggregateRoot aggregateRoot = requestToAssignLimit(BigDecimal.TEN);
-		assertEquals(BigDecimal.TEN, aggregateRoot.creditCard().availableLimit());
+		assertEquals(BigDecimal.TEN, aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -55,14 +55,14 @@ public class CreditCardModelRunnerTest {
 	public void withdrawingOnceWorksCorrectly() {
 		requestToAssignLimit(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestWithdrawal(BigDecimal.ONE);
-		assertEquals(BigDecimal.ZERO, aggregateRoot.creditCard().availableLimit());
+		assertEquals(BigDecimal.ZERO, aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test
 	public void assigningAndWithdrawingTheSameEqualsZero() {
 		requestToAssignLimit(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestWithdrawal(BigDecimal.ONE);
-		assertEquals(BigDecimal.ZERO, aggregateRoot.creditCard().availableLimit());
+		assertEquals(BigDecimal.ZERO, aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -95,7 +95,7 @@ public class CreditCardModelRunnerTest {
 			try {
 				requestWithdrawal(BigDecimal.ONE);
 			} catch (IllegalStateException e) {
-				assertEquals(new BigDecimal(5), aggregateRoot.creditCard().availableLimit());
+				assertEquals(new BigDecimal(5), aggregateRoot.loadCreditCard().availableLimit());
 				return;
 			}
 		}
@@ -122,7 +122,7 @@ public class CreditCardModelRunnerTest {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestRepay(BigDecimal.ONE);
-		assertEquals(BigDecimal.TEN, aggregateRoot.creditCard().availableLimit());
+		assertEquals(BigDecimal.TEN, aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class CreditCardModelRunnerTest {
 		requestWithdrawal(BigDecimal.ONE);
 		requestRepay(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestRepay(BigDecimal.ONE);
-		assertEquals(new BigDecimal(11), aggregateRoot.creditCard().availableLimit());
+		assertEquals(new BigDecimal(11), aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test
@@ -139,7 +139,7 @@ public class CreditCardModelRunnerTest {
 		requestToAssignLimit(BigDecimal.TEN);
 		requestWithdrawal(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestRepay(BigDecimal.TEN);
-		assertEquals(new BigDecimal(19), aggregateRoot.creditCard().availableLimit());
+		assertEquals(new BigDecimal(19), aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class CreditCardModelRunnerTest {
 		requestRepay(BigDecimal.ONE);
 		requestWithdrawal(BigDecimal.ONE);
 		CreditCardAggregateRoot aggregateRoot = requestWithdrawal(BigDecimal.ONE);
-		assertEquals(new BigDecimal(8), aggregateRoot.creditCard().availableLimit());
+		assertEquals(new BigDecimal(8), aggregateRoot.loadCreditCard().availableLimit());
 	}
 
 	private CreditCardAggregateRoot requestToAssignLimit(BigDecimal amount) {

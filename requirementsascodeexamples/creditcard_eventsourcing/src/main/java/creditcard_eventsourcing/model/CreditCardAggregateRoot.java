@@ -1,6 +1,13 @@
 package creditcard_eventsourcing.model;
 
-import static creditcard_eventsourcing.model.CreditCard.*;
+import static creditcard_eventsourcing.model.CreditCard.assigningLimit;
+import static creditcard_eventsourcing.model.CreditCard.assigningLimitTwice;
+import static creditcard_eventsourcing.model.CreditCard.closingCycle;
+import static creditcard_eventsourcing.model.CreditCard.repaying;
+import static creditcard_eventsourcing.model.CreditCard.repeating;
+import static creditcard_eventsourcing.model.CreditCard.withdrawingCard;
+import static creditcard_eventsourcing.model.CreditCard.withdrawingCardAgain;
+import static creditcard_eventsourcing.model.CreditCard.withdrawingCardTooOften;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -30,10 +37,10 @@ public class CreditCardAggregateRoot {
 	private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
 
 	// Command handling methods
-	private Function<RequestsToAssignLimit, Object> assignedLimit = this::assignedLimit;
-	private Function<RequestsWithdrawal, Object> withdrawnCard = this::withdrawnCard;
-	private Function<RequestsRepay, Object> repay = this::repay;
-	private Function<RequestToCloseCycle, Object> closedCycle = this::closedCycle;
+	private Function<RequestsToAssignLimit, DomainEvent> assignedLimit = this::assignedLimit;
+	private Function<RequestsWithdrawal, DomainEvent> withdrawnCard = this::withdrawnCard;
+	private Function<RequestsRepay, DomainEvent> repay = this::repay;
+	private Function<RequestToCloseCycle, DomainEvent> closedCycle = this::closedCycle;
 	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
 	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
@@ -45,8 +52,9 @@ public class CreditCardAggregateRoot {
 	// Other fields
 	private final UUID uuid;
 	private final CreditCardRepository repository;
-	private CreditCard creditCard;
 	private final Model model;
+	
+	private CreditCard creditCard;
 
 	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository creditCardRepository) {
 		this.uuid = uuid;
@@ -92,56 +100,57 @@ public class CreditCardAggregateRoot {
 	 */
 	public void accept(Object command) {
 		loadCreditCard();
-		Optional<Object> event = handle(command);		
-		applyEventToCreditCardIfPresent(event);
+		Optional<DomainEvent> event = restoreStateAndHandle(command);
+		applyToCreditCardIfPresent(event);
 		saveCreditCard();
 	}
 	
 	// Loads the credit card from the repository, replaying all saved events
-	private void loadCreditCard() {
-		creditCard = repository.load(uuid);
+	CreditCard loadCreditCard() {
+		this.creditCard = repository().load(uuid());
+		return creditCard;
 	}
 	
 	// Creates a new model runner and restores the previous state.
 	// The runner handles the command and returns an event.
-	private Optional<Object> handle(Object command) {
-		ModelRunner modelRunner = new ModelRunner().run(model);
-		restorePreviousState(modelRunner, model);
+	private Optional<DomainEvent> restoreStateAndHandle(Object command) {
+		ModelRunner modelRunner = new ModelRunner().run(model());
+		restorePreviousStateOf(modelRunner);
 		return modelRunner.reactTo(command);
 	}
 
 	// If a command handler returned an event, apply it to the credit card 
-	private void applyEventToCreditCardIfPresent(Optional<Object> event) {
-		event.ifPresent(ev -> creditCard.apply((DomainEvent) ev));
+	private void applyToCreditCardIfPresent(Optional<DomainEvent> event) {
+		event.ifPresent(ev -> creditCard().apply(ev));
 	}
 	
 	// Save all pending events of the credit card to the repository
 	private void saveCreditCard() {
-		repository.save(creditCard);
+		repository().save(creditCard());
 	}
 
 	// Command handling methods (that return events)
 	
-	private Object assignedLimit(RequestsToAssignLimit request) {
+	private DomainEvent assignedLimit(RequestsToAssignLimit request) {
 		BigDecimal amount = request.getAmount();
-		return new LimitAssigned(uuid, amount, Instant.now());
+		return new LimitAssigned(uuid(), amount, Instant.now());
 	}
 
-	private Object withdrawnCard(RequestsWithdrawal request) {
+	private DomainEvent withdrawnCard(RequestsWithdrawal request) {
 		BigDecimal amount = request.getAmount();
-		if (creditCard.notEnoughMoneyToWithdraw(amount)) {
+		if (creditCard().notEnoughMoneyToWithdraw(amount)) {
 			throw new IllegalStateException();
 		}
-		return new CardWithdrawn(uuid, amount, Instant.now());
+		return new CardWithdrawn(uuid(), amount, Instant.now());
 	}
 
-	private Object repay(RequestsRepay request) {
+	private DomainEvent repay(RequestsRepay request) {
 		BigDecimal amount = request.getAmount();
-		return new CardRepaid(uuid, amount, Instant.now());
+		return new CardRepaid(uuid(), amount, Instant.now());
 	}
-
-	private Object closedCycle(RequestToCloseCycle request) {
-		return new CycleClosed(uuid, Instant.now());
+	
+	private DomainEvent closedCycle(RequestToCloseCycle request) {
+		return new CycleClosed(uuid(), Instant.now());
 	}
 
 	private void throwAssignLimitException(RequestsToAssignLimit request) {
@@ -155,28 +164,23 @@ public class CreditCardAggregateRoot {
 	// Conditions
 	
 	boolean tooManyWithdrawalsInCycle() {
-		return creditCard.tooManyWithdrawalsInCycle();
+		return creditCard().tooManyWithdrawalsInCycle();
 	}
 
 	boolean limitAlreadyAssigned() {
-		return creditCard.isLimitAlreadyAssigned();
+		return creditCard().isLimitAlreadyAssigned();
 	}
 
 	boolean accountIsOpen() {
-		return creditCard.isAccountOpen();
-	}
-
-	public CreditCard creditCard() {
-		loadCreditCard();
-		return creditCard;
+		return creditCard().isAccountOpen();
 	}
 	
 	// Methods for restoring the previous state of the ModelRunner
 	
-	private void restorePreviousState(ModelRunner modelRunner, Model model) {
-		Optional<Step> latestStepOfEventModel = creditCard.latestStep();
+	private void restorePreviousStateOf(ModelRunner modelRunner) {
+		Optional<Step> latestStepOfEventModel = creditCard().latestStep();
 		latestStepOfEventModel.ifPresent(step -> {
-			Step latestStepOfCommandModel = findNamedStep(model, step.getName());
+			Step latestStepOfCommandModel = findNamedStep(model(), step.getName());
 			modelRunner.setLatestStep(latestStepOfCommandModel);
 		});
 	}
@@ -184,5 +188,21 @@ public class CreditCardAggregateRoot {
 	private Step findNamedStep(Model model, final String stepName) {
 		Step step = model.findUseCase(useCreditCard).findStep(stepName);
 		return step;
+	}
+
+	private UUID uuid() {
+		return uuid;
+	}
+	
+	private CreditCard creditCard() {
+		return creditCard;
+	}
+
+	private CreditCardRepository repository() {
+		return repository;
+	}
+
+	private Model model() {
+		return model;
 	}
 }
