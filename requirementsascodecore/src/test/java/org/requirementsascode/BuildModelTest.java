@@ -86,6 +86,149 @@ public class BuildModelTest extends AbstractTestCase {
 	}
     
   @Test
+	public void flowless_noUseCase_createsSingleNamedStepThatHandlesEvent() {
+		Model model = 
+			modelBuilder
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]); 
+  }
+    
+  @Test
+  public void flowless_noUseCase_createsSingleNamedStepThatHandlesCommand() {
+		Model model = 
+			modelBuilder
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]); 
+  }
+    
+  @Test
+  public void flowless_noUseCase_createsSingleNamedStepThatPublishesEvent() {
+		Model model = 
+			modelBuilder
+				.step(CUSTOMER_ENTERS_TEXT).step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]);
+  }
+    
+  @Test
+  public void flowless_noUseCase_createsSingleNamedStepThatPublishesCommand() {
+		Model model = 
+			modelBuilder
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]);
+  }
+  
+  
+	@Test
+	public void flowless_noUseCase_createsTwoNamedStepsWithEvents() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		useCasePart
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+			.step(CUSTOMER_ENTERS_NUMBER).on(EntersNumber.class).system(displaysEnteredNumber())
+		.build();
+	
+		Collection<Step> steps = useCasePart.getUseCase().getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	
+		step = stepIt.next();
+		assertEquals("S2", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	}
+  
+	@Test
+	public void flowless_noUseCase_createsTwoNamedStepsWithCommands() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		useCasePart
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+		.build();
+	
+		Collection<Step> steps = useCasePart.getUseCase().getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	
+		step = stepIt.next();
+		assertEquals("S2", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	}
+	
+  @Test
+  public void flowless_withUseCase_createsSingleNamedStepThatHandlesEvent() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		Model model = 
+			useCasePart
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+			.build(); 
+	
+		UseCase useCase = useCasePart.getUseCase();
+		Collection<Step> steps = useCase.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]);
+  }
+	
+  @Test
+  public void flowless_withUseCase_createsSingleNamedStepThatHandlesCommand() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		Model model = 
+			useCasePart
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+			.build();
+	
+		UseCase useCase = useCasePart.getUseCase();
+		Collection<Step> steps = useCase.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]);
+  }
+  
+  @Test
 	public void flowless_noUseCase_createsSingleStepThatHandlesEvent() {
 		Model model = 
 			modelBuilder
