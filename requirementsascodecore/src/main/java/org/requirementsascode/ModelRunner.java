@@ -113,10 +113,7 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner run(Model model) {
-		this.model = Objects.requireNonNull(model);
-		this.isRunning = true;
-
-		as(specifiedActorOrDefaultUserOf(model)).triggerAutonomousSystemReaction();
+		as(specifiedActorOrDefaultUserOf(model)).run(model);
 		return this;
 	}
 	private Actor specifiedActorOrDefaultUserOf(Model model) {
@@ -128,29 +125,47 @@ public class ModelRunner {
 		return actor;
 	}
 
-	private void triggerAutonomousSystemReaction() {
-		handleMessage(this);
-	}
-
 	/**
 	 * After you called this method, the runner will only react in steps that have
 	 * explicitly set the specified actor as one of its actors, or that are declared
 	 * as "autonomous system reactions".
 	 *
 	 * @param runActor the actor to run as
-	 * @return this runner, for method chaining with {@link #run(Model)}
+	 * @return object for method chaining
 	 */
-	public ModelRunner as(Actor runActor) {
-		this.runActor = Objects.requireNonNull(runActor);
-		if (model != null) {
-			this.steps = getActorSteps(runActor, model);
+	public As as(Actor runActor) {
+		return new As(runActor);
+	}
+	
+	public class As{
+		private As(Actor runActor) {
+			ModelRunner.this.runActor = Objects.requireNonNull(runActor);
+			if(ModelRunner.this.model != null) {
+				ModelRunner.this.steps = getActorSteps(runActor, model);
+			}
 		}
-		return this;
+		public ModelRunner run(Model model) {
+			runModel(model);
+			return ModelRunner.this;
+		}
+		public <T, U> Optional<U> reactTo(T message) {
+			return ModelRunner.this.reactTo(message);
+		}
+		public <U> Optional<U> reactTo(Object... messages) {
+			return ModelRunner.this.reactTo(messages);
+		}
+	}
+	
+	private void runModel(Model model) {
+		this.model = Objects.requireNonNull(model);
+		this.steps = getActorSteps(runActor, model);
+		this.isRunning = true;
+		triggerAutonomousSystemReaction();
 	}
 
 	private Collection<Step> getActorSteps(Actor actor, Model model) {
-		Set<Step> actorSteps = model.getModifiableSteps().stream().filter(step -> anyStepActorIsRunActor(step, actor))
-				.collect(Collectors.toSet());
+		Set<Step> actorSteps = model.getModifiableSteps().stream().filter(
+			step -> anyStepActorIsRunActor(step, actor)).collect(Collectors.toSet());
 		return actorSteps;
 	}
 	
@@ -167,6 +182,10 @@ public class ModelRunner {
 			}
 		}
 		return false;
+	}
+	
+	private void triggerAutonomousSystemReaction() {
+		handleMessage(this);
 	}
 
 	/**
