@@ -131,7 +131,7 @@ public class ModelRunner {
 	
 	public class As{
 		private As(Actor runActor) {
-			ModelRunner.this.runActor = Objects.requireNonNull(runActor);
+			setRunActor(runActor);
 			if(isRunning()) {
 				ModelRunner.this.steps = getActorSteps(runActor, model);
 			}
@@ -495,5 +495,9 @@ public class ModelRunner {
 		}
 		Object[] messages = recordedMessages.toArray();
 		return messages;
+	}
+	
+	private void setRunActor(Actor runActor) {
+		this.runActor = Objects.requireNonNull(runActor);
 	}
 }
