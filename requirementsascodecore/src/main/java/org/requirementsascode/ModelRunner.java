@@ -44,7 +44,7 @@ public class ModelRunner {
 	 * Constructor for creating a model runner.
 	 */
 	public ModelRunner() {
-		this.stepToBeRun = new StepToBeRun();
+		initializeStepToBeRun();
 		handleWith(stepToBeRun -> stepToBeRun.run());
 		publishWith(this::handleMessage);
 	}
@@ -498,8 +498,8 @@ public class ModelRunner {
 		return messages;
 	}
 	
-	private void setRunActor(Actor runActor) {
-		this.runActor = Objects.requireNonNull(runActor);
+	private void initializeStepToBeRun() {
+		this.stepToBeRun = new StepToBeRun();
 	}
 	
 	private void setModel(Model model) {
@@ -508,5 +508,9 @@ public class ModelRunner {
 
 	private void setRunning(boolean status) {
 		isRunning = status;
+	}
+	
+	private void setRunActor(Actor runActor) {
+		this.runActor = Objects.requireNonNull(runActor);
 	}
 }
