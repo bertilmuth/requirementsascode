@@ -156,20 +156,21 @@ public class ModelRunner {
 	}
 
 	private void updateActorSteps(Model model) {
-		this.steps = model.getModifiableSteps().stream().filter(
-			step -> anyStepActorIsRunActor(step)).collect(Collectors.toSet());
+		Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
+
+		this.steps = model.getModifiableSteps().stream()
+			.filter(step -> hasRightActor(step, isSystemOrRunActor))
+			.collect(Collectors.toSet());
 	}
-	
-	private boolean anyStepActorIsRunActor(Step step) {
+
+	private boolean hasRightActor(Step step, Predicate<Actor> actorTest) {
 		Actor[] stepActors = step.getActors();
 		if (stepActors == null) {
 			throw (new MissingUseCaseStepPart(step, "actor"));
 		}
 
-		Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(step.getModel().getSystemActor())
-			|| actor.equals(runActor);
 		for (Actor stepActor : stepActors) {
-			if (isSystemOrRunActor.test(stepActor)) {
+			if (actorTest.test(stepActor)) {
 				return true;
 			}
 		}
