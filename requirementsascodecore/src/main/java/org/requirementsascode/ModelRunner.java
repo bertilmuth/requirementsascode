@@ -44,7 +44,6 @@ public class ModelRunner {
 	 * Constructor for creating a model runner.
 	 */
 	public ModelRunner() {
-		initializeStepToBeRun();
 		handleWith(stepToBeRun -> stepToBeRun.run());
 		publishWith(this::handleMessage);
 	}
@@ -86,7 +85,7 @@ public class ModelRunner {
 	public ModelRunner publishWith(Consumer<Object> eventPublisher) {
 		Objects.requireNonNull(eventPublisher);
 		this.eventPublisher = event -> {
-			latestPublishedEvent = event;
+			setLatestPublishedEvent(event);
 			eventPublisher.accept(event);
 		};
 		return this;
@@ -133,7 +132,7 @@ public class ModelRunner {
 		private As(Actor runActor) {
 			setRunActor(runActor);
 			if(isRunning()) {
-				updateActorSteps(model);
+				updateActorStepsFrom(model);
 			}
 		}
 		public ModelRunner run(Model model) {
@@ -149,13 +148,14 @@ public class ModelRunner {
 	
 	private ModelRunner runModel(Model model) {
 		setModel(model);
-		updateActorSteps(model);
+		updateActorStepsFrom(model);
+		initializeStepToBeRun();
 		setRunning(true);
 		triggerAutonomousSystemReaction();
 		return this;
 	}
 
-	private void updateActorSteps(Model model) {
+	private void updateActorStepsFrom(Model model) {
 		Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
 
 		this.steps = model.getModifiableSteps().stream()
@@ -213,7 +213,7 @@ public class ModelRunner {
 	public <U> Optional<U> reactTo(Object... messages) {
 		Objects.requireNonNull(messages);
 
-		latestPublishedEvent = null;
+		clearLatestPublishedEvent();
 		for (Object message : messages) {
 			handleMessage(message);
 		}
@@ -261,7 +261,7 @@ public class ModelRunner {
 			return reactTo(messages);
 		}
 
-		latestPublishedEvent = null;
+		clearLatestPublishedEvent();
 		handleMessage(message);
 		return Optional.ofNullable((U)latestPublishedEvent);
 	}
@@ -512,5 +512,13 @@ public class ModelRunner {
 	
 	private void setRunActor(Actor runActor) {
 		this.runActor = Objects.requireNonNull(runActor);
+	}
+	
+	private void clearLatestPublishedEvent() {
+		latestPublishedEvent = null;
+	}
+	
+	private void setLatestPublishedEvent(Object event) {
+		latestPublishedEvent = event;
 	}
 }
