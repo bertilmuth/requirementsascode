@@ -376,14 +376,14 @@ public class ModelRunner {
 	}
 
 	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> messageClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream.filter(step -> stepEventClassIsSameOrSuperclassAsEventClass(step, messageClass))
+		Set<Step> steps = stepStream.filter(step -> stepMessageClassIsSameOrSuperclass(step, messageClass))
 				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
 		return steps;
 	}
 
-	private boolean stepEventClassIsSameOrSuperclassAsEventClass(Step useCaseStep, Class<?> currentEventClass) {
-		Class<?> stepEventClass = useCaseStep.getMessageClass();
-		boolean result = stepEventClass.isAssignableFrom(currentEventClass);
+	private boolean stepMessageClassIsSameOrSuperclass(Step step, Class<?> currentMessageClass) {
+		Class<?> stepMessageClass = step.getMessageClass();
+		boolean result = stepMessageClass.isAssignableFrom(currentMessageClass);
 		return result;
 	}
 
