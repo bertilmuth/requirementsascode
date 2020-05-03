@@ -148,7 +148,7 @@ public class ModelRunner {
 	}
 	
 	private ModelRunner runModel(Model model) {
-		this.model = Objects.requireNonNull(model);
+		setModel(model);
 		updateActorSteps(runActor, model);
 		this.isRunning = true;
 		triggerAutonomousSystemReaction();
@@ -499,4 +499,9 @@ public class ModelRunner {
 	private void setRunActor(Actor runActor) {
 		this.runActor = Objects.requireNonNull(runActor);
 	}
+	
+	private void setModel(Model model) {
+		this.model = Objects.requireNonNull(model);
+	}
+
 }
