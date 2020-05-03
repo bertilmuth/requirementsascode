@@ -113,16 +113,8 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner run(Model model) {
-		as(specifiedActorOrDefaultUserOf(model)).run(model);
+		as(model.getUserActor()).run(model);
 		return this;
-	}
-	private Actor specifiedActorOrDefaultUserOf(Model model) {
-		Actor actor = runActor;
-		Actor userActor = model.getUserActor();
-		if(runActor == null || runActor.getName().equals(userActor.getName())) {
-			actor = userActor;
-		} 
-		return actor;
 	}
 
 	/**
@@ -140,7 +132,7 @@ public class ModelRunner {
 	public class As{
 		private As(Actor runActor) {
 			ModelRunner.this.runActor = Objects.requireNonNull(runActor);
-			if(ModelRunner.this.model != null) {
+			if(model != null) {
 				ModelRunner.this.steps = getActorSteps(runActor, model);
 			}
 		}
