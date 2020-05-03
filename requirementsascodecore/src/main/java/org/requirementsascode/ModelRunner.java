@@ -133,7 +133,7 @@ public class ModelRunner {
 		private As(Actor runActor) {
 			setRunActor(runActor);
 			if(isRunning()) {
-				updateActorSteps(runActor, model);
+				updateActorSteps(model);
 			}
 		}
 		public ModelRunner run(Model model) {
@@ -149,18 +149,18 @@ public class ModelRunner {
 	
 	private ModelRunner runModel(Model model) {
 		setModel(model);
-		updateActorSteps(runActor, model);
+		updateActorSteps(model);
 		setRunning(true);
 		triggerAutonomousSystemReaction();
 		return this;
 	}
 
-	private void updateActorSteps(Actor actor, Model model) {
+	private void updateActorSteps(Model model) {
 		this.steps = model.getModifiableSteps().stream().filter(
-			step -> anyStepActorIsRunActor(step, actor)).collect(Collectors.toSet());
+			step -> anyStepActorIsRunActor(step)).collect(Collectors.toSet());
 	}
 	
-	private boolean anyStepActorIsRunActor(Step step, Actor runActor) {
+	private boolean anyStepActorIsRunActor(Step step) {
 		Actor[] stepActors = step.getActors();
 		if (stepActors == null) {
 			throw (new MissingUseCaseStepPart(step, "actor"));
