@@ -150,7 +150,7 @@ public class ModelRunner {
 	private ModelRunner runModel(Model model) {
 		setModel(model);
 		updateActorSteps(runActor, model);
-		this.isRunning = true;
+		setRunning(true);
 		triggerAutonomousSystemReaction();
 		return this;
 	}
@@ -194,7 +194,7 @@ public class ModelRunner {
 	 * {@link #run(Model)} is called again.
 	 */
 	public void stop() {
-		isRunning = false;
+		setRunning(false);
 	}
 
 	/**
@@ -504,4 +504,7 @@ public class ModelRunner {
 		this.model = Objects.requireNonNull(model);
 	}
 
+	private void setRunning(boolean status) {
+		isRunning = status;
+	}
 }
