@@ -132,7 +132,7 @@ public class ModelRunner {
 	public class As{
 		private As(Actor runActor) {
 			ModelRunner.this.runActor = Objects.requireNonNull(runActor);
-			if(model != null) {
+			if(isRunning()) {
 				ModelRunner.this.steps = getActorSteps(runActor, model);
 			}
 		}
