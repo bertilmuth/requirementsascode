@@ -166,9 +166,10 @@ public class ModelRunner {
 			throw (new MissingUseCaseStepPart(step, "actor"));
 		}
 
-		Actor systemActor = step.getModel().getSystemActor();
+		Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(step.getModel().getSystemActor())
+			|| actor.equals(runActor);
 		for (Actor stepActor : stepActors) {
-			if (stepActor.equals(systemActor) || stepActor.equals(runActor)) {
+			if (isSystemOrRunActor.test(stepActor)) {
 				return true;
 			}
 		}
