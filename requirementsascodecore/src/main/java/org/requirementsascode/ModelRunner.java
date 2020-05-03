@@ -137,8 +137,7 @@ public class ModelRunner {
 			}
 		}
 		public ModelRunner run(Model model) {
-			runModel(model);
-			return ModelRunner.this;
+			return runModel(model);
 		}
 		public <T, U> Optional<U> reactTo(T message) {
 			return ModelRunner.this.reactTo(message);
@@ -148,11 +147,12 @@ public class ModelRunner {
 		}
 	}
 	
-	private void runModel(Model model) {
+	private ModelRunner runModel(Model model) {
 		this.model = Objects.requireNonNull(model);
 		updateActorSteps(runActor, model);
 		this.isRunning = true;
 		triggerAutonomousSystemReaction();
+		return this;
 	}
 
 	private void updateActorSteps(Actor actor, Model model) {
