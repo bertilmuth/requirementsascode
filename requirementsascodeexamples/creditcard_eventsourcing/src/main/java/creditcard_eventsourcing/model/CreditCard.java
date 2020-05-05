@@ -17,14 +17,14 @@ import org.requirementsascode.Step;
  */
 public class CreditCard 
 {
-	public static final String assigningLimit = "Assigning limit";
-	public static final String assigningLimitTwice = "Assigning limit twice";
-	public static final String withdrawingCard = "Withdrawing card";
-	public static final String withdrawingCardAgain = "Withdrawing card again";
-	public static final String withdrawingCardTooOften = "Withdrawing card too often";
-	public static final String closingCycle = "Closing cycle";
-	public static final String repaying = "Repaying";
-	public static final String repeating = "Repeating";
+	static final String assigningLimit = "Assigning limit";
+	static final String assigningLimitTwice = "Assigning limit twice";
+	static final String withdrawingCard = "Withdrawing card";
+	static final String withdrawingCardAgain = "Withdrawing card again";
+	static final String withdrawingCardTooOften = "Withdrawing card too often";
+	static final String closingCycle = "Closing cycle";
+	static final String repaying = "Repaying";
+	static final String repeating = "Repeating";
 	
 	private BigDecimal initialLimit;
 	private BigDecimal usedLimit = BigDecimal.ZERO;
@@ -40,6 +40,13 @@ public class CreditCard
 		this.eventHandlingModel = buildModel();
 		this.modelRunner = new ModelRunner().run(eventHandlingModel);
 		replay(uuid, events);
+	}
+	
+	/*
+	 * UUID
+	 */
+	public UUID uuid() {
+		return uuid;
 	}
 
 	/**
@@ -77,12 +84,6 @@ public class CreditCard
 		withdrawals = 0;
 	}
 
-	/*
-	 * Getters
-	 */
-	public UUID uuid() {
-		return uuid;
-	}
 
 	/*
 	 * Validation methods
@@ -91,7 +92,7 @@ public class CreditCard
 		return availableLimit().compareTo(amount) < 0;
 	}
 
-	public BigDecimal availableLimit() {
+	BigDecimal availableLimit() {
 		return initialLimit.subtract(usedLimit);
 	}
 
@@ -135,7 +136,7 @@ public class CreditCard
 		pendingEvents.clear();
 	}
 	
-	public Optional<Step> latestStep() {
+	Optional<Step> latestStep() {
 		Optional<Step> latestStep = modelRunner.getLatestStep();
 		return latestStep;
 	}
