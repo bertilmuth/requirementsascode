@@ -23,31 +23,28 @@ public class StepSystemPart<T> {
 	private Step step;
 	
 	StepSystemPart(Runnable systemReaction, StepPart stepPart) {
-		this.stepPart = stepPart;
-		this.step = stepPart.getStep();
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		step.setSystemReaction(systemReactionObject);
+		initializeFields(stepPart);
+		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
 	}
 	
 	StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
-		this.stepPart = stepPart;
-		this.step = stepPart.getStep();
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		step.setSystemReaction(systemReactionObject);
+		initializeFields(stepPart);
+		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
 	}
 	
 	StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
-		this.stepPart = stepPart;
-		this.step = stepPart.getStep();
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		step.setSystemReaction(systemReactionObject);
+		initializeFields(stepPart);
+		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
 	}
 	
 	StepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
+		initializeFields(stepPart);
+		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
+	}
+	
+	private void initializeFields(StepPart stepPart) {
 		this.stepPart = stepPart;
 		this.step = stepPart.getStep();
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		step.setSystemReaction(systemReactionObject);
 	}
 
 	/**
