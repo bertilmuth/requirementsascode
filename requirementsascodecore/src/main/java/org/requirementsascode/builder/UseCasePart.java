@@ -1,7 +1,7 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
-import static org.requirementsascode.builder.FlowPart.buildBasicFlowPart;
+import static org.requirementsascode.builder.FlowPart.*;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
@@ -43,7 +43,7 @@ public class UseCasePart {
 	 */
 	public FlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
-		return new FlowPart(flowName, this);
+		return buildFlowPart(flowName, this);
 	}
 
 	/**

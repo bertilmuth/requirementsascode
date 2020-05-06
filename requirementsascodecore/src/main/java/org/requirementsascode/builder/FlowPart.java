@@ -46,10 +46,14 @@ public class FlowPart {
 	 * @param flowName the name of the flow
 	 * @param useCasePart the use case part whose flow this is
 	 */
-	FlowPart(String flowName, UseCasePart useCasePart) {
+	private FlowPart(String flowName, UseCasePart useCasePart) {
 		this.useCasePart = useCasePart;
 		this.useCase = useCasePart.getUseCase();
 		this.flow = useCase.newFlow(flowName);
+	}
+	
+	static FlowPart buildFlowPart(String flowName, UseCasePart useCasePart) {
+		return new FlowPart(flowName, useCasePart);
 	}
 
 	/**
