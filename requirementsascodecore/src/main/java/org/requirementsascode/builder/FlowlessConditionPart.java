@@ -33,8 +33,8 @@ public class FlowlessConditionPart {
 	 * @return the created step part
 	 */
 	public FlowlessStepPart step(final String stepName) {
-		StepPart stepPart = new StepPart(stepName, useCasePart, optionalCondition);
-		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepPart, flowlessStepCounter);
+		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepName, useCasePart, optionalCondition,
+			flowlessStepCounter);
 		return flowlessStepPart;
 	}
 

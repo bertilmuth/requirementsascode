@@ -3,14 +3,15 @@ package org.requirementsascode.builder;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Condition;
 import org.requirementsascode.ModelRunner;
 
 public class FlowlessStepPart {
 	private final StepPart stepPart;
 	private final long flowlessStepCounter;
 
-	FlowlessStepPart(StepPart stepPart, long flowlessStepCounter) {
-		this.stepPart = stepPart;
+	FlowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
+		this.stepPart = new StepPart(stepName, useCasePart, optionalCondition);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
