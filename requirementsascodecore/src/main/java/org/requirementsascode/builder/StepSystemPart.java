@@ -62,12 +62,6 @@ public class StepSystemPart<T> {
 		return trailingStepInFlowPart;
 	}
 
-	FlowStep createTrailingStepInFlow(String stepName, FlowPart flowPart) {
-		Flow flow = flowPart.getFlow();
-		FlowStep newTrailingStep = step.getUseCase().newInterruptableFlowStep(stepName, flow);
-		return newTrailingStep;
-	}
-
 	/**
 	 * Creates a new flow in the current use case.
 	 *
