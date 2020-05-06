@@ -1,7 +1,6 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Actor;
@@ -71,20 +70,6 @@ public class StepAsPart {
 	/**
 	 * Defines an "autonomous system reaction", meaning the system will react
 	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * Instead, the model runner provides itself as an event to the system reaction.
-	 *
-	 * @param systemReaction the autonomous system reaction (that needs information
-	 *                       from the model runner to work)
-	 * @return the created system part of this step
-	 */
-	StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-		StepSystemPart<ModelRunner> systemPart = user(ModelRunner.class).system(systemReaction);
-		return systemPart;
-	}
-
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
 	 * After executing the system reaction, the runner will publish the returned
 	 * event.
 	 *
@@ -108,7 +93,7 @@ public class StepAsPart {
 	 *                              in the current use case
 	 */
 	public UseCasePart continuesAfter(String stepName) {
-		system(new ContinuesAfter(stepName, step.getUseCase()));
+		user(ModelRunner.class).system(new ContinuesAfter(stepName, step.getUseCase()));
 		return stepPart.getUseCasePart();
 	}
 
@@ -124,7 +109,7 @@ public class StepAsPart {
 	 *                              in the current use case
 	 */
 	public UseCasePart continuesAt(String stepName) {
-		system(new ContinuesAt(stepName, step.getUseCase()));
+		user(ModelRunner.class).system(new ContinuesAt(stepName, step.getUseCase()));
 		return stepPart.getUseCasePart();
 	}
 
@@ -139,7 +124,7 @@ public class StepAsPart {
 	 *                              in the current use case
 	 */
 	public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-		system(new ContinuesWithoutAlternativeAt(stepName, (FlowStep) step));
+		user(ModelRunner.class).system(new ContinuesWithoutAlternativeAt(stepName, (FlowStep) step));
 		return stepPart.getUseCasePart();
 	}
 }

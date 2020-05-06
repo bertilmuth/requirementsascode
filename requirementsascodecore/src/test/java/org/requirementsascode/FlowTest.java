@@ -43,7 +43,7 @@ public class FlowTest extends AbstractTestCase{
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(modelRunner -> displaysConstantText())
+					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
 			.build();
 		
 		modelRunner.run(model);

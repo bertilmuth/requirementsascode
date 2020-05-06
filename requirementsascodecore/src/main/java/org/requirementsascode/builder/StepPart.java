@@ -1,7 +1,6 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Actor;
@@ -130,21 +129,6 @@ public class StepPart {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
-		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
-		return systemPart;
-	}
-
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * Instead, the model runner provides itself as an event to the system reaction.
-	 *
-	 * @param systemReaction the autonomous system reaction (that needs information
-	 *                       from a model runner to work)
-	 * @return the created system part of this step
-	 */
-	public StepSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
 		Objects.requireNonNull(systemReaction);
 		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
 		return systemPart;

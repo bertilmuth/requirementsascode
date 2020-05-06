@@ -119,7 +119,6 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 				.basicFlow()
 					.step("S1").on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
 					.step("S2").on(String.class).system(new IgnoresIt<>())
-					.step("S3").system(new IgnoresIt<>())
 		.build();
 	
 		modelRunner.publishWith(event -> publishedEvents.add(event));
@@ -127,6 +126,6 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		
 		assertEquals(1, publishedEvents.size());
 		assertEquals(EntersText.class, publishedEvents.get(0).getClass());
-		assertEquals("S3", modelRunner.getLatestStep().get().getName());
+		assertEquals("S2", modelRunner.getLatestStep().get().getName());
     }
 }
