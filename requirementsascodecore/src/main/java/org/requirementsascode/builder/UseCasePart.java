@@ -44,8 +44,7 @@ public class UseCasePart {
 	 */
 	public FlowPart flow(String flowName) {
 		Objects.requireNonNull(flowName);
-		Flow useCaseFlow = getUseCase().newFlow(flowName);
-		return new FlowPart(useCaseFlow, this);
+		return new FlowPart(flowName, this);
 	}
 
 	/**

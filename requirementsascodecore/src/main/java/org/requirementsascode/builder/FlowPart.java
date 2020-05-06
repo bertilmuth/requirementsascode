@@ -25,6 +25,12 @@ public class FlowPart {
 	private UseCasePart useCasePart;
 	private FlowPositionPart optionalFlowPositionPart;
 
+	FlowPart(String flowName, UseCasePart useCasePart) {
+		this.useCase = useCasePart.getUseCase();
+		this.flow = useCase.newFlow(flowName);
+		this.useCasePart = useCasePart;
+	}
+	
 	FlowPart(Flow flow, UseCasePart useCasePart) {
 		this.flow = flow;
 		this.useCasePart = useCasePart;
