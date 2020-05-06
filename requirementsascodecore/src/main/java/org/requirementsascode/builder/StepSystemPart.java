@@ -24,7 +24,7 @@ public class StepSystemPart<T> {
 	
 	StepSystemPart(Runnable systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
-		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
+		stepPart.getStep().setSystemReaction(systemReaction);
 	}
 	
 	StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
