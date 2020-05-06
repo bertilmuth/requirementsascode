@@ -36,6 +36,10 @@ public class FlowPart {
 		this.flow = useCase.getBasicFlow();
 	}
 	
+	static FlowPart buildBasicFlowPart(UseCasePart useCasePart) {
+		return new FlowPart(useCasePart);
+	}
+	
 	/**
 	 * Creates a flow part for a flow with the specified name.
 	 * 

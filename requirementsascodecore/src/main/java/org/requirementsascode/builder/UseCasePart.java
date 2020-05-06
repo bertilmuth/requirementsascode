@@ -1,6 +1,7 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
+import static org.requirementsascode.builder.FlowPart.buildBasicFlowPart;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
@@ -30,7 +31,7 @@ public class UseCasePart {
 	 * @return the flow part to create the steps of the basic flow.
 	 */
 	public FlowPart basicFlow() {
-		return new FlowPart(this);
+		return buildBasicFlowPart(this);
 	}
 
 	/**
