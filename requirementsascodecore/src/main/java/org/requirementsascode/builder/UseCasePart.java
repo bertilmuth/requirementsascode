@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
-import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
 import org.requirementsascode.UseCase;
 
@@ -31,8 +30,7 @@ public class UseCasePart {
 	 * @return the flow part to create the steps of the basic flow.
 	 */
 	public FlowPart basicFlow() {
-		Flow useCaseFlow = getUseCase().getBasicFlow();
-		return new FlowPart(useCaseFlow, this);
+		return new FlowPart(this);
 	}
 
 	/**
