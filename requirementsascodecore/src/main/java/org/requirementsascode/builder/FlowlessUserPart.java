@@ -5,6 +5,7 @@ import static org.requirementsascode.builder.FlowlessSystemPart.flowlessSystemPu
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -61,6 +62,21 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
+		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPublishPart(stepUserPart, systemReaction,
+			flowlessStepCounter);
+		return flowlessSystemPart;
+	}
+	
+	/**
+	 * Defines the system reaction. The system will react as specified to the
+	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
+	 * executing the system reaction, the runner will publish the returned events. 
+	 *
+	 * @param systemReaction the specified system reaction, that returns an event to
+	 *                       be published. 
+	 * @return the created flowless system part
+	 */
+	public FlowlessSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
 		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPublishPart(stepUserPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;

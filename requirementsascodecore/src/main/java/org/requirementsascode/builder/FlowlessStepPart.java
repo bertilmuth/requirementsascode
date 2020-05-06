@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.ModelRunner;
-import static org.requirementsascode.builder.FlowlessSystemPart.*;
 
 public class FlowlessStepPart {
 	private final StepPart stepPart;
@@ -61,8 +60,7 @@ public class FlowlessStepPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessSystemPart(stepPart, systemReaction,
-			flowlessStepCounter);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = user(ModelRunner.class).system(systemReaction);
 		return flowlessSystemPart;
 	}
 
@@ -77,8 +75,9 @@ public class FlowlessStepPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessSystemPublishPart(stepPart, systemReaction,
-			flowlessStepCounter);
+		@SuppressWarnings("unchecked")
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = user(ModelRunner.class).systemPublish(
+			(Supplier<Object>) systemReaction);
 		return flowlessSystemPart;
 	}
 }

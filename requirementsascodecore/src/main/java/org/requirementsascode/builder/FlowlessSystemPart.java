@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -23,12 +22,6 @@ public class FlowlessSystemPart<T> {
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
-	static FlowlessSystemPart<ModelRunner> flowlessSystemPart(StepPart stepPart, Runnable systemReaction,
-		long flowlessStepCounter) {
-		stepPart.system(systemReaction);
-		return new FlowlessSystemPart<>(stepPart.getUseCasePart(), flowlessStepCounter);
-	}
-
 	static <T> FlowlessSystemPart<T> flowlessSystemPart(StepUserPart<T> stepUserPart, Runnable systemReaction,
 		long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
@@ -36,17 +29,17 @@ public class FlowlessSystemPart<T> {
 		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
 	}
 
-	static <T> FlowlessSystemPart<T> flowlessSystemPart(StepUserPart<T> stepUserPart,
-		Consumer<? super T> systemReaction, long flowlessStepCounter) {
+	static <T> FlowlessSystemPart<T> flowlessSystemPart(StepUserPart<T> stepUserPart, Consumer<? super T> systemReaction,
+		long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
 		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
 	}
 
-	static FlowlessSystemPart<ModelRunner> flowlessSystemPublishPart(StepPart stepPart, Supplier<?> systemReaction,
-		long flowlessStepCounter) {
-		stepPart.systemPublish(systemReaction);
-		UseCasePart useCasePart = stepPart.getUseCasePart();
+	static <T> FlowlessSystemPart<T> flowlessSystemPublishPart(StepUserPart<T> stepUserPart,
+		Supplier<? super T> systemReaction, long flowlessStepCounter) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
+		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
 		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
 	}
 
@@ -69,7 +62,7 @@ public class FlowlessSystemPart<T> {
 		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, useCasePart, ++flowlessStepCounter);
 		return conditionPart;
 	}
-	
+
 	/**
 	 * Creates a named step.
 	 * 
