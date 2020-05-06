@@ -1,7 +1,7 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.FlowlessSystemPart.buildFlowlessSystemPart;
-import static org.requirementsascode.builder.FlowlessSystemPart.buildFlowlessSystemPublishPart;
+import static org.requirementsascode.builder.FlowlessSystemPart.flowlessSystemPart;
+import static org.requirementsascode.builder.FlowlessSystemPart.flowlessSystemPublishPart;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -32,7 +32,7 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> system(Consumer<? super T> systemReaction) {
-		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPart(stepUserPart, systemReaction,
+		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPart(stepUserPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;
 	} 
@@ -46,7 +46,7 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> system(Runnable systemReaction) {
-		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPart(stepUserPart, systemReaction,
+		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPart(stepUserPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;
 	}
@@ -61,7 +61,7 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPublishPart(stepUserPart, systemReaction,
+		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPublishPart(stepUserPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;
 	}

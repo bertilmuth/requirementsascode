@@ -61,7 +61,7 @@ public class FlowlessStepPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = buildFlowlessSystemPart(stepPart, systemReaction,
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessSystemPart(stepPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;
 	}
@@ -77,7 +77,7 @@ public class FlowlessStepPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = buildFlowlessSystemPublishPart(stepPart, systemReaction,
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = flowlessSystemPublishPart(stepPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;
 	}
