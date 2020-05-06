@@ -24,8 +24,10 @@ public class StepPart {
 	private ModelBuilder modelBuilder;
 	private Actor systemActor;
 
-	StepPart(String stepName, UseCasePart useCasePart, FlowPart flowPart) {
-		initializeFields(useCasePart);
+	StepPart(String stepName, FlowPart flowPart) {
+		this.useCasePart = flowPart.getUseCasePart();
+		this.modelBuilder = useCasePart.getModelBuilder();
+		this.systemActor = modelBuilder.build().getSystemActor();
 		this.flowPart = flowPart;
 		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
 	}
@@ -39,14 +41,10 @@ public class StepPart {
 	}
 	
 	StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
-		initializeFields(useCasePart);
-		this.step = useCasePart.getUseCase().newFlowlessStep(optionalCondition, stepName);
-	}
-	
-	private void initializeFields(UseCasePart useCasePart) {
 		this.useCasePart = useCasePart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
+		this.step = useCasePart.getUseCase().newFlowlessStep(optionalCondition, stepName);
 	}
 
 	/**

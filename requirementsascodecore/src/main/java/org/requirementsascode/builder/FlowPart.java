@@ -64,7 +64,7 @@ public class FlowPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		StepPart stepPart = new StepPart(stepName, useCasePart, FlowPart.this);
+		StepPart stepPart = new StepPart(stepName, FlowPart.this);
 		return stepPart;
 	}
 
