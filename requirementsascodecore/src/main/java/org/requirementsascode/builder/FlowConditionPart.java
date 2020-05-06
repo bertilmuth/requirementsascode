@@ -34,8 +34,7 @@ public class FlowConditionPart {
 	 */
 	public StepPart step(String stepName) {
 		FlowPart flowPart = flowPositionPart.getFlowPart();
-		UseCasePart useCasePart = flowPart.getUseCasePart();
-		UseCase useCase = useCasePart.getUseCase();
+		UseCase useCase = flowPart.getUseCasePart().getUseCase();
 		Flow flow = flowPart.getFlow();
 		FlowPosition flowPosition = flowPositionPart.getOptionalFlowPosition();
 		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getOptionalCondition());
