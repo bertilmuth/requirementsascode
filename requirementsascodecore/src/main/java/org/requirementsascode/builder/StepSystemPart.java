@@ -29,7 +29,7 @@ public class StepSystemPart<T> {
 	
 	StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
-		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
+		stepPart.getStep().setSystemReaction(systemReaction);
 	}
 	
 	StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {

@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -69,6 +70,10 @@ public abstract class Step extends ModelElement implements Serializable {
 	}
 	
 	public void setSystemReaction(Runnable systemReaction) {
+		this.systemReaction = new SystemReaction<>(systemReaction);
+	}
+	
+	public <T> void setSystemReaction(Consumer<? super T> systemReaction) {
 		this.systemReaction = new SystemReaction<>(systemReaction);
 	}
 
