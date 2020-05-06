@@ -1,9 +1,13 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -11,12 +15,42 @@ import org.requirementsascode.Model;
  * @author b_muth
  */
 public class FlowlessSystemPart<T> {
-	private long flowlessStepCounter;
 	private UseCasePart useCasePart;
+	private long flowlessStepCounter;
 
-	FlowlessSystemPart(StepSystemPart<T> stepSystemPart, long flowlessStepCounter) {
+	private FlowlessSystemPart(UseCasePart useCasePart, long flowlessStepCounter) {
+		this.useCasePart = useCasePart;
 		this.flowlessStepCounter = flowlessStepCounter;
-		this.useCasePart = stepSystemPart.getStepPart().getUseCasePart();
+	}
+
+	static FlowlessSystemPart<ModelRunner> buildFlowlessSystemPart(StepPart stepPart, Runnable systemReaction,
+		long flowlessStepCounter) {
+		stepPart.system(systemReaction);
+		return new FlowlessSystemPart<>(stepPart.getUseCasePart(), flowlessStepCounter);
+	}
+
+	static <T> FlowlessSystemPart<T> buildFlowlessSystemPart(StepUserPart<T> stepUserPart, Runnable systemReaction,
+		long flowlessStepCounter) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
+		return new FlowlessSystemPart<>(stepSystemPart.getStepPart().getUseCasePart(), flowlessStepCounter);
+	}
+
+	static <T> FlowlessSystemPart<T> buildFlowlessSystemPart(StepUserPart<T> stepUserPart,
+		Consumer<? super T> systemReaction, long flowlessStepCounter) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
+		return new FlowlessSystemPart<>(stepSystemPart.getStepPart().getUseCasePart(), flowlessStepCounter);
+	}
+
+	static FlowlessSystemPart<ModelRunner> buildFlowlessSystemPublishPart(StepPart stepPart, Supplier<?> systemReaction,
+		long flowlessStepCounter) {
+		stepPart.systemPublish(systemReaction);
+		return new FlowlessSystemPart<>(stepPart.getUseCasePart(), flowlessStepCounter);
+	}
+
+	static <T> FlowlessSystemPart<T> buildFlowlessSystemPublishPart(StepUserPart<T> stepUserPart,
+		Function<? super T, ?> systemReaction, long flowlessStepCounter) {
+		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
+		return new FlowlessSystemPart<>(stepSystemPart.getStepPart().getUseCasePart(), flowlessStepCounter);
 	}
 
 	/**

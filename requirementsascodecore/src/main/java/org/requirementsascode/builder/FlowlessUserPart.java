@@ -1,5 +1,8 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowlessSystemPart.buildFlowlessSystemPart;
+import static org.requirementsascode.builder.FlowlessSystemPart.buildFlowlessSystemPublishPart;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -29,9 +32,10 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> system(Consumer<? super T> systemReaction) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
-		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
-	}
+		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPart(stepUserPart, systemReaction,
+			flowlessStepCounter);
+		return flowlessSystemPart;
+	} 
 	
 	/**
 	 * Defines the system reaction. The system will react as specified, but it will
@@ -42,21 +46,23 @@ public class FlowlessUserPart<T> {
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> system(Runnable systemReaction) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
-		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPart(stepUserPart, systemReaction,
+			flowlessStepCounter);
+		return flowlessSystemPart;
 	}
 	
 	/**
 	 * Defines the system reaction. The system will react as specified to the
 	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
-	 * executing the system reaction, the runner will publish the returned events.
+	 * executing the system reaction, the runner will publish the returned events. 
 	 *
 	 * @param systemReaction the specified system reaction, that returns an event to
-	 *                       be published.
+	 *                       be published. 
 	 * @return the created flowless system part
 	 */
 	public FlowlessSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
-		return new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
+		FlowlessSystemPart<T> flowlessSystemPart = buildFlowlessSystemPublishPart(stepUserPart, systemReaction,
+			flowlessStepCounter);
+		return flowlessSystemPart;
 	}
 }
