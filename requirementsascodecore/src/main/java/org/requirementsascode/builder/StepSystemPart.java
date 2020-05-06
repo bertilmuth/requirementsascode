@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
-import org.requirementsascode.Flow;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.Step;
