@@ -39,7 +39,7 @@ public class FlowConditionPart {
 		Flow flow = flowPart.getFlow();
 		FlowPosition flowPosition = flowPositionPart.getOptionalFlowPosition();
 		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getOptionalCondition());
-		StepPart stepPart = new StepPart(step, useCasePart, flowPart);
+		StepPart stepPart = new StepPart(step, flowPart);
 		return stepPart;
 	}
 	

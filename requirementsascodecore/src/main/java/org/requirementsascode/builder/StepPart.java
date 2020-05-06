@@ -29,7 +29,7 @@ public class StepPart {
 	 * start.
 	 * 
 	 * @param stepName the name of the step
-	 * @param flowPart
+	 * @param flowPart the flow part used to create the flow
 	 */
 	StepPart(String stepName, FlowPart flowPart) {
 		this.useCasePart = flowPart.getUseCasePart();
@@ -43,12 +43,11 @@ public class StepPart {
 	 * Creates a conditional step at the beginning of a flow that can interrupt other flows.
 	 * 
 	 * @param step
-	 * @param useCasePart
 	 * @param flowPart
 	 */
-	StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
+	StepPart(Step step, FlowPart flowPart) {
 		this.step = step;
-		this.useCasePart = useCasePart;
+		this.useCasePart = flowPart.getUseCasePart();
 		this.flowPart = flowPart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
