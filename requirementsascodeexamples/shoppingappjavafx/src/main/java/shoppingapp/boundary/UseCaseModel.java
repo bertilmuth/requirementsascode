@@ -1,7 +1,7 @@
 package shoppingapp.boundary;
 
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.builder.ModelBuilder;
 
 import shoppingapp.boundary.internal.command_handler.AddsProductToPurchaseOrder;
 import shoppingapp.boundary.internal.command_handler.DisplaysPaymentDetailsForm;

@@ -1,39 +1,17 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps
- * {@link StepPart}.
- * 
- * @author b_muth
- */
-public class FlowlessConditionPart {
-	private final UseCasePart useCasePart;
-	private final Condition optionalCondition;
+import org.requirementsascode.ModelRunner;
+
+public class FlowlessStepPart {
+	private final StepPart stepPart;
 	private final long flowlessStepCounter;
-	private final String autoIncrementedStepName;
 
-	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
-		this.optionalCondition = optionalCondition;
-		this.useCasePart = useCasePart;
+	FlowlessStepPart(StepPart stepPart, long flowlessStepCounter) {
+		this.stepPart = stepPart;
 		this.flowlessStepCounter = flowlessStepCounter;
-		this.autoIncrementedStepName = "S" + flowlessStepCounter;
-	}
-
-	/**
-	 * Creates a named step.
-	 * 
-	 * @param stepName the name of the created step
-	 * @return the created step part
-	 */
-	public FlowlessStepPart step(final String stepName) {
-		UseCase useCase = useCasePart.getUseCase();
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
-		StepPart stepPart = new StepPart(newStep, useCasePart, null);
-		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepPart, flowlessStepCounter);
-		return flowlessStepPart;
 	}
 
 	/**
@@ -50,7 +28,8 @@ public class FlowlessConditionPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
-		FlowlessUserPart<T> flowlessUserPart = step(autoIncrementedStepName).user(commandClass);
+		StepUserPart<T> stepUserPart = stepPart.user(commandClass);
+		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
@@ -68,7 +47,8 @@ public class FlowlessConditionPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
-		FlowlessUserPart<T> flowlessUserPart = step(autoIncrementedStepName).on(messageClass);
+		StepUserPart<T> stepUserPart = stepPart.on(messageClass);
+		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
@@ -80,7 +60,8 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Runnable systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = step(autoIncrementedStepName).system(systemReaction);
+		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		return flowlessSystemPart;
 	}
 
@@ -94,7 +75,8 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> system(Consumer<ModelRunner> systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = step(autoIncrementedStepName).system(systemReaction);
+		StepSystemPart<ModelRunner> stepSystemPart = stepPart.system(systemReaction);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		return flowlessSystemPart;
 	}
 
@@ -109,11 +91,8 @@ public class FlowlessConditionPart {
 	 * @return the created system part of this step
 	 */
 	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = step(autoIncrementedStepName).systemPublish(systemReaction);
+		StepSystemPart<ModelRunner> stepSystemPart = stepPart.systemPublish(systemReaction);
+		FlowlessSystemPart<ModelRunner> flowlessSystemPart = new FlowlessSystemPart<>(stepSystemPart, flowlessStepCounter);
 		return flowlessSystemPart;
-	}
-
-	Condition getOptionalCondition() {
-		return optionalCondition;
 	}
 }

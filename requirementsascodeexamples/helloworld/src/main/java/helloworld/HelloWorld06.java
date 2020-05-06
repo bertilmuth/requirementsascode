@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelBuilder;
 import org.requirementsascode.ModelRunner;
+import org.requirementsascode.builder.ModelBuilder;
 
 import helloworld.usercommand.EnterText;
 

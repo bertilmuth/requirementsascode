@@ -1,4 +1,4 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,13 +12,20 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.AbstractTestCase;
+import org.requirementsascode.Actor;
+import org.requirementsascode.Flow;
+import org.requirementsascode.FlowStep;
+import org.requirementsascode.Model;
+import org.requirementsascode.Step;
+import org.requirementsascode.UseCase;
 
 public class BuildModelTest extends AbstractTestCase {
 	@Before
 	public void setup() {
 		setupWithRecordingModelRunner();
 	}
-
+	
 	@Test
 	public void createsNoUseCase() {
 		Model model = modelBuilder.build();

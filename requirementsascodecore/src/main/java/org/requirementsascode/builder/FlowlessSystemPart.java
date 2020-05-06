@@ -1,6 +1,9 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.Objects;
+
+import org.requirementsascode.Condition;
+import org.requirementsascode.Model;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.

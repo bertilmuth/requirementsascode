@@ -96,7 +96,7 @@ public class UseCase extends ModelElement implements Serializable {
 	 * @throws ElementAlreadyInModel if a flow with the specified name already
 	 *                               exists in the use case
 	 */
-	Flow newFlow(String flowName) {
+	public Flow newFlow(String flowName) {
 		Flow flow = new Flow(flowName, this);
 		saveModelElement(flow, nameToFlowMap);
 		return flow;
@@ -113,7 +113,7 @@ public class UseCase extends ModelElement implements Serializable {
 	 * @param condition    the condition, may be null if there is none.
 	 * @return the newly created step
 	 */
-	InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
+	public InterruptingFlowStep newInterruptingFlowStep(String stepName, Flow flow, FlowPosition flowPosition,
 			Condition condition) {
 		InterruptingFlowStep step = new InterruptingFlowStep(stepName, flow, flowPosition, condition);
 
@@ -139,7 +139,7 @@ public class UseCase extends ModelElement implements Serializable {
 	 * @param flow     the flow the step shall belong to
 	 * @return the newly created step
 	 */
-	InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {
+	public InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {
 		InterruptableFlowStep step = new InterruptableFlowStep(stepName, flow);
 		saveModelElement(step, nameToStepMap);
 
@@ -155,7 +155,7 @@ public class UseCase extends ModelElement implements Serializable {
 	 * @param stepName          the name of the step
 	 * @return the newly created step
 	 */
-	FlowlessStep newFlowlessStep(Condition optionalCondition, String stepName) {
+	public FlowlessStep newFlowlessStep(Condition optionalCondition, String stepName) {
 		FlowlessStep step = new FlowlessStep(stepName, this, optionalCondition);
 		saveModelElement(step, nameToStepMap);
 

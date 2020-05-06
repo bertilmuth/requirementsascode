@@ -1,10 +1,14 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
+import org.requirementsascode.Step;
+import org.requirementsascode.SystemReaction;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
@@ -35,9 +39,9 @@ public class StepUserPart<T> {
 		return stepSystemPart(systemReactionObject);
 	}
 
-	private StepSystemPart<T> stepSystemPart(SystemReaction<T> systemReactionObject) {
-		Objects.requireNonNull(systemReactionObject);
-		return new StepSystemPart<>(systemReactionObject, stepPart);
+	private StepSystemPart<T> stepSystemPart(SystemReaction<T> systemReaction) {
+		Objects.requireNonNull(systemReaction);
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
 	/**

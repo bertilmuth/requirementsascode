@@ -1,4 +1,4 @@
-package org.requirementsascode;
+package org.requirementsascode.queue;
 
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;

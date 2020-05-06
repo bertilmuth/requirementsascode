@@ -1,9 +1,14 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Actor;
+import org.requirementsascode.FlowStep;
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
+import org.requirementsascode.Step;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;

@@ -1,7 +1,10 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps

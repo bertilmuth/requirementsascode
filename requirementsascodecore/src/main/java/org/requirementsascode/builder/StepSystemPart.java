@@ -1,7 +1,13 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.Objects;
 
+import org.requirementsascode.Condition;
+import org.requirementsascode.Flow;
+import org.requirementsascode.FlowStep;
+import org.requirementsascode.Model;
+import org.requirementsascode.Step;
+import org.requirementsascode.SystemReaction;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**

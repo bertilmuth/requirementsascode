@@ -1,4 +1,9 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
+
+import org.requirementsascode.Actor;
+import org.requirementsascode.Condition;
+import org.requirementsascode.Model;
+import org.requirementsascode.UseCase;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -10,7 +15,7 @@ public class ModelBuilder {
 
 	private Model model;
 
-	ModelBuilder(Model model) {
+	public ModelBuilder(Model model) {
 		this.model = model;
 	}
 

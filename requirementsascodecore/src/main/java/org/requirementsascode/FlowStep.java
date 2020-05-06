@@ -48,7 +48,7 @@ public abstract class FlowStep extends Step implements Serializable {
 		setFlowPosition(flowPosition.orAfter(step));
 	}
 
-	void setReactWhile(Condition reactWhileCondition) {
+	public void setReactWhile(Condition reactWhileCondition) {
 		this.reactWhile = reactWhileCondition;
 		createLoop();
 	}

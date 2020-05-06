@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.builder.ModelBuilder;
+
 public abstract class AbstractTestCase {
 
 	public static final String TEXT = "Hello, Basic Flow!";

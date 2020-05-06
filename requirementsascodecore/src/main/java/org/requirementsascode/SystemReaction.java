@@ -6,11 +6,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * An instance of this class represents an element specified via .system(..) by the user of the library.
- * That element is called modelObject.
+ * An instance of this class represents a system reaction as a function, even if it has been specified as
+ * a Consumer or Runnable by the user of the library. This approach simplifies development of the rest of the API.
  * 
- * Internally, each system reaction needs to be represented as an function, even if it has been specified as
- * a consumer by the user of the library. This approach simplifies development of the rest of the API.
+ * An instance of this class also allows access to the original object (i.e. Consumer, Runnable, or Function)
+ * specified via .system(..) or .systemPublish() by the user of the library.
+ * That element is called modelObject.
  * 
  * @author b_muth
  *
@@ -20,7 +21,7 @@ public class SystemReaction<T> implements Function<T, Object> {
 	private Object modelObject;
 	private Function<? super T, ?> internalFunction;
 
-	SystemReaction(Consumer<? super T> modelObject) {
+	public SystemReaction(Consumer<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> nonPublishingReaction = message -> {
@@ -30,19 +31,19 @@ public class SystemReaction<T> implements Function<T, Object> {
 		this.internalFunction = nonPublishingReaction;
 	}
 
-	SystemReaction(Runnable modelObject) {
+	public SystemReaction(Runnable modelObject) {
 		this((Consumer<? super T>) ignoredRunner -> modelObject.run());
 		this.modelObject = modelObject;
 	}
 
-	SystemReaction(Supplier<? super T> modelObject) {
+	public SystemReaction(Supplier<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> publishingReaction = (Function<? super T, Object>) message -> modelObject.get();
 		this.internalFunction = publishingReaction;
 	}
 
-	SystemReaction(Function<? super T, ?> modelObject) {
+	public SystemReaction(Function<? super T, ?> modelObject) {
 		Objects.requireNonNull(modelObject);
 		this.modelObject = modelObject;
 		this.internalFunction = modelObject;

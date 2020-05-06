@@ -52,7 +52,7 @@ public abstract class Step extends ModelElement implements Serializable {
 		return actors;
 	}
 
-	void setActors(Actor[] actors) {
+	public void setActors(Actor[] actors) {
 		this.actors = actors;
 	}
 
@@ -60,7 +60,7 @@ public abstract class Step extends ModelElement implements Serializable {
 		return messageClass;
 	}
 
-	void setMessageClass(Class<?> eventClass) {
+	public void setMessageClass(Class<?> eventClass) {
 		this.messageClass = eventClass;
 	}
 
@@ -68,7 +68,7 @@ public abstract class Step extends ModelElement implements Serializable {
 		return systemReaction;
 	}
 
-	void setSystemReaction(SystemReaction<?> systemReaction) {
+	public void setSystemReaction(SystemReaction<?> systemReaction) {
 		this.systemReaction = systemReaction;
 	}
 

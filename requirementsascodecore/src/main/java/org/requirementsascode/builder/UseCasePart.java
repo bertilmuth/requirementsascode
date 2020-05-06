@@ -1,6 +1,12 @@
-package org.requirementsascode;
+package org.requirementsascode.builder;
 
 import java.util.Objects;
+
+import org.requirementsascode.Actor;
+import org.requirementsascode.Condition;
+import org.requirementsascode.Flow;
+import org.requirementsascode.Model;
+import org.requirementsascode.UseCase;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.

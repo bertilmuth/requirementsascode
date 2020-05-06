@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.requirementsascode.builder.ModelBuilder;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 /**
@@ -36,7 +37,7 @@ public class Model implements Serializable {
 	private Actor userActor;
 	private Actor systemActor;
 
-	Model() {
+	private Model() {
 		this.nameToActorMap = new LinkedHashMap<>();
 		this.nameToUseCaseMap = new LinkedHashMap<>();
 		this.userActor = newActor("User");
@@ -75,13 +76,13 @@ public class Model implements Serializable {
 		return hasUseCase;
 	}
 
-	Actor newActor(String actorName) {
+	public Actor newActor(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
 	}
 
-	UseCase newUseCase(String useCaseName) {
+	public UseCase newUseCase(String useCaseName) {
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
