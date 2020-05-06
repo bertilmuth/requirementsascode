@@ -22,7 +22,7 @@ public class FlowPositionPart {
 	 * @return this condition part, to ease creation of the first step of the flow
 	 */
 	public FlowConditionPart condition(Condition condition) {
-		this.conditionPart = new FlowConditionPart(this, condition);
+		this.conditionPart = new FlowConditionPart(condition, this);
 		return conditionPart;
 	}
 
