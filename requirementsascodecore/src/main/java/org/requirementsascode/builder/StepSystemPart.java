@@ -1,6 +1,9 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
@@ -18,11 +21,33 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 public class StepSystemPart<T> {
 	private StepPart stepPart;
 	private Step step;
-
-	StepSystemPart(SystemReaction<T> systemReaction, StepPart stepPart) {
+	
+	StepSystemPart(Runnable systemReaction, StepPart stepPart) {
 		this.stepPart = stepPart;
 		this.step = stepPart.getStep();
-		step.setSystemReaction(systemReaction);
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		step.setSystemReaction(systemReactionObject);
+	}
+	
+	StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
+		this.stepPart = stepPart;
+		this.step = stepPart.getStep();
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		step.setSystemReaction(systemReactionObject);
+	}
+	
+	StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
+		this.stepPart = stepPart;
+		this.step = stepPart.getStep();
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		step.setSystemReaction(systemReactionObject);
+	}
+	
+	StepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
+		this.stepPart = stepPart;
+		this.step = stepPart.getStep();
+		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
+		step.setSystemReaction(systemReactionObject);
 	}
 
 	/**

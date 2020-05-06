@@ -1,6 +1,5 @@
 package org.requirementsascode.builder;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -8,7 +7,6 @@ import java.util.function.Supplier;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
-import org.requirementsascode.SystemReaction;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
@@ -35,15 +33,9 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return stepSystemPart(systemReactionObject);
-	}
-
-	private StepSystemPart<T> stepSystemPart(SystemReaction<T> systemReaction) {
-		Objects.requireNonNull(systemReaction);
 		return new StepSystemPart<>(systemReaction, stepPart);
 	}
-	
+
 	/**
 	 * Defines the system reaction. The system will react as specified, but it will
 	 * ignore the message passed in, when {@link ModelRunner#reactTo(Object)} is
@@ -53,8 +45,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return stepSystemPart(systemReactionObject);
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 
 	/**
@@ -67,13 +58,11 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return stepSystemPart(systemReactionObject);
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
 	StepSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
-		SystemReaction<T> systemReactionObject = new SystemReaction<>(systemReaction);
-		return stepSystemPart(systemReactionObject);
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 
 	/**
