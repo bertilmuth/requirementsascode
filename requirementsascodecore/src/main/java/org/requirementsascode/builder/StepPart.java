@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Actor;
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
@@ -23,10 +24,27 @@ public class StepPart {
 	private ModelBuilder modelBuilder;
 	private Actor systemActor;
 
+	StepPart(String stepName, UseCasePart useCasePart, FlowPart flowPart) {
+		initializeFields(useCasePart);
+		this.flowPart = flowPart;
+		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
+	}
+	
 	StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
 		this.step = step;
 		this.useCasePart = useCasePart;
 		this.flowPart = flowPart;
+		this.modelBuilder = useCasePart.getModelBuilder();
+		this.systemActor = modelBuilder.build().getSystemActor();
+	}
+	
+	StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
+		initializeFields(useCasePart);
+		this.step = useCasePart.getUseCase().newFlowlessStep(optionalCondition, stepName);
+	}
+	
+	private void initializeFields(UseCasePart useCasePart) {
+		this.useCasePart = useCasePart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
 	}

@@ -64,8 +64,7 @@ public class FlowPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		FlowStep step = useCase.newInterruptableFlowStep(stepName, flow);
-		StepPart stepPart = new StepPart(step, useCasePart, FlowPart.this);
+		StepPart stepPart = new StepPart(stepName, useCasePart, FlowPart.this);
 		return stepPart;
 	}
 

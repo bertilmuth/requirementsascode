@@ -35,9 +35,7 @@ public class FlowlessConditionPart {
 	 * @return the created step part
 	 */
 	public FlowlessStepPart step(final String stepName) {
-		UseCase useCase = useCasePart.getUseCase();
-		FlowlessStep newStep = useCase.newFlowlessStep(optionalCondition, stepName);
-		StepPart stepPart = new StepPart(newStep, useCasePart, null);
+		StepPart stepPart = new StepPart(stepName, useCasePart, optionalCondition);
 		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepPart, flowlessStepCounter);
 		return flowlessStepPart;
 	}
