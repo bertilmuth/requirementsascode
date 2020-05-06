@@ -21,7 +21,7 @@ public class SystemReaction<T> implements Function<T, Object> {
 	private Object modelObject;
 	private Function<? super T, ?> internalFunction;
 
-	public SystemReaction(Consumer<? super T> modelObject) {
+	SystemReaction(Consumer<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> nonPublishingReaction = message -> {
@@ -31,19 +31,19 @@ public class SystemReaction<T> implements Function<T, Object> {
 		this.internalFunction = nonPublishingReaction;
 	}
 
-	public SystemReaction(Runnable modelObject) {
+	SystemReaction(Runnable modelObject) {
 		this((Consumer<? super T>) ignoredRunner -> modelObject.run());
 		this.modelObject = modelObject;
 	}
 
-	public SystemReaction(Supplier<? super T> modelObject) {
+	SystemReaction(Supplier<? super T> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> publishingReaction = (Function<? super T, Object>) message -> modelObject.get();
 		this.internalFunction = publishingReaction;
 	}
 
-	public SystemReaction(Function<? super T, ?> modelObject) {
+	SystemReaction(Function<? super T, ?> modelObject) {
 		Objects.requireNonNull(modelObject);
 		this.modelObject = modelObject;
 		this.internalFunction = modelObject;
