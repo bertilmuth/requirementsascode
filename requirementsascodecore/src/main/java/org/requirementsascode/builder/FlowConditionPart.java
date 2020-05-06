@@ -2,9 +2,7 @@ package org.requirementsascode.builder;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
-import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
-import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
@@ -34,11 +32,8 @@ public class FlowConditionPart {
 	 */
 	public StepPart step(String stepName) {
 		FlowPart flowPart = flowPositionPart.getFlowPart();
-		UseCase useCase = flowPart.getUseCasePart().getUseCase();
-		Flow flow = flowPart.getFlow();
 		FlowPosition flowPosition = flowPositionPart.getOptionalFlowPosition();
-		FlowStep step = useCase.newInterruptingFlowStep(stepName, flow, flowPosition, getOptionalCondition());
-		StepPart stepPart = new StepPart(step, flowPart);
+		StepPart stepPart = new StepPart(stepName, flowPart, flowPosition, getOptionalCondition());
 		return stepPart;
 	}
 	

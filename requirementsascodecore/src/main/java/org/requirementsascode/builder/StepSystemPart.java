@@ -58,8 +58,7 @@ public class StepSystemPart<T> {
 	public StepPart step(String stepName) {
 		Objects.requireNonNull(stepName);
 		FlowPart flowPart = stepPart.getFlowPart();
-		FlowStep trailingStepInFlow = createTrailingStepInFlow(stepName, flowPart);
-		StepPart trailingStepInFlowPart = new StepPart(trailingStepInFlow, flowPart);
+		StepPart trailingStepInFlowPart = new StepPart(stepName, flowPart);
 		return trailingStepInFlowPart;
 	}
 

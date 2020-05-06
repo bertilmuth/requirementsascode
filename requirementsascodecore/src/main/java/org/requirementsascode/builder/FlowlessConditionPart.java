@@ -4,10 +4,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
-import org.requirementsascode.FlowlessStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.UseCase;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}. Wraps

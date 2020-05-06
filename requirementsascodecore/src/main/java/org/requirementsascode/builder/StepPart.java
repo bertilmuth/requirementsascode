@@ -10,6 +10,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -38,21 +39,23 @@ public class StepPart {
 		this.flowPart = flowPart;
 		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
 	}
-	
+
 	/**
-	 * Creates a conditional step at the beginning of a flow that can interrupt other flows.
+	 * Creates a conditional step at the beginning of a flow that can interrupt
+	 * other flows.
 	 * 
 	 * @param step
 	 * @param flowPart
 	 */
-	StepPart(Step step, FlowPart flowPart) {
-		this.step = step;
+	StepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition, Condition optionalCondition) {
 		this.useCasePart = flowPart.getUseCasePart();
 		this.flowPart = flowPart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
+		this.step = useCasePart.getUseCase().newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition,
+			optionalCondition);
 	}
-	
+
 	/**
 	 * Creates a step, without a use case flow.
 	 * 
