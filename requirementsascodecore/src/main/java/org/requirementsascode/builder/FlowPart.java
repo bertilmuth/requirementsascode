@@ -24,36 +24,30 @@ public class FlowPart {
 	private UseCase useCase;
 	private UseCasePart useCasePart;
 	private FlowPositionPart optionalFlowPositionPart;
+	
+	private FlowPart(UseCasePart useCasePart, Flow flow) {
+		this.useCasePart = useCasePart;
+		this.useCase = useCasePart.getUseCase();
+		this.flow = flow;
+	}
 
 	/**
 	 * Creates a flow part for the basic flow.
 	 * 
 	 * @param useCasePart the use case part whose basic flow this is
 	 */
-	FlowPart(UseCasePart useCasePart) {
-		this.useCasePart = useCasePart;
-		this.useCase = useCasePart.getUseCase();
-		this.flow = useCase.getBasicFlow();
-	}
-	
 	static FlowPart buildBasicFlowPart(UseCasePart useCasePart) {
-		return new FlowPart(useCasePart);
+		return new FlowPart(useCasePart, useCasePart.getUseCase().getBasicFlow());
 	}
-	
+
 	/**
 	 * Creates a flow part for a flow with the specified name.
 	 * 
-	 * @param flowName the name of the flow
 	 * @param useCasePart the use case part whose flow this is
+	 * @param flowName    the name of the flow
 	 */
-	private FlowPart(String flowName, UseCasePart useCasePart) {
-		this.useCasePart = useCasePart;
-		this.useCase = useCasePart.getUseCase();
-		this.flow = useCase.newFlow(flowName);
-	}
-	
 	static FlowPart buildFlowPart(String flowName, UseCasePart useCasePart) {
-		return new FlowPart(flowName, useCasePart);
+		return new FlowPart(useCasePart, useCasePart.getUseCase().newFlow(flowName));
 	}
 
 	/**
