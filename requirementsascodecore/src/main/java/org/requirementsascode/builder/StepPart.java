@@ -44,7 +44,7 @@ public class StepPart {
 		this.useCasePart = useCasePart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
-		this.step = useCasePart.getUseCase().newFlowlessStep(optionalCondition, stepName);
+		this.step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
 	}
 
 	/**

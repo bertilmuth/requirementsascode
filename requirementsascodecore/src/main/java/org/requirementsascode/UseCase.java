@@ -148,14 +148,13 @@ public class UseCase extends ModelElement implements Serializable {
 
 	/**
 	 * Creates a step that is independent of a flow.
-	 * 
+	 * @param stepName          the name of the step
 	 * @param optionalCondition the condition of the flow, or null if the step is
 	 *                          unconditional.
-	 *
-	 * @param stepName          the name of the step
+	 * 
 	 * @return the newly created step
 	 */
-	public FlowlessStep newFlowlessStep(Condition optionalCondition, String stepName) {
+	public FlowlessStep newFlowlessStep(String stepName, Condition optionalCondition) {
 		FlowlessStep step = new FlowlessStep(stepName, this, optionalCondition);
 		saveModelElement(step, nameToStepMap);
 
