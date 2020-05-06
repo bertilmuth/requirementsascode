@@ -24,6 +24,13 @@ public class StepPart {
 	private ModelBuilder modelBuilder;
 	private Actor systemActor;
 
+	/**
+	 * Creates a step in a use case flow that can be interrupted by other flows that
+	 * start.
+	 * 
+	 * @param stepName the name of the step
+	 * @param flowPart
+	 */
 	StepPart(String stepName, FlowPart flowPart) {
 		this.useCasePart = flowPart.getUseCasePart();
 		this.modelBuilder = useCasePart.getModelBuilder();
@@ -32,6 +39,13 @@ public class StepPart {
 		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
 	}
 	
+	/**
+	 * Creates a conditional step at the beginning of a flow that can interrupt other flows.
+	 * 
+	 * @param step
+	 * @param useCasePart
+	 * @param flowPart
+	 */
 	StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
 		this.step = step;
 		this.useCasePart = useCasePart;
@@ -40,6 +54,13 @@ public class StepPart {
 		this.systemActor = modelBuilder.build().getSystemActor();
 	}
 	
+	/**
+	 * Creates a step, without a use case flow.
+	 * 
+	 * @param stepName the name of the step
+	 * @param useCasePart the use case of the step
+	 * @param optionalCondition a condition for the step, or null if the step is unconditional
+	 */
 	StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
 		this.useCasePart = useCasePart;
 		this.modelBuilder = useCasePart.getModelBuilder();
