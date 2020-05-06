@@ -67,6 +67,10 @@ public abstract class Step extends ModelElement implements Serializable {
 	public SystemReaction<?> getSystemReaction() {
 		return systemReaction;
 	}
+	
+	public void setSystemReaction(Runnable systemReaction) {
+		this.systemReaction = new SystemReaction<>(systemReaction);
+	}
 
 	public void setSystemReaction(SystemReaction<?> systemReaction) {
 		this.systemReaction = systemReaction;
