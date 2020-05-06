@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelBuilder;
+import org.requirementsascode.builder.ModelBuilder;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -50,7 +50,7 @@ public class FreemarkerEngineTest {
     Actor secondActor = modelBuilder.actor("Second actor");
     
     Model model = 
-      modelBuilder
+      Model.builder()
         .useCase("Get greeted")
           .basicFlow()
             .step("S1").system(promptsUserToEnterName())
