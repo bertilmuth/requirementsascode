@@ -10,7 +10,6 @@ import org.requirementsascode.Flow;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.Step;
-import org.requirementsascode.SystemReaction;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
 /**
@@ -34,12 +33,12 @@ public class StepSystemPart<T> {
 	
 	StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
-		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
+		stepPart.getStep().setSystemReaction(systemReaction);
 	}
 	
 	StepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
-		stepPart.getStep().setSystemReaction(new SystemReaction<>(systemReaction));
+		stepPart.getStep().setSystemReaction(systemReaction);
 	}
 	
 	private void initializeFields(StepPart stepPart) {

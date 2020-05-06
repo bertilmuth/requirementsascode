@@ -3,7 +3,9 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * A step is a part of a use case. The steps define the behavior of the use
@@ -76,9 +78,13 @@ public abstract class Step extends ModelElement implements Serializable {
 	public <T> void setSystemReaction(Consumer<? super T> systemReaction) {
 		this.systemReaction = new SystemReaction<>(systemReaction);
 	}
+	
+	public <T> void setSystemReaction(Function<? super T, ?> systemReaction) {
+		this.systemReaction = new SystemReaction<>(systemReaction);
+	}
 
-	public void setSystemReaction(SystemReaction<?> systemReaction) {
-		this.systemReaction = systemReaction;
+	public <T> void setSystemReaction(Supplier<? super T> systemReaction) {
+		this.systemReaction = new SystemReaction<>(systemReaction);
 	}
 
 	protected static Predicate<ModelRunner> toPredicate(Condition condition) {
