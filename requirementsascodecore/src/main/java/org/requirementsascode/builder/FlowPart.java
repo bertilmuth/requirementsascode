@@ -129,8 +129,7 @@ public class FlowPart {
 	 */
 	public FlowConditionPart condition(Condition condition) {
 		Objects.requireNonNull(condition);
-		optionalFlowPositionPart = flowPositionPart(new Anytime(), this);
-		FlowConditionPart conditionPart = optionalFlowPositionPart.condition(condition);
+		FlowConditionPart conditionPart = anytime().condition(condition);
 		return conditionPart;
 	}
 
