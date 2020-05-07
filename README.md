@@ -4,7 +4,7 @@
 ![requirements as code logo](./requirementsascode_logo.png)
 
 Requirements as code is a small library and a set of design principles to build maintainable applications.
-It builds on use case theory to record user requirements in the code and make their realization exchangable.
+It builds on use case theory to record user requirements as code and make their realization exchangable.
  
 In use case theory, use cases describe the interactions of users with the system as a black box. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
 
