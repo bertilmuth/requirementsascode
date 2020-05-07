@@ -9,9 +9,13 @@ public class FlowlessStepPart {
 	private final StepPart stepPart;
 	private final long flowlessStepCounter;
 
-	FlowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
+	private FlowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
 		this.stepPart = new StepPart(stepName, useCasePart, optionalCondition);
 		this.flowlessStepCounter = flowlessStepCounter;
+	}
+	
+	static FlowlessStepPart flowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
+		return new FlowlessStepPart(stepName, useCasePart, optionalCondition, flowlessStepCounter);
 	}
 
 	/**

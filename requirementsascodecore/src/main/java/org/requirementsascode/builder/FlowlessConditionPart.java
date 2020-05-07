@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowlessStepPart.flowlessStepPart;
+
 import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
@@ -36,7 +38,7 @@ public class FlowlessConditionPart {
 	 * @return the created step part
 	 */
 	public FlowlessStepPart step(final String stepName) {
-		FlowlessStepPart flowlessStepPart = new FlowlessStepPart(stepName, useCasePart, optionalCondition,
+		FlowlessStepPart flowlessStepPart = flowlessStepPart(stepName, useCasePart, optionalCondition,
 			flowlessStepCounter);
 		return flowlessStepPart;
 	}
