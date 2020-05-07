@@ -21,9 +21,13 @@ public class FlowlessUserPart<T> {
 	private StepUserPart<T> stepUserPart;
 	private long flowlessStepCounter;
 
-	FlowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
+	private FlowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
 		this.stepUserPart = Objects.requireNonNull(stepUserPart);
 		this.flowlessStepCounter = flowlessStepCounter;
+	}
+	
+	static <T> FlowlessUserPart<T> flowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
+		return new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
 	}
 	
 	/**

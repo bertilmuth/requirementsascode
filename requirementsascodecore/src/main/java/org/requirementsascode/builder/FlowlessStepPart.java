@@ -1,6 +1,7 @@
 package org.requirementsascode.builder;
 
 import java.util.function.Supplier;
+import static org.requirementsascode.builder.FlowlessUserPart.*;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.ModelRunner;
@@ -33,7 +34,7 @@ public class FlowlessStepPart {
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
 		StepUserPart<T> stepUserPart = stepPart.user(commandClass);
-		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessUserPart(stepUserPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
@@ -52,7 +53,7 @@ public class FlowlessStepPart {
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
 		StepUserPart<T> stepUserPart = stepPart.on(messageClass);
-		FlowlessUserPart<T> flowlessUserPart = new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessUserPart(stepUserPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
