@@ -40,9 +40,13 @@ public class StepSystemPart<T> {
 		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
-	StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
+	private StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
 		stepPart.getStep().setSystemReaction(systemReaction);
+	}
+	
+	static <T> StepSystemPart<T> functionStepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
 	StepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {

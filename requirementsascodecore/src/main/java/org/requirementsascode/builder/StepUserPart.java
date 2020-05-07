@@ -61,7 +61,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		return new StepSystemPart<>(systemReaction, stepPart);
+		return functionStepSystemPart(systemReaction, stepPart);
 	}
 	
 	StepSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
