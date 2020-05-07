@@ -26,11 +26,13 @@ It's a simple alternative to state machines.
 # influences and special features
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
+You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event causing your event publisher to pick it up automatically.
+And since [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) are processes, you can use this library to implement [process managers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html) as well.
+
 When you follow the design principles of requirements as code, you will end up with pure domain code. The domain code doesn't communicate with technical infrastructure, not even through interfaces. That's why you can test the domain code without mocking anything. That's similar to the idea of a [functional core and an imperative shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell).
 
-The use case model at the boundary represents the single source of truth for interactions started by the user. You can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
+The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
-And since [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) are processes, you can use this library to implement [process managers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html) as well.
 
 # getting started
 Requirements as code is available on Maven Central.
@@ -146,8 +148,35 @@ class RequestHello {
 }
 ```
 
+# publishing events
+When you use the `system()` method, you are restricted to just consuming messages.
+But you can also publish events with `systemPublish()`, like so:
+
+``` java
+private void buildModel() {
+  Model model = Model.builder()
+    .on(EnterName.class).systemPublish(this::publishNameAsString) 
+    .on(String.class).system(this::displayNameString) 
+   .build();			
+}
+
+private String publishNameAsString(EnterName enterName) {
+  return enterName.getUserName();
+}
+
+public void displayNameString(String nameString) {
+  System.out.println("Welcome, " + nameString + ".");
+}
+```
+
+As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
+By default, the model runner takes the returned event and publishes it to the model. 
+
+This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
+For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
+
 # Example for applying the design principles
-The example above has shown how to build and run a use case model. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
+The examples above have shown how to build and run use case models. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
 To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to change as follows.
 
 ## Boundary
@@ -399,33 +428,6 @@ class Greeting{
   }
 }
 ```
-
-# publishing events
-When you use the `system()` method, you are restricted to just consuming messages.
-But you can also publish events with `systemPublish()`, like so:
-
-``` java
-private void buildModel() {
-  Model model = Model.builder()
-    .on(EnterName.class).systemPublish(this::publishNameAsString) 
-    .on(String.class).system(this::displayNameString) 
-   .build();			
-}
-
-private String publishNameAsString(EnterName enterName) {
-  return enterName.getUserName();
-}
-
-public void displayNameString(String nameString) {
-  System.out.println("Welcome, " + nameString + ".");
-}
-```
-
-As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
-By default, the model runner takes the returned event and publishes it to the model. 
-
-This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
-For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
 # documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
