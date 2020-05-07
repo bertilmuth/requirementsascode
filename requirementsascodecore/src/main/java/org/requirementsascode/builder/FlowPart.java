@@ -36,11 +36,13 @@ public class FlowPart {
 	}
 
 	static FlowPart buildBasicFlowPart(UseCasePart useCasePart) {
-		return new FlowPart(useCasePart.getUseCase().getBasicFlow(), useCasePart);
+		final Flow basicFlow = useCasePart.getUseCase().getBasicFlow();
+		return new FlowPart(basicFlow, useCasePart);
 	}
 
 	static FlowPart buildFlowPart(String flowName, UseCasePart useCasePart) {
-		return new FlowPart(useCasePart.getUseCase().newFlow(flowName), useCasePart);
+		final Flow newFlow = useCasePart.getUseCase().newFlow(flowName);
+		return new FlowPart(newFlow, useCasePart);
 	}
 
 	/**
