@@ -28,20 +28,13 @@ public class StepPart {
 	private Actor systemActor;
 	
 	private StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
-		this.useCasePart = useCasePart;
+		this.step = Objects.requireNonNull(step);
+		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
-		this.flowPart = Objects.requireNonNull(flowPart);
-		this.step = Objects.requireNonNull(step);
+		this.flowPart = flowPart;
 	}
-	
-	/**
-	 * Creates a step in a use case flow that can be interrupted by other flows that
-	 * start.
-	 * 
-	 * @param stepName the name of the step
-	 * @param the      step part
-	 */
+
 	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
 		UseCasePart useCasePart = flowPart.getUseCasePart();
 		UseCase useCase = useCasePart.getUseCase();
@@ -49,13 +42,6 @@ public class StepPart {
 		return new StepPart(step, useCasePart, flowPart);
 	}
 
-	/**
-	 * Creates a conditional step at the beginning of a flow that can interrupt
-	 * other flows.
-	 * 
-	 * @param step
-	 * @param flowPart
-	 */
 	static StepPart interruptingFlowStepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition,
 		Condition optionalCondition) {
 		UseCasePart useCasePart = flowPart.getUseCasePart();
@@ -63,23 +49,10 @@ public class StepPart {
 		Step step = useCase.newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition, optionalCondition);
 		return new StepPart(step, useCasePart, flowPart);
 	}
-
-	private StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
-		this.useCasePart = useCasePart;
-		this.modelBuilder = useCasePart.getModelBuilder();
-		this.systemActor = modelBuilder.build().getSystemActor();
-		this.step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
-	}
 	
-	/**
-	 * Creates a step, without a use case flow.
-	 * 
-	 * @param stepName the name of the step
-	 * @param useCasePart the use case of the step
-	 * @param optionalCondition a condition for the step, or null if the step is unconditional
-	 */
 	static StepPart flowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
-		return new StepPart(stepName, useCasePart, optionalCondition);
+		Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
+		return new StepPart(step, useCasePart, null);
 	}
 
 	/**
