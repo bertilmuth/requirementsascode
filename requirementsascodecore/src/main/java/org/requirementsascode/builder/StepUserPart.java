@@ -40,7 +40,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
-		return consumerStepSystemPart(systemReaction, stepPart);
+		return stepSystemPartWithConsumer(systemReaction, stepPart);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
-		return runnableStepSystemPart(systemReaction, stepPart);
+		return stepSystemPartWithRunnable(systemReaction, stepPart);
 	}
 
 	/**
@@ -65,11 +65,11 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		return functionStepSystemPart(systemReaction, stepPart);
+		return stepSystemPartWithFunction(systemReaction, stepPart);
 	}
 	
 	StepSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
-		return supplierStepSystemPart(systemReaction, stepPart);
+		return stepSystemPartWithSupplier(systemReaction, stepPart);
 	}
 
 	/**

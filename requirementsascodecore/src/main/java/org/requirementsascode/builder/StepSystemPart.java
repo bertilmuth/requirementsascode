@@ -31,22 +31,22 @@ public class StepSystemPart<T> {
 		this.step = stepPart.getStep();
 	}
 	
-	static <T> StepSystemPart<T> runnableStepSystemPart(Runnable systemReaction, StepPart stepPart) {
+	static <T> StepSystemPart<T> stepSystemPartWithRunnable(Runnable systemReaction, StepPart stepPart) {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
 	
-	static <T> StepSystemPart<T> consumerStepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
+	static <T> StepSystemPart<T> stepSystemPartWithConsumer(Consumer<? super T> systemReaction, StepPart stepPart) {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
 	
-	static <T> StepSystemPart<T> functionStepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
+	static <T> StepSystemPart<T> stepSystemPartWithFunction(Function<? super T, ?> systemReaction, StepPart stepPart) {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
 	
-	static <T> StepSystemPart<T> supplierStepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
+	static <T> StepSystemPart<T> stepSystemPartWithSupplier(Supplier<? super T> systemReaction, StepPart stepPart) {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
