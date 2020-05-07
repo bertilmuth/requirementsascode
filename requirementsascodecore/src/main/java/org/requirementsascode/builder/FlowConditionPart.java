@@ -8,6 +8,8 @@ import org.requirementsascode.Model;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
+import static org.requirementsascode.builder.StepPart.*;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -39,7 +41,7 @@ public class FlowConditionPart {
 	public StepPart step(String stepName) {
 		FlowPart flowPart = flowPositionPart.getFlowPart();
 		FlowPosition flowPosition = flowPositionPart.getOptionalFlowPosition();
-		StepPart stepPart = new StepPart(stepName, flowPart, flowPosition, getOptionalCondition());
+		StepPart stepPart = interruptingFlowStepPart(stepName, flowPart, flowPosition, getOptionalCondition());
 		return stepPart;
 	}
 	
