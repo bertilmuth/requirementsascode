@@ -21,7 +21,7 @@ public class FlowConditionPart {
 		this.optionalCondition = condition;
 	}
 	
-	public static FlowConditionPart flowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
+	static FlowConditionPart flowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
 		return new FlowConditionPart(condition, flowPositionPart);
 	}
 	

@@ -25,7 +25,7 @@ public class FlowlessConditionPart {
 		this.autoIncrementedStepName = "S" + flowlessStepCounter;
 	}
 	
-	public static FlowlessConditionPart flowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
+	static FlowlessConditionPart flowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		return new FlowlessConditionPart(optionalCondition, useCasePart, flowlessStepCounter);
 	}
 
