@@ -50,7 +50,7 @@ public class StepPart {
 		return new StepPart(step, useCasePart, flowPart);
 	}
 	
-	static StepPart flowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
+	static StepPart stepPartWithoutFlow(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
 		Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
 		return new StepPart(step, useCasePart, null);
 	}

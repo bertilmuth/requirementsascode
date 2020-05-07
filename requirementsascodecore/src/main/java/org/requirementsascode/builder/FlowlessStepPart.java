@@ -1,8 +1,10 @@
 package org.requirementsascode.builder;
 
-import java.util.function.Supplier;
-import static org.requirementsascode.builder.FlowlessUserPart.*;
+import static org.requirementsascode.builder.FlowlessUserPart.flowlessOnPart;
+import static org.requirementsascode.builder.FlowlessUserPart.flowlessUserPart;
+import static org.requirementsascode.builder.StepPart.stepPartWithoutFlow;
 
+import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.ModelRunner;
@@ -12,7 +14,7 @@ public class FlowlessStepPart {
 	private final long flowlessStepCounter;
 
 	private FlowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
-		this.stepPart = org.requirementsascode.builder.StepPart.flowlessStepPart(stepName, useCasePart, optionalCondition);
+		this.stepPart = stepPartWithoutFlow(stepName, useCasePart, optionalCondition);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 	
