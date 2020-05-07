@@ -36,7 +36,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
-		return new StepSystemPart<>(systemReaction, stepPart);
+		return consumerStepSystemPart(systemReaction, stepPart);
 	}
 
 	/**
