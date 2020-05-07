@@ -23,10 +23,6 @@ public class StepSystemPart<T> {
 	private Step step;
 	
 	private StepSystemPart(StepPart stepPart) {
-		initializeFields(stepPart);
-	}
-	
-	private void initializeFields(StepPart stepPart) {
 		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
 	}
