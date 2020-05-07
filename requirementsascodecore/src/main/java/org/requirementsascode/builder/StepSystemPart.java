@@ -22,9 +22,13 @@ public class StepSystemPart<T> {
 	private StepPart stepPart;
 	private Step step;
 	
-	StepSystemPart(Runnable systemReaction, StepPart stepPart) {
+	private StepSystemPart(Runnable systemReaction, StepPart stepPart) {
 		initializeFields(stepPart);
 		stepPart.getStep().setSystemReaction(systemReaction);
+	}
+	
+	static <T> StepSystemPart<T> runnableStepSystemPart(Runnable systemReaction, StepPart stepPart) {
+		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
 	StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {

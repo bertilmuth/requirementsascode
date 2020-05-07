@@ -11,6 +11,8 @@ import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
+import static org.requirementsascode.builder.StepSystemPart.*;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -46,7 +48,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
-		return new StepSystemPart<>(systemReaction, stepPart);
+		return runnableStepSystemPart(systemReaction, stepPart);
 	}
 
 	/**
