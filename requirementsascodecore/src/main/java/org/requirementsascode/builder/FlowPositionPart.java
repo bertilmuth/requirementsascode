@@ -2,6 +2,8 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.FlowConditionPart.flowConditionPart;
 
+import java.util.Objects;
+
 import org.requirementsascode.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
@@ -13,7 +15,7 @@ public class FlowPositionPart {
 
 	FlowPositionPart(FlowPosition optionalFlowPosition, FlowPart flowPart) {
 		this.optionalFlowPosition = optionalFlowPosition;
-		this.flowPart = flowPart;
+		this.flowPart = Objects.requireNonNull(flowPart);
 	}
 
 	/**

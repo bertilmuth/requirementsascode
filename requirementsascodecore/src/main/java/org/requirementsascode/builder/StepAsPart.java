@@ -24,7 +24,8 @@ public class StepAsPart {
 	private StepPart stepPart;
 
 	StepAsPart(Actor[] actors, StepPart stepPart) {
-		this.stepPart = stepPart;
+		Objects.requireNonNull(actors);
+		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
 
 		step.setActors(actors);

@@ -2,6 +2,7 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.FlowlessStepPart.flowlessStepPart;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
@@ -22,11 +23,11 @@ public class FlowlessConditionPart {
 
 	private FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		this.optionalCondition = optionalCondition;
-		this.useCasePart = useCasePart;
+		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.flowlessStepCounter = flowlessStepCounter;
 		this.autoIncrementedStepName = "S" + flowlessStepCounter;
 	}
-	
+
 	static FlowlessConditionPart flowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		return new FlowlessConditionPart(optionalCondition, useCasePart, flowlessStepCounter);
 	}

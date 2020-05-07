@@ -1,5 +1,6 @@
 package org.requirementsascode.builder;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -20,7 +21,7 @@ public class StepUserPart<T> {
 	private Step step;
 
 	StepUserPart(Class<T> messageClass, StepPart stepPart) {
-		this.stepPart = stepPart;
+		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
 		step.setMessageClass(messageClass);
 	}

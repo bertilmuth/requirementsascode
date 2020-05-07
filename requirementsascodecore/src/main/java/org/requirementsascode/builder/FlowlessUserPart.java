@@ -3,6 +3,7 @@ package org.requirementsascode.builder;
 import static org.requirementsascode.builder.FlowlessSystemPart.flowlessSystemPart;
 import static org.requirementsascode.builder.FlowlessSystemPart.flowlessSystemPublishPart;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,7 +22,7 @@ public class FlowlessUserPart<T> {
 	private long flowlessStepCounter;
 
 	FlowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
-		this.stepUserPart = stepUserPart;
+		this.stepUserPart = Objects.requireNonNull(stepUserPart);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 	

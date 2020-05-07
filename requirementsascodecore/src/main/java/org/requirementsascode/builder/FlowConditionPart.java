@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import java.util.Objects;
+
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
@@ -16,9 +18,9 @@ public class FlowConditionPart {
 	private FlowPositionPart flowPositionPart;
 	private Condition optionalCondition;
 
-	private FlowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
-		this.flowPositionPart = flowPositionPart;
-		this.optionalCondition = condition;
+	private FlowConditionPart(Condition optionalCondition, FlowPositionPart flowPositionPart) {
+		this.optionalCondition = optionalCondition;
+		this.flowPositionPart = Objects.requireNonNull(flowPositionPart);
 	}
 	
 	static FlowConditionPart flowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {

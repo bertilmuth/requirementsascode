@@ -26,9 +26,9 @@ public class FlowPart {
 	private FlowPositionPart optionalFlowPositionPart;
 	
 	private FlowPart(UseCasePart useCasePart, Flow flow) {
-		this.useCasePart = useCasePart;
+		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.useCase = useCasePart.getUseCase();
-		this.flow = flow;
+		this.flow = Objects.requireNonNull(flow);
 	}
 
 	/**

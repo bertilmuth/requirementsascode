@@ -23,8 +23,8 @@ public class UseCasePart {
 	private Actor defaultActor;
 
 	UseCasePart(UseCase useCase, ModelBuilder modelBuilder) {
-		this.useCase = useCase;
-		this.modelBuilder = modelBuilder;
+		this.useCase = Objects.requireNonNull(useCase);
+		this.modelBuilder = Objects.requireNonNull(modelBuilder);
 		this.defaultActor = modelBuilder.build().getUserActor();
 	}
 

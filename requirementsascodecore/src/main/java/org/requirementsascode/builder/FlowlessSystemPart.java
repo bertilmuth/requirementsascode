@@ -20,7 +20,7 @@ public class FlowlessSystemPart<T> {
 	private long flowlessStepCounter;
 
 	private FlowlessSystemPart(UseCasePart useCasePart, long flowlessStepCounter) {
-		this.useCasePart = useCasePart;
+		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 

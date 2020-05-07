@@ -32,10 +32,10 @@ public class StepPart {
 	 * @param flowPart the flow part used to create the flow
 	 */
 	StepPart(String stepName, FlowPart flowPart) {
+		this.flowPart = Objects.requireNonNull(flowPart);
 		this.useCasePart = flowPart.getUseCasePart();
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
-		this.flowPart = flowPart;
 		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
 	}
 

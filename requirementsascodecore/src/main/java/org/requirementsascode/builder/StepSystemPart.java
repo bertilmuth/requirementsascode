@@ -41,7 +41,7 @@ public class StepSystemPart<T> {
 	}
 	
 	private void initializeFields(StepPart stepPart) {
-		this.stepPart = stepPart;
+		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
 	}
 
