@@ -34,14 +34,13 @@ public class FlowlessStepPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
-		StepUserPart<T> stepUserPart = stepPart.user(commandClass);
-		FlowlessUserPart<T> flowlessUserPart = flowlessUserPart(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessUserPart(commandClass, stepPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 
 	/**
-	 * Defines the type of messages or exceptions that will cause a system reaction,
-	 * given that the condition is fulfilled.
+	 * Defines the type of system event objects or exceptions that this step
+	 * handles. Events of the specified type can cause a system reaction.
 	 *
 	 * <p>
 	 * Given that the step's condition is true, the system reacts to objects that
@@ -53,8 +52,7 @@ public class FlowlessStepPart {
 	 * @return the created user part of this step
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> messageClass) {
-		StepUserPart<T> stepUserPart = stepPart.on(messageClass);
-		FlowlessUserPart<T> flowlessUserPart = flowlessUserPart(stepUserPart, flowlessStepCounter);
+		FlowlessUserPart<T> flowlessUserPart = flowlessOnPart(messageClass, stepPart, flowlessStepCounter);
 		return flowlessUserPart;
 	}
 

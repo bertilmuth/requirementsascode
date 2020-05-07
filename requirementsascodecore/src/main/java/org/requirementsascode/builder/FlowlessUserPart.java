@@ -26,7 +26,13 @@ public class FlowlessUserPart<T> {
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 	
-	static <T> FlowlessUserPart<T> flowlessUserPart(StepUserPart<T> stepUserPart, long flowlessStepCounter) {
+	static <T> FlowlessUserPart<T> flowlessUserPart(Class<T> commandClass, StepPart stepPart, long flowlessStepCounter) {
+		StepUserPart<T> stepUserPart = stepPart.user(commandClass);
+		return new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
+	}
+	
+	static <T> FlowlessUserPart<T> flowlessOnPart(Class<T> eventClass, StepPart stepPart, long flowlessStepCounter) {
+		StepUserPart<T> stepUserPart = stepPart.on(eventClass);
 		return new FlowlessUserPart<>(stepUserPart, flowlessStepCounter);
 	}
 	
