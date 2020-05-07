@@ -13,6 +13,8 @@ import org.requirementsascode.flowposition.After;
 import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.InsteadOf;
 
+import static org.requirementsascode.builder.FlowPositionPart.*;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -67,7 +69,7 @@ public class FlowPart {
 	public FlowPositionPart after(String stepName) {
 		FlowStep flowStep = (FlowStep)useCase.findStep(stepName);
 		After after = new After(flowStep);
-		optionalFlowPositionPart = new FlowPositionPart(after, this);
+		optionalFlowPositionPart = flowPositionPart(after, this);
 		return optionalFlowPositionPart;
 	}
 
@@ -100,7 +102,7 @@ public class FlowPart {
 	public FlowPositionPart insteadOf(String stepName) {
 		FlowStep flowStep = (FlowStep) useCase.findStep(stepName);
 		InsteadOf insteadOf = new InsteadOf(flowStep);
-		optionalFlowPositionPart = new FlowPositionPart(insteadOf, this);
+		optionalFlowPositionPart = flowPositionPart(insteadOf, this);
 		return optionalFlowPositionPart;
 	}
 
@@ -112,7 +114,7 @@ public class FlowPart {
 	 */
 	public FlowPositionPart anytime() {
 		Anytime anytime = new Anytime();
-		optionalFlowPositionPart = new FlowPositionPart(anytime, this);
+		optionalFlowPositionPart = flowPositionPart(anytime, this);
 		return optionalFlowPositionPart;
 	}
 
@@ -125,7 +127,7 @@ public class FlowPart {
 	 */
 	public FlowConditionPart condition(Condition condition) {
 		Objects.requireNonNull(condition);
-		optionalFlowPositionPart = new FlowPositionPart(new Anytime(), this);
+		optionalFlowPositionPart = flowPositionPart(new Anytime(), this);
 		FlowConditionPart conditionPart = optionalFlowPositionPart.condition(condition);
 		return conditionPart;
 	}

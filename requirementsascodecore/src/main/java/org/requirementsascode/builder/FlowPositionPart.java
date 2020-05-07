@@ -13,9 +13,13 @@ public class FlowPositionPart {
 	private FlowPart flowPart;
 	private FlowConditionPart conditionPart;
 
-	FlowPositionPart(FlowPosition optionalFlowPosition, FlowPart flowPart) {
+	private FlowPositionPart(FlowPosition optionalFlowPosition, FlowPart flowPart) {
 		this.optionalFlowPosition = optionalFlowPosition;
 		this.flowPart = Objects.requireNonNull(flowPart);
+	}
+	
+	static FlowPositionPart flowPositionPart(FlowPosition optionalFlowPosition, FlowPart flowPart) {
+		return new FlowPositionPart(optionalFlowPosition, flowPart);
 	}
 
 	/**
