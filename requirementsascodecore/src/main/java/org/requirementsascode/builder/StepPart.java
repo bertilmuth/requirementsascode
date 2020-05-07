@@ -9,6 +9,7 @@ import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
+import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 import static org.requirementsascode.builder.StepAsPart.*;
@@ -25,13 +26,13 @@ public class StepPart {
 	private FlowPart flowPart;
 	private ModelBuilder modelBuilder;
 	private Actor systemActor;
-
-	private StepPart(String stepName, FlowPart flowPart) {
-		this.useCasePart = flowPart.getUseCasePart();
-		this.flowPart = Objects.requireNonNull(flowPart);
+	
+	private StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
+		this.useCasePart = useCasePart;
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
-		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
+		this.flowPart = Objects.requireNonNull(flowPart);
+		this.step = Objects.requireNonNull(step);
 	}
 	
 	/**
@@ -39,22 +40,15 @@ public class StepPart {
 	 * start.
 	 * 
 	 * @param stepName the name of the step
-	 * @param the step part
+	 * @param the      step part
 	 */
 	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
-		return new StepPart(stepName, flowPart);
+		UseCasePart useCasePart = flowPart.getUseCasePart();
+		UseCase useCase = useCasePart.getUseCase();
+		Step step = useCase.newInterruptableFlowStep(stepName, flowPart.getFlow());
+		return new StepPart(step, useCasePart, flowPart);
 	}
-	
 
-	private StepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition, Condition optionalCondition) {
-		this.useCasePart = flowPart.getUseCasePart();
-		this.flowPart = flowPart;
-		this.modelBuilder = useCasePart.getModelBuilder();
-		this.systemActor = modelBuilder.build().getSystemActor();
-		this.step = useCasePart.getUseCase().newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition,
-			optionalCondition);
-	}
-	
 	/**
 	 * Creates a conditional step at the beginning of a flow that can interrupt
 	 * other flows.
@@ -62,8 +56,12 @@ public class StepPart {
 	 * @param step
 	 * @param flowPart
 	 */
-	static StepPart interruptingFlowStepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition, Condition optionalCondition) {
-		return new StepPart(stepName, flowPart, flowPosition, optionalCondition);
+	static StepPart interruptingFlowStepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition,
+		Condition optionalCondition) {
+		UseCasePart useCasePart = flowPart.getUseCasePart();
+		UseCase useCase = useCasePart.getUseCase();
+		Step step = useCase.newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition, optionalCondition);
+		return new StepPart(step, useCasePart, flowPart);
 	}
 
 	private StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
