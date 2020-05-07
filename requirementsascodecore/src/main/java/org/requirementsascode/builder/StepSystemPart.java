@@ -22,45 +22,33 @@ public class StepSystemPart<T> {
 	private StepPart stepPart;
 	private Step step;
 	
-	private StepSystemPart(Runnable systemReaction, StepPart stepPart) {
+	private StepSystemPart(StepPart stepPart) {
 		initializeFields(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> runnableStepSystemPart(Runnable systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(systemReaction, stepPart);
-	}
-	
-	private StepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
-		initializeFields(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> consumerStepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(systemReaction, stepPart);
-	}
-	
-	private StepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
-		initializeFields(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> functionStepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(systemReaction, stepPart);
-	}
-	
-	private StepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
-		initializeFields(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> supplierStepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(systemReaction, stepPart);
 	}
 	
 	private void initializeFields(StepPart stepPart) {
 		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
+	}
+	
+	static <T> StepSystemPart<T> runnableStepSystemPart(Runnable systemReaction, StepPart stepPart) {
+		stepPart.getStep().setSystemReaction(systemReaction);
+		return new StepSystemPart<>(stepPart);
+	}
+	
+	static <T> StepSystemPart<T> consumerStepSystemPart(Consumer<? super T> systemReaction, StepPart stepPart) {
+		stepPart.getStep().setSystemReaction(systemReaction);
+		return new StepSystemPart<>(stepPart);
+	}
+	
+	static <T> StepSystemPart<T> functionStepSystemPart(Function<? super T, ?> systemReaction, StepPart stepPart) {
+		stepPart.getStep().setSystemReaction(systemReaction);
+		return new StepSystemPart<>(stepPart);
+	}
+	
+	static <T> StepSystemPart<T> supplierStepSystemPart(Supplier<? super T> systemReaction, StepPart stepPart) {
+		stepPart.getStep().setSystemReaction(systemReaction);
+		return new StepSystemPart<>(stepPart);
 	}
 
 	/**
