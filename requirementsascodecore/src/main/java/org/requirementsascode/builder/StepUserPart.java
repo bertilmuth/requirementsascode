@@ -22,10 +22,14 @@ public class StepUserPart<T> {
 	private StepPart stepPart;
 	private Step step;
 
-	StepUserPart(Class<T> messageClass, StepPart stepPart) {
+	private StepUserPart(Class<T> messageClass, StepPart stepPart) {
 		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
 		step.setMessageClass(messageClass);
+	}
+	
+	static <T> StepUserPart<T> stepUserPart(Class<T> messageClass, StepPart stepPart) {
+		return new StepUserPart<>(messageClass, stepPart);
 	}
 
 	/**

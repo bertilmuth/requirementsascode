@@ -13,6 +13,8 @@ import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
 import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 
+import static org.requirementsascode.builder.StepUserPart.*;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -57,7 +59,7 @@ public class StepAsPart {
 	 */
 	public <T> StepUserPart<T> user(Class<T> commandClass) {
 		Objects.requireNonNull(commandClass);
-		return new StepUserPart<>(commandClass, stepPart);
+		return stepUserPart(commandClass, stepPart);
 	}
 
 	/**
