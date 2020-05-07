@@ -1,7 +1,10 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowPart.buildBasicFlowPart;
+import static org.requirementsascode.builder.FlowPart.buildFlowPart;
+import static org.requirementsascode.builder.FlowlessConditionPart.flowlessConditionPart;
+
 import java.util.Objects;
-import static org.requirementsascode.builder.FlowPart.*;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
@@ -69,7 +72,7 @@ public class UseCasePart {
 	 * @return the created condition part
 	 */
 	public FlowlessConditionPart condition(Condition condition) {
-		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, this, 1);
+		FlowlessConditionPart conditionPart = flowlessConditionPart(condition, this, 1);
 		return conditionPart;
 	}
 	
@@ -97,8 +100,7 @@ public class UseCasePart {
 	 */
 	public <T> FlowlessUserPart<T> user(Class<T> commandClass) {
 		Objects.requireNonNull(commandClass);
-		FlowlessConditionPart conditionPart = condition(null);
-		FlowlessUserPart<T> flowlessUserPart = conditionPart.user(commandClass);
+		FlowlessUserPart<T> flowlessUserPart = condition(null).user(commandClass);
 		return flowlessUserPart;
 	}
 
@@ -115,8 +117,7 @@ public class UseCasePart {
 	 */
 	public <T> FlowlessUserPart<T> on(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
-		FlowlessConditionPart conditionPart = condition(null);
-		FlowlessUserPart<T> flowlessUserPart = conditionPart.on(eventOrExceptionClass);
+		FlowlessUserPart<T> flowlessUserPart = condition(null).on(eventOrExceptionClass);
 		return flowlessUserPart;
 	}
 

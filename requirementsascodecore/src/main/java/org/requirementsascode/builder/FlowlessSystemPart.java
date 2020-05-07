@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowlessConditionPart.flowlessConditionPart;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -59,7 +61,7 @@ public class FlowlessSystemPart<T> {
 	 * @return the created condition part
 	 */
 	public FlowlessConditionPart condition(Condition condition) {
-		FlowlessConditionPart conditionPart = new FlowlessConditionPart(condition, useCasePart, ++flowlessStepCounter);
+		FlowlessConditionPart conditionPart = flowlessConditionPart(condition, useCasePart, ++flowlessStepCounter);
 		return conditionPart;
 	}
 

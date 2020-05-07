@@ -18,11 +18,15 @@ public class FlowlessConditionPart {
 	private final long flowlessStepCounter;
 	private final String autoIncrementedStepName;
 
-	FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
+	private FlowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
 		this.optionalCondition = optionalCondition;
 		this.useCasePart = useCasePart;
 		this.flowlessStepCounter = flowlessStepCounter;
 		this.autoIncrementedStepName = "S" + flowlessStepCounter;
+	}
+	
+	public static FlowlessConditionPart flowlessConditionPart(Condition optionalCondition, UseCasePart useCasePart, long flowlessStepCounter) {
+		return new FlowlessConditionPart(optionalCondition, useCasePart, flowlessStepCounter);
 	}
 
 	/**
