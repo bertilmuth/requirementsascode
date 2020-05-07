@@ -35,21 +35,10 @@ public class FlowPart {
 		this.flow = Objects.requireNonNull(flow);
 	}
 
-	/**
-	 * Creates a flow part for the basic flow.
-	 * 
-	 * @param useCasePart the use case part whose basic flow this is
-	 */
 	static FlowPart buildBasicFlowPart(UseCasePart useCasePart) {
 		return new FlowPart(useCasePart, useCasePart.getUseCase().getBasicFlow());
 	}
 
-	/**
-	 * Creates a flow part for a flow with the specified name.
-	 * 
-	 * @param useCasePart the use case part whose flow this is
-	 * @param flowName    the name of the flow
-	 */
 	static FlowPart buildFlowPart(String flowName, UseCasePart useCasePart) {
 		return new FlowPart(useCasePart, useCasePart.getUseCase().newFlow(flowName));
 	}
