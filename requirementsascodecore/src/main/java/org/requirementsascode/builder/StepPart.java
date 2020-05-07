@@ -1,6 +1,7 @@
 package org.requirementsascode.builder;
 
 import java.util.Objects;
+
 import java.util.function.Supplier;
 
 import org.requirementsascode.Actor;
@@ -10,6 +11,7 @@ import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
+import static org.requirementsascode.builder.StepAsPart.*;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -78,7 +80,7 @@ public class StepPart {
 	 */
 	public StepAsPart as(Actor... actors) {
 		Objects.requireNonNull(actors);
-		return new StepAsPart(actors, this);
+		return stepAsPart(actors, this);
 	}
 
 	/**

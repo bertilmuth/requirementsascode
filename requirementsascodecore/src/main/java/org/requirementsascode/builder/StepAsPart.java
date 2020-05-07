@@ -23,7 +23,7 @@ public class StepAsPart {
 	private Step step;
 	private StepPart stepPart;
 
-	StepAsPart(Actor[] actors, StepPart stepPart) {
+	private StepAsPart(Actor[] actors, StepPart stepPart) {
 		Objects.requireNonNull(actors);
 		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
@@ -36,6 +36,10 @@ public class StepAsPart {
 		for (Actor actor : actors) {
 			actor.newStep(useCaseStep);
 		}
+	}
+	
+	static StepAsPart stepAsPart(Actor[] actors, StepPart stepPart) {
+		return new StepAsPart(actors, stepPart);
 	}
 
 	/**
