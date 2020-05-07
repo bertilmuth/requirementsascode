@@ -1,9 +1,10 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.UseCasePart.useCasePart;
+
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.UseCase;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -94,10 +95,7 @@ public class ModelBuilder {
 	 * @return the created / found use case's part.
 	 */
 	public UseCasePart useCase(String useCaseName) {
-		UseCase useCase = model.hasUseCase(useCaseName) ? model.findUseCase(useCaseName)
-				: model.newUseCase(useCaseName);
-
-		return new UseCasePart(useCase, this);
+		return useCasePart(useCaseName, this);
 	}
 
 	/**

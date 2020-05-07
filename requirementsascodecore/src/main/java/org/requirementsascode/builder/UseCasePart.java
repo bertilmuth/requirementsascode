@@ -22,10 +22,16 @@ public class UseCasePart {
 	private ModelBuilder modelBuilder;
 	private Actor defaultActor;
 
-	UseCasePart(UseCase useCase, ModelBuilder modelBuilder) {
-		this.useCase = Objects.requireNonNull(useCase);
+	private UseCasePart(String useCaseName, ModelBuilder modelBuilder) {
 		this.modelBuilder = Objects.requireNonNull(modelBuilder);
-		this.defaultActor = modelBuilder.build().getUserActor();
+		final Model model = modelBuilder.build();
+		this.useCase = model.hasUseCase(useCaseName) ? model.findUseCase(useCaseName)
+			: model.newUseCase(useCaseName);
+		this.defaultActor = model.getUserActor();
+	}
+	
+	static UseCasePart useCasePart(String useCaseName, ModelBuilder modelBuilder) {
+		return new UseCasePart(useCaseName, modelBuilder);
 	}
 
 	/**
