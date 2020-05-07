@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowConditionPart.flowConditionPart;
+
 import org.requirementsascode.Condition;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.flowposition.FlowPosition;
@@ -22,7 +24,7 @@ public class FlowPositionPart {
 	 * @return this condition part, to ease creation of the first step of the flow
 	 */
 	public FlowConditionPart condition(Condition condition) {
-		this.conditionPart = new FlowConditionPart(condition, this);
+		this.conditionPart = flowConditionPart(condition, this);
 		return conditionPart;
 	}
 

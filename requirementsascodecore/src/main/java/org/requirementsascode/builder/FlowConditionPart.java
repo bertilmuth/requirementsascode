@@ -16,9 +16,13 @@ public class FlowConditionPart {
 	private FlowPositionPart flowPositionPart;
 	private Condition optionalCondition;
 
-	FlowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
+	private FlowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
 		this.flowPositionPart = flowPositionPart;
 		this.optionalCondition = condition;
+	}
+	
+	public static FlowConditionPart flowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
+		return new FlowConditionPart(condition, flowPositionPart);
 	}
 	
 	/**
