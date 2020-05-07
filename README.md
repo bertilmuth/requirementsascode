@@ -27,7 +27,7 @@ It's a simple alternative to state machines.
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf). And it goes beyond them.
 
 You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event causing your event publisher to pick it up automatically.
-And since [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) are processes, you can use this library to implement [process managers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html) as well.
+And since [use case models with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) are processes, you can use this library to implement [process managers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html) as well.
 
 When you follow the design principles of requirements as code, you will end up with pure domain code. The domain code doesn't communicate with technical infrastructure, not even through interfaces. That's why you can test the domain code without mocking anything. That's similar to the idea of a [functional core and an imperative shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell).
 
