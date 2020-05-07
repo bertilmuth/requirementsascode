@@ -66,6 +66,13 @@ public class StepPart {
 		return new StepPart(stepName, flowPart, flowPosition, optionalCondition);
 	}
 
+	private StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
+		this.useCasePart = useCasePart;
+		this.modelBuilder = useCasePart.getModelBuilder();
+		this.systemActor = modelBuilder.build().getSystemActor();
+		this.step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
+	}
+	
 	/**
 	 * Creates a step, without a use case flow.
 	 * 
@@ -73,11 +80,8 @@ public class StepPart {
 	 * @param useCasePart the use case of the step
 	 * @param optionalCondition a condition for the step, or null if the step is unconditional
 	 */
-	StepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
-		this.useCasePart = useCasePart;
-		this.modelBuilder = useCasePart.getModelBuilder();
-		this.systemActor = modelBuilder.build().getSystemActor();
-		this.step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
+	static StepPart flowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
+		return new StepPart(stepName, useCasePart, optionalCondition);
 	}
 
 	/**
