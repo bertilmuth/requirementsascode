@@ -29,18 +29,18 @@ public class FlowPart {
 	private UseCasePart useCasePart;
 	private FlowPositionPart optionalFlowPositionPart;
 	
-	private FlowPart(UseCasePart useCasePart, Flow flow) {
+	private FlowPart(Flow flow, UseCasePart useCasePart) {
+		this.flow = Objects.requireNonNull(flow);
 		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.useCase = useCasePart.getUseCase();
-		this.flow = Objects.requireNonNull(flow);
 	}
 
 	static FlowPart buildBasicFlowPart(UseCasePart useCasePart) {
-		return new FlowPart(useCasePart, useCasePart.getUseCase().getBasicFlow());
+		return new FlowPart(useCasePart.getUseCase().getBasicFlow(), useCasePart);
 	}
 
 	static FlowPart buildFlowPart(String flowName, UseCasePart useCasePart) {
-		return new FlowPart(useCasePart, useCasePart.getUseCase().newFlow(flowName));
+		return new FlowPart(useCasePart.getUseCase().newFlow(flowName), useCasePart);
 	}
 
 	/**
