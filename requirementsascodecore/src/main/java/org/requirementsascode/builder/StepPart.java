@@ -26,21 +26,25 @@ public class StepPart {
 	private ModelBuilder modelBuilder;
 	private Actor systemActor;
 
-	/**
-	 * Creates a step in a use case flow that can be interrupted by other flows that
-	 * start.
-	 * 
-	 * @param stepName the name of the step
-	 * @param flowPart the flow part used to create the flow
-	 */
-	StepPart(String stepName, FlowPart flowPart) {
+	private StepPart(String stepName, FlowPart flowPart) {
 		this.flowPart = Objects.requireNonNull(flowPart);
 		this.useCasePart = flowPart.getUseCasePart();
 		this.modelBuilder = useCasePart.getModelBuilder();
 		this.systemActor = modelBuilder.build().getSystemActor();
 		this.step = useCasePart.getUseCase().newInterruptableFlowStep(stepName, flowPart.getFlow());
 	}
-
+	
+	/**
+	 * Creates a step in a use case flow that can be interrupted by other flows that
+	 * start.
+	 * 
+	 * @param stepName the name of the step
+	 * @param the step part
+	 */
+	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
+		return new StepPart(stepName, flowPart);
+	}
+	
 	/**
 	 * Creates a conditional step at the beginning of a flow that can interrupt
 	 * other flows.

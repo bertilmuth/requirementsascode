@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -56,7 +58,7 @@ public class StepSystemPart<T> {
 	 */
 	public StepPart step(String stepName) {
 		Objects.requireNonNull(stepName);
-		StepPart trailingStepInFlowPart = new StepPart(stepName, stepPart.getFlowPart());
+		StepPart trailingStepInFlowPart = interruptableFlowStepPart(stepName, stepPart.getFlowPart());
 		return trailingStepInFlowPart;
 	}
 

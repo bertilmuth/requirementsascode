@@ -1,5 +1,8 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.FlowPositionPart.flowPositionPart;
+import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
+
 import java.util.Objects;
 
 import org.requirementsascode.Condition;
@@ -13,7 +16,6 @@ import org.requirementsascode.flowposition.After;
 import org.requirementsascode.flowposition.Anytime;
 import org.requirementsascode.flowposition.InsteadOf;
 
-import static org.requirementsascode.builder.FlowPositionPart.*;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -85,7 +87,7 @@ public class FlowPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		StepPart stepPart = new StepPart(stepName, FlowPart.this);
+		StepPart stepPart = interruptableFlowStepPart(stepName, FlowPart.this);
 		return stepPart;
 	}
 
