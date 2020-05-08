@@ -57,6 +57,12 @@ public abstract class Step extends ModelElement implements Serializable {
 
 	public void setActors(Actor[] actors) {
 		this.actors = actors;
+		connectActorsToThisStep(this, actors);
+	}
+	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
+		for (Actor actor : actors) {
+			actor.connectToStep(useCaseStep);
+		}
 	}
 
 	public Class<?> getMessageClass() {

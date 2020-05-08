@@ -31,13 +31,6 @@ public class StepAsPart {
 		this.step = stepPart.getStep();
 
 		step.setActors(actors);
-		connectActorsToThisStep(step, actors);
-	}
-
-	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
-		for (Actor actor : actors) {
-			actor.connectToStep(useCaseStep);
-		}
 	}
 	
 	static StepAsPart stepAsPart(Actor[] actors, StepPart stepPart) {
