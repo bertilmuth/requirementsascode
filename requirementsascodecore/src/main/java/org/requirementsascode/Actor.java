@@ -63,7 +63,7 @@ public class Actor extends ModelElement implements Serializable {
 		return Collections.unmodifiableList(steps);
 	}
 
-	public void newStep(Step step) {
+	public void connectToStep(Step step) {
 		Objects.requireNonNull(step.getUseCase());
 		Objects.requireNonNull(step);
 

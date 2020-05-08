@@ -36,7 +36,7 @@ public class StepAsPart {
 
 	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
 		for (Actor actor : actors) {
-			actor.newStep(useCaseStep);
+			actor.connectToStep(useCaseStep);
 		}
 	}
 	
