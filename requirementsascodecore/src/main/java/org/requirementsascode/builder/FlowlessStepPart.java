@@ -17,10 +17,10 @@ public class FlowlessStepPart {
 	private FlowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {
 		this.stepPart = stepPartWithoutFlow(stepName, useCasePart, optionalCondition);
 		this.flowlessStepCounter = flowlessStepCounter;
-		setDefaultActor(useCasePart);
+		setDefaultActorAsActor(useCasePart);
 	}
 
-	private void setDefaultActor(UseCasePart useCasePart) {
+	private void setDefaultActorAsActor(UseCasePart useCasePart) {
 		stepPart.getStep().setActors(new Actor[] {useCasePart.getDefaultActor()});
 	}
 	

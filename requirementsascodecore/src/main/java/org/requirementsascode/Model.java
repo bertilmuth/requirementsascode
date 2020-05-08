@@ -40,8 +40,8 @@ public class Model implements Serializable {
 	private Model() {
 		this.nameToActorMap = new LinkedHashMap<>();
 		this.nameToUseCaseMap = new LinkedHashMap<>();
-		this.userActor = newActor("User");
-		this.systemActor = newActor("System");
+		this.userActor = newActor("##User##");
+		this.systemActor = newActor("##System##");
 	}
 
 	/**
