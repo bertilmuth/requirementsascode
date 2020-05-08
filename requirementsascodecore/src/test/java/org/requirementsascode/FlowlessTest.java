@@ -43,12 +43,11 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void withUseCase_oneNamedStepReactsToCommandWithValidActor() {
-    	Actor user = modelBuilder.actor("User");
-			Model model = modelBuilder.useCase(USE_CASE).as(user)
+			Model model = modelBuilder.useCase(USE_CASE).as(customer)
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-			modelRunner.run(model).as(user).reactTo(entersText());
+			modelRunner.run(model).as(customer).reactTo(entersText());
 			Optional<Step> latestStepRun = modelRunner.getLatestStep();
 		
 			assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
@@ -56,10 +55,9 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void withUseCase_oneNamedStepReactsToCommandWithInvalidActor() {
-    	Actor user = modelBuilder.actor("User");
     	Actor invalidActor = modelBuilder.actor("InvalidUser");
 
-			Model model = modelBuilder.useCase(USE_CASE).as(user)
+			Model model = modelBuilder.useCase(USE_CASE).as(customer)
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
