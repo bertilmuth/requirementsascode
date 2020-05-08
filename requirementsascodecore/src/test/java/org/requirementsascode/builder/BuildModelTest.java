@@ -379,6 +379,28 @@ public class BuildModelTest extends AbstractTestCase {
   }
   
   @Test
+  public void flowless_withUseCase_createsSingleStepWithActor() {
+		Actor actor = modelBuilder.actor("Actor");
+  	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		useCasePart.as(actor)
+			.user(EntersText.class).system(displaysEnteredText())
+		.build();
+	
+		UseCase useCase = useCasePart.getUseCase();
+		Collection<Step> steps = useCase.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals(actor, step.getActors()[0]);
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void flowless_withUseCase_throwsExceptionForUserActor() {
+		modelBuilder.actor("User");
+  }
+  
+  @Test
   public void withFlow_createsSingleStepThatHandlesEvent() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()

@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.requirementsascode.builder.ModelBuilder;
@@ -40,8 +41,8 @@ public class Model implements Serializable {
 	private Model() {
 		this.nameToActorMap = new LinkedHashMap<>();
 		this.nameToUseCaseMap = new LinkedHashMap<>();
-		this.userActor = newActor("##User##");
-		this.systemActor = newActor("##System##");
+		this.userActor = createActorInternally("User");
+		this.systemActor = createActorInternally("System");
 	}
 
 	/**
@@ -76,13 +77,29 @@ public class Model implements Serializable {
 		return hasUseCase;
 	}
 
+	/**
+	 * Creates a new actor with the specified name. Don't use User or System as actor names,
+	 * these are reserved for internal use.
+	 * 
+	 * @param actorName the actor name
+	 * @return the newly created actor
+	 */
 	public Actor newActor(String actorName) {
+		Objects.requireNonNull(actorName);
+		if(actorName.equals(userActor.getName())) {
+			throw new IllegalArgumentException("The names User and System are reserved internally. Please don't use them.");
+		}
+		Actor actor = createActorInternally(actorName);
+		return actor;
+	}
+	private Actor createActorInternally(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;
 	}
 
 	public UseCase newUseCase(String useCaseName) {
+		Objects.requireNonNull(useCaseName);
 		UseCase useCase = new UseCase(useCaseName, this);
 		saveModelElement(useCase, nameToUseCaseMap);
 		return useCase;
