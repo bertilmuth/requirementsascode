@@ -2,6 +2,8 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
+import java.util.Objects;
+
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
@@ -28,10 +30,17 @@ public class ModelBuilder {
 	 * @return the created / found actor.
 	 */
 	public Actor actor(String actorName) {
+		Objects.requireNonNull(actorName);
+		String userActorName = model.getUserActor().getName();
+		String systemActorName = model.getSystemActor().getName();
+		
+		if (actorName.equals(userActorName) || actorName.equals(systemActorName)) {
+			throw new IllegalArgumentException("The actor names "+ userActorName + " and " + systemActorName + " are reserved internally. Please don't use them.");
+		}
 		Actor actor = model.hasActor(actorName) ? model.findActor(actorName) : model.newActor(actorName);
 		return actor;
 	}
-	
+
 	/**
 	 * Only if the specified condition is true, the message is handled.
 	 *

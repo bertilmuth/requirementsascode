@@ -41,8 +41,8 @@ public class Model implements Serializable {
 	private Model() {
 		this.nameToActorMap = new LinkedHashMap<>();
 		this.nameToUseCaseMap = new LinkedHashMap<>();
-		this.userActor = createActorInternally("User");
-		this.systemActor = createActorInternally("System");
+		this.userActor = newActor("User");
+		this.systemActor = newActor("System");
 	}
 
 	/**
@@ -86,13 +86,6 @@ public class Model implements Serializable {
 	 */
 	public Actor newActor(String actorName) {
 		Objects.requireNonNull(actorName);
-		if(actorName.equals(userActor.getName())) {
-			throw new IllegalArgumentException("The names User and System are reserved internally. Please don't use them.");
-		}
-		Actor actor = createActorInternally(actorName);
-		return actor;
-	}
-	private Actor createActorInternally(String actorName) {
 		Actor actor = new Actor(actorName, this);
 		saveModelElement(actor, nameToActorMap);
 		return actor;

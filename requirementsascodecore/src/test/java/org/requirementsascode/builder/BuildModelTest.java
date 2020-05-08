@@ -397,7 +397,14 @@ public class BuildModelTest extends AbstractTestCase {
   
   @Test(expected = IllegalArgumentException.class)
   public void flowless_withUseCase_throwsExceptionForUserActor() {
-		modelBuilder.actor("User");
+  	String userActorName = modelBuilder.build().getUserActor().getName();
+		modelBuilder.actor(userActorName);
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void flowless_withUseCase_throwsExceptionForSystemActor() {
+  	String systemActorName = modelBuilder.build().getSystemActor().getName();
+		modelBuilder.actor(systemActorName);
   }
   
   @Test
