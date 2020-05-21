@@ -15,7 +15,7 @@ import creditcard_eventsourcing.model.command.RequestToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestWithdrawal;
 import creditcard_eventsourcing.persistence.EventStore;
 
-public class CreditCardModelRunnerTest {
+public class CreditCardAggregateRootTest {
 	private EventStore eventStore;
 	private UUID uuid;
 
