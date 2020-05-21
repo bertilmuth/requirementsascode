@@ -25,17 +25,21 @@ public class CreditCardRepository {
     private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
 
     public void save(CreditCard creditCard) {
-        List<DomainEvent> currentStream = eventStream.getOrDefault(creditCard.uuid(), new ArrayList<>());
+        List<DomainEvent> currentStream = uniqueEvents(creditCard.uuid());
         currentStream.addAll(creditCard.getPendingEvents());
         eventStream.put(creditCard.uuid(), currentStream);
         creditCard.flushEvents();
     }
 
     public CreditCard load(UUID uuid) {
-        return new CreditCard(uuid, eventStream.getOrDefault(uuid, new ArrayList<>()));
+        return new CreditCard(uuid, uniqueEvents(uuid));
     }
+
+		private List<DomainEvent> uniqueEvents(UUID uuid) {
+			return eventStream.getOrDefault(uuid, new ArrayList<>());
+		}
     
-    public Set<UUID> getUuids(){
+    public Set<UUID> uuids(){
     	return eventStream.keySet();
     }
 }

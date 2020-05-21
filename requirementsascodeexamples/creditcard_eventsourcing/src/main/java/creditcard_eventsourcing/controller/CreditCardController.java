@@ -25,7 +25,7 @@ class CreditCardController {
 	@GetMapping("/cards")
 	List<CreditCard> creditCardList() {
 		List<CreditCard> creditCards = new ArrayList<>();
-		Set<UUID> uuids = repository.getUuids();
+		Set<UUID> uuids = repository.uuids();
 		for (UUID uuid : uuids) {
 			CreditCard creditCard = repository.load(uuid);
 			creditCards.add(creditCard);
