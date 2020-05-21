@@ -89,10 +89,10 @@ public class CreditCard
 	 * Validation methods
 	 */
 	boolean notEnoughMoneyToWithdraw(BigDecimal amount) {
-		return availableLimit().compareTo(amount) < 0;
+		return getAvailableLimit().compareTo(amount) < 0;
 	}
 
-	BigDecimal availableLimit() {
+	public BigDecimal getAvailableLimit() {
 		return initialLimit.subtract(usedLimit);
 	}
 
@@ -115,7 +115,7 @@ public class CreditCard
 	/*
 	 * Event sourcing methods
 	 */
-	public List<DomainEvent> getPendingEvents() {
+	public List<DomainEvent> pendingEvents() {
 		return pendingEvents;
 	}
 	

@@ -26,7 +26,7 @@ public class CreditCardRepository {
 
     public void save(CreditCard creditCard) {
         List<DomainEvent> currentStream = uniqueEvents(creditCard.uuid());
-        currentStream.addAll(creditCard.getPendingEvents());
+        currentStream.addAll(creditCard.pendingEvents());
         eventStream.put(creditCard.uuid(), currentStream);
         creditCard.flushEvents();
     }
