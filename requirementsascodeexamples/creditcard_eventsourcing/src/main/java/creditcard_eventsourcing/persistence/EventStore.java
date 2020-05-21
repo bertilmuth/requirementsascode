@@ -19,7 +19,7 @@ import creditcard_eventsourcing.model.event.DomainEvent;
  *
  */
 @Repository
-public class CreditCardRepository {
+public class EventStore {
 
     private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
 

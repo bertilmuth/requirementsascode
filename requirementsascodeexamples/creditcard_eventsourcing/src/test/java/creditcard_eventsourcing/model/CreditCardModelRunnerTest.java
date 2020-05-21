@@ -13,19 +13,19 @@ import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestRepay;
 import creditcard_eventsourcing.model.command.RequestToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestWithdrawal;
-import creditcard_eventsourcing.persistence.CreditCardRepository;
+import creditcard_eventsourcing.persistence.EventStore;
 
 public class CreditCardModelRunnerTest {
-	private CreditCardRepository repository;
+	private EventStore eventStore;
 	private UUID uuid;
 
 	@Before
 	public void setUp() throws Exception {
-		this.repository = new CreditCardRepository();
+		this.eventStore = new EventStore();
 		this.uuid = uuid();
 	}
 	private CreditCardAggregateRoot aggregateRoot() {
-		CreditCardAggregateRoot aggregateRoot = new CreditCardAggregateRoot(uuid, repository);
+		CreditCardAggregateRoot aggregateRoot = new CreditCardAggregateRoot(uuid, eventStore);
 		return aggregateRoot;
 	}
 	

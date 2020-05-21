@@ -21,7 +21,7 @@ import creditcard_eventsourcing.model.event.LimitAssigned;
  * https://gitlab.com/pilloPl/eventsourced-credit-cards/blob/4329a0aac283067f1376b3802e13f5a561f18753
  *
  */
-public class CreditCard 
+class CreditCard 
 {
 	static final String assigningLimit = "Assigning limit";
 	static final String assigningLimitTwice = "Assigning limit twice";

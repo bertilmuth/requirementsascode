@@ -31,7 +31,7 @@ import creditcard_eventsourcing.model.event.CardWithdrawn;
 import creditcard_eventsourcing.model.event.CycleClosed;
 import creditcard_eventsourcing.model.event.DomainEvent;
 import creditcard_eventsourcing.model.event.LimitAssigned;
-import creditcard_eventsourcing.persistence.CreditCardRepository;
+import creditcard_eventsourcing.persistence.EventStore;
 
 public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
@@ -57,15 +57,16 @@ public class CreditCardAggregateRoot {
 
 	// Other fields
 	private final UUID uuid;
-	private final CreditCardRepository repository;
+	private final EventStore eventStore;
 	private final Model model;
 	
 	private CreditCard creditCard;
 
-	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository repository) {
+	public CreditCardAggregateRoot(UUID uuid, EventStore eventStore) {
 		this.uuid = uuid;
-		this.repository = repository;
+		this.eventStore = eventStore;
 		this.model = buildModel();
+		this.creditCard = loadCreditCard();
 	}
 
 	/**
@@ -96,11 +97,15 @@ public class CreditCardAggregateRoot {
 		.build();
 		return model;
 	}
+	
+	public BigDecimal getAvailableLimit() {
+		return creditCard().getAvailableLimit();
+	} 
 
 	/**
 	 * This is the method to be called by clients for handling commands.
 	 * Each command that is accepted will cause an event to be applied to the credit card.
-	 * After that, the events are saved to the repository.
+	 * After that, the events are saved to the event store.
 	 * 
 	 * @param command the command to handle.
 	 */
@@ -111,9 +116,9 @@ public class CreditCardAggregateRoot {
 		saveCreditCard();
 	}
 	
-	// Loads the credit card from the repository, replaying all saved events
+	// Loads the credit card from the event store, replaying all saved events
 	CreditCard loadCreditCard() {
-		List<DomainEvent> events = repository.loadEvents(uuid());
+		List<DomainEvent> events = eventStore.loadEvents(uuid());
 		CreditCard creditCard = new CreditCard(uuid(), events);
 		return creditCard;
 	}
@@ -131,11 +136,11 @@ public class CreditCardAggregateRoot {
 		event.ifPresent(ev -> creditCard().apply(ev));
 	}
 	
-	// Save all pending events of the credit card to the repository
+	// Save all pending events of the credit card to the event store
 	private void saveCreditCard() {
-    List<DomainEvent> currentStream = repository().loadEvents(uuid());
+    List<DomainEvent> currentStream = eventStore().loadEvents(uuid());
     currentStream.addAll(creditCard().pendingEvents());
-		repository().save(uuid(), currentStream);
+		eventStore().save(uuid(), currentStream);
     creditCard().flushEvents();
 	}
 
@@ -208,8 +213,8 @@ public class CreditCardAggregateRoot {
 		return creditCard;
 	}
 
-	private CreditCardRepository repository() {
-		return repository;
+	private EventStore eventStore() {
+		return eventStore;
 	}
 
 	private Model model() {

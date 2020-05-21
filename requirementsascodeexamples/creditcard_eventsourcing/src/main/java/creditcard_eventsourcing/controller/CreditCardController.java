@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import creditcard_eventsourcing.model.CreditCardAggregateRoot;
-import creditcard_eventsourcing.persistence.CreditCardRepository;
+import creditcard_eventsourcing.persistence.EventStore;
 
 /**
  * Based on code by Jakub Pilimon: 
@@ -20,14 +20,14 @@ import creditcard_eventsourcing.persistence.CreditCardRepository;
 @RestController
 class CreditCardController {
 	@Autowired
-	CreditCardRepository repository;
+	EventStore eventStore;
 
 	@GetMapping("/cards")
 	List<CreditCardAggregateRoot> creditCardList() {
 		List<CreditCardAggregateRoot> creditCards = new ArrayList<>();
-		Set<UUID> uuids = repository.uuids();
+		Set<UUID> uuids = eventStore.uuids();
 		for (UUID uuid : uuids) {
-			CreditCardAggregateRoot creditCard = new CreditCardAggregateRoot(uuid, repository);
+			CreditCardAggregateRoot creditCard = new CreditCardAggregateRoot(uuid, eventStore);
 			creditCards.add(creditCard);
 		}
 		return creditCards;
