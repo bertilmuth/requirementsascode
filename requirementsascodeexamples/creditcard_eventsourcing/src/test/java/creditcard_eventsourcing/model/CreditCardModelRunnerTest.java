@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import creditcard_eventsourcing.model.command.RequestToCloseCycle;
-import creditcard_eventsourcing.model.command.RequestsRepay;
-import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestRepay;
+import creditcard_eventsourcing.model.command.RequestToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestWithdrawal;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardModelRunnerTest {
@@ -154,19 +154,19 @@ public class CreditCardModelRunnerTest {
 
 	private CreditCardAggregateRoot requestToAssignLimit(BigDecimal amount) {
 		CreditCardAggregateRoot aggregateRoot = aggregateRoot();
-		aggregateRoot.accept(new RequestsToAssignLimit(amount));
+		aggregateRoot.accept(new RequestToAssignLimit(amount));
 		return aggregateRoot;
 	}
 
 	public CreditCardAggregateRoot requestWithdrawal(BigDecimal amount) {
 		CreditCardAggregateRoot aggregateRoot = aggregateRoot();
-		aggregateRoot.accept(new RequestsWithdrawal(amount));
+		aggregateRoot.accept(new RequestWithdrawal(amount));
 		return aggregateRoot;
 	}
 
 	public CreditCardAggregateRoot requestRepay(BigDecimal amount) {
 		CreditCardAggregateRoot aggregateRoot = aggregateRoot();
-		aggregateRoot.accept(new RequestsRepay(amount));
+		aggregateRoot.accept(new RequestRepay(amount));
 		return aggregateRoot;
 	}
 }

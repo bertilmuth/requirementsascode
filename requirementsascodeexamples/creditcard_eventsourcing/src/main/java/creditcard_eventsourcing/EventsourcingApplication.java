@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import creditcard_eventsourcing.model.CreditCardAggregateRoot;
-import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestWithdrawal;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
@@ -35,7 +35,7 @@ public class EventsourcingApplication {
 	@Scheduled(fixedRate = 2000)
 	public void randomCards() {
 		CreditCardAggregateRoot cardModelRunner = new CreditCardAggregateRoot(UUID.randomUUID(), creditCardRepository);
-		cardModelRunner.accept(new RequestsToAssignLimit(BigDecimal.TEN));
-		cardModelRunner.accept(new RequestsWithdrawal(BigDecimal.ONE));
+		cardModelRunner.accept(new RequestToAssignLimit(BigDecimal.TEN));
+		cardModelRunner.accept(new RequestWithdrawal(BigDecimal.ONE));
 	}
 }

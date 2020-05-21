@@ -22,9 +22,9 @@ import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 
 import creditcard_eventsourcing.model.command.RequestToCloseCycle;
-import creditcard_eventsourcing.model.command.RequestsRepay;
-import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
-import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.model.command.RequestRepay;
+import creditcard_eventsourcing.model.command.RequestToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestWithdrawal;
 import creditcard_eventsourcing.model.event.CardRepaid;
 import creditcard_eventsourcing.model.event.CardWithdrawn;
 import creditcard_eventsourcing.model.event.CycleClosed;
@@ -36,18 +36,18 @@ public class CreditCardAggregateRoot {
 	private static final String useCreditCard = "Use credit card";
 
 	// Command types
-	private static final Class<RequestsToAssignLimit> requestsToAssignLimit = RequestsToAssignLimit.class;
-	private static final Class<RequestsWithdrawal> requestsWithdrawingCard = RequestsWithdrawal.class;
-	private static final Class<RequestsRepay> requestsRepay = RequestsRepay.class;
+	private static final Class<RequestToAssignLimit> requestsToAssignLimit = RequestToAssignLimit.class;
+	private static final Class<RequestWithdrawal> requestsWithdrawingCard = RequestWithdrawal.class;
+	private static final Class<RequestRepay> requestsRepay = RequestRepay.class;
 	private static final Class<RequestToCloseCycle> requestToCloseCycle = RequestToCloseCycle.class;
 
 	// Command handling methods
-	private Function<RequestsToAssignLimit, DomainEvent> assignedLimit = this::assignedLimit;
-	private Function<RequestsWithdrawal, DomainEvent> withdrawnCard = this::withdrawnCard;
-	private Function<RequestsRepay, DomainEvent> repay = this::repay;
+	private Function<RequestToAssignLimit, DomainEvent> assignedLimit = this::assignedLimit;
+	private Function<RequestWithdrawal, DomainEvent> withdrawnCard = this::withdrawnCard;
+	private Function<RequestRepay, DomainEvent> repay = this::repay;
 	private Function<RequestToCloseCycle, DomainEvent> closedCycle = this::closedCycle;
-	private Consumer<RequestsToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
-	private Consumer<RequestsWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
+	private Consumer<RequestToAssignLimit> throwsAssignLimitException = this::throwAssignLimitException;
+	private Consumer<RequestWithdrawal> throwsTooManyWithdrawalsException = this::throwTooManyWithdrawalsException;
 
 	// Conditions
 	private Condition tooManyWithdrawalsInCycle = this::tooManyWithdrawalsInCycle;
@@ -136,12 +136,12 @@ public class CreditCardAggregateRoot {
 
 	// Command handling methods (that return events)
 	
-	private DomainEvent assignedLimit(RequestsToAssignLimit request) {
+	private DomainEvent assignedLimit(RequestToAssignLimit request) {
 		BigDecimal amount = request.getAmount();
 		return new LimitAssigned(uuid(), amount, Instant.now());
 	}
 
-	private DomainEvent withdrawnCard(RequestsWithdrawal request) {
+	private DomainEvent withdrawnCard(RequestWithdrawal request) {
 		BigDecimal amount = request.getAmount();
 		if (creditCard().notEnoughMoneyToWithdraw(amount)) {
 			throw new IllegalStateException();
@@ -149,7 +149,7 @@ public class CreditCardAggregateRoot {
 		return new CardWithdrawn(uuid(), amount, Instant.now());
 	}
 
-	private DomainEvent repay(RequestsRepay request) {
+	private DomainEvent repay(RequestRepay request) {
 		BigDecimal amount = request.getAmount();
 		return new CardRepaid(uuid(), amount, Instant.now());
 	}
@@ -158,11 +158,11 @@ public class CreditCardAggregateRoot {
 		return new CycleClosed(uuid(), Instant.now());
 	}
 
-	private void throwAssignLimitException(RequestsToAssignLimit request) {
+	private void throwAssignLimitException(RequestToAssignLimit request) {
 		throw new IllegalStateException();
 	}
 
-	private void throwTooManyWithdrawalsException(RequestsWithdrawal request) {
+	private void throwTooManyWithdrawalsException(RequestWithdrawal request) {
 		throw new IllegalStateException();
 	}
 	

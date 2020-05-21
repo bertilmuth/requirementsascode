@@ -2,9 +2,9 @@ package creditcard_eventsourcing.model.command;
 
 import java.math.BigDecimal;
 
-public class RequestsRepay {
+public class RequestRepay {
     private BigDecimal amount;
-    public RequestsRepay(BigDecimal amount) {
+    public RequestRepay(BigDecimal amount) {
         this.amount = amount;
     }
     public BigDecimal getAmount() {
