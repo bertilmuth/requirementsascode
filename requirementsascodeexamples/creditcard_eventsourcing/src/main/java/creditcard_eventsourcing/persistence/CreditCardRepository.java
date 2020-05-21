@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import creditcard_eventsourcing.model.CreditCard;
-import creditcard_eventsourcing.model.DomainEvent;
+import creditcard_eventsourcing.model.event.DomainEvent;
 
 /**
  * Based on code by Jakub Pilimon: 

@@ -1,4 +1,4 @@
-package creditcard_eventsourcing.model;
+package creditcard_eventsourcing.model.event;
 
 /**
  * Based on code by Jakub Pilimon: 

@@ -25,6 +25,11 @@ import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestsRepay;
 import creditcard_eventsourcing.model.command.RequestsToAssignLimit;
 import creditcard_eventsourcing.model.command.RequestsWithdrawal;
+import creditcard_eventsourcing.model.event.CardRepaid;
+import creditcard_eventsourcing.model.event.CardWithdrawn;
+import creditcard_eventsourcing.model.event.CycleClosed;
+import creditcard_eventsourcing.model.event.DomainEvent;
+import creditcard_eventsourcing.model.event.LimitAssigned;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 public class CreditCardAggregateRoot {

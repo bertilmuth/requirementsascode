@@ -10,6 +10,12 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 
+import creditcard_eventsourcing.model.event.CardRepaid;
+import creditcard_eventsourcing.model.event.CardWithdrawn;
+import creditcard_eventsourcing.model.event.CycleClosed;
+import creditcard_eventsourcing.model.event.DomainEvent;
+import creditcard_eventsourcing.model.event.LimitAssigned;
+
 /**
  * Based on code by Jakub Pilimon:
  * https://gitlab.com/pilloPl/eventsourced-credit-cards/blob/4329a0aac283067f1376b3802e13f5a561f18753
