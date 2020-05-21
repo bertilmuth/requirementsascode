@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import creditcard_eventsourcing.model.CreditCard;
 import creditcard_eventsourcing.model.event.DomainEvent;
 
 /**
@@ -24,11 +23,8 @@ public class CreditCardRepository {
 
     private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
 
-    public void save(CreditCard creditCard) {
-        List<DomainEvent> currentStream = loadEvents(creditCard.uuid());
-        currentStream.addAll(creditCard.pendingEvents());
-        eventStream.put(creditCard.uuid(), currentStream);
-        creditCard.flushEvents();
+    public void save(UUID uuid, List<DomainEvent> currentStream) {
+        eventStream.put(uuid, currentStream);
     }
 
 		public List<DomainEvent> loadEvents(UUID uuid) {

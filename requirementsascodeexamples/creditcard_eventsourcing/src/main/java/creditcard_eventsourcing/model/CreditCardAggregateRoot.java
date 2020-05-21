@@ -133,7 +133,10 @@ public class CreditCardAggregateRoot {
 	
 	// Save all pending events of the credit card to the repository
 	private void saveCreditCard() {
-		repository().save(creditCard());
+    List<DomainEvent> currentStream = repository().loadEvents(uuid());
+    currentStream.addAll(creditCard().pendingEvents());
+		repository().save(uuid(), currentStream);
+    creditCard().flushEvents();
 	}
 
 	// Command handling methods (that return events)
