@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import creditcard_eventsourcing.model.CreditCard;
+import creditcard_eventsourcing.model.CreditCardAggregateRoot;
 import creditcard_eventsourcing.persistence.CreditCardRepository;
 
 /**
@@ -23,11 +23,11 @@ class CreditCardController {
 	CreditCardRepository repository;
 
 	@GetMapping("/cards")
-	List<CreditCard> creditCardList() {
-		List<CreditCard> creditCards = new ArrayList<>();
+	List<CreditCardAggregateRoot> creditCardList() {
+		List<CreditCardAggregateRoot> creditCards = new ArrayList<>();
 		Set<UUID> uuids = repository.uuids();
 		for (UUID uuid : uuids) {
-			CreditCard creditCard = repository.load(uuid);
+			CreditCardAggregateRoot creditCard = new CreditCardAggregateRoot(uuid, repository);
 			creditCards.add(creditCard);
 		}
 		return creditCards;

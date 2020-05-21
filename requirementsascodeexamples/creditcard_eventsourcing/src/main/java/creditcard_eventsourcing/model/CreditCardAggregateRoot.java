@@ -11,6 +11,7 @@ import static creditcard_eventsourcing.model.CreditCard.withdrawingCardTooOften;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -61,9 +62,9 @@ public class CreditCardAggregateRoot {
 	
 	private CreditCard creditCard;
 
-	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository creditCardRepository) {
+	public CreditCardAggregateRoot(UUID uuid, CreditCardRepository repository) {
 		this.uuid = uuid;
-		this.repository = creditCardRepository;
+		this.repository = repository;
 		this.model = buildModel();
 	}
 
@@ -104,7 +105,7 @@ public class CreditCardAggregateRoot {
 	 * @param command the command to handle.
 	 */
 	public void accept(Object command) {
-		loadCreditCard();
+		this.creditCard = loadCreditCard();
 		Optional<DomainEvent> event = restoreStateAndHandle(command);
 		applyToCreditCardIfPresent(event);
 		saveCreditCard();
@@ -112,7 +113,8 @@ public class CreditCardAggregateRoot {
 	
 	// Loads the credit card from the repository, replaying all saved events
 	CreditCard loadCreditCard() {
-		this.creditCard = repository().load(uuid());
+		List<DomainEvent> events = repository.loadEvents(uuid());
+		CreditCard creditCard = new CreditCard(uuid(), events);
 		return creditCard;
 	}
 	
