@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import creditcard_eventsourcing.model.event.DomainEvent;
 
 /**
- * Based on code by Jakub Pilimon: 
+ * Based on code by Jakub Pilimon:
  * https://gitlab.com/pilloPl/eventsourced-credit-cards/blob/4329a0aac283067f1376b3802e13f5a561f18753
  * 
  * @author b_muth
@@ -20,18 +20,17 @@ import creditcard_eventsourcing.model.event.DomainEvent;
  */
 @Repository
 public class EventStore {
+	private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
 
-    private final Map<UUID, List<DomainEvent>> eventStream = new HashMap<>();
+	public void save(UUID uuid, List<DomainEvent> currentStream) {
+		eventStream.put(uuid, currentStream);
+	}
 
-    public void save(UUID uuid, List<DomainEvent> currentStream) {
-        eventStream.put(uuid, currentStream);
-    }
+	public List<DomainEvent> loadEvents(UUID uuid) {
+		return eventStream.getOrDefault(uuid, new ArrayList<>());
+	}
 
-		public List<DomainEvent> loadEvents(UUID uuid) {
-			return eventStream.getOrDefault(uuid, new ArrayList<>());
-		}
-    
-    public Set<UUID> uuids(){
-    	return eventStream.keySet();
-    }
+	public Set<UUID> uuids() {
+		return eventStream.keySet();
+	}
 }
