@@ -1,4 +1,4 @@
-# requirements as code 
+# Requirements as code 
 [![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
 
 ![requirements as code logo](./requirementsascode_logo.png)
@@ -17,7 +17,7 @@ Optionally, you can specify a precondition.
 For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead. 
 It's a simple alternative to state machines.
 
-# influences and special features
+# Influences and special features
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
 
 You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event. Your event publisher will pick it up automatically.
@@ -25,7 +25,7 @@ You can use this library to publish DDD Domain Events without littering your cod
 The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
 
-# getting started
+# Getting started
 Requirements as code is available on Maven Central.
 
 The size of the core jar file is less than 64 kBytes. It has no further dependencies.
@@ -48,7 +48,7 @@ implementation 'org.requirementsascode:requirementsascodecore:1.5'
 
 At least Java 8 is required to use requirements as code, download and install it if necessary.
 
-# how to build and run a use case model
+# How to build and run a use case model
 Let's look at the general steps to building and running a model first.
 After that, you'll see a concrete code example.
 
@@ -139,7 +139,7 @@ class RequestHello {
 }
 ```
 
-# publishing events
+# Publishing events
 When you use the `system()` method, you are restricted to just consuming messages.
 But you can also publish events with `systemPublish()`, like so:
 
@@ -420,24 +420,24 @@ class Greeting{
 }
 ```
 
-# documentation of requirements as code
+# Documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
-# publications
+# Publications
 * [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
 
-# subprojects
+# Subprojects
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run models. 
 * [requirements as code extract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): generate documentation from the models (or any other textual artifact).
 * [requirements as code examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirements as code.
 
-# build from sources
+# Build from sources
 Use Java >=11 and the project's gradle wrapper to build from sources.
 
-# related topics
+# Related topics
 * The work of Ivar Jacobson on Use Cases. As an example, have a look at [Use Case 2.0](https://www.ivarjacobson.com/publications/white-papers/use-case-ebook).
 * The work of Alistair Cockburn on Use Cases, specifically the different goal levels. Look [here](http://alistair.cockburn.us/Use+case+fundamentals) to get started, or read the book "Writing Effective Use Cases".
