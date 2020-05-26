@@ -22,8 +22,6 @@ Requirements as code is influenced by the ideas of [clean architecture](https://
 
 You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event. Your event publisher will pick it up automatically.
 
-When you follow the design principles of requirements as code, you will end up with pure domain code. The domain code doesn't communicate with infrastructure, not even through interfaces. That's why you can test the domain code without mocking anything. 
-
 The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
 
