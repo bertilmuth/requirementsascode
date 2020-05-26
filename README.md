@@ -3,24 +3,18 @@
 
 ![requirements as code logo](./requirementsascode_logo.png)
 
-Requirements as code is a small library and a set of design principles to build maintainable applications.
-It builds on use case theory to record user requirements as code and make their realization exchangable.
- 
-In use case theory, use cases describe the interactions of users with the system as a black box. Technology decisions are postponed to the use case realization. This separation enables more focused discussions about the value the system provides to users, and finding the right solution for the problem to solve.
+Requirements as code enables you to translate use cases to code to build maintainable applications.
 
-In requirements as code, you build use case models that define interactions. They are free of technical concerns. The models call message handlers through interfaces. Message handlers are the use case realization. They orchestrate the calls to the domain code and to the infrastructure outside of the boundary. By switching message handlers, or by injecting different dependencies into them, you can switch your application's technical infrastructure.
+A use case model defines interactions. An interaction consists of a message class and a message handler. A message handler orchestrates the calls to the domain code, and to the infrastructure. By switching message handlers, or by injecting different dependencies into them, you can switch your application's infrastructure.
 
-In requirements as code, an interaction is defined as a message class and a message handler.
-The message handler specifies how the system reacts when receiving an instance of the message class, or an instance of a subclass. 
-
-The message handler calls the domain/infrastructure code and then:
+After calling the domain/infrastructure code, the message handler either:
 * doesn't return anything,
 * returns a query result, or 
 * returns an event to be published.
 
-You can also specify a precondition. 
+Optionally, you can specify a precondition. 
 
-If your interactions are independent from each other, that's your use case model. For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead. 
+For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead. 
 It's a simple alternative to state machines.
 
 # influences and special features
