@@ -131,9 +131,6 @@ public class ModelRunner {
 	public class As{
 		private As(Actor runActor) {
 			setRunActor(runActor);
-			if(isRunning()) {
-				updateActorStepsFrom(model);
-			}
 		}
 		public ModelRunner run(Model model) {
 			return runModel(model);
