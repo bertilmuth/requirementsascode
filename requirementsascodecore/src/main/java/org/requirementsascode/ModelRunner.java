@@ -153,25 +153,9 @@ public class ModelRunner {
 	}
 
 	private void updateActorStepsFrom(Model model) {
-		Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
-
 		this.steps = model.getModifiableSteps().stream()
-			.filter(step -> hasRightActor(step, isSystemOrRunActor))
+			.filter(step -> hasRightActor(step))
 			.collect(Collectors.toSet());
-	}
-
-	private boolean hasRightActor(Step step, Predicate<Actor> actorTest) {
-		Actor[] stepActors = step.getActors();
-		if (stepActors == null) {
-			throw (new MissingUseCaseStepPart(step, "actor"));
-		}
-
-		for (Actor stepActor : stepActors) {
-			if (actorTest.test(stepActor)) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	private void triggerAutonomousSystemReaction() {
@@ -299,11 +283,26 @@ public class ModelRunner {
 	}
 
 	private boolean stepCanReact(Step step, Class<? extends Object> currentMessageClass) {
-		final Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
 		
-		boolean stepCanReact = hasRightActor(step, isSystemOrRunActor) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
+		boolean stepCanReact = hasRightActor(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
 			&& hasTruePredicate(step);
 		return stepCanReact;
+	}
+	
+	private boolean hasRightActor(Step step) {
+		final Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
+		
+		Actor[] stepActors = step.getActors();
+		if (stepActors == null) {
+			throw (new MissingUseCaseStepPart(step, "actor"));
+		}
+
+		for (Actor stepActor : stepActors) {
+			if (isSystemOrRunActor.test(stepActor)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean stepMessageClassIsSameOrSuperclass(Step step, Class<?> currentMessageClass) {
