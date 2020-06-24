@@ -3,6 +3,7 @@ package org.requirementsascode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -421,7 +422,15 @@ public class ModelRunner {
 	public Set<Step> getStepsThatCanReactTo(Class<? extends Object> messageClass) {
 		Objects.requireNonNull(messageClass);
 
-		Set<Step> stepsThatCanReact = getStepsInStreamThatCanReactTo(messageClass, getRunningStepStream());
+		Collection<Step> steps = model.getModifiableSteps();
+		Set<Step> stepsThatCanReact = new HashSet<>(2);
+		
+		for (Step step : steps) {
+			if (canReactToMessageType(step, messageClass)) {
+				stepsThatCanReact.add(step);
+			}
+		}
+		
 		return stepsThatCanReact;
 	}
 
