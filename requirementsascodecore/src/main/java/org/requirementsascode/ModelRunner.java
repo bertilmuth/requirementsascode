@@ -248,37 +248,38 @@ public class ModelRunner {
 	}
 
 	private <T> void reactToMessage(T message) {
-		
-		Class<? extends Object> currentMessageClass = message.getClass();
-		
-		if (isRunning) {
-			try {
-				int nrOfStepsThatCanReact = 0;
-				Step stepThatWillReact = null;
-				Collection<Step> steps = model.getModifiableSteps();
+		if (!isRunning) {
+			return;
+		}
 
-				for (Step step : steps) {
-					if (stepCanReact(step, currentMessageClass)) {
-						stepThatWillReact = step;
-						nrOfStepsThatCanReact++;
-						
-						if(nrOfStepsThatCanReact > 1) {
-							// No more than one step is allowed to react to a message
-							throw new MoreThanOneStepCanReact(steps);
-						}
+		Class<? extends Object> currentMessageClass = message.getClass();
+
+		try {
+			int nrOfStepsThatCanReact = 0;
+			Step stepThatWillReact = null;
+			Collection<Step> steps = model.getModifiableSteps();
+
+			for (Step step : steps) {
+				if (stepCanReact(step, currentMessageClass)) {
+					stepThatWillReact = step;
+					nrOfStepsThatCanReact++;
+
+					if (nrOfStepsThatCanReact > 1) {
+						// No more than one step is allowed to react to a message
+						throw new MoreThanOneStepCanReact(steps);
 					}
 				}
-
-				if (nrOfStepsThatCanReact == 1) {
-					triggerSystemReaction(message, stepThatWillReact);
-				} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
-					unhandledMessageHandler.accept(message);
-				} else if (message instanceof RuntimeException) {
-					throw (RuntimeException) message;
-				}
-			} catch (StackOverflowError err) {
-				throw new InfiniteRepetition(latestStep);
 			}
+
+			if (nrOfStepsThatCanReact == 1) {
+				triggerSystemReaction(message, stepThatWillReact);
+			} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
+				unhandledMessageHandler.accept(message);
+			} else if (message instanceof RuntimeException) {
+				throw (RuntimeException) message;
+			}
+		} catch (StackOverflowError err) {
+			throw new InfiniteRepetition(latestStep);
 		}
 	}
 
