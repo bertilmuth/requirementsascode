@@ -2,6 +2,7 @@ package org.requirementsascode;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -284,7 +285,6 @@ public class ModelRunner {
 	}
 
 	private boolean stepCanReact(Step step, Class<? extends Object> currentMessageClass) {
-		
 		boolean stepCanReact = hasRightActor(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
 			&& hasTruePredicate(step);
 		return stepCanReact;
@@ -378,8 +378,19 @@ public class ModelRunner {
 	 * @return the collection of message types
 	 */
 	public Set<Class<?>> getReactToTypes() {
-		Set<Class<?>> reactToTypes = getRunningStepStream().filter(step -> hasTruePredicate(step))
-				.map(step -> step.getMessageClass()).collect(Collectors.toCollection(LinkedHashSet::new));
+		Set<Class<?>> reactToTypes;
+		
+		if(isRunning) {
+			Collection<Step> steps = model.getModifiableSteps();
+			reactToTypes = steps.stream()
+				.filter(this::hasRightActor)
+				.filter(step -> hasTruePredicate(step))
+				.map(step -> step.getMessageClass())
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+		} else {
+			reactToTypes = Collections.emptySet();
+		}
+
 		return reactToTypes;
 	}
 
