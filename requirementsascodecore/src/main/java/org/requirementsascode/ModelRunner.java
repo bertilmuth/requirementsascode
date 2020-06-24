@@ -278,13 +278,16 @@ public class ModelRunner {
 					if (stepCanReact(step, currentMessageClass)) {
 						stepThatWillReact = step;
 						nrOfStepsThatCanReact++;
+						
+						if(nrOfStepsThatCanReact > 1) {
+							// No more than one step is allowed to react to a message
+							throw new MoreThanOneStepCanReact(steps);
+						}
 					}
 				}
 
 				if (nrOfStepsThatCanReact == 1) {
 					triggerSystemReaction(message, stepThatWillReact);
-				} else if (nrOfStepsThatCanReact > 1) {
-					throw new MoreThanOneStepCanReact(steps);
 				} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
 					unhandledMessageHandler.accept(message);
 				} else if (message instanceof RuntimeException) {
@@ -300,6 +303,18 @@ public class ModelRunner {
 		boolean stepCanReact = stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
 			&& hasTruePredicate(step);
 		return stepCanReact;
+	}
+	
+	private boolean stepMessageClassIsSameOrSuperclass(Step step, Class<?> currentMessageClass) {
+		Class<?> stepMessageClass = step.getMessageClass();
+		boolean result = stepMessageClass.isAssignableFrom(currentMessageClass);
+		return result;
+	}
+
+	private boolean hasTruePredicate(Step step) {
+		Predicate<ModelRunner> predicate = step.getPredicate();
+		boolean result = predicate.test(this);
+		return result;
 	}
 
 	private void triggerSystemReaction(Object message, Step step) {
@@ -389,18 +404,6 @@ public class ModelRunner {
 		Set<Step> steps = stepStream.filter(step -> stepMessageClassIsSameOrSuperclass(step, messageClass))
 				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
 		return steps;
-	}
-
-	private boolean stepMessageClassIsSameOrSuperclass(Step step, Class<?> currentMessageClass) {
-		Class<?> stepMessageClass = step.getMessageClass();
-		boolean result = stepMessageClass.isAssignableFrom(currentMessageClass);
-		return result;
-	}
-
-	private boolean hasTruePredicate(Step step) {
-		Predicate<ModelRunner> predicate = step.getPredicate();
-		boolean result = predicate.test(this);
-		return result;
 	}
 
 	/**
