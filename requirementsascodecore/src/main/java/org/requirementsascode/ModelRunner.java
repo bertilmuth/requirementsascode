@@ -261,7 +261,7 @@ public class ModelRunner {
 			Collection<Step> steps = model.getModifiableSteps();
 
 			for (Step step : steps) {
-				if (canReactToMessage(step, currentMessageClass)) {
+				if (canReactToMessageType(step, currentMessageClass)) {
 					stepThatWillReact = step;
 					nrOfStepsThatCanReact++;
 
@@ -289,7 +289,7 @@ public class ModelRunner {
 		return stepCanReact;
 	}
 
-	private boolean canReactToMessage(Step step, Class<? extends Object> currentMessageClass) {
+	private boolean canReactToMessageType(Step step, Class<? extends Object> currentMessageClass) {
 		boolean stepCanReact = canReact(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass);
 		return stepCanReact;
 	}
@@ -420,8 +420,7 @@ public class ModelRunner {
 	}
 
 	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> messageClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream.filter(step -> stepMessageClassIsSameOrSuperclass(step, messageClass))
-				.filter(step -> hasTruePredicate(step)).collect(Collectors.toSet());
+		Set<Step> steps = stepStream.filter(step -> canReactToMessageType(step, messageClass)).collect(Collectors.toSet());
 		return steps;
 	}
 
