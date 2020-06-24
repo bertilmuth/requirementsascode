@@ -45,7 +45,7 @@ public class ModelRunner {
 	 */
 	public ModelRunner() {
 		handleWith(stepToBeRun -> stepToBeRun.run());
-		publishWith(this::handleMessage);
+		publishWith(this::reactToMessage);
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class ModelRunner {
 	}
 	
 	private void triggerAutonomousSystemReaction() {
-		handleMessage(this);
+		reactToMessage(this);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class ModelRunner {
 
 		clearLatestPublishedEvent();
 		for (Object message : messages) {
-			handleMessage(message);
+			reactToMessage(message);
 		}
 		return Optional.ofNullable((U) latestPublishedEvent);
 	}
@@ -262,41 +262,47 @@ public class ModelRunner {
 		}
 
 		clearLatestPublishedEvent();
-		handleMessage(message);
+		reactToMessage(message);
 		return Optional.ofNullable((U)latestPublishedEvent);
 	}
 
-	private <T> void handleMessage(T message) {
+	private <T> void reactToMessage(T message) {
 		Class<? extends Object> currentMessageClass = message.getClass();
 
-		try {
-			Set<Step> stepsThatCanReact = getStepsThatCanReactTo(currentMessageClass);
-			triggerSystemReactionForSteps(message, stepsThatCanReact);
-		} catch (StackOverflowError err) {
-			throw new InfiniteRepetition(latestStep);
+		if (isRunning) {
+			try {
+				int nrOfStepsThatCanReact = 0;
+				Step stepThatWillReact = null;
+
+				for (Step step : steps) {
+					if (stepCanReact(step, currentMessageClass)) {
+						stepThatWillReact = step;
+						nrOfStepsThatCanReact++;
+					}
+				}
+
+				if (nrOfStepsThatCanReact == 1) {
+					triggerSystemReaction(message, stepThatWillReact);
+				} else if (nrOfStepsThatCanReact > 1) {
+					throw new MoreThanOneStepCanReact(steps);
+				} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
+					unhandledMessageHandler.accept(message);
+				} else if (message instanceof RuntimeException) {
+					throw (RuntimeException) message;
+				}
+			} catch (StackOverflowError err) {
+				throw new InfiniteRepetition(latestStep);
+			}
 		}
 	}
 
-	private void triggerSystemReactionForSteps(Object message, Collection<Step> steps) {
-		Step step = null;
-
-		if (steps.size() == 1) {
-			step = steps.iterator().next();
-			triggerSystemReactionForStep(message, step);
-		} else if (steps.size() > 1) {
-			throw new MoreThanOneStepCanReact(steps);
-		} else if (unhandledMessageHandler != null && !isSystemEvent(message)) {
-			unhandledMessageHandler.accept(message);
-		} else if (message instanceof RuntimeException) {
-			throw (RuntimeException) message;
-		}
+	private boolean stepCanReact(Step step, Class<? extends Object> currentMessageClass) {
+		boolean stepCanReact = stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
+			&& hasTruePredicate(step);
+		return stepCanReact;
 	}
 
-	private <T> boolean isSystemEvent(T message) {
-		return message instanceof ModelRunner;
-	}
-
-	private void triggerSystemReactionForStep(Object message, Step step) {
+	private void triggerSystemReaction(Object message, Step step) {
 		if (step.getSystemReaction() == null) {
 			throw new MissingUseCaseStepPart(step, "system");
 		}
@@ -313,6 +319,10 @@ public class ModelRunner {
 		}
 
 		triggerAutonomousSystemReaction();
+	}
+	
+	private <T> boolean isSystemEvent(T message) {
+		return message instanceof ModelRunner;
 	}
 
 	void recordStepNameAndMessage(Step step, Object message) {
@@ -402,7 +412,7 @@ public class ModelRunner {
 	 * @param e the exception that has been thrown by the system reaction
 	 */
 	protected void handleException(Exception e) {
-		handleMessage(e);
+		reactToMessage(e);
 	}
 
 	/**
