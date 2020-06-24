@@ -381,12 +381,15 @@ public class ModelRunner {
 		Set<Class<?>> reactToTypes;
 		
 		if(isRunning) {
+			reactToTypes = new LinkedHashSet<>();
 			Collection<Step> steps = model.getModifiableSteps();
-			reactToTypes = steps.stream()
-				.filter(this::hasRightActor)
-				.filter(step -> hasTruePredicate(step))
-				.map(step -> step.getMessageClass())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+			
+			for (Step step : steps) {
+				if (hasRightActor(step) && hasTruePredicate(step)) {
+					Class<?> messageClass = step.getMessageClass();
+					reactToTypes.add(messageClass);
+				}
+			}
 		} else {
 			reactToTypes = Collections.emptySet();
 		}
