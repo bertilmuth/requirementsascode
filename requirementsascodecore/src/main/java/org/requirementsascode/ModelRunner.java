@@ -422,12 +422,14 @@ public class ModelRunner {
 	public Set<Step> getStepsThatCanReactTo(Class<? extends Object> messageClass) {
 		Objects.requireNonNull(messageClass);
 
-		Collection<Step> steps = model.getModifiableSteps();
 		Set<Step> stepsThatCanReact = new HashSet<>(2);
 		
-		for (Step step : steps) {
-			if (canReactToMessageType(step, messageClass)) {
-				stepsThatCanReact.add(step);
+		if(isRunning) {
+			Collection<Step> steps = model.getModifiableSteps();
+			for (Step step : steps) {
+				if (canReactToMessageType(step, messageClass)) {
+					stepsThatCanReact.add(step);
+				}
 			}
 		}
 		
