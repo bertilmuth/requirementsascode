@@ -39,7 +39,7 @@ public class ModelRunner {
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
 	private boolean isRecording;
-	private Collection<Step> steps;
+	Collection<Step> steps;
 
 	/**
 	 * Constructor for creating a model runner.
@@ -261,7 +261,7 @@ public class ModelRunner {
 			Collection<Step> steps = model.getModifiableSteps();
 
 			for (Step step : steps) {
-				if (stepCanReact(step, currentMessageClass)) {
+				if (canReactToMessage(step, currentMessageClass)) {
 					stepThatWillReact = step;
 					nrOfStepsThatCanReact++;
 
@@ -283,10 +283,14 @@ public class ModelRunner {
 			throw new InfiniteRepetition(latestStep);
 		}
 	}
+	
+	private boolean canReact(Step step) {
+		boolean stepCanReact = hasRightActor(step) && hasTruePredicate(step);
+		return stepCanReact;
+	}
 
-	private boolean stepCanReact(Step step, Class<? extends Object> currentMessageClass) {
-		boolean stepCanReact = hasRightActor(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
-			&& hasTruePredicate(step);
+	private boolean canReactToMessage(Step step, Class<? extends Object> currentMessageClass) {
+		boolean stepCanReact = canReact(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass);
 		return stepCanReact;
 	}
 	
@@ -385,7 +389,7 @@ public class ModelRunner {
 			Collection<Step> steps = model.getModifiableSteps();
 			
 			for (Step step : steps) {
-				if (hasRightActor(step) && hasTruePredicate(step)) {
+				if (canReact(step)) {
 					Class<?> messageClass = step.getMessageClass();
 					reactToTypes.add(messageClass);
 				}
