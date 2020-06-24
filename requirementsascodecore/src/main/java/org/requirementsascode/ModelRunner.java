@@ -369,8 +369,19 @@ public class ModelRunner {
 	 */
 	public boolean canReactTo(Class<? extends Object> messageClass) {
 		Objects.requireNonNull(messageClass);
-		Set<Step> stepsThatCanReact = getStepsThatCanReactTo(messageClass);
-		boolean canReact = !stepsThatCanReact.isEmpty();
+		
+		if(!isRunning) {
+			return false;
+		}
+		boolean canReact = false;
+		
+		for (Step step : steps) {
+			if (canReactToMessageType(step, messageClass)) {
+				canReact = true;
+				break;
+			}
+		}
+
 		return canReact;
 	}
 
