@@ -267,12 +267,14 @@ public class ModelRunner {
 	}
 
 	private <T> void reactToMessage(T message) {
+		
 		Class<? extends Object> currentMessageClass = message.getClass();
-
+		
 		if (isRunning) {
 			try {
 				int nrOfStepsThatCanReact = 0;
 				Step stepThatWillReact = null;
+				Collection<Step> steps = model.getModifiableSteps();
 
 				for (Step step : steps) {
 					if (stepCanReact(step, currentMessageClass)) {
@@ -300,7 +302,9 @@ public class ModelRunner {
 	}
 
 	private boolean stepCanReact(Step step, Class<? extends Object> currentMessageClass) {
-		boolean stepCanReact = stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
+		final Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
+		
+		boolean stepCanReact = hasRightActor(step, isSystemOrRunActor) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass)
 			&& hasTruePredicate(step);
 		return stepCanReact;
 	}
