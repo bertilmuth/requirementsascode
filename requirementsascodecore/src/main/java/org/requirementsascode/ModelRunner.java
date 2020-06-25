@@ -281,7 +281,7 @@ public class ModelRunner {
 	}
 
 	boolean canReactToMessageClass(Step step, Class<? extends Object> currentMessageClass) {
-		boolean stepCanReact = canReact(step) && stepMessageClassIsSameOrSuperclass(step, currentMessageClass);
+		boolean stepCanReact = stepMessageClassIsSameOrSuperclass(step, currentMessageClass) && canReact(step);
 		return stepCanReact;
 	}
 	
@@ -303,6 +303,9 @@ public class ModelRunner {
 	
 	private boolean stepMessageClassIsSameOrSuperclass(Step step, Class<?> currentMessageClass) {
 		Class<?> stepMessageClass = step.getMessageClass();
+		if (stepMessageClass == null) {
+			throw new MissingUseCaseStepPart(step, "on/user");
+		}
 		boolean result = stepMessageClass.isAssignableFrom(currentMessageClass);
 		return result;
 	}
