@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,8 +63,15 @@ public class Flow extends ModelElement implements Serializable {
 	 *         steps.
 	 */
 	public Optional<FlowStep> getFirstStep() {
-		List<FlowStep> steps = getSteps();
-		return steps.size() > 0 ? Optional.of(steps.get(0)) : Optional.empty();
+		Collection<Step> steps = getUseCase().getModifiableSteps();
+		FlowStep firstStep = null;
+		for (Step step : steps) {
+			if(step instanceof FlowStep && this.equals(((FlowStep)step).getFlow())) {
+				firstStep = (FlowStep)step;
+				break;
+			}
+		}
+		return Optional.ofNullable(firstStep);
 	}
 
 	/**
