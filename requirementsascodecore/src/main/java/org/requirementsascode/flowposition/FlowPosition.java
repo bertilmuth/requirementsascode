@@ -12,14 +12,14 @@ import org.requirementsascode.ModelRunner;
 public abstract class FlowPosition implements Predicate<ModelRunner>, Serializable {
 	private static final long serialVersionUID = -8952890128132543927L;
 
-	private List<FlowStep> orAfterSteps;
+	private List<FlowStep> mergeSteps;
 	private FlowStep step;
 
 	protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
 
 	public FlowPosition(FlowStep step) {
 		this.step = step;
-		this.orAfterSteps = new ArrayList<>();
+		this.mergeSteps = new ArrayList<>();
 	}
 
 	@Override
@@ -30,7 +30,14 @@ public abstract class FlowPosition implements Predicate<ModelRunner>, Serializab
 	}
 
 	private boolean afterAnyMergedStep(ModelRunner modelRunner) {
-		return orAfterSteps.stream().anyMatch(step -> new After(step).test(modelRunner));
+		boolean isAfterStep = false;
+		for (FlowStep mergeStep : mergeSteps) {
+			if(new After(mergeStep).test(modelRunner)) {
+				isAfterStep = true;
+				break;
+			}
+		}
+		return isAfterStep;
 	}
 
 	public final Step getStep() {
@@ -38,7 +45,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner>, Serializab
 	}
 
 	public FlowPosition orAfter(FlowStep mergeStep) {
-		orAfterSteps.add(mergeStep);
+		mergeSteps.add(mergeStep);
 		return this;
 	}
 }
