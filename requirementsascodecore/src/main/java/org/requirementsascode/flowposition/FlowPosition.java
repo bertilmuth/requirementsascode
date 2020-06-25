@@ -25,8 +25,12 @@ public abstract class FlowPosition implements Predicate<ModelRunner>, Serializab
 	@Override
 	public final boolean test(ModelRunner modelRunner) {
 		boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
-				|| orAfterSteps.stream().anyMatch(step -> new After(step).test(modelRunner));
+			|| afterAnyMergedStep(modelRunner);
 		return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
+	}
+
+	private boolean afterAnyMergedStep(ModelRunner modelRunner) {
+		return orAfterSteps.stream().anyMatch(step -> new After(step).test(modelRunner));
 	}
 
 	public final Step getStep() {
