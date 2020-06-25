@@ -1,6 +1,7 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -60,7 +61,9 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
 			boolean isInterrupted = false;
 			if (modelRunner.isRunning()) {
-				Stream<Step> interruptingStepsStream = modelRunner.getRunningStepStream().filter(isInterruptingStep());
+				Collection<Step> steps = getFlow().getModel().getModifiableSteps();
+				
+				Stream<Step> interruptingStepsStream = steps.stream().filter(isInterruptingStep());
 				Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsMessageClass,
 					interruptingStepsStream);
 				isInterrupted = interruptingStepsThatCanReact.isEmpty();
