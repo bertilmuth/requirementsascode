@@ -3,9 +3,7 @@ package org.requirementsascode;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import org.requirementsascode.flowposition.After;
 
@@ -57,24 +55,26 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 
 	private Predicate<ModelRunner> noStepInterrupts() {
 		return modelRunner -> {
-			Class<?> theStepsMessageClass = getMessageClass();
+			Class<?> messageClass = getMessageClass();
 
-			boolean isInterrupted = false;
+			boolean noStepInterrupts = true;
 			if (modelRunner.isRunning()) {
 				Collection<Step> steps = getFlow().getModel().getModifiableSteps();
 				
-				Stream<Step> interruptingStepsStream = steps.stream().filter(isInterruptingStep());
-				Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsMessageClass,
-					interruptingStepsStream);
-				isInterrupted = interruptingStepsThatCanReact.isEmpty();
+				for (Step step : steps) {
+					if(isInterruptingStep(step) && modelRunner.canReactToMessageClass(step, messageClass)) {
+						noStepInterrupts = false;
+						break;
+					}
+				}
 			}
 
-			return isInterrupted;
+			return noStepInterrupts;
 		};
 
 	}
 
-	private Predicate<Step> isInterruptingStep() {
-		return step -> InterruptingFlowStep.class.equals(step.getClass());
+	private boolean isInterruptingStep(Step step) {
+		return InterruptingFlowStep.class.equals(step.getClass());
 	}
 }
