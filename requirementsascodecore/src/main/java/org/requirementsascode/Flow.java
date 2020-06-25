@@ -51,8 +51,8 @@ public class Flow extends ModelElement implements Serializable {
 	 * @return a collection of the steps
 	 */
 	public List<FlowStep> getSteps() {
-		List<FlowStep> steps = getUseCase().getModifiableSteps().stream().filter(step -> step instanceof FlowStep)
-				.map(step -> (FlowStep) step).filter(step -> this.equals(step.getFlow())).collect(Collectors.toList());
+		List<FlowStep> steps = getUseCase().getModifiableSteps().stream().filter(step -> isStepInThisFlow(step))
+				.map(step -> ((FlowStep)step)).collect(Collectors.toList());
 		return Collections.unmodifiableList(steps);
 	}
 
