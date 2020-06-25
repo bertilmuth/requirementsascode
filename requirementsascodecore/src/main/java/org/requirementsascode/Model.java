@@ -6,13 +6,12 @@ import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.requirementsascode.builder.ModelBuilder;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -161,8 +160,12 @@ public class Model implements Serializable {
 
 	Collection<Step> getModifiableSteps() {
 		Collection<UseCase> modifiableUseCases = getModifiableUseCases();
-		List<Step> modifiableSteps = modifiableUseCases.stream().map(useCase -> useCase.getModifiableSteps())
-				.flatMap(steps -> steps.stream()).collect(Collectors.toList());
+		Collection<Step> modifiableSteps = new ArrayList<>();
+		
+		for (UseCase useCase : modifiableUseCases) {
+			Collection<Step> useCaseSteps = useCase.getModifiableSteps();
+			modifiableSteps.addAll(useCaseSteps);
+		}
 		return modifiableSteps;
 	}
 
