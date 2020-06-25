@@ -436,16 +436,6 @@ public class ModelRunner {
 		return stepsThatCanReact;
 	}
 
-	Stream<Step> getRunningStepStream() {
-		Stream<Step> stepStream = isRunning ? steps.stream() : Stream.empty();
-		return stepStream;
-	}
-
-	Set<Step> getStepsInStreamThatCanReactTo(Class<? extends Object> messageClass, Stream<Step> stepStream) {
-		Set<Step> steps = stepStream.filter(step -> canReactToMessageClass(step, messageClass)).collect(Collectors.toSet());
-		return steps;
-	}
-
 	/**
 	 * Overwrite this method to control what happens exactly when an exception is
 	 * thrown by a system reaction. The behavior implemented in runner: the model
