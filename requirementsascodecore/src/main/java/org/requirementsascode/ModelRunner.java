@@ -11,8 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
@@ -40,7 +38,6 @@ public class ModelRunner {
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
 	private boolean isRecording;
-	Collection<Step> steps;
 
 	/**
 	 * Constructor for creating a model runner.
@@ -147,17 +144,10 @@ public class ModelRunner {
 	
 	private ModelRunner runModel(Model model) {
 		setModel(model);
-		updateActorStepsFrom(model);
 		initializeStepToBeRun();
 		setRunning(true);
 		triggerAutonomousSystemReaction();
 		return this;
-	}
-
-	private void updateActorStepsFrom(Model model) {
-		this.steps = model.getModifiableSteps().stream()
-			.filter(step -> hasRightActor(step))
-			.collect(Collectors.toSet());
 	}
 	
 	private void triggerAutonomousSystemReaction() {
@@ -376,6 +366,7 @@ public class ModelRunner {
 		}
 		boolean canReact = false;
 		
+		Collection<Step> steps = model.getModifiableSteps();
 		for (Step step : steps) {
 			if (canReactToMessageClass(step, messageClass)) {
 				canReact = true;
