@@ -58,12 +58,17 @@ public class InterruptableFlowStep extends FlowStep implements Serializable {
 		return modelRunner -> {
 			Class<?> theStepsMessageClass = getMessageClass();
 
-			Stream<Step> interruptingStepsStream = modelRunner.getRunningStepStream().filter(isInterruptingStep());
-			Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsMessageClass,
+			boolean isInterrupted = false;
+			if (modelRunner.isRunning()) {
+				Stream<Step> interruptingStepsStream = modelRunner.getRunningStepStream().filter(isInterruptingStep());
+				Set<Step> interruptingStepsThatCanReact = modelRunner.getStepsInStreamThatCanReactTo(theStepsMessageClass,
 					interruptingStepsStream);
+				isInterrupted = interruptingStepsThatCanReact.isEmpty();
+			}
 
-			return interruptingStepsThatCanReact.isEmpty();
+			return isInterrupted;
 		};
+
 	}
 
 	private Predicate<Step> isInterruptingStep() {
