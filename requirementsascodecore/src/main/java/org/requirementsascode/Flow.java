@@ -66,12 +66,16 @@ public class Flow extends ModelElement implements Serializable {
 		Collection<Step> steps = getUseCase().getModifiableSteps();
 		FlowStep firstStep = null;
 		for (Step step : steps) {
-			if(step instanceof FlowStep && this.equals(((FlowStep)step).getFlow())) {
+			if(isStepInThisFlow(step)) {
 				firstStep = (FlowStep)step;
 				break;
 			}
 		}
 		return Optional.ofNullable(firstStep);
+	}
+
+	private boolean isStepInThisFlow(Step step) {
+		return step instanceof FlowStep && this.equals(((FlowStep)step).getFlow());
 	}
 
 	/**
