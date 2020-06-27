@@ -7,9 +7,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
@@ -107,6 +109,20 @@ public class StepSystemPart<T> {
 	public StepSystemPart<T> reactWhile(Condition reactWhileCondition) {
 		Objects.requireNonNull(reactWhileCondition);
 		((FlowStep) step).setReactWhile(reactWhileCondition);
+		return this;
+	}
+	
+
+	/** Specifies the recipient of the message. Calling this method has no direct effect 
+	 * on the {@link ModelRunner} execution. Instead, custom handling of this information can
+	 * be set up by configuring the ModelRunner by {@link ModelRunner#publishWith(Consumer)}.
+	 * 
+	 * @param recipient 
+	 * @return
+	 */
+	public StepSystemPart<T> to(Actor recipient) {
+		Objects.requireNonNull(recipient);
+		stepPart.getStep().setPublishTo(recipient);
 		return this;
 	}
 
