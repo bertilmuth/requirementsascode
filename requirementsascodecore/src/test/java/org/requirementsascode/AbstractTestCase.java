@@ -13,6 +13,7 @@ public abstract class AbstractTestCase {
 	public static final String TEXT = "Hello, Basic Flow!";
 
 	protected static final String CUSTOMER = "Customer";
+	protected static final String PARTNER = "Partner";
 
 	protected static final String USE_CASE = "Use case";
 	protected static final String USE_CASE_2 = "Use case 2";
@@ -41,6 +42,7 @@ public abstract class AbstractTestCase {
 	protected static final String CONTINUE_2 = "Continue 2";
 
 	protected Actor customer;
+	protected Actor partner;
 	protected ModelBuilder modelBuilder;
 	protected ModelRunner modelRunner;
 	protected String displayedText;
@@ -49,6 +51,7 @@ public abstract class AbstractTestCase {
 		this.modelRunner = new ModelRunner().startRecording();
 		this.modelBuilder = Model.builder();
 		this.customer = modelBuilder.actor(CUSTOMER);
+		this.partner = modelBuilder.actor(PARTNER);
 		this.displayedText = null;
 	}
 

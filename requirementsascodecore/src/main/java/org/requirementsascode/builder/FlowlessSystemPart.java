@@ -7,8 +7,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
+import org.requirementsascode.ModelRunner;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -17,39 +19,45 @@ import org.requirementsascode.Model;
  */
 public class FlowlessSystemPart<T> {
 	private UseCasePart useCasePart;
+	private StepPart stepPart;
 	private long flowlessStepCounter;
 
-	private FlowlessSystemPart(UseCasePart useCasePart, long flowlessStepCounter) {
+	private FlowlessSystemPart(UseCasePart useCasePart, StepPart stepPart, long flowlessStepCounter) {
 		this.useCasePart = Objects.requireNonNull(useCasePart);
+		this.stepPart = stepPart;
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithRunnable(StepUserPart<T> stepUserPart, Runnable systemReaction,
 		long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
-		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
+		StepPart stepPart = stepSystemPart.getStepPart();
+		UseCasePart useCasePart = stepPart.getUseCasePart();
+		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithConsumer(StepUserPart<T> stepUserPart, Consumer<? super T> systemReaction,
 		long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
-		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
+		StepPart stepPart = stepSystemPart.getStepPart();
+		UseCasePart useCasePart = stepPart.getUseCasePart();
+		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithSupplier(StepUserPart<T> stepUserPart,
 		Supplier<? super T> systemReaction, long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
-		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
+		StepPart stepPart = stepSystemPart.getStepPart();
+		UseCasePart useCasePart = stepPart.getUseCasePart();
+		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithFunction(StepUserPart<T> stepUserPart,
 		Function<? super T, ?> systemReaction, long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
-		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, flowlessStepCounter);
+		StepPart stepPart = stepSystemPart.getStepPart();
+		UseCasePart useCasePart = stepPart.getUseCasePart();
+		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
 	}
 
 	/**
@@ -124,6 +132,19 @@ public class FlowlessSystemPart<T> {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart newUseCasePart = useCasePart.getModelBuilder().useCase(useCaseName);
 		return newUseCasePart;
+	}
+	
+	/** Specifies the recipient of the message. Calling this method has no direct effect 
+	 * on the {@link ModelRunner} execution. Instead, custom handling of this information can
+	 * be set up by configuring the ModelRunner by {@link ModelRunner#publishWith(Consumer)}.
+	 * 
+	 * @param recipient 
+	 * @return
+	 */
+	public FlowlessSystemPart<T> to(Actor recipient) {
+		Objects.requireNonNull(recipient);
+		stepPart.getStep().setPublishTo(recipient);
+		return this;
 	}
 
 	/**

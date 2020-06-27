@@ -123,10 +123,10 @@ public class BuildModelTest extends AbstractTestCase {
   }
     
   @Test
-  public void flowless_noUseCase_createsSingleNamedStepThatPublishesEvent() {
+  public void flowless_noUseCase_createsSingleNamedStepThatPublishesEvent() {  	
 		Model model = 
 			modelBuilder
-				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -135,13 +135,14 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
+		assertEquals(partner, step.getPublishTo().get());
   }
     
   @Test
   public void flowless_noUseCase_createsSingleNamedStepThatPublishesCommand() {
 		Model model = 
 			modelBuilder
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -150,6 +151,7 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
+		assertEquals(partner, step.getPublishTo().get());
   }
   
   
@@ -269,7 +271,7 @@ public class BuildModelTest extends AbstractTestCase {
   public void flowless_noUseCase_createsSingleStepThatPublishesEvent() {
 		Model model = 
 			modelBuilder
-				.on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+				.on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -278,13 +280,14 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
+		assertEquals(partner, step.getPublishTo().get());
   }
     
   @Test
   public void flowless_noUseCase_createsSingleStepThatPublishesCommand() {
 		Model model = 
 			modelBuilder
-				.user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+				.user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -293,6 +296,7 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = steps.iterator().next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
+		assertEquals(partner, step.getPublishTo().get());
   }
   
   

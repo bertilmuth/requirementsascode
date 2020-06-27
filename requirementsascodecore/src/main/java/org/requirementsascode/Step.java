@@ -23,9 +23,10 @@ public abstract class Step extends ModelElement implements Serializable {
 
 	private UseCase useCase;
 	private Actor[] actors;
+	private Condition condition;
 	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
-	private Condition condition;
+	private Actor publishTo;
 
 	/**
 	 * Creates a step with the specified name that belongs to the specified use
@@ -95,5 +96,13 @@ public abstract class Step extends ModelElement implements Serializable {
 
 	protected static Predicate<ModelRunner> toPredicate(Condition condition) {
 		return modelRunner -> condition.evaluate();
+	}
+
+	public Optional<Actor> getPublishTo() {
+		return Optional.ofNullable(publishTo);
+	}
+
+	public void setPublishTo(Actor recipient) {
+		this.publishTo = recipient;
 	}
 }
