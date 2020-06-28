@@ -10,18 +10,13 @@ import org.requirementsascode.Model;
 
 public class FlowlessToPart {
 	private UseCasePart useCasePart;
-	private StepSystemPart<?> stepSystemPart;
 	private long flowlessStepCounter;
 
 	FlowlessToPart(UseCasePart useCasePart, StepSystemPart<?> stepSystemPart, Actor recipient, long flowlessStepCounter) {
 		this.useCasePart = Objects.requireNonNull(useCasePart);
-		this.stepSystemPart = Objects.requireNonNull(stepSystemPart);
+		Objects.requireNonNull(stepSystemPart);
 		this.flowlessStepCounter = flowlessStepCounter;
 		stepSystemPart.to(recipient);
-	}
-
-	public Model build() {
-		return stepSystemPart.build();
 	}
 	
 	/**
@@ -96,5 +91,14 @@ public class FlowlessToPart {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart newUseCasePart = useCasePart.getModelBuilder().useCase(useCaseName);
 		return newUseCasePart;
+	}
+	
+	/**
+	 * Returns the model that has been built.
+	 * 
+	 * @return the model
+	 */
+	public Model build() {
+		return useCasePart.build();
 	}
 }
