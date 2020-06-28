@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -53,22 +54,6 @@ public class FlowTest extends AbstractTestCase{
 
 	@Test
 	public void printsTextAutonomouslyOnlyIfActorIsRightInFirstStep() {
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).as(customer).system(displaysConstantText())
-					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).as(secondActor).system(displaysConstantText())
-			.build();
-		
-		modelRunner.as(customer).run(model);
-		
-		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
-	}
-	
-	@Test
-	public void printsTextAutonomouslyOnlyIfActorIsUserInFirstStep() {
-		Actor user = new Actor("User");
-		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -234,6 +219,25 @@ public class FlowTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		reactToAndAssertEvents(entersText(), entersNumber());		
+	}
+	
+	@Test
+	public void twoSequentialStepsReactToEventsOfUser() {
+		Actor user = new Actor("User");
+		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+				.step(CUSTOMER_ENTERS_TEXT).as(user).user(EntersText.class).system(displaysEnteredText())
+					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+			.build();
+		
+		Step userConnectedStep = user.getStepsOf(model.findUseCase(USE_CASE)).iterator().next();
+		assertEquals(CUSTOMER_ENTERS_TEXT, userConnectedStep.getName());
+		
+		modelRunner.as(user).run(model).reactTo(entersText(),entersNumber());
+		
+		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
 	
 	@Test
