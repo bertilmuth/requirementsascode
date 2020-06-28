@@ -13,7 +13,7 @@ import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-/**O
+/**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  * 
  * @author b_muth
