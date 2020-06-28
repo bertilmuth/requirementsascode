@@ -143,8 +143,7 @@ public class FlowlessSystemPart<T> {
 	 */
 	public FlowlessSystemPart<T> to(Actor recipient) {
 		Objects.requireNonNull(recipient);
-		FlowlessToPart publishToPart = new FlowlessToPart(useCasePart, stepSystemPart, flowlessStepCounter);
-		stepSystemPart.to(recipient);
+		FlowlessToPart publishToPart = new FlowlessToPart(useCasePart, stepSystemPart, recipient, flowlessStepCounter);
 		return this;
 	}
 
