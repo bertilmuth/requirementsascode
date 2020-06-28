@@ -240,36 +240,6 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(model.getUserActor(), step.getActors()[0]);
   }
   
-  @Test
-	public void flowless_noUseCase_createsSingleStepThatHandlesEvent() {
-		Model model = 
-			modelBuilder
-				.on(EntersText.class).system(displaysEnteredText())
-			.build();
-	
-		Collection<Step> steps = model.getSteps();
-		assertEquals(1, steps.size());
-	
-		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
-		assertEquals(model.getSystemActor(), step.getActors()[0]); 
-  }
-    
-  @Test
-  public void flowless_noUseCase_createsSingleStepThatHandlesCommand() {
-		Model model = 
-			modelBuilder
-				.user(EntersText.class).system(displaysEnteredText())
-			.build();
-	
-		Collection<Step> steps = model.getSteps();
-		assertEquals(1, steps.size());
-	
-		Step step = steps.iterator().next();
-		assertEquals("S1", step.getName());
-		assertEquals(model.getUserActor(), step.getActors()[0]); 
-  }
-  
 	@Test
 	public void flowless_noUseCase_createsTwoNamedStepsWithEvents() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
@@ -313,6 +283,36 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 	}
+  
+  @Test
+	public void flowless_noUseCase_createsSingleStepThatHandlesEvent() {
+		Model model = 
+			modelBuilder
+				.on(EntersText.class).system(displaysEnteredText())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getSystemActor(), step.getActors()[0]); 
+  }
+    
+  @Test
+  public void flowless_noUseCase_createsSingleStepThatHandlesCommand() {
+		Model model = 
+			modelBuilder
+				.user(EntersText.class).system(displaysEnteredText())
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(1, steps.size());
+	
+		Step step = steps.iterator().next();
+		assertEquals("S1", step.getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]); 
+  }
     
   @Test
   public void flowless_noUseCase_createsSingleStepThatPublishesEvent() {
