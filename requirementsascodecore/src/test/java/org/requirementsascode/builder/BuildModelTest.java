@@ -153,6 +153,52 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(model.getUserActor(), step.getActors()[0]);
 		assertEquals(partner, step.getPublishTo().get());
   }
+  
+	@Test
+	public void flowless_noUseCase_createsTwoNamedStepsThatPublishEvents() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		useCasePart
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
+			.step(CUSTOMER_ENTERS_NUMBER).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+		.build();
+	
+		Collection<Step> steps = useCasePart.getUseCase().getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+		assertEquals(partner, step.getPublishTo().get());
+	
+		step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+		assertEquals(partner2, step.getPublishTo().get());
+	}
+  
+	@Test
+	public void flowless_noUseCase_createsTwoNamedStepsThatPublishCommands() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		useCasePart
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
+			.step(CUSTOMER_ENTERS_NUMBER).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+		.build();
+	
+		Collection<Step> steps = useCasePart.getUseCase().getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	
+		step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+	}
 	
   @Test
   public void flowless_withUseCase_createsSingleNamedStepThatHandlesEvent() {

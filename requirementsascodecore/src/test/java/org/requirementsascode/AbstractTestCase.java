@@ -14,6 +14,7 @@ public abstract class AbstractTestCase {
 
 	protected static final String CUSTOMER = "Customer";
 	protected static final String PARTNER = "Partner";
+	protected static final String PARTNER2 = "Partner2";
 
 	protected static final String USE_CASE = "Use case";
 	protected static final String USE_CASE_2 = "Use case 2";
@@ -43,6 +44,7 @@ public abstract class AbstractTestCase {
 
 	protected Actor customer;
 	protected Actor partner;
+	protected Actor partner2;
 	protected ModelBuilder modelBuilder;
 	protected ModelRunner modelRunner;
 	protected String displayedText;
@@ -52,6 +54,7 @@ public abstract class AbstractTestCase {
 		this.modelBuilder = Model.builder();
 		this.customer = modelBuilder.actor(CUSTOMER);
 		this.partner = modelBuilder.actor(PARTNER);
+		this.partner2 = modelBuilder.actor(PARTNER2);
 		this.displayedText = null;
 	}
 
