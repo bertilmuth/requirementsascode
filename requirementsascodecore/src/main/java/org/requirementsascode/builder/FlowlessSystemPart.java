@@ -1,6 +1,7 @@
 package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.FlowlessConditionPart.flowlessConditionPart;
+import static org.requirementsascode.builder.FlowlessToPart.flowlessToPart;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -12,7 +13,7 @@ import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-/**
+/**O
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  * 
  * @author b_muth
@@ -143,8 +144,8 @@ public class FlowlessSystemPart<T> {
 	 */
 	public FlowlessToPart to(Actor recipient) {
 		Objects.requireNonNull(recipient);
-		FlowlessToPart publishToPart = new FlowlessToPart(useCasePart, stepSystemPart, recipient, flowlessStepCounter);
-		return publishToPart;
+		FlowlessToPart flowlessToPart = flowlessToPart(stepSystemPart, recipient, flowlessStepCounter);
+		return flowlessToPart;
 	}
 
 	/**
