@@ -338,18 +338,6 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(actor, step.getActors()[0]);
   }
   
-  @Test(expected = IllegalArgumentException.class)
-  public void flowless_withUseCase_throwsExceptionForUserActor() {
-  	String userActorName = modelBuilder.build().getUserActor().getName();
-		modelBuilder.actor(userActorName);
-  }
-  
-  @Test(expected = IllegalArgumentException.class)
-  public void flowless_withUseCase_throwsExceptionForSystemActor() {
-  	String systemActorName = modelBuilder.build().getSystemActor().getName();
-		modelBuilder.actor(systemActorName);
-  }
-  
   @Test
   public void withFlow_createsSingleStepThatHandlesEvent() {
 		Model model = 

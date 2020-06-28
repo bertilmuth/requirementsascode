@@ -7,11 +7,14 @@ import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.requirementsascode.builder.ModelBuilder;
 import org.requirementsascode.exception.NoSuchElementInModel;
@@ -32,16 +35,14 @@ import org.requirementsascode.exception.NoSuchElementInModel;
 public class Model implements Serializable {
 	private static final long serialVersionUID = -410733530299609758L;
 
-	private Map<String, Actor> nameToActorMap;
 	private Map<String, UseCase> nameToUseCaseMap;
 	private Actor userActor;
 	private Actor systemActor;
 
 	private Model() {
-		this.nameToActorMap = new LinkedHashMap<>();
 		this.nameToUseCaseMap = new LinkedHashMap<>();
-		this.userActor = newActor("User");
-		this.systemActor = newActor("System");
+		this.userActor = new Actor("User", this);
+		this.systemActor = new Actor("System", this);
 	}
 
 	/**
@@ -61,7 +62,8 @@ public class Model implements Serializable {
 	 * @return true if this model contains the specified actor, false otherwise
 	 */
 	public boolean hasActor(String actorName) {
-		boolean hasActor = hasModelElement(actorName, nameToActorMap);
+		Actor specifiedActor = new Actor(actorName,this);
+		boolean hasActor = getActors().contains(specifiedActor);
 		return hasActor;
 	}
 
@@ -74,20 +76,6 @@ public class Model implements Serializable {
 	public boolean hasUseCase(String useCaseName) {
 		boolean hasUseCase = hasModelElement(useCaseName, nameToUseCaseMap);
 		return hasUseCase;
-	}
-
-	/**
-	 * Creates a new actor with the specified name. Don't use User or System as actor names,
-	 * these are reserved for internal use.
-	 * 
-	 * @param actorName the actor name
-	 * @return the newly created actor
-	 */
-	public Actor newActor(String actorName) {
-		Objects.requireNonNull(actorName);
-		Actor actor = new Actor(actorName, this);
-		saveModelElement(actor, nameToActorMap);
-		return actor;
 	}
 
 	public UseCase newUseCase(String useCaseName) {
@@ -106,8 +94,11 @@ public class Model implements Serializable {
 	 *                              found in the model
 	 */
 	public Actor findActor(String actorName) {
-		Actor actor = findModelElement(actorName, nameToActorMap);
-		return actor;
+		Actor foundActor = getModifiableSteps().stream()
+			.flatMap(s -> Arrays.stream(s.getActors()))
+			.findFirst()
+			.orElseThrow(() -> new NoSuchElementInModel(actorName));
+		return foundActor;
 	}
 
 	/**
@@ -124,14 +115,15 @@ public class Model implements Serializable {
 	}
 
 	/**
-	 * Returns the actors contained in this model. Do not modify that collection
-	 * directly, use {@link #newActor(String)}.
+	 * Returns the actors contained in this model.
 	 *
 	 * @return the actors
 	 */
 	public Collection<Actor> getActors() {
-		Collection<Actor> modifiableActors = getModelElements(nameToActorMap);
-		return Collections.unmodifiableCollection(modifiableActors);
+		Set<Actor> actors = getModifiableSteps().stream()
+			.flatMap(s -> Arrays.stream(s.getActors()))
+			.collect(Collectors.toSet());
+		return Collections.unmodifiableCollection(actors);
 	}
 
 	/**
