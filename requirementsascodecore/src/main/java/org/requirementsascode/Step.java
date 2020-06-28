@@ -1,6 +1,8 @@
 package org.requirementsascode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -22,7 +24,7 @@ public abstract class Step extends ModelElement implements Serializable {
 	private static final long serialVersionUID = -2926490717985964131L;
 
 	private UseCase useCase;
-	private Actor[] actors;
+	private Collection<Actor> actors;
 	private Condition condition;
 	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
@@ -53,16 +55,20 @@ public abstract class Step extends ModelElement implements Serializable {
 	}
 
 	public Actor[] getActors() {
-		return actors;
+		return actors.toArray(new Actor[0]);
 	}
 
 	public void setActors(Actor[] actors) {
-		this.actors = actors;
 		connectActorsToThisStep(this, actors);
 	}
+	
 	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
+		this.actors = new ArrayList<>();
 		for (Actor actor : actors) {
-			actor.connectToStep(useCaseStep);
+			String actorName = actor.getName();
+			Actor actorInModel = getModel().hasActor(actorName) ? getModel().findActor(actorName) : getModel().newActor(actorName);
+			actorInModel.connectToStep(useCaseStep);
+			this.actors.add(actorInModel);
 		}
 	}
 
