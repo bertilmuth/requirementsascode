@@ -10,18 +10,16 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * An actor, as part of a model.
- *
- * <p>
  * An actor is a role that a user plays. Actors represent different user groups.
  * They enable to distinguish user rights: only an actor that is connected to a
  * particular step is allowed to cause a system reaction for that step.
  *
  * @author b_muth
  */
-public class Actor extends ModelElement implements Serializable {
+public class Actor implements Serializable {
 	private static final long serialVersionUID = 2441478758595877661L;
 
+	private String name;
 	private Map<UseCase, List<Step>> useCaseToStepMap;
 
 	/**
@@ -31,9 +29,18 @@ public class Actor extends ModelElement implements Serializable {
 	 * @param name  the name of the actor
 	 * @param model the model
 	 */
-	public Actor(String name, Model model) {
-		super(name, model);
+	public Actor(String name) {
+		this.name = name;
 		this.useCaseToStepMap = new HashMap<>();
+	}
+	
+	/**
+	 * Returns the name of the actor.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -92,7 +99,7 @@ public class Actor extends ModelElement implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ModelElement other = (ModelElement) obj;
+		Actor other = (Actor) obj;
 		if (getName() == null) {
 			if (other.getName() != null)
 				return false;

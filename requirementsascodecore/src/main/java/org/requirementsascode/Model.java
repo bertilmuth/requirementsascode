@@ -41,8 +41,8 @@ public class Model implements Serializable {
 
 	private Model() {
 		this.nameToUseCaseMap = new LinkedHashMap<>();
-		this.userActor = new Actor("User", this);
-		this.systemActor = new Actor("System", this);
+		this.userActor = new Actor("User");
+		this.systemActor = new Actor("System");
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Model implements Serializable {
 	 * @return true if this model contains the specified actor, false otherwise
 	 */
 	public boolean hasActor(String actorName) {
-		Actor specifiedActor = new Actor(actorName,this);
+		Actor specifiedActor = new Actor(actorName);
 		boolean hasActor = getActors().contains(specifiedActor);
 		return hasActor;
 	}

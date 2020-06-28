@@ -31,7 +31,7 @@ public class ModelBuilder {
 	 */
 	public Actor actor(String actorName) {
 		Objects.requireNonNull(actorName);
-		return new Actor(actorName, model);
+		return new Actor(actorName);
 	}
 
 	/**

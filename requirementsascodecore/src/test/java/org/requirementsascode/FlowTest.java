@@ -66,6 +66,22 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
+	public void printsTextAutonomouslyOnlyIfActorIsUserInFirstStep() {
+		Actor user = new Actor("User");
+		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(SYSTEM_DISPLAYS_TEXT).as(customer).system(displaysConstantText())
+					.step(SYSTEM_DISPLAYS_TEXT_AGAIN).as(secondActor).system(displaysConstantText())
+			.build();
+		
+		modelRunner.as(customer).run(model);
+		
+		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
+	}
+	
+	@Test
 	public void printsTextAutonomouslyOnlyIfActorIsRightInSecondStep() {
 		Model model = modelBuilder
 			.useCase(USE_CASE)
