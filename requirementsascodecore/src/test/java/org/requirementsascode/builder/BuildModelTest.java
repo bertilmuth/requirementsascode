@@ -323,7 +323,7 @@ public class BuildModelTest extends AbstractTestCase {
 	}
   
   @Test
-  public void flowless_createsSingleStepWithActor() {
+  public void flowless_createsSingleStepWithDefaultActor() {
 		Actor actor = modelBuilder.actor("Actor");
   	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
