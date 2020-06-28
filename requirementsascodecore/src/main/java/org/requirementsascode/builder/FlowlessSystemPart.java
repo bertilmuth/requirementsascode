@@ -19,12 +19,12 @@ import org.requirementsascode.ModelRunner;
  */
 public class FlowlessSystemPart<T> {
 	private UseCasePart useCasePart;
-	private StepPart stepPart;
+	private StepSystemPart stepSystemPart;
 	private long flowlessStepCounter;
 
-	private FlowlessSystemPart(UseCasePart useCasePart, StepPart stepPart, long flowlessStepCounter) {
+	private FlowlessSystemPart(UseCasePart useCasePart, StepSystemPart stepSystemPart, long flowlessStepCounter) {
 		this.useCasePart = Objects.requireNonNull(useCasePart);
-		this.stepPart = stepPart;
+		this.stepSystemPart = Objects.requireNonNull(stepSystemPart);
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 
@@ -33,7 +33,7 @@ public class FlowlessSystemPart<T> {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		StepPart stepPart = stepSystemPart.getStepPart();
 		UseCasePart useCasePart = stepPart.getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
+		return new FlowlessSystemPart<>(useCasePart, stepSystemPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithConsumer(StepUserPart<T> stepUserPart, Consumer<? super T> systemReaction,
@@ -41,7 +41,7 @@ public class FlowlessSystemPart<T> {
 		StepSystemPart<T> stepSystemPart = stepUserPart.system(systemReaction);
 		StepPart stepPart = stepSystemPart.getStepPart();
 		UseCasePart useCasePart = stepPart.getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
+		return new FlowlessSystemPart<>(useCasePart, stepSystemPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithSupplier(StepUserPart<T> stepUserPart,
@@ -49,7 +49,7 @@ public class FlowlessSystemPart<T> {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		StepPart stepPart = stepSystemPart.getStepPart();
 		UseCasePart useCasePart = stepPart.getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
+		return new FlowlessSystemPart<>(useCasePart, stepSystemPart, flowlessStepCounter);
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithFunction(StepUserPart<T> stepUserPart,
@@ -57,7 +57,7 @@ public class FlowlessSystemPart<T> {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		StepPart stepPart = stepSystemPart.getStepPart();
 		UseCasePart useCasePart = stepPart.getUseCasePart();
-		return new FlowlessSystemPart<>(useCasePart, stepPart, flowlessStepCounter);
+		return new FlowlessSystemPart<>(useCasePart, stepSystemPart, flowlessStepCounter);
 	}
 
 	/**
@@ -143,7 +143,8 @@ public class FlowlessSystemPart<T> {
 	 */
 	public FlowlessSystemPart<T> to(Actor recipient) {
 		Objects.requireNonNull(recipient);
-		stepPart.getStep().setPublishTo(recipient);
+		FlowlessToPart publishToPart = new FlowlessToPart(useCasePart, stepSystemPart, flowlessStepCounter);
+		stepSystemPart.to(recipient);
 		return this;
 	}
 
