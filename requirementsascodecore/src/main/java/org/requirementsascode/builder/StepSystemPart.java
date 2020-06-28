@@ -114,12 +114,10 @@ public class StepSystemPart<T> {
 	}
 	
 
-	/** Specifies the recipient of the message. Calling this method has no direct effect 
-	 * on the {@link ModelRunner} execution. Instead, custom handling of this information can
-	 * be set up by configuring the ModelRunner by {@link ModelRunner#publishWith(Consumer)}.
+	/** Specifies the recipient of the message.
 	 * 
-	 * @param recipient 
-	 * @return
+	 * @param recipient the recipient of this message
+	 * @return the created part
 	 */
 	public StepToPart<T> to(Actor recipient) {
 		Objects.requireNonNull(recipient);

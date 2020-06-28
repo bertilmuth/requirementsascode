@@ -27,7 +27,6 @@ public class Actor implements Serializable {
 	 * case model.
 	 *
 	 * @param name  the name of the actor
-	 * @param model the model
 	 */
 	public Actor(String name) {
 		this.name = name;
