@@ -19,10 +19,10 @@ import org.requirementsascode.ModelRunner;
  */
 public class FlowlessSystemPart<T> {
 	private UseCasePart useCasePart;
-	private StepSystemPart stepSystemPart;
+	private StepSystemPart<?> stepSystemPart;
 	private long flowlessStepCounter;
 
-	private FlowlessSystemPart(UseCasePart useCasePart, StepSystemPart stepSystemPart, long flowlessStepCounter) {
+	private FlowlessSystemPart(UseCasePart useCasePart, StepSystemPart<?> stepSystemPart, long flowlessStepCounter) {
 		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.stepSystemPart = Objects.requireNonNull(stepSystemPart);
 		this.flowlessStepCounter = flowlessStepCounter;
