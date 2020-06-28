@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -28,19 +27,6 @@ public class FlowTest extends AbstractTestCase{
 	
 	@Test
 	public void printsTextAutonomously() {
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-					.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-			.build();
-		
-		modelRunner.run(model);
-		
-		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT);
-	}
-	
-	@Test
-	public void printsTextAutonomouslyWithModelRunner() {
 		Model model = modelBuilder
 			.useCase(USE_CASE)
 				.basicFlow()
@@ -78,6 +64,21 @@ public class FlowTest extends AbstractTestCase{
 		modelRunner.as(customer).run(model);
 		
 		assertRecordedStepNames(SYSTEM_DISPLAYS_TEXT, SYSTEM_DISPLAYS_TEXT_AGAIN);
+	}
+	
+	@Test
+	public void doesntPrintsTextAutonomouslyForActorCalledSystem() {
+		Actor systemActor = new Actor("System");
+		
+		Model model = modelBuilder
+			.useCase(USE_CASE)
+				.basicFlow()
+					.step(SYSTEM_DISPLAYS_TEXT).as(systemActor).system(displaysConstantText())
+			.build();
+		
+		modelRunner.run(model);
+		
+		assertRecordedStepNames();
 	}
 	
 	@Test
