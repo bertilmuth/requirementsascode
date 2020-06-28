@@ -93,6 +93,25 @@ public class BuildModelTest extends AbstractTestCase {
 	}
 	
 	@Test
+	public void flowless_noUseCase_createsTwoNamedStepsWithEvents() {	
+		Model model = 
+			modelBuilder
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+				.step(CUSTOMER_ENTERS_NUMBER).on(EntersNumber.class).system(displaysEnteredNumber())
+			.build();
+		
+		Collection<Step> steps = model.getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
+	
+		step = stepIt.next();
+		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
+	}
+	
+	@Test
 	public void flowless_createsTwoNamedStepsWithEvents() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
