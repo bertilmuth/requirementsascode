@@ -295,6 +295,32 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals("S2", step.getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
 	}
+	
+	@Test
+	public void flowless_twoUseCases_createsTwoStepsThatPublishCommands() {
+		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
+	
+		Model model = 
+			useCasePart
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
+			.useCase(USE_CASE_2)
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+			.build();
+	
+		Collection<Step> steps = model.getSteps();
+		assertEquals(2, steps.size());
+	
+		Iterator<Step> stepIt = steps.iterator();
+		Step step = stepIt.next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE, step.getUseCase().getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]);
+	
+		step = stepIt.next();
+		assertEquals("S1", step.getName());
+		assertEquals(USE_CASE_2, step.getUseCase().getName());
+		assertEquals(model.getUserActor(), step.getActors()[0]);
+	}
   
   @Test
   public void flowless_createsSingleStepWithActor() {

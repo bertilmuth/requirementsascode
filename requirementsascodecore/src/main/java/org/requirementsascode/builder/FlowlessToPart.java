@@ -82,4 +82,19 @@ public class FlowlessToPart {
 		FlowlessUserPart<U> flowlessUserPart = condition(null).user(commandClass);
 		return flowlessUserPart;
 	}
+
+	/**
+	 * Creates a new use case in the current model, and returns a part for building
+	 * its details. If a use case with the specified name already exists, returns a
+	 * part for the existing use case.
+	 *
+	 * @param useCaseName the name of the existing use case / use case to be
+	 *                    created.
+	 * @return the created / found use case's part.
+	 */
+	public UseCasePart useCase(String useCaseName) {
+		Objects.requireNonNull(useCaseName);
+		UseCasePart newUseCasePart = useCasePart.getModelBuilder().useCase(useCaseName);
+		return newUseCasePart;
+	}
 }
