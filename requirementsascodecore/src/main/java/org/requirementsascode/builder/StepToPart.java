@@ -1,55 +1,28 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.StepToPart.stepToPart;
 import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
 
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
-import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
-/**
- * Part used by the {@link ModelBuilder} to build a {@link Model}.
- *
- * @author b_muth
- */
-public class StepSystemPart<T> {
+public class StepToPart<T> {
 	private StepPart stepPart;
-	private Step step;
-	
-	private StepSystemPart(StepPart stepPart) {
-		this.stepPart = Objects.requireNonNull(stepPart);
-		this.step = stepPart.getStep();
-	}
-	
-	static <T> StepSystemPart<T> stepSystemPartWithRunnable(Runnable systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> stepSystemPartWithConsumer(Consumer<? super T> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> stepSystemPartWithFunction(Function<? super T, ?> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(stepPart);
-	}
-	
-	static <T> StepSystemPart<T> stepSystemPartWithSupplier(Supplier<? super T> systemReaction, StepPart stepPart) {
-		stepPart.getStep().setSystemReaction(systemReaction);
-		return new StepSystemPart<>(stepPart);
-	}
 
+	private StepToPart(StepPart stepPart, Actor recipient) {
+		this.stepPart = Objects.requireNonNull(stepPart);
+	}
+	
+	public static <T> StepToPart<T> stepToPart(StepSystemPart<T> stepSystemPart, Actor recipient) {
+		StepPart stepPart = stepSystemPart.getStepPart();
+		stepPart.getStep().setPublishTo(recipient);
+		return new StepToPart<>(stepPart, recipient);
+	}
+	
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
 	 * current step in sequence.
@@ -107,30 +80,12 @@ public class StepSystemPart<T> {
 	 * @param reactWhileCondition the condition to check
 	 * @return the system part
 	 */
-	public StepSystemPart<T> reactWhile(Condition reactWhileCondition) {
+	public StepToPart<T> reactWhile(Condition reactWhileCondition) {
 		Objects.requireNonNull(reactWhileCondition);
-		((FlowStep) step).setReactWhile(reactWhileCondition);
+		((FlowStep) stepPart.getStep()).setReactWhile(reactWhileCondition);
 		return this;
 	}
 	
-
-	/** Specifies the recipient of the message. Calling this method has no direct effect 
-	 * on the {@link ModelRunner} execution. Instead, custom handling of this information can
-	 * be set up by configuring the ModelRunner by {@link ModelRunner#publishWith(Consumer)}.
-	 * 
-	 * @param recipient 
-	 * @return
-	 */
-	public StepToPart<T> to(Actor recipient) {
-		Objects.requireNonNull(recipient);
-		StepToPart<T> stepToPart = stepToPart(this, recipient);
-		return stepToPart;
-	}
-
-	StepPart getStepPart() {
-		return stepPart;
-	}
-
 	/**
 	 * Returns the model built so far.
 	 *
