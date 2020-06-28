@@ -1,7 +1,7 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.StepToPart.stepToPart;
 import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
+import static org.requirementsascode.builder.StepToPart.stepToPart;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -12,7 +12,6 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 
