@@ -12,16 +12,15 @@ public class FlowlessToPart {
 	private UseCasePart useCasePart;
 	private long flowlessStepCounter;
 
-	private FlowlessToPart(UseCasePart useCasePart, StepSystemPart<?> stepSystemPart, Actor recipient, long flowlessStepCounter) {
+	private FlowlessToPart(UseCasePart useCasePart, long flowlessStepCounter) {
 		this.useCasePart = Objects.requireNonNull(useCasePart);
-		Objects.requireNonNull(stepSystemPart);
 		this.flowlessStepCounter = flowlessStepCounter;
-		stepSystemPart.to(recipient);
 	}
 	
 	public static FlowlessToPart flowlessToPart(StepSystemPart<?> stepSystemPart, Actor recipient, long flowlessStepCounter) {
 		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
-		return new FlowlessToPart(useCasePart, stepSystemPart, recipient, flowlessStepCounter);
+		stepSystemPart.to(recipient);
+		return new FlowlessToPart(useCasePart, flowlessStepCounter);
 	}
 	
 	/**
