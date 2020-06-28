@@ -278,7 +278,7 @@ public class BuildModelTest extends AbstractTestCase {
 	}
   
   @Test
-  public void flowless_withUseCase_createsSingleStepWithActor() {
+  public void flowless_createsSingleStepWithActor() {
 		Actor actor = modelBuilder.actor("Actor");
   	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
@@ -288,7 +288,6 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		UseCase useCase = useCasePart.getUseCase();
 		Collection<Step> steps = useCase.getSteps();
-		assertEquals(1, steps.size());
 	
 		Step step = steps.iterator().next();
 		assertEquals(actor, step.getActors()[0]);
