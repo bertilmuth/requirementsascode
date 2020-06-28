@@ -93,7 +93,7 @@ public class BuildModelTest extends AbstractTestCase {
 	}
       
 	@Test
-	public void flowless_noUseCase_createsTwoNamedStepsThatPublishEvents() {
+	public void flowless_createsTwoNamedStepsThatPublishEvents() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
@@ -118,7 +118,7 @@ public class BuildModelTest extends AbstractTestCase {
 	}
   
 	@Test
-	public void flowless_noUseCase_createsTwoNamedStepsThatPublishCommands() {
+	public void flowless_createsTwoNamedStepsThatPublishCommands() {
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 
