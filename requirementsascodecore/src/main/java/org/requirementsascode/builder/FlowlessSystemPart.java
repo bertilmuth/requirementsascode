@@ -141,10 +141,10 @@ public class FlowlessSystemPart<T> {
 	 * @param recipient 
 	 * @return
 	 */
-	public FlowlessSystemPart<T> to(Actor recipient) {
+	public FlowlessToPart to(Actor recipient) {
 		Objects.requireNonNull(recipient);
 		FlowlessToPart publishToPart = new FlowlessToPart(useCasePart, stepSystemPart, recipient, flowlessStepCounter);
-		return this;
+		return publishToPart;
 	}
 
 	/**
