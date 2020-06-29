@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.builder.ModelBuilder;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
 import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
@@ -45,9 +44,8 @@ public class FreemarkerEngineTest {
   @Test
   public void extractsUseCaseModel() throws Exception {
     
-    ModelBuilder modelBuilder = Model.builder();
-    Actor firstActor = modelBuilder.actor("First actor");
-    Actor secondActor = modelBuilder.actor("Second actor");
+    Actor firstActor = new Actor("First actor");
+    Actor secondActor = new Actor("Second actor");
     
     Model model = 
       Model.builder()

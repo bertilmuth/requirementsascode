@@ -2,9 +2,6 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
-import java.util.Objects;
-
-import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
