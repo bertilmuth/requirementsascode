@@ -55,8 +55,8 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 public Model buildModel() {
   ModelBuilder builder = Model.builder();
-  validUser = builder.actor("Valid User");
-  invalidUser = builder.actor("Invalid User");
+  validUser = new Actor("Valid User");
+  invalidUser = new Actor("Invalid User");
   
   Model model = builder
     .useCase("Get greeted").as(validUser)
@@ -138,8 +138,8 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
   public Model buildModel() {
     ModelBuilder builder = Model.builder();
-    normalUser = builder.actor("Normal User");
-    anonymousUser = builder.actor("Anonymous User");
+    normalUser = new Actor("Normal User");
+    anonymousUser = new Actor("Anonymous User");
     
     Model model = builder
     .useCase("Get greeted")
