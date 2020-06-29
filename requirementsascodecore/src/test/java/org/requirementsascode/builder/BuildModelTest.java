@@ -324,7 +324,7 @@ public class BuildModelTest extends AbstractTestCase {
   
   @Test
   public void flowless_createsSingleStepWithDefaultActor() {
-		Actor actor = modelBuilder.actor("Actor");
+		Actor actor = new Actor("Actor");
   	UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		useCasePart.as(actor)
@@ -467,7 +467,7 @@ public class BuildModelTest extends AbstractTestCase {
 
   @Test
   public void accessesExistingCustomerActor() {
-		Actor actualCustomer = modelBuilder.actor(CUSTOMER);
+		Actor actualCustomer = new Actor(CUSTOMER);
 		assertEquals(customer, actualCustomer);
   }
 
@@ -522,7 +522,7 @@ public class BuildModelTest extends AbstractTestCase {
 
   @Test
   public void withFlow_createsTwoActorsWithSingleUseCaseStep() {
-		Actor anotherActor = modelBuilder.actor("Another Actor");
+		Actor anotherActor = new Actor("Another Actor");
 		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
 	
 		Model model = 

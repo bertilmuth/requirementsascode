@@ -19,8 +19,8 @@ public class HelloWorld03a extends AbstractHelloWorldExample {
 
 	public Model buildModel() {
 		ModelBuilder builder = Model.builder();
-		validUser = builder.actor("Valid User");
-		invalidUser = builder.actor("Invalid User");
+		validUser = new Actor("Valid User");
+		invalidUser = new Actor("Invalid User");
 
 		Model model = builder
 			.useCase("Get greeted").as(validUser)

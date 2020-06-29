@@ -55,7 +55,7 @@ public class FlowlessTest extends AbstractTestCase {
     
     @Test
     public void withUseCase_oneNamedStepReactsToCommandWithInvalidActor() {
-    	Actor invalidActor = modelBuilder.actor("InvalidUser");
+    	Actor invalidActor = new Actor("InvalidUser");
 
 			Model model = modelBuilder.useCase(USE_CASE).as(customer)
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())

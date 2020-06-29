@@ -23,18 +23,6 @@ public class ModelBuilder {
 	}
 
 	/**
-	 * Creates a new actor in the current model. If an actor with the specified name
-	 * already exists, returns the existing actor.
-	 *
-	 * @param actorName the name of the existing actor / actor to be created.
-	 * @return the created / found actor.
-	 */
-	public Actor actor(String actorName) {
-		Objects.requireNonNull(actorName);
-		return new Actor(actorName);
-	}
-
-	/**
 	 * Only if the specified condition is true, the message is handled.
 	 *
 	 * @param condition the condition that constrains when the message is handled

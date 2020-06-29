@@ -52,9 +52,9 @@ public abstract class AbstractTestCase {
 	protected void setupWithRecordingModelRunner() {
 		this.modelRunner = new ModelRunner().startRecording();
 		this.modelBuilder = Model.builder();
-		this.customer = modelBuilder.actor(CUSTOMER);
-		this.partner = modelBuilder.actor(PARTNER);
-		this.partner2 = modelBuilder.actor(PARTNER2);
+		this.customer = new Actor(CUSTOMER);
+		this.partner = new Actor(PARTNER);
+		this.partner2 = new Actor(PARTNER2);
 		this.displayedText = null;
 	}
 

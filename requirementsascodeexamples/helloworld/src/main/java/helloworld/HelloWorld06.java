@@ -37,8 +37,8 @@ public class HelloWorld06 extends AbstractHelloWorldExample {
 
   public Model buildModel() {
 		ModelBuilder builder = Model.builder();
-		normalUser = builder.actor("Normal User");
-		anonymousUser = builder.actor("Anonymous User");
+		normalUser = new Actor("Normal User");
+		anonymousUser = new Actor("Anonymous User");
 	
 		Model model = builder
 			.useCase("Get greeted")

@@ -22,7 +22,7 @@ public class FlowTest extends AbstractTestCase{
 	@Before
 	public void setup() {
 		setupWithRecordingModelRunner();
-		this.secondActor = modelBuilder.actor("Second Actor");
+		this.secondActor = new Actor("Second Actor");
 	}
 	
 	@Test
