@@ -36,14 +36,14 @@ If you are using Maven, include the following in your POM, to use the core:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodecore</artifactId>
-    <version>1.6</version>
+    <version>1.6.1</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle, to use the core:
 
 ```
-implementation 'org.requirementsascode:requirementsascodecore:1.6'
+implementation 'org.requirementsascode:requirementsascodecore:1.6.1'
 ```
 
 At least Java 8 is required to use requirements as code, download and install it if necessary.
