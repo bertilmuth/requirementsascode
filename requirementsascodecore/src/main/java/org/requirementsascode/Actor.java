@@ -87,7 +87,7 @@ public class Actor implements Serializable {
 	
 	public Actor withBehavior(Model model) {
 		Objects.requireNonNull(model);
-		modelRunner.run(model);
+		modelRunner.as(this).run(model);
 		return this;
 	}
 	
