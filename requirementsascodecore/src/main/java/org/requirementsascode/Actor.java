@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -20,6 +21,7 @@ public class Actor implements Serializable {
 	private static final long serialVersionUID = 2441478758595877661L;
 
 	private String name;
+	private ModelRunner modelRunner;
 	private Map<UseCase, List<Step>> useCaseToStepMap;
 
 	/**
@@ -30,6 +32,7 @@ public class Actor implements Serializable {
 	 */
 	public Actor(String name) {
 		this.name = name;
+		this.modelRunner = new ModelRunner();
 		this.useCaseToStepMap = new HashMap<>();
 	}
 	
@@ -80,6 +83,21 @@ public class Actor implements Serializable {
 	private List<Step> getModifiableStepsOf(UseCase useCase) {
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
+	}
+	
+	public Actor withBehavior(Model model) {
+		Objects.requireNonNull(model);
+		modelRunner.run(model);
+		return this;
+	}
+	
+	public Optional<Object> reactTo(Object message) {
+		Objects.requireNonNull(message);
+		return modelRunner.reactTo(message);
+	}
+	
+	ModelRunner getModelRunner() {
+		return modelRunner;
 	}
 	
 	@Override
