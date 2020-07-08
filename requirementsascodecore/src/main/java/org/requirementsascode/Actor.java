@@ -34,7 +34,6 @@ public class Actor implements Serializable {
 	 */
 	public Actor(String name) {
 		this.name = name;
-		this.modelRunner = new ModelRunner();
 		this.useCaseToStepMap = new HashMap<>();
 	}
 	
@@ -89,19 +88,24 @@ public class Actor implements Serializable {
 	
 	public Actor withBehavior(Model model) {
 		this.behavior = Objects.requireNonNull(model);
+		this.modelRunner = new ModelRunner().as(this).run(behavior);
 		return this;
-	}
-	
-	public Optional<Object> reactTo(Object message) {
-		Objects.requireNonNull(message);
-		if(modelRunner != null && behavior != null && !modelRunner.isRunning()) {
-			modelRunner.as(this).run(behavior);
-		}
-		return modelRunner.reactTo(message);
 	}
 	
 	protected Model getBehavior() {
 		return behavior;
+	}
+	
+	public Optional<Object> reactTo(Object message) {
+		Objects.requireNonNull(message);
+		Optional<Object> latestPublishedEvent = null;
+
+		if (modelRunner != null) {
+			latestPublishedEvent = modelRunner.reactTo(message);
+		} else {
+			latestPublishedEvent = Optional.empty();
+		}
+		return latestPublishedEvent;
 	}
 	
 	protected ModelRunner getModelRunner() {
