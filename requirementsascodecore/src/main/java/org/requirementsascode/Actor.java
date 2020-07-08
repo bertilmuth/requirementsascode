@@ -24,6 +24,8 @@ public class Actor implements Serializable {
 	private ModelRunner modelRunner;
 	private Map<UseCase, List<Step>> useCaseToStepMap;
 
+	private Model behavior;
+
 	/**
 	 * Creates an actor with the specified name that is part of the specified use
 	 * case model.
@@ -86,17 +88,23 @@ public class Actor implements Serializable {
 	}
 	
 	public Actor withBehavior(Model model) {
-		Objects.requireNonNull(model);
-		modelRunner.as(this).run(model);
+		this.behavior = Objects.requireNonNull(model);
 		return this;
 	}
 	
 	public Optional<Object> reactTo(Object message) {
 		Objects.requireNonNull(message);
+		if(modelRunner != null && behavior != null && !modelRunner.isRunning()) {
+			modelRunner.as(this).run(behavior);
+		}
 		return modelRunner.reactTo(message);
 	}
 	
-	ModelRunner getModelRunner() {
+	protected Model getBehavior() {
+		return behavior;
+	}
+	
+	protected ModelRunner getModelRunner() {
 		return modelRunner;
 	}
 	

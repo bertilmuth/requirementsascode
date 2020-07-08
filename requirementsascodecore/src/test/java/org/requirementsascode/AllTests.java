@@ -8,6 +8,6 @@ import org.requirementsascode.builder.BuildModelTest;
 @RunWith(Suite.class)
 @SuiteClasses({ BuildModelTest.class, RunStopAndRestartTest.class, FlowTest.class, CanReactToTest.class, ReactToTypesTest.class, FlowlessTest.class,
 	ExceptionsThrownTest.class, ExceptionHandlingTest.class, NonStandardEventHandlingTest.class,
-	IncludesTest.class, RecordingTest.class })
+	IncludesTest.class, RecordingTest.class, ActorWithBehaviorTest.class })
 public class AllTests {
 }
