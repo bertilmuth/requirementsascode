@@ -92,8 +92,8 @@ public class Actor implements Serializable {
 		return this;
 	}
 	
-	protected Model getBehavior() {
-		return behavior;
+	public Optional<Model> getBehavior() {
+		return Optional.ofNullable(behavior);
 	}
 	
 	public Optional<Object> reactTo(Object message) {

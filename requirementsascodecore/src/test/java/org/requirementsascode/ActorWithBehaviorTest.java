@@ -19,6 +19,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   @Test
   public void actorDoesntDoAnything() {
   	Optional<Object> latestPublishedEvent = customer.reactTo(entersText());
+  	assertFalse(customer.getBehavior().isPresent());
 		assertTrue(latestPublishedEvent.isEmpty());
   }
 	
@@ -29,7 +30,8 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model).reactTo(entersText());
-		
+  	assertTrue(customer.getBehavior().isPresent());
+
 		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
