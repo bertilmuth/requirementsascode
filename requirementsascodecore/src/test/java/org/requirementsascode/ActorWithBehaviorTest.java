@@ -77,4 +77,20 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		Optional<Step> latestStepRun = invalidActor.getModelRunner().getLatestStep();
 		assertFalse(latestStepRun.isPresent());
   }
+  
+  @Test
+  public void twoActorsInteract() {
+		Model model2 = Model.builder()
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+		.build();
+		partner2.withBehavior(model2);
+		
+		Model model1 = modelBuilder
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(partner2)
+		.build();
+		partner.withBehavior(model1).reactTo(entersText());
+
+		Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
+		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+  }
 }

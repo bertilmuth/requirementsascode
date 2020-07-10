@@ -44,7 +44,12 @@ public class ModelRunner {
 	 */
 	public ModelRunner() {
 		handleWith(stepToBeRun -> stepToBeRun.run());
-		publishWith(this::reactToMessage);
+		publishWith(this::publishMessage);
+	}
+	
+	private <T> void publishMessage(T message) {
+		getLatestStep().flatMap(ls -> ls.getPublishTo()).ifPresentOrElse(actor -> actor.reactTo(message),
+			() -> reactToMessage(message));
 	}
 
 	/**
@@ -111,7 +116,8 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner run(Model model) {
-		as(model.getUserActor()).run(model);
+		Actor userActor = model.getUserActor();
+		as(userActor).run(model);
 		return this;
 	}
 
