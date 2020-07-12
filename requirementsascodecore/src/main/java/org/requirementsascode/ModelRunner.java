@@ -25,6 +25,8 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  * instance of a runner, as the runner determines the user journey.
  */
 public class ModelRunner {
+	private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
+
 	private Actor runActor;
 
 	private Model model;
@@ -312,7 +314,7 @@ public class ModelRunner {
 		if (stepMessageClass == null) {
 			throw new MissingUseCaseStepPart(step, "on/user");
 		}
-		boolean result = ModelRunner.class.equals(currentMessageClass)? ModelRunner.class.equals(stepMessageClass)
+		boolean result = hasSystemEventClass(currentMessageClass)? hasSystemEventClass(stepMessageClass)
 			: stepMessageClass.isAssignableFrom(currentMessageClass);
 		return result;
 	}
@@ -343,7 +345,11 @@ public class ModelRunner {
 	}
 	
 	private <T> boolean isSystemEvent(T message) {
-		return message instanceof ModelRunner;
+		return hasSystemEventClass(message.getClass());
+	}
+	
+	private boolean hasSystemEventClass(Class<?> messageClass) {
+		return SYSTEM_EVENT_CLASS.equals(messageClass);
 	}
 
 	void recordStepNameAndMessage(Step step, Object message) {
