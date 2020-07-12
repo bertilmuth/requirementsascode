@@ -312,7 +312,8 @@ public class ModelRunner {
 		if (stepMessageClass == null) {
 			throw new MissingUseCaseStepPart(step, "on/user");
 		}
-		boolean result = stepMessageClass.isAssignableFrom(currentMessageClass);
+		boolean result = ModelRunner.class.equals(currentMessageClass)? ModelRunner.class.equals(stepMessageClass)
+			: stepMessageClass.isAssignableFrom(currentMessageClass);
 		return result;
 	}
 

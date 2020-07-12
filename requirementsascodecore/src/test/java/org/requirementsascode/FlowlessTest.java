@@ -28,6 +28,17 @@ public class FlowlessTest extends AbstractTestCase {
 			assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
     }
     
+    @Test
+    public void withUseCase_oneNamedStepReactsToEvent_withObjectMessageClass() {
+			Model model = modelBuilder.useCase(USE_CASE)
+				.step(CUSTOMER_ENTERS_TEXT).on(Object.class).system(() -> {})
+			.build();
+		
+			modelRunner.run(model).reactTo(entersText());
+			Optional<Step> latestStepRun = modelRunner.getLatestStep();
+		
+			assertEquals(Object.class, latestStepRun.get().getMessageClass());
+    }
     
     @Test
     public void withUseCase_oneNamedStepReactsToCommand() {
