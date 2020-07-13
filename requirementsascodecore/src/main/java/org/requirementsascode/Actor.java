@@ -98,18 +98,14 @@ public class Actor implements Serializable {
 	
 	public Optional<Object> reactTo(Object message) {
 		Objects.requireNonNull(message);
-		Optional<Object> latestPublishedEvent = null;
 
-		if (modelRunner != null) {
-			latestPublishedEvent = modelRunner.reactTo(message);
-		} else {
-			latestPublishedEvent = Optional.empty();
-		}
+		Optional<Object> latestPublishedEvent = getModelRunner().map(runner -> runner.reactTo(message));
+
 		return latestPublishedEvent;
 	}
 	
-	protected ModelRunner getModelRunner() {
-		return modelRunner;
+	public Optional<ModelRunner> getModelRunner() {
+		return Optional.ofNullable(modelRunner);
 	}
 	
 	@Override
