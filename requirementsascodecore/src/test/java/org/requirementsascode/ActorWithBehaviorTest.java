@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class ActorWithBehaviorTest extends AbstractTestCase{
 	
-	private String publishedMessageString;
+	private String publishedString;
 
 	@Before
 	public void setup() {
@@ -81,6 +81,34 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
+  public void actorReturnsCorrectPublishedEvent() {
+		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
+		.build();
+
+		String publishedString = (String) customer.withBehavior(model).reactTo(entersText()).get();
+		assertEquals(TEXT, publishedString);
+	}
+  
+  @Test
+  public void actorModelRunnerIsConfigurable() {
+		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
+		.build();
+	
+		customer.withBehavior(model);		
+		Optional<ModelRunner>	 customerRunner = customer.getModelRunner();
+		
+		customerRunner.map(cr -> cr.publishWith(msg -> {
+			publishedString = (String)msg;
+		}));
+		
+		publishedString = null;
+		customer.reactTo(entersText());
+		assertEquals(TEXT, publishedString);
+  }
+  
+  @Test
   public void twoActorsInteract() {
 		Model model2 = Model.builder()
 			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
@@ -94,23 +122,5 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 
 		Optional<Step> latestStepRun = partner2.getModelRunner().flatMap(mr -> mr.getLatestStep());
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
-  }
-  
-  @Test
-  public void actorModelRunnerIsConfigurable() {
-		Model model = modelBuilder.useCase(USE_CASE).as(customer)
-			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
-		.build();
-	
-		customer.withBehavior(model);		
-		Optional<ModelRunner>	 customerRunner = customer.getModelRunner();
-		
-		customerRunner.map(cr -> cr.publishWith(msg -> {
-			publishedMessageString = (String)msg;
-		}));
-		
-		publishedMessageString = null;
-		customer.reactTo(entersText());
-		assertEquals(TEXT, publishedMessageString);
   }
 }

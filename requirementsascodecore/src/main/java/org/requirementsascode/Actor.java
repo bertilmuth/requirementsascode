@@ -99,7 +99,7 @@ public class Actor implements Serializable {
 	public Optional<Object> reactTo(Object message) {
 		Objects.requireNonNull(message);
 
-		Optional<Object> latestPublishedEvent = getModelRunner().map(runner -> runner.reactTo(message));
+		Optional<Object> latestPublishedEvent = getModelRunner().flatMap(runner -> runner.reactTo(message));
 
 		return latestPublishedEvent;
 	}
