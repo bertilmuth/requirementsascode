@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
-import shoppingapp.boundary.Boundary;
 import shoppingapp.boundary.driven_port.Display;
 import shoppingapp.boundary.internal.domain.PaymentDetails;
 import shoppingapp.boundary.internal.domain.Product;
@@ -15,10 +14,10 @@ import shoppingapp.boundary.internal.domain.ShippingInformation;
 import shoppingapp.boundary.internal.domain.Stock;
 import shoppingapp.boundary.stubs.DisplayStub;
 import shoppingapp.command.AddsProductToCart;
+import shoppingapp.command.ChecksOutPurchase;
 import shoppingapp.command.ConfirmsPurchase;
 import shoppingapp.command.EntersPaymentDetails;
 import shoppingapp.command.EntersShippingInformation;
-import shoppingapp.command.ChecksOutPurchase;
 
 public class BoundaryTest {
 	private Boundary boundary;
