@@ -25,6 +25,12 @@ public class Actor implements Serializable {
 	private Map<UseCase, List<Step>> useCaseToStepMap;
 
 	private Model behavior;
+	
+	// Solution to Github issue #73 (used for customizing Actor subclasses)
+	protected Actor() {
+		this.useCaseToStepMap = new HashMap<>();
+		setName(getClass().getSimpleName());
+	}
 
 	/**
 	 * Creates an actor with the specified name that is part of the specified use
@@ -33,8 +39,8 @@ public class Actor implements Serializable {
 	 * @param name  the name of the actor
 	 */
 	public Actor(String name) {
-		this.name = name;
 		this.useCaseToStepMap = new HashMap<>();
+		setName(name);
 	}
 	
 	/**
@@ -44,6 +50,10 @@ public class Actor implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	private void setName(String name) {
+		this.name = name;
 	}
 
 	/**
