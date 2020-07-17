@@ -2,6 +2,8 @@ package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
@@ -21,7 +23,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   @Test
   public void actorDoesntDoAnything() {
   	Optional<Object> latestPublishedEvent = customer.reactTo(entersText());
-  	assertFalse(customer.getBehavior().isPresent());
+  	assertNull(customer.behavior());
 		assertTrue(latestPublishedEvent.isEmpty());
   }
 	
@@ -32,7 +34,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model).reactTo(entersText());
-  	assertTrue(customer.getBehavior().isPresent());
+  	assertNotNull(customer.behavior());
 
 		Optional<Step> latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());

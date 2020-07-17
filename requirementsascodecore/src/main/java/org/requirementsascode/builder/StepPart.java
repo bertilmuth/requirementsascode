@@ -1,10 +1,11 @@
 package org.requirementsascode.builder;
 
-import java.util.Objects;
+import static org.requirementsascode.builder.StepAsPart.stepAsPart;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -12,7 +13,6 @@ import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
-import static org.requirementsascode.builder.StepAsPart.*;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -25,7 +25,7 @@ public class StepPart {
 	private UseCasePart useCasePart;
 	private FlowPart flowPart;
 	private ModelBuilder modelBuilder;
-	private Actor systemActor;
+	private AbstractActor systemActor;
 	
 	private StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
 		this.step = Objects.requireNonNull(step);
@@ -59,10 +59,10 @@ public class StepPart {
 	 * Defines which actors (i.e. user groups) can cause the system to react to the
 	 * message of this step.
 	 *
-	 * @param actors the actors that define the user groups
+	 * @param systemActor the actors that define the user groups
 	 * @return the created as part of this step
 	 */
-	public StepAsPart as(Actor... actors) {
+	public StepAsPart as(AbstractActor... actors) {
 		Objects.requireNonNull(actors);
 		return stepAsPart(actors, this);
 	}
@@ -82,7 +82,7 @@ public class StepPart {
 	 */
 	public <T> StepUserPart<T> user(Class<T> commandClass) {
 		Objects.requireNonNull(commandClass);
-		Actor defaultActor = getUseCasePart().getDefaultActor();
+		AbstractActor defaultActor = getUseCasePart().getDefaultActor();
 		StepUserPart<T> userPart = as(defaultActor).user(commandClass);
 		return userPart;
 	}

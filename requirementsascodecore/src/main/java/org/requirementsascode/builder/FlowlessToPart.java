@@ -4,7 +4,7 @@ import static org.requirementsascode.builder.FlowlessConditionPart.flowlessCondi
 
 import java.util.Objects;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
@@ -17,7 +17,7 @@ public class FlowlessToPart {
 		this.flowlessStepCounter = flowlessStepCounter;
 	}
 	
-	public static FlowlessToPart flowlessToPart(StepSystemPart<?> stepSystemPart, Actor recipient, long flowlessStepCounter) {
+	public static FlowlessToPart flowlessToPart(StepSystemPart<?> stepSystemPart, AbstractActor recipient, long flowlessStepCounter) {
 		UseCasePart useCasePart = stepSystemPart.getStepPart().getUseCasePart();
 		stepSystemPart.to(recipient);
 		return new FlowlessToPart(useCasePart, flowlessStepCounter);

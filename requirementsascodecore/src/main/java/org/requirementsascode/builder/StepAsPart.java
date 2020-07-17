@@ -1,8 +1,11 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.StepUserPart.stepUserPart;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Actor;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
@@ -13,19 +16,17 @@ import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
 import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 
-import static org.requirementsascode.builder.StepUserPart.*;
-
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
- * @see Step#setActors(Actor[])
+ * @see Step#setActors(AbstractActor[])
  * @author b_muth
  */
 public class StepAsPart {
 	private Step step;
 	private StepPart stepPart;
 
-	private StepAsPart(Actor[] actors, StepPart stepPart) {
+	private StepAsPart(AbstractActor[] actors, StepPart stepPart) {
 		Objects.requireNonNull(actors);
 		this.stepPart = Objects.requireNonNull(stepPart);
 		this.step = stepPart.getStep();
@@ -33,7 +34,7 @@ public class StepAsPart {
 		step.setActors(actors);
 	}
 	
-	static StepAsPart stepAsPart(Actor[] actors, StepPart stepPart) {
+	static StepAsPart stepAsPart(AbstractActor[] actors, StepPart stepPart) {
 		return new StepAsPart(actors, stepPart);
 	}
 

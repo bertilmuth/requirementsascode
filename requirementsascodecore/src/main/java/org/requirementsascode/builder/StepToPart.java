@@ -4,7 +4,7 @@ import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
 
 import java.util.Objects;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
@@ -13,11 +13,11 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 public class StepToPart<T> {
 	private StepPart stepPart;
 
-	private StepToPart(StepPart stepPart, Actor recipient) {
+	private StepToPart(StepPart stepPart, AbstractActor recipient) {
 		this.stepPart = Objects.requireNonNull(stepPart);
 	}
 	
-	public static <T> StepToPart<T> stepToPart(StepSystemPart<T> stepSystemPart, Actor recipient) {
+	public static <T> StepToPart<T> stepToPart(StepSystemPart<T> stepSystemPart, AbstractActor recipient) {
 		StepPart stepPart = stepSystemPart.getStepPart();
 		stepPart.getStep().setPublishTo(recipient);
 		return new StepToPart<>(stepPart, recipient);

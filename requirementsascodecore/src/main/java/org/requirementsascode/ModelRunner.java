@@ -27,7 +27,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 public class ModelRunner {
 	private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
 
-	private Actor runActor;
+	private AbstractActor runActor;
 
 	private Model model;
 	private Step latestStep;
@@ -118,7 +118,7 @@ public class ModelRunner {
 	 * @return this model runner, for chaining
 	 */
 	public ModelRunner run(Model model) {
-		Actor userActor = model.getUserActor();
+		AbstractActor userActor = model.getUserActor();
 		as(userActor).run(model);
 		return this;
 	}
@@ -131,12 +131,12 @@ public class ModelRunner {
 	 * @param runActor the actor to run as
 	 * @return object for method chaining
 	 */
-	public As as(Actor runActor) {
+	public As as(AbstractActor runActor) {
 		return new As(runActor);
 	}
 	
 	public class As{
-		private As(Actor runActor) {
+		private As(AbstractActor runActor) {
 			setRunActor(runActor);
 		}
 		public ModelRunner run(Model model) {
@@ -294,14 +294,14 @@ public class ModelRunner {
 	}
 	
 	private boolean hasRightActor(Step step) {
-		final Predicate<Actor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
+		final Predicate<AbstractActor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
 		
-		Actor[] stepActors = step.getActors();
+		AbstractActor[] stepActors = step.getActors();
 		if (stepActors == null) {
 			throw (new MissingUseCaseStepPart(step, "actor"));
 		}
 
-		for (Actor stepActor : stepActors) {
+		for (AbstractActor stepActor : stepActors) {
 			if (isSystemOrRunActor.test(stepActor)) {
 				return true;
 			}
@@ -560,7 +560,7 @@ public class ModelRunner {
 		isRunning = status;
 	}
 	
-	private void setRunActor(Actor runActor) {
+	private void setRunActor(AbstractActor runActor) {
 		this.runActor = Objects.requireNonNull(runActor);
 	}
 	

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.AbstractTestCase;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Flow;
@@ -473,7 +474,7 @@ public class BuildModelTest extends AbstractTestCase {
   
   @Test
   public void createsInstanceOfActorSubclass() {
-		Actor specificCustomer = new SpecificCustomer();
+		AbstractActor specificCustomer = new SpecificCustomer();
 		assertEquals("SpecificCustomer", specificCustomer.getName());
   }
   private class SpecificCustomer extends Actor{
@@ -487,7 +488,7 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		Actor customerActor = model.findActor(CUSTOMER);
+		AbstractActor customerActor = model.findActor(CUSTOMER);
 		Set<UseCase> useCases = customerActor.getUseCases();
 		assertEquals(1, useCases.size());
 	
@@ -502,7 +503,7 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		Actor customerActor = model.findActor(CUSTOMER);
+		AbstractActor customerActor = model.findActor(CUSTOMER);
 		Set<UseCase> useCases = customerActor.getUseCases();
 		assertEquals(1, useCases.size());
 	
@@ -519,7 +520,7 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		Actor customerActor = model.findActor(customer.getName());
+		AbstractActor customerActor = model.findActor(customer.getName());
 		List<Step> steps = customerActor.getStepsOf(useCasePart.getUseCase());
 		Step step = steps.get(0);
 	
@@ -539,7 +540,7 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).as(customer, anotherActor).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		Actor customerActor = model.findActor(customer.getName());
+		AbstractActor customerActor = model.findActor(customer.getName());
 		List<Step> steps = customerActor.getStepsOf(useCasePart.getUseCase());
 		Step step = steps.get(0);
 	
@@ -735,8 +736,8 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(2, steps.size());
 	
 		Iterator<Step> stepsIt = steps.iterator();
-		Actor actor1 = stepsIt.next().getActors()[0];
-		Actor actor2 = stepsIt.next().getActors()[0];
+		AbstractActor actor1 = stepsIt.next().getActors()[0];
+		AbstractActor actor2 = stepsIt.next().getActors()[0];
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
@@ -756,8 +757,8 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(2, steps.size());
 	
 		Iterator<Step> stepsIt = steps.iterator();
-		Actor actor1 = stepsIt.next().getActors()[0];
-		Actor actor2 = stepsIt.next().getActors()[0];
+		AbstractActor actor1 = stepsIt.next().getActors()[0];
+		AbstractActor actor2 = stepsIt.next().getActors()[0];
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);
@@ -775,8 +776,8 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(2, steps.size());
 	
 		Iterator<Step> stepsIt = steps.iterator();
-		Actor actor1 = stepsIt.next().getActors()[0];
-		Actor actor2 = stepsIt.next().getActors()[0];
+		AbstractActor actor1 = stepsIt.next().getActors()[0];
+		AbstractActor actor2 = stepsIt.next().getActors()[0];
 	
 		assertTrue(actor1 == actor2);
 		assertEquals(customer, actor1);

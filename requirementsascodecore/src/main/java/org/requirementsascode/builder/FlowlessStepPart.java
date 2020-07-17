@@ -6,7 +6,7 @@ import static org.requirementsascode.builder.StepPart.stepPartWithoutFlow;
 
 import java.util.function.Supplier;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.ModelRunner;
 
@@ -21,7 +21,7 @@ public class FlowlessStepPart {
 	}
 
 	private void setDefaultActorAsActor(UseCasePart useCasePart) {
-		stepPart.getStep().setActors(new Actor[] {useCasePart.getDefaultActor()});
+		stepPart.getStep().setActors(new AbstractActor[] {useCasePart.getDefaultActor()});
 	}
 	
 	static FlowlessStepPart flowlessStepPart(String stepName, UseCasePart useCasePart, Condition optionalCondition, long flowlessStepCounter) {

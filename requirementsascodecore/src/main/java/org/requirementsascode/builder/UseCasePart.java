@@ -6,7 +6,7 @@ import static org.requirementsascode.builder.FlowlessConditionPart.flowlessCondi
 
 import java.util.Objects;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.UseCase;
@@ -20,7 +20,7 @@ import org.requirementsascode.UseCase;
 public class UseCasePart {
 	private UseCase useCase;
 	private ModelBuilder modelBuilder;
-	private Actor defaultActor;
+	private AbstractActor defaultActor;
 
 	private UseCasePart(String useCaseName, ModelBuilder modelBuilder) {
 		this.modelBuilder = Objects.requireNonNull(modelBuilder);
@@ -63,7 +63,7 @@ public class UseCasePart {
 	 * @param defaultActor the actor to use as a default for the use case's steps
 	 * @return this use case part
 	 */
-	public UseCasePart as(Actor defaultActor) {
+	public UseCasePart as(AbstractActor defaultActor) {
 		Objects.requireNonNull(defaultActor);
 		this.defaultActor = defaultActor;
 		return this;
@@ -144,7 +144,7 @@ public class UseCasePart {
 		return modelBuilder;
 	}
 
-	Actor getDefaultActor() {
+	AbstractActor getDefaultActor() {
 		return defaultActor;
 	}
 }

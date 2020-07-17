@@ -22,11 +22,11 @@ public abstract class Step extends ModelElement implements Serializable {
 	private static final long serialVersionUID = -2926490717985964131L;
 
 	private UseCase useCase;
-	private Actor[] actors;
+	private AbstractActor[] actors;
 	private Condition condition;
 	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
-	private Actor publishTo;
+	private AbstractActor publishTo;
 
 	/**
 	 * Creates a step with the specified name that belongs to the specified use
@@ -52,17 +52,17 @@ public abstract class Step extends ModelElement implements Serializable {
 		return Optional.ofNullable(condition);
 	}
 
-	public Actor[] getActors() {
+	public AbstractActor[] getActors() {
 		return actors;
 	}
 
-	public void setActors(Actor[] actors) {
+	public void setActors(AbstractActor[] actors) {
 		connectActorsToThisStep(this, actors);
 	}
 	
-	private void connectActorsToThisStep(Step useCaseStep, Actor[] actors) {
+	private void connectActorsToThisStep(Step useCaseStep, AbstractActor[] actors) {
 		this.actors = actors;
-		for (Actor actor : actors) {
+		for (AbstractActor actor : actors) {
 			actor.connectToStep(useCaseStep);
 		}
 	}
@@ -99,11 +99,11 @@ public abstract class Step extends ModelElement implements Serializable {
 		return modelRunner -> condition.evaluate();
 	}
 
-	public Optional<Actor> getPublishTo() {
+	public Optional<AbstractActor> getPublishTo() {
 		return Optional.ofNullable(publishTo);
 	}
 
-	public void setPublishTo(Actor recipient) {
+	public void setPublishTo(AbstractActor recipient) {
 		this.publishTo = recipient;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
@@ -118,7 +118,7 @@ public class StepSystemPart<T> {
 	 * @param recipient the recipient of this message
 	 * @return the created part
 	 */
-	public StepToPart<T> to(Actor recipient) {
+	public StepToPart<T> to(AbstractActor recipient) {
 		Objects.requireNonNull(recipient);
 		StepToPart<T> stepToPart = stepToPart(this, recipient);
 		return stepToPart;

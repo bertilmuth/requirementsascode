@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
@@ -139,7 +139,7 @@ public class FlowlessSystemPart<T> {
 	 * @param recipient the recipient of this message
 	 * @return the created part
 	 */
-	public FlowlessToPart to(Actor recipient) {
+	public FlowlessToPart to(AbstractActor recipient) {
 		Objects.requireNonNull(recipient);
 		FlowlessToPart flowlessToPart = flowlessToPart(stepSystemPart, recipient, flowlessStepCounter);
 		return flowlessToPart;

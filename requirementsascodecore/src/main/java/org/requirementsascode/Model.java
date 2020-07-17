@@ -36,8 +36,8 @@ public class Model implements Serializable {
 	private static final long serialVersionUID = -410733530299609758L;
 
 	private Map<String, UseCase> nameToUseCaseMap;
-	private Actor userActor;
-	private Actor systemActor;
+	private AbstractActor userActor;
+	private AbstractActor systemActor;
 
 	private Model() {
 		this.nameToUseCaseMap = new LinkedHashMap<>();
@@ -93,8 +93,8 @@ public class Model implements Serializable {
 	 * @throws NoSuchElementInModel if no actor with the specified actorName is
 	 *                              found in the model
 	 */
-	public Actor findActor(String actorName) {
-		Actor foundActor = getModifiableSteps().stream()
+	public AbstractActor findActor(String actorName) {
+		AbstractActor foundActor = getModifiableSteps().stream()
 			.flatMap(s -> Arrays.stream(s.getActors()))
 			.findFirst()
 			.orElseThrow(() -> new NoSuchElementInModel(actorName));
@@ -119,8 +119,8 @@ public class Model implements Serializable {
 	 *
 	 * @return the actors
 	 */
-	public Collection<Actor> getActors() {
-		Set<Actor> actors = getModifiableSteps().stream()
+	public Collection<AbstractActor> getActors() {
+		Set<AbstractActor> actors = getModifiableSteps().stream()
 			.flatMap(s -> Arrays.stream(s.getActors()))
 			.collect(Collectors.toSet());
 		return Collections.unmodifiableCollection(actors);
@@ -166,7 +166,7 @@ public class Model implements Serializable {
 	 *
 	 * @return the user actor
 	 */
-	public Actor getUserActor() {
+	public AbstractActor getUserActor() {
 		return userActor;
 	}
 
@@ -175,7 +175,7 @@ public class Model implements Serializable {
 	 *
 	 * @return the user actor
 	 */
-	public Actor getSystemActor() {
+	public AbstractActor getSystemActor() {
 		return systemActor;
 	}
 }
