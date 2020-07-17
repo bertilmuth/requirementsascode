@@ -98,7 +98,7 @@ public class Actor implements Serializable {
 	
 	public Actor withBehavior(Model model) {
 		this.behavior = Objects.requireNonNull(model);
-		this.modelRunner = new ModelRunner().as(this).run(behavior);
+		this.modelRunner = new ModelRunner().run(behavior);
 		return this;
 	}
 	
@@ -112,6 +112,11 @@ public class Actor implements Serializable {
 		Optional<Object> latestPublishedEvent = getModelRunner().flatMap(runner -> runner.reactTo(message));
 
 		return latestPublishedEvent;
+	}
+	
+	public Optional<Object> reactTo(Object message, Actor callingActor) {
+		getModelRunner().ifPresent(runner -> runner.as(callingActor));
+		return reactTo(message);
 	}
 	
 	public Optional<ModelRunner> getModelRunner() {

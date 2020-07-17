@@ -56,11 +56,13 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void actorReactsIfActorInModelMatches() {
-		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+  	Actor validActor = new Actor("ValidActor");
+  	
+		Model model = modelBuilder.useCase(USE_CASE).as(validActor)
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		customer.withBehavior(model).reactTo(entersText());
+		customer.withBehavior(model).reactTo(entersText(), validActor);
 
 		Optional<Step> latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
@@ -68,13 +70,14 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void actorDoesnReactIfActorInModelIsDifferent() {
-  	Actor invalidActor = new Actor("InvalidUser");
+  	Actor validActor = new Actor("ValidActor");
+  	Actor invalidActor = new Actor("InvalidActor");
 
-		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+		Model model = modelBuilder.useCase(USE_CASE).as(validActor)
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		invalidActor.withBehavior(model).reactTo(entersText());
+		customer.withBehavior(model).reactTo(entersText(), invalidActor);
 
 		Optional<Step> latestStepRun = invalidActor.getModelRunner().flatMap(mr -> mr.getLatestStep());
 		assertFalse(latestStepRun.isPresent());
@@ -82,7 +85,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void actorReturnsCorrectPublishedEvent() {
-		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+		Model model = modelBuilder
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
 		.build();
 
@@ -92,7 +95,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void actorModelRunnerIsConfigurable() {
-		Model model = modelBuilder.useCase(USE_CASE).as(customer)
+		Model model = modelBuilder
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
 		.build();
 	
