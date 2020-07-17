@@ -20,8 +20,7 @@ public abstract class AbstractActor {
 	 *
 	 */
 	public AbstractActor() {
-		this.useCaseToStepMap = new HashMap<>();
-		this.modelRunner = new ModelRunner();
+		initializeFields();
 		setName(getClass().getSimpleName());
 	}
 
@@ -32,9 +31,13 @@ public abstract class AbstractActor {
 	 * @param name  the name of the actor
 	 */
 	public AbstractActor(String name) {
+		initializeFields();
+		setName(name);
+	}
+	
+	private void initializeFields() {
 		this.useCaseToStepMap = new HashMap<>();
 		this.modelRunner = new ModelRunner();
-		setName(name);
 	}
 
 	/**
