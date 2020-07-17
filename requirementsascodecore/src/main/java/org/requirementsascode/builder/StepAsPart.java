@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.requirementsascode.AbstractActor;
-import org.requirementsascode.Actor;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
