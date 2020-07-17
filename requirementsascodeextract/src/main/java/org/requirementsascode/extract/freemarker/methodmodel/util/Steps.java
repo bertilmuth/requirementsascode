@@ -1,6 +1,6 @@
 package org.requirementsascode.extract.freemarker.methodmodel.util;
 
-import org.requirementsascode.Actor;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Flow;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
@@ -22,7 +22,7 @@ public class Steps {
   }
   
   public static boolean hasNonDefaultActor(Step step) {
-    Actor firstActorOfStep = getFirstActorOfStep(step);
+    AbstractActor firstActorOfStep = getFirstActorOfStep(step);
     return !getUserActor(step).equals(firstActorOfStep) && !getSystemActor(step).equals(firstActorOfStep);
   }
   
@@ -38,15 +38,15 @@ public class Steps {
     return !(step.getSystemReaction().getModelObject() instanceof IgnoresIt<?>);
   }
   
-  public static Actor getUserActor(Step step) { 
+  public static AbstractActor getUserActor(Step step) { 
     return step.getModel().getUserActor();
   }
   
-  public static Actor getSystemActor(Step step) {
+  public static AbstractActor getSystemActor(Step step) {
     return step.getModel().getSystemActor();
   }
   
-  private static Actor getFirstActorOfStep(Step step) {
+  private static AbstractActor getFirstActorOfStep(Step step) {
     return step.getActors()[0];
   }
 }
