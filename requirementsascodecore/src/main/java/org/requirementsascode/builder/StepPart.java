@@ -59,7 +59,7 @@ public class StepPart {
 	 * Defines which actors (i.e. user groups) can cause the system to react to the
 	 * message of this step.
 	 *
-	 * @param systemActor the actors that define the user groups
+	 * @param actors the actors that define the user groups
 	 * @return the created as part of this step
 	 */
 	public StepAsPart as(AbstractActor... actors) {
