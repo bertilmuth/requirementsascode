@@ -2,7 +2,6 @@ package helloworld;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
@@ -119,7 +118,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample {
 		exitSystem();
 	}
 
-	public AbstractActor normalUser() {
+	public Actor normalUser() {
 		return normalUser;
 	}
 

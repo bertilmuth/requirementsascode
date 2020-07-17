@@ -2,7 +2,6 @@ package helloworld;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
@@ -57,11 +56,11 @@ public class HelloWorld03a extends AbstractHelloWorldExample {
 		modelRunner.as(validUser).reactTo(entersText());
 	}
 
-	public AbstractActor validUser() {
+	public Actor validUser() {
 		return validUser;
 	}
 
-	public AbstractActor invalidUser() {
+	public Actor invalidUser() {
 		return invalidUser;
 	}
 }

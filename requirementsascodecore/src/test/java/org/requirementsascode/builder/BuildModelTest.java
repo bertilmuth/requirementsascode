@@ -474,7 +474,7 @@ public class BuildModelTest extends AbstractTestCase {
   
   @Test
   public void createsInstanceOfActorSubclass() {
-		AbstractActor specificCustomer = new SpecificCustomer();
+  	Actor specificCustomer = new SpecificCustomer();
 		assertEquals("SpecificCustomer", specificCustomer.getName());
   }
   private class SpecificCustomer extends Actor{
