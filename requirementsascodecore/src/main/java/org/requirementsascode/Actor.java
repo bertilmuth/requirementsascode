@@ -29,6 +29,7 @@ public class Actor implements Serializable {
 	// Solution to Github issue #73 (used for customizing Actor subclasses)
 	protected Actor() {
 		this.useCaseToStepMap = new HashMap<>();
+		this.modelRunner = new ModelRunner();
 		setName(getClass().getSimpleName());
 	}
 
@@ -40,6 +41,7 @@ public class Actor implements Serializable {
 	 */
 	public Actor(String name) {
 		this.useCaseToStepMap = new HashMap<>();
+		this.modelRunner = new ModelRunner();
 		setName(name);
 	}
 	
@@ -98,7 +100,6 @@ public class Actor implements Serializable {
 	
 	public Actor withBehavior(Model model) {
 		this.behavior = Objects.requireNonNull(model);
-		this.modelRunner = new ModelRunner().run(behavior);
 		return this;
 	}
 	
@@ -108,15 +109,27 @@ public class Actor implements Serializable {
 	
 	public Optional<Object> reactTo(Object message) {
 		Objects.requireNonNull(message);
+		
+		if(!modelRunner.isRunning() && behavior != null) {
+			modelRunner.run(behavior);
+		}
 
-		Optional<Object> latestPublishedEvent = getModelRunner().flatMap(runner -> runner.reactTo(message));
-
+		Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
+		
 		return latestPublishedEvent;
 	}
 	
 	public Optional<Object> reactTo(Object message, Actor callingActor) {
-		getModelRunner().ifPresent(runner -> runner.as(callingActor));
-		return reactTo(message);
+		Objects.requireNonNull(message);
+		Objects.requireNonNull(callingActor);
+		
+		if(!modelRunner.isRunning() && behavior != null) {
+			modelRunner.as(callingActor).run(behavior);
+		}
+
+		Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
+		
+		return latestPublishedEvent;
 	}
 	
 	public Optional<ModelRunner> getModelRunner() {
