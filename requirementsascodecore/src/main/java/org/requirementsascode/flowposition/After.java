@@ -1,6 +1,5 @@
 package org.requirementsascode.flowposition;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import org.requirementsascode.FlowStep;
@@ -13,9 +12,7 @@ import org.requirementsascode.Step;
  * @author b_muth
  *
  */
-public class After extends FlowPosition implements Serializable {
-	private static final long serialVersionUID = -4951912635216926005L;
-
+public class After extends FlowPosition{
 	/**
 	 * Tests whether the specified step was the last step run.
 	 * 
