@@ -5,7 +5,6 @@ import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,9 +31,7 @@ import org.requirementsascode.exception.NoSuchElementInModel;
  *
  * @author b_muth
  */
-public class Model implements Serializable {
-	private static final long serialVersionUID = -410733530299609758L;
-
+public class Model{
 	private Map<String, UseCase> nameToUseCaseMap;
 	private AbstractActor userActor;
 	private AbstractActor systemActor;

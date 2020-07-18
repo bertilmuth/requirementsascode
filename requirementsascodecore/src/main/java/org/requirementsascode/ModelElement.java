@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**

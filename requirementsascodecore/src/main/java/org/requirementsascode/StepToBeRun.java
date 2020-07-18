@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -12,9 +11,7 @@ import java.util.function.Function;
  * @see ModelRunner#handleWith(Consumer)
  * @author b_muth
  */
-public class StepToBeRun implements Serializable {
-	private static final long serialVersionUID = -8615677956101523359L;
-
+public class StepToBeRun{
 	private Step step; 
 	private Object message;
 	private Consumer<Object> eventPublisher;

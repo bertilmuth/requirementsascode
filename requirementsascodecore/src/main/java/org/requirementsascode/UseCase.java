@@ -5,7 +5,6 @@ import static org.requirementsascode.ModelElementContainer.getModelElements;
 import static org.requirementsascode.ModelElementContainer.hasModelElement;
 import static org.requirementsascode.ModelElementContainer.saveModelElement;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -29,9 +28,7 @@ import org.requirementsascode.flowposition.FlowPosition;
  *
  * @author b_muth
  */
-public class UseCase extends ModelElement implements Serializable {
-	private static final long serialVersionUID = 4939249650285018834L;
-
+public class UseCase extends ModelElement{
 	private static final String BASIC_FLOW = "Basic flow";
 
 	private Map<String, Flow> nameToFlowMap;
