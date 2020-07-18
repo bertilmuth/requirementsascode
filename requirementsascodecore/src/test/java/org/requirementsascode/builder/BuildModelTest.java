@@ -478,7 +478,6 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals("SpecificCustomer", specificCustomer.getName());
   }
   private class SpecificCustomer extends Actor{
-		private static final long serialVersionUID = 1L;
   }
 
   @Test
