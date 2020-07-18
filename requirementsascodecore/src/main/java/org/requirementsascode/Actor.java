@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,8 +9,7 @@ import java.util.Objects;
  *
  * @author b_muth
  */
-public class Actor extends AbstractActor implements Serializable {
-	private static final long serialVersionUID = 4581179263937622015L;
+public class Actor extends AbstractActor{
 	private Model behavior;
 	
 	/**

@@ -12,10 +12,9 @@ import org.requirementsascode.Step;
  *
  */
 public class InfiniteRepetition extends RuntimeException implements Serializable {
+	private static final long serialVersionUID = 5249803987787358917L;
+	
 	public InfiniteRepetition(Step step) {
 		super("Possible cause: " + step.getName() + " has an always true condition.");
 	}
-
-	private static final long serialVersionUID = 5249803987787358917L;
-
 }
