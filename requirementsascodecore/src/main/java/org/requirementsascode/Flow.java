@@ -18,9 +18,7 @@ import org.requirementsascode.flowposition.FlowPosition;
  *
  * @author b_muth
  */
-public class Flow extends ModelElement implements Serializable {
-	private static final long serialVersionUID = -2448742413260609615L;
-
+public class Flow extends ModelElement{
 	private UseCase useCase;
 
 	/**

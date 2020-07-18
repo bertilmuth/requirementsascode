@@ -9,8 +9,6 @@ import java.util.function.Predicate;
  *
  */
 public class FlowlessStep extends Step {
-	private static final long serialVersionUID = -5290327128546502292L;
-
 	FlowlessStep(String stepName, UseCase useCase, Condition optionalCondition) {
 		super(stepName, useCase, optionalCondition);
 	}

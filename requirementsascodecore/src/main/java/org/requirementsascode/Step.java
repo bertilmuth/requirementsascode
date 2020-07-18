@@ -18,9 +18,7 @@ import java.util.function.Supplier;
  *
  * @author b_muth
  */
-public abstract class Step extends ModelElement implements Serializable {
-	private static final long serialVersionUID = -2926490717985964131L;
-
+public abstract class Step extends ModelElement{
 	private UseCase useCase;
 	private AbstractActor[] actors;
 	private Condition condition;
