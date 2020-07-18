@@ -1,8 +1,6 @@
 package org.requirementsascode;
 
 class UserActor extends Actor{
-	private static final long serialVersionUID = 1598263321163535293L;
-
 	public UserActor() {
 		super("User");
 	}

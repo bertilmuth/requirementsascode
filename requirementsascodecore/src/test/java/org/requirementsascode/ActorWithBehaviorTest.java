@@ -36,7 +36,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		customer.withBehavior(model).reactTo(entersText());
   	assertNotNull(customer.behavior());
 
-		Optional<Step> latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
@@ -48,11 +48,11 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model).reactTo(entersText());
-		Optional<Step> latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
 	
 		customer.reactTo(entersNumber());
-		latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		latestStepRun = customer.getModelRunner().getLatestStep();
 		assertEquals(EntersNumber.class, latestStepRun.get().getMessageClass());
   }
   
@@ -66,7 +66,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 	
 		customer.withBehavior(model).reactTo(entersText(), validActor);
 
-		Optional<Step> latestStepRun = customer.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
@@ -81,7 +81,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 	
 		customer.withBehavior(model).reactTo(entersText(), invalidActor);
 
-		Optional<Step> latestStepRun = invalidActor.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		Optional<Step> latestStepRun = invalidActor.getModelRunner().getLatestStep();
 		assertFalse(latestStepRun.isPresent());
   }
   
@@ -102,11 +102,11 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model);		
-		Optional<ModelRunner>	 customerRunner = customer.getModelRunner();
+		ModelRunner	 customerRunner = customer.getModelRunner();
 		
-		customerRunner.map(cr -> cr.publishWith(msg -> {
+		customerRunner.publishWith(msg -> {
 			publishedString = (String)msg;
-		}));
+		});
 		
 		publishedString = null;
 		customer.reactTo(entersText());
@@ -125,7 +125,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 		partner.withBehavior(model1).reactTo(entersText());
 
-		Optional<Step> latestStepRun = partner2.getModelRunner().flatMap(mr -> mr.getLatestStep());
+		Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
 }

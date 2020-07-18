@@ -126,8 +126,8 @@ public abstract class AbstractActor {
 
 	public abstract Model behavior();
 
-	public Optional<ModelRunner> getModelRunner() {
-		return Optional.ofNullable(modelRunner);
+	public ModelRunner getModelRunner() {
+		return modelRunner;
 	}
 
 	@Override
