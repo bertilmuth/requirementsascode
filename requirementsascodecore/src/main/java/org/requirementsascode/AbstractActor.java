@@ -96,9 +96,11 @@ public abstract class AbstractActor {
 	public Optional<Object> reactTo(Object message) {
 		Objects.requireNonNull(message);
 		
-		Model actorBehavior = behavior();
-		if(!modelRunner.isRunning() && actorBehavior != null) {
-			modelRunner.run(actorBehavior);
+		if(!modelRunner.isRunning()) {
+			Model actorBehavior = behavior();
+			if(actorBehavior != null) {
+				modelRunner.run(actorBehavior);
+			}
 		}
 	
 		Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
@@ -110,9 +112,11 @@ public abstract class AbstractActor {
 		Objects.requireNonNull(message);
 		Objects.requireNonNull(callingActor);
 		
-		Model actorBehavior = behavior();
-		if(!modelRunner.isRunning() && actorBehavior != null) {
-			modelRunner.as(callingActor).run(actorBehavior);
+		if(!modelRunner.isRunning()) {
+			Model actorBehavior = behavior();
+			if(actorBehavior != null) {
+				modelRunner.as(callingActor).run(actorBehavior);
+			}
 		}
 	
 		Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
