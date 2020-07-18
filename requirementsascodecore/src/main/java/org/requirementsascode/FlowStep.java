@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -9,9 +8,7 @@ import org.requirementsascode.flowposition.FlowPosition;
 /**
  * @author b_muth
  */
-public abstract class FlowStep extends Step implements Serializable {
-	private static final long serialVersionUID = -2926490717985964131L;
-
+public abstract class FlowStep extends Step{
 	private Flow flow;
 	private FlowPosition flowPosition;
 	private FlowStep previousStepInFlow;

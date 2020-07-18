@@ -19,9 +19,7 @@ import org.requirementsascode.flowposition.After;
  * 
  * @author b_muth
  */
-public class InterruptableFlowStep extends FlowStep implements Serializable {
-	private static final long serialVersionUID = -2926490717985964131L;
-
+public class InterruptableFlowStep extends FlowStep{
 	/**
 	 * Creates unconditional step with the specified name as the last step of the
 	 * specified flow.

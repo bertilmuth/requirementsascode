@@ -9,9 +9,7 @@ import java.util.Objects;
  *
  * @author b_muth
  */
-abstract class ModelElement implements Serializable {
-	private static final long serialVersionUID = 4955023531983786087L;
-
+abstract class ModelElement{
 	private String name;
 	private Model model;
 
