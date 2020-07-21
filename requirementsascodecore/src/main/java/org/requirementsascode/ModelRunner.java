@@ -50,8 +50,12 @@ public class ModelRunner {
 	}
 	
 	private <T> void publishMessage(T message) {
-		getLatestStep().flatMap(ls -> ls.getPublishTo()).ifPresentOrElse(actor -> actor.reactTo(message),
-			() -> reactToMessage(message));
+		Optional<AbstractActor> optionalToActor = getLatestStep().flatMap(ls -> ls.getPublishTo());
+		if(optionalToActor.isPresent()) {
+			optionalToActor.get().reactTo(message);
+		}else {
+			this.reactToMessage(message);
+		}
 	}
 
 	/**

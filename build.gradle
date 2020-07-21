@@ -1,13 +1,16 @@
 allprojects{
 	group = 'org.requirementsascode'
-	version = '1.7'
+	version = '1.7.1'
 	
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: "jacoco"
 	
-	sourceCompatibility = 8
-
+	compileJava {
+	  sourceCompatibility = '1.8'
+	  targetCompatibility = '1.8'
+	}
+	
 	repositories {
 		mavenCentral()
 		maven {
