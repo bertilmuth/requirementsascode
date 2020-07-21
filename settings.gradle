@@ -1,8 +1,6 @@
 include 'requirementsascodecore'
 include 'requirementsascodeextract'
 include 'requirementsascodeexamples:helloworld'
-//include 'requirementsascodeexamples:shoppingappjavafx'
-//include 'requirementsascodeexamples:shoppingappextract'
 include 'requirementsascodeexamples:crosscuttingconcerns'
 include 'requirementsascodeexamples:akka'
 include 'requirementsascodeexamples:creditcard_eventsourcing'
