@@ -4,7 +4,10 @@ plugins {
 
 mainClassName = 'shoppingappextract.extract.ShoppingAppExtract'
 
-sourceCompatibility = 11
+compileJava {
+  sourceCompatibility = '11'
+  targetCompatibility = '11'
+}
 
 jar {
     manifest {
