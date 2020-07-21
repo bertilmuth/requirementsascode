@@ -1,7 +1,8 @@
 language: java
+install: skip
+
 jdk:
   - openjdk8
   - openjdk14
   - oraclejdk14
-before_install:
- - chmod +x gradlew
+
