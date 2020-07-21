@@ -24,7 +24,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   public void actorDoesntDoAnything() {
   	Optional<Object> latestPublishedEvent = customer.reactTo(entersText());
   	assertNull(customer.behavior());
-		assertTrue(latestPublishedEvent.isEmpty());
+		assertFalse(latestPublishedEvent.isPresent());
   }
 	
   @Test
