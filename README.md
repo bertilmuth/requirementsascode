@@ -396,6 +396,8 @@ As you can see, `publishNameAsString()` takes a command object as input paramete
 The actor takes the returned event and publishes it to the model. 
 Note that in any case, the actor also returns the event that was published last to the caller of `actor.reactTo()`. 
 
+You can find the full code of this example [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishingActorExample.java).
+
 # Documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
