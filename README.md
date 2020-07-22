@@ -281,20 +281,20 @@ public class ActorExample {
  * dispatching them to message handlers.
  */
 class GreetingService extends AbstractActor {
-	private static final Class<RequestHello> requestsHello = RequestHello.class;
-	private Consumer<RequestHello> saysHello;
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private Consumer<RequestHello> saysHello;
 
-	public GreetingService(Consumer<RequestHello> saysHello) {
-		this.saysHello = saysHello;
-	}
+  public GreetingService(Consumer<RequestHello> saysHello) {
+    this.saysHello = saysHello;
+  }
 
-	@Override
-	public Model behavior() {
-		Model model = Model.builder()
-			.user(requestsHello).system(saysHello)
-		.build();
-		return model;
-	}
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(requestsHello).system(saysHello)
+    .build();
+    return model;
+  }
 }
 
 /**
@@ -373,23 +373,23 @@ When an actor's behavior only uses the `system()` method, it's restricted to jus
 But an actor can also publish events with `systemPublish()`, like so:
 
 ``` java
-class PublishingActor extends AbstractActor{
-	@Override
-	public Model behavior() {
-		Model model = Model.builder()
-			.on(EnterName.class).systemPublish(this::publishNameAsString) 
-			.on(String.class).system(this::displayNameString) 
-		.build();
-		return model;		
-	}
-	
-	private String publishNameAsString(EnterName enterName) {
-		return enterName.getUserName();
-	}
+class PublishingActor extends AbstractActor {
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .on(EnterName.class).systemPublish(this::publishNameAsString)
+      .on(String.class).system(this::displayNameString)
+    .build();
+    return model;
+  }
 
-	public void displayNameString(String nameString) {
-		System.out.println("Welcome, " + nameString + ".");
-	}
+  private String publishNameAsString(EnterName enterName) {
+    return enterName.getUserName();
+  }
+
+  public void displayNameString(String nameString) {
+    System.out.println("Welcome, " + nameString + ".");
+  }
 }
 ```
 

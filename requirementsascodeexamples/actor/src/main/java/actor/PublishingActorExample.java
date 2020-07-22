@@ -14,23 +14,23 @@ public class PublishingActorExample {
 	}
 }
 
-class PublishingActor extends AbstractActor{
-	@Override
-	public Model behavior() {
-		Model model = Model.builder()
-			.on(EnterName.class).systemPublish(this::publishNameAsString) 
-			.on(String.class).system(this::displayNameString) 
-		.build();
-		return model;		
-	}
-	
-	private String publishNameAsString(EnterName enterName) {
-		return enterName.getUserName();
-	}
+class PublishingActor extends AbstractActor {
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .on(EnterName.class).systemPublish(this::publishNameAsString)
+      .on(String.class).system(this::displayNameString)
+    .build();
+    return model;
+  }
 
-	public void displayNameString(String nameString) {
-		System.out.println("Welcome, " + nameString + ".");
-	}
+  private String publishNameAsString(EnterName enterName) {
+    return enterName.getUserName();
+  }
+
+  public void displayNameString(String nameString) {
+    System.out.println("Welcome, " + nameString + ".");
+  }
 }
 
 class EnterName {
