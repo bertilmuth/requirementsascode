@@ -143,64 +143,53 @@ class RequestHello {
 The examples above have shown how to build and run use case models. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
 To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to change as follows.
 
-## Boundary
-There needs to be a boundary that creates and runs the use case model, and reacts to messages.
-It gets the message handlers injected into its constructor as interfaces, and builds the model based on them.
-The boundary is implemented as a function that transforms an input (i.e. the message) to an output (the optional query result or published event). That's why the `Boundary` class implements `Function<Object, Optional<Object>>`.
+## Actor that represents system/service
+Instead of directly creating a runner for a model as shown above, for larger scale applications, you should create an actor.
+
+An actor encapsulates a `ModelRunner` and runs it for you. All you need to provide is the model of the actor's behavior, as shown below.
+
+Create a subclass of `AbstractActor`, and override its `behavior()` method to provide the model:
 
 ``` java
-class Boundary implements Function<Object, Optional<Object>> {
-  private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Model model;
+class GreetingService extends AbstractActor {
+	private static final Class<RequestHello> requestsHello = RequestHello.class;
+	private Consumer<RequestHello> saysHello;
 
-  /**
-   * The constructor that builds the model by using the injected message handlers.
-   * 
-   * @param saysHello the message handler for saying hello to the user
-   */
-  public Boundary(Consumer<RequestHello> saysHello) {
-    buildModel(saysHello);
-  }
+	public GreetingService(Consumer<RequestHello> saysHello) {
+		this.saysHello = saysHello;
+	}
 
-  private void buildModel(Consumer<RequestHello> saysHello) {
-    model = Model.builder()
-      .user(requestsHello).system(saysHello)
-     .build();
-  }
-
-  /**
-   * Reacts to the specified message by dispatching it to a message handler.
-   * 
-   * @param message the message to dispatch
-   * @return the result of a query, a published event, or an empty Optional.
-   */
-  public Optional<Object> apply(Object message) {
-    return new ModelRunner().run(model).reactTo(message);
-  }
+	@Override
+	public Model behavior() {
+		Model model = Model.builder()
+			.user(requestsHello).system(saysHello)
+				.build();
+		return model;
+	}
 }
 ```
+Pass the message handlers as constructor parameters. Use interfaces, not concrete classes, as constructor parameters.
+That let's you change the concrete message handler from the outside.
+
+To send a message to the actor, call `actor.reactTo(<message>)`.
+Same syntax you already know.
 
 ## Message senders
-There needs to be someone outside of the boundary who's sending messages to the boundary.
+There needs to be someone who's sending messages to the actor.
 In practice, this could be a Spring Controller, or a desktop GUI, for example.
-The message sender gets the boundary injected into its constructor as interface.
-After that, it can send messages to the boundary.
+Pass the actor to the message sender as a constructor parameter.
+After that, the sender can send messages to the actor.
 
 ``` java
 class MessageSender {
-  private Function<Object, Optional<Object>> boundary;
+  private AbstractActor greetingService;
 
-  public MessageSender(Function<Object, Optional<Object>> boundary) {
-    this.boundary = boundary;
+  public MessageSender(AbstractActor greetingService) {
+    this.greetingService = greetingService;
   }
 
-  /**
-   * Send messages to the boundary. In this example, we don't care 
-   * about the return value of the call, because we don't send a query
-   * or publish events.
-   */
   public void sendMessages() {
-    boundary.apply(new RequestHello("Joe"));
+    greetingService.reactTo(new RequestHello("Joe"));
   }
 }
 ```
@@ -273,73 +262,58 @@ class Greeting{
 Here's the complete example as a single file for convenience.
 
 ``` java
-package hello;
+package actor;
 
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
-public class Main {
+public class ActorExample {
   public static void main(String[] args) {
-    Boundary boundary = new Boundary(new DisplayHello());
-    new MessageSender(boundary).sendMessages();
+    GreetingService greetingService = new GreetingService(new SayHello());
+    new MessageSender(greetingService).sendMessages();
   }
 }
 
 /**
- * Boundary class that builds and runs the use case model, and reacts to messages by
+ * Actor that owns and runs the use case model, and reacts to messages by
  * dispatching them to message handlers.
  */
-class Boundary implements Function<Object, Optional<Object>> {
-  private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Model model;
+class GreetingService extends AbstractActor {
+	private static final Class<RequestHello> requestsHello = RequestHello.class;
+	private Consumer<RequestHello> saysHello;
 
-  /**
-   * The constructor that builds the model by using the injected message handlers.
-   * 
-   * @param saysHello the message handler for saying hello to the user
-   */
-  public Boundary(Consumer<RequestHello> saysHello) {
-    buildModel(saysHello);
-  }
+	public GreetingService(Consumer<RequestHello> saysHello) {
+		this.saysHello = saysHello;
+	}
 
-  private void buildModel(Consumer<RequestHello> saysHello) {
-    model = Model.builder()
-      .user(requestsHello).system(saysHello)
-     .build();
-  }
-
-  /**
-   * Reacts to the specified message by dispatching it to a message handler.
-   * 
-   * @param message the message to dispatch
-   * @return the result of a query, a published event, or an empty Optional.
-   */
-  public Optional<Object> apply(Object message) {
-    return new ModelRunner().run(model).reactTo(message);
-  }
+	@Override
+	public Model behavior() {
+		Model model = Model.builder()
+			.user(requestsHello).system(saysHello)
+				.build();
+		return model;
+	}
 }
 
 /**
  * Sender of the message, external to the boundary
  */
 class MessageSender {
-  private Function<Object, Optional<Object>> boundary;
+  private AbstractActor greetingService;
 
-  public MessageSender(Function<Object, Optional<Object>> boundary) {
-    this.boundary = boundary;
+  public MessageSender(AbstractActor greetingService) {
+    this.greetingService = greetingService;
   }
 
   /**
-   * Send messages to the boundary. In this example, we don't care 
+   * Send messages to the service actor. In this example, we don't care 
    * about the return value of the call, because we don't send a query
    * or publish events.
    */
   public void sendMessages() {
-    boundary.apply(new RequestHello("Joe"));
+    greetingService.reactTo(new RequestHello("Joe"));
   }
 }
 
@@ -391,6 +365,7 @@ class Greeting{
     return "Hello, " + userName + ".";
   }
 }
+
 ```
 
 # Publishing events

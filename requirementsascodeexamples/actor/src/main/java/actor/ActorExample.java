@@ -34,17 +34,17 @@ class GreetingService extends AbstractActor {
 }
 
 /**
- * Sender of the message, external to the boundary
+ * Message sender class
  */
 class MessageSender {
-  private GreetingService greetingService;
+  private AbstractActor greetingService;
 
-  public MessageSender(GreetingService greetingService) {
+  public MessageSender(AbstractActor greetingService) {
     this.greetingService = greetingService;
   }
 
   /**
-   * Send messages to the service actor. In this example, we don't care 
+   * Send message to the service actor. In this example, we don't care 
    * about the return value of the call, because we don't send a query
    * or publish events.
    */
@@ -69,7 +69,7 @@ class RequestHello {
 }
 
 /**
- * Message handlers
+ * Message handler
  */
 class SayHello implements Consumer<RequestHello> {
   private OutputAdapter outputAdapter;
@@ -85,7 +85,7 @@ class SayHello implements Consumer<RequestHello> {
 }
 
 /**
- * Infrastructure classes
+ * Infrastructure class
  */
 class OutputAdapter{
   public void showMessage(String message) {
@@ -94,7 +94,7 @@ class OutputAdapter{
 }
 
 /**
- * Domain classes
+ * Domain class
  */
 class Greeting{
   public static String forUser(String userName) {
