@@ -2,6 +2,7 @@ include 'requirementsascodecore'
 include 'requirementsascodeextract'
 include 'requirementsascodeexamples:helloworld'
 include 'requirementsascodeexamples:crosscuttingconcerns'
+include 'requirementsascodeexamples:actor'
 include 'requirementsascodeexamples:akka'
 include 'requirementsascodeexamples:creditcard_eventsourcing'
 

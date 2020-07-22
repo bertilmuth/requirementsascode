@@ -1,13 +1,13 @@
-package publish;
+package actor;
 
 import java.util.Optional;
 
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 
-public class Publish {
+public class PublishExample {
 	public static void main(String[] args) {
-		new Publish().buildAndRunModel();
+		new PublishExample().buildAndRunModel();
 	}
 
 	private void buildAndRunModel() {
