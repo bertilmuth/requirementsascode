@@ -145,7 +145,6 @@ To apply the requirements as code design principles, to clearly separate require
 
 ## Actor that represents system/service
 Instead of directly creating a runner for a model as shown above, for larger scale applications, you should create an actor.
-
 An actor encapsulates a `ModelRunner` and runs it for you. All you need to provide is the model of the actor's behavior, as shown below.
 
 Create a subclass of `AbstractActor`, and override its `behavior()` method to provide the model:
