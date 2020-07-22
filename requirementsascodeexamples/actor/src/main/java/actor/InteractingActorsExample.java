@@ -25,7 +25,7 @@ class MessageProducer extends AbstractActor {
   @Override
   public Model behavior() {
     Model model = Model.builder()
-      .on(EnterName.class).systemPublish(this::nameEntered).to(messageConsumer)
+      .user(EnterName.class).systemPublish(this::nameEntered).to(messageConsumer)
     .build();
     return model;
   }

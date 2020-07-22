@@ -55,7 +55,7 @@ After that, you'll see a concrete code example.
 ## Step 1: Build a use case model
 ``` java
 Model model = Model.builder()
-  .user(/* message class */).system(/* message handler*/)
+  .user(/* command class */).system(/* command handler*/)
   .user(..).system(...)
   ...
 .build();
@@ -369,14 +369,14 @@ class Greeting{
 
 # Publishing events
 When an actor's behavior only uses the `system()` method, it's restricted to just consuming messages.
-But an actor can also publish events with `systemPublish()`, like so:
+But an actor can also publish events with `systemPublish()`, as shown in [this file](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishingActorExample.java):
 
 ``` java
 class PublishingActor extends AbstractActor {
   @Override
   public Model behavior() {
     Model model = Model.builder()
-      .on(EnterName.class).systemPublish(this::publishNameAsString)
+      .user(EnterName.class).systemPublish(this::publishNameAsString)
       .on(String.class).system(this::displayNameString)
     .build();
     return model;
@@ -393,10 +393,61 @@ class PublishingActor extends AbstractActor {
 ```
 
 As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
-The actor takes the returned event and publishes it to the model. 
-Note that in any case, the actor also returns the event that was published last to the caller of `actor.reactTo()`. 
 
-You can find the full code of this example [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishingActorExample.java).
+By default, the actor takes the returned event and publishes it to the same model, as shown above. 
+But you can also publish events to a different actor. That receiving actor will react to the event.
+
+The syntax is:
+
+`.user(/* command class */).systemPublish(/* event producing function*/).to(/* receiving actor */)`
+
+or
+
+`.on(/* event class */).systemPublish(/* event producing function*/).to(/* receiving actor */)`
+
+[Here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/InteractingActorsExample.java) is an example of two actors. 
+
+The `MessageProducer` receives an `EnterName` command and sends a `NameEntered` event to the `MessageConsumer`.
+
+The consumer receives the event, and prints the name.
+
+``` java
+class MessageProducer extends AbstractActor {
+  private AbstractActor messageConsumer;
+
+  public MessageProducer(AbstractActor messageConsumer) {
+    this.messageConsumer = messageConsumer;
+  }
+  
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(EnterName.class).systemPublish(this::nameEntered).to(messageConsumer)
+    .build();
+    return model;
+  }
+
+  private NameEntered nameEntered(EnterName enterName) {
+    return new NameEntered(enterName.getUserName());
+  }
+}
+
+class MessageConsumer extends AbstractActor {
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .on(NameEntered.class).system(this::displayName)
+    .build();
+    return model;
+  }
+
+  public void displayName(NameEntered nameEntered) {
+    System.out.println("Welcome, " + nameEntered.getUserName() + ".");
+  }
+}
+```
+
+Note that in any case, an actor returns the event that was published last to the caller of `actor.reactTo()`. 
 
 # Documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)

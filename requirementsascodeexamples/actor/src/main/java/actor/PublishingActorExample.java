@@ -20,7 +20,7 @@ class PublishingActor extends AbstractActor {
   @Override
   public Model behavior() {
     Model model = Model.builder()
-      .on(EnterName.class).systemPublish(this::publishNameAsString)
+      .user(EnterName.class).systemPublish(this::publishNameAsString)
       .on(String.class).system(this::displayNameString)
     .build();
     return model;
