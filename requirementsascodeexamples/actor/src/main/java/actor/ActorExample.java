@@ -24,13 +24,13 @@ class GreetingService extends AbstractActor {
     this.saysHello = saysHello;
   }
 
-	@Override
-	public Model behavior() {
-		Model model = Model.builder()
-			.user(requestsHello).system(saysHello)
-		.build();
-		return model;
-	}
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(requestsHello).system(saysHello)
+    .build();
+    return model;
+  }
 }
 
 /**
