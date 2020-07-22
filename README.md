@@ -405,11 +405,7 @@ or
 
 `.on(/* event class */).systemPublish(/* event producing function*/).to(/* receiving actor */)`
 
-[Here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/InteractingActorsExample.java) is an example of two actors. 
-
-The `MessageProducer` receives an `EnterName` command and sends a `NameEntered` event to the `MessageConsumer`.
-
-The consumer receives the event, and prints the name.
+[Here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/InteractingActorsExample.java) is an example of two actors. The `MessageProducer` receives an `EnterName` command and sends a `NameEntered` event to the `MessageConsumer`. The consumer receives the event, and prints the name.
 
 ``` java
 class MessageProducer extends AbstractActor {
