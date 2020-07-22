@@ -11,7 +11,7 @@ public class HelloUser {
     ModelRunner modelRunner = new ModelRunner().run(model);
     modelRunner.reactTo(new RequestHello("Joe"));
   }
-  
+
   public static void sayHello(RequestHello requestHello) {
     System.out.println("Hello, " + requestHello.getUserName() + ".");
   }
@@ -23,7 +23,7 @@ class ModelBuilder {
   public Model build(Consumer<RequestHello> saysHello) {
     Model model = Model.builder()
       .user(requestsHello).system(saysHello)
-     .build();
+    .build();
     return model;
   }
 }
