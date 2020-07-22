@@ -55,9 +55,9 @@ After that, you'll see a concrete code example.
 ## Step 1: Build a use case model
 ``` java
 Model model = Model.builder()
-	.user(/* message class */).system(/* message handler*/)
-	.user(..).system(...)
-	...
+  .user(/* message class */).system(/* message handler*/)
+  .user(..).system(...)
+  ...
 .build();
 ```
 
@@ -152,20 +152,20 @@ Create a subclass of `AbstractActor`, and override its `behavior()` method to pr
 
 ``` java
 class GreetingService extends AbstractActor {
-	private static final Class<RequestHello> requestsHello = RequestHello.class;
-	private Consumer<RequestHello> saysHello;
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private Consumer<RequestHello> saysHello;
 
-	public GreetingService(Consumer<RequestHello> saysHello) {
-		this.saysHello = saysHello;
-	}
+  public GreetingService(Consumer<RequestHello> saysHello) {
+    this.saysHello = saysHello;
+  }
 
-	@Override
-	public Model behavior() {
-		Model model = Model.builder()
-			.user(requestsHello).system(saysHello)
-		.build();
-		return model;
-	}
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(requestsHello).system(saysHello)
+    .build();
+    return model;
+  }
 }
 ```
 Pass the message handlers as constructor parameters. Use interfaces, not concrete classes, as constructor parameters.
