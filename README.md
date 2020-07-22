@@ -259,7 +259,7 @@ class Greeting{
 ```
 
 # Complete example code for applying the design priciples
-Here's the complete example as a single file for convenience.
+Here's the complete example as a [single file](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/ActorExample.java) for convenience.
 
 ``` java
 package actor;
