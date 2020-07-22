@@ -7,7 +7,7 @@ import org.requirementsascode.Model;
 
 public class ActorExample {
   public static void main(String[] args) {
-  	AbstractActor greetingService = new GreetingService(new SayHello());
+    AbstractActor greetingService = new GreetingService(new SayHello());
     new MessageSender(greetingService).sendMessages();
   }
 }
@@ -17,12 +17,12 @@ public class ActorExample {
  * dispatching them to message handlers.
  */
 class GreetingService extends AbstractActor {
-	private static final Class<RequestHello> requestsHello = RequestHello.class;
-	private Consumer<RequestHello> saysHello;
+  private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private Consumer<RequestHello> saysHello;
 
-	public GreetingService(Consumer<RequestHello> saysHello) {
-		this.saysHello = saysHello;
-	}
+  public GreetingService(Consumer<RequestHello> saysHello) {
+    this.saysHello = saysHello;
+  }
 
 	@Override
 	public Model behavior() {
@@ -44,9 +44,8 @@ class MessageSender {
   }
 
   /**
-   * Send message to the service actor. In this example, we don't care 
-   * about the return value of the call, because we don't send a query
-   * or publish events.
+   * Send message to the service actor. In this example, we don't care about the
+   * return value of the call, because we don't send a query or publish events.
    */
   public void sendMessages() {
     greetingService.reactTo(new RequestHello("Joe"));
@@ -77,7 +76,7 @@ class SayHello implements Consumer<RequestHello> {
   public SayHello() {
     this.outputAdapter = new OutputAdapter();
   }
-  
+
   public void accept(RequestHello requestHello) {
     String greeting = Greeting.forUser(requestHello.getUserName());
     outputAdapter.showMessage(greeting);
@@ -87,7 +86,7 @@ class SayHello implements Consumer<RequestHello> {
 /**
  * Infrastructure class
  */
-class OutputAdapter{
+class OutputAdapter {
   public void showMessage(String message) {
     System.out.println(message);
   }
@@ -96,7 +95,7 @@ class OutputAdapter{
 /**
  * Domain class
  */
-class Greeting{
+class Greeting {
   public static String forUser(String userName) {
     return "Hello, " + userName + ".";
   }
