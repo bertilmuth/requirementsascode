@@ -96,7 +96,7 @@ There's a single use case with a single interaction.
 The user sends a request with the user name ("Joe"). The system says hello ("Hello, Joe.")
 
 ``` java
-package hello;
+package helloworld;
 
 import java.util.function.Consumer;
 
