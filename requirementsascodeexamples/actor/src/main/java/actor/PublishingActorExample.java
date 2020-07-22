@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
+import actor.message.EnterName;
+
 public class PublishingActorExample {
 	public static void main(String[] args) {
 		AbstractActor actor = new PublishingActor(); 
@@ -33,14 +35,3 @@ class PublishingActor extends AbstractActor {
   }
 }
 
-class EnterName {
-	private String userName;
-
-	public EnterName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-}
