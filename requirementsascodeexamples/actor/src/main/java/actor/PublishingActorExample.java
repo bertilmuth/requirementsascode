@@ -8,12 +8,12 @@ import org.requirementsascode.Model;
 import actor.message.EnterName;
 
 public class PublishingActorExample {
-	public static void main(String[] args) {
-		AbstractActor actor = new PublishingActor(); 
-		
-		Optional<Object> userName = actor.reactTo(new EnterName("Joe"));	
-		System.out.println("Your name is: " + userName.get() + ".");
-	}
+  public static void main(String[] args) {
+    AbstractActor actor = new PublishingActor();
+
+    Optional<Object> userName = actor.reactTo(new EnterName("Joe"));
+    System.out.println("Your name is: " + userName.get() + ".");
+  }
 }
 
 class PublishingActor extends AbstractActor {
