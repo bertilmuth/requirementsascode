@@ -139,35 +139,6 @@ class RequestHello {
 }
 ```
 
-# Publishing events
-When you use the `system()` method, you are restricted to just consuming messages.
-But you can also publish events with `systemPublish()`, like so:
-
-``` java
-private void buildModel() {
-  Model model = Model.builder()
-    .on(EnterName.class).systemPublish(this::publishNameAsString) 
-    .on(String.class).system(this::displayNameString) 
-   .build();			
-}
-
-private String publishNameAsString(EnterName enterName) {
-  return enterName.getUserName();
-}
-
-public void displayNameString(String nameString) {
-  System.out.println("Welcome, " + nameString + ".");
-}
-```
-
-As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
-By default, the model runner takes the returned event and publishes it to the model. 
-
-This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
-For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
-
-You can find the example code [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishExample.java).
-
 # Example for applying the design principles
 The examples above have shown how to build and run use case models. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
 To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to change as follows.
@@ -421,6 +392,35 @@ class Greeting{
   }
 }
 ```
+
+# Publishing events
+When you use the `system()` method, you are restricted to just consuming messages.
+But you can also publish events with `systemPublish()`, like so:
+
+``` java
+private void buildModel() {
+  Model model = Model.builder()
+    .on(EnterName.class).systemPublish(this::publishNameAsString) 
+    .on(String.class).system(this::displayNameString) 
+   .build();			
+}
+
+private String publishNameAsString(EnterName enterName) {
+  return enterName.getUserName();
+}
+
+public void displayNameString(String nameString) {
+  System.out.println("Welcome, " + nameString + ".");
+}
+```
+
+As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
+By default, the model runner takes the returned event and publishes it to the model. 
+
+This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
+For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
+
+You can find the example code [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishExample.java).
 
 # Documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
