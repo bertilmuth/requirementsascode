@@ -166,7 +166,7 @@ By default, the model runner takes the returned event and publishes it to the mo
 This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
 For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
 
-You can find the example code [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/publish/Publish.java).
+You can find the example code [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishExample.java).
 
 # Example for applying the design principles
 The examples above have shown how to build and run use case models. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
