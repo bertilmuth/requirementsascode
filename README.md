@@ -121,7 +121,7 @@ class ModelBuilder {
   public Model build(Consumer<RequestHello> saysHello) {
     Model model = Model.builder()
       .user(requestsHello).system(saysHello)
-     .build();
+    .build();
     return model;
   }
 }
@@ -163,7 +163,7 @@ class GreetingService extends AbstractActor {
 	public Model behavior() {
 		Model model = Model.builder()
 			.user(requestsHello).system(saysHello)
-				.build();
+		.build();
 		return model;
 	}
 }
@@ -271,7 +271,7 @@ import org.requirementsascode.Model;
 
 public class ActorExample {
   public static void main(String[] args) {
-    GreetingService greetingService = new GreetingService(new SayHello());
+    AbstractActor greetingService = new GreetingService(new SayHello());
     new MessageSender(greetingService).sendMessages();
   }
 }
@@ -292,7 +292,7 @@ class GreetingService extends AbstractActor {
 	public Model behavior() {
 		Model model = Model.builder()
 			.user(requestsHello).system(saysHello)
-				.build();
+		.build();
 		return model;
 	}
 }
@@ -369,33 +369,33 @@ class Greeting{
 ```
 
 # Publishing events
-When you use the `system()` method, you are restricted to just consuming messages.
-But you can also publish events with `systemPublish()`, like so:
+When an actor's behavior only uses the `system()` method, it's restricted to just consuming messages.
+But an actor can also publish events with `systemPublish()`, like so:
 
 ``` java
-private void buildModel() {
-  Model model = Model.builder()
-    .on(EnterName.class).systemPublish(this::publishNameAsString) 
-    .on(String.class).system(this::displayNameString) 
-   .build();			
-}
+class PublishingActor extends AbstractActor{
+	@Override
+	public Model behavior() {
+		Model model = Model.builder()
+			.on(EnterName.class).systemPublish(this::publishNameAsString) 
+			.on(String.class).system(this::displayNameString) 
+		.build();
+		return model;		
+	}
+	
+	private String publishNameAsString(EnterName enterName) {
+		return enterName.getUserName();
+	}
 
-private String publishNameAsString(EnterName enterName) {
-  return enterName.getUserName();
-}
-
-public void displayNameString(String nameString) {
-  System.out.println("Welcome, " + nameString + ".");
+	public void displayNameString(String nameString) {
+		System.out.println("Welcome, " + nameString + ".");
+	}
 }
 ```
 
 As you can see, `publishNameAsString()` takes a command object as input parameter, and returns an event to be published. In this case, a String.
-By default, the model runner takes the returned event and publishes it to the model. 
-
-This behavior can be overriden by specifying a custom event handler on the ModelRunner with `publishWith()`.
-For example, you can use `modelRunner.publishWith(queue::put)` to publish events to an event queue.
-
-You can find the example code [here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/actor/src/main/java/actor/PublishExample.java).
+The actor takes the returned event and publishes it to the model. 
+Note that in any case, the actor also returns the event that was published last to the caller of `actor.reactTo()`. 
 
 # Documentation of requirements as code
 * [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)

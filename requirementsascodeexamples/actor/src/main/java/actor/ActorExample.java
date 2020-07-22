@@ -7,7 +7,7 @@ import org.requirementsascode.Model;
 
 public class ActorExample {
   public static void main(String[] args) {
-    GreetingService greetingService = new GreetingService(new SayHello());
+  	AbstractActor greetingService = new GreetingService(new SayHello());
     new MessageSender(greetingService).sendMessages();
   }
 }
@@ -28,7 +28,7 @@ class GreetingService extends AbstractActor {
 	public Model behavior() {
 		Model model = Model.builder()
 			.user(requestsHello).system(saysHello)
-				.build();
+		.build();
 		return model;
 	}
 }
