@@ -7,12 +7,12 @@ import actor.message.EnterName;
 import actor.message.NameEntered;
 
 public class InteractingActorsExample {
-	public static void main(String[] args) {
-    AbstractActor consumer = new MessageConsumer(); 
-		AbstractActor producer = new MessageProducer(consumer); 
-		
-		producer.reactTo(new EnterName("Joe"));	
-	}
+  public static void main(String[] args) {
+    AbstractActor consumer = new MessageConsumer();
+    AbstractActor producer = new MessageProducer(consumer);
+
+    producer.reactTo(new EnterName("Joe"));
+  }
 }
 
 class MessageProducer extends AbstractActor {
