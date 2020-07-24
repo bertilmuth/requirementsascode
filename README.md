@@ -443,6 +443,9 @@ class MessageConsumer extends AbstractActor {
 }
 ```
 
+To access the model runner inside of an actor, call `super.getModelRunner()`.
+If you want full control of the way events are published, call `modelRunner.publishWith()`.
+
 Note that in any case, an actor returns the event that was published last to the caller of `actor.reactTo()`. 
 
 # Documentation of requirements as code
