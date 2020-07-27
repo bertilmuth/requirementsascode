@@ -163,6 +163,8 @@ public abstract class AbstractActor {
   /**
    * Same as {@link #reactTo(Object)}, but with the specified actor as the calling user's role.
    * 
+   * @param <T>     the type of message
+   * @param <U>     the return type that you as the user expects.
    * @param message the message object
    * @param callingActor the actor as which to call this actor.
    * @return the event that was published (latest) if the system reacted, or an empty Optional.
