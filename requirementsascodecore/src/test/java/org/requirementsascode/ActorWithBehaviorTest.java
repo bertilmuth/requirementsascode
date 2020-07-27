@@ -28,6 +28,28 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
+  public void customActorReactsToFulfilledCondition() {
+    AbstractActor customActor = new CustomActor();    
+    assertNotNull(customActor.behavior());
+
+    Optional<Step> latestStepRun = customActor.getModelRunner().getLatestStep();
+    assertTrue(latestStepRun.isPresent());
+  }
+  
+  private class CustomActor extends AbstractActor{
+    @Override
+    public Model behavior() {
+      Condition actorHasNotRunAnyStep = () -> !getModelRunner().getLatestStep().isPresent();
+      
+      Model model = Model.builder()
+        .condition(actorHasNotRunAnyStep).system(displaysConstantText())
+      .build();
+      
+      return model;
+    }
+  }
+  
+  @Test
   public void actorReactsToFulfilledCondition() {
     Condition customerHasNotRunAnyStep = () -> !customer.getModelRunner().getLatestStep().isPresent();
     
