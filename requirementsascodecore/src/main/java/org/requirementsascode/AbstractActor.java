@@ -36,9 +36,21 @@ public abstract class AbstractActor {
 	}
 	
 	private void initializeFields() {
-		this.useCaseToStepMap = new HashMap<>();
-		this.modelRunner = new ModelRunner();
+		createEmptyUseCaseToStepMap();
+		createRunnerWithBehaviorIfPresent();
 	}
+
+  private void createEmptyUseCaseToStepMap() {
+    this.useCaseToStepMap = new HashMap<>();
+  }
+	
+  protected void createRunnerWithBehaviorIfPresent() {
+    this.modelRunner = new ModelRunner();
+    Model actorBehavior = behavior();
+    if(actorBehavior != null) {
+      modelRunner.run(actorBehavior);
+    }
+  }
 
 	/**
 	 * Returns the name of the actor.
@@ -94,31 +106,13 @@ public abstract class AbstractActor {
 	}
 
   public Optional<Object> reactTo(Object message) {
-    Objects.requireNonNull(message);
-    return runBehavior(message, null, behavior());
+    Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
+    return latestPublishedEvent;
   }
 
   public Optional<Object> reactTo(Object message, AbstractActor callingActor) {
-    Objects.requireNonNull(message);
-    Objects.requireNonNull(callingActor);
-    return runBehavior(message, callingActor, behavior());
-  }
-
-  private Optional<Object> runBehavior(Object message, AbstractActor callingActor, Model actorBehavior) {
-    Objects.requireNonNull(message);
-
-    if (isBehaviorPresentButNotRunning(actorBehavior, modelRunner)) {
-      AbstractActor callingActorOrDefaultUser = callingActor != null ? callingActor : actorBehavior.getUserActor();
-      modelRunner.as(callingActorOrDefaultUser).run(actorBehavior);
-    }
-
-    Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
-
+    Optional<Object> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
     return latestPublishedEvent;
-  }
-	
-  private boolean isBehaviorPresentButNotRunning(Model behavior, ModelRunner runner) {
-    return behavior != null && !modelRunner.isRunning();
   }
 
 	public abstract Model behavior();

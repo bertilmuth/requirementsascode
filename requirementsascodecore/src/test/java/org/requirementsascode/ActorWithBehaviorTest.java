@@ -103,6 +103,23 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
+  public void actorReactsIfActorInModelMatchesForSecondEvent() {
+    Actor validActor = new Actor("ValidActor");
+    Actor invalidActor = new Actor("InvalidActor");
+
+    Model model = modelBuilder.useCase(USE_CASE).as(validActor)
+      .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+    .build();
+  
+    Actor customerWithBehavior = customer.withBehavior(model);
+    customerWithBehavior.reactTo(entersText(), invalidActor);
+    customerWithBehavior.reactTo(entersText(), validActor);
+
+    Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
+    assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+  }
+  
+  @Test
   public void actorReturnsCorrectPublishedEvent() {
 		Model model = modelBuilder
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
