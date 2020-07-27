@@ -31,10 +31,10 @@ public class UserPartOfStep implements TemplateMethodModelEx {
       String wordsOfUserEventClassName = getLowerCaseWordsOfClassName(step.getMessageClass());
       userPartOfStep = userActorName + " " + wordsOfUserEventClassName + USER_POSTFIX;
     }
-    
+
     return new SimpleScalar(userPartOfStep);
   }
-  
+
   private boolean hasUser(Step step) {
     return !hasSystemUser(step) && !hasSystemEvent(step);
   }
