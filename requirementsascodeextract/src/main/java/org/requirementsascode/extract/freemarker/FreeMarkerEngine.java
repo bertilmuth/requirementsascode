@@ -20,11 +20,11 @@ public class FreeMarkerEngine {
   private Configuration cfg;
 
   /**
-   * Creates an engine for generating documentation, based on a 
-   * requirementsascodecore UseCaseModel and using the FreeMarker 
-   * template engine.
+   * Creates an engine for generating documentation, based on a
+   * requirementsascodecore UseCaseModel and using the FreeMarker template engine.
    * 
-   * @param basePackagePath package path in your classpath, where your FreeMarker templates are located.
+   * @param basePackagePath package path in your classpath, where your FreeMarker
+   *                        templates are located.
    */
   public FreeMarkerEngine(String basePackagePath) {
     createConfiguration(basePackagePath);
@@ -44,7 +44,7 @@ public class FreeMarkerEngine {
     put("flowCondition", new FlowCondition());
     put("actorPartOfStep", new ActorPartOfStep());
     put("userPartOfStep", new UserPartOfStep());
-    put("systemPartOfStep", new SystemPartOfStep()); 
+    put("systemPartOfStep", new SystemPartOfStep());
     put("reactWhileOfStep", new ReactWhileOfStep());
   }
 
@@ -61,17 +61,18 @@ public class FreeMarkerEngine {
   }
 
   /**
-   * 'Extracts' the use cases from the model. This is done by putting the specified models
-   * in the FreeMarker configuration under the name 'model'. Then, the specified template is
-   * used to transform the model to text and write it using the specified writer.
+   * 'Extracts' the use cases from the model. This is done by putting the
+   * specified models in the FreeMarker configuration under the name 'model'.
+   * Then, the specified template is used to transform the model to text and write
+   * it using the specified writer.
    *
-   * @param model the input model, created with requirementsascodecore
-   * @param templateFileName name of the template file, relative to the base class path (when constructing the engine)
-   * @param outputWriter the writer that writes out the resulting text
+   * @param model            the input model, created with requirementsascodecore
+   * @param templateFileName name of the template file, relative to the base class
+   *                         path (when constructing the engine)
+   * @param outputWriter     the writer that writes out the resulting text
    * @throws Exception if anything goes wrong
    */
-  public void extract(Model model, String templateFileName, Writer outputWriter)
-      throws Exception {
+  public void extract(Model model, String templateFileName, Writer outputWriter) throws Exception {
     put("model", model);
     Template template = cfg.getTemplate(templateFileName);
     template.process(dataModel, outputWriter);

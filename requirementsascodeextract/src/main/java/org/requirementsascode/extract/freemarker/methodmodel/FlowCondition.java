@@ -16,65 +16,65 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class FlowCondition implements TemplateMethodModelEx {
-    private static final String WHEN = "when ";
-    private static final String PREDICATE_SEPARATOR = ", ";
-    private static final String PREDICATE_POSTFIX = ": ";
+  private static final String WHEN = "when ";
+  private static final String PREDICATE_SEPARATOR = ", ";
+  private static final String PREDICATE_POSTFIX = ": ";
 
-    @SuppressWarnings("rawtypes")
-    @Override
-    public Object exec(List arguments) throws TemplateModelException {
-	if (arguments.size() != 1) {
-	    throw new TemplateModelException("Wrong number of arguments. Must be 1.");
-	}
-
-	Flow flow = getFlowFromFreemarker(arguments.get(0));
-
-	String flowPredicate = getFlowPredicate(flow);
-
-	return new SimpleScalar(flowPredicate);
+  @SuppressWarnings("rawtypes")
+  @Override
+  public Object exec(List arguments) throws TemplateModelException {
+    if (arguments.size() != 1) {
+      throw new TemplateModelException("Wrong number of arguments. Must be 1.");
     }
 
-    private String getFlowPredicate(Flow flow) {
-	String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR)
-		+ getCondition(flow);
-	String sep = "".equals(predicate) ? "" : PREDICATE_POSTFIX;
-	String capitalizedPredicateWithColon = StringUtils.capitalize(predicate) + sep;
-	return capitalizedPredicateWithColon;
-    }
+    Flow flow = getFlowFromFreemarker(arguments.get(0));
 
-    private String getFlowPosition(Flow flow) {
-	FlowPosition flowPosition = flow.getFlowPosition();
-	String result = "";
+    String flowPredicate = getFlowPredicate(flow);
 
-	if (flowPosition != null) {
-	    Step step = flowPosition.getStep();
-	    boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, step);
-	    if (isNonDefaultFlowPosition) {
-		String stepName = step != null ? step.getName() : "";
-		String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
-		String flowPositionWithStepName = flowPositionWords + " " + stepName;
-		result = flowPositionWithStepName.trim();
-	    }
-	}
-	return result;
-    }
+    return new SimpleScalar(flowPredicate);
+  }
 
-    boolean isNonDefaultFlowCondition(FlowPosition flowPosition, Step step) {
-	return !After.class.equals(flowPosition.getClass()) || step != null;
-    }
+  private String getFlowPredicate(Flow flow) {
+    String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR)
+      + getCondition(flow);
+    String sep = "".equals(predicate) ? "" : PREDICATE_POSTFIX;
+    String capitalizedPredicateWithColon = StringUtils.capitalize(predicate) + sep;
+    return capitalizedPredicateWithColon;
+  }
 
-    private String getFlowPredicateSeparator(Flow flow, String sep) {
-	String flowPosition = getFlowPosition(flow);
-	String result = "";
-	if (flowPosition != "" && getCondition(flow) != "") {
-	    result = sep;
-	}
-	return result;
-    }
+  private String getFlowPosition(Flow flow) {
+    FlowPosition flowPosition = flow.getFlowPosition();
+    String result = "";
 
-    private String getCondition(Flow flow) {
-	String conditionWords = flow.getCondition()
-		.map(condition -> (WHEN + getLowerCaseWordsOfClassName(condition.getClass()))).orElse("");
-	return conditionWords;
+    if (flowPosition != null) {
+      Step step = flowPosition.getStep();
+      boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, step);
+      if (isNonDefaultFlowPosition) {
+        String stepName = step != null ? step.getName() : "";
+        String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
+        String flowPositionWithStepName = flowPositionWords + " " + stepName;
+        result = flowPositionWithStepName.trim();
+      }
     }
+    return result;
+  }
+
+  boolean isNonDefaultFlowCondition(FlowPosition flowPosition, Step step) {
+    return !After.class.equals(flowPosition.getClass()) || step != null;
+  }
+
+  private String getFlowPredicateSeparator(Flow flow, String sep) {
+    String flowPosition = getFlowPosition(flow);
+    String result = "";
+    if (flowPosition != "" && getCondition(flow) != "") {
+      result = sep;
+    }
+    return result;
+  }
+
+  private String getCondition(Flow flow) {
+    String conditionWords = flow.getCondition().map(
+      condition -> (WHEN + getLowerCaseWordsOfClassName(condition.getClass()))).orElse("");
+    return conditionWords;
+  }
 }

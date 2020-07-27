@@ -52,7 +52,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     }
     return systemPartOfStep;
   }
-  
+
   private String getOn(Step step) {
     String on = "";
 
@@ -61,13 +61,13 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     }
     return on;
   }
-  
+
   private String getSystemPublishString(Step step) {
     Object systemReaction = step.getSystemReaction().getModelObject();
-    String systemPublishString = systemReaction instanceof Function? "publishes " : "";
+    String systemPublishString = systemReaction instanceof Function ? "publishes " : "";
     return systemPublishString;
   }
-  
+
   private String getPublishToActorString(Step step) {
     Optional<AbstractActor> optionalPublishToActor = step.getPublishTo();
     String publishToString = optionalPublishToActor.map(act -> " to " + act.getName()).orElse("");
@@ -76,7 +76,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
 
   private String getWordsOfSystemReactionClassName(Step step) {
     Object systemReaction = step.getSystemReaction().getModelObject();
-    Class<?> systemReactionClass = systemReaction.getClass();    
+    Class<?> systemReactionClass = systemReaction.getClass();
     String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
     return wordsOfClassName;
   }

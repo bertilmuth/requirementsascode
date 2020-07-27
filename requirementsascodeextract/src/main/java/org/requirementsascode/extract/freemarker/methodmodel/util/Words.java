@@ -13,7 +13,7 @@ public class Words {
     String[] wordsArray = StringUtils.splitByCharacterTypeCamelCase(camelCaseString);
     return wordsArray;
   }
-  
+
   private static String wordArrayToLowerCaseString(String[] wordArray) {
     String wordString = StringUtils.join(wordArray, " ").toLowerCase();
     return wordString;
