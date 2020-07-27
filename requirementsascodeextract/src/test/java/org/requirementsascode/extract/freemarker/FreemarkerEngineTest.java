@@ -102,9 +102,12 @@ public class FreemarkerEngineTest {
   
   @Test
   public void extractsFlowlessModel() throws Exception {
+    Actor secondActor = new Actor("Second actor");
+    
     Model model = Model.builder()
       .on(entersName()).system(greetsUser())
       .on(entersName()).systemPublish(nameEntered())
+      .on(entersName()).systemPublish(nameEntered()).to(secondActor)
       .on(Exception.class).system(logsException())
     .build();
 
@@ -117,7 +120,8 @@ public class FreemarkerEngineTest {
     assertEquals("Use case: Handles messages." 
       + " Step: S1. On EntersName: System greets user."
       + " Step: S2. On EntersName: System publishes name entered."
-      + " Step: S3. On Exception: System logs exception.", output);
+      + " Step: S3. On EntersName: System publishes name entered to Second actor."
+      + " Step: S4. On Exception: System logs exception.", output);
   }
 
   private Condition thereIsNoAlternative() {
