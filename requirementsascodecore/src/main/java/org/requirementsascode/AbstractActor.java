@@ -8,7 +8,25 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import org.requirementsascode.exception.InfiniteRepetition;
+import org.requirementsascode.exception.MoreThanOneStepCanReact;
+
+/**
+ * An actor can be anything with a behavior.
+ * It can be the system/service you're developing,
+ * or a role that an external user plays. 
+ * 
+ * Actors can be senders and receivers of messages to
+ * other actors.
+ * 
+ * Actors enable to distinguish user rights: 
+ * only an actor that is connected to a particular step is allowed to 
+ * cause a system reaction for that step. 
+ *
+ * @author b_muth
+ */
 public abstract class AbstractActor {
 	private String name;
 	private ModelRunner modelRunner;
@@ -25,8 +43,7 @@ public abstract class AbstractActor {
 	}
 
 	/**
-	 * Creates an actor with the specified name that is part of the specified use
-	 * case model.
+	 * Creates an actor with the specified name.
 	 *
 	 * @param name  the name of the actor
 	 */
@@ -61,17 +78,21 @@ public abstract class AbstractActor {
 		return name;
 	}
 
-	protected void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Returns the use cases this actor is associated with.
+	 * Returns the use cases this actor is associated with, 
+	 * as an external user. 
 	 *
 	 * <p>
 	 * The actor is associated to a use case if it is connected to at least one of
 	 * its steps.
-	 *
+	 * 
+	 * <p>
+	 * Note: don't confuse this with the
+   * use cases that the actor owns as part of its behavior.
 	 * @return the use cases the actor is associated with
 	 */
 	public Set<UseCase> getUseCases() {
@@ -81,6 +102,9 @@ public abstract class AbstractActor {
 
 	/**
 	 * Returns the steps this actor is connected with, for the specified use case.
+	 * <p>
+   * Note: don't confuse this with the
+   * steps that the actor owns as part of its behavior.
 	 *
 	 * @param useCase the use case to query for steps the actor is connected with
 	 * @return the steps the actor is connected with
@@ -92,37 +116,88 @@ public abstract class AbstractActor {
 		return Collections.unmodifiableList(steps);
 	}
 
-	public void connectToStep(Step step) {
-		Objects.requireNonNull(step.getUseCase());
-		Objects.requireNonNull(step);
-	
-		List<Step> steps = getModifiableStepsOf(step.getUseCase());
-		steps.add(step);
-	}
-
 	private List<Step> getModifiableStepsOf(UseCase useCase) {
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}
 
-  public Optional<Object> reactTo(Object message) {
-    Optional<Object> latestPublishedEvent = modelRunner.reactTo(message);
+	/**
+   * Call this method to provide a message (i.e. command or event object) to the
+   * actor.
+   *
+   * <p>
+   * The actor will then check which steps can react. If a
+   * single step can react, the actor will call the message handler with it. If
+   * no step can react, the actor will either call the handler defined with
+   * {@link ModelRunner#handleUnhandledWith(Consumer)} on the actor's model runner, 
+   * or if no such handler exists, consume the message silently.
+   * 
+   * If more than one step can react, the actor will throw an exception.
+   * <p>
+   * After that, the actor will trigger "autonomous system reactions"
+   * that don't have a message class.
+   * 
+   * Note that if you provide a collection as the first and only argument, this
+   * will be flattened to the objects in the collection, and for each object
+   * {@link #reactTo(Object)} is called.
+   *
+   * @see AbstractActor#getModelRunner()
+   * @see ModelRunner#handleUnhandledWith(Consumer)
+   * @see ModelRunner#reactTo(Object)
+   * 
+   * @param <T>     the type of message
+   * @param <U>     the return type that you as the user expects.
+   * @param message the message object
+   * @return the event that was published (latest) if the system reacted, or an empty Optional.
+   * 
+   * @throws MoreThanOneStepCanReact when more than one step can react
+   * @throws InfiniteRepetition      when a step has an always true condition, or
+   *                                 there is an infinite loop.
+   * @throws ClassCastException      when type of the returned instance isn't U
+   */
+  public <T, U> Optional<U> reactTo(T message) {
+    Optional<U> latestPublishedEvent = modelRunner.reactTo(message);
     return latestPublishedEvent;
   }
 
-  public Optional<Object> reactTo(Object message, AbstractActor callingActor) {
-    Optional<Object> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
+  /**
+   * Same as {@link #reactTo(Object)}, but with the specified actor as the calling user's role.
+   * 
+   * @param message the message object
+   * @param callingActor the actor as which to call this actor.
+   * @return the event that was published (latest) if the system reacted, or an empty Optional.
+   */
+  public <T, U> Optional<U> reactTo(Object message, AbstractActor callingActor) {
+    Optional<U> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
     return latestPublishedEvent;
   }
 
+  /**
+   * Override this method to provide the model for the actor's behavior.
+   * 
+   * @return the behavior
+   */
 	public abstract Model behavior();
 
+	/**
+	 * Call this method from a subclass to customize the way the actor runs the behavior.
+	 * 
+	 * @return the single model runner encapsulated by this actor
+	 */
 	public ModelRunner getModelRunner() {
 		return modelRunner;
 	}
+	
+  void connectToStep(Step step) {
+    Objects.requireNonNull(step.getUseCase());
+    Objects.requireNonNull(step);
 
-	@Override
-	public String toString() {
+    List<Step> steps = getModifiableStepsOf(step.getUseCase());
+    steps.add(step);
+  }
+
+  @Override
+  public String toString() {
 		return getName();
 	}
 

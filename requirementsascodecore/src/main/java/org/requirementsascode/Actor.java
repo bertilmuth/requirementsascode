@@ -3,9 +3,7 @@ package org.requirementsascode;
 import java.util.Objects;
 
 /**
- * An actor is a role that a user plays. Actors represent different user groups.
- * They enable to distinguish user rights: only an actor that is connected to a
- * particular step is allowed to cause a system reaction for that step.
+ * An actor with dynamically attachable behavior.
  *
  * @author b_muth
  */
@@ -29,12 +27,20 @@ public class Actor extends AbstractActor{
 		super(name);
 	}
 	
+	/**
+	 * Attach the specified behavior to the actor.
+	 * 
+	 * @param behaviorModel the behvior the actor will show from now on
+	 * 
+	 * @return this actor
+	 */
 	public Actor withBehavior(Model behaviorModel) {
 		this.behavior = Objects.requireNonNull(behaviorModel);
 		createRunnerWithBehaviorIfPresent();
 		return this;
 	}
 	
+	@Override
 	public Model behavior() {
 		return behavior;
 	}

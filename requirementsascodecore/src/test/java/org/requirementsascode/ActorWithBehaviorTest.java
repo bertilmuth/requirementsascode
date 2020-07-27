@@ -145,7 +145,8 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
 		.build();
 
-		String publishedString = (String) customer.withBehavior(model).reactTo(entersText()).get();
+		Optional<String> optionalString = customer.withBehavior(model).reactTo(entersText());
+		String publishedString = optionalString.get();
 		assertEquals(TEXT, publishedString);
 	}
   
@@ -156,7 +157,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model);		
-		ModelRunner	 customerRunner = customer.getModelRunner();
+		ModelRunner	customerRunner = customer.getModelRunner();
 		
 		customerRunner.publishWith(msg -> {
 			publishedString = (String)msg;
