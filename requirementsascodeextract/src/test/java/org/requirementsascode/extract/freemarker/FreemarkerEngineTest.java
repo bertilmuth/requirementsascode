@@ -98,24 +98,22 @@ public class FreemarkerEngineTest {
         output);
   }
   
-    @Test
-    public void extractsFlowlessModel() throws Exception {
-	Model model = Model.builder()
-		.on(entersName()).system(greetsUser())
-		.on(Exception.class).system(logsException())
-	.build();
-  
-	String templateFileName = "testextract_flowless.ftl";
-	Writer outputWriter = new StringWriter();
+  @Test
+  public void extractsFlowlessModel() throws Exception {
+    Model model = Model.builder()
+      .on(entersName()).system(greetsUser())
+      .on(Exception.class).system(logsException())
+    .build();
 
-	engine.extract(model, templateFileName, outputWriter);
-	String output = outputWriter.toString();
+    String templateFileName = "testextract_flowless.ftl";
+    Writer outputWriter = new StringWriter();
 
-          assertEquals(
-              "Use case: Handles messages."
-                    + " Step: S1. On EntersName: System greets user."                 
-                    + " Step: S2. On Exception: System logs exception.",
-              output);
+    engine.extract(model, templateFileName, outputWriter);
+    String output = outputWriter.toString();
+
+    assertEquals("Use case: Handles messages." 
+      + " Step: S1. On EntersName: System greets user."
+      + " Step: S2. On Exception: System logs exception.", output);
   }
 
   private Condition thereIsNoAlternative() {
@@ -133,7 +131,7 @@ public class FreemarkerEngineTest {
   private Consumer<EntersName> greetsUser() {
     return new GreetsUser();
   }
-  
+
   private Condition someConditionIsFulfilled() {
     return new SomeConditionIsFulfilled();
   }
@@ -146,10 +144,10 @@ public class FreemarkerEngineTest {
     return new Quits();
   }
 
-  private Runnable blowsUp() { 
-	  return new BlowsUp();
+  private Runnable blowsUp() {
+    return new BlowsUp();
   }
-  
+
   private Consumer<Exception> logsException() {
     return new LogsException();
   }
