@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ActorWithBehaviorTest extends AbstractTestCase{
@@ -29,7 +28,6 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
-  @Ignore
   public void actorReactsToFulfilledCondition() {
     Condition customerHasNotRunAnyStep = () -> !customer.getModelRunner().getLatestStep().isPresent();
     
