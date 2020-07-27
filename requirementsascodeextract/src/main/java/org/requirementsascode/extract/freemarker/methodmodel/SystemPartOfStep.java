@@ -8,6 +8,7 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.h
 import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.AbstractContinues;
@@ -41,15 +42,22 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
       String on = getOn(step);
       String systemActorName = getSystemActor(step).getName();
       String wordsOfSystemReactionClassName = getWordsOfSystemReactionClassName(step);
+      String systemPublishString = getSystemPublishString(step);
       String stepName = getStepName(step);
-      systemPartOfStep = on + systemActorName + " " + wordsOfSystemReactionClassName + stepName + SYSTEM_POSTFIX;
+      systemPartOfStep = on + systemActorName + " " + systemPublishString + wordsOfSystemReactionClassName + stepName + SYSTEM_POSTFIX;
     }
     return systemPartOfStep;
+  }
+  
+  private String getSystemPublishString(Step step) {
+    Object systemReaction = step.getSystemReaction().getModelObject();
+    String systemPublishString = systemReaction instanceof Function? "publishes " : "";
+    return systemPublishString;
   }
 
   private String getWordsOfSystemReactionClassName(Step step) {
     Object systemReaction = step.getSystemReaction().getModelObject();
-    Class<?> systemReactionClass = systemReaction.getClass();
+    Class<?> systemReactionClass = systemReaction.getClass();    
     String wordsOfClassName = getLowerCaseWordsOfClassName(systemReactionClass);
     return wordsOfClassName;
   }

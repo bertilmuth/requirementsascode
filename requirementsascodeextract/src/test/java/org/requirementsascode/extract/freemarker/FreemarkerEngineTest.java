@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.requirementsascode.extract.freemarker.predicate.ThereIsNoAlternative;
 import org.requirementsascode.extract.freemarker.systemreaction.BlowsUp;
 import org.requirementsascode.extract.freemarker.systemreaction.GreetsUser;
 import org.requirementsascode.extract.freemarker.systemreaction.LogsException;
+import org.requirementsascode.extract.freemarker.systemreaction.NameEntered;
 import org.requirementsascode.extract.freemarker.systemreaction.PromptsUserToEnterName;
 import org.requirementsascode.extract.freemarker.systemreaction.Quits;
 import org.requirementsascode.extract.freemarker.usercommand.DecidesToQuit;
@@ -102,6 +104,7 @@ public class FreemarkerEngineTest {
   public void extractsFlowlessModel() throws Exception {
     Model model = Model.builder()
       .on(entersName()).system(greetsUser())
+      .on(entersName()).systemPublish(nameEntered())
       .on(Exception.class).system(logsException())
     .build();
 
@@ -113,7 +116,8 @@ public class FreemarkerEngineTest {
 
     assertEquals("Use case: Handles messages." 
       + " Step: S1. On EntersName: System greets user."
-      + " Step: S2. On Exception: System logs exception.", output);
+      + " Step: S2. On EntersName: System publishes name entered."
+      + " Step: S3. On Exception: System logs exception.", output);
   }
 
   private Condition thereIsNoAlternative() {
@@ -126,6 +130,10 @@ public class FreemarkerEngineTest {
 
   private Class<EntersName> entersName() {
     return EntersName.class;
+  }
+  
+  private Function<EntersName, String> nameEntered() {
+    return new NameEntered();
   }
 
   private Consumer<EntersName> greetsUser() {
