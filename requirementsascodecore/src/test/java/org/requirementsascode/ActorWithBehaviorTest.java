@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ActorWithBehaviorTest extends AbstractTestCase{
@@ -24,6 +26,22 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   	Optional<Object> latestPublishedEvent = customer.reactTo(entersText());
   	assertNull(customer.behavior());
 		assertFalse(latestPublishedEvent.isPresent());
+  }
+  
+  @Test
+  @Ignore
+  public void actorReactsToFulfilledCondition() {
+    Condition customerHasNotRunAnyStep = () -> !customer.getModelRunner().getLatestStep().isPresent();
+    
+    Model model = modelBuilder
+      .condition(customerHasNotRunAnyStep).system(displaysConstantText())
+    .build();
+  
+    customer.withBehavior(model);
+    assertNotNull(customer.behavior());
+
+    Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
+    assertTrue(latestStepRun.isPresent());
   }
 	
   @Test
