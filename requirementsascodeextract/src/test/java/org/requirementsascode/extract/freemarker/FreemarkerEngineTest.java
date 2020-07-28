@@ -107,7 +107,7 @@ public class FreemarkerEngineTest {
     Model model = Model.builder()
       .on(entersName()).system(greetsUser())
       .on(entersName()).systemPublish(nameEntered())
-      .on(entersName()).systemPublish(nameEntered()).to(secondActor)
+      .condition(thereIsNoAlternative()).step("Three").on(entersName()).systemPublish(nameEntered()).to(secondActor)
       .on(Exception.class).system(logsException())
     .build();
 
@@ -120,7 +120,7 @@ public class FreemarkerEngineTest {
     assertEquals("Use case: Handles messages." 
       + " Step: S1. On EntersName: System greets user."
       + " Step: S2. On EntersName: System publishes name entered."
-      + " Step: S3. On EntersName: System publishes name entered to Second actor."
+      + " Step: Three. When there is no alternative: On EntersName: System publishes name entered to Second actor."
       + " Step: S4. On Exception: System logs exception.", output);
   }
 

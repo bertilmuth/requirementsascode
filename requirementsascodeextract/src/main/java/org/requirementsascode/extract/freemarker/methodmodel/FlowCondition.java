@@ -37,7 +37,7 @@ public class FlowCondition implements TemplateMethodModelEx {
   private String getFlowPredicate(Flow flow) {
     String predicate = getFlowPosition(flow) + getFlowPredicateSeparator(flow, PREDICATE_SEPARATOR)
       + getCondition(flow);
-    String sep = "".equals(predicate) ? "" : PREDICATE_POSTFIX;
+    String sep = predicate.isEmpty() ? "" : PREDICATE_POSTFIX;
     String capitalizedPredicateWithColon = StringUtils.capitalize(predicate) + sep;
     return capitalizedPredicateWithColon;
   }
@@ -66,7 +66,7 @@ public class FlowCondition implements TemplateMethodModelEx {
   private String getFlowPredicateSeparator(Flow flow, String sep) {
     String flowPosition = getFlowPosition(flow);
     String result = "";
-    if (flowPosition != "" && getCondition(flow) != "") {
+    if (!flowPosition.isEmpty() && !getCondition(flow).isEmpty()) {
       result = sep;
     }
     return result;

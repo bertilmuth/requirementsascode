@@ -7,6 +7,7 @@ import java.util.Map;
 import org.requirementsascode.Model;
 import org.requirementsascode.extract.freemarker.methodmodel.ActorPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.FlowCondition;
+import org.requirementsascode.extract.freemarker.methodmodel.FlowlessCondition;
 import org.requirementsascode.extract.freemarker.methodmodel.ReactWhileOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.SystemPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.UserPartOfStep;
@@ -42,6 +43,7 @@ public class FreeMarkerEngine {
   private void putFreemarkerMethodsInDataModel() {
     dataModel = new HashMap<String, Object>();
     put("flowCondition", new FlowCondition());
+    put("flowlessCondition", new FlowlessCondition());
     put("actorPartOfStep", new ActorPartOfStep());
     put("userPartOfStep", new UserPartOfStep());
     put("systemPartOfStep", new SystemPartOfStep());
