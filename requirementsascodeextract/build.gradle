@@ -11,8 +11,8 @@ jar {
 }
 
 dependencies {
-    implementation 'org.freemarker:freemarker:2.3.28'
-    implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'org.freemarker:freemarker:2.3.30'
+    implementation 'org.apache.commons:commons-lang3:3.11'
 	api ('org.requirementsascode:requirementsascodecore:' + version)
 	testImplementation 'junit:junit:4.12'
 }
