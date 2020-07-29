@@ -36,7 +36,6 @@ public class Actor extends AbstractActor{
 	 */
 	public Actor withBehavior(Model behaviorModel) {
 		this.behavior = Objects.requireNonNull(behaviorModel);
-		createRunnerWithBehaviorIfPresent();
 		return this;
 	}
 	

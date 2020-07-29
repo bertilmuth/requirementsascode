@@ -54,19 +54,15 @@ public abstract class AbstractActor {
 	
 	private void initializeFields() {
 		createEmptyUseCaseToStepMap();
-		createRunnerWithBehaviorIfPresent();
+		createModelRunner();
 	}
 
   private void createEmptyUseCaseToStepMap() {
     this.useCaseToStepMap = new HashMap<>();
   }
 	
-  protected void createRunnerWithBehaviorIfPresent() {
+  protected void createModelRunner() {
     this.modelRunner = new ModelRunner();
-    Model actorBehavior = behavior();
-    if(actorBehavior != null) {
-      modelRunner.run(actorBehavior);
-    }
   }
 
 	/**
@@ -120,6 +116,22 @@ public abstract class AbstractActor {
 		useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
 		return useCaseToStepMap.get(useCase);
 	}
+	
+	/**
+	 * Runs the ModelRunner encapsulated by this actor.
+	 * You only need to explicitly call this method if your model contains
+	 * steps that have a condition, but no event/command defined.
+	 */
+  public void run() {
+    runBehavior();
+  }
+  
+  private void runBehavior() {
+    Model actorBehavior = behavior();
+    if(actorBehavior != null) {
+      modelRunner.run(actorBehavior);
+    }
+  }
 
 	/**
    * Call this method to provide a message (i.e. command or event object) to the
@@ -156,6 +168,9 @@ public abstract class AbstractActor {
    * @throws ClassCastException      when type of the returned instance isn't U
    */
   public <T, U> Optional<U> reactTo(T message) {
+    if(!modelRunner.isRunning()) {
+      runBehavior();
+    }
     Optional<U> latestPublishedEvent = modelRunner.reactTo(message);
     return latestPublishedEvent;
   }
@@ -170,6 +185,9 @@ public abstract class AbstractActor {
    * @return the event that was published (latest) if the system reacted, or an empty Optional.
    */
   public <T, U> Optional<U> reactTo(Object message, AbstractActor callingActor) {
+    if(!modelRunner.isRunning()) {
+      runBehavior();
+    }
     Optional<U> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
     return latestPublishedEvent;
   }
@@ -227,5 +245,4 @@ public abstract class AbstractActor {
 			return false;
 		return true;
 	}
-
 }
