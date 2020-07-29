@@ -183,4 +183,43 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
+  
+  @Test
+  public void twoCustomActorsInteract() {
+    AbstractActor partner2 = new Partner2();    
+    AbstractActor partner1 = new Partner1(partner2);    
+
+    partner1.reactTo(entersText());
+
+    Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
+    assertTrue(latestStepRun.isPresent());
+  }
+  
+  private class Partner1 extends AbstractActor{
+    private AbstractActor actor2;
+
+    public Partner1(AbstractActor actor2) {
+      this.actor2 = actor2;
+    }
+    
+    @Override
+    public Model behavior() {      
+      Model model = Model.builder()
+        .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(actor2)
+      .build();
+      
+      return model;
+    }
+  }
+  
+  private class Partner2 extends AbstractActor{    
+    @Override
+    public Model behavior() {      
+      Model model = Model.builder()
+        .on(EntersText.class).system(displaysEnteredText())
+      .build();
+      
+      return model;
+    }
+  }
 }
