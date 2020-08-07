@@ -1,7 +1,5 @@
 package org.requirementsascode.exception;
 
-import java.io.Serializable;
-
 import org.requirementsascode.Step;
 
 /**
@@ -11,7 +9,7 @@ import org.requirementsascode.Step;
  * @author b_muth
  *
  */
-public class InfiniteRepetition extends RuntimeException implements Serializable {
+public class InfiniteRepetition extends RuntimeException{
 	private static final long serialVersionUID = 5249803987787358917L;
 	
 	public InfiniteRepetition(Step step) {

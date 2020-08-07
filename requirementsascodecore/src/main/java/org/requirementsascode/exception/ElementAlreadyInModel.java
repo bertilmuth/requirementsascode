@@ -1,7 +1,5 @@
 package org.requirementsascode.exception;
 
-import java.io.Serializable;
-
 /**
  * Exception that is thrown when somebody tries to create a new model element,
  * and a model element with the same name is already in the model.
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @author b_muth
  *
  */
-public class ElementAlreadyInModel extends RuntimeException implements Serializable {
+public class ElementAlreadyInModel extends RuntimeException{
 	private static final long serialVersionUID = -510216736346192818L;
 
 	public ElementAlreadyInModel(String elementName) {

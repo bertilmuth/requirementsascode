@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
+import org.requirementsascode.exception.NestedCallOfReactTo;
 
 /**
  * A model runner is a highly configurable controller that receives messages and
@@ -40,6 +41,7 @@ public class ModelRunner {
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
 	private boolean isRecording;
+  private boolean nestedReactToMessageCallCausesException;
 
 	/**
 	 * Constructor for creating a model runner.
@@ -54,6 +56,7 @@ public class ModelRunner {
 		if(optionalToActor.isPresent()) {
 			optionalToActor.get().reactTo(message);
 		}else {
+	    nestedReactToMessageCallCausesException = false;
 			this.reactToMessage(message);
 		}
 	}
@@ -163,6 +166,7 @@ public class ModelRunner {
 	}
 	
 	private void triggerAutonomousSystemReaction() {
+    nestedReactToMessageCallCausesException = false;
 		reactToMessage(this);
 	}
 
@@ -255,6 +259,9 @@ public class ModelRunner {
 		if (!isRunning) {
 			return;
 		}
+    if(nestedReactToMessageCallCausesException) {
+      throw new NestedCallOfReactTo();
+    }
 
 		Class<? extends Object> currentMessageClass = message.getClass();
 
@@ -340,6 +347,7 @@ public class ModelRunner {
 		setLatestStep(step);
 
 		try {
+      nestedReactToMessageCallCausesException = true;
 			messageHandler.accept(stepToBeRun);
 		} catch (Exception e) {
 			handleException(e);
@@ -456,6 +464,7 @@ public class ModelRunner {
 	 * @param e the exception that has been thrown by the system reaction
 	 */
 	protected void handleException(Exception e) {
+    nestedReactToMessageCallCausesException = false;
 		reactToMessage(e);
 	}
 

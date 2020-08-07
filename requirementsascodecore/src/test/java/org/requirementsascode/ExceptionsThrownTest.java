@@ -8,6 +8,7 @@ import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MissingUseCaseStepPart;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
+import org.requirementsascode.exception.NestedCallOfReactTo;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 public class ExceptionsThrownTest extends AbstractTestCase {
@@ -91,11 +92,23 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		modelRunner.run(model);
 	}
 
-	@Test
-	public void throwsExceptionIfMoreThanOneStepCanReactInSameUseCase() {
-		thrown.expect(MoreThanOneStepCanReact.class);
-		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
-		thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
+  @Test
+  public void throwsExceptionWhenReactToIsCalledFromSystemReaction() {
+    thrown.expect(NestedCallOfReactTo.class);
+
+    Model model = modelBuilder.useCase(USE_CASE)
+      .basicFlow()
+        .step(CUSTOMER_ENTERS_TEXT).system(() -> modelRunner.reactTo(""))
+    .build();
+
+    modelRunner.run(model);
+  }
+
+  @Test
+  public void throwsExceptionIfMoreThanOneStepCanReactInSameUseCase() {
+    thrown.expect(MoreThanOneStepCanReact.class);
+    thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
+    thrown.expectMessage(CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
 
 		Model model = modelBuilder.useCase(USE_CASE)
 			.basicFlow().anytime()
@@ -104,8 +117,8 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).system(displaysConstantText())
 			.build();
 
-		modelRunner.run(model);
-	}
+    modelRunner.run(model);
+  }
 
 	@Test
 	public void throwsExceptionIfMoreThanOneStepCanReactInDifferentUseCases() {
@@ -155,9 +168,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	public void rethrowsExceptionIfExceptionIsNotHandled() {
 		thrown.expect(IllegalStateException.class);
 
-		modelBuilder.useCase(USE_CASE).basicFlow().step(CUSTOMER_ENTERS_TEXT).system(() -> {
-			throw new IllegalStateException();
-		});
+		modelBuilder.useCase(USE_CASE)
+		  .basicFlow()
+		    .step(CUSTOMER_ENTERS_TEXT).system(() -> {throw new IllegalStateException();});
 
 		Model model = modelBuilder.build();
 
