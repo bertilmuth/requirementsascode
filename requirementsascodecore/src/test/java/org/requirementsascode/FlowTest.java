@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
@@ -223,25 +224,6 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void twoSequentialStepsReactToEventsOfUser() {
-		Actor user = new Actor("User");
-		
-		Model model = modelBuilder
-			.useCase(USE_CASE)
-				.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).as(user).user(EntersText.class).system(displaysEnteredText())
-					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
-			.build();
-		
-		Step userConnectedStep = user.getStepsOf(model.findUseCase(USE_CASE)).iterator().next();
-		assertEquals(CUSTOMER_ENTERS_TEXT, userConnectedStep.getName());
-		
-		modelRunner.as(user).run(model).reactTo(entersText(),entersNumber());
-		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
-	}
-	
-	@Test
 	public void secondStepReactsWhenFirstStepPublishesAnyMessage() {
 		final String PROCESS_PUBLISHED_EVENT = "Process published event";
 	    
@@ -344,16 +326,33 @@ public class FlowTest extends AbstractTestCase{
 						.as(customer).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
 						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
-			.build();
+					.build();
 		
 		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
 	}
 	
-	@Test
-	public void twoSequentialStepsReactOnlyWhenDefaultActorIsRight() {		
-		Model model = modelBuilder
+  @Test
+  public void twoSequentialStepsReactyOnlyWhenActorHasSameName() {
+    Model model = modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT)
+            .as(customer).user(EntersText.class).system(displaysEnteredText())
+          .step(CUSTOMER_ENTERS_TEXT_AGAIN)
+            .as(secondActor).user(EntersText.class).system(displaysEnteredText())
+          .build();
+
+    Actor actorWithSameName = new Actor(customer.getName());
+    modelRunner.as(actorWithSameName).run(model).reactTo(entersText(), entersText());
+
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
+  }
+
+  @Test
+  public void twoSequentialStepsReactWhenDefaultActorIsRight() {
+    Model model = modelBuilder
 			.useCase(USE_CASE).as(customer)			
 				.basicFlow()
 					.step(CUSTOMER_ENTERS_TEXT)
@@ -362,27 +361,52 @@ public class FlowTest extends AbstractTestCase{
 						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
-		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
-	}
-	
-	@Test
-	public void twoSequentialStepsReactWhenActorIsChanged() {		
-		Model model = modelBuilder
-			.useCase(USE_CASE)			
-				.basicFlow()
-					.step(CUSTOMER_ENTERS_TEXT)
-						.as(customer).user(EntersText.class).system(displaysEnteredText())
-					.step(CUSTOMER_ENTERS_TEXT_AGAIN)
-						.as(secondActor).user(EntersText.class).system(displaysEnteredText())
-			.build();
-		
-		modelRunner.as(customer).run(model).reactTo(entersText());		
-		modelRunner.as(secondActor).run(model).reactTo(entersText());	
-		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
-	}
+    modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
+
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
+  }
+
+  @Test
+  public void doesntReactWhenDefaultActorIsWrong() {
+    Model model = modelBuilder
+      .useCase(USE_CASE).as(secondActor)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+          .step(CUSTOMER_ENTERS_TEXT_AGAIN).as(secondActor).user(EntersText.class).system(displaysEnteredText())
+      .build();
+
+    modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
+
+    assertRecordedStepNames();
+  }
+
+  @Test
+  @Ignore
+  public void twoSequentialStepsReactWhenNoActorHasBeenSpecified() {
+    Model model = modelBuilder
+      .useCase(USE_CASE).basicFlow()
+        .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+        .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+      .build();
+
+    modelRunner.as(customer).run(model).reactTo(entersText(), entersText());
+
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
+  }
+
+  @Test
+  public void twoSequentialStepsReactWhenActorIsChanged() {
+    Model model = modelBuilder
+      .useCase(USE_CASE).basicFlow()
+        .step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
+        .step(CUSTOMER_ENTERS_TEXT_AGAIN).as(secondActor).user(EntersText.class).system(displaysEnteredText())
+      .build();
+
+    modelRunner.as(customer).run(model).reactTo(entersText());
+    modelRunner.as(secondActor).run(model).reactTo(entersText());
+
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
+  }
 	
 	@Test
 	public void twoSequentialStepsReactWhenSeveralActorsContainRightActorAtFirstPosition() {	
@@ -499,7 +523,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	@Test
-	public void stepWithWrongActorInDifferentFlowDoesNotReact() { 
+	public void doesNotReactIfStepHasWrongActorInDifferentFlow() { 
 		Model model = modelBuilder
 			.useCase(USE_CASE)		
 				.basicFlow()	
