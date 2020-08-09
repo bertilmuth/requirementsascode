@@ -304,9 +304,10 @@ public class ModelRunner {
 		return stepCanReact;
 	}
 	
-	private boolean hasRightActor(Step step) {
-		final Predicate<AbstractActor> isSystemOrRunActor = actor -> actor.equals(model.getSystemActor()) || actor.equals(runActor);
-		
+  private boolean hasRightActor(Step step) {
+    final Predicate<AbstractActor> isSystemOrRunActor = actor -> actor.equals(model.getUserActor())
+      || actor.equals(model.getSystemActor()) || actor.equals(runActor);
+
 		AbstractActor[] stepActors = step.getActors();
 		if (stepActors == null) {
 			throw (new MissingUseCaseStepPart(step, "actor"));

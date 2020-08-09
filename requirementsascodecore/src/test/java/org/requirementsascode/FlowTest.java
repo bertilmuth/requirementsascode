@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
@@ -381,7 +380,6 @@ public class FlowTest extends AbstractTestCase{
   }
 
   @Test
-  @Ignore
   public void twoSequentialStepsReactWhenNoActorHasBeenSpecified() {
     Model model = modelBuilder
       .useCase(USE_CASE).basicFlow()
