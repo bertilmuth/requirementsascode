@@ -54,15 +54,16 @@ public abstract class AbstractActor {
 	
 	private void initializeFields() {
 		createEmptyUseCaseToStepMap();
-		createModelRunner();
+		createOwnedModelRunner();
 	}
 
   private void createEmptyUseCaseToStepMap() {
     this.useCaseToStepMap = new HashMap<>();
   }
 	
-  protected void createModelRunner() {
+  protected void createOwnedModelRunner() {
     this.modelRunner = new ModelRunner();
+    this.modelRunner.setOwningActor(this);
   }
 
 	/**

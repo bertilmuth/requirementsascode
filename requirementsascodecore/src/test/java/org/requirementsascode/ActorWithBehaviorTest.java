@@ -133,18 +133,37 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void twoActorsInteract() {
-		Model model2 = Model.builder()
+		Model targetBehavior = Model.builder()
 			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
-		partner2.withBehavior(model2);
+		targetActor.withBehavior(targetBehavior);
 		
-		Model model1 = modelBuilder
-			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(partner2)
+		Model sourceBehavior = modelBuilder
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(targetActor)
 		.build();
-		partner.withBehavior(model1).reactTo(entersText());
+		sourceActor.withBehavior(sourceBehavior).reactTo(entersText());
 
-		Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
+		Optional<Step> latestStepRun = targetActor.getModelRunner().getLatestStep();
 		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+  }
+  
+  @Test
+  public void twoActorsInteractWhenSourceActorIsSpecifiedInTargetStepAs() {
+    Actor sourceActorClone = new Actor(sourceActor.getName());
+    
+    Model targetBehavior = Model.builder()
+      .useCase(USE_CASE).basicFlow()
+        .step(CUSTOMER_ENTERS_TEXT).as(sourceActorClone).user(EntersText.class).system(displaysEnteredText())
+    .build();
+    targetActor.withBehavior(targetBehavior);
+    
+    Model sourceBehavior = modelBuilder
+      .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(targetActor)
+    .build();
+    sourceActor.withBehavior(sourceBehavior).reactTo(entersText());
+
+    Optional<Step> latestStepRun = targetActor.getModelRunner().getLatestStep();
+    assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
   @Test
@@ -187,7 +206,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
-  public void customActorDoesnReactToFulfilledConditionIfRunHasNotBeenCalled() {
+  public void customActorDoesntReactToFulfilledConditionIfRunHasNotBeenCalled() {
     AbstractActor customActor = new CustomActor();    
     assertNotNull(customActor.behavior());
 

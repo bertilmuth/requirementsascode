@@ -43,8 +43,8 @@ public abstract class AbstractTestCase {
 	protected static final String CONTINUE_2 = "Continue 2";
 
 	protected Actor customer;
-	protected Actor partner;
-	protected Actor partner2;
+	protected Actor sourceActor;
+	protected Actor targetActor;
 	protected ModelBuilder modelBuilder;
 	protected ModelRunner modelRunner;
 	protected String displayedText;
@@ -53,8 +53,8 @@ public abstract class AbstractTestCase {
 		this.modelRunner = new ModelRunner().startRecording();
 		this.modelBuilder = Model.builder();
 		this.customer = new Actor(CUSTOMER);
-		this.partner = new Actor(PARTNER);
-		this.partner2 = new Actor(PARTNER2);
+		this.sourceActor = new Actor(PARTNER);
+		this.targetActor = new Actor(PARTNER2);
 		this.displayedText = null;
 	}
 

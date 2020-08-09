@@ -163,8 +163,8 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart
-				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
-				.step(CUSTOMER_ENTERS_NUMBER).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+				.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(sourceActor)
+				.step(CUSTOMER_ENTERS_NUMBER).on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(targetActor)
 			.build();
 	
 		Collection<Step> steps = useCasePart.getUseCase().getSteps();
@@ -174,12 +174,12 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = stepIt.next();
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-		assertEquals(partner, step.getPublishTo().get());
+		assertEquals(sourceActor, step.getPublishTo().get());
 	
 		step = stepIt.next();
 		assertEquals(CUSTOMER_ENTERS_NUMBER, step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-		assertEquals(partner2, step.getPublishTo().get());
+		assertEquals(targetActor, step.getPublishTo().get());
 	}
   
 	@Test
@@ -188,8 +188,8 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
-				.step(CUSTOMER_ENTERS_NUMBER).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(sourceActor)
+				.step(CUSTOMER_ENTERS_NUMBER).user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(targetActor)
 			.build();
 	
 		Collection<Step> steps = useCasePart.getUseCase().getSteps();
@@ -255,8 +255,8 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart
-				.on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
-				.on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+				.on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(sourceActor)
+				.on(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(targetActor)
 			.build();
 	
 		Collection<Step> steps = useCasePart.getUseCase().getSteps();
@@ -266,12 +266,12 @@ public class BuildModelTest extends AbstractTestCase {
 		Step step = stepIt.next();
 		assertEquals("S1", step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-		assertEquals(partner, step.getPublishTo().get());
+		assertEquals(sourceActor, step.getPublishTo().get());
 	
 		step = stepIt.next();
 		assertEquals("S2", step.getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-		assertEquals(partner2, step.getPublishTo().get());
+		assertEquals(targetActor, step.getPublishTo().get());
 	}
   
 	@Test
@@ -280,8 +280,8 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart
-				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
-				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(sourceActor)
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(targetActor)
 			.build();
 	
 		Collection<Step> steps = useCasePart.getUseCase().getSteps();
@@ -303,9 +303,9 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart
-				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner)
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(sourceActor)
 			.useCase(USE_CASE_2)
-				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(partner2)
+				.user(EntersText.class).systemPublish(publishesEnteredTextAsEvent()).to(targetActor)
 			.build();
 	
 		Collection<Step> steps = model.getSteps();
@@ -393,7 +393,7 @@ public class BuildModelTest extends AbstractTestCase {
   public void withFlow_createsSingleStepThatPublishesEvent() {
 		Model model = 
 			modelBuilder.useCase(USE_CASE).basicFlow()
-				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
+				.step(SYSTEM_DISPLAYS_TEXT).on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(sourceActor)
 			.build();
 	
 		UseCase useCase = model.findUseCase(USE_CASE);
@@ -404,7 +404,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(SYSTEM_DISPLAYS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getSystemActor(), step.getActors()[0]);
-		assertEquals(partner, step.getPublishTo().get());
+		assertEquals(sourceActor, step.getPublishTo().get());
   }
     
   @Test
@@ -413,7 +413,7 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		Model model = 
 			useCasePart.basicFlow()
-				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(partner)
+				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent()).to(sourceActor)
 			.build();
 	
 		UseCase useCase = useCasePart.getUseCase();
@@ -426,7 +426,7 @@ public class BuildModelTest extends AbstractTestCase {
 		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
 		assertEquals(USE_CASE, step.getUseCase().getName());
 		assertEquals(model.getUserActor(), step.getActors()[0]);
-		assertEquals(partner, step.getPublishTo().get());
+		assertEquals(sourceActor, step.getPublishTo().get());
   }
 
   @Test
@@ -467,9 +467,21 @@ public class BuildModelTest extends AbstractTestCase {
   }
 
   @Test
-  public void accessesExistingCustomerActor() {
-		Actor actualCustomer = new Actor(CUSTOMER);
-		assertEquals(customer, actualCustomer);
+  public void createsActorWithSameNameAndChecksEquality() {
+		Actor actorNamedCustomer = new Actor(CUSTOMER);
+		assertEquals(customer, actorNamedCustomer);
+  }
+  
+  @Test
+  public void createsActorWithBehaviorAndChecksOwnership() {
+    Model model = 
+      modelBuilder
+        .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
+      .build(); 
+    
+    customer.withBehavior(model);
+    Optional<AbstractActor> optionalOwningActor = customer.getModelRunner().getOwningActor();
+    assertEquals(customer, optionalOwningActor.get());
   }
   
   @Test

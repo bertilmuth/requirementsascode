@@ -28,6 +28,7 @@ import org.requirementsascode.exception.NestedCallOfReactTo;
 public class ModelRunner {
 	private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
 
+  private AbstractActor owningActor;
 	private AbstractActor runActor;
 
 	private Model model;
@@ -54,7 +55,8 @@ public class ModelRunner {
 	private <T> void publishMessage(T message) {
 		Optional<AbstractActor> optionalToActor = getLatestStep().flatMap(ls -> ls.getPublishTo());
 		if(optionalToActor.isPresent()) {
-			optionalToActor.get().reactTo(message);
+		  AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
+			optionalToActor.get().reactTo(message, owningActor);
 		}else {
 	    nestedReactToMessageCallCausesException = false;
 			this.reactToMessage(message);
@@ -561,6 +563,18 @@ public class ModelRunner {
 		Object[] messages = recordedMessages.toArray();
 		return messages;
 	}
+	
+	/**
+	 * Returns the actor that owns this model runner for running its behavior.
+	 * 
+	 * @return the owning actor, if existent, or an empty optional
+	 */
+  public Optional<AbstractActor> getOwningActor() {
+    return Optional.ofNullable(owningActor);
+  }
+  void setOwningActor(AbstractActor owningActor) {
+    this.owningActor = owningActor;
+  }
 	
 	private void initializeStepToBeRun() {
 		this.stepToBeRun = new StepToBeRun();
