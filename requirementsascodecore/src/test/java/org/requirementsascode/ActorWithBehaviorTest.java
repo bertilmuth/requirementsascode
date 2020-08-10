@@ -216,26 +216,29 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   
   @Test
   public void twoCustomActorsInteract() {
-    AbstractActor partner2 = new Partner2();    
-    AbstractActor partner1 = new Partner1(partner2);    
+    Partner2 partner2 = new Partner2();    
+    AbstractActor partner1 = new Partner1(partner2);  
+    partner2.replyTo(partner1);
 
-    partner1.reactTo(entersText());
+    Optional<String> partner2Response = partner1.reactTo(entersText());
 
-    Optional<Step> latestStepRun = partner2.getModelRunner().getLatestStep();
-    assertTrue(latestStepRun.isPresent());
+    assertEquals(TEXT.toUpperCase(), partner2Response.get());
   }
   
   private class Partner1 extends AbstractActor{
-    private AbstractActor actor2;
+    private AbstractActor partner2;
 
-    public Partner1(AbstractActor actor2) {
-      this.actor2 = actor2;
+    public Partner1(AbstractActor partner2) {
+      this.partner2 = partner2;
     }
     
     @Override
     public Model behavior() {      
       Model model = Model.builder()
-        .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(actor2)
+        .useCase(USE_CASE)
+          .basicFlow()
+            .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(partner2)
+            .step(SYSTEM_DISPLAYS_TEXT).on(TransformedText.class).systemPublish(tt -> tt.getText())
       .build();
       
       return model;
@@ -243,13 +246,31 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   private class Partner2 extends AbstractActor{    
+    private AbstractActor partner1;
+    
     @Override
     public Model behavior() {      
       Model model = Model.builder()
-        .on(EntersText.class).system(displaysEnteredText())
+        .on(EntersText.class).systemPublish(t -> new TransformedText(t.value().toUpperCase())).to(partner1)
       .build();
       
       return model;
+    }
+    
+    public void replyTo(AbstractActor partner1) {
+      this.partner1 = partner1;
+    }
+  }
+  
+  private class TransformedText{
+    private String text;
+    
+    public TransformedText(String text) {
+      this.text = text;
+    }
+
+    public String getText() {
+      return text;
     }
   }
 }

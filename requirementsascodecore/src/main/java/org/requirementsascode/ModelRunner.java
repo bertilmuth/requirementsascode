@@ -54,11 +54,11 @@ public class ModelRunner {
 	
 	private <T> void publishMessage(T message) {
 		Optional<AbstractActor> optionalToActor = getLatestStep().flatMap(ls -> ls.getPublishTo());
+    nestedReactToMessageCallCausesException = false;
 		if(optionalToActor.isPresent()) {
 		  AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
 			optionalToActor.get().reactTo(message, owningActor);
 		}else {
-	    nestedReactToMessageCallCausesException = false;
 			this.reactToMessage(message);
 		}
 	}
