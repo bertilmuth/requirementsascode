@@ -20,20 +20,28 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		setupWithRecordingModelRunner();
 	}
 
-	@Test
-	public void throwsExceptionIfInsteadOfStepNotExistsInSameUseCase() {
-		thrown.expect(NoSuchElementInModel.class);
-		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
+  @Test
+  public void throwsExceptionIfInsteadOfStepNotExistsInSameUseCase() {
+    thrown.expect(NoSuchElementInModel.class);
+    thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
 
-		modelBuilder.useCase(USE_CASE).basicFlow().insteadOf(CUSTOMER_ENTERS_TEXT);
-	}
+    modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow().insteadOf(CUSTOMER_ENTERS_TEXT)
+          .step("S1").system(displaysConstantText())
+        .build();
+  }
 
 	@Test
 	public void throwsExceptionIfAfterStepNotExistsInSameUseCase() {
 		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CUSTOMER_ENTERS_TEXT);
-
-		modelBuilder.useCase(USE_CASE).basicFlow().after(CUSTOMER_ENTERS_TEXT);
+		
+    modelBuilder
+    .useCase(USE_CASE)
+      .basicFlow().after(CUSTOMER_ENTERS_TEXT)
+        .step("S1").system(displaysConstantText())
+      .build();
 	}
 
 	@Test
@@ -41,23 +49,34 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
 
-		modelBuilder.useCase(USE_CASE).basicFlow().step("S1").continuesAfter(CONTINUE);
+    modelBuilder
+    .useCase(USE_CASE)
+      .basicFlow()
+        .step("S1").continuesAfter(CONTINUE)
+      .build();
 	}
 
 	@Test
 	public void throwsExceptionIfContinueAtNotExists() {
 		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
-
-		modelBuilder.useCase(USE_CASE).basicFlow().step("S1").continuesAt(CONTINUE);
+		
+    modelBuilder
+    .useCase(USE_CASE)
+      .basicFlow()
+        .step("S1").continuesAt(CONTINUE)
+      .build();
 	}
 
 	@Test
 	public void throwsExceptionIfContinueWithoutAlternativeAtNotExists() {
 		thrown.expect(NoSuchElementInModel.class);
 		thrown.expectMessage(CONTINUE);
-
-		modelBuilder.useCase(USE_CASE).basicFlow().step("S1").continuesWithoutAlternativeAt(CONTINUE);
+		
+    modelBuilder.useCase(USE_CASE)
+      .basicFlow()
+        .step("S1").continuesWithoutAlternativeAt(CONTINUE)
+      .build();
 	}
 
 	@Test
@@ -68,7 +87,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		modelBuilder.useCase(USE_CASE)
 			.flow(ALTERNATIVE_FLOW)
 				.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-			.flow(ALTERNATIVE_FLOW);
+			.flow(ALTERNATIVE_FLOW)
+			  .step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText())
+			.build();
 	}
 
 	@Test
@@ -79,7 +100,8 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		modelBuilder.useCase(USE_CASE)
 			.basicFlow()
 				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
-				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText());
+				.step(CUSTOMER_ENTERS_TEXT).system(displaysConstantText())
+			.build();
 	}
 
 	@Test
@@ -87,7 +109,9 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		thrown.expect(InfiniteRepetition.class);
 		thrown.expectMessage("S1");
 
-		Model model = modelBuilder.condition(() -> true).system(() -> {}).build();
+		Model model = modelBuilder
+		  .condition(() -> true).system(() -> {})
+		.build();
 
 		modelRunner.run(model);
 	}
