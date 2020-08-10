@@ -3,7 +3,9 @@ package org.requirementsascode.builder;
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
 import org.requirementsascode.Condition;
+import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -91,6 +93,17 @@ public class ModelBuilder {
 	 * @return the model
 	 */
 	public Model build() {
+	  // This is done lazily, only when building, to enable forward references
+	  resolveFlowPositionsOfAllFlows();
+	  
 		return model;
 	}
+
+  private void resolveFlowPositionsOfAllFlows() {
+    model.getUseCases().stream()
+	    .flatMap(uc -> uc.getFlows().stream())
+	    .map(Flow::getFlowPosition)
+	    .filter(fp -> fp != null)
+	    .forEach(FlowPosition::resolveStep);
+  }
 }

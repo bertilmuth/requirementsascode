@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
+import org.requirementsascode.UseCase;
 
 /**
  * Tests whether the specified step was the last step run.
@@ -13,13 +14,8 @@ import org.requirementsascode.Step;
  *
  */
 public class After extends FlowPosition{
-	/**
-	 * Tests whether the specified step was the last step run.
-	 * 
-	 * @param step, or null to mean: when no step has been run.
-	 */
-	public After(FlowStep step) {
-		super(step);
+	public After(UseCase useCase, String stepName) {
+		super(useCase, stepName);
 	}
 
 	@Override

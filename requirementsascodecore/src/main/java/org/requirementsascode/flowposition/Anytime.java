@@ -5,7 +5,7 @@ import org.requirementsascode.ModelRunner;
 
 public class Anytime extends FlowPosition{
 	public Anytime() {
-		super(null);
+		super(null, null);
 	}
 
 	@Override

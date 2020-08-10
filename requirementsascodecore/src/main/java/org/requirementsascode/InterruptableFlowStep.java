@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.requirementsascode.flowposition.After;
+import org.requirementsascode.flowposition.FlowPosition;
 
 /**
  * An interruptable flow step is either the first step of a flow without a user
@@ -35,10 +36,17 @@ public class InterruptableFlowStep extends FlowStep{
 		List<FlowStep> flowSteps = getFlow().getSteps();
 		FlowStep lastFlowStep = flowSteps.isEmpty() ? null : flowSteps.get(flowSteps.size() - 1);
 		setPreviousStepInFlow(lastFlowStep);
-		setFlowPosition(new After(lastFlowStep));
+    setFlowPosition(after(lastFlowStep));
 	}
 
-	@Override
+  private After after(FlowStep lastFlowStep) {
+    UseCase useCase = lastFlowStep == null? null: lastFlowStep.getUseCase();
+    String stepName = lastFlowStep == null? null: lastFlowStep.getName();
+    After afterLastFlowStep = new After(useCase, stepName);
+    return afterLastFlowStep;
+  }
+
+  @Override
 	public Predicate<ModelRunner> getPredicate() {
 		Condition reactWhile = getReactWhile();
 
