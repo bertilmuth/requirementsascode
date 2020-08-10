@@ -26,7 +26,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner>{
   @Override
 	public final boolean test(ModelRunner modelRunner) {
     if(step == null) {
-      this.step = resolveStep();
+      resolveStep();
     }
     
 		boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
@@ -37,7 +37,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner>{
   public FlowStep resolveStep() {
     FlowStep flowStep = null;
     if(useCase != null && stepName != null) {
-      flowStep = (FlowStep) useCase.findStep(stepName);
+      this.step = (FlowStep) useCase.findStep(stepName);
     }
     return flowStep;
   }
