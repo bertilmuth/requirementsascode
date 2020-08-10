@@ -17,9 +17,9 @@ public abstract class FlowPosition implements Predicate<ModelRunner>{
 
 	protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
 
-	public FlowPosition(UseCase useCase, String stepName) {
-	  this.useCase = useCase;
+	public FlowPosition(String stepName, UseCase useCase) {
 	  this.stepName = stepName;
+	  this.useCase = useCase;
 	  this.mergeSteps = new ArrayList<>();
   }
 
@@ -45,7 +45,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner>{
 	private boolean afterAnyMergedStep(ModelRunner modelRunner) {
 		boolean isAfterStep = false;
 		for (FlowStep mergeStep : mergeSteps) {
-			After isAfterMergeStep = new After(mergeStep.getUseCase(), mergeStep.getName());
+			After isAfterMergeStep = new After(mergeStep.getName(), mergeStep.getUseCase());
       if(isAfterMergeStep.test(modelRunner)) {
 				isAfterStep = true;
 				break;

@@ -5,8 +5,8 @@ import org.requirementsascode.ModelRunner;
 import org.requirementsascode.UseCase;
 
 public class InsteadOf extends FlowPosition{
-	public InsteadOf(UseCase useCase, String stepName) {
-	  super(useCase, stepName);
+	public InsteadOf(String stepName, UseCase useCase) {
+	  super(stepName, useCase);
   }
 
   @Override
@@ -19,7 +19,7 @@ public class InsteadOf extends FlowPosition{
   private After after(FlowStep lastFlowStep) {
     UseCase useCase = lastFlowStep == null? null: lastFlowStep.getUseCase();
     String stepName = lastFlowStep == null? null: lastFlowStep.getName();
-    After afterLastFlowStep = new After(useCase, stepName);
+    After afterLastFlowStep = new After(stepName, useCase);
     return afterLastFlowStep;
   }
 }

@@ -61,7 +61,7 @@ public class FlowPart {
 	 */
 	public FlowPositionPart after(String stepName) {
 	   Objects.requireNonNull(stepName);
-		After after = new After(useCase, stepName);
+		After after = new After(stepName, useCase);
 		optionalFlowPositionPart = flowPositionPart(after, this);
 		return optionalFlowPositionPart;
 	}
@@ -94,7 +94,7 @@ public class FlowPart {
 	 */
 	public FlowPositionPart insteadOf(String stepName) {
 	  Objects.requireNonNull(stepName);
-		InsteadOf insteadOf = new InsteadOf(useCase, stepName);
+		InsteadOf insteadOf = new InsteadOf(stepName, useCase);
 		optionalFlowPositionPart = flowPositionPart(insteadOf, this);
 		return optionalFlowPositionPart;
 	}

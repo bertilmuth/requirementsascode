@@ -14,8 +14,8 @@ import org.requirementsascode.UseCase;
  *
  */
 public class After extends FlowPosition{
-	public After(UseCase useCase, String stepName) {
-		super(useCase, stepName);
+	public After(String stepName, UseCase useCase) {
+		super(stepName, useCase);
 	}
 
 	@Override

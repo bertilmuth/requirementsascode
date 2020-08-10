@@ -42,7 +42,7 @@ public class InterruptableFlowStep extends FlowStep{
   private After after(FlowStep lastFlowStep) {
     UseCase useCase = lastFlowStep == null? null: lastFlowStep.getUseCase();
     String stepName = lastFlowStep == null? null: lastFlowStep.getName();
-    After afterLastFlowStep = new After(useCase, stepName);
+    After afterLastFlowStep = new After(stepName, useCase);
     return afterLastFlowStep;
   }
 
