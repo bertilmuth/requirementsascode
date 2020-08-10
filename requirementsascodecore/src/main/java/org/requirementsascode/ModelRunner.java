@@ -350,7 +350,7 @@ public class ModelRunner {
 			throw new MissingUseCaseStepPart(step, "system");
 		}
 
-		stepToBeRun.setupWith(step, message, messagePublisher);
+		stepToBeRun.setupWith(step, message);
 		recordStepNameAndMessage(step, message);
 
 		setLatestStep(step);

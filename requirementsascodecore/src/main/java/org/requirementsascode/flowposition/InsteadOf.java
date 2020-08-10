@@ -12,14 +12,7 @@ public class InsteadOf extends FlowPosition{
   @Override
 	protected boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
 		FlowStep previousStep = step.getPreviousStepInFlow().orElse(null);
-		After afterPreviousStep = after(previousStep);
+		After afterPreviousStep = After.flowStep(previousStep);
 		return afterPreviousStep.test(modelRunner);
 	}
-  
-  private After after(FlowStep lastFlowStep) {
-    UseCase useCase = lastFlowStep == null? null: lastFlowStep.getUseCase();
-    String stepName = lastFlowStep == null? null: lastFlowStep.getName();
-    After afterLastFlowStep = new After(stepName, useCase);
-    return afterLastFlowStep;
-  }
 }

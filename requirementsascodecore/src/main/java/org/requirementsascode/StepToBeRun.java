@@ -14,7 +14,6 @@ import java.util.function.Function;
 public class StepToBeRun{
 	private Step step; 
 	private Object message;
-	private Consumer<Object> eventPublisher;
   private Object messageToBePublished;
 
 	StepToBeRun() {
@@ -95,9 +94,8 @@ public class StepToBeRun{
 		return systemReactionObject;
 	}
 
-	void setupWith(Step useCaseStep, Object message, Consumer<Object> eventPublisher) {
+	void setupWith(Step useCaseStep, Object message) {
 		this.step = useCaseStep;
 		this.message = message;
-		this.eventPublisher = eventPublisher;
 	}
 }

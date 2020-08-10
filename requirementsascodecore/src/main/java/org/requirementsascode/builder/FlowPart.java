@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
-import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.ElementAlreadyInModel;
