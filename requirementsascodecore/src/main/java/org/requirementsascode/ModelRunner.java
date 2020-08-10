@@ -38,7 +38,7 @@ public class ModelRunner {
 	private StepToBeRun stepToBeRun;
 	private Consumer<StepToBeRun> messageHandler;
 	private Consumer<Object> unhandledMessageHandler;
-	private Consumer<Object> eventPublisher;
+	private Consumer<Object> messagePublisher;
 	private List<String> recordedStepNames;
 	private List<Object> recordedMessages;
 	private boolean isRecording;
@@ -48,8 +48,12 @@ public class ModelRunner {
 	 * Constructor for creating a model runner.
 	 */
 	public ModelRunner() {
-		handleWith(stepToBeRun -> stepToBeRun.run());
+		handleWith(this::runStep);
 		publishWith(this::publishMessage);
+	}
+	
+	private void runStep(StepToBeRun stepToBeRun) {
+	  stepToBeRun.run();
 	}
 	
 	private <T> void publishMessage(T message) {
@@ -99,9 +103,11 @@ public class ModelRunner {
 	 */
 	public ModelRunner publishWith(Consumer<Object> eventPublisher) {
 		Objects.requireNonNull(eventPublisher);
-		this.eventPublisher = event -> {
-			setLatestPublishedEvent(event);
-			eventPublisher.accept(event);
+		this.messagePublisher = event -> {
+		  if(isRunning) {
+	      setLatestPublishedEvent(event);
+	      eventPublisher.accept(event);
+		  }
 		};
 		return this;
 	}
@@ -344,7 +350,7 @@ public class ModelRunner {
 			throw new MissingUseCaseStepPart(step, "system");
 		}
 
-		stepToBeRun.setupWith(step, message, eventPublisher);
+		stepToBeRun.setupWith(step, message, messagePublisher);
 		recordStepNameAndMessage(step, message);
 
 		setLatestStep(step);
@@ -352,12 +358,20 @@ public class ModelRunner {
 		try {
       nestedReactToMessageCallCausesException = true;
 			messageHandler.accept(stepToBeRun);
+			publishReturnedMessage();
 		} catch (Exception e) {
 			handleException(e);
 		}
 
 		triggerAutonomousSystemReaction();
 	}
+
+  private void publishReturnedMessage() {
+    Optional<Object> messageToBePublished = stepToBeRun.getMessageToBePublished();
+    if(messagePublisher != null && messageToBePublished.isPresent()) {
+      messagePublisher.accept(messageToBePublished.get());
+    }
+  }
 	
 	private <T> boolean isSystemEvent(T message) {
 		return hasSystemEventClass(message.getClass());

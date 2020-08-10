@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -152,4 +153,33 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		assertEquals(recipient, actualRecipients.get(0));
 		assertEquals("S2", modelRunner.getLatestStep().get().getName());
 	}
+	
+	 @Test
+	  public void stopsRunningAndPublishingEventAfterSpecifiedStep() {	    
+	    Model model = modelBuilder
+	      .useCase(USE_CASE)
+	        .basicFlow()
+	          .step("S1").on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+	          .step("S2").system(() -> {})
+	        .build();
+	  
+	    modelRunner.handleWith(stopAfterStep("S1"));
+	    Optional<Object> response = modelRunner.run(model).reactTo(entersText(), "Some String");
+
+	    assertEquals("S1", modelRunner.getLatestStep().get().getName());
+	    assertFalse(response.isPresent());
+	    
+	  }
+	 
+	  private Consumer<StepToBeRun> stopAfterStep(String stopAfterStepName) {
+	    Objects.requireNonNull(stopAfterStepName);
+	    return stepToBeRun -> {
+	      stepToBeRun.run();
+	      String runStepName = stepToBeRun.getStepName();
+	      if(runStepName.equals(stopAfterStepName)) {
+	        modelRunner.stop();
+	      }
+	    };
+	  }
+
 }

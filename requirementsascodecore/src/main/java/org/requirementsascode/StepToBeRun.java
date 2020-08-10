@@ -15,26 +15,37 @@ public class StepToBeRun{
 	private Step step; 
 	private Object message;
 	private Consumer<Object> eventPublisher;
+  private Object messageToBePublished;
 
 	StepToBeRun() {
 	}
 
-	/**
-	 * Triggers the system reaction of this step, and publishes the resulting
-	 * event.
-	 */
-	public void run() {
-		Object eventToBePublished = runSystemReactionOfStep();
-		if(eventToBePublished != null) {
-			eventPublisher.accept(eventToBePublished);
-		}
-	}
+  /**
+   * Triggers the system reaction of this step.
+   * 
+   * @return the message returned by the system reaction that will be published
+   *         after the message handler completes.
+   */
+  public Object run() {
+    messageToBePublished = null;
+    messageToBePublished = runSystemReactionOfStep();
+    return messageToBePublished;
+  }
 	
 	private Object runSystemReactionOfStep() {
 		@SuppressWarnings("unchecked")
 		Function<Object, Object> systemReactionFunction = (Function<Object, Object>) step.getSystemReaction();
-		Object eventToBePublished = systemReactionFunction.apply(message);
-		return eventToBePublished;
+		Object messageToBePublished = systemReactionFunction.apply(message);
+		return messageToBePublished;
+	}
+	
+	/**
+	 * Returns the message that was returned by the latest system reaction.
+	 * 
+	 * @return an optional containing the message, or an empty optional if there was none.
+	 */
+	public Optional<Object> getMessageToBePublished(){
+	  return Optional.ofNullable(messageToBePublished);
 	}
 
 	/**
