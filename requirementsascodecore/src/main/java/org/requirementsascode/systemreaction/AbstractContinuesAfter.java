@@ -6,14 +6,21 @@ import org.requirementsascode.ModelRunner;
 public abstract class AbstractContinuesAfter extends AbstractContinues {
 	private FlowStep previousStep;
 
-	public AbstractContinuesAfter(String stepName, FlowStep previousStep) {
+	public AbstractContinuesAfter(String stepName) {
 		super(stepName);
-		this.previousStep = previousStep;
 	}
 
 	@Override
-	public void accept(ModelRunner runner) {
-		runner.setLatestStep(previousStep);
-	}
+  public void accept(ModelRunner runner) {
+    if(previousStep == null) {
+      resolvePreviousStep();
+    }
+    runner.setLatestStep(previousStep);
+  }
 
+  public abstract void resolvePreviousStep();
+    
+  protected void setPreviousStep(FlowStep previousStep) {
+    this.previousStep = previousStep;
+  }
 }

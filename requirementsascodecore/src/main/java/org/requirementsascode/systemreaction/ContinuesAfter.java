@@ -4,7 +4,16 @@ import org.requirementsascode.FlowStep;
 import org.requirementsascode.UseCase;
 
 public class ContinuesAfter extends AbstractContinuesAfter{
-	public ContinuesAfter(String stepName, UseCase useCase) {
-		super(stepName, (FlowStep) useCase.findStep(stepName));
+	private UseCase useCase;
+
+  public ContinuesAfter(String stepName, UseCase useCase) {
+		super(stepName);
+		this.useCase = useCase;
 	}
+
+  @Override
+  public void resolvePreviousStep() {
+    FlowStep previousStep = (FlowStep) useCase.findStep(getStepName());
+    setPreviousStep(previousStep);
+  }
 }

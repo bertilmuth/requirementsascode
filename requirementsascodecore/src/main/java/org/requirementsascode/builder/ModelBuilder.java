@@ -2,10 +2,16 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
+import java.util.Collection;
+
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
+import org.requirementsascode.Step;
+import org.requirementsascode.SystemReaction;
+import org.requirementsascode.UseCase;
 import org.requirementsascode.flowposition.FlowPosition;
+import org.requirementsascode.systemreaction.AbstractContinuesAfter;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -86,6 +92,10 @@ public class ModelBuilder {
 	public UseCasePart useCase(String useCaseName) {
 		return useCasePart(useCaseName, this);
 	}
+	
+	Model getModel() {
+	  return model;
+	}
 
 	/**
 	 * Returns the model built so far.
@@ -95,8 +105,8 @@ public class ModelBuilder {
 	public Model build() {
 	  // This is done lazily, only when building, to enable forward references
 	  resolveFlowPositionsOfAllFlows();
-	  
-		return model;
+	  resolveContinuesOfAllFlows();
+		return getModel();
 	}
 
   private void resolveFlowPositionsOfAllFlows() {
@@ -105,5 +115,13 @@ public class ModelBuilder {
 	    .map(Flow::getFlowPosition)
 	    .filter(fp -> fp != null)
 	    .forEach(FlowPosition::resolveStep);
+  }
+  
+  private void resolveContinuesOfAllFlows() {
+    model.getUseCases().stream()
+      .flatMap(uc -> uc.getSteps().stream())
+      .map(Step::getSystemReaction)
+      .map(SystemReaction::getModelObject)
+      .filter(obj -> obj instanceof AbstractContinuesAfter);
   }
 }

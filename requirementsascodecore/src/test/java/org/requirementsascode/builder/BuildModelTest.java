@@ -48,19 +48,6 @@ public class BuildModelTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void accessesExistingUseCaseTwice() {
-		modelBuilder.useCase(USE_CASE);
-		modelBuilder.useCase(USE_CASE);
-
-		Model model = modelBuilder.build();
-		assertTrue(model.hasUseCase(USE_CASE));
-
-		Collection<UseCase> useCases = model.getUseCases();
-		assertEquals(1, useCases.size());
-		assertEquals(USE_CASE, useCases.iterator().next().getName());
-	}
-
-	@Test
 	public void createsTwoUseCasesInOneGo() {
 		modelBuilder.useCase(USE_CASE);
 		modelBuilder.useCase(USE_CASE_2);
@@ -661,21 +648,6 @@ public class BuildModelTest extends AbstractTestCase {
 	
 		useCasePart.basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText())
-			.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
-	
-		FlowStep firstUseCaseStep = (FlowStep)useCasePart.getUseCase().findStep(SYSTEM_DISPLAYS_TEXT);
-		FlowStep secondUseCaseStep = (FlowStep)useCasePart.getUseCase().findStep(SYSTEM_DISPLAYS_TEXT_AGAIN);
-	
-		assertEquals(firstUseCaseStep, secondUseCaseStep.getPreviousStepInFlow().get());
-  }
-
-  @Test
-  public void withFlow_createsTwoStepsIncrementally() {
-		UseCasePart useCasePart = modelBuilder.useCase(USE_CASE);
-		modelBuilder.useCase(USE_CASE).basicFlow().step(SYSTEM_DISPLAYS_TEXT).system(displaysConstantText());
-	
-		useCasePart = modelBuilder.useCase(USE_CASE);
-		modelBuilder.useCase(USE_CASE).basicFlow()
 			.step(SYSTEM_DISPLAYS_TEXT_AGAIN).system(displaysConstantText());
 	
 		FlowStep firstUseCaseStep = (FlowStep)useCasePart.getUseCase().findStep(SYSTEM_DISPLAYS_TEXT);

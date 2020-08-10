@@ -31,7 +31,7 @@ public class StepPart {
 		this.step = Objects.requireNonNull(step);
 		this.useCasePart = Objects.requireNonNull(useCasePart);
 		this.modelBuilder = useCasePart.getModelBuilder();
-		this.systemActor = modelBuilder.build().getSystemActor();
+		this.systemActor = modelBuilder.getModel().getSystemActor();
 		this.flowPart = flowPart;
 	}
 

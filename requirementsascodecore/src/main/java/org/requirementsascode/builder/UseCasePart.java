@@ -24,9 +24,8 @@ public class UseCasePart {
 
 	private UseCasePart(String useCaseName, ModelBuilder modelBuilder) {
 		this.modelBuilder = Objects.requireNonNull(modelBuilder);
-		final Model model = modelBuilder.build();
-		this.useCase = model.hasUseCase(useCaseName) ? model.findUseCase(useCaseName)
-			: model.newUseCase(useCaseName);
+		final Model model = modelBuilder.getModel();
+		this.useCase = model.newUseCase(useCaseName);
 		this.defaultActor = model.getUserActor();
 	}
 	
