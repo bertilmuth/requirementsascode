@@ -17,17 +17,19 @@ import static org.requirementsascode.builder.StepPart.*;
  * @author b_muth
  */
 public class FlowConditionPart {
-	private FlowPositionPart flowPositionPart;
+	private FlowPart flowPart;
 	private Condition optionalCondition;
+  private FlowPosition optionalFlowPosition;
 
-	private FlowConditionPart(Condition optionalCondition, FlowPositionPart flowPositionPart) {
-		this.optionalCondition = optionalCondition;
-		this.flowPositionPart = Objects.requireNonNull(flowPositionPart);
+  private FlowConditionPart(Condition optionalCondition, FlowPart flowPart, FlowPosition optionalFlowPosition) {
+    this.flowPart = Objects.requireNonNull(flowPart);
+    this.optionalCondition = optionalCondition;
+    this.optionalFlowPosition = optionalFlowPosition;
 	}
 	
-	static FlowConditionPart flowConditionPart(Condition condition, FlowPositionPart flowPositionPart) {
-		return new FlowConditionPart(condition, flowPositionPart);
-	}
+  static FlowConditionPart flowConditionPart(Condition condition, FlowPart flowPart, FlowPosition optionalFlowPosition) {
+    return new FlowConditionPart(condition, flowPart, optionalFlowPosition);
+  }
 	
 	/**
 	 * Creates the first step of this flow. It can be run when the runner is at the
@@ -39,9 +41,7 @@ public class FlowConditionPart {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		FlowPart flowPart = flowPositionPart.getFlowPart();
-		FlowPosition flowPosition = flowPositionPart.getOptionalFlowPosition();
-		StepPart stepPart = interruptingFlowStepPart(stepName, flowPart, flowPosition, getOptionalCondition());
+		StepPart stepPart = interruptingFlowStepPart(stepName, flowPart, optionalFlowPosition, getOptionalCondition());
 		return stepPart;
 	}
 	

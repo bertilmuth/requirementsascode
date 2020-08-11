@@ -23,16 +23,18 @@ public class FlowPositionPart {
 	}
 
 	/**
-	 * Constrains the flow's condition: only if the specified condition is true as
-	 * well (beside the flow position), the flow is started.
-	 *
-	 * @param condition the condition that constrains when the flow is started
-	 * @return this condition part, to ease creation of the first step of the flow
-	 */
-	public FlowConditionPart condition(Condition condition) {
-		this.conditionPart = flowConditionPart(condition, this);
-		return conditionPart;
-	}
+   * Constrains the flow's condition: only if the specified condition is true as
+   * well (beside the flow position), the flow is started.
+   *
+   * @param condition the condition that constrains when the flow is started
+   * @return this condition part, to ease creation of the first step of the flow
+   */
+  public FlowConditionPart condition(Condition condition) {
+    FlowPart flowPart = getFlowPart();
+    FlowPosition optionalFlowPosition = getOptionalFlowPosition();
+    this.conditionPart = flowConditionPart(condition, flowPart, optionalFlowPosition);
+    return conditionPart;
+  }
 
 	/**
 	 * Creates the first step of this flow. It can be run when the runner is at the
