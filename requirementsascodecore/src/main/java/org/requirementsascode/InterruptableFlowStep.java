@@ -25,9 +25,10 @@ public class InterruptableFlowStep extends FlowStep{
 	 *
 	 * @param stepName the name of the step to be created
 	 * @param flow     the flow that will contain the new step
+	 * @param optionalCondition the condition of the step, or null if it has none
 	 */
-	InterruptableFlowStep(String stepName, Flow flow) {
-		super(stepName, flow, null);
+	InterruptableFlowStep(String stepName, Flow flow, Condition optionalCondition) {
+		super(stepName, flow, optionalCondition);
 		appendToLastStepOfFlow();
 	}
 

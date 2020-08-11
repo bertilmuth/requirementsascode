@@ -34,11 +34,15 @@ public class StepPart {
 		this.systemActor = modelBuilder.getModel().getSystemActor();
 		this.flowPart = flowPart;
 	}
+	
+	 static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
+	    return interruptableFlowStepPart(stepName, flowPart, null);
+	  }
 
-	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
+	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart, Condition optionalCondition) {
 		UseCasePart useCasePart = flowPart.getUseCasePart();
 		UseCase useCase = useCasePart.getUseCase();
-		Step step = useCase.newInterruptableFlowStep(stepName, flowPart.getFlow());
+		Step step = useCase.newInterruptableFlowStep(stepName, flowPart.getFlow(), optionalCondition);
 		return new StepPart(step, useCasePart, flowPart);
 	}
 

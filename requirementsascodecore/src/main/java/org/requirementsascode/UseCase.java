@@ -134,10 +134,11 @@ public class UseCase extends ModelElement{
 	 *
 	 * @param stepName the name of the step
 	 * @param flow     the flow the step shall be appended to at the end
+	 * @param optionalCondition the condition of the step, or null if it has none
 	 * @return the newly created step
 	 */
-	public InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {
-		InterruptableFlowStep step = new InterruptableFlowStep(stepName, flow);
+	public InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow, Condition optionalCondition) {
+		InterruptableFlowStep step = new InterruptableFlowStep(stepName, flow, optionalCondition);
 		saveModelElement(step, nameToStepMap);
 
 		return step;

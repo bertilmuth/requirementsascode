@@ -1,5 +1,6 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.StepConditionPart.stepConditionPart;
 import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
 import static org.requirementsascode.builder.StepToPart.stepToPart;
 
@@ -56,8 +57,10 @@ public class StepSystemPart<T> {
    * @param condition the condition that constrains when the step is run
    * @return the created part
    */
-  public StepSystemPart<T> condition(Condition condition) {
-    return this;
+  public StepConditionPart condition(Condition condition) {
+    Objects.requireNonNull(condition);
+    StepConditionPart conditionPart = stepConditionPart(condition, stepPart.getFlowPart());
+    return conditionPart;
   }
 
 	/**
