@@ -42,15 +42,13 @@ public class InterruptableFlowStep extends FlowStep{
 	public Predicate<ModelRunner> getPredicate() {
 		Condition reactWhile = getReactWhile();
 
-		Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts());
-		if (reactWhile != null) {
-			predicate = predicate.and(toPredicate(reactWhile));
-		}
+    Predicate<ModelRunner> predicate = getFlowPosition().and(noStepInterrupts()).and(isConditionTrue());
+    if (reactWhile != null) {
+      predicate = predicate.and(toPredicate(reactWhile));
+    }
 
-		predicate.and(isConditionTrue());
-		
-		return predicate;
-	}
+    return predicate;
+  }
 
 	private Predicate<ModelRunner> noStepInterrupts() {
 		return modelRunner -> {
