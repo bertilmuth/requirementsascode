@@ -101,7 +101,7 @@ public class ModelBuilder {
 	 * @return the model
 	 */
 	public Model build() {
-	  // This is done lazily, only when building, to enable forward references
+	  // This is done lazily, only when building, to enable forward references (#92)
 	  resolveFlowPositions();
 	  resolveContinuesAfterAndContinuousAt();
 	  resolveContinuesWithoutAlternativeAt();

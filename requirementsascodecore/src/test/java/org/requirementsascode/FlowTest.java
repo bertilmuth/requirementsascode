@@ -797,12 +797,14 @@ public class FlowTest extends AbstractTestCase{
 	public void continuesAtThirdStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
-				.basicFlow()
+        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
+          .step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
+          
+				.flow("Main Flow")
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
-				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
-					.step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
+
 			.build();
 		
 		modelRunner.run(model).reactTo(entersText(), entersNumber());
@@ -890,12 +892,14 @@ public class FlowTest extends AbstractTestCase{
 	public void continuesAfterSecondStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
-				.basicFlow()
+        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
+          .step(CONTINUE).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
+				
+        .flow("Main Flow")
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
 					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
-				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
-					.step(CONTINUE).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
+
 			.build();
 		
 		modelRunner.run(model).reactTo(entersText(), entersNumber());
