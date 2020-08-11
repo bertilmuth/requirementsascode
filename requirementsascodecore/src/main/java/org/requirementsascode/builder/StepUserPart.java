@@ -81,7 +81,8 @@ public class StepUserPart<T> {
 
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
-	 * current step in sequence.
+	 * the step before in sequence. The step before this step has no system reaction,
+	 * i.e. will just receive the message but do nothing with it.
 	 *
 	 * @param stepName the name of the step to be created
 	 * @return the newly created step

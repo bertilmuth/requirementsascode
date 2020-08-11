@@ -51,7 +51,7 @@ public class StepSystemPart<T> {
 
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
-	 * current step in sequence.
+	 * the step before in sequence.
 	 *
 	 * @param stepName the name of the step to be created
 	 * @return the newly created step
