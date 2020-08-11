@@ -57,8 +57,8 @@ public abstract class FlowPosition implements Predicate<ModelRunner>{
 		return step;
 	}
 
-	public FlowPosition orAfter(FlowStep mergeStep) {
-	  After orAfterStep = new After(mergeStep.getName(), mergeStep.getUseCase());
+	public FlowPosition orAfter(String stepName, UseCase useCase) {
+	  After orAfterStep = new After(stepName, useCase);
 		orAfterSteps.add(orAfterStep);
 		return this;
 	}
