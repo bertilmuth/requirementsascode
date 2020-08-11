@@ -943,6 +943,25 @@ public class FlowTest extends AbstractTestCase{
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_NUMBER);
 	}
 	
+	 @Test
+	  public void continuesAfterSecondStepCalledFromFirstStepOfAlternativeFlowWithEvent() {    
+	    Model model = modelBuilder
+	      .useCase(USE_CASE)
+	        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
+	          .step(CONTINUE).on(EntersText.class).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
+	        
+	        .flow("Main Flow")
+	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+	          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersNumber.class).system(displaysEnteredNumber())
+	          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
+
+	      .build();
+	    
+	    modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
+	     
+	    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_NUMBER);
+	  }
+	
 	@Test
 	public void continuesAfterCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
 		Model model = modelBuilder
