@@ -2,14 +2,14 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
 import org.requirementsascode.Step;
 import org.requirementsascode.SystemReaction;
-import org.requirementsascode.UseCase;
 import org.requirementsascode.flowposition.FlowPosition;
 import org.requirementsascode.systemreaction.AbstractContinuesAfter;
 
@@ -121,7 +121,10 @@ public class ModelBuilder {
     model.getUseCases().stream()
       .flatMap(uc -> uc.getSteps().stream())
       .map(Step::getSystemReaction)
+      .filter(sr -> sr != null)
       .map(SystemReaction::getModelObject)
-      .filter(obj -> obj instanceof AbstractContinuesAfter);
+      .filter(obj -> obj instanceof AbstractContinuesAfter)
+      .map(obj -> (AbstractContinuesAfter)obj)
+      .forEach(AbstractContinuesAfter::resolvePreviousStep);
   }
 }
