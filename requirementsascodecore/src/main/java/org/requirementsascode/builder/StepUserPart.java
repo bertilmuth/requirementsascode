@@ -68,7 +68,14 @@ public class StepUserPart<T> {
 		return stepSystemPartWithFunction(systemReaction, stepPart);
 	}
 	
-	StepSystemPart<T> systemPublish(Supplier<?> systemReaction) {
+	 /**
+   * Defines the system reaction. After executing the system reaction, the runner will publish the returned event.
+   *
+   * @param systemReaction the specified system reaction, that returns an event to
+   *                       be published.
+   * @return the created system part of this step
+   */
+	public StepSystemPart<T> systemPublish(Supplier<?> systemReaction) {
 		return stepSystemPartWithSupplier(systemReaction, stepPart);
 	}
 

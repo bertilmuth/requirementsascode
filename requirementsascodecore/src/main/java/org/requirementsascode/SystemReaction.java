@@ -36,7 +36,7 @@ public class SystemReaction<T> implements Function<T, Object> {
 		this.modelObject = modelObject;
 	}
 
-	SystemReaction(Supplier<? super T> modelObject) {
+	SystemReaction(Supplier<?> modelObject) {
 		this.modelObject = Objects.requireNonNull(modelObject);
 		
 		Function<? super T, Object> publishingReaction = (Function<? super T, Object>) message -> modelObject.get();

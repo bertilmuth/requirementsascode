@@ -254,6 +254,22 @@ public class FlowTest extends AbstractTestCase{
 		assertEquals(TEXT, actualText);
 	}
 	
+	 @Test
+	  public void secondStepReactsWhenFirstStepPublishesViaSupplier() {
+	    final String PROCESS_PUBLISHED_EVENT = "Process published event";
+	      
+	    Model model = modelBuilder
+	      .useCase(USE_CASE)
+	        .basicFlow()
+	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishConstantTextAsString())
+	          .step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
+	      .build();
+	    
+	    Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+	    String actualText = optionalActualText.get();   
+	    assertEquals(TEXT, actualText);
+	  }
+	
 	@Test
 	public void twoSequentialStepsReactToEventsOfDifferentTypeAsList() {		
 		Model model = modelBuilder

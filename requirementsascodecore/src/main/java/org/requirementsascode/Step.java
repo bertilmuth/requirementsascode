@@ -94,7 +94,7 @@ public abstract class Step extends ModelElement{
 		this.systemReaction = new SystemReaction<>(systemReaction);
 	}
 
-	public <T> void setSystemReaction(Supplier<? super T> systemReaction) {
+	public <T> void setSystemReaction(Supplier<?> systemReaction) {
 		this.systemReaction = new SystemReaction<>(systemReaction);
 	}
 
