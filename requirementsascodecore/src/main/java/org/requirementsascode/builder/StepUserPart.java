@@ -1,5 +1,10 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithConsumer;
+import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithFunction;
+import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithRunnable;
+import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithSupplier;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -9,9 +14,8 @@ import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
+import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.IgnoresIt;
-
-import static org.requirementsascode.builder.StepSystemPart.*;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -92,4 +96,19 @@ public class StepUserPart<T> {
 	public StepPart step(String stepName) {
 		return system(new IgnoresIt<>()).step(stepName);
 	}
+
+  /**
+   * Makes the model runner continue at the specified step. If there are
+   * alternative flows starting at the specified step, one may be entered if its
+   * condition is enabled.
+   *
+   * @param stepName name of the step to continue at, in this use case.
+   * @return the use case part this step belongs to, to ease creation of further
+   *         flows
+   * @throws NoSuchElementInModel if no step with the specified stepName is found
+   *                              in the current use case
+   */
+  public UseCasePart continuesAt(String stepName) {
+    return stepPart.continuesAt(stepName);
+  }
 }
