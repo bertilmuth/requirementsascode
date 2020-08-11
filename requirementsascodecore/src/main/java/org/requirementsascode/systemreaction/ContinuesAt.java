@@ -12,9 +12,9 @@ public class ContinuesAt extends AbstractContinuesAfter {
 	}
 
   @Override
-  public void resolvePreviousStep() {
+  public FlowStep resolvePreviousStep() {
     FlowStep step = (FlowStep) useCase.findStep(getStepName());
     FlowStep previousStep = step.getPreviousStepInFlow().orElse(null);
-    setPreviousStep(previousStep);
+    return previousStep;
   }
 }

@@ -13,14 +13,10 @@ public abstract class AbstractContinuesAfter extends AbstractContinues {
 	@Override
   public void accept(ModelRunner runner) {
     if(previousStep == null) {
-      resolvePreviousStep();
+      previousStep = resolvePreviousStep();
     }
     runner.setLatestStep(previousStep);
   }
 
-  public abstract void resolvePreviousStep();
-    
-  protected void setPreviousStep(FlowStep previousStep) {
-    this.previousStep = previousStep;
-  }
+  public abstract FlowStep resolvePreviousStep();
 }

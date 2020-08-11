@@ -12,8 +12,8 @@ public class ContinuesAfter extends AbstractContinuesAfter{
 	}
 
   @Override
-  public void resolvePreviousStep() {
+  public FlowStep resolvePreviousStep() {
     FlowStep previousStep = (FlowStep) useCase.findStep(getStepName());
-    setPreviousStep(previousStep);
+    return previousStep;
   }
 }

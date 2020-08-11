@@ -2,9 +2,6 @@ package org.requirementsascode.builder;
 
 import static org.requirementsascode.builder.UseCasePart.useCasePart;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.requirementsascode.Condition;
 import org.requirementsascode.Flow;
 import org.requirementsascode.Model;
