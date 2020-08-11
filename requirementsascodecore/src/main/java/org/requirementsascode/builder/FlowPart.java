@@ -51,19 +51,22 @@ public class FlowPart {
 	 * Note: You should use after to handle exceptions that occurred in the
 	 * specified step.
 	 *
-	 * @param stepName the name of the step to start the flow after
+	 * @param stepNames the name of the step to start the flow after
 	 * @return the flow position part, to ease creation of the condition and the
 	 *         first step of the flow
 	 * @throws NoSuchElementInModel if the specified step is not found in a flow of
 	 *                              this use case
 	 * 
 	 */
-	public FlowPositionPart after(String stepName) {
-	   Objects.requireNonNull(stepName);
-		After after = new After(stepName, useCase);
-		optionalFlowPositionPart = flowPositionPart(after, this);
-		return optionalFlowPositionPart;
-	}
+  public FlowPositionPart after(String... stepNames) {
+    Objects.requireNonNull(stepNames);
+    if (stepNames.length == 0) {
+      throw new IllegalArgumentException("You need to specify at least one step!");
+    }
+    After after = new After(stepNames[0], useCase);
+    optionalFlowPositionPart = flowPositionPart(after, this);
+    return optionalFlowPositionPart;
+  }
 
 	/**
 	 * Creates the first step of this flow, without specifying position or
