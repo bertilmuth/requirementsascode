@@ -76,20 +76,18 @@ public class FlowlessStepPart {
 		return flowlessSystemPart;
 	}
 
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned
-	 * event.
-	 *
-	 * @param systemReaction the autonomous system reaction, that returns a single
-	 *                       event to be published.
-	 * @return the created system part of this step
-	 */
-	public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		@SuppressWarnings("unchecked")
-		FlowlessSystemPart<ModelRunner> flowlessSystemPart = user(ModelRunner.class).systemPublish(
-			(Supplier<Object>) systemReaction);
-		return flowlessSystemPart;
-	}
+  /**
+   * Defines an "autonomous system reaction", meaning the system will react
+   * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
+   * After executing the system reaction, the runner will publish the returned
+   * event.
+   *
+   * @param systemReaction the autonomous system reaction, that returns a single
+   *                       event to be published.
+   * @return the created system part of this step
+   */
+  public FlowlessSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
+    FlowlessSystemPart<ModelRunner> flowlessSystemPart = user(ModelRunner.class).systemPublish(systemReaction);
+    return flowlessSystemPart;
+  }
 }

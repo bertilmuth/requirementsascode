@@ -45,7 +45,7 @@ public class FlowlessSystemPart<T> {
 	}
 
 	static <T> FlowlessSystemPart<T> flowlessSystemPartWithSupplier(StepUserPart<T> stepUserPart,
-		Supplier<? super T> systemReaction, long flowlessStepCounter) {
+		Supplier<?> systemReaction, long flowlessStepCounter) {
 		StepSystemPart<T> stepSystemPart = stepUserPart.systemPublish(systemReaction);
 		StepPart stepPart = stepSystemPart.getStepPart();
 		UseCasePart useCasePart = stepPart.getUseCasePart();

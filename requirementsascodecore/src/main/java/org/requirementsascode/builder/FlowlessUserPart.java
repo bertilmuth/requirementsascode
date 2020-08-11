@@ -89,7 +89,7 @@ public class FlowlessUserPart<T> {
 	 *                       be published.
 	 * @return the created flowless system part
 	 */
-	public FlowlessSystemPart<T> systemPublish(Supplier<? super T> systemReaction) {
+	public FlowlessSystemPart<T> systemPublish(Supplier<?> systemReaction) {
 		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPartWithSupplier(stepUserPart, systemReaction,
 			flowlessStepCounter);
 		return flowlessSystemPart;

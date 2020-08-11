@@ -44,7 +44,7 @@ public class StepSystemPart<T> {
 		return new StepSystemPart<>(stepPart);
 	}
 	
-	static <T> StepSystemPart<T> stepSystemPartWithSupplier(Supplier<? super T> systemReaction, StepPart stepPart) {
+	static <T> StepSystemPart<T> stepSystemPartWithSupplier(Supplier<?> systemReaction, StepPart stepPart) {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
