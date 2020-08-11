@@ -852,6 +852,17 @@ public class FlowlessTest extends AbstractTestCase {
     }
     
     @Test
+    public void withUseCase_publishConstantTextAsStringWithOnInFirstStep() {
+      Model model = modelBuilder.useCase(USE_CASE)
+        .on(EntersText.class).systemPublish(super.publishConstantTextAsString())
+      .build();
+    
+      Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+      String actualText = optionalActualText.get();
+      assertEquals(TEXT, actualText);
+    }
+    
+    @Test
     public void withUseCase_publishIntegerInsteadOfEnteredText() {
 	    final Integer EXPECTED_INTEGER = 1234;
 	    	

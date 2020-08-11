@@ -80,18 +80,17 @@ public class FlowlessUserPart<T> {
 		return flowlessSystemPart;
 	}
 
-	/**
-	 * Defines the system reaction. The system will react as specified to the
-	 * message passed in, when you call {@link ModelRunner#reactTo(Object)}. After
-	 * executing the system reaction, the runner will publish the returned event.
-	 *
-	 * @param systemReaction the specified system reaction, that returns an event to
-	 *                       be published.
-	 * @return the created flowless system part
-	 */
-	public FlowlessSystemPart<T> systemPublish(Supplier<?> systemReaction) {
-		FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPartWithSupplier(stepUserPart, systemReaction,
-			flowlessStepCounter);
-		return flowlessSystemPart;
-	}
+  /**
+   * Defines the system reaction. After executing the system reaction, the runner
+   * will publish the returned event.
+   *
+   * @param systemReaction the specified system reaction, that returns an event to
+   *                       be published.
+   * @return the created flowless system part
+   */
+  public FlowlessSystemPart<T> systemPublish(Supplier<?> systemReaction) {
+    FlowlessSystemPart<T> flowlessSystemPart = flowlessSystemPartWithSupplier(stepUserPart, systemReaction,
+      flowlessStepCounter);
+    return flowlessSystemPart;
+  }
 }
