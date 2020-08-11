@@ -22,13 +22,10 @@ public class InterruptingFlowStep extends FlowStep {
 		return predicate;
 	}
 
-	private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
-		Predicate<ModelRunner> flowPosition = getFlowPosition();
-
-		Predicate<ModelRunner> flowCondition = flowPosition.and(isRunnerInDifferentFlow())
-				.and(isConditionTrue());
-		return flowCondition;
-	}
+  private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
+    Predicate<ModelRunner> flowCondition = getFlowPosition().and(isRunnerInDifferentFlow()).and(isConditionTrue());
+    return flowCondition;
+  }
 
 	private Predicate<ModelRunner> isRunnerInDifferentFlow() {
 		Predicate<ModelRunner> isRunnerInDifferentFlow = runner -> runner.getLatestFlow()
