@@ -3,7 +3,6 @@ package org.requirementsascode;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ExceptionHandlingTest extends AbstractTestCase{
@@ -59,7 +58,6 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 	}
 	
 	 @Test
-	 @Ignore
    public void handlesExceptionAfterAnyOfSeveralSteps() {
      Model model = 
        modelBuilder.useCase(USE_CASE)
