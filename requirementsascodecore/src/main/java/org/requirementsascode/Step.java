@@ -48,6 +48,12 @@ public abstract class Step extends ModelElement{
 	public Optional<Condition> getCondition() {
 		return Optional.ofNullable(condition);
 	}
+	
+  protected Predicate<ModelRunner> isConditionTrue() {
+    Condition conditionOrElseTrue = getCondition().orElse(() -> true);
+    Predicate<ModelRunner> flowCondition = toPredicate(conditionOrElseTrue);
+    return flowCondition;
+  }
 
 	public AbstractActor[] getActors() {
 		return actors;

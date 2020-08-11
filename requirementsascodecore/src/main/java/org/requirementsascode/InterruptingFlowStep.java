@@ -24,10 +24,9 @@ public class InterruptingFlowStep extends FlowStep {
 
 	private Predicate<ModelRunner> isFlowConditionTrueAndRunnerInDifferentFlow() {
 		Predicate<ModelRunner> flowPosition = getFlowPosition();
-		Condition conditionOrElseTrue = getCondition().orElse(() -> true);
 
 		Predicate<ModelRunner> flowCondition = isRunnerInDifferentFlow().and(flowPosition)
-				.and(toPredicate(conditionOrElseTrue));
+				.and(isConditionTrue());
 		return flowCondition;
 	}
 

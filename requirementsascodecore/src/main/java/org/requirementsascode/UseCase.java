@@ -133,7 +133,7 @@ public class UseCase extends ModelElement{
 	 * interruptable step as well.
 	 *
 	 * @param stepName the name of the step
-	 * @param flow     the flow the step shall belong to
+	 * @param flow     the flow the step shall be appended to at the end
 	 * @return the newly created step
 	 */
 	public InterruptableFlowStep newInterruptableFlowStep(String stepName, Flow flow) {

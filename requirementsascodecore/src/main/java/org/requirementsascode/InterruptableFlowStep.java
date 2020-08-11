@@ -47,6 +47,8 @@ public class InterruptableFlowStep extends FlowStep{
 			predicate = predicate.and(toPredicate(reactWhile));
 		}
 
+		predicate.and(isConditionTrue());
+		
 		return predicate;
 	}
 
