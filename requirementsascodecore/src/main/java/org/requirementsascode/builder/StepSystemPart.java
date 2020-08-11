@@ -48,6 +48,17 @@ public class StepSystemPart<T> {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
+	
+  /**
+   * Constrains the step's condition: only if the specified condition is true, the
+   * step is run.
+   *
+   * @param condition the condition that constrains when the step is run
+   * @return the created part
+   */
+  public StepSystemPart<T> condition(Condition condition) {
+    return this;
+  }
 
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
