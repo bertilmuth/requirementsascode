@@ -124,4 +124,18 @@ public class StepUserPart<T> {
   public UseCasePart continuesAfter(String stepName) {
     return stepPart.continuesAfter(stepName);
   }
+
+  /**
+   * Makes the model runner continue at the specified step. No alternative flow
+   * starting at the specified step is entered, even if its condition is enabled.
+   *
+   * @param stepName name of the step to continue at, in this use case.
+   * @return the use case part this step belongs to, to ease creation of further
+   *         flows
+   * @throws NoSuchElementInModel if no step with the specified stepName is found
+   *                              in the current use case
+   */
+  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
+    return stepPart.continuesWithoutAlternativeAt(stepName);
+  }
 }
