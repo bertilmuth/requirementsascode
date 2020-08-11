@@ -34,7 +34,7 @@ public abstract class AbstractTestCase {
 	protected static final String CUSTOMER_ENTERS_TEXT_AGAIN = "Customer enters text again";
 	protected static final String CUSTOMER_ENTERS_ALTERNATIVE_TEXT = "Customer enters alternative text";
 	protected static final String CUSTOMER_ENTERS_NUMBER = "Customer enters number";
-	protected static final String CUSTOMER_ENTERS_NUMBER_AGAIN = "Customer enters number again";
+	protected static final String CUSTOMER_ENTERS_ALTERNATIVE_NUMBER = "Customer enters number again";
 
 	protected static final String THIS_STEP_SHOULD_BE_SKIPPED = "This step should be skipped";
 	protected static final String THIS_STEP_SHOULD_BE_SKIPPED_AS_WELL = "This step should be skipped as well";

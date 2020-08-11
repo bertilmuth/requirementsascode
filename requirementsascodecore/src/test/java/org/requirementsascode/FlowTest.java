@@ -722,13 +722,13 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 				.flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_NUMBER)
-					.step(CUSTOMER_ENTERS_NUMBER_AGAIN)
+					.step(CUSTOMER_ENTERS_ALTERNATIVE_NUMBER)
 						.user(EntersNumber.class).system(displaysEnteredNumber())
 			.build();
 				
 		modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
 		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_NUMBER_AGAIN);
+		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN, CUSTOMER_ENTERS_ALTERNATIVE_NUMBER);
 	}
 	
 	@Test
@@ -1065,7 +1065,7 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 					.step(CONTINUE).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)		
 				.flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN).condition(this::textIsNotAvailable)
-					.step(CUSTOMER_ENTERS_NUMBER_AGAIN).user(EntersNumber.class).system(displaysEnteredNumber())
+					.step(CUSTOMER_ENTERS_ALTERNATIVE_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
 					.step(CONTINUE_2).continuesWithoutAlternativeAt(CUSTOMER_ENTERS_TEXT_AGAIN)
 			.build();
 		

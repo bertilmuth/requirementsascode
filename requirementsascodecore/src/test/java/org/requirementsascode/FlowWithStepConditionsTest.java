@@ -25,6 +25,21 @@ public class FlowWithStepConditionsTest extends AbstractTestCase {
   }
   
   @Test
+  public void alternativeFlowInterruptsEvenIfStepConditionIsTrue() {    
+    Model model = modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow().condition(() -> true)
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+          .condition(() -> true).step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+        .flow(ALTERNATIVE_FLOW).after(CUSTOMER_ENTERS_TEXT)
+          .step(CUSTOMER_ENTERS_ALTERNATIVE_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+      .build();
+        
+    modelRunner.run(model).reactTo(entersText(), entersNumber());
+    assertEquals(CUSTOMER_ENTERS_ALTERNATIVE_NUMBER, modelRunner.getLatestStep().get().getName());   
+  }
+  
+  @Test
   public void doesntReactWhenConditionIsFalse() {    
     Model model = modelBuilder
       .useCase(USE_CASE)
