@@ -19,7 +19,7 @@ jar {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.requirementsascode:requirementsascodecore:1.7.8'
+	implementation 'org.requirementsascode:requirementsascodecore:1.7.9'
 	testImplementation 'junit:junit:4.12'
 }
 

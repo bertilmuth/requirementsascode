@@ -9,14 +9,14 @@ If you are using Maven, include the following in your POM:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodeextract</artifactId>
-    <version>1.7.8</version>
+    <version>1.7.9</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle:
 
 ```
-implementation 'org.requirementsascode:requirementsascodeextract:1.7.8'
+implementation 'org.requirementsascode:requirementsascodeextract:1.7.9'
 ```
 
 This will put the following libraries on the classpath:
