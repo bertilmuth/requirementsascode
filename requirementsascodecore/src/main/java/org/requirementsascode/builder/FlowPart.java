@@ -63,17 +63,9 @@ public class FlowPart {
     if (stepNames.length == 0) {
       throw new IllegalArgumentException("You need to specify at least one step!");
     }
-    After after = afterSteps(stepNames);
+    After after = new After(stepNames, useCase);
     optionalFlowPositionPart = flowPositionPart(after, this);
     return optionalFlowPositionPart;
-  }
-
-  private After afterSteps(String... stepNames) {
-    After after = new After(stepNames[0], useCase);
-    for(int i=1; i<stepNames.length; i++) {
-      after.orAfter(stepNames[i], useCase);
-    }
-    return after;
   }
 
 	/**
