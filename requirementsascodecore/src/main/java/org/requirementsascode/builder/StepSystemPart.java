@@ -1,6 +1,5 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.StepConditionPart.stepConditionPart;
 import static org.requirementsascode.builder.StepPart.interruptableFlowStepPart;
 import static org.requirementsascode.builder.StepToPart.stepToPart;
 
@@ -49,19 +48,6 @@ public class StepSystemPart<T> {
 		stepPart.getStep().setSystemReaction(systemReaction);
 		return new StepSystemPart<>(stepPart);
 	}
-	
-  /**
-   * Constrains the step's condition: only if the specified condition is true, the
-   * step is run.
-   *
-   * @param condition the condition that constrains when the step is run
-   * @return the created part
-   */
-  public StepConditionPart condition(Condition condition) {
-    Objects.requireNonNull(condition);
-    StepConditionPart conditionPart = stepConditionPart(condition, stepPart.getFlowPart());
-    return conditionPart;
-  }
 
 	/**
 	 * Creates a new step in this flow, with the specified name, that follows the
