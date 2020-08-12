@@ -3,6 +3,7 @@ package org.requirementsascode;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class FlowWithCaseStepTest extends AbstractTestCase {
@@ -24,6 +25,7 @@ public class FlowWithCaseStepTest extends AbstractTestCase {
   }
   
   @Test
+  @Ignore
   public void doesntRunsStepWithFalseCase() {    
     Model model = modelBuilder
       .useCase(USE_CASE)
