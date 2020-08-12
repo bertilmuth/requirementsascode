@@ -1,7 +1,5 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.StepAsPart.stepAsPart;
-
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -58,6 +56,17 @@ public class StepPart {
 		Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
 		return new StepPart(step, useCasePart, null);
 	}
+	
+	/** Immediately before a step is run, the specified case condition is checked.
+	 * If the condition evaluates to true, the model runner runs the step.
+	 * If it evauluates to false, the model runner proceeds to the next step in the same flow.
+	 *  
+	 * @param aCase the case conditon
+	 * @return the created in case part of this step
+	 */
+  public StepInCasePart inCase(Condition aCase) {
+    return new StepInCasePart(aCase, this);
+  }
 
 	/**
 	 * Defines which actors (i.e. user groups) can cause the system to react to the
@@ -68,7 +77,7 @@ public class StepPart {
 	 */
 	public StepAsPart as(AbstractActor... actors) {
 		Objects.requireNonNull(actors);
-		return stepAsPart(actors, this);
+		return inCase(null).as(actors);
 	}
 
 	/**
@@ -86,8 +95,7 @@ public class StepPart {
 	 */
 	public <T> StepUserPart<T> user(Class<T> commandClass) {
 		Objects.requireNonNull(commandClass);
-		AbstractActor defaultActor = getUseCasePart().getDefaultActor();
-		StepUserPart<T> userPart = as(defaultActor).user(commandClass);
+		StepUserPart<T> userPart = inCase(null).user(commandClass);
 		return userPart;
 	}
 
@@ -107,7 +115,7 @@ public class StepPart {
 	 */
 	public <T> StepUserPart<T> on(Class<T> eventOrExceptionClass) {
 		Objects.requireNonNull(eventOrExceptionClass);
-		StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
+		StepUserPart<T> userPart = inCase(null).on(eventOrExceptionClass);
 		return userPart;
 	}
 
@@ -120,7 +128,7 @@ public class StepPart {
 	 */
 	public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
+		StepSystemPart<ModelRunner> systemPart = inCase(null).system(systemReaction);
 		return systemPart;
 	}
 
@@ -136,7 +144,7 @@ public class StepPart {
 	 */
 	public StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
 		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
+		StepSystemPart<ModelRunner> systemPart = inCase(null).systemPublish(systemReaction);
 		return systemPart;
 	}
 
@@ -151,7 +159,7 @@ public class StepPart {
 	 */
 	public UseCasePart continuesAfter(String stepName) {
 		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = as(systemActor).continuesAfter(stepName);
+		UseCasePart useCasePart = inCase(null).continuesAfter(stepName);
 		return useCasePart;
 	}
 
@@ -168,7 +176,7 @@ public class StepPart {
 	 */
 	public UseCasePart continuesAt(String stepName) {
 		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = as(systemActor).continuesAt(stepName);
+		UseCasePart useCasePart = inCase(null).continuesAt(stepName);
 		return useCasePart;
 	}
 
@@ -184,7 +192,7 @@ public class StepPart {
 	 */
 	public UseCasePart continuesWithoutAlternativeAt(String stepName) {
 		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = as(systemActor).continuesWithoutAlternativeAt(stepName);
+		UseCasePart useCasePart = inCase(null).continuesWithoutAlternativeAt(stepName);
 		return useCasePart;
 	}
 
@@ -204,7 +212,7 @@ public class StepPart {
 		return modelBuilder;
 	}
 
-  public StepPart inCase(Condition condition) {
-    return this;
+  AbstractActor getSystemActor() {
+    return systemActor;
   }
 }
