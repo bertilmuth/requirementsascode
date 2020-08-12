@@ -14,9 +14,13 @@ public class StepInCasePart {
   private Condition aCase;
   private StepPart stepPart;
 
-  public StepInCasePart(Condition aCase, StepPart stepPart) {
+  private StepInCasePart(Condition aCase, StepPart stepPart) {
     this.aCase = aCase;
     this.stepPart = stepPart;
+  }
+  
+  static StepInCasePart stepInCasePart(Condition aCase, StepPart stepPart) {
+    return new StepInCasePart(aCase, stepPart);
   }
   
   /**

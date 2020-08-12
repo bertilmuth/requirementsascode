@@ -12,6 +12,8 @@ import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
+import static org.requirementsascode.builder.StepInCasePart.stepInCasePart;
+
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -65,7 +67,7 @@ public class StepPart {
 	 * @return the created in case part of this step
 	 */
   public StepInCasePart inCase(Condition aCase) {
-    return new StepInCasePart(aCase, this);
+    return stepInCasePart(aCase, this);
   }
 
 	/**
