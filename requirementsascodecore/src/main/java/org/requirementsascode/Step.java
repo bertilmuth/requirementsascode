@@ -24,6 +24,7 @@ public abstract class Step extends ModelElement{
 	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
 	private AbstractActor publishTo;
+  private Condition aCase;
 
 	/**
 	 * Creates a step with the specified name that belongs to the specified use
@@ -109,4 +110,12 @@ public abstract class Step extends ModelElement{
 	public void setPublishTo(AbstractActor recipient) {
 		this.publishTo = recipient;
 	}
+
+  public void setCase(Condition aCase) {
+    this.aCase = aCase;
+  }
+  
+  public Optional<Condition> getCase(){
+    return Optional.ofNullable(aCase);
+  }
 }

@@ -11,12 +11,12 @@ import org.requirementsascode.ModelRunner;
 import org.requirementsascode.exception.NoSuchElementInModel;
 
 public class StepInCasePart {
-  private Condition aCase;
   private StepPart stepPart;
 
   private StepInCasePart(Condition aCase, StepPart stepPart) {
-    this.aCase = aCase;
     this.stepPart = stepPart;
+    
+    stepPart.getStep().setCase(aCase);
   }
   
   static StepInCasePart stepInCasePart(Condition aCase, StepPart stepPart) {

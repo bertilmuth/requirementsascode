@@ -352,13 +352,17 @@ public class ModelRunner {
 
 		stepToBeRun.setupWith(step, message);
 		recordStepNameAndMessage(step, message);
-
 		setLatestStep(step);
 
 		try {
       nestedReactToMessageCallCausesException = true;
-			messageHandler.accept(stepToBeRun);
-			publishReturnedMessage();
+      
+      Condition isTheCase = step.getCase().orElse(() -> true);
+      if (isTheCase.evaluate()) {
+        messageHandler.accept(stepToBeRun);
+        publishReturnedMessage();
+      }
+			
 		} catch (Exception e) {
 			handleException(e);
 		}
