@@ -4,10 +4,10 @@ import static org.requirementsascode.extract.freemarker.methodmodel.util.Steps.g
 import static org.requirementsascode.extract.freemarker.methodmodel.util.Words.getLowerCaseWordsOfClassName;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
-import org.requirementsascode.Step;
 import org.requirementsascode.flowposition.After;
 import org.requirementsascode.flowposition.FlowPosition;
 
@@ -44,13 +44,20 @@ public class FlowCondition implements TemplateMethodModelEx {
 
   private String getFlowPosition(Flow flow) {
     FlowPosition flowPosition = flow.getFlowPosition();
-    String result = "";
+    String flowPositionWords = flowPositionToWords(flowPosition);
+    String afterAnyOtherStepWords = 
+      flowPosition.getAfterOtherSteps().stream()
+        .map(After::getStepName)
+        .collect(Collectors.joining(","));
+    return flowPositionWords + afterAnyOtherStepWords;
+  }
 
+  private String flowPositionToWords(FlowPosition flowPosition) {
+    String result = "";
     if (flowPosition != null) {
-      Step step = flowPosition.getStep();
-      boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, step);
+      String stepName = flowPosition.getStepName();
+      boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, stepName);
       if (isNonDefaultFlowPosition) {
-        String stepName = step != null ? step.getName() : "";
         String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
         String flowPositionWithStepName = flowPositionWords + " " + stepName;
         result = flowPositionWithStepName.trim();
@@ -59,8 +66,8 @@ public class FlowCondition implements TemplateMethodModelEx {
     return result;
   }
 
-  boolean isNonDefaultFlowCondition(FlowPosition flowPosition, Step step) {
-    return !After.class.equals(flowPosition.getClass()) || step != null;
+  boolean isNonDefaultFlowCondition(FlowPosition flowPosition, String stepName) {
+    return !After.class.equals(flowPosition.getClass()) || stepName != null;
   }
 
   private String getFlowPredicateSeparator(Flow flow, String sep) {

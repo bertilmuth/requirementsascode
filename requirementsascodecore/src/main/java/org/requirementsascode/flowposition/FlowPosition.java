@@ -6,55 +6,65 @@ import java.util.function.Predicate;
 
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
 
 public abstract class FlowPosition implements Predicate<ModelRunner> {
   private UseCase useCase;
   private FlowStep step;
   private String stepName;
-  private List<After> orAfterSteps;
+  private List<After> afterOtherSteps;
 
   protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
 
   public FlowPosition(String stepName, UseCase useCase) {
     this.stepName = stepName;
     this.useCase = useCase;
-    this.orAfterSteps = new ArrayList<>();
+    this.afterOtherSteps = new ArrayList<>();
   }
 
   @Override
   public final boolean test(ModelRunner modelRunner) {
     if (step == null) {
-      resolveStep();
+      resolveSteps();
     }
 
     boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
-      || afterAnyOtherStep(modelRunner);
+      || isAfterAnyOtherStep(modelRunner);
     return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
   }
 
-  public FlowStep resolveStep() {
+  public FlowStep resolveSteps() {
     FlowStep flowStep = null;
-    if (useCase != null && stepName != null) {
-      this.step = (FlowStep) useCase.findStep(stepName);
-    }
+    this.step = resolveStep(this);
+    getAfterOtherSteps().forEach(this::resolveStep);
     return flowStep;
   }
 
-  private boolean afterAnyOtherStep(ModelRunner modelRunner) {
+  private FlowStep resolveStep(FlowPosition fp) {
+    FlowStep resolvedStep = null;
+    
+    UseCase fpUseCase = fp.getUseCase();
+    String fpStepName = fp.getStepName();
+    if (fpUseCase != null && fpStepName != null) {
+      resolvedStep = (FlowStep) fpUseCase.findStep(fpStepName);
+    }
+    
+    return resolvedStep;
+  }
+
+  private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
     boolean isAfterStep = false;
-    for (After orAfterStep : orAfterSteps) {
-      if (orAfterStep.test(modelRunner)) {
+    for (After afterOtherStep : afterOtherSteps) {
+      if (afterOtherStep.test(modelRunner)) {
         isAfterStep = true;
         break;
       }
     }
     return isAfterStep;
   }
-
-  public final Step getStep() {
-    return step;
+  
+  public final String getStepName() {
+    return stepName;
   }
 
   public final UseCase getUseCase() {
@@ -62,8 +72,12 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
   }
 
   public FlowPosition orAfter(String stepName, UseCase useCase) {
-    After orAfterStep = new After(stepName, useCase);
-    orAfterSteps.add(orAfterStep);
+    After afterOtherStep = new After(stepName, useCase);
+    afterOtherSteps.add(afterOtherStep);
     return this;
+  }
+
+  public List<After> getAfterOtherSteps() {
+    return afterOtherSteps;
   }
 }
