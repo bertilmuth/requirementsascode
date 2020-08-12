@@ -11,8 +11,7 @@ public class InsteadOf extends FlowPosition{
 
   @Override
 	protected boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
-		FlowStep previousStep = step.getPreviousStepInFlow().orElse(null);
-		After afterPreviousStep = After.flowStep(previousStep);
-		return afterPreviousStep.test(modelRunner);
+      FlowPosition flowPosition = step.getFlowPosition();
+      return flowPosition.test(modelRunner);
 	}
 }

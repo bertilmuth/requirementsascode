@@ -633,10 +633,27 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 		
-		modelRunner.run(model).reactTo(entersText(), entersAlternativeText());
+		modelRunner.run(model);
 		
-		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_ALTERNATIVE_TEXT);
+    reactToAndAssertEvents(entersText(), entersAlternativeText());		
 	}
+	
+	 @Test
+	  public void reactsToAlternativeOfAlternative() {   
+	    Model model = modelBuilder
+	      .useCase(USE_CASE)    
+	        .basicFlow()
+	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+	          .step(THIS_STEP_SHOULD_BE_SKIPPED).user(EntersText.class).system(throwsRuntimeException())    
+	        .flow(ALTERNATIVE_FLOW).insteadOf(THIS_STEP_SHOULD_BE_SKIPPED)
+	          .step(CUSTOMER_ENTERS_ALTERNATIVE_TEXT).user(EntersText.class).system(displaysEnteredText())
+	        .flow(ALTERNATIVE_FLOW_2).insteadOf(CUSTOMER_ENTERS_ALTERNATIVE_TEXT)
+            .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())
+	      .build();
+	    
+	    modelRunner.run(model).reactTo(entersNumber(), entersText(), entersNumber());
+	    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_NUMBER);
+	  }
 	
 	@Test
 	public void reactsToAlternativeAtFirstStep() {		
