@@ -203,4 +203,8 @@ public class StepPart {
 	ModelBuilder getModelBuilder() {
 		return modelBuilder;
 	}
+
+  public StepPart inCase(Condition condition) {
+    return this;
+  }
 }
