@@ -830,13 +830,13 @@ public class FlowTest extends AbstractTestCase{
 	public void continuesAtThirdStepCalledFromFirstStepOfAlternativeFlowWithoutEvent() {		
 		Model model = modelBuilder
 			.useCase(USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
+			
         .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
           .step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
-          
-				.flow("Main Flow")
-					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-					.step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
-					.step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())		
 
 			.build();
 		
