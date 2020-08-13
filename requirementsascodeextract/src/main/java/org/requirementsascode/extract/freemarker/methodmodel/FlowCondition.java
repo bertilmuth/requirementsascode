@@ -53,14 +53,14 @@ public class FlowCondition implements TemplateMethodModelEx {
       flowPositionWords = flowPositionToWords(flowPosition, stepName);
     } else if(flowPosition instanceof After) {
       After after = (After)flowPosition;
-      String stepName = after.getStepName();
       
-      String afterAnyOtherStepWords = 
-        flowPosition.getAfterOtherSteps().stream()
+      String afterStepNames = 
+        after.getAfterSteps().stream()
           .map(After::getStepName)
+          .filter(name -> name != null)
           .collect(Collectors.joining(","));
       
-      flowPositionWords = flowPositionToWords(flowPosition, stepName) + afterAnyOtherStepWords;
+      flowPositionWords = afterStepNames.isEmpty()? "" : "After " + afterStepNames;
     }
     
 
