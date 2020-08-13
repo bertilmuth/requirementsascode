@@ -617,7 +617,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model)
-			.reactTo(entersAlternativeText(), entersNumber(), entersAlternativeText(), entersNumber());
+			.reactTo(entersText(), entersNumber(), entersText(), entersNumber());
 		
 		assertRecordedStepNames(CUSTOMER_ENTERS_ALTERNATIVE_TEXT, CUSTOMER_ENTERS_NUMBER);
 	}
