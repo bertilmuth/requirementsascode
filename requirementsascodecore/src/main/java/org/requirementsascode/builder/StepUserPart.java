@@ -38,8 +38,8 @@ public class StepUserPart<T> {
    * @param aCase the case conditon
    * @return the created in case part of this step
    */
-  public StepInCasePart<T> inCase(Condition inCase) {
-    return new StepInCasePart<>(inCase, stepPart);
+  public StepInCasePart<T> inCase(Condition aCase) {
+    return new StepInCasePart<>(aCase, stepPart);
   }
 
 	/**
@@ -104,21 +104,6 @@ public class StepUserPart<T> {
 	}
 
   /**
-   * Makes the model runner continue at the specified step. If there are
-   * alternative flows starting at the specified step, one may be entered if its
-   * condition is enabled.
-   *
-   * @param stepName name of the step to continue at, in this use case.
-   * @return the use case part this step belongs to, to ease creation of further
-   *         flows
-   * @throws NoSuchElementInModel if no step with the specified stepName is found
-   *                              in the current use case
-   */
-  public UseCasePart continuesAt(String stepName) {
-    return inCase(null).continuesAt(stepName);
-  }
-
-  /**
    * Makes the model runner continue after the specified step.
    *
    * @param stepName name of the step to continue after, in this use case.
@@ -128,20 +113,10 @@ public class StepUserPart<T> {
    *                              in the current use case
    */
   public UseCasePart continuesAfter(String stepName) {
-    return stepPart.continuesAfter(stepName);
+    return inCase(null).continuesAfter(stepName);
   }
 
-  /**
-   * Makes the model runner continue at the specified step. No alternative flow
-   * starting at the specified step is entered, even if its condition is enabled.
-   *
-   * @param stepName name of the step to continue at, in this use case.
-   * @return the use case part this step belongs to, to ease creation of further
-   *         flows
-   * @throws NoSuchElementInModel if no step with the specified stepName is found
-   *                              in the current use case
-   */
-  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-    return inCase(null).continuesWithoutAlternativeAt(stepName);
+  public UseCasePart continuesAt(String stepName) {
+    return inCase(null).continuesAt(stepName);
   }
 }

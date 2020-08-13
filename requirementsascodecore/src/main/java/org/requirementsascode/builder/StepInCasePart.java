@@ -85,21 +85,6 @@ public class StepInCasePart<T> {
   }
 
   /**
-   * Makes the model runner continue at the specified step. If there are
-   * alternative flows starting at the specified step, one may be entered if its
-   * condition is enabled.
-   *
-   * @param stepName name of the step to continue at, in this use case.
-   * @return the use case part this step belongs to, to ease creation of further
-   *         flows
-   * @throws NoSuchElementInModel if no step with the specified stepName is found
-   *                              in the current use case
-   */
-  public UseCasePart continuesAt(String stepName) {
-    return stepPart.continuesAt(stepName);
-  }
-
-  /**
    * Makes the model runner continue after the specified step.
    *
    * @param stepName name of the step to continue after, in this use case.
@@ -122,7 +107,7 @@ public class StepInCasePart<T> {
    * @throws NoSuchElementInModel if no step with the specified stepName is found
    *                              in the current use case
    */
-  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-    return stepPart.continuesWithoutAlternativeAt(stepName);
+  public UseCasePart continuesAt(String stepName) {
+    return stepPart.continuesAt(stepName);
   }
 }

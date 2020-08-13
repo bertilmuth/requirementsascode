@@ -75,7 +75,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 		
     modelBuilder.useCase(USE_CASE)
       .basicFlow()
-        .step("S1").continuesWithoutAlternativeAt(CONTINUE)
+        .step("S1").continuesAt(CONTINUE)
       .build();
 	}
 

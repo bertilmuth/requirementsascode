@@ -1,20 +1,27 @@
 package org.requirementsascode.systemreaction;
 
 import org.requirementsascode.FlowStep;
-import org.requirementsascode.UseCase;
+import org.requirementsascode.ModelRunner;
 
-public class ContinuesAt extends AbstractContinuesAfter {
-	private UseCase useCase;
+public class ContinuesAt extends AbstractContinues {
+  private FlowStep currentStep;
+  private FlowStep continueAtStep;
 
-  public ContinuesAt(String stepName, UseCase useCase) {
-		super(stepName);
-    this.useCase = useCase;
-	}
+  public ContinuesAt(String continueAtStepName, FlowStep currentStep) {
+    super(continueAtStepName);
+    this.currentStep = currentStep;
+
+  }
 
   @Override
-  public FlowStep resolvePreviousStep() {
-    FlowStep step = (FlowStep) useCase.findStep(getStepName());
-    FlowStep previousStep = step.getPreviousStepInFlow().orElse(null);
-    return previousStep;
+  public void accept(ModelRunner runner) {
+    if(continueAtStep == null) {
+      resolveContinueAtStep();
+    }
+  }
+
+  public void resolveContinueAtStep() {
+    continueAtStep = ((FlowStep) currentStep.getUseCase().findStep(getStepName()));
+    continueAtStep.orAfter(currentStep);
   }
 }

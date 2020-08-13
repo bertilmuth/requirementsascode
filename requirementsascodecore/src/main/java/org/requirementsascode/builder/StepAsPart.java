@@ -13,7 +13,6 @@ import org.requirementsascode.Step;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.systemreaction.ContinuesAfter;
 import org.requirementsascode.systemreaction.ContinuesAt;
-import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -98,22 +97,6 @@ public class StepAsPart {
 	}
 
 	/**
-	 * Makes the model runner continue at the specified step. If there are
-	 * alternative flows starting at the specified step, one may be entered if its
-	 * condition is enabled.
-	 *
-	 * @param stepName name of the step to continue at, in this use case.
-	 * @return the use case part this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInModel if no step with the specified stepName is found
-	 *                              in the current use case
-	 */
-	public UseCasePart continuesAt(String stepName) {
-		user(ModelRunner.class).system(new ContinuesAt(stepName, step.getUseCase()));
-		return stepPart.getUseCasePart();
-	}
-
-	/**
 	 * Makes the model runner continue at the specified step. No alternative flow
 	 * starting at the specified step is entered, even if its condition is enabled.
 	 *
@@ -123,8 +106,8 @@ public class StepAsPart {
 	 * @throws NoSuchElementInModel if no step with the specified stepName is found
 	 *                              in the current use case
 	 */
-	public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-		user(ModelRunner.class).system(new ContinuesWithoutAlternativeAt(stepName, (FlowStep) step));
+	public UseCasePart continuesAt(String stepName) {
+		user(ModelRunner.class).system(new ContinuesAt(stepName, (FlowStep) step));
 		return stepPart.getUseCasePart();
 	}
 }

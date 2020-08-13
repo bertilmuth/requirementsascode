@@ -9,7 +9,7 @@ import org.requirementsascode.Step;
 import org.requirementsascode.SystemReaction;
 import org.requirementsascode.flowposition.FlowPosition;
 import org.requirementsascode.systemreaction.AbstractContinuesAfter;
-import org.requirementsascode.systemreaction.ContinuesWithoutAlternativeAt;
+import org.requirementsascode.systemreaction.ContinuesAt;
 
 /**
  * Class that builds a {@link Model}, in a fluent way.
@@ -103,8 +103,8 @@ public class ModelBuilder {
 	public Model build() {
 	  // This is done lazily, only when building, to enable forward references (#92)
 	  resolveFlowPositions();
-	  resolveContinuesAfterAndContinuousAt();
-	  resolveContinuesWithoutAlternativeAt();
+	  resolveContinuesAfter();
+	  resolveContinuesAt();
 		return getModel();
 	}
 
@@ -116,7 +116,7 @@ public class ModelBuilder {
 	    .forEach(FlowPosition::resolveSteps);
   }
   
-  private void resolveContinuesAfterAndContinuousAt() {
+  private void resolveContinuesAfter() {
     model.getUseCases().stream()
       .flatMap(uc -> uc.getSteps().stream())
       .map(Step::getSystemReaction)
@@ -127,14 +127,14 @@ public class ModelBuilder {
       .forEach(AbstractContinuesAfter::resolvePreviousStep);
   }
   
-  private void resolveContinuesWithoutAlternativeAt() {
+  private void resolveContinuesAt() {
     model.getUseCases().stream()
       .flatMap(uc -> uc.getSteps().stream())
       .map(Step::getSystemReaction)
       .filter(sr -> sr != null)
       .map(SystemReaction::getModelObject)
-      .filter(obj -> obj instanceof ContinuesWithoutAlternativeAt)
-      .map(obj -> (ContinuesWithoutAlternativeAt)obj)
-      .forEach(ContinuesWithoutAlternativeAt::resolveContinueAtStep);
+      .filter(obj -> obj instanceof ContinuesAt)
+      .map(obj -> (ContinuesAt)obj)
+      .forEach(ContinuesAt::resolveContinueAtStep);
   }
 }
