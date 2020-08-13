@@ -65,7 +65,7 @@ public class FreemarkerEngineTest {
       .flow("Alternative flow B").after("S3", "S4")
         .step("S4b_1").continuesAfter("S2")
       .flow("Alternative flow C").condition(thereIsNoAlternative())
-        .step("S5a").continuesWithoutAlternativeAt("S4")
+        .step("S5a").continuesAt("S4")
       .flow("Alternative flow D").insteadOf("S4").condition(thereIsNoAlternative())
         .step("S4c_2").continuesAt("S1")
       .flow("EX").anytime()
@@ -77,16 +77,19 @@ public class FreemarkerEngineTest {
     engine.extract(model, templateFileName, outputWriter);
     String output = outputWriter.toString();
 
-    assertEquals("Use case: Get greeted. Flow: Basic flow" + " Step: S1. System prompts user to enter name."
+    assertEquals("Use case: Get greeted. Flow: Basic flow After S4a_2,S4c_2:" 
+      + " Step: S1. System prompts user to enter name."
       + " Step: S2. User enters name.System greets user."
       + " Step: S3. As long as some condition is fulfilled: As First actor: User enters name.System greets user."
       + " Step: S4. As First actor/Second actor: User decides to quit."
       + " Step: S5. As First actor/Second actor: System prompts user to enter name." + " Step: S6. System quits."
-      + " Flow: Alternative flow A Instead of S4:" + " Step: S4a_1. System blows up."
-      + " Step: S4a_2. System continues at S1." + " Flow: Alternative flow B After S3,S4:"
+      + " Flow: Alternative flow A Instead of S4:" 
+      + " Step: S4a_1. System blows up."
+      + " Step: S4a_2. System continues at S1." 
+      + " Flow: Alternative flow B After S3,S4:"
       + " Step: S4b_1. System continues after S2." 
       + " Flow: Alternative flow C When there is no alternative:"
-      + " Step: S5a. System continues without alternative at S4."
+      + " Step: S5a. System continues at S4."
       + " Flow: Alternative flow D Instead of S4, when there is no alternative:"
       + " Step: S4c_2. System continues at S1." 
       + " Flow: EX"
