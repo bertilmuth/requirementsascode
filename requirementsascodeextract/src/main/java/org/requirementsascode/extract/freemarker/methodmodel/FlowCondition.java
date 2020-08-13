@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
 import org.requirementsascode.flowposition.After;
 import org.requirementsascode.flowposition.FlowPosition;
+import org.requirementsascode.flowposition.InsteadOf;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
@@ -44,7 +45,18 @@ public class FlowCondition implements TemplateMethodModelEx {
 
   private String getFlowPosition(Flow flow) {
     FlowPosition flowPosition = flow.getFlowPosition();
-    String flowPositionWords = flowPositionToWords(flowPosition);
+    
+    String flowPositionWords = "";
+    if(flowPosition instanceof InsteadOf) {
+      InsteadOf insteadOf = (InsteadOf)flowPosition;
+      String stepName = insteadOf.getStepName();
+      flowPositionWords = flowPositionToWords(flowPosition, stepName);
+    } else if(flowPosition instanceof After) {
+      After insteadOf = (After)flowPosition;
+      String stepName = insteadOf.getStepName();
+      flowPositionWords = flowPositionToWords(flowPosition, stepName);
+    }
+    
     String afterAnyOtherStepWords = 
       flowPosition.getAfterOtherSteps().stream()
         .map(After::getStepName)
@@ -52,10 +64,9 @@ public class FlowCondition implements TemplateMethodModelEx {
     return flowPositionWords + afterAnyOtherStepWords;
   }
 
-  private String flowPositionToWords(FlowPosition flowPosition) {
+  private String flowPositionToWords(FlowPosition flowPosition, String stepName) {
     String result = "";
     if (flowPosition != null) {
-      String stepName = flowPosition.getStepName();
       boolean isNonDefaultFlowPosition = isNonDefaultFlowCondition(flowPosition, stepName);
       if (isNonDefaultFlowPosition) {
         String flowPositionWords = getLowerCaseWordsOfClassName(flowPosition.getClass());
