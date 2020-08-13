@@ -63,7 +63,7 @@ public class FlowWithCaseStepTest {
     Model model = Model.builder()
       .useCase("inCase Test")
         .basicFlow()
-          .step("step1").on(String.class).inCase(() -> false).system(str -> actualResult = str)
+          .step("step1").user(String.class).inCase(() -> false).system(str -> actualResult = str)
           .step("step2").inCase(() -> false).system(str -> actualResult = "not evaluated")
       .build();
         
