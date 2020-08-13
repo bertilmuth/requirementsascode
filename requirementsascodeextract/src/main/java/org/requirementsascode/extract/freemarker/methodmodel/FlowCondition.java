@@ -52,8 +52,8 @@ public class FlowCondition implements TemplateMethodModelEx {
       String stepName = insteadOf.getStepName();
       flowPositionWords = flowPositionToWords(flowPosition, stepName);
     } else if(flowPosition instanceof After) {
-      After insteadOf = (After)flowPosition;
-      String stepName = insteadOf.getStepName();
+      After after = (After)flowPosition;
+      String stepName = after.getStepName();
       flowPositionWords = flowPositionToWords(flowPosition, stepName);
     }
     
