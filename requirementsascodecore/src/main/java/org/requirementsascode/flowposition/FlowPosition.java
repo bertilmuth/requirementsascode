@@ -22,23 +22,11 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
   public final boolean test(ModelRunner modelRunner) {
     resolveStep();
 
-    boolean isRunnerAtRightPosition = isRunnerAtRightPositionFor(modelRunner)
-      || isAfterAnyOtherStep(modelRunner);
+    boolean isRunnerAtRightPosition = isRunnerAtRightPositionFor(modelRunner);
     return isRunnerAtRightPosition;
   }
 
   public abstract void resolveStep();
-
-  private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
-    boolean isAfterStep = false;
-    for (After afterOtherStep : afterOtherSteps) {
-      if (afterOtherStep.test(modelRunner)) {
-        isAfterStep = true;
-        break;
-      }
-    }
-    return isAfterStep;
-  }
 
   public final UseCase getUseCase() {
     return useCase;

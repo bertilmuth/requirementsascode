@@ -43,8 +43,19 @@ public class After extends FlowPosition {
   @Override
   protected boolean isRunnerAtRightPositionFor(ModelRunner modelRunner) {
     Step latestStepRun = modelRunner.getLatestStep().orElse(null);
-    boolean stepWasRunLast = Objects.equals(step, latestStepRun);
+    boolean stepWasRunLast = Objects.equals(step, latestStepRun) || isAfterAnyOtherStep(modelRunner);
     return stepWasRunLast;
+  }
+  
+  private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
+    boolean isAfterStep = false;
+    for (After afterOtherStep : getAfterOtherSteps()) {
+      if (afterOtherStep.test(modelRunner)) {
+        isAfterStep = true;
+        break;
+      }
+    }
+    return isAfterStep;
   }
 
   public void resolveStep() {
