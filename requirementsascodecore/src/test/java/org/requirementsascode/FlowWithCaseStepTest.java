@@ -25,6 +25,20 @@ public class FlowWithCaseStepTest extends AbstractTestCase {
   }
   
   @Test
+  public void runsTrueCaseStepWithEvent() {    
+    Model model = modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersNumber.class).inCase(() -> true).system(displaysEnteredNumber())
+      .build();
+        
+    modelRunner.run(model).reactTo(entersNumber());
+    assertEquals(String.valueOf(NUMBER), displayedText);
+    
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
+  }
+  
+  @Test
   public void runsFalseCaseTrueCaseSteps() {    
     Model model = modelBuilder
       .useCase(USE_CASE)

@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 import org.requirementsascode.builder.ModelBuilder;
 
 public abstract class AbstractTestCase {
-
-	public static final String TEXT = "Hello, Basic Flow!";
+  public static final String TEXT = "Hello, Basic Flow!";
+  public static final int NUMBER = 42;
 
 	protected static final String CUSTOMER = "Customer";
 	protected static final String PARTNER = "Partner";
@@ -85,7 +85,7 @@ public abstract class AbstractTestCase {
 	}
 
 	protected EntersNumber entersNumber() {
-		EntersNumber enterNumber = new EntersNumber(42);
+		EntersNumber enterNumber = new EntersNumber(NUMBER);
 		return enterNumber;
 	}
 
