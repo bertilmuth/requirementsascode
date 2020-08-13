@@ -1,5 +1,7 @@
 package org.requirementsascode.builder;
 
+import static org.requirementsascode.builder.StepAsPart.stepAsPart;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -12,8 +14,6 @@ import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
 
-import static org.requirementsascode.builder.StepInCasePart.stepInCasePart;
-
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
  *
@@ -21,200 +21,186 @@ import static org.requirementsascode.builder.StepInCasePart.stepInCasePart;
  * @author b_muth
  */
 public class StepPart {
-	private Step step;
-	private UseCasePart useCasePart;
-	private FlowPart flowPart;
-	private ModelBuilder modelBuilder;
-	private AbstractActor systemActor;
-	
-	private StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
-		this.step = Objects.requireNonNull(step);
-		this.useCasePart = Objects.requireNonNull(useCasePart);
-		this.modelBuilder = useCasePart.getModelBuilder();
-		this.systemActor = modelBuilder.getModel().getSystemActor();
-		this.flowPart = flowPart;
-	}
-	
-	 static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
-	    return interruptableFlowStepPart(stepName, flowPart, null);
-	  }
+  private Step step;
+  private UseCasePart useCasePart;
+  private FlowPart flowPart;
+  private ModelBuilder modelBuilder;
+  private AbstractActor systemActor;
+  
+  private StepPart(Step step, UseCasePart useCasePart, FlowPart flowPart) {
+    this.step = Objects.requireNonNull(step);
+    this.useCasePart = Objects.requireNonNull(useCasePart);
+    this.modelBuilder = useCasePart.getModelBuilder();
+    this.systemActor = modelBuilder.getModel().getSystemActor();
+    this.flowPart = flowPart;
+  }
+  
+   static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart) {
+      return interruptableFlowStepPart(stepName, flowPart, null);
+    }
 
-	static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart, Condition optionalCondition) {
-		UseCasePart useCasePart = flowPart.getUseCasePart();
-		UseCase useCase = useCasePart.getUseCase();
-		Step step = useCase.newInterruptableFlowStep(stepName, flowPart.getFlow(), optionalCondition);
-		return new StepPart(step, useCasePart, flowPart);
-	}
-
-	static StepPart interruptingFlowStepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition,
-		Condition optionalCondition) {
-		UseCasePart useCasePart = flowPart.getUseCasePart();
-		UseCase useCase = useCasePart.getUseCase();
-		Step step = useCase.newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition, optionalCondition);
-		return new StepPart(step, useCasePart, flowPart);
-	}
-	
-	static StepPart stepPartWithoutFlow(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
-		Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
-		return new StepPart(step, useCasePart, null);
-	}
-	
-	/** Immediately before a step is run, the specified case condition is checked.
-	 * If the condition evaluates to true, the model runner runs the step.
-	 * If it evauluates to false, the model runner proceeds to the next step in the same flow.
-	 *  
-	 * @param aCase the case conditon
-	 * @return the created in case part of this step
-	 */
-  public StepInCasePart inCase(Condition aCase) {
-    return stepInCasePart(aCase, this);
+  static StepPart interruptableFlowStepPart(String stepName, FlowPart flowPart, Condition optionalCondition) {
+    UseCasePart useCasePart = flowPart.getUseCasePart();
+    UseCase useCase = useCasePart.getUseCase();
+    Step step = useCase.newInterruptableFlowStep(stepName, flowPart.getFlow(), optionalCondition);
+    return new StepPart(step, useCasePart, flowPart);
   }
 
-	/**
-	 * Defines which actors (i.e. user groups) can cause the system to react to the
-	 * message of this step.
-	 *
-	 * @param actors the actors that define the user groups
-	 * @return the created as part of this step
-	 */
-	public StepAsPart as(AbstractActor... actors) {
-		Objects.requireNonNull(actors);
-		return inCase(null).as(actors);
-	}
+  static StepPart interruptingFlowStepPart(String stepName, FlowPart flowPart, FlowPosition flowPosition,
+    Condition optionalCondition) {
+    UseCasePart useCasePart = flowPart.getUseCasePart();
+    UseCase useCase = useCasePart.getUseCase();
+    Step step = useCase.newInterruptingFlowStep(stepName, flowPart.getFlow(), flowPosition, optionalCondition);
+    return new StepPart(step, useCasePart, flowPart);
+  }
+  
+  static StepPart stepPartWithoutFlow(String stepName, UseCasePart useCasePart, Condition optionalCondition) {
+    Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
+    return new StepPart(step, useCasePart, null);
+  }
 
-	/**
-	 * Defines the type of user command objects that this step accepts. Commands of
-	 * this type can cause a system reaction.
-	 *
-	 * <p>
-	 * Given that the step's condition is true, and the actor is right, the system
-	 * reacts to objects that are instances of the specified class or instances of
-	 * any direct or indirect subclass of the specified class.
-	 *
-	 * @param commandClass the class of commands the system reacts to in this step
-	 * @param <T>          the type of the class
-	 * @return the created user part of this step
-	 */
-	public <T> StepUserPart<T> user(Class<T> commandClass) {
-		Objects.requireNonNull(commandClass);
-		StepUserPart<T> userPart = inCase(null).user(commandClass);
-		return userPart;
-	}
+  /**
+   * Defines which actors (i.e. user groups) can cause the system to react to the
+   * message of this step.
+   *
+   * @param actors the actors that define the user groups
+   * @return the created as part of this step
+   */
+  public StepAsPart as(AbstractActor... actors) {
+    Objects.requireNonNull(actors);
+    return stepAsPart(actors, this);
+  }
 
-	/**
-	 * Defines the type of system event objects or exceptions that this step
-	 * handles. Events of the specified type can cause a system reaction.
-	 *
-	 * <p>
-	 * Given that the step's condition is true, and the actor is right, the system
-	 * reacts to objects that are instances of the specified class or instances of
-	 * any direct or indirect subclass of the specified class.
-	 *
-	 * @param eventOrExceptionClass the class of events the system reacts to in this
-	 *                              step
-	 * @param <T>                   the type of the class
-	 * @return the created user part of this step
-	 */
-	public <T> StepUserPart<T> on(Class<T> eventOrExceptionClass) {
-		Objects.requireNonNull(eventOrExceptionClass);
-		StepUserPart<T> userPart = inCase(null).on(eventOrExceptionClass);
-		return userPart;
-	}
+  /**
+   * Defines the type of user command objects that this step accepts. Commands of
+   * this type can cause a system reaction.
+   *
+   * <p>
+   * Given that the step's condition is true, and the actor is right, the system
+   * reacts to objects that are instances of the specified class or instances of
+   * any direct or indirect subclass of the specified class.
+   *
+   * @param commandClass the class of commands the system reacts to in this step
+   * @param <T>          the type of the class
+   * @return the created user part of this step
+   */
+  public <T> StepUserPart<T> user(Class<T> commandClass) {
+    Objects.requireNonNull(commandClass);
+    AbstractActor defaultActor = getUseCasePart().getDefaultActor();
+    StepUserPart<T> userPart = as(defaultActor).user(commandClass);
+    return userPart;
+  }
 
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 *
-	 * @param systemReaction the autonomous system reaction
-	 * @return the created system part of this step
-	 */
-	public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
-		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = inCase(null).system(systemReaction);
-		return systemPart;
-	}
+  /**
+   * Defines the type of system event objects or exceptions that this step
+   * handles. Events of the specified type can cause a system reaction.
+   *
+   * <p>
+   * Given that the step's condition is true, and the actor is right, the system
+   * reacts to objects that are instances of the specified class or instances of
+   * any direct or indirect subclass of the specified class.
+   *
+   * @param eventOrExceptionClass the class of events the system reacts to in this
+   *                              step
+   * @param <T>                   the type of the class
+   * @return the created user part of this step
+   */
+  public <T> StepUserPart<T> on(Class<T> eventOrExceptionClass) {
+    Objects.requireNonNull(eventOrExceptionClass);
+    StepUserPart<T> userPart = as(systemActor).user(eventOrExceptionClass);
+    return userPart;
+  }
 
-	/**
-	 * Defines an "autonomous system reaction", meaning the system will react
-	 * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
-	 * After executing the system reaction, the runner will publish the returned
-	 * event.
-	 *
-	 * @param systemReaction the autonomous system reaction, that returns a single
-	 *                       event to be published.
-	 * @return the created system part of this step
-	 */
-	public StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
-		Objects.requireNonNull(systemReaction);
-		StepSystemPart<ModelRunner> systemPart = inCase(null).systemPublish(systemReaction);
-		return systemPart;
-	}
+  /**
+   * Defines an "autonomous system reaction", meaning the system will react
+   * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
+   *
+   * @param systemReaction the autonomous system reaction
+   * @return the created system part of this step
+   */
+  public StepSystemPart<ModelRunner> system(Runnable systemReaction) {
+    Objects.requireNonNull(systemReaction);
+    StepSystemPart<ModelRunner> systemPart = as(systemActor).system(systemReaction);
+    return systemPart;
+  }
 
-	/**
-	 * Makes the model runner continue after the specified step.
-	 *
-	 * @param stepName name of the step to continue after, in this use case.
-	 * @return the use case part this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInModel if no step with the specified stepName is found
-	 *                              in the current use case
-	 */
-	public UseCasePart continuesAfter(String stepName) {
-		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = inCase(null).continuesAfter(stepName);
-		return useCasePart;
-	}
+  /**
+   * Defines an "autonomous system reaction", meaning the system will react
+   * without needing a message provided via {@link ModelRunner#reactTo(Object)}.
+   * After executing the system reaction, the runner will publish the returned
+   * event.
+   *
+   * @param systemReaction the autonomous system reaction, that returns a single
+   *                       event to be published.
+   * @return the created system part of this step
+   */
+  public StepSystemPart<ModelRunner> systemPublish(Supplier<?> systemReaction) {
+    Objects.requireNonNull(systemReaction);
+    StepSystemPart<ModelRunner> systemPart = as(systemActor).systemPublish(systemReaction);
+    return systemPart;
+  }
 
-	/**
-	 * Makes the model runner continue at the specified step. If there are
-	 * alternative flows starting at the specified step, one may be entered if its
-	 * condition is enabled.
-	 *
-	 * @param stepName name of the step to continue at, in this use case.
-	 * @return the use case part this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInModel if no step with the specified stepName is found
-	 *                              in the current use case
-	 */
-	public UseCasePart continuesAt(String stepName) {
-		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = inCase(null).continuesAt(stepName);
-		return useCasePart;
-	}
+  /**
+   * Makes the model runner continue after the specified step.
+   *
+   * @param stepName name of the step to continue after, in this use case.
+   * @return the use case part this step belongs to, to ease creation of further
+   *         flows
+   * @throws NoSuchElementInModel if no step with the specified stepName is found
+   *                              in the current use case
+   */
+  public UseCasePart continuesAfter(String stepName) {
+    Objects.requireNonNull(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesAfter(stepName);
+    return useCasePart;
+  }
 
-	/**
-	 * Makes the model runner continue at the specified step. No alternative flow
-	 * starting at the specified step is entered, even if its condition is enabled.
-	 *
-	 * @param stepName name of the step to continue at, in this use case.
-	 * @return the use case part this step belongs to, to ease creation of further
-	 *         flows
-	 * @throws NoSuchElementInModel if no step with the specified stepName is found
-	 *                              in the current use case
-	 */
-	public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-		Objects.requireNonNull(stepName);
-		UseCasePart useCasePart = inCase(null).continuesWithoutAlternativeAt(stepName);
-		return useCasePart;
-	}
+  /**
+   * Makes the model runner continue at the specified step. If there are
+   * alternative flows starting at the specified step, one may be entered if its
+   * condition is enabled.
+   *
+   * @param stepName name of the step to continue at, in this use case.
+   * @return the use case part this step belongs to, to ease creation of further
+   *         flows
+   * @throws NoSuchElementInModel if no step with the specified stepName is found
+   *                              in the current use case
+   */
+  public UseCasePart continuesAt(String stepName) {
+    Objects.requireNonNull(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesAt(stepName);
+    return useCasePart;
+  }
 
-	Step getStep() {
-		return step;
-	}
+  /**
+   * Makes the model runner continue at the specified step. No alternative flow
+   * starting at the specified step is entered, even if its condition is enabled.
+   *
+   * @param stepName name of the step to continue at, in this use case.
+   * @return the use case part this step belongs to, to ease creation of further
+   *         flows
+   * @throws NoSuchElementInModel if no step with the specified stepName is found
+   *                              in the current use case
+   */
+  public UseCasePart continuesWithoutAlternativeAt(String stepName) {
+    Objects.requireNonNull(stepName);
+    UseCasePart useCasePart = as(systemActor).continuesWithoutAlternativeAt(stepName);
+    return useCasePart;
+  }
 
-	FlowPart getFlowPart() {
-		return flowPart;
-	}
+  Step getStep() {
+    return step;
+  }
 
-	UseCasePart getUseCasePart() {
-		return useCasePart;
-	}
+  FlowPart getFlowPart() {
+    return flowPart;
+  }
 
-	ModelBuilder getModelBuilder() {
-		return modelBuilder;
-	}
+  UseCasePart getUseCasePart() {
+    return useCasePart;
+  }
 
-  AbstractActor getSystemActor() {
-    return systemActor;
+  ModelBuilder getModelBuilder() {
+    return modelBuilder;
   }
 }
