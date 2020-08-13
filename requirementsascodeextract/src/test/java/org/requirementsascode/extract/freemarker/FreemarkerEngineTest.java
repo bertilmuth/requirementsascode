@@ -77,7 +77,7 @@ public class FreemarkerEngineTest {
     engine.extract(model, templateFileName, outputWriter);
     String output = outputWriter.toString();
 
-    assertEquals("Use case: Get greeted. Flow: Basic flow After S4a_2,S4c_2:" 
+    assertEquals("Use case: Get greeted. Flow: Basic flow" 
       + " Step: S1. System prompts user to enter name."
       + " Step: S2. User enters name.System greets user."
       + " Step: S3. As long as some condition is fulfilled: As First actor: User enters name.System greets user."

@@ -58,14 +58,17 @@ public class FlowCondition implements TemplateMethodModelEx {
       String afterStepNames = 
         after.getAfterForEachSingleStep().stream()
           .map(AfterSingleStep::getStepName)
-          .filter(name -> name != null)
           .collect(Collectors.joining(","));
       
-      flowPositionWords = afterStepNames.isEmpty()? "" : "After " + afterStepNames;
+      flowPositionWords = isFlowWithoutFlowPosition(afterStepNames)? "" : "After " + afterStepNames;
     }
     
 
     return flowPositionWords;
+  }
+
+  protected boolean isFlowWithoutFlowPosition(String afterStepNames) {
+    return afterStepNames.startsWith("null");
   }
 
   private String flowPositionToWords(FlowPosition flowPosition, String stepName) {
