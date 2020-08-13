@@ -68,7 +68,7 @@ public class StepPart {
    * @param aCase the case conditon
    * @return the created in case part of this step
    */
-  public StepInCasePart inCase(Condition condition) {
+  public StepInCasePart<?> inCase(Condition condition) {
     return as(systemActor).user(ModelRunner.class).inCase(condition);
   }
 
