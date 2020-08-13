@@ -12,14 +12,14 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
   private UseCase useCase;
   private FlowStep step;
   private String stepName;
-  private List<After> afters;
+  private List<After> afterOtherSteps;
 
   protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
 
   public FlowPosition(String stepName, UseCase useCase) {
     this.stepName = stepName;
     this.useCase = useCase;
-    this.afters = new ArrayList<>();
+    this.afterOtherSteps = new ArrayList<>();
   }
 
   @Override
@@ -29,7 +29,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     }
 
     boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
-      || isAfterStep(modelRunner);
+      || isAfterAnyOtherStep(modelRunner);
     return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
   }
 
@@ -45,10 +45,10 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     this.step = resolvedStep;
   }
 
-  private boolean isAfterStep(ModelRunner modelRunner) {
+  private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
     boolean isAfterStep = false;
-    for (After afterStep : afters) {
-      if (afterStep.test(modelRunner)) {
+    for (After afterOtherStep : afterOtherSteps) {
+      if (afterOtherStep.test(modelRunner)) {
         isAfterStep = true;
         break;
       }
@@ -64,13 +64,13 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     return useCase;
   }
 
-  public FlowPosition after(String stepName, UseCase useCase) {
-    After after = new After(stepName, useCase);
-    afters.add(after);
+  public FlowPosition orAfter(String stepName, UseCase useCase) {
+    After afterOtherStep = new After(stepName, useCase);
+    afterOtherSteps.add(afterOtherStep);
     return this;
   }
 
-  public List<After> getAfters() {
-    return afters;
+  public List<After> getAfterOtherSteps() {
+    return afterOtherSteps;
   }
 }
