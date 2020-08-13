@@ -20,13 +20,13 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
 
   @Override
   public final boolean test(ModelRunner modelRunner) {
-    resolveStep();
+    resolveSteps();
 
     boolean isRunnerAtRightPosition = isRunnerAtRightPositionFor(modelRunner);
     return isRunnerAtRightPosition;
   }
 
-  public abstract void resolveStep();
+  public abstract void resolveSteps();
 
   public final UseCase getUseCase() {
     return useCase;

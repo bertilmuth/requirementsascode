@@ -57,19 +57,23 @@ public class After extends FlowPosition {
     }
     return isAfterStep;
   }
-
-  public void resolveStep() {
+  
+  public void resolveSteps() {
     if (step == null) {
-      FlowStep resolvedStep = null;
-
-      UseCase useCase = getUseCase();
-      String stepName = getStepName();
-      if (useCase != null && stepName != null) {
-        resolvedStep = (FlowStep) useCase.findStep(stepName);
-      }
-
-      this.step = resolvedStep;
+      this.step = resolveStep();
     }
+  }
+
+  private FlowStep resolveStep() {
+    FlowStep resolvedStep = null;
+
+    UseCase useCase = getUseCase();
+    String stepName = getStepName();
+    if (useCase != null && stepName != null) {
+      resolvedStep = (FlowStep) useCase.findStep(stepName);
+    }
+
+    return resolvedStep;
   }
   
   public final String getStepName() {
