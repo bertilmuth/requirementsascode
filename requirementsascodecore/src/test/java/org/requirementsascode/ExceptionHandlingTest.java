@@ -81,7 +81,7 @@ public class ExceptionHandlingTest extends AbstractTestCase{
 				.flow(ALTERNATIVE_FLOW).after(SYSTEM_DISPLAYS_TEXT)
 					.step(SYSTEM_THROWS_EXCEPTION).system(throwsArrayIndexOutOfBoundsException())
 				.flow(ALTERNATIVE_FLOW_2).anytime()
-					.step(SYSTEM_HANDLES_EXCEPTION).on(ArrayIndexOutOfBoundsException.class).system(e -> {})
+					.step(SYSTEM_HANDLES_EXCEPTION).on(Exception.class).system(e -> {})
 			.build();
 		
 		modelRunner.run(model);
