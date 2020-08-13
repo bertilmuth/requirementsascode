@@ -847,7 +847,7 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	 @Test
-	  public void continuesAtThirdStepEvenIfThereIsAnAlternativeFlow() {    
+	  public void continuesWithPreferredFlow() {    
 	    Model model = modelBuilder
 	      .useCase(USE_CASE)
           .basicFlow()
