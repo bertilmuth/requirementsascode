@@ -847,6 +847,28 @@ public class FlowTest extends AbstractTestCase{
 	}
 	
 	 @Test
+	  public void continuesAtThirdStepEvenIfThereIsAnAlternativeFlow() {    
+	    Model model = modelBuilder
+	      .useCase(USE_CASE)
+	        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
+	          .step(CONTINUE).continuesAt(CUSTOMER_ENTERS_NUMBER)
+	          
+	        .flow("Ignored Flow").insteadOf(CUSTOMER_ENTERS_NUMBER)
+            .step(CUSTOMER_ENTERS_ALTERNATIVE_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
+	          
+	        .flow("Main Flow")
+	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
+	          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
+	          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
+
+	      .build();
+	    
+	    modelRunner.run(model).reactTo(entersText(), entersNumber());
+
+      assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_ALTERNATIVE_NUMBER);
+	  }
+	
+	 @Test
 	  public void continuesAtThirdStepCalledFromFirstStepOfAlternativeFlowWithEvent() {    
 	    Model model = modelBuilder
 	      .useCase(USE_CASE)

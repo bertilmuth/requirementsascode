@@ -85,7 +85,7 @@ public class StepInCasePart<T> {
   }
 
   /**
-   * Makes the model runner continue after the specified step.
+   * Positions the modelRunner after the specified step, and reevaluates which flows can start from there.
    *
    * @param stepName name of the step to continue after, in this use case.
    * @return the use case part this step belongs to, to ease creation of further
@@ -98,8 +98,11 @@ public class StepInCasePart<T> {
   }
 
   /**
-   * Makes the model runner continue at the specified step. No alternative flow
-   * starting at the specified step is entered, even if its condition is enabled.
+   * Makes the model runner continue at the specified step. 
+   * 
+   * IMPORTANT NOTE: given you have specified continuesAt(x), 
+   * if there is an alternative flow with an insteadOf(x) condition,
+   * that alternative flow will be given preference to x if its condition is fulfilled.
    *
    * @param stepName name of the step to continue at, in this use case.
    * @return the use case part this step belongs to, to ease creation of further
