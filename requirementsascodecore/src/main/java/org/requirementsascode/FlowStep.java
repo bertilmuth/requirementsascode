@@ -42,7 +42,7 @@ public abstract class FlowStep extends Step{
 	}
 
 	public void orAfter(FlowStep step) {
-		FlowPosition flowPositionAfterStep = flowPosition.orAfter(step.getName(), step.getUseCase());
+		FlowPosition flowPositionAfterStep = flowPosition.after(step.getName(), step.getUseCase());
     setFlowPosition(flowPositionAfterStep);
 	}
 
@@ -52,7 +52,7 @@ public abstract class FlowStep extends Step{
 	}
 
 	private void createLoop() {
-		getFlowPosition().orAfter(getName(), getUseCase());
+		getFlowPosition().after(getName(), getUseCase());
 	}
 
 	public Condition getReactWhile() {

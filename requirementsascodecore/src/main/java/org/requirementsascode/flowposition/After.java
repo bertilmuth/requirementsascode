@@ -20,12 +20,12 @@ public class After extends FlowPosition {
 
   public After(String[] stepNames, UseCase useCase) {
     this(stepNames[0], useCase);
-    afterRemainingSteps(stepNames);
+    afterSteps(stepNames);
   }
 
-  private void afterRemainingSteps(String[] stepNames) {
-    for (int i = 1; i < stepNames.length; i++) {
-      orAfter(stepNames[i], getUseCase());
+  private void afterSteps(String[] stepNames) {
+    for (String stepName : stepNames) {
+      after(stepName, getUseCase());
     }
   }
 
