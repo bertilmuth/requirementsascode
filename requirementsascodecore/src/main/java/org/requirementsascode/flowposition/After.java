@@ -1,12 +1,7 @@
 package org.requirementsascode.flowposition;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
-import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
 
 /**
@@ -16,17 +11,13 @@ import org.requirementsascode.UseCase;
  *
  */
 public class After extends FlowPosition {
-  private String stepName;
-  private FlowStep step;
-
   public After(String[] stepNames, UseCase useCase) {
     super(useCase);
-    this.stepName = stepNames[0];
-    afterRemainingSteps(stepNames);
+    afterSteps(stepNames);
   }
 
-  private void afterRemainingSteps(String[] stepNames) {
-    for (int i = 1; i < stepNames.length; i++) {
+  private void afterSteps(String[] stepNames) {
+    for (int i = 0; i < stepNames.length; i++) {
       orAfter(stepNames[i], getUseCase());
     }
   }
@@ -40,15 +31,14 @@ public class After extends FlowPosition {
 
   @Override
   protected boolean isRunnerAtRightPositionFor(ModelRunner modelRunner) {
-    Step latestStepRun = modelRunner.getLatestStep().orElse(null);
-    boolean stepWasRunLast = Objects.equals(step, latestStepRun) || isAfterAnyOtherStep(modelRunner);
-    return stepWasRunLast;
+    boolean result = isAfterAnyStep(modelRunner);
+    return result;
   }
   
-  private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
+  private boolean isAfterAnyStep(ModelRunner modelRunner) {
     boolean isAfterStep = false;
-    for (After afterOtherStep : getAfterOtherSteps()) {
-      if (afterOtherStep.test(modelRunner)) {
+    for (AfterSingleStep afterSingleStep : getAfters()) {
+      if (afterSingleStep.test(modelRunner)) {
         isAfterStep = true;
         break;
       }
@@ -56,31 +46,10 @@ public class After extends FlowPosition {
     return isAfterStep;
   }
   
-  public void resolveStep() {
-    if (step == null) {
-      this.step = resolveStep(stepName);
+  @Override
+  public void resolveSteps() {
+    for(AfterSingleStep afterSingleStep : getAfters()) {
+      afterSingleStep.resolveStep();
     }
   }
-
-  private FlowStep resolveStep(String stepName) {
-    FlowStep resolvedStep = null;
-
-    UseCase useCase = getUseCase();
-    if (useCase != null && stepName != null) {
-      resolvedStep = (FlowStep) useCase.findStep(stepName);
-    }
-
-    return resolvedStep;
-  }
-  
-  public final String getStepName() {
-    return stepName;
-  }
-  
-  public List<After> getAfterSteps() {
-    List<After> afterSteps = new ArrayList<>();
-    afterSteps.add(this);
-    afterSteps.addAll(getAfterOtherSteps());
-    return afterSteps;
-  } 
 }

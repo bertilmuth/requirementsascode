@@ -113,7 +113,7 @@ public class ModelBuilder {
 	    .flatMap(uc -> uc.getFlows().stream())
 	    .map(Flow::getFlowPosition)
 	    .filter(fp -> fp != null)
-	    .forEach(FlowPosition::resolveStep);
+	    .forEach(FlowPosition::resolveSteps);
   }
   
   private void resolveContinuesAfterAndContinuousAt() {

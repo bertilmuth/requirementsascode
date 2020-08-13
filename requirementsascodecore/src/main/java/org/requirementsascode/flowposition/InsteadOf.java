@@ -19,7 +19,7 @@ public class InsteadOf extends FlowPosition{
       return flowPosition.test(modelRunner);
 	}
   
-  public void resolveStep() {
+  public void resolveSteps() {
     if(step == null) {
       FlowStep resolvedStep = null;
       

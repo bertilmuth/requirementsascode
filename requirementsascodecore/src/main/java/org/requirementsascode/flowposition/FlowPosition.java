@@ -9,36 +9,36 @@ import org.requirementsascode.UseCase;
 
 public abstract class FlowPosition implements Predicate<ModelRunner> {
   private UseCase useCase;
-  private List<After> afterOtherSteps;
+  private List<AfterSingleStep> afters;
 
   protected abstract boolean isRunnerAtRightPositionFor(ModelRunner modelRunner);
 
   public FlowPosition(UseCase useCase) {
     this.useCase = useCase;
-    this.afterOtherSteps = new ArrayList<>();
+    this.afters = new ArrayList<>();
   }
 
   @Override
   public final boolean test(ModelRunner modelRunner) {
-    resolveStep();
+    resolveSteps();
 
     boolean isRunnerAtRightPosition = isRunnerAtRightPositionFor(modelRunner);
     return isRunnerAtRightPosition;
   }
 
-  public abstract void resolveStep();
+  public abstract void resolveSteps();
 
   public final UseCase getUseCase() {
     return useCase;
   }
 
   public FlowPosition orAfter(String stepName, UseCase useCase) {
-    After afterOtherStep = new After(new String[] {stepName}, useCase);
-    afterOtherSteps.add(afterOtherStep);
+    AfterSingleStep afterStep = new AfterSingleStep(stepName, useCase);
+    afters.add(afterStep);
     return this;
   }
 
-  List<After> getAfterOtherSteps() {
-    return afterOtherSteps;
+  List<AfterSingleStep> getAfters() {
+    return afters;
   }
 }
