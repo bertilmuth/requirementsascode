@@ -14,14 +14,14 @@ public class FlowWithCaseStepTest extends AbstractTestCase {
   
   @Test
   public void runsTrueCaseStep() {    
-    /*Model model = modelBuilder
+    Model model = modelBuilder
       .useCase(USE_CASE)
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).inCase(() -> true).system(displaysConstantText())
       .build();
         
     modelRunner.run(model);
-    assertEquals(TEXT, displayedText);*/
+    assertEquals(TEXT, displayedText);
   }
   
   @Test

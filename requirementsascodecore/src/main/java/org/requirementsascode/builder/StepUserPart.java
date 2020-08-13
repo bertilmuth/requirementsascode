@@ -1,21 +1,16 @@
 package org.requirementsascode.builder;
 
-import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithConsumer;
-import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithFunction;
-import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithRunnable;
-import static org.requirementsascode.builder.StepSystemPart.stepSystemPartWithSupplier;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
-import org.requirementsascode.systemreaction.IgnoresIt;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -35,6 +30,17 @@ public class StepUserPart<T> {
 	static <T> StepUserPart<T> stepUserPart(Class<T> messageClass, StepPart stepPart) {
 		return new StepUserPart<>(messageClass, stepPart);
 	}
+	
+	/** Immediately before a step is run, the specified case condition is checked.
+   * If the condition evaluates to true, the model runner runs the step.
+   * If it evauluates to false, the model runner proceeds to the next step in the same flow.
+   *  
+   * @param aCase the case conditon
+   * @return the created in case part of this step
+   */
+  public StepInCasePart<T> inCase(Condition inCase) {
+    return new StepInCasePart<>(inCase, stepPart);
+  }
 
 	/**
 	 * Defines the system reaction. The system will react as specified to the
@@ -44,7 +50,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Consumer<? super T> systemReaction) {
-		return stepSystemPartWithConsumer(systemReaction, stepPart);
+		return inCase(null).system(systemReaction);
 	}
 
 	/**
@@ -56,7 +62,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> system(Runnable systemReaction) {
-		return stepSystemPartWithRunnable(systemReaction, stepPart);
+	  return inCase(null).system(systemReaction);
 	}
 
 	/**
@@ -69,7 +75,7 @@ public class StepUserPart<T> {
 	 * @return the created system part of this step
 	 */
 	public StepSystemPart<T> systemPublish(Function<? super T, ?> systemReaction) {
-		return stepSystemPartWithFunction(systemReaction, stepPart);
+    return inCase(null).systemPublish(systemReaction);
 	}
 	
 	 /**
@@ -80,7 +86,7 @@ public class StepUserPart<T> {
    * @return the created system part of this step
    */
 	public StepSystemPart<T> systemPublish(Supplier<?> systemReaction) {
-		return stepSystemPartWithSupplier(systemReaction, stepPart);
+    return inCase(null).systemPublish(systemReaction);
 	}
 
 	/**
@@ -94,7 +100,7 @@ public class StepUserPart<T> {
 	 *                               exists in the use case
 	 */
 	public StepPart step(String stepName) {
-		return system(new IgnoresIt<>()).step(stepName);
+    return inCase(null).step(stepName);
 	}
 
   /**
@@ -109,7 +115,7 @@ public class StepUserPart<T> {
    *                              in the current use case
    */
   public UseCasePart continuesAt(String stepName) {
-    return stepPart.continuesAt(stepName);
+    return inCase(null).continuesAt(stepName);
   }
 
   /**
@@ -136,6 +142,6 @@ public class StepUserPart<T> {
    *                              in the current use case
    */
   public UseCasePart continuesWithoutAlternativeAt(String stepName) {
-    return stepPart.continuesWithoutAlternativeAt(stepName);
+    return inCase(null).continuesWithoutAlternativeAt(stepName);
   }
 }

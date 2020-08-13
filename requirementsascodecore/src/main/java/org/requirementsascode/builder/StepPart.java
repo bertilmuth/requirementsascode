@@ -58,6 +58,19 @@ public class StepPart {
     Step step = useCasePart.getUseCase().newFlowlessStep(stepName, optionalCondition);
     return new StepPart(step, useCasePart, null);
   }
+  
+  /**
+   * Immediately before a step is run, the specified case condition is checked. If
+   * the condition evaluates to true, the model runner runs the step. If it
+   * evauluates to false, the model runner proceeds to the next step in the same
+   * flow.
+   * 
+   * @param aCase the case conditon
+   * @return the created in case part of this step
+   */
+  public StepInCasePart inCase(Condition condition) {
+    return as(systemActor).user(ModelRunner.class).inCase(condition);
+  }
 
   /**
    * Defines which actors (i.e. user groups) can cause the system to react to the
