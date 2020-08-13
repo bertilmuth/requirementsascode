@@ -29,7 +29,7 @@ public class After extends FlowPosition {
     }
   }
 
-  public static After flowStep(FlowStep flowStep) {
+  public static After afterFlowStep(FlowStep flowStep) {
     UseCase useCase = flowStep == null ? null : flowStep.getUseCase();
     String stepName = flowStep == null ? null : flowStep.getName();
     After afterFlowStep = new After(new String[] {stepName}, useCase);
@@ -54,7 +54,7 @@ public class After extends FlowPosition {
     return isAfterStep;
   }
   
-  public void resolveSteps() {
+  public void resolveStep() {
     if (step == null) {
       this.step = resolveStep(stepName);
     }

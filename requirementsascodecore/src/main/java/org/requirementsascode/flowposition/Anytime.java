@@ -13,6 +13,6 @@ public class Anytime extends FlowPosition{
 	}
 
   @Override
-  public void resolveSteps() {    
+  public void resolveStep() {    
   }
 }

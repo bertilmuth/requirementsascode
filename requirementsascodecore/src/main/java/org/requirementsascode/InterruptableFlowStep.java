@@ -36,7 +36,7 @@ public class InterruptableFlowStep extends FlowStep{
 		List<FlowStep> flowSteps = getFlow().getSteps();
 		FlowStep lastFlowStep = flowSteps.isEmpty() ? null : flowSteps.get(flowSteps.size() - 1);
 		setPreviousStepInFlow(lastFlowStep);
-    setFlowPosition(After.flowStep(lastFlowStep));
+    setFlowPosition(After.afterFlowStep(lastFlowStep));
 	}
 
   @Override
