@@ -38,7 +38,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     return this;
   }
 
-  public List<After> getAfterOtherSteps() {
+  List<After> getAfterOtherSteps() {
     return afterOtherSteps;
   }
 }

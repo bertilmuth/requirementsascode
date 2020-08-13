@@ -1,5 +1,7 @@
 package org.requirementsascode.flowposition;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.requirementsascode.FlowStep;
@@ -74,4 +76,11 @@ public class After extends FlowPosition {
   public final String getStepName() {
     return stepName;
   }
+  
+  public List<After> getAfterSteps() {
+    List<After> afterSteps = new ArrayList<>();
+    afterSteps.add(this);
+    afterSteps.addAll(getAfterOtherSteps());
+    return afterSteps;
+  } 
 }
