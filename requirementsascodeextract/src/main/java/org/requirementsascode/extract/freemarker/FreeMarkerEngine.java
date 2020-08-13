@@ -22,7 +22,7 @@ public class FreeMarkerEngine {
 
   /**
    * Creates an engine for generating documentation, based on a
-   * requirementsascodecore UseCaseModel and using the FreeMarker template engine.
+   * requirements as code core Model and using the FreeMarker template engine.
    * 
    * @param basePackagePath package path in your classpath, where your FreeMarker
    *                        templates are located.

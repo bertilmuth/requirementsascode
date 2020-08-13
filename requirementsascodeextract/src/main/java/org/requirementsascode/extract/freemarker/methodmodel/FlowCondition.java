@@ -18,6 +18,7 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class FlowCondition implements TemplateMethodModelEx {
+  private static final String AFTER_PREFIX = "after ";
   private static final String WHEN = "when ";
   private static final String PREDICATE_SEPARATOR = ", ";
   private static final String PREDICATE_POSTFIX = ": ";
@@ -60,7 +61,7 @@ public class FlowCondition implements TemplateMethodModelEx {
           .map(AfterSingleStep::getStepName)
           .collect(Collectors.joining(","));
       
-      flowPositionWords = isFlowWithoutFlowPosition(afterStepNames)? "" : "After " + afterStepNames;
+      flowPositionWords = isFlowWithoutFlowPosition(afterStepNames)? "" : AFTER_PREFIX + afterStepNames;
     }
     
 
