@@ -25,7 +25,7 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
   @Override
   public final boolean test(ModelRunner modelRunner) {
     if (step == null) {
-      resolveSteps();
+      resolveStep();
     }
 
     boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
@@ -33,23 +33,16 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
     return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
   }
 
-  public FlowStep resolveSteps() {
-    FlowStep flowStep = null;
-    this.step = resolveStep(this);
-    getAfterOtherSteps().forEach(this::resolveStep);
-    return flowStep;
-  }
-
-  private FlowStep resolveStep(FlowPosition fp) {
+  public void resolveStep() {
     FlowStep resolvedStep = null;
     
-    UseCase fpUseCase = fp.getUseCase();
-    String fpStepName = fp.getStepName();
-    if (fpUseCase != null && fpStepName != null) {
-      resolvedStep = (FlowStep) fpUseCase.findStep(fpStepName);
+    UseCase useCase = getUseCase();
+    String stepName = getStepName();
+    if (useCase != null && stepName != null) {
+      resolvedStep = (FlowStep) useCase.findStep(stepName);
     }
     
-    return resolvedStep;
+    this.step = resolvedStep;
   }
 
   private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
