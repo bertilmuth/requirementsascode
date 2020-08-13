@@ -8,6 +8,7 @@ import org.requirementsascode.Model;
 import org.requirementsascode.extract.freemarker.methodmodel.ActorPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.FlowCondition;
 import org.requirementsascode.extract.freemarker.methodmodel.FlowlessCondition;
+import org.requirementsascode.extract.freemarker.methodmodel.InCasePartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.ReactWhileOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.SystemPartOfStep;
 import org.requirementsascode.extract.freemarker.methodmodel.UserPartOfStep;
@@ -46,6 +47,7 @@ public class FreeMarkerEngine {
     put("flowlessCondition", new FlowlessCondition());
     put("actorPartOfStep", new ActorPartOfStep());
     put("userPartOfStep", new UserPartOfStep());
+    put("inCasePartOfStep", new InCasePartOfStep());
     put("systemPartOfStep", new SystemPartOfStep());
     put("reactWhileOfStep", new ReactWhileOfStep());
   }

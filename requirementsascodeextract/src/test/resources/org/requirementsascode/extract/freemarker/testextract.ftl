@@ -4,7 +4,7 @@
 	<#list useCase.flows as f>
 		Flow: ${f} ${flowCondition(f)}
 		<#list f.steps as s>
-			Step: ${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${systemPartOfStep(s)}
+			Step: ${s}. ${reactWhileOfStep(s)}${actorPartOfStep(s)}${userPartOfStep(s)}${inCasePartOfStep(s)}${systemPartOfStep(s)}
 		</#list>
 	</#list>
 </#list>
