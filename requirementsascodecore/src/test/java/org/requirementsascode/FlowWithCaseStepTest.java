@@ -1,70 +1,80 @@
 package org.requirementsascode;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class FlowWithCaseStepTest extends AbstractTestCase {
+public class FlowWithCaseStepTest {
+  private String actualResult;
+  private ModelRunner modelRunner;
+  
   @Before
   public void setup() {
-    setupWithRecordingModelRunner();
+    this.modelRunner = new ModelRunner().startRecording();
   }
   
   @Test
-  public void runsTrueCaseStep() {    
-    Model model = modelBuilder
-      .useCase(USE_CASE)
+  public void runsTrueStepWithoutEvent() {  
+    Model model = Model.builder()
+      .useCase("inCase Test")
         .basicFlow()
-          .step(CUSTOMER_ENTERS_TEXT).inCase(() -> true).system(displaysConstantText())
+          .step("step1").inCase(() -> true).system(() -> actualResult = "step1 run")
       .build();
         
     modelRunner.run(model);
-    assertEquals(TEXT, displayedText);
+    assertEquals("step1 run", actualResult);
+    assertRecordedStepNames("step1");
   }
   
   @Test
-  public void runsTrueCaseStepWithEvent() {    
-    Model model = modelBuilder
-      .useCase(USE_CASE)
+  public void runsTrueStepWithEvent() {    
+    Model model = Model.builder()
+      .useCase("inCase Test")
         .basicFlow()
-          .step(CUSTOMER_ENTERS_TEXT).user(EntersNumber.class).inCase(() -> true).system(displaysEnteredNumber())
+          .step("step1").user(String.class).inCase(() -> true).system(str -> actualResult = str)
       .build();
         
-    modelRunner.run(model).reactTo(entersNumber());
-    assertEquals(String.valueOf(NUMBER), displayedText);
+    modelRunner.run(model).reactTo("event");
+    assertEquals("event", actualResult);
     
-    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT);
+    assertRecordedStepNames("step1");
   }
   
   @Test
-  public void runsFalseCaseTrueCaseSteps() {    
-    Model model = modelBuilder
-      .useCase(USE_CASE)
+  public void runsFalseStepTrueStep() {    
+    Model model = Model.builder()
+      .useCase("inCase Test")
         .basicFlow()
-          .step(CUSTOMER_ENTERS_TEXT).user(EntersNumber.class).inCase(() -> false).system(displaysEnteredNumber())
-          .step(SYSTEM_DISPLAYS_TEXT).system(super.displaysConstantText())
+          .step("step1").user(String.class).inCase(() -> false).system(str -> actualResult = str)
+          .step("step2").user(String.class).inCase(() -> true).system(str -> actualResult = str)
       .build();
         
-    modelRunner.run(model).reactTo(entersNumber());
-    assertEquals(TEXT, displayedText);
+    modelRunner.run(model).reactTo("event1", "event2");
+    assertEquals("event2", actualResult);
     
-    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, SYSTEM_DISPLAYS_TEXT);
+    assertRecordedStepNames("step1", "step2");
   }
   
   @Test
-  public void runsFalseCaseFalseCaseSteps() {    
-    Model model = modelBuilder
-      .useCase(USE_CASE)
+  public void runsFalseStepFalseStep() {    
+    Model model = Model.builder()
+      .useCase("inCase Test")
         .basicFlow()
-          .step(CUSTOMER_ENTERS_TEXT).user(EntersNumber.class).inCase(() -> false).system(displaysEnteredNumber())
-          .step(SYSTEM_DISPLAYS_TEXT).inCase(() -> false).system(displaysConstantText())
+          .step("step1").user(String.class).inCase(() -> false).system(str -> actualResult = str)
+          .step("step2").inCase(() -> false).system(str -> actualResult = "not evaluated")
       .build();
         
-    modelRunner.run(model).reactTo(entersNumber(), entersText());
-    assertNull(displayedText);
+    modelRunner.run(model).reactTo("event1", "event2");
+    assertNull(actualResult);
     
-    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, SYSTEM_DISPLAYS_TEXT);
+    assertRecordedStepNames("step1", "step2");
+  }
+  
+  protected void assertRecordedStepNames(String... expectedStepNames) {
+    String[] actualStepNames = modelRunner.getRecordedStepNames();
+    assertArrayEquals(expectedStepNames, actualStepNames);
   }
 }
