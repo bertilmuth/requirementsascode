@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.requirementsascode.Flow;
 import org.requirementsascode.flowposition.After;
+import org.requirementsascode.flowposition.AfterSingleStep;
 import org.requirementsascode.flowposition.FlowPosition;
 import org.requirementsascode.flowposition.InsteadOf;
 
@@ -55,8 +56,8 @@ public class FlowCondition implements TemplateMethodModelEx {
       After after = (After)flowPosition;
       
       String afterStepNames = 
-        after.getAfterSteps().stream()
-          .map(After::getStepName)
+        after.getAfterForEachSingleStep().stream()
+          .map(AfterSingleStep::getStepName)
           .filter(name -> name != null)
           .collect(Collectors.joining(","));
       

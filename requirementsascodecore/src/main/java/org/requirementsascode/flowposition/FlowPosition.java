@@ -9,13 +9,13 @@ import org.requirementsascode.UseCase;
 
 public abstract class FlowPosition implements Predicate<ModelRunner> {
   private UseCase useCase;
-  private List<AfterSingleStep> afters;
+  private List<AfterSingleStep> afterForEachSingleStep;
 
   protected abstract boolean isRunnerAtRightPositionFor(ModelRunner modelRunner);
 
   public FlowPosition(UseCase useCase) {
     this.useCase = useCase;
-    this.afters = new ArrayList<>();
+    this.afterForEachSingleStep = new ArrayList<>();
   }
 
   @Override
@@ -33,12 +33,12 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
   }
 
   public FlowPosition orAfter(String stepName, UseCase useCase) {
-    AfterSingleStep afterStep = new AfterSingleStep(stepName, useCase);
-    afters.add(afterStep);
+    AfterSingleStep afterSingleStep = new AfterSingleStep(stepName, useCase);
+    afterForEachSingleStep.add(afterSingleStep);
     return this;
   }
 
-  List<AfterSingleStep> getAfters() {
-    return afters;
+  public List<AfterSingleStep> getAfterForEachSingleStep() {
+    return afterForEachSingleStep;
   }
 }

@@ -37,7 +37,7 @@ public class After extends FlowPosition {
   
   private boolean isAfterAnyStep(ModelRunner modelRunner) {
     boolean isAfterStep = false;
-    for (AfterSingleStep afterSingleStep : getAfters()) {
+    for (AfterSingleStep afterSingleStep : getAfterForEachSingleStep()) {
       if (afterSingleStep.test(modelRunner)) {
         isAfterStep = true;
         break;
@@ -48,7 +48,7 @@ public class After extends FlowPosition {
   
   @Override
   public void resolveSteps() {
-    for(AfterSingleStep afterSingleStep : getAfters()) {
+    for(AfterSingleStep afterSingleStep : getAfterForEachSingleStep()) {
       afterSingleStep.resolveStep();
     }
   }
