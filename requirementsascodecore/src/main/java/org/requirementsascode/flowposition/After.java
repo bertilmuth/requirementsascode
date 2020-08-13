@@ -60,15 +60,14 @@ public class After extends FlowPosition {
   
   public void resolveSteps() {
     if (step == null) {
-      this.step = resolveStep();
+      this.step = resolveStep(stepName);
     }
   }
 
-  private FlowStep resolveStep() {
+  private FlowStep resolveStep(String stepName) {
     FlowStep resolvedStep = null;
 
     UseCase useCase = getUseCase();
-    String stepName = getStepName();
     if (useCase != null && stepName != null) {
       resolvedStep = (FlowStep) useCase.findStep(stepName);
     }
