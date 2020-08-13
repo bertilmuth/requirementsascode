@@ -58,7 +58,7 @@ public class FreemarkerEngineTest {
           .reactWhile(someConditionIsFulfilled())
         .step("S4").as(firstActor, secondActor).user(decidesToQuit())
         .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
-        .step("S6").system(quits())
+        .step("S6").inCase(thereIsNoAlternative()).system(quits())
       .flow("Alternative flow A").insteadOf("S4")
         .step("S4a_1").system(blowsUp())
         .step("S4a_2").continuesAt("S1")
@@ -82,7 +82,8 @@ public class FreemarkerEngineTest {
       + " Step: S2. User enters name.System greets user."
       + " Step: S3. As long as some condition is fulfilled: As First actor: User enters name.System greets user."
       + " Step: S4. As First actor/Second actor: User decides to quit."
-      + " Step: S5. As First actor/Second actor: System prompts user to enter name." + " Step: S6. System quits."
+      + " Step: S5. As First actor/Second actor: System prompts user to enter name." 
+      + " Step: S6. System quits."
       + " Flow: Alternative flow A Instead of S4:" 
       + " Step: S4a_1. System blows up."
       + " Step: S4a_2. System continues at S1." 
