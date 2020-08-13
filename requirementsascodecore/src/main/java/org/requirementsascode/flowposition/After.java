@@ -14,8 +14,12 @@ import org.requirementsascode.UseCase;
  *
  */
 public class After extends FlowPosition {
+  private String stepName;
+  private FlowStep step;
+
   public After(String stepName, UseCase useCase) {
-    super(stepName, useCase);
+    super(useCase);
+    this.stepName = stepName;
   }
 
   public After(String[] stepNames, UseCase useCase) {
@@ -37,9 +41,27 @@ public class After extends FlowPosition {
   }
 
   @Override
-  protected boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner) {
+  protected boolean isRunnerAtRightPositionFor(ModelRunner modelRunner) {
     Step latestStepRun = modelRunner.getLatestStep().orElse(null);
     boolean stepWasRunLast = Objects.equals(step, latestStepRun);
     return stepWasRunLast;
+  }
+
+  public void resolveStep() {
+    if (step == null) {
+      FlowStep resolvedStep = null;
+
+      UseCase useCase = getUseCase();
+      String stepName = getStepName();
+      if (useCase != null && stepName != null) {
+        resolvedStep = (FlowStep) useCase.findStep(stepName);
+      }
+
+      this.step = resolvedStep;
+    }
+  }
+  
+  public final String getStepName() {
+    return stepName;
   }
 }

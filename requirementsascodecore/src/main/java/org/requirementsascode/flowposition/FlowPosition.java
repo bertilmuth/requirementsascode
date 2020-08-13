@@ -4,46 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.UseCase;
 
 public abstract class FlowPosition implements Predicate<ModelRunner> {
   private UseCase useCase;
-  private FlowStep step;
-  private String stepName;
   private List<After> afterOtherSteps;
 
-  protected abstract boolean isRunnerAtRightPositionFor(FlowStep step, ModelRunner modelRunner);
+  protected abstract boolean isRunnerAtRightPositionFor(ModelRunner modelRunner);
 
-  public FlowPosition(String stepName, UseCase useCase) {
-    this.stepName = stepName;
+  public FlowPosition(UseCase useCase) {
     this.useCase = useCase;
     this.afterOtherSteps = new ArrayList<>();
   }
 
   @Override
   public final boolean test(ModelRunner modelRunner) {
-    if (step == null) {
-      resolveStep();
-    }
+    resolveStep();
 
-    boolean isRunnerAtRightPositionForStepOrAfterAnyMergedStep = isRunnerAtRightPositionFor(step, modelRunner)
+    boolean isRunnerAtRightPosition = isRunnerAtRightPositionFor(modelRunner)
       || isAfterAnyOtherStep(modelRunner);
-    return isRunnerAtRightPositionForStepOrAfterAnyMergedStep;
+    return isRunnerAtRightPosition;
   }
 
-  public void resolveStep() {
-    FlowStep resolvedStep = null;
-    
-    UseCase useCase = getUseCase();
-    String stepName = getStepName();
-    if (useCase != null && stepName != null) {
-      resolvedStep = (FlowStep) useCase.findStep(stepName);
-    }
-    
-    this.step = resolvedStep;
-  }
+  public abstract void resolveStep();
 
   private boolean isAfterAnyOtherStep(ModelRunner modelRunner) {
     boolean isAfterStep = false;
@@ -54,10 +38,6 @@ public abstract class FlowPosition implements Predicate<ModelRunner> {
       }
     }
     return isAfterStep;
-  }
-  
-  public final String getStepName() {
-    return stepName;
   }
 
   public final UseCase getUseCase() {
