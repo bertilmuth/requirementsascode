@@ -351,7 +351,6 @@ public class ModelRunner {
 		}
 
 		stepToBeRun.setupWith(step, message);
-		recordStepNameAndMessage(step, message);
 		setLatestStep(step);
 
 		try {
@@ -359,6 +358,7 @@ public class ModelRunner {
       
       Condition isTheCase = step.getCase().orElse(() -> true);
       if (isTheCase.evaluate()) {
+        recordStepNameAndMessage(step, message);
         messageHandler.accept(stepToBeRun);
         publishReturnedMessage();
       }

@@ -55,7 +55,7 @@ public class FlowWithCaseStepTest {
     modelRunner.run(model).reactTo("event1", "event2");
     assertEquals("event2", actualResult);
     
-    assertRecordedStepNames("step1", "step2");
+    assertRecordedStepNames("step2");
   }
   
   @Test
@@ -70,7 +70,7 @@ public class FlowWithCaseStepTest {
     modelRunner.run(model).reactTo("event1", "event2");
     assertNull(actualResult);
     
-    assertRecordedStepNames("step1", "step2");
+    assertRecordedStepNames();
   }
   
   protected void assertRecordedStepNames(String... expectedStepNames) {
