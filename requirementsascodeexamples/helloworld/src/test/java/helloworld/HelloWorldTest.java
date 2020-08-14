@@ -1,6 +1,7 @@
 package helloworld;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -130,6 +131,17 @@ public class HelloWorldTest {
 
 		assertRecordedStepNames("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
+	
+  @Test
+  public void testHelloWorld07() {
+    HelloWorld07 example = new HelloWorld07();
+    model = example.buildModel();
+
+    example.inputColor = "yellow";
+    modelRunner.run(model);
+
+    assertEquals("yellow", example.outputColor);
+  }
 
 	protected void assertRecordedStepNames(String... expectedStepNames) {
 		String[] actualStepNames = modelRunner.getRecordedStepNames();

@@ -173,3 +173,25 @@ while (!systemStopped())
 exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld06.java).
+
+# example 07 - steps with case condition, model runner moves in if condition false
+``` java
+public Model buildModel() {
+  Model model = Model.builder()
+    .useCase("Handle colors")
+      .basicFlow()
+        .step("S1").inCase(this::isColorRed).system(this::setColorToRed)
+        .step("S2").inCase(this::isColorYellow).system(this::setColorToYellow)
+        .step("S3").inCase(this::isColorGreen).system(this::setColorToGreen)
+        .step("S4").system(this::displayColor)
+      .build();
+    
+  return model;
+}
+...
+
+Model model = buildModel();
+new ModelRunner().run(model);
+```
+
+For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld07.java).
