@@ -13,10 +13,10 @@ import pizzavolumecalculator.actor.command.CalculateVolume;
 import pizzavolumecalculator.actor.command.EnterHeight;
 import pizzavolumecalculator.actor.command.EnterRadius;
 
-public class PizzaVolumeCalculator extends AbstractActor{
+public class PizzaVolumeCalculator extends AbstractActor {
   private int z;
   private int a;
-  
+
   private Consumer<EnterRadius> saveRadius;
   private Consumer<EnterHeight> saveHeight;
   private Supplier<Double> calculateVolume;
@@ -34,54 +34,53 @@ public class PizzaVolumeCalculator extends AbstractActor{
     this.isNegativeRadius = this::isNegativeRadius;
     this.isNegativeHeight = this::isNegativeHeight;
   }
-  
+
   @Override
   public Model behavior() {
-		Model model = Model.builder()
-			.useCase("Calculate Pizza Volume")
-				.basicFlow()
-					.step("S1").user(EnterRadius.class).system(saveRadius)
-	        .step("S2").user(EnterHeight.class).system(saveHeight)
-	        .step("S3").user(CalculateVolume.class).systemPublish(calculateVolume)
-	        .step("S4").continuesAt("S1")
-	      
-	      .flow("Negative radius").after("S1").condition(isNegativeRadius)
-	        .step("S1a_1").system(throwIllegalRadiusException)
+    Model model = Model.builder()
+      .useCase("Calculate Pizza Volume").basicFlow()
+        .step("S1").user(EnterRadius.class).system(saveRadius)
+        .step("S2").user(EnterHeight.class).system(saveHeight)
+        .step("S3").user(CalculateVolume.class).systemPublish(calculateVolume)
+        .step("S4").continuesAt("S1")
 
-	      .flow("Negative height").after("S2").condition(isNegativeHeight)
-          .step("S2a_1").system(throwIllegalHeightException)
-          
-			  .build();
-		
-		return model;
+      .flow("Negative radius").after("S1").condition(isNegativeRadius)
+        .step("S1a_1").system(throwIllegalRadiusException)
+
+      .flow("Negative height").after("S2").condition(isNegativeHeight)
+        .step("S2a_1").system(throwIllegalHeightException)
+
+      .build();
+
+    return model;
   }
-  
+
   // system reactions
   private void saveRadius(EnterRadius enterRadius) {
     this.z = enterRadius.getRadius();
   }
-  
+
   private void saveHeight(EnterHeight enterHeight) {
     this.a = enterHeight.getHeight();
   }
-  
+
   private Double calculateVolume() {
     return PI * z * z * a;
   }
-  
+
   private void throwIllegalRadiusException() {
     throw new IllegalArgumentException("Please specify a non-negative radius!");
   }
-  
+
   private void throwIllegalHeightException() {
     throw new IllegalArgumentException("Please specify a non-negative height!");
   }
-  
+
   // conditions
   private boolean isNegativeRadius() {
     return z < 0;
   }
-  
+
   private boolean isNegativeHeight() {
     return a < 0;
   }
