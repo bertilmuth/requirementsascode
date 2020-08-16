@@ -27,22 +27,22 @@ public class PizzaVolumeCalculatorTest {
     pizzaVolumeCalculator.getModelRunner().startRecording();
   }
 
-	@Test
-	public void testBasicFlow() {
-	  pizzaVolumeCalculator.reactTo(new EnterRadius(4));
-	  pizzaVolumeCalculator.reactTo(new EnterHeight(5));
-	  Optional<Double> pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
-		assertRecordedStepNames("S1", "S2", "S3", "S4");
-		
-		assertEquals(251.327, pizzaVolume.get(), 0.01);
-	}
-	
+  @Test
+  public void testBasicFlow() {
+    pizzaVolumeCalculator.reactTo(new EnterRadius(4));
+    pizzaVolumeCalculator.reactTo(new EnterHeight(5));
+    Optional<Double> pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
+    assertRecordedStepNames("S1", "S2", "S3", "S4");
+
+    assertEquals(251.327, pizzaVolume.get(), 0.01);
+  }
+
   @Test
   public void testBasicFlowTwice() {
     pizzaVolumeCalculator.reactTo(new EnterRadius(2));
     pizzaVolumeCalculator.reactTo(new EnterHeight(3));
     Optional<Double> pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
-    
+
     assertEquals(37.69, pizzaVolume.get(), 0.01);
 
     pizzaVolumeCalculator.reactTo(new EnterRadius(4));
