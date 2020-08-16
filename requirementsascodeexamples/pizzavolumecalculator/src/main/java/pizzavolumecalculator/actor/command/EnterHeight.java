@@ -1,4 +1,4 @@
-package pizzavolumecalculator.command;
+package pizzavolumecalculator.actor.command;
 
 public class EnterHeight {
   private int height;
