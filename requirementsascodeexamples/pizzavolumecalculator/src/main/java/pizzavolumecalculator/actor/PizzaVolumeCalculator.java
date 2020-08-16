@@ -50,6 +50,7 @@ public class PizzaVolumeCalculator extends AbstractActor{
 
 	      .flow("Negative height").after("S2").condition(isNegativeHeight)
           .step("S2a_1").system(throwIllegalHeightException)
+          
 			  .build();
 		
 		return model;
