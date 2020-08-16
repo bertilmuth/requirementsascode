@@ -1,0 +1,12 @@
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'requirements as code - hello world',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+	implementation project(':requirementsascodecore')
+	testImplementation 'junit:junit:4.12'
+}
+
