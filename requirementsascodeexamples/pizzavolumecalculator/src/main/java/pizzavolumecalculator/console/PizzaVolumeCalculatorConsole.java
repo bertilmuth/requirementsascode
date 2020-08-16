@@ -17,21 +17,17 @@ public class PizzaVolumeCalculatorConsole {
   }
 
   private void start() {
-    PizzaVolumeCalculator actor = new PizzaVolumeCalculator();
-    actor.run();
-    Optional<Double> result = Optional.empty();
-    
-    do {
-      System.out.print("Please enter the radius: ");
-      actor.reactTo(enterRadius());
+    PizzaVolumeCalculator calculator = new PizzaVolumeCalculator();
 
-      System.out.print("Please enter the height: ");
-      actor.reactTo(enterHeight());
+    System.out.print("Please enter the radius: ");
+    calculator.reactTo(enterRadius());
 
-      result = actor.reactTo(new CalculateVolume());
-    } while (!result.isPresent());
-    
-    System.out.println("The volume is:  " + result.get());
+    System.out.print("Please enter the height: ");
+    calculator.reactTo(enterHeight());
+
+    Optional<Double> volume = calculator.reactTo(new CalculateVolume());
+
+    System.out.println("The volume is:  " + volume.get());
   }
   
   public static void main(String[] args) {
