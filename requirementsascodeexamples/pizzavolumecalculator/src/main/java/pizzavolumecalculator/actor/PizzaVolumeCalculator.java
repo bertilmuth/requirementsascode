@@ -85,4 +85,9 @@ public class PizzaVolumeCalculator extends AbstractActor{
   private boolean isNegativeHeight() {
     return a < 0;
   }
+  
+  // convenience method
+  public boolean canReactTo(Class<? extends Object> messageClass) {
+    return getModelRunner().canReactTo(messageClass);
+  }
 }
