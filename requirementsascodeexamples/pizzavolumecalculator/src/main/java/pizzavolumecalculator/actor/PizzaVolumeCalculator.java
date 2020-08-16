@@ -43,6 +43,7 @@ public class PizzaVolumeCalculator extends AbstractActor{
 					.step("S1").user(EnterRadius.class).system(saveRadius)
 	        .step("S2").user(EnterHeight.class).system(saveHeight)
 	        .step("S3").user(CalculateVolume.class).systemPublish(calculateVolume)
+	        .step("S4").continuesAt("S1")
 	      
 	      .flow("Negative radius").after("S1").condition(isNegativeRadius)
 	        .step("S1a_1").system(throwIllegalRadiusException)

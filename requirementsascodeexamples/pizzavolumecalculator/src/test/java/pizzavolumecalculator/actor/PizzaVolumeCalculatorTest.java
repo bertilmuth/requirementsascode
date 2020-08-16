@@ -32,11 +32,27 @@ public class PizzaVolumeCalculatorTest {
 	  calculator.reactTo(new EnterRadius(4));
 	  calculator.reactTo(new EnterHeight(5));
 	  Optional<Double> pizzaVolume = calculator.reactTo(new CalculateVolume());
-		assertRecordedStepNames("S1", "S2", "S3");
+		assertRecordedStepNames("S1", "S2", "S3", "S4");
 		
-		assertEquals(251.327, pizzaVolume.get(), 0.0009);
+		assertEquals(251.327, pizzaVolume.get(), 0.01);
 	}
 	
+  @Test
+  public void testBasicFlowTwice() {
+    calculator.reactTo(new EnterRadius(2));
+    calculator.reactTo(new EnterHeight(3));
+    Optional<Double> pizzaVolume = calculator.reactTo(new CalculateVolume());
+    
+    assertEquals(37.69, pizzaVolume.get(), 0.01);
+
+    calculator.reactTo(new EnterRadius(4));
+    calculator.reactTo(new EnterHeight(5));
+    pizzaVolume = calculator.reactTo(new CalculateVolume());
+    assertRecordedStepNames("S1", "S2", "S3", "S4", "S1", "S2", "S3", "S4");
+
+    assertEquals(251.32, pizzaVolume.get(), 0.01);
+  }
+
   @Test
   public void testIllegalRadius() {
     thrown.expect(IllegalArgumentException.class);
