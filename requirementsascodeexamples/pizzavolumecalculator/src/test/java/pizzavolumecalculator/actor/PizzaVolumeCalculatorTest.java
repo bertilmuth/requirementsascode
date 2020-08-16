@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.requirementsascode.AbstractActor;
 
-import pizzavolumecalculator.actor.PizzaVolumeCalculator;
 import pizzavolumecalculator.actor.command.CalculateVolume;
 import pizzavolumecalculator.actor.command.EnterHeight;
 import pizzavolumecalculator.actor.command.EnterRadius;
