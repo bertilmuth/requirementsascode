@@ -86,10 +86,10 @@ public class StepSystemPart<T> {
 	 * @throws ElementAlreadyInModel if a use case with the specified name already
 	 *                               exists in the model
 	 */
-	public UseCasePart useCase(String useCaseName) {
+	public StepUseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart useCasePart = stepPart.getModelBuilder().useCase(useCaseName);
-		return useCasePart;
+		return new StepUseCasePart(useCasePart);
 	}
 
 	/**
