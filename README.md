@@ -8,11 +8,13 @@ Requirements as code enables you to translate use cases to code to build maintai
 
 This page describes simple ways to get started. 
 
-You will create actors with use case models that react to individual messages.
+You will see how to create actors with use case models that react to individual messages.
 
 For sequences of interactions, create a model with flows instead.
 
-An actor running such a model can serve as an easy to understand alternative to state machines.
+An actor running such a model with flows can serve as an easy to understand alternative to state machines.
+
+A model with flows is useful to build user journeys, sagas and process managers.
 
 See the [wiki](https://github.com/bertilmuth/requirementsascode/wiki/) for details.
 
