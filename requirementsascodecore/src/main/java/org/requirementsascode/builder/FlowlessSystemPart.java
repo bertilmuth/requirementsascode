@@ -128,10 +128,10 @@ public class FlowlessSystemPart<T> {
 	 *                    created.
 	 * @return the created / found use case's part.
 	 */
-	public UseCasePart useCase(String useCaseName) {
+	public FlowlessUseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
 		UseCasePart newUseCasePart = useCasePart.getModelBuilder().useCase(useCaseName);
-		return newUseCasePart;
+		return new FlowlessUseCasePart(newUseCasePart);
 	}
 	
 	/** Specifies the recipient of the message.

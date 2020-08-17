@@ -88,8 +88,8 @@ public class StepSystemPart<T> {
 	 */
 	public StepUseCasePart useCase(String useCaseName) {
 		Objects.requireNonNull(useCaseName);
-		UseCasePart useCasePart = stepPart.getModelBuilder().useCase(useCaseName);
-		return new StepUseCasePart(useCasePart);
+		UseCasePart newUseCasePart = stepPart.getModelBuilder().useCase(useCaseName);
+		return new StepUseCasePart(newUseCasePart);
 	}
 
 	/**
