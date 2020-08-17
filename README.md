@@ -55,19 +55,23 @@ implementation 'org.requirementsascode:requirementsascodecore:1.8.2'
 
 At least Java 8 is required to use requirements as code, download and install it if necessary.
 
-# How to build and run a use case model
-Let's look at the general steps to building and running a model first.
+# How to create an actor and send messages to it
+Let's look at the general steps first.
 After that, you'll see a concrete code example.
 
-## Step 1: Build a use case model
+## Step 1: Create an actor with a model
 ``` java
-Model model = Model.builder()
-  .user(/* command class */).system(/* command handler*/)
-  .user(..).system(...)
-  ...
-.build();
+class MyActor extends AbstractActor{
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(/* command class */).system(/* command handler*/)
+      .user(..).system(...)
+      ...
+    .build();
+  }
+}
 ```
-
 For handling commands, the message handler has a `Consumer<T>` or `Runnable` type, where T is the message class.
 For handling queries, use `.systemPublish` instead of `.system`, and the message handler has a `Function<T, U>` type.
 For handling events, use `.on()` instead of `.user()`.
@@ -79,26 +83,19 @@ Use `.step(...)` before `.user()`/`.on()` to explicitly name the step - otherwis
 
 The order of `user(..).system(...)` statements has no significance here.
 
-## Step 2: Create a runner, and run the model
+Note that the `Actor` class is not thread-safe, and it's not an active class that runs in its own thread.
+
+## Step 2: Send a message to the actor
 ``` java
-ModelRunner runner = new ModelRunner().run(model);
+MyActor actor = new MyActor();
+Optional<T> queryResultOrEvent = actor.reactTo(<Message POJO Object>);
 ```
 
-## Step 3: Send a message to the runner
-``` java
-Optional<T> queryResultOrEvent = runner.reactTo(<Message POJO Object>);
-```
+Instead of T, use the type you expect to be published. Note that `reactTo()` casts to that type, so if you don't know it, use `Object` for T.
+If an unchecked exception is thrown in one of the handler methods, `reactTo()` will rethrow it.
 
-Instead of T, use the type you expect to be published. Note that the runner casts to that type, so if you don't know it, use `Object` for T.
-To customize the behavior when the runner reacts to a message, use `modelRunner.handleWith()` (example [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)).
-
-By default, if a message's class (or superclass) is not declared in the model, the runner consumes the message silently.
-To customize that behavior, use `modelRunner.handleUnhandledWith()`. 
-If an unchecked exception is thrown in one of the handler methods and it is not handled by any 
-other handler method, the runner will rethrow it.
-
-# Example for building and running a use case model
-There's a single use case with a single interaction.
+# Code example
+There's an actor with a single use case with a single interaction.
 
 The user sends a request with the user name ("Joe"). The system says hello ("Hello, Joe.")
 
@@ -107,25 +104,30 @@ package helloworld;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
 public class HelloUser {
   public static void main(String[] args) {
-    Model model = new ModelBuilder().build(HelloUser::sayHello);
-    ModelRunner modelRunner = new ModelRunner().run(model);
-    modelRunner.reactTo(new RequestHello("Joe"));
+    GreetingService greeter = new GreetingService(HelloUser::saysHello);
+    greeter.reactTo(new RequestHello("Joe"));
   }
   
-  public static void sayHello(RequestHello requestHello) {
-    System.out.println("Hello, " + requestHello.getUserName() + ".");
+  private static void saysHello(RequestHello requestsHello) {
+    System.out.println("Hello, " + requestsHello.getUserName() + ".");
   }
 }
 
-class ModelBuilder {
+class GreetingService extends AbstractActor {
   private static final Class<RequestHello> requestsHello = RequestHello.class;
+  private final Consumer<RequestHello> saysHello;
 
-  public Model build(Consumer<RequestHello> saysHello) {
+  public GreetingService(Consumer<RequestHello> saysHello) {
+    this.saysHello = saysHello;
+  }
+
+  @Override
+  public Model behavior() {
     Model model = Model.builder()
       .user(requestsHello).system(saysHello)
     .build();
@@ -146,39 +148,17 @@ class RequestHello {
 }
 ```
 
-# Example for applying the design principles
-The examples above have shown how to build and run use case models. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance.
-To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to change as follows.
+## Applying the requirements as code design principles
+The example above has shown how to create an actor, and send messages to it. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance. To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to be expanded as follows.
 
-## Actor that represents system/service
-Instead of directly creating a runner for a model as shown above, for larger scale applications, you should create an actor.
-An actor encapsulates a `ModelRunner` and runs it for you. All you need to provide is the model of the actor's behavior, as shown below.
+# Actor
+Create a subclass of `AbstractActor`, and override its `behavior()` method to provide the model.
 
-Create a subclass of `AbstractActor`, and override its `behavior()` method to provide the model:
+Pass the message handlers as constructor parameters. 
 
-``` java
-class GreetingService extends AbstractActor {
-  private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Consumer<RequestHello> saysHello;
+Use interfaces, not concrete classes, as constructor parameters.
 
-  public GreetingService(Consumer<RequestHello> saysHello) {
-    this.saysHello = saysHello;
-  }
-
-  @Override
-  public Model behavior() {
-    Model model = Model.builder()
-      .user(requestsHello).system(saysHello)
-    .build();
-    return model;
-  }
-}
-```
-Pass the message handlers as constructor parameters. Use interfaces, not concrete classes, as constructor parameters.
 That let's you change the concrete message handler from the outside.
-
-To send a message to the actor, call `actor.reactTo(<message>)`.
-Same syntax you already know.
 
 ## Message senders
 There needs to be someone who's sending messages to the actor.
@@ -288,7 +268,7 @@ public class ActorExample {
  */
 class GreetingService extends AbstractActor {
   private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Consumer<RequestHello> saysHello;
+  private final Consumer<RequestHello> saysHello;
 
   public GreetingService(Consumer<RequestHello> saysHello) {
     this.saysHello = saysHello;
@@ -451,14 +431,13 @@ class MessageConsumer extends AbstractActor {
 ```
 
 To access the model runner inside of an actor, call `super.getModelRunner()`.
-If you want full control of the way events are published, call `modelRunner.publishWith()`.
 
 Note that in any case, an actor returns the event that was published last to the caller of `actor.reactTo()`. 
 
-# Documentation of requirements as code
-* [Examples for building/running state based use case models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+# Further documentation of requirements as code
+* [Examples for building/running use case models with flows (ModelRunner syntax)](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [Cross-cutting concerns example (ModelRunner syntax)](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
-* [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 
 # Publications
 * [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
