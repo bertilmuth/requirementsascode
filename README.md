@@ -6,17 +6,9 @@
 
 Requirements as code enables you to translate use cases to code to build maintainable applications.
 
-A use case model defines interactions. An interaction consists of a message class and a message handler. A message handler orchestrates the calls to the domain code, and to the infrastructure. By switching message handlers, or by injecting different dependencies into them, you can switch your application's infrastructure.
+This page describes simple ways to get started. 
 
-After calling the domain/infrastructure code, the message handler either:
-* doesn't return anything,
-* returns a query result, or 
-* returns an event to be published.
-
-Optionally, you can specify a precondition. 
-
-# Models with flows (for user journeys, sagas, process managers)
-This page describes simple ways to get started with creating models that react to messages.
+You will create actors with use case models that react to individual messages.
 
 For sequences of interactions, create a model with flows instead.
 
