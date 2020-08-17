@@ -18,14 +18,6 @@ A model with flows is useful to build user journeys, sagas and process managers.
 
 See the [wiki](https://github.com/bertilmuth/requirementsascode/wiki/) for details.
 
-# Influences and special features
-Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
-
-You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event. Your event publisher will pick it up automatically.
-
-The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
-
-
 # Getting started
 Requirements as code is available on Maven Central.
 
@@ -428,6 +420,13 @@ class MessageConsumer extends AbstractActor {
 To access the model runner inside of an actor, call `super.getModelRunner()`.
 
 Note that in any case, an actor returns the event that was published last to the caller of `actor.reactTo()`. 
+
+# Influences and special features
+Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+
+You can use this library to publish DDD Domain Events without littering your code with calls to a domain event publisher. Instead, your command handler returns the event. Your event publisher will pick it up automatically.
+
+The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
 # Further documentation of requirements as code
 * [Examples for building/running use case models with flows (ModelRunner syntax)](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
