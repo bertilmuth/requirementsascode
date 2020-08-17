@@ -15,8 +15,14 @@ After calling the domain/infrastructure code, the message handler either:
 
 Optionally, you can specify a precondition. 
 
-For sequences of interactions, create a [use case model with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld) instead. 
-It's a simple alternative to state machines.
+# Models with flows (for user journeys, sagas, process managers)
+This page describes simple ways to get started with creating models that react to messages.
+
+For sequences of interactions, create a model with flows instead.
+
+An actor running such a model can serve as an easy to understand alternative to state machines.
+
+See the [wiki](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for details.
 
 # Influences and special features
 Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
