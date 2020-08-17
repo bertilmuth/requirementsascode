@@ -63,6 +63,7 @@ class MyActor extends AbstractActor{
       .user(..).system(...)
       ...
     .build();
+    return model;
   }
 }
 ```
