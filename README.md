@@ -135,10 +135,10 @@ class RequestHello {
 }
 ```
 
-## Applying the requirements as code design principles
+# Applying the requirements as code design principles
 The example above has shown how to create an actor, and send messages to it. In practice, that already gives you the benefit of recording the interaction in the code for long term maintenance. To apply the requirements as code design principles, to clearly separate requirements from realization and get to a pure domain model, the above example needs to be expanded as follows.
 
-# Actor
+## Actor
 Create a subclass of `AbstractActor`, and override its `behavior()` method to provide the model.
 
 Pass the message handlers as constructor parameters. 
