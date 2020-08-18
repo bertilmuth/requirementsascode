@@ -14,8 +14,8 @@ import pizzavolumecalculator.actor.command.EnterHeight;
 import pizzavolumecalculator.actor.command.EnterRadius;
 
 public class PizzaVolumeCalculator extends AbstractActor {
-  private int z;
-  private int a;
+  private int r;
+  private int h;
 
   private Consumer<EnterRadius> saveRadius;
   private Consumer<EnterHeight> saveHeight;
@@ -57,15 +57,15 @@ public class PizzaVolumeCalculator extends AbstractActor {
 
   // system reactions
   private void saveRadius(EnterRadius enterRadius) {
-    this.z = enterRadius.getRadius();
+    this.r = enterRadius.getRadius();
   }
 
   private void saveHeight(EnterHeight enterHeight) {
-    this.a = enterHeight.getHeight();
+    this.h = enterHeight.getHeight();
   }
 
   private Double calculateVolume() {
-    return PI * z * z * a;
+    return PI * r * r * h;
   }
 
   private void throwIllegalRadiusException() {
@@ -78,10 +78,10 @@ public class PizzaVolumeCalculator extends AbstractActor {
 
   // conditions
   private boolean isNegativeRadius() {
-    return z < 0;
+    return r < 0;
   }
 
   private boolean isNegativeHeight() {
-    return a < 0;
+    return h < 0;
   }
 }
