@@ -6,6 +6,8 @@
 
 Requirements as code enables you to translate use cases to code to build maintainable applications.
 
+Define behavior by creating a model of the interactions with users inside the code.
+
 This page describes simple ways to get started. 
 
 You will see how to create actors with use case models that react to individual messages.
