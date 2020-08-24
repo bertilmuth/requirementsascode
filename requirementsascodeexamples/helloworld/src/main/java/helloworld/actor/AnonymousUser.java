@@ -20,6 +20,7 @@ public class AnonymousUser extends AbstractActor{
       .useCase("Get greeted")
         .basicFlow()
           .step("S1").systemPublish(() -> new EnterText(ageString)).to(helloWorldActor)
+          .step("S2").systemPublish(() -> new EnterText("43")).to(helloWorldActor)
        .build();
     
     return model;
