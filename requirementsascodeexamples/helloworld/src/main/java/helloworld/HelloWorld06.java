@@ -5,8 +5,6 @@ import java.util.function.Consumer;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
-import org.requirementsascode.builder.ModelBuilder;
 
 import helloworld.usercommand.EnterText;
 
@@ -34,13 +32,15 @@ public class HelloWorld06 extends AbstractHelloWorldExample {
 
   private Actor normalUser;
   private Actor anonymousUser;
+  
+  public HelloWorld06() {
+    normalUser = new Actor("Normal User");
+    anonymousUser = new Actor("Anonymous User");
+  }
 
-  public Model buildModel() {
-		ModelBuilder builder = Model.builder();
-		normalUser = new Actor("Normal User");
-		anonymousUser = new Actor("Anonymous User");
-	
-		Model model = builder
+  @Override
+  public Model behavior() {
+		Model model = Model.builder()
 			.useCase("Get greeted")
 				.basicFlow()
 					.step("S1").as(normalUser).system(asksForName)
@@ -106,15 +106,15 @@ public class HelloWorld06 extends AbstractHelloWorldExample {
 	}
 
 	public static void main(String[] args) {
-		HelloWorld06 example = new HelloWorld06();
-		example.start();
+		HelloWorld06 actor = new HelloWorld06();
+		actor.react();
 	}
 
-	private void start() {
-		Model model = buildModel();
-		ModelRunner modelRunner = new ModelRunner().as(anonymousUser()).run(model);
+	private void react() {
+	  getModelRunner().as(anonymousUser()).run(behavior());
+	  
 		while (!systemStopped())
-			modelRunner.reactTo(entersText());
+		   getModelRunner().as(anonymousUser()).reactTo(entersText());
 		exitSystem();
 	}
 
