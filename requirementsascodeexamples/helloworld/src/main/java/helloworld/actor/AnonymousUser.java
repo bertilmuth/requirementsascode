@@ -7,9 +7,11 @@ import helloworld.command.EnterText;
 
 public class AnonymousUser extends AbstractActor{
   private final AbstractActor helloWorldActor;
+  private final String ageString;
 
-  public AnonymousUser(AbstractActor helloWorldActor) {
+  public AnonymousUser(AbstractActor helloWorldActor, String ageString) {
     this.helloWorldActor = helloWorldActor;
+    this.ageString = ageString;
   }
   
   @Override
@@ -17,7 +19,7 @@ public class AnonymousUser extends AbstractActor{
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
-          .step("S1").systemPublish(() -> new EnterText("43")).to(helloWorldActor)
+          .step("S1").systemPublish(() -> new EnterText(ageString)).to(helloWorldActor)
        .build();
     
     return model;

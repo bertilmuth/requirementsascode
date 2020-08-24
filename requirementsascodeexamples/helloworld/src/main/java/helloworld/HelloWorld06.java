@@ -51,12 +51,11 @@ public class HelloWorld06{
 	public static void main(String[] args) {
 		HelloWorldActor06 helloWorldActor = new HelloWorldActor06(saveName, saveAge, greetUserWithName, greetUserWithAge, ageIsOk, ageIsOutOfBounds);
     
-    NormalUser normalUser = new NormalUser(helloWorldActor);
-    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "43");
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
 
-    helloWorldActor.run();
     normalUser.run();	
   }
 }
@@ -96,7 +95,7 @@ class HelloWorldActor06 extends AbstractActor{
           .step("S4").as(normalUser, anonymousUser).system(greetsUserWithAge)
         .flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
           .step("S3a_1").continuesAt("S2")
-        .flow("Handle non-numerical age").insteadOf("S3")
+        .flow("Handle non-numerical age").anytime()
           .step("S3b_1").on(numberFormatException).continuesAt("S2")
         .flow("Anonymous greeted with age only").insteadOf("S3").condition(ageIsOk)
           .step("S3c_1").as(anonymousUser).continuesAt("S4")

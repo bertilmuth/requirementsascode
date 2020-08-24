@@ -114,13 +114,27 @@ public class HelloWorldTest {
       HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
-    NormalUser normalUser = new NormalUser(helloWorldActor);
-    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "43");
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
     normalUser.run(); 
 		assertRecordedStepNames(helloWorldActor, "S1", "S2", "S3", "S4");
 	}
+	
+	 @Test 
+	  public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
+	    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
+	      HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
+	    
+	    recordStepNamesOf(helloWorldActor);    
+	    NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
+	    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "NON-NUMERICAL-AGE");
+	    helloWorldActor.setNormalUser(normalUser);
+	    helloWorldActor.setAnonymousUser(anonymousUser);
+	    anonymousUser.run(); 
+	    assertRecordedStepNames(helloWorldActor, "S1a_1", "S3b_1");
+	  }
 
 	@Test
 	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
@@ -128,27 +142,13 @@ public class HelloWorldTest {
       HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
     
     recordStepNamesOf(helloWorldActor);    
-    NormalUser normalUser = new NormalUser(helloWorldActor);
-    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "43");
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
     helloWorldActor.run();
     anonymousUser.run(); 
 		assertRecordedStepNames(helloWorldActor, "S1a_1", "S1a_2", "S3c_1", "S4");
-	}
-
-	@Test 
-	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
-      HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
-    
-    recordStepNamesOf(helloWorldActor);    
-    NormalUser normalUser = new NormalUser(helloWorldActor);
-    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
-    helloWorldActor.setNormalUser(normalUser);
-    helloWorldActor.setAnonymousUser(anonymousUser);
-    anonymousUser.run(); 
-		assertRecordedStepNames(helloWorldActor, "S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
   @Test
