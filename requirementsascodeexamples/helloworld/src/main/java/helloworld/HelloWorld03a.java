@@ -3,55 +3,46 @@ package helloworld;
 import java.util.function.Consumer;
 
 import org.requirementsascode.AbstractActor;
-import org.requirementsascode.Actor;
 import org.requirementsascode.Model;
 
+import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
 
 public class HelloWorld03a {
   public static void main(String[] args) {
-    HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), HelloWorld03a::greetUser);
-    sendMessages(actor);
-  }
-
-  private static void sendMessages(AbstractActor actor) {
-    actor.run();
-
-    // The next command will not be handled, because the actor is wrong
-    actor.getModelRunner().as(new Actor("Invalid User")).reactTo(new EnterText("Ignored Command"));
-
-    // This command will be handled
-    actor.getModelRunner().as(validUser()).reactTo("John Q. Public");
+    HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(HelloWorld03a::greetUser);
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
+    helloWorldActor.setValidUser(validUser03a);
+    validUser03a.run();
   }
   
   private static void greetUser(EnterText enterText) {
     System.out.println("Hello, " + enterText.text + ".");
   }
-
-  public static Actor validUser() {
-    return new Actor("Valid User");
-  }
 }
 
-class HelloWorldActor03a extends AbstractHelloWorldExample {
+class HelloWorldActor03a extends AbstractActor{
   private AbstractActor validUser;
 	private final Class<EnterText> entersName = EnterText.class;
 	private final Consumer<EnterText> greetsUser;
 
 	
-  public HelloWorldActor03a(AbstractActor validUser, Consumer<EnterText> greetsUser) {
-    this.validUser = validUser;
+  public HelloWorldActor03a(Consumer<EnterText> greetsUser) {
     this.greetsUser = greetsUser;
   }
 
-	@Override
+  @Override
 	public Model behavior() {
 		Model model = Model.builder()
 			.useCase("Get greeted").as(validUser)
 				.basicFlow()
-					.step("S1").user(entersName).system(greetsUser)
+					.step("S1b").user(entersName).system(greetsUser)
 			.build();
 		
 		return model;
 	}
+  
+  public void setValidUser(AbstractActor validUser) {
+    this.validUser = validUser;
+  }
 }

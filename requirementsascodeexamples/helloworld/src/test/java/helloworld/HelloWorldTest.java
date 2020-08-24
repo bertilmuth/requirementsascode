@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
-import org.requirementsascode.Actor;
 import org.requirementsascode.ModelRunner;
 
+import helloworld.actor.InvalidUser;
+import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
 
 public class HelloWorldTest {
@@ -40,24 +41,25 @@ public class HelloWorldTest {
 
   @Test
   public void testHelloWorld03a_validUser() {
-    HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), et -> {});
-
-    recordStepNamesOf(actor);
-    actor.getModelRunner().as(HelloWorld03a.validUser()).run(actor.behavior());
-
-    actor.reactTo(new EnterText("John Q. Public"));
-    assertRecordedStepNames(actor, "S1");
+    HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
+    helloWorldActor.setValidUser(validUser03a);
+    
+    recordStepNamesOf(helloWorldActor);
+    validUser03a.run();
+    assertRecordedStepNames(helloWorldActor, "S1b");
   }
 
   @Test
   public void testHelloWorld03a_invalidUser() {
-    HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), et -> {});
+    HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
+    InvalidUser invalidUser03a = new InvalidUser(helloWorldActor);
+    helloWorldActor.setValidUser(validUser03a);
 
-    recordStepNamesOf(actor);
-    actor.getModelRunner().as(new Actor("Invalid User")).run(actor.behavior());
-
-    actor.reactTo(new EnterText("Ignored"));
-    assertRecordedStepNames(actor);
+    recordStepNamesOf(helloWorldActor);
+    invalidUser03a.run();
+    assertRecordedStepNames(helloWorldActor);
   }
 
   @Test
