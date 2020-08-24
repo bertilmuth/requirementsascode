@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
+import org.requirementsascode.Actor;
 import org.requirementsascode.ModelRunner;
 
 import helloworld.command.EnterText;
@@ -42,7 +43,7 @@ public class HelloWorldTest {
 		HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), et -> {});
 		
     recordStepNamesOf(actor);
-    actor.getModelRunner().as(HelloWorld03a.invalidUser()).run(actor.behavior());
+    actor.getModelRunner().as(new Actor("Invalid User")).run(actor.behavior());
  
 		actor.reactTo(new EnterText("Ignored"));
 		assertRecordedStepNames(actor);

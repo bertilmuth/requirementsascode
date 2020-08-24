@@ -18,7 +18,7 @@ public class HelloWorld03a {
     actor.run();
 
     // The next command will not be handled, because the actor is wrong
-    actor.getModelRunner().as(invalidUser()).reactTo(new EnterText("Ignored Command"));
+    actor.getModelRunner().as(new Actor("Invalid User")).reactTo(new EnterText("Ignored Command"));
 
     // This command will be handled
     actor.getModelRunner().as(validUser()).reactTo("John Q. Public");
@@ -30,10 +30,6 @@ public class HelloWorld03a {
 
   public static Actor validUser() {
     return new Actor("Valid User");
-  }
-
-  public static Actor invalidUser() {
-    return new Actor("Invalid User");
   }
 }
 
