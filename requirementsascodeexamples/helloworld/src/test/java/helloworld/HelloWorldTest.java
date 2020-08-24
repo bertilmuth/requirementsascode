@@ -1,9 +1,5 @@
 package helloworld;
 
-import static helloworld.HelloWorld05.ageIsOutOfBounds;
-import static helloworld.HelloWorld05.greetUser;
-import static helloworld.HelloWorld05.saveAge;
-import static helloworld.HelloWorld05.saveName;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -77,50 +73,55 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld05_WithCorrectNameAndAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
-		
+    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge, HelloWorld05.greetUser,
+      HelloWorld05.ageIsOutOfBounds);
+    
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
 		assertRecordedStepNames(actor, "S1", "S2", "S3");
 	}
 
-	@Test
-	public void testHelloWorld05_WithOutOfBoundsAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
-    
+  @Test
+  public void testHelloWorld05_WithOutOfBoundsAge() {
+    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge, HelloWorld05.greetUser,
+      HelloWorld05.ageIsOutOfBounds);
+
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("1000"));
     actor.reactTo(new EnterText("43"));
     assertRecordedStepNames(actor, "S1", "S2", "S3a_1", "S2", "S3");
-	}
+  }
 
-	@Test
-	public void testHelloWorld05_WithNonNumericalAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
-    
+  @Test
+  public void testHelloWorld05_WithNonNumericalAge() {
+    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge,
+      HelloWorld05.greetUser, HelloWorld05.ageIsOutOfBounds);
+
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("NON-NUMERICAL-AGE"));
     actor.reactTo(new EnterText("43"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3b_1", "S2", "S3");
-	}
+    assertRecordedStepNames(actor, "S1", "S2", "S3b_1", "S2", "S3");
+  }
 
 	@Test
-	public void testHelloWorld06_AsNormalUser() {
-	  HelloWorld06 actor = new HelloWorld06();
-    
-	  recordStepNamesOf(actor);
+  public void testHelloWorld06_AsNormalUser() {
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
+      HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
+
+    recordStepNamesOf(helloWorldActor);
     actor.getModelRunner().as(actor.normalUser()).run(actor.behavior());
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6", "S7");
+		assertRecordedStepNames(helloWorldActor, "S1", "S2", "S3", "S4", "S5", "S6", "S7");
 	}
 
 	@Test
 	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
-    HelloWorld06 actor = new HelloWorld06();
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
+      HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
     
     recordStepNamesOf(actor);    
     actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
@@ -130,7 +131,8 @@ public class HelloWorldTest {
 
 	@Test 
 	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
-    HelloWorld06 actor = new HelloWorld06();
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
+      HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
     
     recordStepNamesOf(actor);    
     actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());

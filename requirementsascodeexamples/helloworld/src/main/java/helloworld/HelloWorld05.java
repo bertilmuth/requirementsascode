@@ -44,7 +44,6 @@ public class HelloWorld05{
   }
 }
 
-
 class HelloWorldActor05 extends AbstractActor {
 	private final Class<EnterText> entersName = EnterText.class;
   private final Consumer<EnterText> savesName;

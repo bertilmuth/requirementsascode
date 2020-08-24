@@ -17,7 +17,8 @@ public class User extends AbstractActor{
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
-          .step("S1a").systemPublish(() -> new EnterText("John Q. Public")).to(helloWorldActor)
+          .step("S1").systemPublish(() -> new EnterText("John Q. Public")).to(helloWorldActor)
+          .step("S2").systemPublish(() -> new EnterText("43")).to(helloWorldActor)
        .build();
     
     return model;

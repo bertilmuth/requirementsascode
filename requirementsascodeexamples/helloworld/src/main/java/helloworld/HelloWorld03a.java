@@ -25,7 +25,6 @@ class HelloWorldActor03a extends AbstractActor{
   private AbstractActor validUser;
 	private final Class<EnterText> entersName = EnterText.class;
 	private final Consumer<EnterText> greetsUser;
-
 	
   public HelloWorldActor03a(Consumer<EnterText> greetsUser) {
     this.greetsUser = greetsUser;
