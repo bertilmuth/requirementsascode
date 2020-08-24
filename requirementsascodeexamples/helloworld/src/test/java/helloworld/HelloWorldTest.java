@@ -13,18 +13,18 @@ public class HelloWorldTest {
 	@Test
 	public void testHelloWorld01() {
 		HelloWorldActor01 actor = new HelloWorldActor01(() -> {});
-		actor.getModelRunner().startRecording();
+		
+		recordStepNamesOf(actor);
 		actor.run();
-
 		assertRecordedStepNames(actor, "S1");
 	}
 
 	@Test
 	public void testHelloWorld02() {
 	  HelloWorldActor02 actor = new HelloWorldActor02(() -> {});
-    actor.getModelRunner().startRecording();
+	  
+    recordStepNamesOf(actor);
     actor.run();
-
 		assertRecordedStepNames(actor, "S1", "S1", "S1");
 	}
 
@@ -157,6 +157,10 @@ public class HelloWorldTest {
     actor.run();
 
     assertEquals("yellow", actor.outputColor);
+  }
+  
+  private void recordStepNamesOf(AbstractActor actor) {
+    actor.getModelRunner().startRecording();
   }
 
 	protected void assertRecordedStepNames(AbstractActor actor, String... expectedStepNames) {
