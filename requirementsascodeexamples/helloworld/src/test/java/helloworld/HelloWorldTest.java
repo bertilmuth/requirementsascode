@@ -111,43 +111,52 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld06_AsNormalUser() {
-		HelloWorld06 example = new HelloWorld06();
-		model = example.buildModel();
+	  HelloWorld06 actor = new HelloWorld06();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
+        
+    actor.getModelRunner().as(actor.normalUser()).run(actor.behavior());
 
-		modelRunner.as(example.normalUser()).run(model).reactTo(new EnterText("John"), new EnterText("39"));
+    actor.reactTo(new EnterText("John"));
+    actor.reactTo(new EnterText("39"));
 
-		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6", "S7");
+		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6", "S7");
 	}
 
 	@Test
 	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
-		HelloWorld06 example = new HelloWorld06();
-		model = example.buildModel();
+    HelloWorld06 actor = new HelloWorld06();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
+        
+    actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
 
-		modelRunner.as(example.anonymousUser()).run(model).reactTo(new EnterText("39"));
+    actor.reactTo(new EnterText("39"));
 
-		assertRecordedStepNames("S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
+		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
 	}
 
 	@Test
 	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
-		HelloWorld06 example = new HelloWorld06();
-		model = example.buildModel();
+    HelloWorld06 actor = new HelloWorld06();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
+        
+    actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
 
-		modelRunner.as(example.anonymousUser()).run(model).reactTo(new EnterText("NotANumber"));
+    actor.reactTo(new EnterText("NotANumber"));
 
-		assertRecordedStepNames("S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
+		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
   @Test
   public void testHelloWorld07() {
-    HelloWorld07 example = new HelloWorld07();
-    model = example.buildModel();
+    HelloWorld07 actor = new HelloWorld07();
 
-    example.inputColor = "yellow";
-    modelRunner.run(model);
+    actor.inputColor = "yellow";
+    actor.run();
 
-    assertEquals("yellow", example.outputColor);
+    assertEquals("yellow", actor.outputColor);
   }
 
 	protected void assertRecordedStepNames(AbstractActor actor, String... expectedStepNames) {

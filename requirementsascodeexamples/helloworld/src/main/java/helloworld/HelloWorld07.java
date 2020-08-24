@@ -1,13 +1,14 @@
 package helloworld;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
-public class HelloWorld07{
+public class HelloWorld07 extends AbstractActor{
   public String inputColor = "green";
   public String outputColor;
   
-  public Model buildModel() {
+  @Override
+  public Model behavior() {
     Model model = Model.builder()
       .useCase("Handle colors")
         .basicFlow()
@@ -49,12 +50,7 @@ public class HelloWorld07{
   }
   
   public static void main(String[] args) {
-    HelloWorld07 example = new HelloWorld07();
-    example.start();
-  }
-
-  private void start() {
-    Model model = buildModel();
-    new ModelRunner().run(model);
+    HelloWorld07 actor = new HelloWorld07();
+    actor.run();
   }
 }

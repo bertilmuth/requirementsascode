@@ -114,7 +114,7 @@ public class HelloWorld06 extends AbstractHelloWorldExample {
 	  getModelRunner().as(anonymousUser()).run(behavior());
 	  
 		while (!systemStopped())
-		   getModelRunner().as(anonymousUser()).reactTo(entersText());
+		   reactTo(entersText());
 		exitSystem();
 	}
 
