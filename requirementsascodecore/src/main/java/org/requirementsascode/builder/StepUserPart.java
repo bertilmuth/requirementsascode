@@ -104,19 +104,6 @@ public class StepUserPart<T> {
 	}
 
   /**
-   * Positions the modelRunner after the specified step, and reevaluates which flows can start from there.
-   *
-   * @param stepName name of the step to continue after, in this use case.
-   * @return the use case part this step belongs to, to ease creation of further
-   *         flows
-   * @throws NoSuchElementInModel if no step with the specified stepName is found
-   *                              in the current use case
-   */
-  public UseCasePart continuesAfter(String stepName) {
-    return inCase(null).continuesAfter(stepName);
-  }
-
-  /**
    * Makes the model runner continue at the specified step. 
    * 
    * IMPORTANT NOTE: given you have specified continuesAt(x), 

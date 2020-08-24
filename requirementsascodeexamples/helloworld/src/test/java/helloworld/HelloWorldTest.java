@@ -1,5 +1,9 @@
 package helloworld;
 
+import static helloworld.HelloWorld05.ageIsOutOfBounds;
+import static helloworld.HelloWorld05.greetUser;
+import static helloworld.HelloWorld05.saveAge;
+import static helloworld.HelloWorld05.saveName;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -73,7 +77,7 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld05_WithCorrectNameAndAge() {
-		HelloWorldActor05 actor = new HelloWorldActor05(et -> {}, et -> {}, () -> {}, () -> false);
+    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
 		
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
@@ -83,24 +87,23 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld05_WithOutOfBoundsAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(et -> {}, et -> {}, () -> {}, () -> true);
+    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
     
     recordStepNamesOf(actor);
-    actor.run();
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("1000"));
-    assertRecordedStepNames(actor, "S1", "S2", "S3a_1");
+    actor.reactTo(new EnterText("43"));
+    assertRecordedStepNames(actor, "S1", "S2", "S3a_1", "S2", "S3");
 	}
 
 	@Test
 	public void testHelloWorld05_WithNonNumericalAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(et -> {}, et -> {}, () -> {}, () -> false);
+    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
     
     recordStepNamesOf(actor);
-    actor.run();
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("NON-NUMERICAL-AGE"));
-    actor.reactTo(new EnterText("39"));
+    actor.reactTo(new EnterText("43"));
 		assertRecordedStepNames(actor, "S1", "S2", "S3b_1", "S2", "S3");
 	}
 

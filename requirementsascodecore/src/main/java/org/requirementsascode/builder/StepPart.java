@@ -185,7 +185,7 @@ public class StepPart {
    */
   public UseCasePart continuesAt(String stepName) {
     Objects.requireNonNull(stepName);
-    user(ModelRunner.class).system(new ContinuesAt(stepName, (FlowStep) step));
+    user(ModelRunner.class).system(new ContinuesAt<>(stepName, (FlowStep) step));
     return useCasePart;
   }
 

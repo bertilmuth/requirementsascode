@@ -110,7 +110,7 @@ public class StepAsPart {
    *                              in the current use case
    */
 	public UseCasePart continuesAt(String stepName) {
-		user(ModelRunner.class).system(new ContinuesAt(stepName, (FlowStep) step));
+		user(ModelRunner.class).system(new ContinuesAt<>(stepName, (FlowStep) step));
 		return stepPart.getUseCasePart();
 	}
 }

@@ -9,10 +9,10 @@ import org.requirementsascode.Model;
 import helloworld.command.EnterText;
 
 public class HelloWorld05{
-  private static final Consumer<EnterText> saveName = HelloWorld05::saveName;
-  private static final Consumer<EnterText> saveAge = HelloWorld05::saveAge;
-  private static final Runnable greetUser = HelloWorld05::greetUser;
-  private static final Condition ageIsOutOfBounds = HelloWorld05::ageIsOutOfBounds;
+  public static final Consumer<EnterText> saveName = HelloWorld05::saveName;
+  public static final Consumer<EnterText> saveAge = HelloWorld05::saveAge;
+  public static final Runnable greetUser = HelloWorld05::greetUser;
+  public static final Condition ageIsOutOfBounds = HelloWorld05::ageIsOutOfBounds;
   
   private static final int MIN_AGE = 5;
   private static final int MAX_AGE = 130;
@@ -71,7 +71,7 @@ class HelloWorldActor05 extends AbstractActor {
 					.step("S3").system(greetsUser)
 				.flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
 					.step("S3a_1").continuesAt("S2")
-				.flow("Handle non-numerical age").insteadOf("S3")
+				.flow("Handle non-numerical age").after("S2")
 					.step("S3b_1").on(numberFormatException).continuesAt("S2")
 			.build();
 

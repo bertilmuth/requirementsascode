@@ -940,9 +940,8 @@ public class FlowTest extends AbstractTestCase{
           
         .flow("Main Flow")
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersNumber.class).system(displaysEnteredNumber())
+          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
           .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
-
       .build();
     
     modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
@@ -968,43 +967,6 @@ public class FlowTest extends AbstractTestCase{
 		 
 		assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_NUMBER);
 	}
-	
-	@Test
-  public void continuesAfterSecondStepCalledFromFirstStepOfAlternativeFlowWithEvent() {    
-    Model model = modelBuilder
-      .useCase(USE_CASE)
-        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT_AGAIN)
-          .step(CONTINUE).on(EntersText.class).continuesAfter(CUSTOMER_ENTERS_TEXT_AGAIN)
-        
-        .flow("Main Flow")
-          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-          .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersNumber.class).system(displaysEnteredNumber())
-          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
-
-      .build();
-    
-    modelRunner.run(model).reactTo(entersText(), entersText(), entersNumber());
-     
-    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CONTINUE, CUSTOMER_ENTERS_NUMBER);
-  }
-	
-	 @Test
-	  public void doesntContinueAfterSecondStepCalledFromFirstStepOfAlternativeFlowWithWrongEvent() {    
-	    Model model = modelBuilder
-	      .useCase(USE_CASE)
-	        .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_NUMBER)
-	          .step(CONTINUE).on(EntersText.class).continuesAfter(CUSTOMER_ENTERS_NUMBER)
-	        
-	        .flow("Main Flow")
-	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
-	          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
-
-	      .build();
-	    
-	    modelRunner.run(model).reactTo(entersText(), entersNumber());
-	     
-	    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_NUMBER);
-	  }
 	
 	@Test
 	public void continuesAfterCalledFromFirstStepOfAlternativeFlowWithRightActor() {	
@@ -1122,12 +1084,11 @@ public class FlowTest extends AbstractTestCase{
         .basicFlow()
           .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
           .step(CUSTOMER_ENTERS_TEXT_AGAIN).user(EntersText.class).system(displaysEnteredText())
-          .step(CUSTOMER_ENTERS_NUMBER).user(EntersNumber.class).system(displaysEnteredNumber())    
         .flow(ALTERNATIVE_FLOW).insteadOf(CUSTOMER_ENTERS_TEXT)
           .step(CONTINUE).on(EntersNumber.class).continuesAt(CUSTOMER_ENTERS_TEXT)
       .build();
     
-    modelRunner.run(model).reactTo(entersText(), entersText(), entersText());
+    modelRunner.run(model).reactTo(entersText(), entersText());
      
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_TEXT_AGAIN);
   }

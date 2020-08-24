@@ -134,7 +134,7 @@ public class ModelBuilder {
       .filter(sr -> sr != null)
       .map(SystemReaction::getModelObject)
       .filter(obj -> obj instanceof ContinuesAt)
-      .map(obj -> (ContinuesAt)obj)
+      .map(obj -> (ContinuesAt<?>)obj)
       .forEach(ContinuesAt::resolveContinueAtStep);
   }
 }

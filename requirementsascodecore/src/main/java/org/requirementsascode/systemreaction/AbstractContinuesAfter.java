@@ -3,7 +3,7 @@ package org.requirementsascode.systemreaction;
 import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
 
-public abstract class AbstractContinuesAfter extends AbstractContinues {
+public abstract class AbstractContinuesAfter extends AbstractContinues<ModelRunner> {
 	private FlowStep previousStep;
 
 	public AbstractContinuesAfter(String stepName) {

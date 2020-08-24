@@ -3,9 +3,7 @@ package org.requirementsascode.systemreaction;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.requirementsascode.ModelRunner;
-
-public abstract class AbstractContinues implements Consumer<ModelRunner> {
+public abstract class AbstractContinues<T> implements Consumer<T> {
 	private String stepName;
 
 	public AbstractContinues(String stepName) {

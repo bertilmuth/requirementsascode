@@ -111,6 +111,9 @@ public class StepInCasePart<T> {
    *                              in the current use case
    */
   public UseCasePart continuesAt(String stepName) {
-    return stepPart.continuesAt(stepName);
+    Class<?> messageClass = stepPart.getStep().getMessageClass();
+    UseCasePart continuesAt = stepPart.continuesAt(stepName);
+    stepPart.getStep().setMessageClass(messageClass);
+    return continuesAt;
   }
 }

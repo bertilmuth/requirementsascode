@@ -1,9 +1,8 @@
 package org.requirementsascode.systemreaction;
 
 import org.requirementsascode.FlowStep;
-import org.requirementsascode.ModelRunner;
 
-public class ContinuesAt extends AbstractContinues {
+public class ContinuesAt<T> extends AbstractContinues<T> {
   private FlowStep currentStep;
   private FlowStep continueAtStep;
 
@@ -14,7 +13,7 @@ public class ContinuesAt extends AbstractContinues {
   }
 
   @Override
-  public void accept(ModelRunner runner) {
+  public void accept(Object message) {
     if(continueAtStep == null) {
       resolveContinueAtStep();
     }
