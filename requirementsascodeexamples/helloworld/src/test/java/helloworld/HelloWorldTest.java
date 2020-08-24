@@ -48,7 +48,7 @@ public class HelloWorldTest {
     
     recordStepNamesOf(helloWorldActor);
     validUser03a.run();
-    assertRecordedStepNames(helloWorldActor, "S1b");
+    assertRecordedStepNames(helloWorldActor, "S1");
   }
 
   @Test

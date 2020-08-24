@@ -71,29 +71,28 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 03a - user enters name, system prints it only if actor is right
 ``` java
-public Model buildModel() {
-  ModelBuilder builder = Model.builder();
-  validUser = new Actor("Valid User");
-  invalidUser = new Actor("Invalid User");
-  
-  Model model = builder
-    .useCase("Get greeted").as(validUser)
-      .basicFlow()
-        .step("S1").system(asksForName)
-	.step("S2").user(entersName).system(greetsUser)
-    .build();
+class HelloWorldActor03a extends AbstractActor {
+  ...
+  public HelloWorldActor03a(Consumer<EnterText> greetsUser) {
+    this.greetsUser = greetsUser;
+  }
 
-  return model;
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted").as(validUser)
+        .basicFlow()
+          .step("S1").user(entersName).system(greetsUser)
+      .build();
+
+    return model;
+  }
+
+  public void setValidUser(AbstractActor validUser) {
+    this.validUser = validUser;
+  }
 }
-...
-Model model = buildModel();
-ModelRunner modelRunner = new ModelRunner().run(model);
 
-// The next command will not be handled, because the actor is wrong
-modelRunner.as(invalidUser).reactTo(new EnterText("Ignored Command"));
-
-// This command will be handled
-modelRunner.as(validUser).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03a.java).
 
