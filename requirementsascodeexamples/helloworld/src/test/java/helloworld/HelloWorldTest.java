@@ -108,27 +108,21 @@ public class HelloWorldTest {
 	@Test
 	public void testHelloWorld06_AsNormalUser() {
 	  HelloWorld06 actor = new HelloWorld06();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-        
+    
+	  recordStepNamesOf(actor);
     actor.getModelRunner().as(actor.normalUser()).run(actor.behavior());
-
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-
 		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6", "S7");
 	}
 
 	@Test
 	public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
     HelloWorld06 actor = new HelloWorld06();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-        
+    
+    recordStepNamesOf(actor);    
     actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
-
     actor.reactTo(new EnterText("39"));
-
 		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
 	}
 
