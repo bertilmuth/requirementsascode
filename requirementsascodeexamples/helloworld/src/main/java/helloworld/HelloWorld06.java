@@ -10,13 +10,13 @@ import helloworld.actor.AnonymousUser;
 import helloworld.actor.NormalUser;
 import helloworld.command.EnterText;
 
-public class HelloWorld06{
-	public static final Consumer<EnterText> saveName = HelloWorld06::saveName;
-	public static final Consumer<EnterText> saveAge = HelloWorld06::saveAge;
-	public static final Runnable greetUserWithName = HelloWorld06::greetUserWithName;
-	public static final Runnable greetUserWithAge = HelloWorld06::greetUserWithAge;
-	public static final Condition ageIsOk = HelloWorld06::ageIsOk;
-	public static final Condition ageIsOutOfBounds = HelloWorld06::ageIsOutOfBounds;
+public class HelloWorld06 {
+  public static final Consumer<EnterText> saveName = HelloWorld06::saveName;
+  public static final Consumer<EnterText> saveAge = HelloWorld06::saveAge;
+  public static final Runnable greetUserWithName = HelloWorld06::greetUserWithName;
+  public static final Runnable greetUserWithAge = HelloWorld06::greetUserWithAge;
+  public static final Condition ageIsOk = HelloWorld06::ageIsOk;
+  public static final Condition ageIsOutOfBounds = HelloWorld06::ageIsOutOfBounds;
 
   private static final int MIN_AGE = 5;
   private static final int MAX_AGE = 130;
@@ -24,43 +24,44 @@ public class HelloWorld06{
   private static String firstName;
   private static int age;
 
-	private static void saveName(EnterText enterText) {
-		firstName = enterText.text;
-	}
+  private static void saveName(EnterText enterText) {
+    firstName = enterText.text;
+  }
 
-	private static void saveAge(EnterText enterText) {
-		age = Integer.parseInt(enterText.text);
-	}
+  private static void saveAge(EnterText enterText) {
+    age = Integer.parseInt(enterText.text);
+  }
 
-	private static void greetUserWithName() {
-		System.out.println("Hello, " + firstName + ".");
-	}
+  private static void greetUserWithName() {
+    System.out.println("Hello, " + firstName + ".");
+  }
 
-	private static void greetUserWithAge() {
-		System.out.println("You are " + age + " years old.");
-	}
+  private static void greetUserWithAge() {
+    System.out.println("You are " + age + " years old.");
+  }
 
-	private static boolean ageIsOutOfBounds() {
-		return age < MIN_AGE || age > MAX_AGE;
-	}
+  private static boolean ageIsOutOfBounds() {
+    return age < MIN_AGE || age > MAX_AGE;
+  }
 
-	private static boolean ageIsOk() {
-		return !ageIsOutOfBounds();
-	}
+  private static boolean ageIsOk() {
+    return !ageIsOutOfBounds();
+  }
 
-	public static void main(String[] args) {
-		HelloWorldActor06 helloWorldActor = new HelloWorldActor06(saveName, saveAge, greetUserWithName, greetUserWithAge, ageIsOk, ageIsOutOfBounds);
-    
+  public static void main(String[] args) {
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(saveName, saveAge, greetUserWithName, greetUserWithAge,
+      ageIsOk, ageIsOutOfBounds);
+
     NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
     AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "43");
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
 
-    normalUser.run();	
+    normalUser.run();
   }
 }
 
-class HelloWorldActor06 extends AbstractActor{
+class HelloWorldActor06 extends AbstractActor {
   private final Class<EnterText> entersName = EnterText.class;
   private final Consumer<EnterText> savesName;
   private final Class<EnterText> entersAge = EnterText.class;
@@ -73,7 +74,7 @@ class HelloWorldActor06 extends AbstractActor{
 
   private AbstractActor normalUser;
   private AbstractActor anonymousUser;
-  
+
   public HelloWorldActor06(Consumer<EnterText> savesName, Consumer<EnterText> savesAge, Runnable greetsUserWithName,
     Runnable greetsUserWithAge, Condition ageIsOk, Condition ageIsOutOfBounds) {
     this.savesName = savesName;
@@ -103,14 +104,14 @@ class HelloWorldActor06 extends AbstractActor{
           .step("S1a_1").as(anonymousUser).user(entersAge).system(savesAge)
           .step("S1a_2").continuesAfter("S2")
       .build();
-    
+
     return model;
   }
-  
+
   public void setNormalUser(AbstractActor normalUser) {
     this.normalUser = normalUser;
   }
-  
+
   public void setAnonymousUser(AbstractActor anonymousUser) {
     this.anonymousUser = anonymousUser;
   }
