@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-import helloworld.usercommand.EnterText;
+import helloworld.command.EnterText;
 
 public class HelloWorld05 extends AbstractHelloWorldExample {
 	private final Runnable asksForName = this::askForName;

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import org.requirementsascode.AbstractActor;
 
-import helloworld.usercommand.EnterText;
+import helloworld.command.EnterText;
 
 public abstract class AbstractHelloWorldExample extends AbstractActor{
 	private Scanner scanner;

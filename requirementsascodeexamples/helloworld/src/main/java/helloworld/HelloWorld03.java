@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
 
-import helloworld.usercommand.EnterText;
+import helloworld.command.EnterText;
 
 public class HelloWorld03{
   public static void main(String[] args) {

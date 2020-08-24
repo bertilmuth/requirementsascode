@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.ModelRunner;
 
-import helloworld.usercommand.EnterText;
+import helloworld.command.EnterText;
 
 public class HelloWorldTest {
 	@Test

@@ -6,7 +6,7 @@ import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-import helloworld.usercommand.EnterText;
+import helloworld.command.EnterText;
 
 public class HelloWorld06 extends AbstractHelloWorldExample {
 	private final Runnable asksForName = this::askForName;
