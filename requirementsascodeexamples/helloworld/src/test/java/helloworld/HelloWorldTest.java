@@ -2,6 +2,7 @@ package helloworld;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static helloworld.HelloWorld07.*;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
@@ -170,12 +171,13 @@ public class HelloWorldTest {
 	
   @Test
   public void testHelloWorld07() {
-    HelloWorld07 actor = new HelloWorld07();
+    HelloWorldActor07 actor = new HelloWorldActor07(isColorRed, isColorYellow, isColorGreen,
+      setColorToRed, setColorToYellow, setColorToGreen, displayColor);
 
-    actor.inputColor = "yellow";
+    HelloWorld07.inputColor = "yellow";
     actor.run();
 
-    assertEquals("yellow", actor.outputColor);
+    assertEquals("yellow", HelloWorld07.outputColor);
   }
   
   private void recordStepNamesOf(AbstractActor actor) {
