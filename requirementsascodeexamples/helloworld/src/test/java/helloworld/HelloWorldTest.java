@@ -69,12 +69,16 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld05_WithCorrectNameAndAge() {
-		HelloWorld05 example = new HelloWorld05();
-		model = example.buildModel();
-
-		modelRunner.run(model).reactTo(new EnterText("John"), new EnterText("39"));
-
-		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5", "S6");
+		HelloWorld05 actor = new HelloWorld05();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
+    
+    actor.run();
+    
+    actor.reactTo(new EnterText("John"));
+    actor.reactTo(new EnterText("39"));
+    
+		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6");
 	}
 
 	@Test
