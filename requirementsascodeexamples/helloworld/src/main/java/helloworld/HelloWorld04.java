@@ -17,7 +17,6 @@ public class HelloWorld04 {
 
   public static void main(String[] args) {
     HelloWorldActor04 actor = new HelloWorldActor04(saveName, saveAge, greetUser);
-    actor.run();
     actor.reactTo(new EnterText("John Q. Public"));
     actor.reactTo(new EnterText("43"));
   }

@@ -65,14 +65,10 @@ public class HelloWorldTest {
   @Test
 	public void testHelloWorld04() {
 		HelloWorldActor04 actor = new HelloWorldActor04(et -> {}, et -> {}, () -> {});
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-
-    actor.run();
     
+		recordStepNamesOf(actor);
 		actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-
 		assertRecordedStepNames(actor, "S1", "S2", "S3");
 	}
 
