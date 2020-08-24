@@ -125,32 +125,33 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 05 - user enters name and age, system prints them (with validation)
 ``` java
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(asksForName)
-	.step("S2").user(entersName).system(savesName)
-	.step("S3").system(asksForAge)
-	.step("S4").user(entersAge).system(savesAge)
-	.step("S5").system(greetsUser)
-	.step("S6").system(stops)
-      .flow("Handle out-of-bounds age").insteadOf("S5").condition(ageIsOutOfBounds)
-        .step("S5a_1").system(displaysAgeIsOutOfBounds)
-	.step("S5a_2").continuesAt("S3")
-      .flow("Handle non-numerical age").insteadOf("S5")
-	.step("S5b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
-	.step("S5b_2").continuesAt("S3")
-    .build();
+class HelloWorldActor05 extends AbstractActor {
+  ...
+  public HelloWorldActor05(Consumer<EnterText> savesName, Consumer<EnterText> savesAge, Runnable greetsUser,
+    Condition ageIsOutOfBounds) {
+    this.savesName = savesName;
+    this.savesAge = savesAge;
+    this.greetsUser = greetsUser;
+    this.ageIsOutOfBounds = ageIsOutOfBounds;
+  }
 
-  return model;
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").user(entersName).system(savesName)
+          .step("S2").user(entersAge).system(savesAge)
+          .step("S3").system(greetsUser)
+        .flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
+          .step("S3a_1").continuesAt("S2")
+        .flow("Handle non-numerical age").after("S2")
+          .step("S3b_1").on(numberFormatException).continuesAt("S2")
+      .build();
+
+    return model;
+  }
 }
-...
-Model model = buildModel();
-ModelRunner modelRunner = new ModelRunner().run(model);
-while (!systemStopped())
-  modelRunner.reactTo(entersText());
-exitSystem();
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld05.java).
 
