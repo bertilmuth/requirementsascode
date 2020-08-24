@@ -92,31 +92,34 @@ class HelloWorldActor03a extends AbstractActor {
     this.validUser = validUser;
   }
 }
-
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03a.java).
 
 
 # example 04 - user enters name and age, system prints them (exception thrown if non-numerical age entered)
 ``` java
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(asksForName)
-	.step("S2").user(entersName).system(savesName)
-	.step("S3").system(asksForAge)
-	.step("S4").user(entersAge).system(savesAge)
-	.step("S5").system(greetsUser)
-    .build();
-  
-  return model;
+class HelloWorldActor04 extends AbstractActor {
+  ...
+  public HelloWorldActor04(Consumer<EnterText> savesName, Consumer<EnterText> savesAge, Runnable greetsUser) {
+    this.savesName = savesName;
+    this.savesAge = savesAge;
+    this.greetsUser = greetsUser;
+  }
+
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").user(entersName).system(savesName)
+          .step("S2").user(entersAge).system(savesAge)
+          .step("S3").system(greetsUser)
+        .build();
+
+    return model;
+  }
 }
-...
-Model model = buildModel();
-ModelRunner modelRunner = new ModelRunner().run(model);
-modelRunner.reactTo(entersText());
-modelRunner.reactTo(entersText());
+
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld04.java).
 

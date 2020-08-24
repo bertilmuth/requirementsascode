@@ -34,7 +34,7 @@ public class HelloWorld04 {
   }
 }
 
-class HelloWorldActor04 extends AbstractActor{
+class HelloWorldActor04 extends AbstractActor {
   private final Class<EnterText> entersName = EnterText.class;
   private final Consumer<EnterText> savesName;
   private final Class<EnterText> entersAge = EnterText.class;
@@ -46,17 +46,17 @@ class HelloWorldActor04 extends AbstractActor{
     this.savesAge = savesAge;
     this.greetsUser = greetsUser;
   }
-  
+
   @Override
   public Model behavior() {
-  	Model model = Model.builder()
-  		.useCase("Get greeted")
-  			.basicFlow()
-  				.step("S1").user(entersName).system(savesName)
-  				.step("S2").user(entersAge).system(savesAge)
-  				.step("S3").system(greetsUser)
-  		.build();
-  	
-  	return model;
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").user(entersName).system(savesName)
+          .step("S2").user(entersAge).system(savesAge)
+          .step("S3").system(greetsUser)
+        .build();
+
+    return model;
   }
 }
