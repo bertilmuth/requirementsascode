@@ -86,7 +86,7 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
     if (hasSystemReaction(step)) {
       Object systemReaction = step.getSystemReaction().getModelObject();
       if (systemReaction instanceof AbstractContinues) {
-        stepName = " " + ((AbstractContinues) systemReaction).getStepName();
+        stepName = " " + ((AbstractContinues<?>) systemReaction).getStepName();
       }
     }
     return stepName;
