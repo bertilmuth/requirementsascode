@@ -1,15 +1,44 @@
 package helloworld;
 
+import java.util.Scanner;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
 
 import helloworld.usercommand.EnterText;
 
-public class HelloWorld03 extends AbstractHelloWorldExample { 
-	private final Runnable asksForName = this::askForName;
+public class HelloWorld03{
+  public static void main(String[] args) {
+    HelloWorldActor03 actor = new HelloWorldActor03(HelloWorld03::askForName, HelloWorld03::greetUser);
+    actor.run();
+    actor.reactTo(enterText());
+  }
+  
+  private static void askForName() {
+    System.out.print("Please enter your name: ");
+  }
+  
+  private static EnterText enterText() {
+    Scanner scanner = new Scanner(System.in);
+    String text = scanner.next();
+    scanner.close();
+    return new EnterText(text);
+  }
+  
+  private static void greetUser(EnterText enterText) {
+    System.out.println("Hello, " + enterText.text + ".");
+  }
+}
+
+class HelloWorldActor03 extends AbstractHelloWorldExample { 
+	private final Runnable asksForName;
 	private final Class<EnterText> entersName = EnterText.class;
-	private final Consumer<EnterText> greetsUser = this::greetUser;
+	private final Consumer<EnterText> greetsUser;
+	
+  public HelloWorldActor03(Runnable asksForName, Consumer<EnterText> greetsUser) {
+    this.asksForName = asksForName;
+    this.greetsUser = greetsUser;
+  }
 
 	@Override
 	public Model behavior() {
@@ -21,23 +50,5 @@ public class HelloWorld03 extends AbstractHelloWorldExample {
 			.build();
 		
 		return model;
-	}
-
-	private void askForName() {
-		System.out.print("Please enter your name: ");
-	}
-
-	private void greetUser(EnterText enterText) {
-		System.out.println("Hello, " + enterText.text + ".");
-	}
-
-	public static void main(String[] args) {
-		HelloWorld03 actor = new HelloWorld03();
-		actor.react();
-	}
-
-	private void react() {
-	  run();
-		reactTo(entersText());
 	}
 }

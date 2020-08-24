@@ -30,7 +30,7 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld03() {
-		HelloWorld03 actor = new HelloWorld03();
+		HelloWorldActor03 actor = new HelloWorldActor03(() -> {}, et -> {});
 		
     recordStepNamesOf(actor);
 		actor.reactTo(new EnterText("John Q. Public"));

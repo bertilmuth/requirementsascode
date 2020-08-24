@@ -20,10 +20,10 @@ class HelloWorldActor02 extends AbstractActor{
 	private final Condition lessThan3 = this::lessThan3;
 
 	private int greetingsCounter = 0;
-	
-	 public HelloWorldActor02(Runnable greetsUser) {
-	    this.greetsUser = greetsUser;
-	  }
+
+  public HelloWorldActor02(Runnable greetsUser) {
+    this.greetsUser = greetsUser;
+  }
 
 	@Override
 	public Model behavior() {
