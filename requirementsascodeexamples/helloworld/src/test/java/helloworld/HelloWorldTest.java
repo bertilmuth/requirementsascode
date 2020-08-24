@@ -76,10 +76,9 @@ public class HelloWorldTest {
 		HelloWorld05 actor = new HelloWorld05();
 		
     recordStepNamesOf(actor);
-    actor.run();
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6");
+		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4");
 	}
 
 	@Test
@@ -90,7 +89,8 @@ public class HelloWorldTest {
     actor.run();
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("1000"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3");
+    actor.reactTo(new EnterText("39"));
+    assertRecordedStepNames(actor, "S1", "S2", "S3a_1", "S3a_2", "S2", "S3", "S4");
 	}
 
 	@Test
@@ -101,7 +101,8 @@ public class HelloWorldTest {
     actor.run();
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("NON-NUMERICAL-AGE"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3");
+    actor.reactTo(new EnterText("39"));
+		assertRecordedStepNames(actor, "S1", "S2", "S3b_1", "S3b_2", "S2", "S3", "S4");
 	}
 
 	@Test

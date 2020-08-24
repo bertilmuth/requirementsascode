@@ -8,10 +8,8 @@ import org.requirementsascode.Model;
 import helloworld.command.EnterText;
 
 public class HelloWorld05 extends AbstractHelloWorldExample {
-	private final Runnable asksForName = this::askForName;
 	private final Class<EnterText> entersName = EnterText.class;
 	private final Consumer<EnterText> savesName = this::saveName;
-	private final Runnable asksForAge = this::askForAge;
 	private final Class<EnterText> entersAge = EnterText.class;
 	private final Consumer<EnterText> savesAge = this::saveAge;
 	private final Runnable greetsUser = this::greetUser;
@@ -32,33 +30,23 @@ public class HelloWorld05 extends AbstractHelloWorldExample {
 		Model model = Model.builder()
 			.useCase("Get greeted")
 				.basicFlow()
-					.step("S1").system(asksForName)
-					.step("S2").user(entersName).system(savesName)
-					.step("S3").system(asksForAge)
-					.step("S4").user(entersAge).system(savesAge)
-					.step("S5").system(greetsUser)
-					.step("S6").system(stops)
-				.flow("Handle out-of-bounds age").insteadOf("S5").condition(ageIsOutOfBounds)
-					.step("S5a_1").system(displaysAgeIsOutOfBounds)
-					.step("S5a_2").continuesAt("S3")
-				.flow("Handle non-numerical age").insteadOf("S5")
-					.step("S5b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
-					.step("S5b_2").continuesAt("S3")
+					.step("S1").user(entersName).system(savesName)
+					.step("S2").user(entersAge).system(savesAge)
+					.step("S3").system(greetsUser)
+					.step("S4").system(stops)
+				.flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
+					.step("S3a_1").system(displaysAgeIsOutOfBounds)
+					.step("S3a_2").continuesAt("S2")
+				.flow("Handle non-numerical age").insteadOf("S3")
+					.step("S3b_1").on(numberFormatException).system(displaysAgeIsNonNumerical)
+					.step("S3b_2").continuesAt("S2")
 			.build();
 
 		return model;
 	}
 
-	private void askForName() {
-		System.out.print("Please enter your name: ");
-	}
-
 	private void saveName(EnterText enterText) {
 		firstName = enterText.text;
-	}
-	
-	private void askForAge() {
-		System.out.print("Please enter your age: ");
 	}
 
 	private void saveAge(EnterText enterText) {
