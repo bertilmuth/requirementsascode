@@ -7,12 +7,14 @@ import java.util.function.Supplier;
 
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
+import org.requirementsascode.FlowStep;
 import org.requirementsascode.Model;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.Step;
 import org.requirementsascode.UseCase;
 import org.requirementsascode.exception.NoSuchElementInModel;
 import org.requirementsascode.flowposition.FlowPosition;
+import org.requirementsascode.systemreaction.ContinuesAt;
 
 /**
  * Part used by the {@link ModelBuilder} to build a {@link Model}.
@@ -183,7 +185,7 @@ public class StepPart {
    */
   public UseCasePart continuesAt(String stepName) {
     Objects.requireNonNull(stepName);
-    UseCasePart useCasePart = as(systemActor).continuesAt(stepName);
+    user(ModelRunner.class).system(new ContinuesAt(stepName, (FlowStep) step));
     return useCasePart;
   }
 
