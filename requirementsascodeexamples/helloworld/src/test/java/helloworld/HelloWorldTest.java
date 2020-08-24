@@ -30,38 +30,38 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld03() {
-		HelloWorldActor03 actor = new HelloWorldActor03(() -> {}, et -> {});
+		HelloWorldActor03 actor = new HelloWorldActor03(et -> {});
 		
     recordStepNamesOf(actor);
 		actor.reactTo(new EnterText("John Q. Public"));
-		assertRecordedStepNames(actor, "S1", "S2");
+		assertRecordedStepNames(actor, "S1");
 	}
 
 	@Test
 	public void testHelloWorld03a_invalidUser() {
-		HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), () -> {}, et -> {});
+		HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), et -> {});
 		
     recordStepNamesOf(actor);
     actor.getModelRunner().as(HelloWorld03a.invalidUser()).run(actor.behavior());
  
 		actor.reactTo(new EnterText("Ignored"));
-		assertRecordedStepNames(actor, "S1");
+		assertRecordedStepNames(actor);
 	}
 	
 	 @Test
 	  public void testHelloWorld03a_validUser() {
-	    HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), () -> {}, et -> {});
+	    HelloWorldActor03a actor = new HelloWorldActor03a(HelloWorld03a.validUser(), et -> {});
 	    
 	    recordStepNamesOf(actor);
 	    actor.getModelRunner().as(HelloWorld03a.validUser()).run(actor.behavior());
 	 
 	    actor.reactTo(new EnterText("John Q. Public"));
-	    assertRecordedStepNames(actor, "S1", "S2");
+	    assertRecordedStepNames(actor, "S1");
 	  }
 
 	@Test
 	public void testHelloWorld04() {
-		HelloWorld04 actor = new HelloWorld04();
+		HelloWorldActor04 actor = new HelloWorldActor04(et -> {}, et -> {}, () -> {});
     ModelRunner modelRunner = actor.getModelRunner();
     modelRunner.startRecording();
 
@@ -70,7 +70,7 @@ public class HelloWorldTest {
 		actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
 
-		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5");
+		assertRecordedStepNames(actor, "S1", "S2", "S3");
 	}
 
 	@Test

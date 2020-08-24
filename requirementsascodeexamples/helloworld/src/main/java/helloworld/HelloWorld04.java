@@ -1,16 +1,14 @@
 package helloworld;
 
-import java.util.Scanner;
 import java.util.function.Consumer;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
 
 public class HelloWorld04 {
-  private static final Runnable askForName = HelloWorld04::askForName;
   private static final Consumer<EnterText> saveName = HelloWorld04::saveName;
-  private static final Runnable askForAge = HelloWorld04::askForAge;
   private static final Consumer<EnterText> saveAge = HelloWorld04::saveAge;
   private static final Runnable greetUser = HelloWorld04::greetUser;
 
@@ -18,29 +16,14 @@ public class HelloWorld04 {
   private static int age;
 
   public static void main(String[] args) {
-    HelloWorldActor04 actor = new HelloWorldActor04(askForName, saveName, askForAge, saveAge, greetUser);
+    HelloWorldActor04 actor = new HelloWorldActor04(saveName, saveAge, greetUser);
     actor.run();
-    actor.reactTo(enterText());
-    actor.reactTo(enterText());
-  }
-
-  private static void askForName() {
-    System.out.print("Please enter your name: ");
-  }
-
-  private static EnterText enterText() {
-    Scanner scanner = new Scanner(System.in);
-    String text = scanner.next();
-    scanner.close();
-    return new EnterText(text);
+    actor.reactTo(new EnterText("John Q. Public"));
+    actor.reactTo(new EnterText("43"));
   }
 
   private static void saveName(EnterText enterText) {
     firstName = enterText.text;
-  }
-
-  private static void askForAge() {
-    System.out.print("Please enter your age: ");
   }
 
   private static void saveAge(EnterText enterText) {
@@ -52,20 +35,15 @@ public class HelloWorld04 {
   }
 }
 
-class HelloWorldActor04 extends AbstractHelloWorldExample {
-  private final Runnable asksForName;
+class HelloWorldActor04 extends AbstractActor{
   private final Class<EnterText> entersName = EnterText.class;
   private final Consumer<EnterText> savesName;
-  private final Runnable asksForAge;
   private final Class<EnterText> entersAge = EnterText.class;
   private final Consumer<EnterText> savesAge;
   private final Runnable greetsUser;
 
-  public HelloWorldActor04(Runnable asksForName, Consumer<EnterText> savesName, Runnable asksForAge,
-    Consumer<EnterText> savesAge, Runnable greetsUser) {
-    this.asksForName = asksForName;
+  public HelloWorldActor04(Consumer<EnterText> savesName, Consumer<EnterText> savesAge, Runnable greetsUser) {
     this.savesName = savesName;
-    this.asksForAge = asksForAge;
     this.savesAge = savesAge;
     this.greetsUser = greetsUser;
   }
@@ -75,11 +53,9 @@ class HelloWorldActor04 extends AbstractHelloWorldExample {
   	Model model = Model.builder()
   		.useCase("Get greeted")
   			.basicFlow()
-  				.step("S1").system(asksForName)
-  				.step("S2").user(entersName).system(savesName)
-  				.step("S3").system(asksForAge)
-  				.step("S4").user(entersAge).system(savesAge)
-  				.step("S5").system(greetsUser)
+  				.step("S1").user(entersName).system(savesName)
+  				.step("S2").user(entersAge).system(savesAge)
+  				.step("S3").system(greetsUser)
   		.build();
   	
   	return model;
