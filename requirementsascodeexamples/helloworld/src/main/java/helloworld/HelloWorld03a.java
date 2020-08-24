@@ -14,12 +14,14 @@ public class HelloWorld03a extends AbstractHelloWorldExample {
 
 	private Actor validUser;
 	private Actor invalidUser;
+	
+  public HelloWorld03a() {
+    validUser = new Actor("Valid User");
+    invalidUser = new Actor("Invalid User");
+  }
 
 	@Override
 	public Model behavior() {
-		validUser = new Actor("Valid User");
-		invalidUser = new Actor("Invalid User");
-
 		Model model = Model.builder()
 			.useCase("Get greeted").as(validUser)
 				.basicFlow()

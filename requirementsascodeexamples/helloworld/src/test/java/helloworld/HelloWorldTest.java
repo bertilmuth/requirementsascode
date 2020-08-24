@@ -31,27 +31,33 @@ public class HelloWorldTest {
 	@Test
 	public void testHelloWorld03() {
 		HelloWorld03 actor = new HelloWorld03();
-    actor.getModelRunner().startRecording();
-    
+		
+    recordStepNamesOf(actor);
 		actor.reactTo(new EnterText("John Q. Public"));
-
 		assertRecordedStepNames(actor, "S1", "S2");
 	}
 
 	@Test
-	public void testHelloWorld03a() {
+	public void testHelloWorld03a_invalidUser() {
 		HelloWorld03a actor = new HelloWorld03a();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-
-		actor.run();
 		
-		modelRunner.as(actor.invalidUser()).reactTo(new EnterText("Ignored"));
+    recordStepNamesOf(actor);
+    actor.getModelRunner().as(actor.invalidUser()).run(actor.behavior());
+ 
+		actor.reactTo(new EnterText("Ignored"));
 		assertRecordedStepNames(actor, "S1");
-		
-		modelRunner.as(actor.validUser()).reactTo(new EnterText("John Q. Public"));
-		assertRecordedStepNames(actor, "S1", "S2");
 	}
+	
+	 @Test
+	  public void testHelloWorld03a_validUser() {
+	    HelloWorld03a actor = new HelloWorld03a();
+	    
+	    recordStepNamesOf(actor);
+	    actor.getModelRunner().as(actor.validUser()).run(actor.behavior());
+	 
+	    actor.reactTo(new EnterText("John Q. Public"));
+	    assertRecordedStepNames(actor, "S1", "S2");
+	  }
 
 	@Test
 	public void testHelloWorld04() {
