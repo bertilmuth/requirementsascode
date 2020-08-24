@@ -1,16 +1,17 @@
 package helloworld;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
-public class HelloWorld02 {
+public class HelloWorld02 extends AbstractActor{
 	private final Runnable greetsUser = this::greetUser;
 	private final Condition lessThan3 = this::lessThan3;
 
 	private int greetingsCounter = 0;
 
-	public Model buildModel() {
+	@Override
+	public Model behavior() {
 		Model model = Model.builder()
 			.useCase("Get greeted")
 				.basicFlow()
@@ -30,12 +31,7 @@ public class HelloWorld02 {
 	}
 
 	public static void main(String[] args) {
-		HelloWorld02 example = new HelloWorld02();
-		example.start();
-	}
-
-	private void start() {
-		Model model = buildModel();
-		new ModelRunner().run(model);
+		HelloWorld02 actor = new HelloWorld02();
+		actor.run();
 	}
 }

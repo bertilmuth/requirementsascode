@@ -1,12 +1,13 @@
 package helloworld;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
-public class HelloWorld01 {
+public class HelloWorld01 extends AbstractActor{
 	private final Runnable greetsUser = this::greetUser;
 
-	public Model buildModel() {
+	@Override
+	public Model behavior() {
 		Model model = Model.builder()
 			.useCase("Get greeted")
 				.basicFlow()
@@ -21,12 +22,7 @@ public class HelloWorld01 {
 	}
 
 	public static void main(String[] args) {
-		HelloWorld01 example = new HelloWorld01();
-		example.start();
-	}
-
-	private void start() {
-		Model model = buildModel();
-		new ModelRunner().run(model);
+		HelloWorld01 actor = new HelloWorld01();
+		actor.run();
 	}
 }

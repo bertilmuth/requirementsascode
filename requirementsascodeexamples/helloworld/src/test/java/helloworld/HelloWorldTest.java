@@ -3,73 +3,68 @@ package helloworld;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.requirementsascode.Model;
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.ModelRunner;
 
 import helloworld.usercommand.EnterText;
 
 public class HelloWorldTest {
-	private ModelRunner modelRunner;
-	private Model model;
-
-	@Before
-	public void setUp() throws Exception {
-		modelRunner = new ModelRunner().startRecording();
-	}
-
 	@Test
 	public void testHelloWorld01() {
-		HelloWorld01 example = new HelloWorld01();
-		model = example.buildModel();
+		HelloWorld01 actor = new HelloWorld01();
+		actor.getModelRunner().startRecording();
+		actor.run();
 
-		modelRunner.run(model);
-
-		assertRecordedStepNames("S1");
+		assertRecordedStepNames(actor, "S1");
 	}
 
 	@Test
 	public void testHelloWorld02() {
-		HelloWorld02 example = new HelloWorld02();
-		model = example.buildModel();
+		HelloWorld02 actor = new HelloWorld02();
+    actor.getModelRunner().startRecording();
+    actor.run();
 
-		modelRunner.run(model);
-
-		assertRecordedStepNames("S1", "S1", "S1");
+		assertRecordedStepNames(actor, "S1", "S1", "S1");
 	}
 
 	@Test
 	public void testHelloWorld03() {
-		HelloWorld03 example = new HelloWorld03();
-		model = example.buildModel();
+		HelloWorld03 actor = new HelloWorld03();
+    actor.getModelRunner().startRecording();
+    
+		actor.reactTo(new EnterText("John Q. Public"));
 
-		modelRunner.run(model).reactTo(new EnterText("John Q. Public"));
-
-		assertRecordedStepNames("S1", "S2");
+		assertRecordedStepNames(actor, "S1", "S2");
 	}
 
 	@Test
 	public void testHelloWorld03a() {
-		HelloWorld03a example = new HelloWorld03a();
-		model = example.buildModel();
+		HelloWorld03a actor = new HelloWorld03a();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
 
-		modelRunner.run(model);
-
-		modelRunner.as(example.invalidUser()).reactTo(new EnterText("Ignored"));
-		modelRunner.as(example.validUser()).reactTo(new EnterText("John Q. Public"));
-
-		assertRecordedStepNames("S1", "S2");
+		actor.run();
+		
+		modelRunner.as(actor.invalidUser()).reactTo(new EnterText("Ignored"));
+		assertRecordedStepNames(actor, "S1");
+		
+		modelRunner.as(actor.validUser()).reactTo(new EnterText("John Q. Public"));
+		assertRecordedStepNames(actor, "S1", "S2");
 	}
 
 	@Test
 	public void testHelloWorld04() {
-		HelloWorld04 example = new HelloWorld04();
-		model = example.buildModel();
+		HelloWorld04 actor = new HelloWorld04();
+    ModelRunner modelRunner = actor.getModelRunner();
+    modelRunner.startRecording();
 
-		modelRunner.run(model).reactTo(new EnterText("John"), new EnterText("39"));
+    actor.run();
+    
+		actor.reactTo(new EnterText("John"));
+    actor.reactTo(new EnterText("39"));
 
-		assertRecordedStepNames("S1", "S2", "S3", "S4", "S5");
+		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5");
 	}
 
 	@Test
@@ -143,8 +138,8 @@ public class HelloWorldTest {
     assertEquals("yellow", example.outputColor);
   }
 
-	protected void assertRecordedStepNames(String... expectedStepNames) {
-		String[] actualStepNames = modelRunner.getRecordedStepNames();
+	protected void assertRecordedStepNames(AbstractActor actor, String... expectedStepNames) {
+		String[] actualStepNames = actor.getModelRunner().getRecordedStepNames();
 		assertArrayEquals(expectedStepNames, actualStepNames);
 	}
 }

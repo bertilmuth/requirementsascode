@@ -3,7 +3,6 @@ package helloworld;
 import java.util.function.Consumer;
 
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 
 import helloworld.usercommand.EnterText;
 
@@ -12,7 +11,8 @@ public class HelloWorld03 extends AbstractHelloWorldExample {
 	private final Class<EnterText> entersName = EnterText.class;
 	private final Consumer<EnterText> greetsUser = this::greetUser;
 
-	public Model buildModel() {
+	@Override
+	public Model behavior() {
 		Model model = Model.builder()
 			.useCase("Get greeted")
 				.basicFlow()
@@ -32,12 +32,12 @@ public class HelloWorld03 extends AbstractHelloWorldExample {
 	}
 
 	public static void main(String[] args) {
-		HelloWorld03 example = new HelloWorld03();
-		example.start();
+		HelloWorld03 actor = new HelloWorld03();
+		actor.react();
 	}
 
-	private void start() {
-		Model model = buildModel();
-		new ModelRunner().run(model).reactTo(entersText());
+	private void react() {
+	  run();
+		reactTo(entersText());
 	}
 }

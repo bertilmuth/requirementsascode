@@ -2,9 +2,11 @@ package helloworld;
 
 import java.util.Scanner;
 
+import org.requirementsascode.AbstractActor;
+
 import helloworld.usercommand.EnterText;
 
-public class AbstractHelloWorldExample {
+public abstract class AbstractHelloWorldExample extends AbstractActor{
 	private Scanner scanner;
 	private boolean isSystemStopped;
 
