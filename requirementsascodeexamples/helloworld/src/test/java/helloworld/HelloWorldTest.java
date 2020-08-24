@@ -75,42 +75,33 @@ public class HelloWorldTest {
 	@Test
 	public void testHelloWorld05_WithCorrectNameAndAge() {
 		HelloWorld05 actor = new HelloWorld05();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-    
+		
+    recordStepNamesOf(actor);
     actor.run();
-    
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-    
 		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5", "S6");
 	}
 
 	@Test
 	public void testHelloWorld05_WithOutOfBoundsAge() {
     HelloWorld05 actor = new HelloWorld05();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
     
+    recordStepNamesOf(actor);
     actor.run();
-    
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("1000"));
-
 		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5a_1", "S5a_2", "S3");
 	}
 
 	@Test
 	public void testHelloWorld05_WithNonNumericalAge() {
     HelloWorld05 actor = new HelloWorld05();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
     
+    recordStepNamesOf(actor);
     actor.run();
-
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("NON-NUMERICAL-AGE"));
-
 		assertRecordedStepNames(actor, "S1", "S2", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 
