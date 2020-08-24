@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
-import org.requirementsascode.ModelRunner;
 
 import helloworld.actor.InvalidUser;
 import helloworld.actor.ValidUser;
@@ -129,13 +128,10 @@ public class HelloWorldTest {
 	@Test
 	public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAge() {
     HelloWorld06 actor = new HelloWorld06();
-    ModelRunner modelRunner = actor.getModelRunner();
-    modelRunner.startRecording();
-        
+    
+    recordStepNamesOf(actor);    
     actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
-
     actor.reactTo(new EnterText("NotANumber"));
-
 		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
