@@ -21,7 +21,7 @@ public class HelloWorldTest {
 
 	@Test
 	public void testHelloWorld02() {
-		HelloWorld02 actor = new HelloWorld02();
+	  HelloWorldActor02 actor = new HelloWorldActor02(() -> {});
     actor.getModelRunner().startRecording();
     actor.run();
 

@@ -4,11 +4,26 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-public class HelloWorld02 extends AbstractActor{
-	private final Runnable greetsUser = this::greetUser;
+public class HelloWorld02{
+  public static void main(String[] args) {
+    HelloWorldActor02 actor = new HelloWorldActor02(HelloWorld02::greetUser);
+    actor.run();
+  }
+  
+  private static void greetUser() {
+    System.out.println("Hello, User.");
+  }
+}
+
+class HelloWorldActor02 extends AbstractActor{
+	private final Runnable greetsUser;
 	private final Condition lessThan3 = this::lessThan3;
 
 	private int greetingsCounter = 0;
+	
+	 public HelloWorldActor02(Runnable greetsUser) {
+	    this.greetsUser = greetsUser;
+	  }
 
 	@Override
 	public Model behavior() {
@@ -21,17 +36,7 @@ public class HelloWorld02 extends AbstractActor{
 		return model;
 	}
 
-	private void greetUser() {
-		System.out.println("Hello, User! Nice to see you.");
-		greetingsCounter++;
-	}
-
 	private boolean lessThan3() {
-		return greetingsCounter < 3;
-	}
-
-	public static void main(String[] args) {
-		HelloWorld02 actor = new HelloWorld02();
-		actor.run();
+		return greetingsCounter++ < 3;
 	}
 }

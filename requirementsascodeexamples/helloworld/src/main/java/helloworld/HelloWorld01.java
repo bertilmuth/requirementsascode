@@ -9,7 +9,7 @@ public class HelloWorld01{
     actor.run();
   }
   
-  public static void greetUser() {
+  private static void greetUser() {
     System.out.println("Hello, User.");
   }
 }
