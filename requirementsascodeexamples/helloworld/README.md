@@ -49,19 +49,23 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 03 - user enters name, system prints it
 ``` java
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(asksForName)
-	.step("S2").user(entersName).system(greetsUser)
-    .build();
+class HelloWorldActor03 extends AbstractHelloWorldExample {
+  ...
+  public HelloWorldActor03(Consumer<EnterText> greetsUser) {
+    this.greetsUser = greetsUser;
+  }
 
-  return model;
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").user(entersName).system(greetsUser)
+      .build();
+
+    return model;
+  }
 }
-...
-Model model = buildModel();
-new ModelRunner().run(model).reactTo(entersText());
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
