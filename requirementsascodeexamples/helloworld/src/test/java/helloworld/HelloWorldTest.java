@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
-import org.requirementsascode.Actor;
 import org.requirementsascode.ModelRunner;
 
 import helloworld.command.EnterText;
