@@ -190,11 +190,11 @@ class HelloWorldActor06 extends AbstractActor {
           .step("S2").as(normalUser, anonymousUser).user(entersAge).system(savesAge)
           .step("S3").as(normalUser).system(greetsUserWithName)
           .step("S4").as(normalUser, anonymousUser).system(greetsUserWithAge)
-        .flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
+        .flow("Handle out-of-bounds age").after("S2").condition(ageIsOutOfBounds)
           .step("S3a_1").continuesAt("S2")
         .flow("Handle non-numerical age").anytime()
           .step("S3b_1").on(numberFormatException).continuesAt("S2")
-        .flow("Anonymous greeted with age only").insteadOf("S3").condition(ageIsOk)
+        .flow("Anonymous greeted with age only").after("S2").condition(ageIsOk)
           .step("S3c_1").as(anonymousUser).continuesAt("S4")
         .flow("Anonymous does not enter name").insteadOf("S1")
           .step("S1a_1").as(anonymousUser).user(entersAge).system(savesAge)
@@ -217,22 +217,33 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 07 - steps with case condition, model runner moves in if condition false
 ``` java
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Handle colors")
-      .basicFlow()
-        .step("S1").inCase(this::isColorRed).system(this::setColorToRed)
-        .step("S2").inCase(this::isColorYellow).system(this::setColorToYellow)
-        .step("S3").inCase(this::isColorGreen).system(this::setColorToGreen)
-        .step("S4").system(this::displayColor)
-      .build();
-    
-  return model;
-}
-...
+class HelloWorldActor07 extends AbstractActor {
+  ...
+  public HelloWorldActor07(Condition isColorRed, Condition isColorYellow, Condition isColorGreen,
+    Runnable setColorToRed, Runnable setColorToYellow, Runnable setColorToGreen, Runnable displayColor) {
+    this.isColorRed = isColorRed;
+    this.isColorYellow = isColorYellow;
+    this.isColorGreen = isColorGreen;
+    this.setColorToRed = setColorToRed;
+    this.setColorToYellow = setColorToYellow;
+    this.setColorToGreen = setColorToGreen;
+    this.displayColor = displayColor;
+  }
+  
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Handle colors")
+        .basicFlow()
+          .step("S1").inCase(isColorRed).system(setColorToRed)
+          .step("S2").inCase(isColorYellow).system(setColorToYellow)
+          .step("S3").inCase(isColorGreen).system(setColorToGreen)
+          .step("S4").system(displayColor)
+        .build();
 
-Model model = buildModel();
-new ModelRunner().run(model);
+    return model;
+  }
+}
 ```
 
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld07.java).
