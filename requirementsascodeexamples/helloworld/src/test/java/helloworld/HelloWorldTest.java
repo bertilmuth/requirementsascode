@@ -12,7 +12,7 @@ import helloworld.usercommand.EnterText;
 public class HelloWorldTest {
 	@Test
 	public void testHelloWorld01() {
-		HelloWorld01 actor = new HelloWorld01();
+		HelloWorldActor01 actor = new HelloWorldActor01(() -> {});
 		actor.getModelRunner().startRecording();
 		actor.run();
 

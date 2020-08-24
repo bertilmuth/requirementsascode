@@ -3,8 +3,23 @@ package helloworld;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
-public class HelloWorld01 extends AbstractActor{
-	private final Runnable greetsUser = this::greetUser;
+public class HelloWorld01{
+  public static void main(String[] args) {
+    HelloWorldActor01 actor = new HelloWorldActor01(HelloWorld01::greetUser);
+    actor.run();
+  }
+  
+  public static void greetUser() {
+    System.out.println("Hello, User.");
+  }
+}
+
+class HelloWorldActor01 extends AbstractActor{
+	private final Runnable greetsUser;
+	
+	public HelloWorldActor01(Runnable greetsUser) {
+	  this.greetsUser = greetsUser;
+  }
 
 	@Override
 	public Model behavior() {
@@ -16,13 +31,5 @@ public class HelloWorld01 extends AbstractActor{
 		
 		return model;
 	}
-
-	private void greetUser() {
-		System.out.println("Hello, User.");
-	}
-
-	public static void main(String[] args) {
-		HelloWorld01 actor = new HelloWorld01();
-		actor.run();
-	}
 }
+
