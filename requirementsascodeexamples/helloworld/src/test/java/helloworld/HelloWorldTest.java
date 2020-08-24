@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.requirementsascode.AbstractActor;
 
 import helloworld.actor.InvalidUser;
-import helloworld.actor.ValidUser;
+import helloworld.actor.User;
 import helloworld.command.EnterText;
 
 public class HelloWorldTest {
@@ -45,7 +45,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld03a_validUser() {
     HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
-    ValidUser validUser03a = new ValidUser(helloWorldActor);
+    User validUser03a = new User(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
     
     recordStepNamesOf(helloWorldActor);
@@ -56,7 +56,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld03a_invalidUser() {
     HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
-    ValidUser validUser03a = new ValidUser(helloWorldActor);
+    User validUser03a = new User(helloWorldActor);
     InvalidUser invalidUser03a = new InvalidUser(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
 

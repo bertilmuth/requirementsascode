@@ -5,10 +5,10 @@ import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
 
-public class ValidUser extends AbstractActor{
+public class User extends AbstractActor{
   private final AbstractActor helloWorldActor;
 
-  public ValidUser(AbstractActor helloWorldActor) {
+  public User(AbstractActor helloWorldActor) {
     this.helloWorldActor = helloWorldActor;
   }
   
