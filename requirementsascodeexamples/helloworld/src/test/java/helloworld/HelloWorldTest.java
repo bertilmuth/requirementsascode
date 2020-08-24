@@ -132,8 +132,9 @@ public class HelloWorldTest {
     AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
+    helloWorldActor.run();
     anonymousUser.run(); 
-		assertRecordedStepNames(helloWorldActor, "S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
+		assertRecordedStepNames(helloWorldActor, "S1a_1", "S1a_2", "S3c_1", "S4");
 	}
 
 	@Test 

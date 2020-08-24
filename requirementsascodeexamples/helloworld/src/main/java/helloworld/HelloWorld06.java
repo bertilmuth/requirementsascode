@@ -56,6 +56,7 @@ public class HelloWorld06{
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
 
+    helloWorldActor.run();
     normalUser.run();	
   }
 }
@@ -94,13 +95,14 @@ class HelloWorldActor06 extends AbstractActor{
           .step("S3").as(normalUser).system(greetsUserWithName)
           .step("S4").as(normalUser, anonymousUser).system(greetsUserWithAge)
         .flow("Handle out-of-bounds age").insteadOf("S3").condition(ageIsOutOfBounds)
-          .step("S5a_2").continuesAt("S2")
+          .step("S3a_1").continuesAt("S2")
         .flow("Handle non-numerical age").insteadOf("S3")
-          .step("S5b_2").on(numberFormatException).continuesAt("S2")
+          .step("S3b_1").on(numberFormatException).continuesAt("S2")
         .flow("Anonymous greeted with age only").insteadOf("S3").condition(ageIsOk)
-          .step("S5c_1").as(anonymousUser).continuesAt("S4")
+          .step("S3c_1").as(anonymousUser).continuesAt("S4")
         .flow("Anonymous does not enter name").insteadOf("S1")
-          .step("S1a_1").as(anonymousUser).continuesAt("S2")
+          .step("S1a_1").as(anonymousUser).user(entersAge).system(savesAge)
+          .step("S1a_2").continuesAfter("S2")
       .build();
     
     return model;
