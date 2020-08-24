@@ -1,34 +1,48 @@
 # example 01 - system greets user
 ``` java		
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(greetsUser)
-    .build();
+class HelloWorldActor01 extends AbstractActor{
+	...	
+  public HelloWorldActor01(Runnable greetsUser) {
+    this.greetsUser = greetsUser;
+  }
 
-  return model;
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").system(greetsUser)
+      .build();
+
+    return model;
+  }
 }
-...
-Model model = buildModel();
-new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld01.java).
 
 # example 02 - system greets user three times
 ``` java		
-public Model buildModel() {
-  Model model = Model.builder()
-    .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(greetsUser).reactWhile(lessThan3)
-    .build();
+class HelloWorldActor02 extends AbstractActor {
+  ...
+  public HelloWorldActor02(Runnable greetsUser) {
+    this.greetsUser = greetsUser;
+  }
+  
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .useCase("Get greeted")
+        .basicFlow()
+          .step("S1").system(greetsUser).reactWhile(lessThan3)
+      .build();
 
-  return model;
+    return model;
+  }
+
+  private boolean lessThan3() {
+    return greetingsCounter++ < 3;
+  }
 }
-...
-Model model = buildModel();
-new ModelRunner().run(model);
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld02.java).
 
