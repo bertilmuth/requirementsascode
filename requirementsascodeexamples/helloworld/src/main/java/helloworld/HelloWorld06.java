@@ -6,7 +6,8 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-import helloworld.actor.User;
+import helloworld.actor.AnonymousUser;
+import helloworld.actor.NormalUser;
 import helloworld.command.EnterText;
 
 public class HelloWorld06{
@@ -32,7 +33,7 @@ public class HelloWorld06{
 	}
 
 	private static void greetUserWithName() {
-		System.out.println("Hello, " + firstName + " (" + age + ").");
+		System.out.println("Hello, " + firstName + ".");
 	}
 
 	private static void greetUserWithAge() {
@@ -50,8 +51,8 @@ public class HelloWorld06{
 	public static void main(String[] args) {
 		HelloWorldActor06 helloWorldActor = new HelloWorldActor06(saveName, saveAge, greetUserWithName, greetUserWithAge, ageIsOk, ageIsOutOfBounds);
     
-		User normalUser = new User(helloWorldActor);
-    User anonymousUser = new User(helloWorldActor);
+    NormalUser normalUser = new NormalUser(helloWorldActor);
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
     helloWorldActor.setNormalUser(normalUser);
     helloWorldActor.setAnonymousUser(anonymousUser);
 

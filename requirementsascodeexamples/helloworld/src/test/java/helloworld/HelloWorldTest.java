@@ -6,8 +6,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
 
+import helloworld.actor.AnonymousUser;
 import helloworld.actor.InvalidUser;
-import helloworld.actor.User;
+import helloworld.actor.NormalUser;
+import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
 
 public class HelloWorldTest {
@@ -41,7 +43,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld03a_validUser() {
     HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
-    User validUser03a = new User(helloWorldActor);
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
     
     recordStepNamesOf(helloWorldActor);
@@ -52,7 +54,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld03a_invalidUser() {
     HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(et -> {});
-    User validUser03a = new User(helloWorldActor);
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
     InvalidUser invalidUser03a = new InvalidUser(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
 
@@ -112,10 +114,12 @@ public class HelloWorldTest {
       HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
-    actor.getModelRunner().as(actor.normalUser()).run(actor.behavior());
-    actor.reactTo(new EnterText("John"));
-    actor.reactTo(new EnterText("39"));
-		assertRecordedStepNames(helloWorldActor, "S1", "S2", "S3", "S4", "S5", "S6", "S7");
+    NormalUser normalUser = new NormalUser(helloWorldActor);
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    helloWorldActor.setNormalUser(normalUser);
+    helloWorldActor.setAnonymousUser(anonymousUser);
+    normalUser.run(); 
+		assertRecordedStepNames(helloWorldActor, "S1", "S2", "S3", "S4");
 	}
 
 	@Test
@@ -123,10 +127,13 @@ public class HelloWorldTest {
     HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
       HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
     
-    recordStepNamesOf(actor);    
-    actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
-    actor.reactTo(new EnterText("39"));
-		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
+    recordStepNamesOf(helloWorldActor);    
+    NormalUser normalUser = new NormalUser(helloWorldActor);
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    helloWorldActor.setNormalUser(normalUser);
+    helloWorldActor.setAnonymousUser(anonymousUser);
+    anonymousUser.run(); 
+		assertRecordedStepNames(helloWorldActor, "S1a_1", "S3", "S4", "S5c_1", "S6", "S7");
 	}
 
 	@Test 
@@ -134,10 +141,13 @@ public class HelloWorldTest {
     HelloWorldActor06 helloWorldActor = new HelloWorldActor06(HelloWorld06.saveName, HelloWorld06.saveAge,
       HelloWorld06.greetUserWithName, HelloWorld06.greetUserWithAge, HelloWorld06.ageIsOk, HelloWorld06.ageIsOutOfBounds);
     
-    recordStepNamesOf(actor);    
-    actor.getModelRunner().as(actor.anonymousUser()).run(actor.behavior());
-    actor.reactTo(new EnterText("NotANumber"));
-		assertRecordedStepNames(actor, "S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
+    recordStepNamesOf(helloWorldActor);    
+    NormalUser normalUser = new NormalUser(helloWorldActor);
+    AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor);
+    helloWorldActor.setNormalUser(normalUser);
+    helloWorldActor.setAnonymousUser(anonymousUser);
+    anonymousUser.run(); 
+		assertRecordedStepNames(helloWorldActor, "S1a_1", "S3", "S4", "S5b_1", "S5b_2", "S3");
 	}
 	
   @Test

@@ -5,13 +5,13 @@ import java.util.function.Consumer;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
-import helloworld.actor.User;
+import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
 
 public class HelloWorld03a {
   public static void main(String[] args) {
     HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(HelloWorld03a::greetUser);
-    User validUser03a = new User(helloWorldActor);
+    ValidUser validUser03a = new ValidUser(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
     validUser03a.run();
   }
