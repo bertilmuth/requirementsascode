@@ -119,9 +119,10 @@ public abstract class AbstractActor {
 	}
 	
 	/**
-	 * Runs the ModelRunner encapsulated by this actor.
-	 * You only need to explicitly call this method if your model contains
-	 * steps that have a condition, but no event/command defined.
+	 * Runs the behavior of this actor.
+	 * 
+	 * You only need to explicitly call this method if your model starts with a
+	 * step that has no event/command defined (i.e. no user(...) / on(...)).
 	 */
   public void run() {
     runBehavior();
