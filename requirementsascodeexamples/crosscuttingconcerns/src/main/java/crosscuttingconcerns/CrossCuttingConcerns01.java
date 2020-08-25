@@ -1,37 +1,41 @@
 package crosscuttingconcerns;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
-import org.requirementsascode.ModelRunner;
 import org.requirementsascode.StepToBeRun;
 
 public class CrossCuttingConcerns01 {
-	public void start() {
-		Model model = Model.builder()
-			.user(RequestCalculating.class).system(this::calculate)
-		.build();
+  public static void main(String[] args) {
+    new CrossCuttingConcernsActor01().reactTo(new RequestCalculating());
+  }
+}
 
-		ModelRunner modelRunner = new ModelRunner();
-		modelRunner.handleWith(this::measuresPerformance);
-		modelRunner.run(model).reactTo(new RequestCalculating());
-	}
+class CrossCuttingConcernsActor01 extends AbstractActor {
+  public CrossCuttingConcernsActor01() {
+    getModelRunner().handleWith(this::measuresPerformance);
+  }
 
-	private void measuresPerformance(StepToBeRun stepToBeRun) {
-		long timeBefore = System.nanoTime();
-		stepToBeRun.run();
-		long timeAfter = System.nanoTime();
-		long timeElapsed = timeAfter - timeBefore;
+  @Override
+  public Model behavior() {
+    Model model = Model.builder()
+      .user(RequestCalculating.class).system(this::calculate)
+      .build();
+    return model;
+  }
 
-		System.out.println("Elapsed time: " + timeElapsed + " nanoseconds.");
-	}
+  private void measuresPerformance(StepToBeRun stepToBeRun) {
+    long timeBefore = System.nanoTime();
+    stepToBeRun.run();
+    long timeAfter = System.nanoTime();
+    long timeElapsed = timeAfter - timeBefore;
 
-	private void calculate() {
-		Math.pow(2, 1000);
-	}
+    System.out.println("Elapsed time: " + timeElapsed + " nanoseconds.");
+  }
 
-	public static void main(String[] args) {
-		new CrossCuttingConcerns01().start();
-	}
+  private void calculate() {
+    Math.pow(2, 1000);
+  }
+}
 
-	private class RequestCalculating {
-	}
+class RequestCalculating {
 }
