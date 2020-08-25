@@ -6,31 +6,17 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
+import helloworld.commandhandler.GreetPerson;
+import helloworld.commandhandler.SaveAge;
+import helloworld.commandhandler.SaveName;
+import helloworld.domain.Person;
 
 public class HelloWorld04 {
-  private static final Consumer<EnterText> saveName = HelloWorld04::saveName;
-  private static final Consumer<EnterText> saveAge = HelloWorld04::saveAge;
-  private static final Runnable greetUser = HelloWorld04::greetUser;
-
-  private static String firstName;
-  private static int age;
-
   public static void main(String[] args) {
-    HelloWorldActor04 actor = new HelloWorldActor04(saveName, saveAge, greetUser);
+    Person person = new Person();
+    HelloWorldActor04 actor = new HelloWorldActor04(new SaveName(person), new SaveAge(person), new GreetPerson(person));
     actor.reactTo(new EnterText("John Q. Public"));
     actor.reactTo(new EnterText("43"));
-  }
-
-  private static void saveName(EnterText enterText) {
-    firstName = enterText.text;
-  }
-
-  private static void saveAge(EnterText enterText) {
-    age = Integer.parseInt(enterText.text);
-  }
-
-  private static void greetUser() {
-    System.out.println("Hello, " + firstName + " (" + age + ").");
   }
 }
 

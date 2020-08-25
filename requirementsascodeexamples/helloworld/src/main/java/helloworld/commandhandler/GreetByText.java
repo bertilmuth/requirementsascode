@@ -6,21 +6,25 @@ import helloworld.command.EnterText;
 import helloworld.domain.Greeting;
 import helloworld.infrastructure.OutputAdapter;
 
-public class GreetUser implements Runnable, Consumer<EnterText> {
+public class GreetByText implements Runnable, Consumer<EnterText> {
   private OutputAdapter outputAdapter;
 
-  public GreetUser() {
+  public GreetByText() {
     this.outputAdapter = new OutputAdapter();
   }
 
   @Override
   public void accept(EnterText t) {
-    String greeting = Greeting.forUserWithName(t.text);
-    outputAdapter.showMessage(greeting);    
+    greetWithName(t.text);    
   }
 
   @Override
   public void run() {
-    accept(new EnterText("User"));
+    greetWithName("User");    
+  }
+  
+  private void greetWithName(String name) {
+    String greeting = Greeting.forUserWithName(name);
+    outputAdapter.showMessage(greeting);
   }
 }

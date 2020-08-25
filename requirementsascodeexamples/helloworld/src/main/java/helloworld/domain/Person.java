@@ -1,7 +1,5 @@
 package helloworld.domain;
 
-import helloworld.command.EnterText;
-
 public class Person {
   private final int MIN_AGE = 5;
   private final int MAX_AGE = 130;
@@ -17,12 +15,12 @@ public class Person {
     return !ageIsOutOfBounds();
   }
 
-  public void saveName(EnterText enterText) {
-    this.name = enterText.text;
+  public void saveName(String name) {
+    this.name = name;
   }
 
-  public void saveAge(EnterText enterText) {
-    this.age = Integer.parseInt(enterText.text);
+  public void saveAge(int age) {
+    this.age = age;
   }
 
   public String getName() {
