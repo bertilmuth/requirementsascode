@@ -3,14 +3,12 @@ package helloworld;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
+import helloworld.commandhandler.GreetUser;
+
 public class HelloWorld01 {
   public static void main(String[] args) {
-    HelloWorldActor01 actor = new HelloWorldActor01(HelloWorld01::greetUser);
+    HelloWorldActor01 actor = new HelloWorldActor01(new GreetUser());
     actor.run();
-  }
-
-  private static void greetUser() {
-    System.out.println("Hello, User.");
   }
 }
 

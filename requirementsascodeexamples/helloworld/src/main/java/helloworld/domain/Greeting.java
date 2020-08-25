@@ -1,6 +1,6 @@
 package helloworld.domain;
 
-class Greeting {
+public class Greeting {
   public static String forUserWithName(String userName) {
     return "Hello, " + userName + ".";
   }
