@@ -15,7 +15,7 @@ public class GreetWithEnteredName implements Runnable, Consumer<EnterText> {
 
   @Override
   public void accept(EnterText t) {
-    greetWithName(t.text);    
+    greetWithName(t.getText());    
   }
 
   @Override

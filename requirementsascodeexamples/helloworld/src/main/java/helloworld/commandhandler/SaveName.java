@@ -14,6 +14,6 @@ public class SaveName implements Consumer<EnterText> {
 
   @Override
   public void accept(EnterText t) {
-    person.saveName(t.text);
+    person.saveName(t.getText());
   }
 }

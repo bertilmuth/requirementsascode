@@ -14,7 +14,7 @@ public class SaveAge implements Consumer<EnterText> {
 
   @Override
   public void accept(EnterText t) {
-    int age = Integer.parseInt(t.text);
+    int age = Integer.parseInt(t.getText());
     person.saveAge(age);
   }
 }
