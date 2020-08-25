@@ -11,8 +11,6 @@ import helloworld.actor.InvalidUser;
 import helloworld.actor.NormalUser;
 import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
-import helloworld.commandhandler.GreetPersonWithAge;
-import helloworld.commandhandler.GreetPersonWithName;
 import helloworld.commandhandler.SaveAge;
 import helloworld.commandhandler.SaveName;
 import helloworld.domain.Color;
@@ -82,7 +80,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld05_WithCorrectNameAndAge() {
     Person person = new Person();
-    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), () -> {},
       person::ageIsOutOfBounds);
 
     recordStepNamesOf(actor);
@@ -94,7 +92,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld05_WithOutOfBoundsAge() {
     Person person = new Person();
-    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), () -> {},
       person::ageIsOutOfBounds);
 
     recordStepNamesOf(actor);
@@ -107,7 +105,7 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld05_WithNonNumericalAge() {
     Person person = new Person();
-    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), () -> {},
       person::ageIsOutOfBounds);
 
     recordStepNamesOf(actor);
@@ -120,8 +118,8 @@ public class HelloWorldTest {
 	@Test
   public void testHelloWorld06_AsNormalUser() {
     Person person = new Person();
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
-      new GreetPersonWithAge(person), person::ageIsOk, person::ageIsOutOfBounds);
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), () -> {},
+      () -> {}, person::ageIsOk, person::ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
     NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
@@ -135,8 +133,8 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld06_AsNormalUserHandleOutOfBoundsAgeAndThenOkAge() {
     Person person = new Person();
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
-      new GreetPersonWithAge(person), person::ageIsOk, person::ageIsOutOfBounds);
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), () -> {},
+      () -> {}, person::ageIsOk, person::ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
     NormalUser normalUser = new NormalUser(helloWorldActor, "Methusalem", "1000");
@@ -150,8 +148,8 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld06_AsAnonymousUserHandleNonNumericalAgeAndThenOkAge() {
     Person person = new Person();
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
-      new GreetPersonWithAge(person), person::ageIsOk, person::ageIsOutOfBounds);
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), () -> {},
+      () -> {}, person::ageIsOk, person::ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
     NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
@@ -165,8 +163,8 @@ public class HelloWorldTest {
   @Test
   public void testHelloWorld06_AsAnonymousUserAgeIsOk() {
     Person person = new Person();
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
-      new GreetPersonWithAge(person), person::ageIsOk, person::ageIsOutOfBounds);
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), () -> {},
+      () -> {}, person::ageIsOk, person::ageIsOutOfBounds);
 
     recordStepNamesOf(helloWorldActor);
     NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
