@@ -2,6 +2,7 @@ package helloworld;
 
 import java.util.function.Consumer;
 
+import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
@@ -17,7 +18,7 @@ public class HelloWorld03 {
   }
 }
 
-class HelloWorldActor03 extends AbstractHelloWorldExample {
+class HelloWorldActor03 extends AbstractActor {
   private final Class<EnterText> entersName = EnterText.class;
   private final Consumer<EnterText> greetsUser;
 
