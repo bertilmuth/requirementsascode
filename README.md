@@ -6,8 +6,6 @@
 
 Requirements as code enables you to translate use cases to code to build maintainable applications.
 
-Define behavior by creating a model of the interactions with users inside the code.
-
 This page describes simple ways to get started. 
 
 You will see how to create actors with use case models that react to individual messages.
@@ -18,7 +16,9 @@ An actor running such a model with flows can serve as an easy to understand alte
 
 A model with flows is useful to build user journeys, sagas and process managers.
 
-See the [wiki](https://github.com/bertilmuth/requirementsascode/wiki/) for details.
+See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for an explanation.
+
+You can find code examples for models with flows [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
 # Getting started
 Requirements as code is available on Maven Central.
@@ -431,8 +431,8 @@ You can use this library to publish DDD Domain Events without littering your cod
 The use case model at the boundary represents the single source of truth for interactions started by the user. That's why you can [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the use case model. The generated use case documents represent always up to date information about how the system works from a user's perspective.
 
 # Further documentation of requirements as code
-* [Examples for building/running use case models with flows (ModelRunner syntax)](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
-* [Cross-cutting concerns example (ModelRunner syntax)](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
+* [Examples for building/running use case models with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
+* [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 
 # Publications
