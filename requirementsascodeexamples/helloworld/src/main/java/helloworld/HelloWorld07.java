@@ -17,22 +17,22 @@ public class HelloWorld07 {
 }
 
 class HelloWorldActor07 extends AbstractActor {
-  private final Condition isColorRed;
-  private final Condition isColorYellow;
-  private final Condition isColorGreen;
+  private final Condition isInputColorRed;
+  private final Condition isInputColorYellow;
+  private final Condition isInputColorGreen;
   private final Runnable displayColor;
-  private final Runnable setColorToRed;
-  private final Runnable setColorToYellow;
-  private final Runnable setColorToGreen;
+  private final Runnable setOutputColorToRed;
+  private final Runnable setOutputColorToYellow;
+  private final Runnable setOutputColorToGreen;
 
-  public HelloWorldActor07(Condition isColorRed, Condition isColorYellow, Condition isColorGreen,
-    Runnable setColorToRed, Runnable setColorToYellow, Runnable setColorToGreen, Runnable displayColor) {
-    this.isColorRed = isColorRed;
-    this.isColorYellow = isColorYellow;
-    this.isColorGreen = isColorGreen;
-    this.setColorToRed = setColorToRed;
-    this.setColorToYellow = setColorToYellow;
-    this.setColorToGreen = setColorToGreen;
+  public HelloWorldActor07(Condition isInputColorRed, Condition isInputColorYellow, Condition isInputColorGreen,
+    Runnable setOutputColorToRed, Runnable setOutputColorToYellow, Runnable setOutputColorToGreen, Runnable displayColor) {
+    this.isInputColorRed = isInputColorRed;
+    this.isInputColorYellow = isInputColorYellow;
+    this.isInputColorGreen = isInputColorGreen;
+    this.setOutputColorToRed = setOutputColorToRed;
+    this.setOutputColorToYellow = setOutputColorToYellow;
+    this.setOutputColorToGreen = setOutputColorToGreen;
     this.displayColor = displayColor;
   }
   
@@ -41,9 +41,9 @@ class HelloWorldActor07 extends AbstractActor {
     Model model = Model.builder()
       .useCase("Handle colors")
         .basicFlow()
-          .step("S1").inCase(isColorRed).system(setColorToRed)
-          .step("S2").inCase(isColorYellow).system(setColorToYellow)
-          .step("S3").inCase(isColorGreen).system(setColorToGreen)
+          .step("S1").inCase(isInputColorRed).system(setOutputColorToRed)
+          .step("S2").inCase(isInputColorYellow).system(setOutputColorToYellow)
+          .step("S3").inCase(isInputColorGreen).system(setOutputColorToGreen)
           .step("S4").system(displayColor)
         .build();
 

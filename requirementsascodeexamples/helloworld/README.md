@@ -1,7 +1,7 @@
 # example 01 - system greets user
 ``` java		
 class HelloWorldActor01 extends AbstractActor{
-	...	
+  ...	
   public HelloWorldActor01(Runnable greetsUser) {
     this.greetsUser = greetsUser;
   }
@@ -49,7 +49,7 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 
 # example 03 - user enters name, system prints it
 ``` java
-class HelloWorldActor03 extends AbstractHelloWorldExample {
+class HelloWorldActor03 extends AbstractActor {
   ...
   public HelloWorldActor03(Consumer<EnterText> greetsUser) {
     this.greetsUser = greetsUser;
@@ -66,10 +66,11 @@ class HelloWorldActor03 extends AbstractHelloWorldExample {
     return model;
   }
 }
+
 ```
 For the full source code, [look here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloWorld03.java).
 
-# example 03a - user enters name, system prints it only if actor is right
+# example 03a - user enters name, system prints it only if calling actor is valid user
 ``` java
 class HelloWorldActor03a extends AbstractActor {
   ...
@@ -158,19 +159,7 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 # example 06 - user enters name and age as normal user, or only age as anonymous user, system prints the data (with validation)
 ``` java
 class HelloWorldActor06 extends AbstractActor {
-  private final Class<EnterText> entersName = EnterText.class;
-  private final Consumer<EnterText> savesName;
-  private final Class<EnterText> entersAge = EnterText.class;
-  private final Consumer<EnterText> savesAge;
-  private final Runnable greetsUserWithName;
-  private final Runnable greetsUserWithAge;
-  private final Condition ageIsOk;
-  private final Condition ageIsOutOfBounds;
-  private final Class<NumberFormatException> numberFormatException = NumberFormatException.class;
-
-  private AbstractActor normalUser;
-  private AbstractActor anonymousUser;
-
+  ...
   public HelloWorldActor06(Consumer<EnterText> savesName, Consumer<EnterText> savesAge, Runnable greetsUserWithName,
     Runnable greetsUserWithAge, Condition ageIsOk, Condition ageIsOutOfBounds) {
     this.savesName = savesName;
@@ -219,14 +208,14 @@ For the full source code, [look here](https://github.com/bertilmuth/requirements
 ``` java
 class HelloWorldActor07 extends AbstractActor {
   ...
-  public HelloWorldActor07(Condition isColorRed, Condition isColorYellow, Condition isColorGreen,
-    Runnable setColorToRed, Runnable setColorToYellow, Runnable setColorToGreen, Runnable displayColor) {
-    this.isColorRed = isColorRed;
-    this.isColorYellow = isColorYellow;
-    this.isColorGreen = isColorGreen;
-    this.setColorToRed = setColorToRed;
-    this.setColorToYellow = setColorToYellow;
-    this.setColorToGreen = setColorToGreen;
+  public HelloWorldActor07(Condition isInputColorRed, Condition isInputColorYellow, Condition isInputColorGreen,
+    Runnable setOutputColorToRed, Runnable setOutputColorToYellow, Runnable setOutputColorToGreen, Runnable displayColor) {
+    this.isInputColorRed = isInputColorRed;
+    this.isInputColorYellow = isInputColorYellow;
+    this.isInputColorGreen = isInputColorGreen;
+    this.setOutputColorToRed = setOutputColorToRed;
+    this.setOutputColorToYellow = setOutputColorToYellow;
+    this.setOutputColorToGreen = setOutputColorToGreen;
     this.displayColor = displayColor;
   }
   
@@ -235,9 +224,9 @@ class HelloWorldActor07 extends AbstractActor {
     Model model = Model.builder()
       .useCase("Handle colors")
         .basicFlow()
-          .step("S1").inCase(isColorRed).system(setColorToRed)
-          .step("S2").inCase(isColorYellow).system(setColorToYellow)
-          .step("S3").inCase(isColorGreen).system(setColorToGreen)
+          .step("S1").inCase(isInputColorRed).system(setOutputColorToRed)
+          .step("S2").inCase(isInputColorYellow).system(setOutputColorToYellow)
+          .step("S3").inCase(isInputColorGreen).system(setOutputColorToGreen)
           .step("S4").system(displayColor)
         .build();
 
