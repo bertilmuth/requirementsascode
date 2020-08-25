@@ -4,14 +4,12 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
+import helloworld.commandhandler.GreetUser;
+
 public class HelloWorld02 {
   public static void main(String[] args) {
-    HelloWorldActor02 actor = new HelloWorldActor02(HelloWorld02::greetUser);
+    HelloWorldActor02 actor = new HelloWorldActor02(new GreetUser());
     actor.run();
-  }
-
-  private static void greetUser() {
-    System.out.println("Hello, User.");
   }
 }
 
