@@ -3,11 +3,11 @@ package helloworld;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
-import helloworld.commandhandler.GreetByText;
+import helloworld.commandhandler.GreetWithDefaultName;
 
 public class HelloWorld01 {
   public static void main(String[] args) {
-    HelloWorldActor01 actor = new HelloWorldActor01(new GreetByText());
+    HelloWorldActor01 actor = new HelloWorldActor01(new GreetWithDefaultName());
     actor.run();
   }
 }

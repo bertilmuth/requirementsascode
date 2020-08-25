@@ -7,11 +7,11 @@ import org.requirementsascode.Model;
 
 import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
-import helloworld.commandhandler.GreetByText;
+import helloworld.commandhandler.GreetWithEnteredName;
 
 public class HelloWorld03a {
   public static void main(String[] args) {
-    HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(new GreetByText());
+    HelloWorldActor03a helloWorldActor = new HelloWorldActor03a(new GreetWithEnteredName());
     ValidUser validUser03a = new ValidUser(helloWorldActor);
     helloWorldActor.setValidUser(validUser03a);
     validUser03a.run();

@@ -4,11 +4,11 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-import helloworld.commandhandler.GreetByText;
+import helloworld.commandhandler.GreetWithDefaultName;
 
 public class HelloWorld02 {
   public static void main(String[] args) {
-    HelloWorldActor02 actor = new HelloWorldActor02(new GreetByText());
+    HelloWorldActor02 actor = new HelloWorldActor02(new GreetWithDefaultName());
     actor.run();
   }
 }

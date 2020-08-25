@@ -1,21 +1,13 @@
 package helloworld.commandhandler;
 
-import java.util.function.Consumer;
-
-import helloworld.command.EnterText;
 import helloworld.domain.Greeting;
 import helloworld.infrastructure.OutputAdapter;
 
-public class GreetByText implements Runnable, Consumer<EnterText> {
+public class GreetWithDefaultName implements Runnable{
   private OutputAdapter outputAdapter;
 
-  public GreetByText() {
+  public GreetWithDefaultName() {
     this.outputAdapter = new OutputAdapter();
-  }
-
-  @Override
-  public void accept(EnterText t) {
-    greetWithName(t.text);    
   }
 
   @Override
