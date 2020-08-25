@@ -7,40 +7,17 @@ import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
+import helloworld.commandhandler.GreetPerson;
+import helloworld.commandhandler.SaveAge;
+import helloworld.commandhandler.SaveName;
+import helloworld.domain.Person;
 
 public class HelloWorld05 {
-  public static final Consumer<EnterText> saveName = HelloWorld05::saveName;
-  public static final Consumer<EnterText> saveAge = HelloWorld05::saveAge;
-  public static final Runnable greetUser = HelloWorld05::greetUser;
-  public static final Condition ageIsOutOfBounds = HelloWorld05::ageIsOutOfBounds;
-
-  private static final int MIN_AGE = 5;
-  private static final int MAX_AGE = 130;
-
-  private static String firstName;
-  private static int age;
-
-  private static void saveName(EnterText enterText) {
-    firstName = enterText.text;
-  }
-
-  private static void saveAge(EnterText enterText) {
-    age = Integer.parseInt(enterText.text);
-  }
-
-  private static void greetUser() {
-    System.out.println("Hello, " + firstName + " (" + age + ").");
-  }
-
-  private static boolean ageIsOutOfBounds() {
-    return age < MIN_AGE || age > MAX_AGE;
-  }
-
   public static void main(String[] args) {
-    HelloWorldActor05 actor = new HelloWorldActor05(saveName, saveAge, greetUser, ageIsOutOfBounds);
+    Person person = new Person();
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPerson(person), person::ageIsOutOfBounds);
     actor.reactTo(new EnterText("John Q. Public"));
     actor.reactTo(new EnterText("43"));
-    System.out.println(actor.getModelRunner().getLatestStep().get());
   }
 }
 

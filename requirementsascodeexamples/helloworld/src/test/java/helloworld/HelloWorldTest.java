@@ -12,6 +12,10 @@ import helloworld.actor.InvalidUser;
 import helloworld.actor.NormalUser;
 import helloworld.actor.ValidUser;
 import helloworld.command.EnterText;
+import helloworld.commandhandler.GreetPerson;
+import helloworld.commandhandler.SaveAge;
+import helloworld.commandhandler.SaveName;
+import helloworld.domain.Person;
 
 public class HelloWorldTest {
 	@Test
@@ -74,21 +78,23 @@ public class HelloWorldTest {
 		assertRecordedStepNames(actor, "S1", "S2", "S3");
 	}
 
-	@Test
-	public void testHelloWorld05_WithCorrectNameAndAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge, HelloWorld05.greetUser,
-      HelloWorld05.ageIsOutOfBounds);
-    
+  @Test
+  public void testHelloWorld05_WithCorrectNameAndAge() {
+    Person person = new Person();
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPerson(person),
+      person::ageIsOutOfBounds);
+
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
     actor.reactTo(new EnterText("39"));
-		assertRecordedStepNames(actor, "S1", "S2", "S3");
-	}
+    assertRecordedStepNames(actor, "S1", "S2", "S3");
+  }
 
   @Test
   public void testHelloWorld05_WithOutOfBoundsAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge, HelloWorld05.greetUser,
-      HelloWorld05.ageIsOutOfBounds);
+    Person person = new Person();
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPerson(person),
+      person::ageIsOutOfBounds);
 
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
@@ -99,8 +105,9 @@ public class HelloWorldTest {
 
   @Test
   public void testHelloWorld05_WithNonNumericalAge() {
-    HelloWorldActor05 actor = new HelloWorldActor05(HelloWorld05.saveName, HelloWorld05.saveAge,
-      HelloWorld05.greetUser, HelloWorld05.ageIsOutOfBounds);
+    Person person = new Person();
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPerson(person),
+      person::ageIsOutOfBounds);
 
     recordStepNamesOf(actor);
     actor.reactTo(new EnterText("John"));
