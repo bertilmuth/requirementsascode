@@ -6,7 +6,7 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
-import helloworld.commandhandler.GreetPerson;
+import helloworld.commandhandler.GreetPersonWithName;
 import helloworld.commandhandler.SaveAge;
 import helloworld.commandhandler.SaveName;
 import helloworld.domain.Person;
@@ -14,7 +14,8 @@ import helloworld.domain.Person;
 public class HelloWorld04 {
   public static void main(String[] args) {
     Person person = new Person();
-    HelloWorldActor04 actor = new HelloWorldActor04(new SaveName(person), new SaveAge(person), new GreetPerson(person));
+    HelloWorldActor04 actor = new HelloWorldActor04(new SaveName(person), new SaveAge(person),
+      new GreetPersonWithName(person));
     actor.reactTo(new EnterText("John Q. Public"));
     actor.reactTo(new EnterText("43"));
   }

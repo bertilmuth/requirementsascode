@@ -7,7 +7,7 @@ import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
-import helloworld.commandhandler.GreetPerson;
+import helloworld.commandhandler.GreetPersonWithName;
 import helloworld.commandhandler.SaveAge;
 import helloworld.commandhandler.SaveName;
 import helloworld.domain.Person;
@@ -15,7 +15,8 @@ import helloworld.domain.Person;
 public class HelloWorld05 {
   public static void main(String[] args) {
     Person person = new Person();
-    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person), new GreetPerson(person), person::ageIsOutOfBounds);
+    HelloWorldActor05 actor = new HelloWorldActor05(new SaveName(person), new SaveAge(person),
+      new GreetPersonWithName(person), person::ageIsOutOfBounds);
     actor.reactTo(new EnterText("John Q. Public"));
     actor.reactTo(new EnterText("43"));
   }

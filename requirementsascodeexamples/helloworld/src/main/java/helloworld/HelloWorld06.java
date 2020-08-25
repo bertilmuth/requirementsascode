@@ -9,48 +9,17 @@ import org.requirementsascode.Model;
 import helloworld.actor.AnonymousUser;
 import helloworld.actor.NormalUser;
 import helloworld.command.EnterText;
+import helloworld.commandhandler.GreetPersonWithAge;
+import helloworld.commandhandler.GreetPersonWithName;
+import helloworld.commandhandler.SaveAge;
+import helloworld.commandhandler.SaveName;
+import helloworld.domain.Person;
 
 public class HelloWorld06 {
-  public static final Consumer<EnterText> saveName = HelloWorld06::saveName;
-  public static final Consumer<EnterText> saveAge = HelloWorld06::saveAge;
-  public static final Runnable greetUserWithName = HelloWorld06::greetUserWithName;
-  public static final Runnable greetUserWithAge = HelloWorld06::greetUserWithAge;
-  public static final Condition ageIsOk = HelloWorld06::ageIsOk;
-  public static final Condition ageIsOutOfBounds = HelloWorld06::ageIsOutOfBounds;
-
-  private static final int MIN_AGE = 5;
-  private static final int MAX_AGE = 130;
-
-  private static String firstName;
-  private static int age;
-
-  private static void saveName(EnterText enterText) {
-    firstName = enterText.text;
-  }
-
-  private static void saveAge(EnterText enterText) {
-    age = Integer.parseInt(enterText.text);
-  }
-
-  private static void greetUserWithName() {
-    System.out.println("Hello, " + firstName + ".");
-  }
-
-  private static void greetUserWithAge() {
-    System.out.println("You are " + age + " years old.");
-  }
-
-  private static boolean ageIsOutOfBounds() {
-    return age < MIN_AGE || age > MAX_AGE;
-  }
-
-  private static boolean ageIsOk() {
-    return !ageIsOutOfBounds();
-  }
-
   public static void main(String[] args) {
-    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(saveName, saveAge, greetUserWithName, greetUserWithAge,
-      ageIsOk, ageIsOutOfBounds);
+    Person person = new Person();
+    HelloWorldActor06 helloWorldActor = new HelloWorldActor06(new SaveName(person), new SaveAge(person), new GreetPersonWithName(person),
+      new GreetPersonWithAge(person), person::ageIsOk, person::ageIsOutOfBounds);
 
     NormalUser normalUser = new NormalUser(helloWorldActor, "Jane", "21");
     AnonymousUser anonymousUser = new AnonymousUser(helloWorldActor, "43");

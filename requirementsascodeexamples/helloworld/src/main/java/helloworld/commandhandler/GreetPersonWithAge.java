@@ -4,22 +4,22 @@ import helloworld.domain.Greeting;
 import helloworld.domain.Person;
 import helloworld.infrastructure.OutputAdapter;
 
-public class GreetPerson implements Runnable{
+public class GreetPersonWithAge implements Runnable{
   private Person person;
   private OutputAdapter outputAdapter;
 
-  public GreetPerson(Person person) {
+  public GreetPersonWithAge(Person person) {
     this.person = person;
     this.outputAdapter = new OutputAdapter();
   }
 
   @Override
   public void run() {
-    greetWithName(person.getName());    
+    greetWithAge(person.getAge());
   }
   
-  private void greetWithName(String name) {
-    String greeting = Greeting.forUserWithName(name);
+  private void greetWithAge(int age) {
+    String greeting = Greeting.forUserWithAge(age);
     outputAdapter.showMessage(greeting);
   }
 }
