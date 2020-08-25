@@ -6,15 +6,12 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
 import helloworld.command.EnterText;
+import helloworld.commandhandler.GreetUser;
 
 public class HelloWorld03 {
   public static void main(String[] args) {
-    HelloWorldActor03 actor = new HelloWorldActor03(HelloWorld03::greetUser);
+    HelloWorldActor03 actor = new HelloWorldActor03(new GreetUser());
     actor.reactTo(new EnterText("John Q. Public"));
-  }
-
-  private static void greetUser(EnterText enterText) {
-    System.out.println("Hello, " + enterText.text + ".");
   }
 }
 
