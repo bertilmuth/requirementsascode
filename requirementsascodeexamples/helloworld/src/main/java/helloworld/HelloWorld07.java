@@ -4,49 +4,14 @@ import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 
-public class HelloWorld07{
-  public static final Condition isColorRed = HelloWorld07::isColorRed;
-  public static final Condition isColorYellow = HelloWorld07::isColorYellow;
-  public static final Condition isColorGreen = HelloWorld07::isColorGreen;
-  public static final Runnable setColorToRed = HelloWorld07::setColorToRed;
-  public static final Runnable setColorToYellow = HelloWorld07::setColorToYellow;
-  public static final Runnable setColorToGreen = HelloWorld07::setColorToGreen;
-  public static final Runnable displayColor = HelloWorld07::displayColor;
-  
-  public static String inputColor = "green";
-  public static String outputColor;
-  
-  private static boolean isColorRed() {
-    return inputColor.equals("red");
-  }
+import helloworld.domain.Color;
 
-  private static boolean isColorYellow() {
-    return inputColor.equals("yellow");
-  }
-
-  private static boolean isColorGreen() {
-    return inputColor.equals("green");
-  }
-
-  private static void setColorToRed() {
-    outputColor = "red";
-  }
-
-  private static void setColorToYellow() {
-    outputColor = "yellow";
-  }
-
-  private static void setColorToGreen() {
-    outputColor = "green";
-  }
-
-  private static void displayColor() {
-    System.out.println("The color is: " + outputColor);
-  }
-
+public class HelloWorld07 {
   public static void main(String[] args) {
-    HelloWorldActor07 actor = new HelloWorldActor07(isColorRed, isColorYellow, isColorGreen, setColorToRed,
-      setColorToYellow, setColorToGreen, displayColor);
+    Color color = new Color();
+    HelloWorldActor07 actor = new HelloWorldActor07(color::isInputColorRed, color::isInputColorYellow,
+      color::isInputColorGreen, color::setOutputColorToRed, color::setOutputColorToYellow, color::setOutputColorToGreen,
+      () -> System.out.println("The output color is: " + color.getOutputColor()));
     actor.run();
   }
 }

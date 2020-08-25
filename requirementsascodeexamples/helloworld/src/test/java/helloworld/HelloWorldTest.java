@@ -2,7 +2,6 @@ package helloworld;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static helloworld.HelloWorld07.*;
 
 import org.junit.Test;
 import org.requirementsascode.AbstractActor;
@@ -16,6 +15,7 @@ import helloworld.commandhandler.GreetPersonWithAge;
 import helloworld.commandhandler.GreetPersonWithName;
 import helloworld.commandhandler.SaveAge;
 import helloworld.commandhandler.SaveName;
+import helloworld.domain.Color;
 import helloworld.domain.Person;
 
 public class HelloWorldTest {
@@ -180,13 +180,15 @@ public class HelloWorldTest {
 	
   @Test
   public void testHelloWorld07() {
-    HelloWorldActor07 actor = new HelloWorldActor07(isColorRed, isColorYellow, isColorGreen,
-      setColorToRed, setColorToYellow, setColorToGreen, displayColor);
+    Color color = new Color();
+    HelloWorldActor07 actor = new HelloWorldActor07(color::isInputColorRed, color::isInputColorYellow,
+      color::isInputColorGreen, color::setOutputColorToRed, color::setOutputColorToYellow, color::setOutputColorToGreen,
+      () -> {});
 
-    HelloWorld07.inputColor = "yellow";
+    color.setInputColor("yellow");
     actor.run();
 
-    assertEquals("yellow", HelloWorld07.outputColor);
+    assertEquals("yellow", color.getOutputColor());
   }
   
   private void recordStepNamesOf(AbstractActor actor) {
