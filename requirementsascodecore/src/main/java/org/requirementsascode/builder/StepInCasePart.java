@@ -10,9 +10,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.requirementsascode.Condition;
+import org.requirementsascode.FlowStep;
 import org.requirementsascode.ModelRunner;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.NoSuchElementInModel;
+import org.requirementsascode.systemreaction.ContinuesAt;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class StepInCasePart<T> {
@@ -98,9 +100,7 @@ public class StepInCasePart<T> {
    *                              in the current use case
    */
   public UseCasePart continuesAt(String stepName) {
-    Class<?> messageClass = stepPart.getStep().getMessageClass();
-    UseCasePart continuesAt = stepPart.continuesAt(stepName);
-    stepPart.getStep().setMessageClass(messageClass);
-    return continuesAt;
+    system(new ContinuesAt<>(stepName, (FlowStep) stepPart.getStep()));
+    return stepPart.getUseCasePart();
   }
 }
