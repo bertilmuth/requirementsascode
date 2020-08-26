@@ -23,7 +23,7 @@ You can find code examples for models with flows [here](https://github.com/berti
 # Getting started
 Requirements as code is available on Maven Central.
 
-The size of the core jar file is around 64 kBytes. It has no further dependencies.
+The size of the core jar file is less than 100 kBytes. It has no further dependencies.
 
 If you are using Maven, include the following in your POM, to use the core:
 
