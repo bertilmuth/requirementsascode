@@ -121,10 +121,6 @@ public abstract class AbstractActor {
    * that has no event/command defined (i.e. no user(...) / on(...)).
    */
   public void run() {
-    runBehavior();
-  }
-
-  private void runBehavior() {
     Model actorBehavior = behavior();
     if (actorBehavior != null) {
       modelRunner.run(actorBehavior);
@@ -168,7 +164,7 @@ public abstract class AbstractActor {
    */
   public <T, U> Optional<U> reactTo(T message) {
     if (!modelRunner.isRunning()) {
-      runBehavior();
+      run();
     }
     Optional<U> latestPublishedEvent = modelRunner.reactTo(message);
     return latestPublishedEvent;
@@ -187,7 +183,7 @@ public abstract class AbstractActor {
    */
   public <T, U> Optional<U> reactTo(Object message, AbstractActor callingActor) {
     if (!modelRunner.isRunning()) {
-      runBehavior();
+      run();
     }
     Optional<U> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
     return latestPublishedEvent;
