@@ -603,6 +603,15 @@ public class ModelRunner {
   private void initializeStepToBeRun() {
     this.stepToBeRun = new StepToBeRun();
   }
+  
+  /**
+   * Returns the model currently run by this model runner.
+   * 
+   * @return the model that is run, or an empty optional
+   */
+  public Optional<Model> getModel() {
+    return Optional.ofNullable(model);
+  }
 
   private void setModel(Model model) {
     this.model = Objects.requireNonNull(model);

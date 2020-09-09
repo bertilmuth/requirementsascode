@@ -163,11 +163,7 @@ public abstract class AbstractActor {
    * @throws ClassCastException      when type of the returned instance isn't U
    */
   public <T, U> Optional<U> reactTo(T message) {
-    if (!modelRunner.isRunning()) {
-      run();
-    }
-    Optional<U> latestPublishedEvent = modelRunner.reactTo(message);
-    return latestPublishedEvent;
+    return reactTo(message, null);
   }
 
   /**
@@ -185,8 +181,23 @@ public abstract class AbstractActor {
     if (!modelRunner.isRunning()) {
       run();
     }
-    Optional<U> latestPublishedEvent = modelRunner.as(callingActor).reactTo(message);
-    return latestPublishedEvent;
+    AbstractActor runActor = callingActorOrDefaultUser(callingActor);
+    if (runActor != null) {
+      Optional<U> latestPublishedEvent = modelRunner.as(runActor).reactTo(message);
+      return latestPublishedEvent;
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  private AbstractActor callingActorOrDefaultUser(AbstractActor callingActor) {
+    AbstractActor runActor;
+    if (callingActor == null) {
+      runActor = modelRunner.getModel().map(Model::getUserActor).orElse(null);
+    } else {
+      runActor = callingActor;
+    }
+    return runActor;
   }
 
   /**
