@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -487,11 +486,7 @@ public class BuildModelTest extends AbstractTestCase {
 			.build();
 	
 		AbstractActor customerActor = model.findActor(CUSTOMER);
-		Set<UseCase> useCases = customerActor.getUseCases();
-		assertEquals(1, useCases.size());
-	
-		UseCase actualUseCase = useCases.iterator().next();
-		assertEquals(USE_CASE, actualUseCase.getName());
+		assertEquals(CUSTOMER, customerActor.getName());
   }
     
   @Test
@@ -501,12 +496,8 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		AbstractActor customerActor = model.findActor(CUSTOMER);
-		Set<UseCase> useCases = customerActor.getUseCases();
-		assertEquals(1, useCases.size());
-	
-		UseCase actualUseCase = useCases.iterator().next();
-		assertEquals(USE_CASE, actualUseCase.getName());
+    AbstractActor customerActor = model.findActor(CUSTOMER);
+    assertEquals(CUSTOMER, customerActor.getName());
   }
 
   @Test
@@ -518,14 +509,8 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).as(customer).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		AbstractActor customerActor = model.findActor(customer.getName());
-		List<Step> steps = customerActor.getStepsOf(useCasePart.getUseCase());
-		Step step = steps.get(0);
-	
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
-		assertEquals(USE_CASE, step.getUseCase().getName());
-		assertEquals(customer, step.getActors()[0]);
+    AbstractActor customerActor = model.findActor(CUSTOMER);
+    assertEquals(CUSTOMER, customerActor.getName());
   }
 
   @Test
@@ -538,20 +523,11 @@ public class BuildModelTest extends AbstractTestCase {
 				.step(CUSTOMER_ENTERS_TEXT).as(customer, anotherActor).user(EntersText.class).system(displaysEnteredText())
 			.build();
 	
-		AbstractActor customerActor = model.findActor(customer.getName());
-		List<Step> steps = customerActor.getStepsOf(useCasePart.getUseCase());
-		Step step = steps.get(0);
+    AbstractActor customerActor = model.findActor(CUSTOMER);
+    assertEquals(CUSTOMER, customerActor.getName());
 	
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.toString());
-		assertEquals(USE_CASE, step.getUseCase().getName());
-		assertEquals(customer, step.getActors()[0]);
-	
-		steps = anotherActor.getStepsOf(useCasePart.getUseCase());
-		step = steps.get(0);
-	
-		assertEquals(CUSTOMER_ENTERS_TEXT, step.getName());
-		assertEquals(anotherActor, step.getActors()[1]);
+    AbstractActor actualOtherActor = model.findActor(anotherActor.getName());
+    assertEquals(anotherActor.getName(), actualOtherActor.getName());
   }
 
   @Test

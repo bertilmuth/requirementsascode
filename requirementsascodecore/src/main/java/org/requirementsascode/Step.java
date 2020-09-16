@@ -61,14 +61,7 @@ public abstract class Step extends ModelElement{
 	}
 
 	public void setActors(AbstractActor[] actors) {
-		connectActorsToThisStep(this, actors);
-	}
-	
-	private void connectActorsToThisStep(Step useCaseStep, AbstractActor[] actors) {
-		this.actors = actors;
-		for (AbstractActor actor : actors) {
-			actor.connectToStep(useCaseStep);
-		}
+    this.actors = actors;
 	}
 
 	public Class<?> getMessageClass() {

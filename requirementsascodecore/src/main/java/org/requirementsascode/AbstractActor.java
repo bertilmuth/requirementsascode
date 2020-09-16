@@ -1,13 +1,6 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import org.requirementsascode.exception.InfiniteRepetition;
@@ -27,14 +20,13 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
 public abstract class AbstractActor {
   private String name;
   private ModelRunner modelRunner;
-  private Map<UseCase, List<Step>> useCaseToStepMap;
 
   /**
    * Creates an actor with a name equal to the current class' simple name.
    *
    */
   public AbstractActor() {
-    initializeFields();
+    createOwnedModelRunner();
     setName(getClass().getSimpleName());
   }
 
@@ -44,17 +36,8 @@ public abstract class AbstractActor {
    * @param name the name of the actor
    */
   public AbstractActor(String name) {
-    initializeFields();
-    setName(name);
-  }
-
-  private void initializeFields() {
-    createEmptyUseCaseToStepMap();
     createOwnedModelRunner();
-  }
-
-  private void createEmptyUseCaseToStepMap() {
-    this.useCaseToStepMap = new HashMap<>();
+    setName(name);
   }
 
   protected void createOwnedModelRunner() {
@@ -73,45 +56,6 @@ public abstract class AbstractActor {
 
   private void setName(String name) {
     this.name = name;
-  }
-
-  /**
-   * Returns the use cases this actor is associated with, as an external user.
-   *
-   * <p>
-   * The actor is associated to a use case if it is connected to at least one of
-   * its steps.
-   * 
-   * <p>
-   * Note: don't confuse this with the use cases that the actor owns as part of
-   * its behavior.
-   * 
-   * @return the use cases the actor is associated with
-   */
-  public Set<UseCase> getUseCases() {
-    Set<UseCase> useCases = useCaseToStepMap.keySet();
-    return Collections.unmodifiableSet(useCases);
-  }
-
-  /**
-   * Returns the steps this actor is connected with, for the specified use case.
-   * <p>
-   * Note: don't confuse this with the steps that the actor owns as part of its
-   * behavior.
-   *
-   * @param useCase the use case to query for steps the actor is connected with
-   * @return the steps the actor is connected with
-   */
-  public List<Step> getStepsOf(UseCase useCase) {
-    Objects.requireNonNull(useCase);
-
-    List<Step> steps = getModifiableStepsOf(useCase);
-    return Collections.unmodifiableList(steps);
-  }
-
-  private List<Step> getModifiableStepsOf(UseCase useCase) {
-    useCaseToStepMap.putIfAbsent(useCase, new ArrayList<>());
-    return useCaseToStepMap.get(useCase);
   }
 
   /**
@@ -215,14 +159,6 @@ public abstract class AbstractActor {
    */
   public ModelRunner getModelRunner() {
     return modelRunner;
-  }
-
-  void connectToStep(Step step) {
-    Objects.requireNonNull(step.getUseCase());
-    Objects.requireNonNull(step);
-
-    List<Step> steps = getModifiableStepsOf(step.getUseCase());
-    steps.add(step);
   }
 
   @Override

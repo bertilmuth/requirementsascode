@@ -91,8 +91,10 @@ public class Model{
 	 *                              found in the model
 	 */
 	public AbstractActor findActor(String actorName) {
+	  Objects.requireNonNull(actorName);
 		AbstractActor foundActor = getModifiableSteps().stream()
 			.flatMap(s -> Arrays.stream(s.getActors()))
+			.filter(act -> actorName.equals(act.getName()))
 			.findFirst()
 			.orElseThrow(() -> new NoSuchElementInModel(actorName));
 		return foundActor;
