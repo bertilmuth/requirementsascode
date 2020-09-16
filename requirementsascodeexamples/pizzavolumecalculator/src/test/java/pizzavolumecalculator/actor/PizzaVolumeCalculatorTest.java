@@ -24,7 +24,6 @@ public class PizzaVolumeCalculatorTest {
   @Before
   public void setup() {
     pizzaVolumeCalculator = 
-      new PizzaVolumeCalculator();
       RecordingActor.basedOn(new PizzaVolumeCalculator());
   }
 
@@ -33,7 +32,7 @@ public class PizzaVolumeCalculatorTest {
     pizzaVolumeCalculator.reactTo(new EnterRadius(4));
     pizzaVolumeCalculator.reactTo(new EnterHeight(5));
     Optional<Double> pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
-    assertRecordedStepNames("S1", "S2", "S3", "S4");
+    assertRecordedStepNames("S1", "S2", "S3", "S4"); 
 
     assertEquals(251.327, pizzaVolume.get(), 0.01);
   }
