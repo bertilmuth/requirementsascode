@@ -118,14 +118,12 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		.build();
 	
 		customer.withBehavior(model);		
-		ModelRunner	customerRunner = customer.getModelRunner();
-		
-		customerRunner.publishWith(msg -> {
-			publishedString = (String)msg;
+		recordingCustomer.getModelRunner().publishWith(msg -> {
+	    publishedString = (String)msg;
 		});
 		
 		publishedString = null;
-		customer.reactTo(entersText());
+		recordingCustomer.reactTo(entersText());
 		assertEquals(TEXT, publishedString);
   }
   
@@ -135,14 +133,14 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
 		targetActor.withBehavior(targetBehavior);
+		RecordingActor recordingTargetActor = RecordingActor.basedOn(targetActor);
 		
 		Model sourceBehavior = modelBuilder
-			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(targetActor)
+			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(recordingTargetActor)
 		.build();
 		sourceActor.withBehavior(sourceBehavior).reactTo(entersText());
 
-		Optional<Step> latestStepRun = targetActor.getModelRunner().getLatestStep();
-		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+    assertRecordedStepNames(recordingTargetActor, CUSTOMER_ENTERS_TEXT);
   }
   
   @Test
@@ -154,14 +152,14 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
         .step(CUSTOMER_ENTERS_TEXT).as(sourceActorClone).user(EntersText.class).system(displaysEnteredText())
     .build();
     targetActor.withBehavior(targetBehavior);
+    RecordingActor recordingTargetActor = RecordingActor.basedOn(targetActor);
     
     Model sourceBehavior = modelBuilder
-      .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(targetActor)
+      .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(recordingTargetActor)
     .build();
     sourceActor.withBehavior(sourceBehavior).reactTo(entersText());
 
-    Optional<Step> latestStepRun = targetActor.getModelRunner().getLatestStep();
-    assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+    assertRecordedStepNames(recordingTargetActor, CUSTOMER_ENTERS_TEXT);
   }
   
   @Test
