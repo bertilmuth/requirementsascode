@@ -23,7 +23,8 @@ public class PizzaVolumeCalculatorTest {
 
   @Before
   public void setup() {
-    pizzaVolumeCalculator = new PizzaVolumeCalculator();
+    pizzaVolumeCalculator = 
+      new PizzaVolumeCalculator();
     pizzaVolumeCalculator.getModelRunner().startRecording();
   }
 

@@ -1,7 +1,4 @@
-package helloworld;
-
-import org.requirementsascode.AbstractActor;
-import org.requirementsascode.Model;
+package org.requirementsascode;
 
 public class RecordingActor extends AbstractActor {
   private AbstractActor baseActor;

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.requirementsascode.AbstractActor;
+import org.requirementsascode.RecordingActor;
 
 import helloworld.actor.AnonymousUser;
 import helloworld.actor.InvalidUser;
