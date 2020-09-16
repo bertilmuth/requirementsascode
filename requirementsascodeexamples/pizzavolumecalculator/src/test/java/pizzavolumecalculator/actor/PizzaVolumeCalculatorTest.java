@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.requirementsascode.AbstractActor;
+import org.requirementsascode.RecordingActor;
 
 import pizzavolumecalculator.actor.command.CalculateVolume;
 import pizzavolumecalculator.actor.command.EnterHeight;
 import pizzavolumecalculator.actor.command.EnterRadius;
 
 public class PizzaVolumeCalculatorTest {
-  private AbstractActor pizzaVolumeCalculator;
+  private RecordingActor pizzaVolumeCalculator;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -25,7 +25,7 @@ public class PizzaVolumeCalculatorTest {
   public void setup() {
     pizzaVolumeCalculator = 
       new PizzaVolumeCalculator();
-    pizzaVolumeCalculator.getModelRunner().startRecording();
+      RecordingActor.basedOn(new PizzaVolumeCalculator());
   }
 
   @Test
@@ -68,7 +68,7 @@ public class PizzaVolumeCalculatorTest {
   }
 
   protected void assertRecordedStepNames(String... expectedStepNames) {
-    String[] actualStepNames = pizzaVolumeCalculator.getModelRunner().getRecordedStepNames();
+    String[] actualStepNames = pizzaVolumeCalculator.getRecordedStepNames();
     assertArrayEquals(expectedStepNames, actualStepNames);
   }
 }
