@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -14,10 +15,12 @@ import org.junit.Test;
 public class ActorWithBehaviorTest extends AbstractTestCase{
 	
 	private String publishedString;
+  private RecordingActor recordingCustomer;
 
 	@Before
 	public void setup() {
 		setupWithRecordingModelRunner();
+    this.recordingCustomer = RecordingActor.basedOn(customer);
 	}
 	
   @Test
@@ -33,11 +36,9 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		customer.withBehavior(model).reactTo(entersText());
-  	assertNotNull(customer.behavior());
-
-		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+		customer.withBehavior(model);    
+		recordingCustomer.reactTo(entersText());
+  	assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
   }
   
   @Test
@@ -47,13 +48,12 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_NUMBER).on(EntersNumber.class).system(displaysEnteredNumber())
 		.build();
 	
-		customer.withBehavior(model).reactTo(entersText());
-		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+		customer.withBehavior(model);
+    recordingCustomer.reactTo(entersText());
+    assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
 	
-		customer.reactTo(entersNumber());
-		latestStepRun = customer.getModelRunner().getLatestStep();
-		assertEquals(EntersNumber.class, latestStepRun.get().getMessageClass());
+		recordingCustomer.reactTo(entersNumber());
+    assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT, CUSTOMER_ENTERS_NUMBER);
   }
   
   @Test
@@ -64,10 +64,12 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		customer.withBehavior(model).reactTo(entersText(), validActor);
+		customer.withBehavior(model);
+    recordingCustomer.reactTo(entersText(), validActor);
+    assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
 
 		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-		assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+		//assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
   @Test
@@ -79,7 +81,9 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
 		.build();
 	
-		customer.withBehavior(model).reactTo(entersText(), invalidActor);
+		customer.withBehavior(model);
+		recordingCustomer.reactTo(entersText(), invalidActor);
+    assertRecordedStepNames(recordingCustomer);
 
 		Optional<Step> latestStepRun = invalidActor.getModelRunner().getLatestStep();
 		assertFalse(latestStepRun.isPresent());
@@ -94,12 +98,13 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
       .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).system(displaysEnteredText())
     .build();
   
-    Actor customerWithBehavior = customer.withBehavior(model);
-    customerWithBehavior.reactTo(entersText(), invalidActor);
-    customerWithBehavior.reactTo(entersText(), validActor);
+    customer.withBehavior(model);
+    recordingCustomer.reactTo(entersText(), invalidActor);
+    recordingCustomer.reactTo(entersText(), validActor);
+    assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
 
     Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-    assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
+    //assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
   @Test
@@ -108,7 +113,9 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 			.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(publishEnteredTextAsString())
 		.build();
 
-		Optional<String> optionalString = customer.withBehavior(model).reactTo(entersText());
+		customer.withBehavior(model);
+		Optional<String> optionalString = recordingCustomer.reactTo(entersText());
+		
 		String publishedString = optionalString.get();
 		assertEquals(TEXT, publishedString);
 	}
@@ -272,5 +279,10 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     public String getText() {
       return text;
     }
+  }
+  
+  protected void assertRecordedStepNames(RecordingActor actor, String... expectedStepNames) {
+    String[] actualStepNames = actor.getRecordedStepNames();
+    assertArrayEquals(expectedStepNames, actualStepNames);
   }
 }
