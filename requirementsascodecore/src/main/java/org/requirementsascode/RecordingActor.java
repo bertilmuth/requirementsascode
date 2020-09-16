@@ -5,11 +5,16 @@ public class RecordingActor extends AbstractActor {
 
   private RecordingActor(AbstractActor baseActor) {
     this.baseActor = baseActor;
-    super.getModelRunner().startRecording();
+    baseActor.getModelRunner().startRecording();
   }
 
   public static RecordingActor basedOn(AbstractActor baseActor) {
     return new RecordingActor(baseActor);
+  }
+  
+  @Override
+  public ModelRunner getModelRunner() {
+    return baseActor.getModelRunner();
   }
 
   @Override
@@ -18,7 +23,7 @@ public class RecordingActor extends AbstractActor {
   }
 
   public String[] getRecordedStepNames() {
-    String[] recordedStepNames = super.getModelRunner().getRecordedStepNames();
+    String[] recordedStepNames = getModelRunner().getRecordedStepNames();
     return recordedStepNames;
   }
 }

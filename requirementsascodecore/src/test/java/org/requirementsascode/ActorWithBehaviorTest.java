@@ -3,9 +3,7 @@ package org.requirementsascode;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
@@ -170,22 +168,20 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
       .condition(customerHasNotRunAnyStep).system(displaysConstantText())
     .build();
   
-    customer.withBehavior(model).run();
-    assertNotNull(customer.behavior());
+    customer.withBehavior(model);
+    recordingCustomer.run();
 
-    Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-    assertTrue(latestStepRun.isPresent());
+    assertRecordedStepNames(recordingCustomer, "S1");
   }
   
   @Test
   public void customActorReactsToFulfilledCondition() {
     AbstractActor customActor = new CustomActor();    
-    assertNotNull(customActor.behavior());
 
-    customActor.run();
+    RecordingActor recordingCustomActor = RecordingActor.basedOn(customActor);
+    recordingCustomActor.run();
     
-    Optional<Step> latestStepRun = customActor.getModelRunner().getLatestStep();
-    assertTrue(latestStepRun.isPresent());
+    assertRecordedStepNames(recordingCustomActor, "S1");
   }
   
   private class CustomActor extends AbstractActor{
@@ -204,7 +200,6 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   @Test
   public void customActorDoesntReactToFulfilledConditionIfRunHasNotBeenCalled() {
     AbstractActor customActor = new CustomActor();    
-    assertNotNull(customActor.behavior());
 
     Optional<Step> latestStepRun = customActor.getModelRunner().getLatestStep();
     assertFalse(latestStepRun.isPresent());

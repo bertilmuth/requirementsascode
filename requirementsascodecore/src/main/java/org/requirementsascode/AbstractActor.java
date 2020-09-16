@@ -67,7 +67,7 @@ public abstract class AbstractActor {
   public void run() {
     Model actorBehavior = behavior();
     if (actorBehavior != null) {
-      modelRunner.run(actorBehavior);
+      getModelRunner().run(actorBehavior);
     }
   }
 
@@ -122,12 +122,12 @@ public abstract class AbstractActor {
    *         empty Optional.
    */
   public <T, U> Optional<U> reactTo(Object message, AbstractActor callingActor) {
-    if (!modelRunner.isRunning()) {
+    if (!getModelRunner().isRunning()) {
       run();
     }
     AbstractActor runActor = callingActorOrDefaultUser(callingActor);
     if (runActor != null) {
-      Optional<U> latestPublishedEvent = modelRunner.as(runActor).reactTo(message);
+      Optional<U> latestPublishedEvent = getModelRunner().as(runActor).reactTo(message);
       return latestPublishedEvent;
     } else {
       return Optional.empty();
@@ -137,7 +137,7 @@ public abstract class AbstractActor {
   private AbstractActor callingActorOrDefaultUser(AbstractActor callingActor) {
     AbstractActor runActor;
     if (callingActor == null) {
-      runActor = modelRunner.getModel().map(Model::getUserActor).orElse(null);
+      runActor = getModelRunner().getModel().map(Model::getUserActor).orElse(null);
     } else {
       runActor = callingActor;
     }
