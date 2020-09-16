@@ -67,9 +67,6 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		customer.withBehavior(model);
     recordingCustomer.reactTo(entersText(), validActor);
     assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
-
-		Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-		//assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
   @Test
@@ -84,9 +81,6 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
 		customer.withBehavior(model);
 		recordingCustomer.reactTo(entersText(), invalidActor);
     assertRecordedStepNames(recordingCustomer);
-
-		Optional<Step> latestStepRun = invalidActor.getModelRunner().getLatestStep();
-		assertFalse(latestStepRun.isPresent());
   }
   
   @Test
@@ -102,9 +96,6 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     recordingCustomer.reactTo(entersText(), invalidActor);
     recordingCustomer.reactTo(entersText(), validActor);
     assertRecordedStepNames(recordingCustomer, CUSTOMER_ENTERS_TEXT);
-
-    Optional<Step> latestStepRun = customer.getModelRunner().getLatestStep();
-    //assertEquals(EntersText.class, latestStepRun.get().getMessageClass());
   }
   
   @Test
