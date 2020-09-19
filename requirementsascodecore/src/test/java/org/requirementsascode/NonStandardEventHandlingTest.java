@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
@@ -168,7 +169,6 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 
 	    assertEquals("S1", modelRunner.getLatestStep().get().getName());
 	    assertFalse(response.isPresent());
-	    
 	  }
 	 
 	  private Consumer<StepToBeRun> stopAfterStep(String stopAfterStepName) {
@@ -182,4 +182,28 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	    };
 	  }
 
-}
+	  @Test
+	  @Ignore
+    public void publishesCustomEvent() {      
+      Model model = modelBuilder
+        .useCase(USE_CASE)
+          .basicFlow()
+            .step("S1").on(EntersText.class).systemPublish(super.publishesEnteredTextAsEvent())
+            .step("S2").on(String.class).system(() -> {})
+          .build();
+    
+      final String customEvent = "Custom published event";
+      modelRunner.handleWith(publishCustomEvent(customEvent));
+      Optional<Object> response = modelRunner.run(model).reactTo(entersText());
+
+      assertEquals("S2", modelRunner.getLatestStep().get().getName());
+      assertEquals(customEvent, response.get());
+    }
+
+    private Consumer<StepToBeRun> publishCustomEvent(Object customEvent) {
+      return stepToBeRun -> {
+        stepToBeRun.run();
+        stepToBeRun.setMessageToBePublished(customEvent);
+      };
+    }
+ }
