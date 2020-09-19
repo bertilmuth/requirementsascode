@@ -23,10 +23,9 @@ public class StepToBeRun{
    * Triggers the system reaction of this step.
    * 
    * @return the message returned by the system reaction that will be published
-   *         after the message handler completes.
+   *         after the handleWith() method completes.
    */
   public Object run() {
-    messageToBePublished = null;
     messageToBePublished = runSystemReactionOfStep();
     return messageToBePublished;
   }
@@ -34,7 +33,7 @@ public class StepToBeRun{
 	private Object runSystemReactionOfStep() {
 		@SuppressWarnings("unchecked")
 		Function<Object, Object> systemReactionFunction = (Function<Object, Object>) step.getSystemReaction();
-		Object messageToBePublished = systemReactionFunction.apply(message);
+		setMessageToBePublished(systemReactionFunction.apply(message));
 		return messageToBePublished;
 	}
 	
@@ -45,6 +44,16 @@ public class StepToBeRun{
 	 */
 	public Optional<Object> getMessageToBePublished(){
 	  return Optional.ofNullable(messageToBePublished);
+	}
+	
+	/**
+	 * Alter the message to be published after the handleWith() method completes.
+	 * IMPORTANT: Call this method after {@link #run()}.
+	 * 
+	 * @param messageToBePublished the message to be published
+	 */
+	public void setMessageToBePublished(Object messageToBePublished) {
+	  this.messageToBePublished = messageToBePublished;
 	}
 
 	/**
