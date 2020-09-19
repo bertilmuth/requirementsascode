@@ -1,10 +1,12 @@
 package org.requirementsascode;
 
+import java.util.Objects;
+
 public class RecordingActor extends AbstractActor {
   private AbstractActor baseActor;
 
   private RecordingActor(AbstractActor baseActor) {
-    this.baseActor = baseActor;
+    this.baseActor = Objects.requireNonNull(baseActor);
     baseActor.getModelRunner().startRecording();
   }
 
