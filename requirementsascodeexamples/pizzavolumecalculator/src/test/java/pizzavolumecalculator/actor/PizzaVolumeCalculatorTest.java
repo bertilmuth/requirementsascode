@@ -45,9 +45,7 @@ public class PizzaVolumeCalculatorTest {
 
     assertEquals(37.69, pizzaVolume.get(), 0.01);
 
-    pizzaVolumeCalculator.reactTo(new EnterRadius(4));
-    pizzaVolumeCalculator.reactTo(new EnterHeight(5));
-    pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
+    reactAndAssertMessagesAreHandled(new EnterRadius(4), new EnterHeight(5), new CalculateVolume());
     assertRecordedStepNames("S1", "S2", "S3", "S4", "S1", "S2", "S3", "S4");
 
     assertEquals(251.32, pizzaVolume.get(), 0.01);
@@ -64,6 +62,12 @@ public class PizzaVolumeCalculatorTest {
     thrown.expect(IllegalArgumentException.class);
     pizzaVolumeCalculator.reactTo(new EnterRadius(5));
     pizzaVolumeCalculator.reactTo(new EnterHeight(-1));
+  }
+  
+  protected void reactAndAssertMessagesAreHandled(Object... messages) {
+    pizzaVolumeCalculator.reactTo(messages);
+    final Object[] actualMessages = pizzaVolumeCalculator.getRecordedMessages();
+    assertArrayEquals(messages, actualMessages);
   }
 
   protected void assertRecordedStepNames(String... expectedStepNames) {

@@ -181,7 +181,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 				
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText());		
+		reactAndAssertMessagesAreHandled(entersText());		
 	}
 	
 	@Test
@@ -189,7 +189,7 @@ public class FlowTest extends AbstractTestCase{
 		Model model = buildModel();
 				
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText());		
+		reactAndAssertMessagesAreHandled(entersText());		
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ public class FlowTest extends AbstractTestCase{
 		
 		model = buildModel();
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText());		
+		reactAndAssertMessagesAreHandled(entersText());		
 	}
 	private Model buildModel() {
 		return Model.builder()
@@ -219,7 +219,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText(), entersNumber());		
+		reactAndAssertMessagesAreHandled(entersText(), entersNumber());		
 	}
 	
 	@Test
@@ -296,7 +296,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText(), entersText());		
+		reactAndAssertMessagesAreHandled(entersText(), entersText());		
 	}
 	
 	@Test
@@ -434,7 +434,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.as(customer).run(model);
-		reactToAndAssertEvents(entersText(), entersText());
+		reactAndAssertMessagesAreHandled(entersText(), entersText());
 	}
 	
 	@Test
@@ -449,7 +449,7 @@ public class FlowTest extends AbstractTestCase{
 				.build();
 		
 		modelRunner.as(customer).run(model);
-		reactToAndAssertEvents(entersText(), entersText());		
+		reactAndAssertMessagesAreHandled(entersText(), entersText());		
 	}
 	
 	@Test
@@ -635,7 +635,7 @@ public class FlowTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		
-    reactToAndAssertEvents(entersText(), entersAlternativeText());		
+    reactAndAssertMessagesAreHandled(entersText(), entersAlternativeText());		
 	}
 	
 	 @Test
@@ -685,7 +685,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersNumber());		
+		reactAndAssertMessagesAreHandled(entersNumber());		
 	}
 	
 	@Test
@@ -700,7 +700,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText(), entersNumber());		
+		reactAndAssertMessagesAreHandled(entersText(), entersNumber());		
 	}
 	
 	@Test
@@ -777,7 +777,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 				
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText(), entersNumber());		
+		reactAndAssertMessagesAreHandled(entersText(), entersNumber());		
 	}
 	
 	@Test
@@ -793,7 +793,7 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 				
 		modelRunner.run(model);
-		reactToAndAssertEvents(entersText(), entersText(), entersNumber());		
+		reactAndAssertMessagesAreHandled(entersText(), entersText(), entersNumber());		
 	}
 	
 	@Test

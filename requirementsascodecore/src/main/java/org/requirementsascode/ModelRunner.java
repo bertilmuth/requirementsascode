@@ -393,7 +393,7 @@ public class ModelRunner {
   void recordStepNameAndMessage(Step step, Object message) {
     if (isRecording) {
       recordedStepNames.add(step.getName());
-      if (message != null) {
+      if (message != null && !isSystemEvent(message)) {
         recordedMessages.add(message);
       }
     }
