@@ -63,7 +63,7 @@ public class ModelRunner {
       AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
       optionalToActor.get().reactTo(message, owningActor);
     } else {
-      this.reactToSingleMessage(message);
+      this.reactToSingleOrSeveralMessages(message);
     }
   }
 

@@ -248,28 +248,49 @@ public class FlowTest extends AbstractTestCase{
 					.step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishEnteredTextAsString())
 					.step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
 			.build();
-		
-		Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
-		String actualText = optionalActualText.get();		
-		assertEquals(TEXT, actualText);
-	}
+
+    Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+    String actualText = optionalActualText.get();
+    assertEquals(TEXT, actualText);
+  }
 	
 	 @Test
-	  public void secondStepReactsWhenFirstStepPublishesViaSupplier() {
-	    final String PROCESS_PUBLISHED_EVENT = "Process published event";
-	      
-	    Model model = modelBuilder
+	  public void secondStepReactsWhenFirstStepPublishesViaSupplier() {	      
+	    final String step2 = "step2";
+	    
+      Model model = modelBuilder
 	      .useCase(USE_CASE)
 	        .basicFlow()
 	          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(super.publishConstantTextAsString())
-	          .step(PROCESS_PUBLISHED_EVENT).user(String.class).system(new IgnoresIt<String>())
+	          .step(step2).user(String.class).system(new IgnoresIt<String>())
 	      .build();
 	    
-	    Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
-	    String actualText = optionalActualText.get();   
-	    assertEquals(TEXT, actualText);
-	  }
-	
+      Optional<String> optionalActualText = modelRunner.run(model).reactTo(entersText());
+      String actualText = optionalActualText.get();
+      assertEquals(TEXT, actualText);
+      assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, step2);
+    }
+	 
+  @Test
+  public void twoStepReactWhenFirstStepPublishesTwoEventsAsArray() {   
+    final String step2 = "step2";
+    final String step3 = "step3";
+
+    Model model = modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(this::mapEnteredTextToTwoEvents)
+          .step(step2).user(String.class).system(new IgnoresIt<String>())
+          .step(step3).user(EntersText.class).system(new IgnoresIt<EntersText>())
+      .build();
+
+    modelRunner.run(model).reactTo(entersText());
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, step2, step3);
+  }	 
+  protected Object[] mapEnteredTextToTwoEvents(EntersText enteredText) {
+    return new Object[] { enteredText.value(), enteredText};
+  }
+
 	@Test
 	public void twoSequentialStepsReactToEventsOfDifferentTypeAsList() {		
 		Model model = modelBuilder
