@@ -279,7 +279,7 @@ public class FlowTest extends AbstractTestCase{
     Model model = modelBuilder
       .useCase(USE_CASE)
         .basicFlow()
-          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(this::mapEnteredTextToTwoEvents)
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(this::mapEnteredTextToTwoEventArray)
           .step(step2).user(String.class).system(new IgnoresIt<String>())
           .step(step3).user(EntersText.class).system(new IgnoresIt<EntersText>())
       .build();
@@ -287,8 +287,29 @@ public class FlowTest extends AbstractTestCase{
     modelRunner.run(model).reactTo(entersText());
     assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, step2, step3);
   }	 
-  protected Object[] mapEnteredTextToTwoEvents(EntersText enteredText) {
+  private Object[] mapEnteredTextToTwoEventArray(EntersText enteredText) {
     return new Object[] { enteredText.value(), enteredText};
+  }
+  
+  @Test
+  public void twoStepReactWhenFirstStepPublishesTwoEventsAsCollection() {   
+    final String step2 = "step2";
+    final String step3 = "step3";
+
+    Model model = modelBuilder
+      .useCase(USE_CASE)
+        .basicFlow()
+          .step(CUSTOMER_ENTERS_TEXT).user(EntersText.class).systemPublish(this::mapEnteredTextToTwoEventCollection)
+          .step(step2).user(String.class).system(new IgnoresIt<String>())
+          .step(step3).user(EntersText.class).system(new IgnoresIt<EntersText>())
+      .build();
+
+    modelRunner.run(model).reactTo(entersText());
+    assertRecordedStepNames(CUSTOMER_ENTERS_TEXT, step2, step3);
+  }  
+  private List<Object> mapEnteredTextToTwoEventCollection(EntersText enteredText) {
+    Object[] objectArray = new Object[] { enteredText.value(), enteredText};
+    return Arrays.asList(objectArray);
   }
 
 	@Test
