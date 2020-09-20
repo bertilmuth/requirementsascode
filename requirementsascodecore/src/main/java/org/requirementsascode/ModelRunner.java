@@ -212,6 +212,7 @@ public class ModelRunner {
    */
   public <U> Optional<U> reactTo(Object... messages) {
     Objects.requireNonNull(messages);
+    clearLatestPublishedEvent();
     return reactToMessages(messages);
   }
 
@@ -251,6 +252,8 @@ public class ModelRunner {
   public <T, U> Optional<U> reactTo(T message) {
     Objects.requireNonNull(message);
 
+    clearLatestPublishedEvent();
+    
     Object[] messages;
     if (message instanceof Collection) {
       messages = ((Collection<?>) message).toArray(new Object[0]);
@@ -265,7 +268,6 @@ public class ModelRunner {
   
   @SuppressWarnings("unchecked")
   private <U> Optional<U> reactToMessages(Object[] messages) {
-    clearLatestPublishedEvent();
     for (Object message : messages) {
       reactToMessage(message);
     }
