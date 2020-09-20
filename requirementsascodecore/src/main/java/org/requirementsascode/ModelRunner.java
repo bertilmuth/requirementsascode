@@ -257,19 +257,31 @@ public class ModelRunner {
 
     clearLatestPublishedEvent();
     
-    Object[] messages;
+    if (isMessageContainer(message)) {
+      Object[] messages = flattenMessageContainer(message);
+      reactToMessages(messages);
+    } else {
+      reactToSingleMessage(message);
+    }
+
+    return Optional.ofNullable((U) latestPublishedEvent);
+  }
+  
+  private boolean isMessageContainer(Object message) {
+    boolean isMessageContainer = message instanceof Collection || message instanceof Object[];
+    return isMessageContainer;
+  }
+  
+  private Object[] flattenMessageContainer(Object message) {
+    Object[] messages = null;
     if (message instanceof Collection) {
       messages = ((Collection<?>) message).toArray(new Object[0]);
     } else if(message instanceof Object[]) {
       messages = ((Object[])message);
-    } else {
-      messages = new Object[] {message};
     }
-
-    reactToMessages(messages);
-    return Optional.ofNullable((U) latestPublishedEvent);
+    return messages; 
   }
-  
+
   private void reactToMessages(Object[] messages) {
     for (Object message : messages) {
       reactToSingleMessage(message);
