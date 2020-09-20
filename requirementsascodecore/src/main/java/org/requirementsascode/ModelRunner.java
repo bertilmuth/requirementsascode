@@ -63,7 +63,7 @@ public class ModelRunner {
       AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
       optionalToActor.get().reactTo(message, owningActor);
     } else {
-      this.reactToMessage(message);
+      this.reactToSingleMessage(message);
     }
   }
 
@@ -179,7 +179,7 @@ public class ModelRunner {
 
   private void triggerAutonomousSystemReaction() {
     nestedReactToMessageCallCausesException = false;
-    reactToMessage(this);
+    reactToSingleMessage(this);
   }
 
   /**
@@ -269,12 +269,12 @@ public class ModelRunner {
   @SuppressWarnings("unchecked")
   private <U> Optional<U> reactToMessages(Object[] messages) {
     for (Object message : messages) {
-      reactToMessage(message);
+      reactToSingleMessage(message);
     }
     return Optional.ofNullable((U) latestPublishedEvent);
   }
 
-  private <T> void reactToMessage(T message) {
+  private <T> void reactToSingleMessage(T message) {
     if (!isRunning) {
       return;
     }
@@ -497,7 +497,7 @@ public class ModelRunner {
    */
   protected void handleException(Exception e) {
     nestedReactToMessageCallCausesException = false;
-    reactToMessage(e);
+    reactToSingleMessage(e);
   }
 
   /**
