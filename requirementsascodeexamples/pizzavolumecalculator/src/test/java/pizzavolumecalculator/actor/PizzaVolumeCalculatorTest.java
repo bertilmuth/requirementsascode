@@ -39,15 +39,11 @@ public class PizzaVolumeCalculatorTest {
 
   @Test
   public void testBasicFlowTwice() {
-    pizzaVolumeCalculator.reactTo(new EnterRadius(2));
-    pizzaVolumeCalculator.reactTo(new EnterHeight(3));
+    reactAndAssertMessagesAreHandled(new EnterRadius(2), new EnterHeight(3), new CalculateVolume(),
+      new EnterRadius(4), new EnterHeight(5));
     Optional<Double> pizzaVolume = pizzaVolumeCalculator.reactTo(new CalculateVolume());
 
-    assertEquals(37.69, pizzaVolume.get(), 0.01);
-
-    reactAndAssertMessagesAreHandled(new EnterRadius(4), new EnterHeight(5), new CalculateVolume());
     assertRecordedStepNames("S1", "S2", "S3", "S4", "S1", "S2", "S3", "S4");
-
     assertEquals(251.32, pizzaVolume.get(), 0.01);
   }
 

@@ -210,15 +210,9 @@ public class ModelRunner {
    * @return the event that was published (latest) if the system reacted, or an
    *         empty Optional.
    */
-  @SuppressWarnings("unchecked")
   public <U> Optional<U> reactTo(Object... messages) {
     Objects.requireNonNull(messages);
-
-    clearLatestPublishedEvent();
-    for (Object message : messages) {
-      reactToMessage(message);
-    }
-    return Optional.ofNullable((U) latestPublishedEvent);
+    return reactToMessages(messages);
   }
 
   /**
@@ -237,8 +231,8 @@ public class ModelRunner {
    * <p>
    * After that, the runner will trigger "autonomous system reactions".
    * 
-   * Note that if you provide a collection as the first and only argument, this
-   * will be flattened to the objects in the collection, and for each object
+   * Note that if you provide an array or a collection as the first and only argument, this
+   * will be flattened to the contained objects, and for each object
    * {@link #reactTo(Object)} is called.
    *
    * <p>
@@ -254,17 +248,27 @@ public class ModelRunner {
    *                                 there is an infinite loop.
    * @throws ClassCastException      when type of the returned instance isn't U
    */
-  @SuppressWarnings("unchecked")
   public <T, U> Optional<U> reactTo(T message) {
     Objects.requireNonNull(message);
 
+    Object[] messages;
     if (message instanceof Collection) {
-      Object[] messages = ((Collection<?>) message).toArray(new Object[0]);
-      return reactTo(messages);
+      messages = ((Collection<?>) message).toArray(new Object[0]);
+    } else if(message instanceof Object[]) {
+      messages = ((Object[])message);
+    } else {
+      messages = new Object[] {message};
     }
 
+    return reactToMessages(messages);
+  }
+  
+  @SuppressWarnings("unchecked")
+  private <U> Optional<U> reactToMessages(Object[] messages) {
     clearLatestPublishedEvent();
-    reactToMessage(message);
+    for (Object message : messages) {
+      reactToMessage(message);
+    }
     return Optional.ofNullable((U) latestPublishedEvent);
   }
 
