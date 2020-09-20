@@ -257,14 +257,18 @@ public class ModelRunner {
 
     clearLatestPublishedEvent();
     
+    reactToSingleOrSeveralMessages(message);
+
+    return Optional.ofNullable((U) latestPublishedEvent);
+  }
+
+  private <T> void reactToSingleOrSeveralMessages(T message) {
     if (isMessageContainer(message)) {
       Object[] messages = flattenMessageContainer(message);
       reactToMessages(messages);
     } else {
       reactToSingleMessage(message);
     }
-
-    return Optional.ofNullable((U) latestPublishedEvent);
   }
   
   private boolean isMessageContainer(Object message) {
