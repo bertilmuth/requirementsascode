@@ -293,7 +293,7 @@ public class ModelRunner {
   }
 
   private <T> void reactToSingleMessage(T message) {
-    if (!isRunning) {
+    if (!isRunning()) {
       return;
     }
     if (nestedReactToMessageCallCausesException) {
