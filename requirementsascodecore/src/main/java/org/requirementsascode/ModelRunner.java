@@ -210,10 +210,12 @@ public class ModelRunner {
    * @return the event that was published (latest) if the system reacted, or an
    *         empty Optional.
    */
+  @SuppressWarnings("unchecked")
   public <U> Optional<U> reactTo(Object... messages) {
     Objects.requireNonNull(messages);
     clearLatestPublishedEvent();
-    return reactToMessages(messages);
+    reactToMessages(messages);
+    return Optional.ofNullable((U) latestPublishedEvent);
   }
 
   /**
@@ -249,6 +251,7 @@ public class ModelRunner {
    *                                 there is an infinite loop.
    * @throws ClassCastException      when type of the returned instance isn't U
    */
+  @SuppressWarnings("unchecked")
   public <T, U> Optional<U> reactTo(T message) {
     Objects.requireNonNull(message);
 
@@ -263,15 +266,14 @@ public class ModelRunner {
       messages = new Object[] {message};
     }
 
-    return reactToMessages(messages);
+    reactToMessages(messages);
+    return Optional.ofNullable((U) latestPublishedEvent);
   }
   
-  @SuppressWarnings("unchecked")
-  private <U> Optional<U> reactToMessages(Object[] messages) {
+  private void reactToMessages(Object[] messages) {
     for (Object message : messages) {
       reactToSingleMessage(message);
     }
-    return Optional.ofNullable((U) latestPublishedEvent);
   }
 
   private <T> void reactToSingleMessage(T message) {
