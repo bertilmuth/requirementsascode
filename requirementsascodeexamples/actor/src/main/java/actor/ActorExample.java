@@ -7,7 +7,8 @@ import org.requirementsascode.Model;
 
 public class ActorExample {
   public static void main(String[] args) {
-    AbstractActor greetingService = new GreetingService(new SayHello());
+    final OutputAdapter outputAdapter = new OutputAdapter();
+    AbstractActor greetingService = new GreetingService(new SayHello(outputAdapter));
     new MessageSender(greetingService).sendMessages();
   }
 }
@@ -73,8 +74,8 @@ class RequestHello {
 class SayHello implements Consumer<RequestHello> {
   private OutputAdapter outputAdapter;
 
-  public SayHello() {
-    this.outputAdapter = new OutputAdapter();
+  public SayHello(OutputAdapter outputAdapter) {
+    this.outputAdapter = outputAdapter;
   }
 
   public void accept(RequestHello requestHello) {

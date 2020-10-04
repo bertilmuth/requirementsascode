@@ -192,15 +192,16 @@ class RequestHello {
 ## Message handlers
 Message handlers orchestrate the calls to the infrastructure and domain code.
 They are 'dumb' in the sense that they don't contain business logic themselves.
+For testability, pass in all collaborators via constructor parameters.
 
 ``` java
 class SayHello implements Consumer<RequestHello> {
   private OutputAdapter outputAdapter;
 
-  public SayHello() {
-    this.outputAdapter = new OutputAdapter();
+  public SayHello(OutputAdapter outputAdapter) {
+    this.outputAdapter = outputAdapter;
   }
-  
+
   public void accept(RequestHello requestHello) {
     String greeting = Greeting.forUser(requestHello.getUserName());
     outputAdapter.showMessage(greeting);
@@ -246,7 +247,8 @@ import org.requirementsascode.Model;
 
 public class ActorExample {
   public static void main(String[] args) {
-    AbstractActor greetingService = new GreetingService(new SayHello());
+    final OutputAdapter outputAdapter = new OutputAdapter();
+    AbstractActor greetingService = new GreetingService(new SayHello(outputAdapter));
     new MessageSender(greetingService).sendMessages();
   }
 }
@@ -257,7 +259,7 @@ public class ActorExample {
  */
 class GreetingService extends AbstractActor {
   private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private final Consumer<RequestHello> saysHello;
+  private Consumer<RequestHello> saysHello;
 
   public GreetingService(Consumer<RequestHello> saysHello) {
     this.saysHello = saysHello;
@@ -273,7 +275,7 @@ class GreetingService extends AbstractActor {
 }
 
 /**
- * Sender of the message, external to the boundary
+ * Message sender class
  */
 class MessageSender {
   private AbstractActor greetingService;
@@ -283,9 +285,8 @@ class MessageSender {
   }
 
   /**
-   * Send messages to the service actor. In this example, we don't care 
-   * about the return value of the call, because we don't send a query
-   * or publish events.
+   * Send message to the service actor. In this example, we don't care about the
+   * return value of the call, because we don't send a query or publish events.
    */
   public void sendMessages() {
     greetingService.reactTo(new RequestHello("Joe"));
@@ -308,15 +309,15 @@ class RequestHello {
 }
 
 /**
- * Message handlers
+ * Message handler
  */
 class SayHello implements Consumer<RequestHello> {
   private OutputAdapter outputAdapter;
 
-  public SayHello() {
-    this.outputAdapter = new OutputAdapter();
+  public SayHello(OutputAdapter outputAdapter) {
+    this.outputAdapter = outputAdapter;
   }
-  
+
   public void accept(RequestHello requestHello) {
     String greeting = Greeting.forUser(requestHello.getUserName());
     outputAdapter.showMessage(greeting);
@@ -324,23 +325,22 @@ class SayHello implements Consumer<RequestHello> {
 }
 
 /**
- * Infrastructure classes
+ * Infrastructure class
  */
-class OutputAdapter{
+class OutputAdapter {
   public void showMessage(String message) {
     System.out.println(message);
   }
 }
 
 /**
- * Domain classes
+ * Domain class
  */
-class Greeting{
+class Greeting {
   public static String forUser(String userName) {
     return "Hello, " + userName + ".";
   }
 }
-
 ```
 
 # Publishing events
