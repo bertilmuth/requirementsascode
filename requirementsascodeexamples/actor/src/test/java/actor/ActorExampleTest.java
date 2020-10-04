@@ -13,13 +13,13 @@ public class ActorExampleTest {
   }
 
   @Test
-  public void greetsJoe() {
+  public void greetsJack() {
     final TestOutputAdapter outputAdapter = new TestOutputAdapter();
     final SayHello sayHello = new SayHello(outputAdapter);
     AbstractActor greetingService = new GreetingService(sayHello);
-    new MessageSender(greetingService).sendMessages();
+    greetingService.reactTo(new RequestHello("Jack"));
     
-    assertEquals("Hello, Joe.", outputAdapter.message());
+    assertEquals("Hello, Jack.", outputAdapter.message());
   }
   
   private class TestOutputAdapter extends OutputAdapter{
