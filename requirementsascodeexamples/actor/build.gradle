@@ -1,12 +1,12 @@
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'requirements as code - actor example',
-                   'Implementation-Version': version
-    }
+  manifest {
+    attributes 'Implementation-Title': 'requirements as code - actor example', 'Implementation-Version': version
+  }
 }
 
 dependencies {
-	implementation project(':requirementsascodecore')
-	testImplementation 'junit:junit:4.12'
+  implementation project(':requirementsascodecore')
+  testImplementation 'junit:junit:4.12'
+  testImplementation "org.mockito:mockito-core:3.+"
 }
 

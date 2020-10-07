@@ -1,6 +1,7 @@
 package actor;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,24 +15,11 @@ public class ActorExampleTest {
 
   @Test
   public void greetsJack() {
-    final TestOutputAdapter outputAdapter = new TestOutputAdapter();
+    OutputAdapter outputAdapter = mock(OutputAdapter.class);
     final SayHello sayHello = new SayHello(outputAdapter);
     AbstractActor greetingService = new GreetingService(sayHello);
     greetingService.reactTo(new RequestHello("Jack"));
     
-    assertEquals("Hello, Jack.", outputAdapter.message());
-  }
-  
-  private class TestOutputAdapter extends OutputAdapter{
-    private String message;
-
-    @Override
-    public void showMessage(String message) {
-      this.message = message;
-    }
-    
-    public String message() {
-      return message;
-    }
+    verify(outputAdapter).showMessage("Hello, Jack.");
   }
 }
