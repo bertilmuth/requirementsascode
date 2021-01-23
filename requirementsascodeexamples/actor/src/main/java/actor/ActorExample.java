@@ -19,7 +19,7 @@ public class ActorExample {
  */
 class GreetingService extends AbstractActor {
   private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Consumer<RequestHello> saysHello;
+  private final Consumer<RequestHello> saysHello;
 
   public GreetingService(Consumer<RequestHello> saysHello) {
     this.saysHello = saysHello;
@@ -38,7 +38,7 @@ class GreetingService extends AbstractActor {
  * Message sender class
  */
 class MessageSender {
-  private AbstractActor greetingService;
+  private final AbstractActor greetingService;
 
   public MessageSender(AbstractActor greetingService) {
     this.greetingService = greetingService;
@@ -57,7 +57,7 @@ class MessageSender {
  * Command class
  */
 class RequestHello {
-  private String userName;
+  private final String userName;
 
   public RequestHello(String userName) {
     this.userName = userName;
@@ -72,7 +72,7 @@ class RequestHello {
  * Message handler
  */
 class SayHello implements Consumer<RequestHello> {
-  private OutputAdapter outputAdapter;
+  private final OutputAdapter outputAdapter;
 
   public SayHello(OutputAdapter outputAdapter) {
     this.outputAdapter = outputAdapter;

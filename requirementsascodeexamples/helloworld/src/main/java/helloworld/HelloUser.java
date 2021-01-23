@@ -34,7 +34,7 @@ class GreetingService extends AbstractActor {
 }
 
 class RequestHello {
-  private String userName;
+  private final String userName;
 
   public RequestHello(String userName) {
     this.userName = userName;

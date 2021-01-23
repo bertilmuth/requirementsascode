@@ -82,6 +82,7 @@ Optional<T> queryResultOrEvent = actor.reactTo(<Message POJO Object>);
 
 Instead of T, use the type you expect to be published. Note that `reactTo()` casts to that type, so if you don't know it, use `Object` for T.
 If an unchecked exception is thrown in one of the handler methods, `reactTo()` will rethrow it.
+The call to `reactTo()` is synchronous.
 
 # Code example
 There's an actor with a single use case with a single interaction.
@@ -125,7 +126,7 @@ class GreetingService extends AbstractActor {
 }
 
 class RequestHello {
-  private String userName;
+  private final String userName;
 
   public RequestHello(String userName) {
     this.userName = userName;
@@ -157,7 +158,7 @@ After that, the sender can send messages to the actor.
 
 ``` java
 class MessageSender {
-  private AbstractActor greetingService;
+  private final AbstractActor greetingService;
 
   public MessageSender(AbstractActor greetingService) {
     this.greetingService = greetingService;
@@ -177,7 +178,7 @@ In the example, the `RequestHello` class represents a command that carries the u
 
 ``` java
 class RequestHello {
-  private String userName;
+  private final String userName;
 
   public RequestHello(String userName) {
     this.userName = userName;
@@ -196,7 +197,7 @@ For testability, pass in all collaborators via constructor parameters.
 
 ``` java
 class SayHello implements Consumer<RequestHello> {
-  private OutputAdapter outputAdapter;
+  private final OutputAdapter outputAdapter;
 
   public SayHello(OutputAdapter outputAdapter) {
     this.outputAdapter = outputAdapter;
@@ -259,7 +260,7 @@ public class ActorExample {
  */
 class GreetingService extends AbstractActor {
   private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private Consumer<RequestHello> saysHello;
+  private final Consumer<RequestHello> saysHello;
 
   public GreetingService(Consumer<RequestHello> saysHello) {
     this.saysHello = saysHello;
@@ -278,7 +279,7 @@ class GreetingService extends AbstractActor {
  * Message sender class
  */
 class MessageSender {
-  private AbstractActor greetingService;
+  private final AbstractActor greetingService;
 
   public MessageSender(AbstractActor greetingService) {
     this.greetingService = greetingService;
@@ -297,7 +298,7 @@ class MessageSender {
  * Command class
  */
 class RequestHello {
-  private String userName;
+  private final String userName;
 
   public RequestHello(String userName) {
     this.userName = userName;
@@ -312,7 +313,7 @@ class RequestHello {
  * Message handler
  */
 class SayHello implements Consumer<RequestHello> {
-  private OutputAdapter outputAdapter;
+  private final OutputAdapter outputAdapter;
 
   public SayHello(OutputAdapter outputAdapter) {
     this.outputAdapter = outputAdapter;
@@ -341,6 +342,7 @@ class Greeting {
     return "Hello, " + userName + ".";
   }
 }
+
 ```
 
 # Publishing events
