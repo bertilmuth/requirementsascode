@@ -1,5 +1,5 @@
 # Requirements as code 
-[![Build Status](https://travis-ci.org/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.org/bertilmuth/requirementsascode)
+[![Build Status](https://travis-ci.com/bertilmuth/requirementsascode.svg?branch=master)](https://travis-ci.com/bertilmuth/requirementsascode)
 [![Gitter](https://badges.gitter.im/requirementsascode/community.svg)](https://gitter.im/requirementsascode/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ![requirements as code logo](./requirementsascode_logo.png)
