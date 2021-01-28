@@ -2,7 +2,6 @@ package org.requirementsascode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		assertEquals(reactionAsRunnable, systemReaction);
 	}
 
-	private class ReactionAsRunnable implements Runnable {
+	private static class ReactionAsRunnable implements Runnable {
 		@Override
 		public void run() {
 		}
@@ -74,22 +73,22 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		modelRunner.reactTo(entersText());
 
 		Object condition = optionalCondition.get();
-		assertTrue(condition instanceof AlwaysTrue);
+    assertEquals(AlwaysTrue.class, condition.getClass());
 
 		Object event = optionalEvent.get();
-		assertTrue(event instanceof EntersText);
+    assertEquals(EntersText.class, event.getClass());
 
 		assertEquals(reactionAsConsumer, systemReaction);
 	}
 
-	private class AlwaysTrue implements Condition {
+	private static class AlwaysTrue implements Condition {
 		@Override
 		public boolean evaluate() {
 			return true;
 		}
 	}
 
-	private class ReactionAsConsumer implements Consumer<EntersText> {
+	private static class ReactionAsConsumer implements Consumer<EntersText> {
 		@Override
 		public void accept(EntersText t) {
 		}
@@ -105,7 +104,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 		modelRunner.handleUnhandledWith(this::eventRecordingEventHandler).run(model).reactTo(entersNumber());
 
 		Object event = optionalEvent.get();
-		assertTrue(event instanceof EntersNumber);
+		assertEquals(EntersNumber.class, event.getClass());
 	}
 	
 	private void eventRecordingEventHandler(Object event) {

@@ -216,7 +216,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     assertEquals(TEXT.toUpperCase(), partner2Response.get());
   }
   
-  private class Partner1 extends AbstractActor{
+  private static class Partner1 extends AbstractActor{
     private AbstractActor partner2;
 
     public Partner1(AbstractActor partner2) {

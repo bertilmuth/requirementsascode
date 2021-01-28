@@ -160,7 +160,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 			.build();
 
 		modelRunner.run(model);
-		modelRunner.reactTo(new String("Some text"));
+		modelRunner.reactTo("Some text");
 	}
 
 	@Test

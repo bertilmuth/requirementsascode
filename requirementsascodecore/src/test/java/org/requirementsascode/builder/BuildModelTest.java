@@ -475,7 +475,7 @@ public class BuildModelTest extends AbstractTestCase {
   	Actor specificCustomer = new SpecificCustomer();
 		assertEquals("SpecificCustomer", specificCustomer.getName());
   }
-  private class SpecificCustomer extends Actor{
+  private static class SpecificCustomer extends Actor{
   }
 
   @Test
