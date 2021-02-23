@@ -1,5 +1,6 @@
 package org.requirementsascode;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -61,7 +62,7 @@ public abstract class Step extends ModelElement{
 	}
 
 	public void setActors(AbstractActor[] actors) {
-    this.actors = actors;
+    this.actors = Arrays.copyOf(actors, actors.length);
 	}
 
 	public Class<?> getMessageClass() {

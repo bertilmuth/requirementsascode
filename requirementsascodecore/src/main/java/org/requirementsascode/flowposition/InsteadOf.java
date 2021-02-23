@@ -14,10 +14,13 @@ public class InsteadOf extends FlowPosition{
   }
 
   @Override
-	protected boolean isRunnerAtRightPositionFor(ModelRunner modelRunner) {
-      FlowPosition flowPosition = step.getFlowPosition();
-      return flowPosition.test(modelRunner);
-	}
+  protected boolean isRunnerAtRightPositionFor(ModelRunner modelRunner) {
+    if(step == null) {
+      throw new RuntimeException("step has not been resolved. Please call resolveSteps()!");
+    }
+    FlowPosition flowPosition = step.getFlowPosition();
+    return flowPosition.test(modelRunner);
+  }
   
   public void resolveSteps() {
     if(step == null) {

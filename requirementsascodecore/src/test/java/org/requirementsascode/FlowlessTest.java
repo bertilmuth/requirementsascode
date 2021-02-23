@@ -12,7 +12,7 @@ import org.requirementsascode.systemreaction.IgnoresIt;
 public class FlowlessTest extends AbstractTestCase {
 
     @Before
-    public void setUp() throws Exception {
+    public void setup() throws Exception {
     	setupWithRecordingModelRunner();
     }
 

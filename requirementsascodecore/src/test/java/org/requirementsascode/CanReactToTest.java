@@ -62,7 +62,7 @@ public class CanReactToTest extends AbstractTestCase {
 
 		Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(EntersText.class);
 		assertEquals(1, stepsThatCanReact.size());
-		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
+		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class CanReactToTest extends AbstractTestCase {
 
 		Set<Step> stepsThatCanReact = modelRunner.getStepsThatCanReactTo(EntersText.class);
 		assertEquals(1, stepsThatCanReact.size());
-		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName().toString());
+		assertEquals(CUSTOMER_ENTERS_TEXT, stepsThatCanReact.iterator().next().getName());
 	}
 
 	private class EntersTextSubClass extends EntersText {

@@ -21,4 +21,9 @@ class UserActor extends Actor{
 			return false;
 		return true;
 	}
+	
+  @Override
+  public int hashCode() {
+    return getName().hashCode();
+  }
 }

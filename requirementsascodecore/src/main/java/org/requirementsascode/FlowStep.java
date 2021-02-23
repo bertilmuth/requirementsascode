@@ -42,6 +42,10 @@ public abstract class FlowStep extends Step{
 	}
 
 	public void orAfter(FlowStep step) {
+	  Objects.requireNonNull(step);
+	  if(flowPosition == null) {
+	    throw new RuntimeException("flowPosition must be initialized before calling this method!");
+	  }
 		FlowPosition flowPositionAfterStep = flowPosition.orAfter(step.getName(), step.getUseCase());
     setFlowPosition(flowPositionAfterStep);
 	}

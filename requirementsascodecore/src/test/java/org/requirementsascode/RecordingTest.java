@@ -8,7 +8,7 @@ import org.junit.Test;
 public class RecordingTest extends AbstractTestCase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setup() throws Exception {
 		setupWithRecordingModelRunner();
 	}
 	
