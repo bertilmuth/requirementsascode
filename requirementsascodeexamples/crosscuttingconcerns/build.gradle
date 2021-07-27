@@ -1,7 +1,7 @@
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirements as code - cross cutting concerns',
-                   'Implementation-Version': version
+                   'Implementation-Version':archiveVersion
     }
 }
 

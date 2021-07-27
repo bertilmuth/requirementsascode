@@ -1,7 +1,7 @@
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirements as code - hello world',
-                   'Implementation-Version': version
+                   'Implementation-Version':archiveVersion
     }
 }
 

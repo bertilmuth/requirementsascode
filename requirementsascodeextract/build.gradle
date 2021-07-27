@@ -5,7 +5,7 @@ plugins {
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirements as code - extract',
-                   'Implementation-Version': version
+                   'Implementation-Version' : archiveVersion
 	}
 }
 

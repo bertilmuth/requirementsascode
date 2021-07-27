@@ -1,6 +1,6 @@
 jar {
     manifest {
         attributes 'Implementation-Title': 'requirements as code - core',
-                   'Implementation-Version': version
+                   'Implementation-Version':archiveVersion
     }
 }

@@ -1,6 +1,6 @@
 jar {
   manifest {
-    attributes 'Implementation-Title': 'requirements as code - actor example', 'Implementation-Version': version
+    attributes 'Implementation-Title': 'requirements as code - actor example', 'Implementation-Version':archiveVersion
   }
 }
 

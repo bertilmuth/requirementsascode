@@ -6,7 +6,7 @@ plugins {
 jar {
     manifest {
         attributes 'Implementation-Title': 'creditcard eventsourcing',
-                   'Implementation-Version': version
+                   'Implementation-Version':archiveVersion
     }
 }
 
