@@ -19,18 +19,6 @@ subprojects{
         }
 	}
 	
-	test {
-		finalizedBy jacocoTestReport
-	}
-
-	jacocoTestReport {
-    	reports {
-        	xml.enabled false
-        	csv.enabled false
-        	html.destination file("${buildDir}/jacocoHtml")
-    	}
-	}
-	
 	task javadocJar(type: Jar) {
 	    classifier = 'javadoc'
 	    from javadoc
