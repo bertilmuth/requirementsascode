@@ -6,6 +6,5 @@ dependencies {
   implementation project(':requirementsascodecore')
   implementation 'com.typesafe.akka:akka-actor_2.11:2.5.4'
   implementation 'com.typesafe.akka:akka-remote_2.11:2.5.4'
-  testImplementation 'junit:junit:4.12'
 }
 

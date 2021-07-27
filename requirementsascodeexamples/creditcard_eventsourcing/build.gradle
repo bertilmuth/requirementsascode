@@ -1,25 +1,17 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE")
-    }
+plugins {
+  id "org.springframework.boot" version "2.5.3"
+  id "io.spring.dependency-management" version "1.0.11.RELEASE"
 }
-
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'requirements as code - hello world',
+        attributes 'Implementation-Title': 'creditcard eventsourcing',
                    'Implementation-Version': version
     }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.requirementsascode:requirementsascodecore:1.9.2'
-	testImplementation 'junit:junit:4.12'
+	implementation ('org.requirementsascode:requirementsascodecore:' + version)
 }
 

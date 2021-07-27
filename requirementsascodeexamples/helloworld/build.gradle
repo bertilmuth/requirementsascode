@@ -7,6 +7,5 @@ jar {
 
 dependencies {
 	implementation project(':requirementsascodecore')
-	testImplementation 'junit:junit:4.12'
 }
 

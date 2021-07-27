@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'maven'
 }
 
 jar {
@@ -11,72 +10,7 @@ jar {
 }
 
 dependencies {
-    implementation 'org.freemarker:freemarker:2.3.30'
+    implementation 'org.freemarker:freemarker:2.3.31'
     implementation 'org.apache.commons:commons-lang3:3.11'
 	api ('org.requirementsascode:requirementsascodecore:' + version)
-	testImplementation 'junit:junit:4.12'
-}
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-if (project.hasProperty("signing.keyId")) {
-	apply plugin: 'signing'
-
-	signing {
-	    sign configurations.archives
-	}
-	
-	uploadArchives {
-	    repositories {
-	        mavenDeployer {
-	            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-	            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-	               authentication(userName: sonatypeUsername, password: sonatypePassword)
-	            }
-	            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-	               authentication(userName: sonatypeUsername, password: sonatypePassword)
-	            } 
-	            
-	            pom.project {
-	               name 'requirementsascodeextract'
-	               packaging 'jar'
-	               description 'Enables you to generate documentation from use case specifications in your code.'
-	               url 'http://requirementsascode.org/'
-	
-	               scm {
-	                   url 'scm:git@github.com:bertilmuth/requirementsascode.git'
-	                   connection 'scm:git@github.com:bertilmuth/requirementsascode.git'
-	                   developerConnection 'scm:git@github.com:bertilmuth/requirementsascode.git'
-	               }
-	
-	               licenses {
-	                   license {
-	                       name 'The Apache Software License, Version 2.0'
-	                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-	                       distribution 'repo'
-	                   }
-	               }
-	
-	               developers {
-	                   developer {
-	                       id 'bertilmuth'
-	                       name 'Bertil Muth'
-	                   }
-	               }
-	           }
-	        }
-	    }
-	}
 }

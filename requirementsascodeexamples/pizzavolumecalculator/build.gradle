@@ -1,12 +1,11 @@
 jar {
     manifest {
-        attributes 'Implementation-Title': 'requirements as code - hello world',
+        attributes 'Implementation-Title': 'requirements as code - pizza volume calculator',
                    'Implementation-Version': version
     }
 }
 
 dependencies {
 	implementation project(':requirementsascodecore')
-	testImplementation 'junit:junit:4.12'
 }
 
