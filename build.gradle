@@ -19,6 +19,10 @@ subprojects{
         }
 	}
 	
+	javadoc {
+	    options.addBooleanOption("Xdoclint:-missing", true)
+	}
+	
 	task javadocJar(type: Jar) {
 	    classifier = 'javadoc'
 	    from javadoc
@@ -31,11 +35,6 @@ subprojects{
 	
 	artifacts {
 	    archives javadocJar, sourcesJar
-	}
-	
-	tasks.withType(JavaCompile) {
-	    options.compilerArgs << '-Xlint:unchecked'
-	    options.deprecation = true
 	}
 	
 	dependencies {
