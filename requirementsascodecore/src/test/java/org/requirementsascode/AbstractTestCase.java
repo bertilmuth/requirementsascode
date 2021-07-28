@@ -2,6 +2,8 @@ package org.requirementsascode;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -42,15 +44,21 @@ public abstract class AbstractTestCase {
 	protected static final String CONTINUE = "Continue";
 	protected static final String CONTINUE_2 = "Continue 2";
 
+  private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
+	
 	protected Actor customer;
 	protected Actor sourceActor;
 	protected Actor targetActor;
 	protected ModelBuilder modelBuilder;
 	protected ModelRunner modelRunner;
 	protected String displayedText;
+	
+  private List<String> recordedStepNames;
+  private List<Object> recordedMessages;
 
 	protected void setupWithRecordingModelRunner() {
-		this.modelRunner = new ModelRunner().startRecording();
+		startRecordingModelRunner();
+		
 		this.modelBuilder = Model.builder();
 		this.customer = new Actor(CUSTOMER);
 		this.sourceActor = new Actor(PARTNER);
@@ -59,14 +67,55 @@ public abstract class AbstractTestCase {
 	}
 
 	protected void assertRecordedStepNames(String... expectedStepNames) {
-		String[] actualStepNames = modelRunner.getRecordedStepNames();
+		String[] actualStepNames = getRecordedStepNames();
 		assertArrayEquals(expectedStepNames, actualStepNames);
 	}
 
 	protected void reactAndAssertMessagesAreHandled(Object... messages) {
 		modelRunner.reactTo(messages);
-		assertArrayEquals(messages, modelRunner.getRecordedMessages());
+		assertArrayEquals(messages, getRecordedMessages());
 	}
+	
+  private void startRecordingModelRunner() {
+    this.modelRunner = new ModelRunner();
+    modelRunner.handleWith(stepToBeRun -> {
+      recordStepNameAndMessage(stepToBeRun.getStepName(), stepToBeRun.getMessage().orElse(null));
+      stepToBeRun.run();
+    });
+    recordedStepNames = new ArrayList<>();
+    recordedMessages = new ArrayList<>();
+  }
+	
+  private void recordStepNameAndMessage(String stepName, Object message) {
+    recordedStepNames.add(stepName);
+    if (message != null && !isSystemEvent(message)) {
+      recordedMessages.add(message);
+    }
+  }
+  
+  private <T> boolean isSystemEvent(T message) {
+    return hasSystemEventClass(message.getClass());
+  }
+  
+  private boolean hasSystemEventClass(Class<?> messageClass) {
+    return SYSTEM_EVENT_CLASS.equals(messageClass);
+  }
+	
+  private String[] getRecordedStepNames() {
+    if (recordedStepNames == null) {
+      recordedStepNames = new ArrayList<>();
+    }
+    String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
+    return stepNames;
+  }
+  
+  public Object[] getRecordedMessages() {
+    if (recordedMessages == null) {
+      recordedMessages = new ArrayList<>();
+    }
+    Object[] messages = recordedMessages.toArray();
+    return messages;
+  }
 
 	protected boolean textIsAvailable() {
 		return displayedText != null;

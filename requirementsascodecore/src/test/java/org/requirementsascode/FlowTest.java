@@ -1,6 +1,5 @@
 package org.requirementsascode;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -350,10 +349,7 @@ public class FlowTest extends AbstractTestCase{
 		
 		modelRunner.run(model);
 		
-		EntersText[] eventArray = new EntersText[] {entersText(), entersText()};
-		List<EntersText> events = Arrays.asList(eventArray);
-		modelRunner.reactTo(events);
-		assertArrayEquals(eventArray, modelRunner.getRecordedMessages());		
+    reactAndAssertMessagesAreHandled(entersText(), entersText());   		
 	}
 	
 	@Test
