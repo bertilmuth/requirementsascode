@@ -2,6 +2,7 @@ package pizzavolumecalculator.actor;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
 
@@ -15,9 +16,6 @@ import pizzavolumecalculator.actor.command.EnterRadius;
 
 public class PizzaVolumeCalculatorTest {
   private RecordingActor pizzaVolumeCalculator;
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @BeforeEach
   public void setup() {
@@ -47,15 +45,17 @@ public class PizzaVolumeCalculatorTest {
 
   @Test
   public void testIllegalRadius() {
-    thrown.expect(IllegalArgumentException.class);
-    pizzaVolumeCalculator.reactTo(new EnterRadius(-1));
+    assertThrows(IllegalArgumentException.class, () -> {
+      pizzaVolumeCalculator.reactTo(new EnterRadius(-1));
+    });
   }
 
   @Test
   public void testIllegalHeight() {
-    thrown.expect(IllegalArgumentException.class);
-    pizzaVolumeCalculator.reactTo(new EnterRadius(5));
-    pizzaVolumeCalculator.reactTo(new EnterHeight(-1));
+    assertThrows(IllegalArgumentException.class, () -> {
+      pizzaVolumeCalculator.reactTo(new EnterRadius(5));
+      pizzaVolumeCalculator.reactTo(new EnterHeight(-1));
+    });
   }
   
   protected void reactAndAssertMessagesAreHandled(Object... messages) {
