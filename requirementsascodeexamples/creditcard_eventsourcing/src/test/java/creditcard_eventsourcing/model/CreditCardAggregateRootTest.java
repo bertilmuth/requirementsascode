@@ -1,6 +1,7 @@
 package creditcard_eventsourcing.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
@@ -45,10 +46,11 @@ public class CreditCardAggregateRootTest {
 		assertEquals(BigDecimal.TEN, aggregateRoot.loadCreditCard().getAvailableLimit());
 	}
 
-	@Test(expected = IllegalStateException.class)
 	public void assigningLimitTwiceThrowsException() {
-		requestToAssignLimit(BigDecimal.TEN);
-		requestToAssignLimit(BigDecimal.TEN);
+    assertThrows(IllegalStateException.class, () -> {
+      requestToAssignLimit(BigDecimal.TEN);
+      requestToAssignLimit(BigDecimal.TEN);
+    });
 	}
 
 	@Test
@@ -65,26 +67,29 @@ public class CreditCardAggregateRootTest {
 		assertEquals(BigDecimal.ZERO, aggregateRoot.loadCreditCard().getAvailableLimit());
 	}
 
-	@Test(expected = IllegalStateException.class)
 	public void assigningAndWithdrawingAndAssigningThrowsException() {
-		requestToAssignLimit(BigDecimal.ONE);
-		requestWithdrawal(BigDecimal.ONE);
-		requestToAssignLimit(BigDecimal.ONE);
+    assertThrows(IllegalStateException.class, () -> {
+  		requestToAssignLimit(BigDecimal.ONE);
+  		requestWithdrawal(BigDecimal.ONE);
+  		requestToAssignLimit(BigDecimal.ONE);
+    });
 	}
 
-	@Test(expected = IllegalStateException.class)
 	public void withdrawingTooMuchThrowsException() {
-		requestToAssignLimit(BigDecimal.ONE);
-		requestWithdrawal(new BigDecimal(2));
+    assertThrows(IllegalStateException.class, () -> {
+  		requestToAssignLimit(BigDecimal.ONE);
+  		requestWithdrawal(new BigDecimal(2));
+    });
 	}
 
-	@Test(expected = IllegalStateException.class)
 	public void withdrawingTooOftenThrowsException() {
-		requestToAssignLimit(new BigDecimal(100));
-
-		for (int i = 1; i <= 90; i++) {
-			requestWithdrawal(BigDecimal.ONE);
-		}
+    assertThrows(IllegalStateException.class, () -> {
+  		requestToAssignLimit(new BigDecimal(100));
+  
+  		for (int i = 1; i <= 90; i++) {
+  			requestWithdrawal(BigDecimal.ONE);
+  		}
+    });
 	}
 
 	@Test
