@@ -1,11 +1,9 @@
 package org.requirementsascode;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -39,9 +37,6 @@ public class ModelRunner {
   private Consumer<StepToBeRun> messageHandler;
   private Consumer<Object> unhandledMessageHandler;
   private Consumer<Object> messagePublisher;
-  private List<String> recordedStepNames;
-  private List<Object> recordedMessages;
-  private boolean isRecording;
   private boolean nestedReactToMessageCallCausesException;
 
   /**
@@ -53,12 +48,11 @@ public class ModelRunner {
   }
 
   private <T> void publishMessage(T message) {
-    Optional<Behavior> optionalToBehavior = getLatestStep().flatMap(ls -> ls.getPublishTo());
+    Optional<Behavior> targetBehavior = getLatestStep().flatMap(ls -> ls.getPublishTo());
     nestedReactToMessageCallCausesException = false;
-    if (optionalToBehavior.isPresent()) {
+    if (targetBehavior.isPresent()) {
       AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
-      Behavior targetBehavior = optionalToBehavior.get();
-      sendToTargetBehavior(message, owningActor, targetBehavior);
+      sendToTargetBehavior(message, owningActor, targetBehavior.get());
     } else {
       this.reactToSingleOrSeveralMessages(message);
     }
@@ -401,7 +395,6 @@ public class ModelRunner {
 
       Condition isTheCase = step.getCase().orElse(() -> true);
       if (isTheCase.evaluate()) {
-        recordStepNameAndMessage(step, message);
         messageHandler.accept(stepToBeRun);
         publishReturnedMessage();
       }
@@ -426,15 +419,6 @@ public class ModelRunner {
 
   private boolean hasSystemEventClass(Class<?> messageClass) {
     return SYSTEM_EVENT_CLASS.equals(messageClass);
-  }
-
-  void recordStepNameAndMessage(Step step, Object message) {
-    if (isRecording) {
-      recordedStepNames.add(step.getName());
-      if (message != null && !isSystemEvent(message)) {
-        recordedMessages.add(message);
-      }
-    }
   }
 
   /**
@@ -562,67 +546,6 @@ public class ModelRunner {
    */
   public Optional<Flow> getLatestFlow() {
     return getLatestStep().filter(step -> step instanceof FlowStep).map(step -> ((FlowStep) step).getFlow());
-  }
-
-  /**
-   * After calling this method, until recording is stopped, messages and step
-   * names are recorded. If messages/step names have been recorded before calling
-   * this method, they are discarded.
-   * 
-   * @return this model runner for method chaining
-   */
-  public ModelRunner startRecording() {
-    recordedStepNames = new ArrayList<>();
-    recordedMessages = new ArrayList<>();
-    isRecording = true;
-    return this;
-  }
-
-  /**
-   * When calling this method, recording is stopped. No messages and step names
-   * are recorded until {@link #startRecording()} is called again.
-   * 
-   * @return this model runner for method chaining
-   */
-  public ModelRunner stopRecording() {
-    isRecording = false;
-    return this;
-  }
-
-  /**
-   * Returns the recorded names of the steps that have been run so far.
-   * <p>
-   * If no step has been run, an empty array is returned. For example, this method
-   * can used with the assertArrayEquals method of JUnit to compare the actual
-   * names of steps that have been run (returned by this method) to the expected
-   * step names.
-   *
-   * @return the ordered names of steps run by this runner
-   */
-  public String[] getRecordedStepNames() {
-    if (recordedStepNames == null) {
-      recordedStepNames = new ArrayList<>();
-    }
-    String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
-    return stepNames;
-  }
-
-  /**
-   * Returns the recorded messages that the runner reacted to so far.
-   * <p>
-   * If no messages have caused a system reaction, an empty array is returned. For
-   * example, this method can used with the assertArrayEquals method of JUnit to
-   * compare the actual messages that caused a reaction (returned by this method)
-   * to the expected messages.
-   *
-   * @return the messages that caused a system reaction, in order of occurrence
-   */
-  public Object[] getRecordedMessages() {
-    if (recordedMessages == null) {
-      recordedMessages = new ArrayList<>();
-    }
-    Object[] messages = recordedMessages.toArray();
-    return messages;
   }
 
   /**

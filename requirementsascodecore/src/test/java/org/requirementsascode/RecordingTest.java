@@ -22,16 +22,6 @@ public class RecordingTest extends AbstractTestCase {
   }
 
   @Test
-  public void recordIsEmptyIfRecordingWasStoppedBeforeBeingStarted() {
-    Model model = modelBuilder.useCase(USE_CASE)
-      .on(EntersText.class).system(displaysEnteredText())
-      .build();
-
-    modelRunner.run(model).stopRecording();
-    assertRecordedStepNames();
-  }
-
-  @Test
   public void recordSingleEvent() {
     Model model = modelBuilder.useCase(USE_CASE)
       .on(EntersText.class).system(displaysEnteredText())
