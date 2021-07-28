@@ -39,6 +39,7 @@ public abstract class AbstractActor implements Behavior{
    */
   public AbstractActor(String name) {
     createOwnedModelRunner();
+    createBehaviorModel();
     setName(name);
   }
 
@@ -71,9 +72,9 @@ public abstract class AbstractActor implements Behavior{
    * that has no event/command defined (i.e. no user(...) / on(...)).
    */
   public void run() {
-    Model actorBehavior = behavior();
-    if (actorBehavior != null) {
-      getModelRunner().run(actorBehavior);
+    Model model = behaviorModel().model();
+    if (model != null) {
+      getModelRunner().run(model);
     }
   }
 
@@ -165,14 +166,14 @@ public abstract class AbstractActor implements Behavior{
   }
   
   private class LazilyInitializedBehaviorModel implements BehaviorModel{
-    private Model model;
+    private Model lazilyInitializedModel;
     
     @Override
     public Model model() {
-      if(model == null) {
-        model = behavior();
+      if(lazilyInitializedModel == null) {
+        lazilyInitializedModel = behavior();
       }
-      return  model();
+      return  lazilyInitializedModel;
     }
   }
 
