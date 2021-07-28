@@ -1,14 +1,37 @@
 package org.requirementsascode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class RecordingActor extends AbstractActor {
-  private AbstractActor baseActor;
+  private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
+  
+  private final AbstractActor baseActor;
+  private final List<String> recordedStepNames;
+  private final List<Object> recordedMessages;
 
   private RecordingActor(AbstractActor baseActor) {
-    this.baseActor = Objects.requireNonNull(baseActor);
-    baseActor.getModelRunner().startRecording();
+    this.baseActor = Objects.requireNonNull(baseActor, "baseActor must be non-null!");
+    getModelRunner().handleWith(stepToBeRun -> {
+      recordStepNameAndMessage(stepToBeRun.getStepName(), stepToBeRun.getMessage().orElse(null));
+      stepToBeRun.run();
+    });
+    recordedStepNames = new ArrayList<>();
+    recordedMessages = new ArrayList<>();
   }
+  
+  private void recordStepNameAndMessage(String stepName, Object message) {
+    recordedStepNames.add(stepName);
+    if (message != null && !isSystemEvent(message)) {
+      recordedMessages.add(message);
+    }
+  }
+  
+  private <T> boolean isSystemEvent(T message) {
+    return SYSTEM_EVENT_CLASS.equals(message.getClass());
+  }
+
 
   /**
    * Creates an actor that records the steps and messages that are handled
@@ -38,8 +61,8 @@ public class RecordingActor extends AbstractActor {
    * @return the step names
    */
   public String[] getRecordedStepNames() {
-    String[] recordedStepNames = getModelRunner().getRecordedStepNames();
-    return recordedStepNames;
+    String[] stepNames = recordedStepNames.stream().toArray(String[]::new);
+    return stepNames;
   }
 
   /**
@@ -49,7 +72,7 @@ public class RecordingActor extends AbstractActor {
    * @return the messages
    */
   public Object[] getRecordedMessages() {
-    Object[] recordedMessages = getModelRunner().getRecordedMessages();
-    return recordedMessages;
+    Object[] messages = recordedMessages.toArray();
+    return messages;
   }
 }
