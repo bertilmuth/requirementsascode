@@ -57,13 +57,23 @@ public class ModelRunner {
   }
 
   private <T> void publishMessage(T message) {
-    Optional<AbstractActor> optionalToActor = getLatestStep().flatMap(ls -> ls.getPublishTo());
+    Optional<Behavior> optionalToBehavior = getLatestStep().flatMap(ls -> ls.getPublishTo());
     nestedReactToMessageCallCausesException = false;
-    if (optionalToActor.isPresent()) {
+    if (optionalToBehavior.isPresent()) {
       AbstractActor owningActor = getOwningActor().orElse(model.getUserActor());
-      optionalToActor.get().reactTo(message, owningActor);
+      Behavior targetBehavior = optionalToBehavior.get();
+      sendToTargetBehavior(message, owningActor, targetBehavior);
     } else {
       this.reactToSingleOrSeveralMessages(message);
+    }
+  }
+
+  private <T> void sendToTargetBehavior(T message, AbstractActor owningActor, Behavior targetBehavior) {
+    if(targetBehavior instanceof AbstractActor) {
+      AbstractActor targetActor = (AbstractActor)targetBehavior;
+      targetActor.reactTo(message, owningActor);
+    }else {
+      targetBehavior.reactTo(message);
     }
   }
 

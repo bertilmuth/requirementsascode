@@ -24,7 +24,7 @@ public abstract class Step extends ModelElement{
 	private Condition condition;
 	private Class<?> messageClass;
 	private SystemReaction<?> systemReaction;
-	private AbstractActor publishTo;
+	private Behavior publishTo;
   private Condition aCase;
 
 	/**
@@ -97,11 +97,11 @@ public abstract class Step extends ModelElement{
 		return modelRunner -> condition.evaluate();
 	}
 
-	public Optional<AbstractActor> getPublishTo() {
+	public Optional<Behavior> getPublishTo() {
 		return Optional.ofNullable(publishTo);
 	}
 
-	public void setPublishTo(AbstractActor recipient) {
+	public void setPublishTo(Behavior recipient) {
 		this.publishTo = recipient;
 	}
 
