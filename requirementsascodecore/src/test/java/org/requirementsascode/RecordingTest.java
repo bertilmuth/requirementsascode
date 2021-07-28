@@ -13,32 +13,24 @@ public class RecordingTest extends AbstractTestCase {
   }
 
   @Test
-  public void recordIsEmptyForNonRecordingModelRunner() {
-    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
-
-    ModelRunner nonRecordingModelRunner = new ModelRunner();
-    nonRecordingModelRunner.run(model);
-    assertEquals(0, nonRecordingModelRunner.getRecordedMessages().length);
-    assertEquals(0, nonRecordingModelRunner.getRecordedStepNames().length);
-  }
-
-  @Test
   public void recordIsEmptyForFreshlyRunModel() {
-    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
+    Model model = modelBuilder.useCase(USE_CASE)
+      .on(EntersText.class).system(displaysEnteredText())
+      .build();
 
     modelRunner.run(model);
-    assertEquals(0, modelRunner.getRecordedMessages().length);
-    assertEquals(0, modelRunner.getRecordedStepNames().length);
+    
+    assertRecordedStepNames();
   }
 
   @Test
   public void recordIsEmptyIfRecordingWasStoppedBeforeBeingStarted() {
-    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
+    Model model = modelBuilder.useCase(USE_CASE)
+      .on(EntersText.class).system(displaysEnteredText())
+      .build();
 
     modelRunner.run(model).stopRecording();
-
-    assertEquals(0, modelRunner.getRecordedMessages().length);
-    assertEquals(0, modelRunner.getRecordedStepNames().length);
+    assertRecordedStepNames();
   }
 
   @Test
@@ -51,8 +43,7 @@ public class RecordingTest extends AbstractTestCase {
     assertEquals(1, modelRunner.getRecordedMessages().length);
     assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 
-    assertEquals(1, modelRunner.getRecordedStepNames().length);
-    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+    assertRecordedStepNames("S1");
   }
 
   @Test
@@ -67,9 +58,7 @@ public class RecordingTest extends AbstractTestCase {
     assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
     assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 
-    assertEquals(2, modelRunner.getRecordedStepNames().length);
-    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+    assertRecordedStepNames("S1","S2");
   }
 
   @Test
@@ -84,9 +73,7 @@ public class RecordingTest extends AbstractTestCase {
     assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
     assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 
-    assertEquals(2, modelRunner.getRecordedStepNames().length);
-    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+    assertRecordedStepNames("S1","S2");
   }
 
   @Test
@@ -102,8 +89,7 @@ public class RecordingTest extends AbstractTestCase {
     assertEquals(1, modelRunner.getRecordedMessages().length);
     assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 
-    assertEquals(1, modelRunner.getRecordedStepNames().length);
-    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+    assertRecordedStepNames("S1");
   }
 
   @Test
@@ -120,8 +106,6 @@ public class RecordingTest extends AbstractTestCase {
     assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
     assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 
-    assertEquals(2, modelRunner.getRecordedStepNames().length);
-    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+    assertRecordedStepNames("S1","S2");
   }
 }
