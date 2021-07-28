@@ -155,14 +155,15 @@ public abstract class AbstractActor implements Behavior{
 
   @Override
   public BehaviorModel behaviorModel() {
-    return new BehaviorModel() {
-      @Override
-      public Model model() {
-        return behavior();
-      }
-    };
+    return new ActorBehaviorModel();
   }
-
+  
+  private class ActorBehaviorModel implements BehaviorModel{
+    @Override
+    public Model model() {
+      return  behavior();
+    }
+  }
 
   /**
    * Call this method from a subclass to customize the way the actor runs the
