@@ -1,17 +1,19 @@
-subprojects{
+allprojects{
 	group = 'org.requirementsascode'
 	version = '2.0-SNAPSHOT'
 	
 	apply plugin: 'java'
-	apply plugin: 'eclipse'
-	apply plugin: "jacoco"
-	apply plugin: 'maven-publish'
-	
+
 	compileJava {
-	  sourceCompatibility = '1.8'
-	  targetCompatibility = '1.8'
+	  sourceCompatibility = '8'
+	  targetCompatibility = '8'
 	}
-	
+}
+
+subprojects{
+	apply plugin: 'eclipse'
+	apply plugin: 'maven-publish'
+
 	repositories {
 		mavenCentral()
 		maven {
