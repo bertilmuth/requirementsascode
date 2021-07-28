@@ -23,10 +23,7 @@ public interface BehaviorModel {
 	 * is just consumed (via a <code>.system(...)</code> definition in the model),
 	 * or when a handler function returns null.
 	 * 
-	 * @return the default response, null by default. Override this method to
-	 *         provide a non-null default response.
+	 * @return the default response, or null if there is no default response.
 	 */
-	default Object defaultResponse() {
-		return null;
-	}
+	Object defaultResponse();
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.requirementsascode.AbstractActor;
+import org.requirementsascode.Behavior;
 import org.requirementsascode.Step;
 import org.requirementsascode.systemreaction.AbstractContinues;
 
@@ -69,8 +70,11 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
   }
 
   private String getPublishToActorString(Step step) {
-    Optional<AbstractActor> optionalPublishToActor = step.getPublishTo();
-    String publishToString = optionalPublishToActor.map(act -> " to " + act.getName()).orElse("");
+    Optional<Behavior> optionalPublishToActor = step.getPublishTo();
+    String publishToString = optionalPublishToActor
+      .filter(b -> b instanceof AbstractActor)
+      .map(b -> (AbstractActor)b)
+      .map(act -> " to " + act.getName()).orElse("");
     return publishToString;
   }
 

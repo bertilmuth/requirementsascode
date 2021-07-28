@@ -58,7 +58,8 @@ public abstract class Step extends ModelElement{
   }
 
 	public AbstractActor[] getActors() {
-		return actors;
+		final AbstractActor[] actorsCopy = Arrays.copyOf(actors, actors.length);
+    return actorsCopy;
 	}
 
 	public void setActors(AbstractActor[] actors) {
