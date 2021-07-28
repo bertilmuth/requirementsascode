@@ -7,8 +7,8 @@ import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
 /**
- * An actor is a stateful entity with a behavior. It can be the system/service you're
- * developing, or a role that an external user plays.
+ * An actor is a stateful entity with a behavior. It can be the system/service
+ * you're developing, or a role that an external user plays.
  * 
  * Actors can be senders and receivers of messages to other actors.
  * 
@@ -17,7 +17,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  *
  * @author b_muth
  */
-public abstract class AbstractActor implements Behavior{
+public abstract class AbstractActor implements Behavior {
   private String name;
   private BehaviorModel behaviorModel;
   private ModelRunner modelRunner;
@@ -47,7 +47,7 @@ public abstract class AbstractActor implements Behavior{
     this.modelRunner = new ModelRunner();
     this.modelRunner.setOwningActor(this);
   }
-  
+
   private void createBehaviorModel() {
     this.behaviorModel = new LazilyInitializedBehaviorModel();
   }
@@ -57,7 +57,7 @@ public abstract class AbstractActor implements Behavior{
    *
    * @return the name
    */
-  public String getName() {
+  public final String getName() {
     return name;
   }
 
@@ -71,7 +71,7 @@ public abstract class AbstractActor implements Behavior{
    * You only need to explicitly call this method if your model starts with a step
    * that has no event/command defined (i.e. no user(...) / on(...)).
    */
-  public void run() {
+  public final void run() {
     Model model = behaviorModel().model();
     if (model != null) {
       getModelRunner().run(model);
@@ -114,8 +114,7 @@ public abstract class AbstractActor implements Behavior{
    * @throws ClassCastException      when type of the returned instance isn't U
    */
   @Override
-  public
-  <T> Optional<T> reactTo(Object message) {
+  public final <T> Optional<T> reactTo(Object message) {
     return reactTo(message, null);
   }
 
@@ -123,20 +122,19 @@ public abstract class AbstractActor implements Behavior{
    * Same as {@link #reactTo(Object)}, but with the specified actor as the calling
    * user's role.
    * 
-   * @param <T>          the type of message
-   * @param <U>          the return type that you as the user expects.
+   * @param <T>          the return type that you as the user expects.
    * @param message      the message object
    * @param callingActor the actor as which to call this actor.
    * @return the event that was published (latest) if the system reacted, or an
    *         empty Optional.
    */
-  public <T, U> Optional<U> reactTo(Object message, AbstractActor callingActor) {
+  public final <T> Optional<T> reactTo(Object message, AbstractActor callingActor) {
     if (!getModelRunner().isRunning()) {
       run();
     }
     AbstractActor runActor = callingActorOrDefaultUser(callingActor);
     if (runActor != null) {
-      Optional<U> latestPublishedEvent = getModelRunner().as(runActor).reactTo(message);
+      Optional<T> latestPublishedEvent = getModelRunner().as(runActor).reactTo(message);
       return latestPublishedEvent;
     } else {
       return Optional.empty();
@@ -158,22 +156,22 @@ public abstract class AbstractActor implements Behavior{
    * 
    * @return the behavior
    */
-  public abstract Model behavior();
+  protected abstract Model behavior();
 
   @Override
-  public BehaviorModel behaviorModel() {
+  public final BehaviorModel behaviorModel() {
     return behaviorModel;
   }
-  
-  private class LazilyInitializedBehaviorModel implements BehaviorModel{
+
+  private class LazilyInitializedBehaviorModel implements BehaviorModel {
     private Model lazilyInitializedModel;
-    
+
     @Override
     public Model model() {
-      if(lazilyInitializedModel == null) {
+      if (lazilyInitializedModel == null) {
         lazilyInitializedModel = behavior();
       }
-      return  lazilyInitializedModel;
+      return lazilyInitializedModel;
     }
   }
 
