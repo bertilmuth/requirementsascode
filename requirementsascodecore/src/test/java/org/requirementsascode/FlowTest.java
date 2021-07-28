@@ -322,10 +322,8 @@ public class FlowTest extends AbstractTestCase{
 			.build();
 		
 		modelRunner.run(model);
-		Object[] eventArray = new Object[] {entersText(), entersNumber()};
-		List<? extends Object> events = Arrays.asList(eventArray);
-		modelRunner.reactTo(events);
-		assertArrayEquals(eventArray, modelRunner.getRecordedMessages());		
+		
+		reactAndAssertMessagesAreHandled(entersText(), entersNumber());	
 	}
 	
 	@Test
