@@ -127,11 +127,26 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
   }
   
   @Test
+  public void oneActorAndOneStatelessBehaviorInteract() {
+    Model targetModel = Model.builder()
+      .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(et -> publishedString = et.value())
+    .build();
+    Behavior statelessBehavior = new StatelessBehavior(() -> targetModel);
+    
+    Model sourceBehavior = modelBuilder
+      .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(statelessBehavior)
+    .build();
+    sourceActor.withBehavior(sourceBehavior).reactTo(entersText());
+
+    assertEquals(TEXT, publishedString);
+  }
+  
+  @Test
   public void twoActorsInteract() {
-		Model targetBehavior = Model.builder()
+		Model targetModel = Model.builder()
 			.step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(displaysEnteredText())
 		.build();
-		targetActor.withBehavior(targetBehavior);
+		targetActor.withBehavior(targetModel);
 		RecordingActor recordingTargetActor = RecordingActor.basedOn(targetActor);
 		
 		Model sourceBehavior = modelBuilder
