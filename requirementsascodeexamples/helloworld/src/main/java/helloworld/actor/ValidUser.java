@@ -13,7 +13,7 @@ public class ValidUser extends AbstractActor{
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()

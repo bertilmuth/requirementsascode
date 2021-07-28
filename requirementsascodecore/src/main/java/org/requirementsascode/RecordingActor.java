@@ -56,7 +56,7 @@ public class RecordingActor extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     return baseActor.behavior();
   }
 

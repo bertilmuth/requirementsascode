@@ -17,7 +17,7 @@ public class NormalUser extends AbstractActor{
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder() 
       .useCase("Get greeted")
         .basicFlow()

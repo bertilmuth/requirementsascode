@@ -36,7 +36,7 @@ public class PizzaVolumeCalculator extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Calculate Pizza Volume").basicFlow()
         .step("S1").user(EnterRadius.class).system(saveRadius)

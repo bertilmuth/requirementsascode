@@ -40,7 +40,7 @@ public class Actor extends AbstractActor{
 	}
 	
 	@Override
-	public Model behavior() {
+	protected Model behavior() {
 		return behavior;
 	}
 }

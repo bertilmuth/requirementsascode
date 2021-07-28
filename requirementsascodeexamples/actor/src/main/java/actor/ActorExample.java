@@ -26,7 +26,7 @@ class GreetingService extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .user(requestsHello).system(saysHello)
     .build();

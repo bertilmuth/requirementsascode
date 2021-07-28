@@ -28,7 +28,7 @@ class HelloWorldActor03a extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted").as(validUser)
         .basicFlow()

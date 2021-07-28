@@ -23,7 +23,7 @@ class MessageProducer extends AbstractActor {
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .user(EnterName.class).systemPublish(this::nameEntered).to(messageConsumer)
     .build();
@@ -37,7 +37,7 @@ class MessageProducer extends AbstractActor {
 
 class MessageConsumer extends AbstractActor {
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .on(NameEntered.class).system(this::displayName)
     .build();

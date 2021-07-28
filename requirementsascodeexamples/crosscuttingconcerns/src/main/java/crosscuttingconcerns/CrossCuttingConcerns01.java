@@ -16,7 +16,7 @@ class CrossCuttingConcernsActor01 extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .user(RequestCalculating.class).system(this::calculate)
       .build();

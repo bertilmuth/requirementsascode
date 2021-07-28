@@ -37,7 +37,7 @@ class HelloWorldActor07 extends AbstractActor {
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Handle colors")
         .basicFlow()

@@ -18,7 +18,7 @@ public class PublishingActorExample {
 
 class PublishingActor extends AbstractActor {
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .user(EnterName.class).systemPublish(this::publishNameAsString)
       .on(String.class).system(this::displayNameString)

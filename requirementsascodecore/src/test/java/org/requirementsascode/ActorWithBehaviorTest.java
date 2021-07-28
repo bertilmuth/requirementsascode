@@ -221,7 +221,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     }
     
     @Override
-    public Model behavior() {
+    protected Model behavior() {
       Condition actorHasNotRunAnyStep = () -> !getModelRunner().getLatestStep().isPresent();
       
       Model model = Model.builder()
@@ -263,7 +263,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     }
     
     @Override
-    public Model behavior() {      
+    protected Model behavior() {      
       Model model = Model.builder()
         .useCase(USE_CASE)
           .basicFlow()
@@ -279,7 +279,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     private AbstractActor partner1;
     
     @Override
-    public Model behavior() {      
+    protected Model behavior() {      
       Model model = Model.builder()
         .on(EntersText.class).systemPublish(t -> new TransformedText(t.value().toUpperCase())).to(partner1)
       .build();
