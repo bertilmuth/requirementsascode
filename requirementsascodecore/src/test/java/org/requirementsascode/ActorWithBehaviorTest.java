@@ -131,7 +131,7 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     Model targetModel = Model.builder()
       .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).system(et -> publishedString = et.value())
     .build();
-    Behavior statelessBehavior = new StatelessBehavior(() -> targetModel);
+    Behavior statelessBehavior = StatelessBehavior.of(() -> targetModel);
     
     Model sourceBehavior = modelBuilder
       .step(CUSTOMER_ENTERS_TEXT).on(EntersText.class).systemPublish(et -> et).to(statelessBehavior)

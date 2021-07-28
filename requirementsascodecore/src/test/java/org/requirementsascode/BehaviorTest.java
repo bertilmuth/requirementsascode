@@ -28,14 +28,14 @@ public class BehaviorTest {
 
 	@Test
 	void emptyBehaviorDoesntReactToMessage() {
-		StatelessBehavior statelessBehavior = new StatelessBehavior(new EmptyBehavior());
+		StatelessBehavior statelessBehavior = StatelessBehavior.of(new EmptyBehavior());
 		Optional<Object> response = statelessBehavior.reactTo("DummyStringMessage");
 		assertFalse(response.isPresent());
 	}
 
 	@Test
 	void reactsToStringMessage() {
-		StatelessBehavior statelessBehavior = new StatelessBehavior(new MessageFieldMutator());
+		StatelessBehavior statelessBehavior = StatelessBehavior.of(new MessageFieldMutator());
 
 		final String expectedMessage = "ExpectedTestMessage";
 		Optional<Object> response = statelessBehavior.reactTo(expectedMessage);
@@ -46,7 +46,7 @@ public class BehaviorTest {
 
 	@Test
 	void reactsToCreateList() {
-		StatelessBehavior statelessBehavior = new StatelessBehavior(new TestBehaviorModel());
+		StatelessBehavior statelessBehavior = StatelessBehavior.of(new TestBehaviorModel());
 
 		final TestCreateListRequest createList = new TestCreateListRequest();
 		final Optional<TestCreateListResponse> optionalResponse = statelessBehavior.reactTo(createList);
@@ -57,7 +57,7 @@ public class BehaviorTest {
 
 	@Test
 	void reactsToAddTask() {
-		StatelessBehavior statelessBehavior = new StatelessBehavior(new TestBehaviorModel());
+		StatelessBehavior statelessBehavior = StatelessBehavior.of(new TestBehaviorModel());
 
 		final TestAddTaskRequest addTask = new TestAddTaskRequest();
 		final Optional<TestAddTaskResponse> optionalResponse = statelessBehavior.reactTo(addTask);
@@ -68,7 +68,7 @@ public class BehaviorTest {
 
 	@Test
 	void throwsExceptionIfPublishedTypeMatchesRequestType() {
-		StatelessBehavior statelessBehavior = new StatelessBehavior(new TestExceptionThrower());
+		StatelessBehavior statelessBehavior = StatelessBehavior.of(new TestExceptionThrower());
 
 		BehaviorException actualException = assertThrows(BehaviorException.class,
 			() -> statelessBehavior.reactTo("StringMessageThatWillTriggerException"));
