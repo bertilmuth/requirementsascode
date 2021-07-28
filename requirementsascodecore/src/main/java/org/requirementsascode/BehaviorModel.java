@@ -19,11 +19,14 @@ public interface BehaviorModel {
 	Model model();
 
 	/**
-	 * The default response is the response that a behavior returns when a message
-	 * is just consumed (via a <code>.system(...)</code> definition in the model),
-	 * or when a handler function returns null.
-	 * 
-	 * @return the default response, or null if there is no default response.
-	 */
-	Object defaultResponse();
+   * The default response is the response that a behavior returns when a message
+   * is just consumed (via a <code>.system(...)</code> definition in the model),
+   * or when a handler function returns null.
+   * 
+   * @return the default response, null by default. Override this method to
+   *         provide a non-null default response.
+   */
+  default Object defaultResponse() {
+    return null;
+  }
 }

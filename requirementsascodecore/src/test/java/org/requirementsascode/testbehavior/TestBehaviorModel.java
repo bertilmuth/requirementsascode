@@ -12,9 +12,4 @@ public class TestBehaviorModel implements BehaviorModel {
 			.user(TestCompleteTaskRequest.class).system(() -> {})
 			.build();
 	}
-
-  @Override
-  public Object defaultResponse() {
-    return null;
-  }
 }

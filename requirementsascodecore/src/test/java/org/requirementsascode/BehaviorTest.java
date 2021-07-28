@@ -83,10 +83,5 @@ public class BehaviorTest {
 		public Model model() {
 			return Model.builder().user(String.class).system(msg -> receivedMessage = msg).build();
 		}
-
-		@Override
-		public Object defaultResponse() {
-			return null;
-		}
 	}
 }

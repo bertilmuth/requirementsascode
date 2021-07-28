@@ -175,11 +175,6 @@ public abstract class AbstractActor implements Behavior{
       }
       return  lazilyInitializedModel;
     }
-
-    @Override
-    public Object defaultResponse() {
-      return null;
-    }
   }
 
   /**

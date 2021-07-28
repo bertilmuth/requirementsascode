@@ -10,9 +10,4 @@ public class TestExceptionThrower implements BehaviorModel {
 			.on(String.class).systemPublish(msg -> "Throws an exception, since it's a string (same response type as request type)")
 			.build();
 	}
-
-	@Override
-	public Object defaultResponse() {
-		return null;
-	}
 }

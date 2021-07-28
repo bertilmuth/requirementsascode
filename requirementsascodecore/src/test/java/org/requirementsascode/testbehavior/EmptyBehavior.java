@@ -8,9 +8,4 @@ public class EmptyBehavior implements BehaviorModel {
 	public Model model() {
 		return Model.builder().build();
 	}
-
-  @Override
-  public Object defaultResponse() {
-    return null;
-  }
 }
