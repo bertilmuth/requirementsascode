@@ -19,6 +19,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  */
 public abstract class AbstractActor implements Behavior{
   private String name;
+  private BehaviorModel behaviorModel;
   private ModelRunner modelRunner;
 
   /**
@@ -27,6 +28,7 @@ public abstract class AbstractActor implements Behavior{
    */
   public AbstractActor() {
     createOwnedModelRunner();
+    createBehaviorModel();
     setName(getClass().getSimpleName());
   }
 
@@ -40,9 +42,13 @@ public abstract class AbstractActor implements Behavior{
     setName(name);
   }
 
-  protected void createOwnedModelRunner() {
+  private void createOwnedModelRunner() {
     this.modelRunner = new ModelRunner();
     this.modelRunner.setOwningActor(this);
+  }
+  
+  private void createBehaviorModel() {
+    this.behaviorModel = new LazilyInitializedBehaviorModel();
   }
 
   /**
@@ -155,13 +161,18 @@ public abstract class AbstractActor implements Behavior{
 
   @Override
   public BehaviorModel behaviorModel() {
-    return new ActorBehaviorModel();
+    return behaviorModel;
   }
   
-  private class ActorBehaviorModel implements BehaviorModel{
+  private class LazilyInitializedBehaviorModel implements BehaviorModel{
+    private Model model;
+    
     @Override
     public Model model() {
-      return  behavior();
+      if(model == null) {
+        model = behavior();
+      }
+      return  model();
     }
   }
 
