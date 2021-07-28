@@ -1,20 +1,18 @@
 package org.requirementsascode;
 
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class FlowWithCaseStepTest {
+public class FlowWithCaseStepTest extends AbstractTestCase{
   private String actualResult;
-  private ModelRunner modelRunner;
   
   @BeforeEach
   public void setup() {
-    this.modelRunner = new ModelRunner().startRecording();
+    setupWithRecordingModelRunner();
   }
   
   @Test
@@ -72,10 +70,5 @@ public class FlowWithCaseStepTest {
     assertNull(actualResult);
     
     assertRecordedStepNames();
-  }
-  
-  protected void assertRecordedStepNames(String... expectedStepNames) {
-    String[] actualStepNames = modelRunner.getRecordedStepNames();
-    assertArrayEquals(expectedStepNames, actualStepNames);
   }
 }
