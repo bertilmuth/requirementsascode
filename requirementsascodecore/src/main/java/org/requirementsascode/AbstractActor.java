@@ -7,7 +7,7 @@ import org.requirementsascode.exception.InfiniteRepetition;
 import org.requirementsascode.exception.MoreThanOneStepCanReact;
 
 /**
- * An actor can be anything with a behavior. It can be the system/service you're
+ * An actor is a stateful entity with a behavior. It can be the system/service you're
  * developing, or a role that an external user plays.
  * 
  * Actors can be senders and receivers of messages to other actors.
@@ -17,7 +17,7 @@ import org.requirementsascode.exception.MoreThanOneStepCanReact;
  *
  * @author b_muth
  */
-public abstract class AbstractActor {
+public abstract class AbstractActor implements Behavior{
   private String name;
   private ModelRunner modelRunner;
 
@@ -106,7 +106,9 @@ public abstract class AbstractActor {
    *                                 there is an infinite loop.
    * @throws ClassCastException      when type of the returned instance isn't U
    */
-  public <T, U> Optional<U> reactTo(T message) {
+  @Override
+  public
+  <T> Optional<T> reactTo(Object message) {
     return reactTo(message, null);
   }
 
@@ -150,6 +152,17 @@ public abstract class AbstractActor {
    * @return the behavior
    */
   public abstract Model behavior();
+
+  @Override
+  public BehaviorModel behaviorModel() {
+    return new BehaviorModel() {
+      @Override
+      public Model model() {
+        return behavior();
+      }
+    };
+  }
+
 
   /**
    * Call this method from a subclass to customize the way the actor runs the
