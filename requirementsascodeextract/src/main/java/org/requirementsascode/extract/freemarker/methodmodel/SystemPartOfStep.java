@@ -70,12 +70,17 @@ public class SystemPartOfStep implements TemplateMethodModelEx {
   }
 
   private String getPublishToActorString(Step step) {
-    Optional<Behavior> optionalPublishToActor = step.getPublishTo();
-    String publishToString = optionalPublishToActor
-      .filter(b -> b instanceof AbstractActor)
-      .map(b -> (AbstractActor)b)
-      .map(act -> " to " + act.getName()).orElse("");
+    Optional<Behavior> optionalPublishToBehavior = step.getPublishTo();
+    String publishToString = optionalPublishToBehavior
+      .map(act -> " to " + nameOf(act))
+      .orElse("");
     return publishToString;
+  }
+
+  private String nameOf(Behavior behavior) {
+    final String name = behavior instanceof AbstractActor ? ((AbstractActor) behavior).getName()
+      : behavior.getClass().getSimpleName();
+    return name;
   }
 
   private String getWordsOfSystemReactionClassName(Step step) {

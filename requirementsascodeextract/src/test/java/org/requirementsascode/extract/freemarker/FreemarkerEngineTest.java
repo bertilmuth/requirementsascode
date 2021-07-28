@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.requirementsascode.Actor;
+import org.requirementsascode.Behavior;
+import org.requirementsascode.BehaviorModel;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
 import org.requirementsascode.extract.freemarker.predicate.SomeConditionIsFulfilled;
@@ -51,25 +54,25 @@ public class FreemarkerEngineTest {
 
     Model model = Model.builder()
       .useCase("Get greeted")
-      .basicFlow()
-        .step("S1").system(promptsUserToEnterName())
-        .step("S2").user(entersName()).system(greetsUser())
-        .step("S3").as(firstActor).user(entersName()).system(greetsUser())
-          .reactWhile(someConditionIsFulfilled())
-        .step("S4").as(firstActor, secondActor).user(decidesToQuit())
-        .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
-        .step("S6").inCase(thereIsNoAlternative()).system(quits())
-      .flow("Alternative flow A").insteadOf("S4")
-        .step("S4a_1").system(blowsUp())
-        .step("S4a_2").continuesAt("S1")
-      .flow("Alternative flow B").after("S3", "S4")
-        .step("S4b_1").continuesAfter("S2")
-      .flow("Alternative flow C").condition(thereIsNoAlternative())
-        .step("S5a").continuesAt("S4")
-      .flow("Alternative flow D").insteadOf("S4").condition(thereIsNoAlternative())
-        .step("S4c_2").continuesAt("S1")
-      .flow("EX").anytime()
-        .step("EX1").on(Exception.class).system(logsException()).build();
+        .basicFlow()
+          .step("S1").system(promptsUserToEnterName())
+          .step("S2").user(entersName()).system(greetsUser())
+          .step("S3").as(firstActor).user(entersName()).system(greetsUser())
+            .reactWhile(someConditionIsFulfilled())
+          .step("S4").as(firstActor, secondActor).user(decidesToQuit())
+          .step("S5").as(firstActor, secondActor).system(promptsUserToEnterName())
+          .step("S6").inCase(thereIsNoAlternative()).system(quits())
+        .flow("Alternative flow A").insteadOf("S4")
+          .step("S4a_1").system(blowsUp())
+          .step("S4a_2").continuesAt("S1")
+        .flow("Alternative flow B").after("S3", "S4")
+          .step("S4b_1").continuesAfter("S2")
+        .flow("Alternative flow C").condition(thereIsNoAlternative())
+          .step("S5a").continuesAt("S4")
+        .flow("Alternative flow D").insteadOf("S4").condition(thereIsNoAlternative())
+          .step("S4c_2").continuesAt("S1")
+        .flow("EX").anytime()
+          .step("EX1").on(Exception.class).system(logsException()).build();
 
     String templateFileName = "testextract.ftl";
     Writer outputWriter = new StringWriter();
@@ -99,11 +102,17 @@ public class FreemarkerEngineTest {
 
   @Test
   public void extractsFlowlessModel() throws Exception {
-    Actor secondActor = new Actor("Second actor");
+    Actor anotherActor = new Actor("another actor");
+    DummyBehavior dummyBehavior = new DummyBehavior();
 
-    Model model = Model.builder().on(entersName()).system(greetsUser()).on(entersName()).systemPublish(
-      nameEntered()).condition(thereIsNoAlternative()).step("Three").on(entersName()).systemPublish(nameEntered()).to(
-        secondActor).on(Exception.class).system(logsException()).build();
+    Model model = Model.builder()
+      .on(entersName()).system(greetsUser())
+      .on(entersName()).systemPublish(nameEntered())
+      .condition(thereIsNoAlternative()).step("Three")
+        .on(entersName()).systemPublish(nameEntered()).to(anotherActor)
+      .on(entersName()).systemPublish(nameEntered()).to(dummyBehavior)
+      .on(Exception.class).system(logsException())
+      .build();
 
     String templateFileName = "testextract_flowless.ftl";
     Writer outputWriter = new StringWriter();
@@ -113,8 +122,24 @@ public class FreemarkerEngineTest {
 
     assertEquals("Use case: Handles messages." + " Step: S1. On EntersName: System greets user."
       + " Step: S2. On EntersName: System publishes name entered."
-      + " Step: Three. When there is no alternative: On EntersName: System publishes name entered to Second actor."
-      + " Step: S4. On Exception: System logs exception.", output);
+      + " Step: Three. When there is no alternative: On EntersName: System publishes name entered to another actor."
+      + " Step: S4. On EntersName: System publishes name entered to DummyBehavior."
+      + " Step: S5. On Exception: System logs exception.", 
+      output);
+  }
+  
+  private class DummyBehavior implements Behavior{
+
+    @Override
+    public <T> Optional<T> reactTo(Object message) {
+      return null;
+    }
+
+    @Override
+    public BehaviorModel behaviorModel() {
+      return null;
+    }
+    
   }
 
   private Condition thereIsNoAlternative() {
