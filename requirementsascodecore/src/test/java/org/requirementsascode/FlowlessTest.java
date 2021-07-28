@@ -1,17 +1,17 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FlowlessTest extends AbstractTestCase {
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
     	setupWithRecordingModelRunner();
     }

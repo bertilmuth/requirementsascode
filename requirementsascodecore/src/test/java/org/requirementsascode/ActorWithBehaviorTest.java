@@ -1,21 +1,21 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ActorWithBehaviorTest extends AbstractTestCase{
 	
 	private String publishedString;
   private RecordingActor recordingCustomer;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		setupWithRecordingModelRunner();
     this.recordingCustomer = RecordingActor.basedOn(customer);

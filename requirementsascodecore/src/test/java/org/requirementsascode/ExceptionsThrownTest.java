@@ -1,8 +1,8 @@
 package org.requirementsascode;
 
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 import org.requirementsascode.exception.ElementAlreadyInModel;
 import org.requirementsascode.exception.InfiniteRepetition;
@@ -15,7 +15,7 @@ public class ExceptionsThrownTest extends AbstractTestCase {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		setupWithRecordingModelRunner();
 	}

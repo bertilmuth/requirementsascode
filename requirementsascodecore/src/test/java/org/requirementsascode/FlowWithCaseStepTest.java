@@ -1,17 +1,18 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class FlowWithCaseStepTest {
   private String actualResult;
   private ModelRunner modelRunner;
   
-  @Before
+  @BeforeEach
   public void setup() {
     this.modelRunner = new ModelRunner().startRecording();
   }

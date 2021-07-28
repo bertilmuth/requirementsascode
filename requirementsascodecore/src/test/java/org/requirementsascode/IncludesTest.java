@@ -1,15 +1,15 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class IncludesTest extends AbstractTestCase{
     protected static final String INCLUDED_USE_CASE = "Included use case";
     protected static final String SYSTEM_INCLUDES_USE_CASE = "Step that includes use case";
 
-    @Before
+    @BeforeEach
     public void setup() {
       setupWithRecordingModelRunner();
     }

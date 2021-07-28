@@ -1,9 +1,9 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class FlowTest extends AbstractTestCase{
 	private Actor secondActor;
 	private int timesDisplayed;
 		
-	@Before
+	@BeforeEach
 	public void setup() {
 		setupWithRecordingModelRunner();
 		this.secondActor = new Actor("Second Actor");

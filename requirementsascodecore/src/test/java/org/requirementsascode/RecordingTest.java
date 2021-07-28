@@ -1,143 +1,127 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RecordingTest extends AbstractTestCase {
 
-	@Before
-	public void setup() throws Exception {
-		setupWithRecordingModelRunner();
-	}
-	
-	@Test
-	public void recordIsEmptyForNonRecordingModelRunner() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-		.build();
+  @BeforeEach
+  public void setup() throws Exception {
+    setupWithRecordingModelRunner();
+  }
 
-		ModelRunner nonRecordingModelRunner = new ModelRunner();
-		nonRecordingModelRunner.run(model);
-		assertEquals(0, nonRecordingModelRunner.getRecordedMessages().length);
-		assertEquals(0, nonRecordingModelRunner.getRecordedStepNames().length);
-	}
+  @Test
+  public void recordIsEmptyForNonRecordingModelRunner() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
 
-	@Test
-	public void recordIsEmptyForFreshlyRunModel() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-		.build();
+    ModelRunner nonRecordingModelRunner = new ModelRunner();
+    nonRecordingModelRunner.run(model);
+    assertEquals(0, nonRecordingModelRunner.getRecordedMessages().length);
+    assertEquals(0, nonRecordingModelRunner.getRecordedStepNames().length);
+  }
 
-		modelRunner.run(model);
-		assertEquals(0, modelRunner.getRecordedMessages().length);
-		assertEquals(0, modelRunner.getRecordedStepNames().length);
-	}
+  @Test
+  public void recordIsEmptyForFreshlyRunModel() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
 
-	@Test
-	public void recordIsEmptyIfRecordingWasStoppedBeforeBeingStarted() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-		.build();
+    modelRunner.run(model);
+    assertEquals(0, modelRunner.getRecordedMessages().length);
+    assertEquals(0, modelRunner.getRecordedStepNames().length);
+  }
 
-		modelRunner.run(model).stopRecording();
+  @Test
+  public void recordIsEmptyIfRecordingWasStoppedBeforeBeingStarted() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
 
-		assertEquals(0, modelRunner.getRecordedMessages().length);
-		assertEquals(0, modelRunner.getRecordedStepNames().length);
-	}
+    modelRunner.run(model).stopRecording();
 
-	@Test
-	public void recordSingleEvent() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-		.build();
+    assertEquals(0, modelRunner.getRecordedMessages().length);
+    assertEquals(0, modelRunner.getRecordedStepNames().length);
+  }
 
-		modelRunner.run(model).startRecording();
-		modelRunner.reactTo(entersText());
+  @Test
+  public void recordSingleEvent() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).build();
 
-		assertEquals(1, modelRunner.getRecordedMessages().length);
-		assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+    modelRunner.run(model).startRecording();
+    modelRunner.reactTo(entersText());
 
-		assertEquals(1, modelRunner.getRecordedStepNames().length);
-		assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-	}
+    assertEquals(1, modelRunner.getRecordedMessages().length);
+    assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 
-	@Test
-	public void recordMultipleEvents_startRecordingAfterRunning() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-			.on(EntersNumber.class).system(displaysEnteredNumber())
-		.build();
+    assertEquals(1, modelRunner.getRecordedStepNames().length);
+    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+  }
 
-		modelRunner.run(model).startRecording();
-		modelRunner.reactTo(entersText(), entersNumber());
+  @Test
+  public void recordMultipleEvents_startRecordingAfterRunning() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).on(
+      EntersNumber.class).system(displaysEnteredNumber()).build();
 
-		assertEquals(2, modelRunner.getRecordedMessages().length);
-		assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
-		assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
+    modelRunner.run(model).startRecording();
+    modelRunner.reactTo(entersText(), entersNumber());
 
-		assertEquals(2, modelRunner.getRecordedStepNames().length);
-		assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-		assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
-	}
+    assertEquals(2, modelRunner.getRecordedMessages().length);
+    assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+    assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 
-	@Test
-	public void recordMultipleEvents_startRecordingBeforeRunning() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-			.on(EntersNumber.class).system(displaysEnteredNumber())
-		.build();
+    assertEquals(2, modelRunner.getRecordedStepNames().length);
+    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+  }
 
-		modelRunner.startRecording().run(model);
-		modelRunner.reactTo(entersText(), entersNumber());
+  @Test
+  public void recordMultipleEvents_startRecordingBeforeRunning() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).on(
+      EntersNumber.class).system(displaysEnteredNumber()).build();
 
-		assertEquals(2, modelRunner.getRecordedMessages().length);
-		assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
-		assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
+    modelRunner.startRecording().run(model);
+    modelRunner.reactTo(entersText(), entersNumber());
 
-		assertEquals(2, modelRunner.getRecordedStepNames().length);
-		assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-		assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
-	}
+    assertEquals(2, modelRunner.getRecordedMessages().length);
+    assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+    assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
 
-	@Test
-	public void noMoreRecordingAfterRecordingIsStopped() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-			.on(EntersNumber.class).system(displaysEnteredNumber())
-		.build();
+    assertEquals(2, modelRunner.getRecordedStepNames().length);
+    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+  }
 
-		modelRunner.run(model).startRecording();
-		modelRunner.reactTo(entersText());
-		modelRunner.stopRecording();
-		modelRunner.reactTo(entersNumber());
+  @Test
+  public void noMoreRecordingAfterRecordingIsStopped() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).on(
+      EntersNumber.class).system(displaysEnteredNumber()).build();
 
-		assertEquals(1, modelRunner.getRecordedMessages().length);
-		assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+    modelRunner.run(model).startRecording();
+    modelRunner.reactTo(entersText());
+    modelRunner.stopRecording();
+    modelRunner.reactTo(entersNumber());
 
-		assertEquals(1, modelRunner.getRecordedStepNames().length);
-		assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-	}
+    assertEquals(1, modelRunner.getRecordedMessages().length);
+    assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
 
-	@Test
-	public void continueRecordingAfterRestart() {
-		Model model = modelBuilder.useCase(USE_CASE)
-			.on(EntersText.class).system(displaysEnteredText())
-			.on(EntersNumber.class).system(displaysEnteredNumber())
-		.build();
+    assertEquals(1, modelRunner.getRecordedStepNames().length);
+    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+  }
 
-		modelRunner.run(model).startRecording();
-		modelRunner.reactTo(entersText());
-		modelRunner.restart();
-		modelRunner.reactTo(entersNumber());
+  @Test
+  public void continueRecordingAfterRestart() {
+    Model model = modelBuilder.useCase(USE_CASE).on(EntersText.class).system(displaysEnteredText()).on(
+      EntersNumber.class).system(displaysEnteredNumber()).build();
 
-		assertEquals(2, modelRunner.getRecordedMessages().length);
-		assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
-		assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
+    modelRunner.run(model).startRecording();
+    modelRunner.reactTo(entersText());
+    modelRunner.restart();
+    modelRunner.reactTo(entersNumber());
 
-		assertEquals(2, modelRunner.getRecordedStepNames().length);
-		assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
-		assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
-	}
+    assertEquals(2, modelRunner.getRecordedMessages().length);
+    assertEquals(EntersText.class, modelRunner.getRecordedMessages()[0].getClass());
+    assertEquals(EntersNumber.class, modelRunner.getRecordedMessages()[1].getClass());
+
+    assertEquals(2, modelRunner.getRecordedStepNames().length);
+    assertEquals("S1", modelRunner.getRecordedStepNames()[0]);
+    assertEquals("S2", modelRunner.getRecordedStepNames()[1]);
+  }
 }

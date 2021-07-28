@@ -1,8 +1,8 @@
 package org.requirementsascode.extract.freemarker.methodmodel;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.requirementsascode.extract.freemarker.methodmodel.util.Words;
 import org.requirementsascode.extract.freemarker.usercommand.DecidesToQuit;
 import org.requirementsascode.extract.freemarker.usercommand.EntersName;

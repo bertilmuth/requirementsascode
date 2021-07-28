@@ -1,14 +1,14 @@
 package org.requirementsascode.extract.freemarker;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.requirementsascode.Actor;
 import org.requirementsascode.Condition;
 import org.requirementsascode.Model;
@@ -26,7 +26,7 @@ import org.requirementsascode.extract.freemarker.usercommand.EntersName;
 public class FreemarkerEngineTest {
   private FreeMarkerEngine engine;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     engine = new FreeMarkerEngine("org/requirementsascode/extract/freemarker");
   }

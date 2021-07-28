@@ -1,17 +1,17 @@
 package creditcard_eventsourcing.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestRepay;
 import creditcard_eventsourcing.model.command.RequestToAssignLimit;
+import creditcard_eventsourcing.model.command.RequestToCloseCycle;
 import creditcard_eventsourcing.model.command.RequestWithdrawal;
 import creditcard_eventsourcing.persistence.EventStore;
 
@@ -19,7 +19,7 @@ public class CreditCardAggregateRootTest {
 	private EventStore eventStore;
 	private UUID uuid;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.eventStore = new EventStore();
 		this.uuid = uuid();

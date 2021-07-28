@@ -1,6 +1,6 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

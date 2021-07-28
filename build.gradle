@@ -39,8 +39,13 @@ subprojects{
 	    archives javadocJar, sourcesJar
 	}
 	
+	test {
+		useJUnitPlatform()
+	}
+	
 	dependencies {
-		testImplementation 'junit:junit:4.12'
+		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+		testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 	}
 	
 	if (project.hasProperty("signing.keyId")) {

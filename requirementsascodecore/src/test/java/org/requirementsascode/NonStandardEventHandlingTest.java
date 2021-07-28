@@ -1,7 +1,7 @@
 package org.requirementsascode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.requirementsascode.systemreaction.IgnoresIt;
 
 public class NonStandardEventHandlingTest extends AbstractTestCase {
@@ -19,7 +19,7 @@ public class NonStandardEventHandlingTest extends AbstractTestCase {
 	private Optional<? extends Object> optionalEvent;
 	private Object systemReaction;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		setupWithRecordingModelRunner();
 	}
