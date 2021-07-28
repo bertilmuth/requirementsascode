@@ -256,8 +256,7 @@ public class ModelRunner {
    * <p>
    * See {@link #canReactTo(Class)} for a description of what "can react" means.
    *
-   * @param <T>     the type of message
-   * @param <U>     the return type that you as the user expects.
+   * @param <T>     the return type that you as the user expects.
    * @param message the message object
    * @return the event that was published (latest) if the system reacted, or an
    *         empty Optional.
@@ -267,17 +266,17 @@ public class ModelRunner {
    * @throws ClassCastException      when type of the returned instance isn't U
    */
   @SuppressWarnings("unchecked")
-  public <T, U> Optional<U> reactTo(T message) {
+  public <T> Optional<T> reactTo(Object message) {
     Objects.requireNonNull(message);
 
     clearLatestPublishedEvent();
     
     reactToSingleOrSeveralMessages(message);
 
-    return Optional.ofNullable((U) latestPublishedEvent);
+    return Optional.ofNullable((T) latestPublishedEvent);
   }
 
-  private <T> void reactToSingleOrSeveralMessages(T message) {
+  private void reactToSingleOrSeveralMessages(Object message) {
     if (isMessageContainer(message)) {
       Object[] messages = flattenMessageContainer(message);
       reactToMessages(messages);
