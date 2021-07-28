@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
@@ -184,7 +185,26 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
     assertRecordedStepNames(recordingCustomActor, "S1");
   }
   
+  @Test
+  public void customActorHasRunCustomHandler() {
+    CustomActor customActor = new CustomActor();    
+
+    RecordingActor recordingCustomActor = RecordingActor.basedOn(customActor);
+    recordingCustomActor.run();
+    
+    assertTrue(customActor.hasCustomHandlerRun());
+  }
+  
   private class CustomActor extends AbstractActor{
+    private boolean hasCustomHandlerRun = false;
+    
+    public CustomActor() {
+      getModelRunner().handleWith(stepToBeRun -> {
+        hasCustomHandlerRun = true;
+        stepToBeRun.run();
+      });
+    }
+    
     @Override
     public Model behavior() {
       Condition actorHasNotRunAnyStep = () -> !getModelRunner().getLatestStep().isPresent();
@@ -194,6 +214,10 @@ public class ActorWithBehaviorTest extends AbstractTestCase{
       .build();
       
       return model;
+    }
+
+    public boolean hasCustomHandlerRun() {
+      return hasCustomHandlerRun;
     }
   }
   

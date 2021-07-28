@@ -48,12 +48,8 @@ public class ModelRunner {
    * Constructor for creating a model runner.
    */
   public ModelRunner() {
-    handleWith(this::runStep);
+    handleWith(StepToBeRun::run);
     publishWith(this::publishMessage);
-  }
-
-  private void runStep(StepToBeRun stepToBeRun) {
-    stepToBeRun.run();
   }
 
   private <T> void publishMessage(T message) {
@@ -91,6 +87,15 @@ public class ModelRunner {
   public ModelRunner handleWith(Consumer<StepToBeRun> messageHandler) {
     this.messageHandler = Objects.requireNonNull(messageHandler);
     return this;
+  }
+  
+  /**
+   * Returns the message handler of the model runner.
+   * 
+   * @return the message handler
+   */
+  public Consumer<StepToBeRun> getMessageHandler(){
+    return messageHandler;
   }
 
   /**

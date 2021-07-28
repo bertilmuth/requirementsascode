@@ -3,19 +3,25 @@ package org.requirementsascode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class RecordingActor extends AbstractActor {
   private static final Class<?> SYSTEM_EVENT_CLASS = ModelRunner.class;
   
   private final AbstractActor baseActor;
-  private final List<String> recordedStepNames;
-  private final List<Object> recordedMessages;
+  private List<String> recordedStepNames;
+  private List<Object> recordedMessages;
 
   private RecordingActor(AbstractActor baseActor) {
     this.baseActor = Objects.requireNonNull(baseActor, "baseActor must be non-null!");
+    startRecordingStepsAndMessages();
+  }
+
+  private void startRecordingStepsAndMessages() {
+    Consumer<StepToBeRun> messageHandler = getModelRunner().getMessageHandler();
     getModelRunner().handleWith(stepToBeRun -> {
       recordStepNameAndMessage(stepToBeRun.getStepName(), stepToBeRun.getMessage().orElse(null));
-      stepToBeRun.run();
+      messageHandler.accept(stepToBeRun);
     });
     recordedStepNames = new ArrayList<>();
     recordedMessages = new ArrayList<>();
