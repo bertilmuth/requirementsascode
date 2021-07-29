@@ -9,12 +9,12 @@ import org.requirementsascode.StatelessBehavior;
 
 public class HelloUser {
   public static void main(String[] args) {
-    GreeterModel greeterModel = new GreeterModel(HelloUser::saysHello);
+    GreeterModel greeterModel = new GreeterModel(HelloUser::sayHello);
     Behavior greeter = StatelessBehavior.of(greeterModel);
     greeter.reactTo(new SayHelloRequest("Joe"));
   }
   
-  private static void saysHello(SayHelloRequest requestsHello) {
+  private static void sayHello(SayHelloRequest requestsHello) {
     System.out.println("Hello, " + requestsHello.getUserName() + ".");
   }
 }
