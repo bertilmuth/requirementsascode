@@ -17,7 +17,7 @@ This page describes a simple way to get started. Learn how to create a stateless
 
 For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts or rejects messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
 
-See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for an explanation of actors, use cases and flows.
+See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Actors,-use-cases-and-flows) for an explanation of actors, use cases and flows.
 
 You can find code examples for models with flows [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
