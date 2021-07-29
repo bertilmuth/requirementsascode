@@ -9,18 +9,18 @@ If you are using Maven, include the following in your POM:
   <dependency>
     <groupId>org.requirementsascode</groupId>
     <artifactId>requirementsascodeextract</artifactId>
-    <version>1.9.2</version>
+    <version>2.0</version>
   </dependency>
 ```
 
 If you are using Gradle, include the following in your build.gradle:
 
 ```
-implementation 'org.requirementsascode:requirementsascodeextract:1.9.2'
+implementation 'org.requirementsascode:requirementsascodeextract:2.0'
 ```
 
 This will put the following libraries on the classpath:
-* freemarker-2.3.30.jar (FreeMarker)
+* freemarker-2.3.31.jar (FreeMarker)
 * commons-lang3-3.11.jar (Apache Commons)
 * The current requirements as code extract jar
 * The current requirements as code core jar
