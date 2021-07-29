@@ -3,21 +3,21 @@
 
 ![requirements as code logo](./requirementsascode_logo.png)
 
-Requirements as code enables you to translate a use case model to code, to build maintainable applications.
+A *behavior* is configured by a behavior model.
 
-The model represents the single source of truth for interactions started by the user. That's why you can also [generate living documentation](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract) from the model. The generated documents represent always up to date information about how the system works from a user's perspective.
+A *behavior model* maps message types to message handlers.
 
-This page describes simple ways to get started. 
+A *message handler* is a function, consumer or supplier of messages.
 
-You will see how to create stateless behaviors with models that react to individual messages.
+Your calling code sends all messages to the behavior. The behavior finds the right handler. The handler handles the message, and potentially produces a result.
 
-For sequences of interactions, create a use case model with flows instead.
+So the calling code doesn't need to know anything about the internals of your service. It sends all messages to a single behavior instance, and gets a result back. Black box behavior.
 
-An actor running such a model with flows can serve as an easy to understand alternative to state machines.
+This page describes a simpl ways to get started. Learn how to create a stateless behavior that handles each message individually.
 
-A model with flows is useful to build user journeys, sagas and process managers.
+For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
 
-See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for an explanation.
+See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for an explanation of actors, use cases and flows.
 
 You can find code examples for models with flows [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
