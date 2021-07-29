@@ -13,9 +13,9 @@ Your calling code sends all messages to the behavior. The behavior finds the rig
 
 So the calling code doesn't need to know anything about the internals of your service. It sends all messages to a single behavior instance, and gets a result back. Black box behavior.
 
-This page describes a simpl ways to get started. Learn how to create a stateless behavior that handles each message individually.
+This page describes a simple way to get started. Learn how to create a stateless behavior that handles each message individually.
 
-For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
+For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts or rejects messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
 
 See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Models-with-flows) for an explanation of actors, use cases and flows.
 
