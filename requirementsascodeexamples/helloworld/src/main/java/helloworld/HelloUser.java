@@ -2,41 +2,43 @@ package helloworld;
 
 import java.util.function.Consumer;
 
-import org.requirementsascode.AbstractActor;
+import org.requirementsascode.Behavior;
+import org.requirementsascode.BehaviorModel;
 import org.requirementsascode.Model;
+import org.requirementsascode.StatelessBehavior;
 
 public class HelloUser {
   public static void main(String[] args) {
-    GreetingService greeter = new GreetingService(HelloUser::saysHello);
-    greeter.reactTo(new RequestHello("Joe"));
+    GreeterModel greeterModel = new GreeterModel(HelloUser::saysHello);
+    Behavior greeter = StatelessBehavior.of(greeterModel);
+    greeter.reactTo(new SayHelloRequest("Joe"));
   }
   
-  private static void saysHello(RequestHello requestsHello) {
+  private static void saysHello(SayHelloRequest requestsHello) {
     System.out.println("Hello, " + requestsHello.getUserName() + ".");
   }
 }
 
-class GreetingService extends AbstractActor {
-  private static final Class<RequestHello> requestsHello = RequestHello.class;
-  private final Consumer<RequestHello> saysHello;
+class GreeterModel implements BehaviorModel {
+  private final Consumer<SayHelloRequest> sayHello;
 
-  public GreetingService(Consumer<RequestHello> saysHello) {
-    this.saysHello = saysHello;
+  public GreeterModel(Consumer<SayHelloRequest> sayHello) {
+    this.sayHello = sayHello;
   }
 
   @Override
-  protected Model behavior() {
+  public Model model() {
     Model model = Model.builder()
-      .user(requestsHello).system(saysHello)
+      .user(SayHelloRequest.class).system(sayHello)
     .build();
     return model;
   }
 }
 
-class RequestHello {
+class SayHelloRequest {
   private final String userName;
 
-  public RequestHello(String userName) {
+  public SayHelloRequest(String userName) {
     this.userName = userName;
   }
 
