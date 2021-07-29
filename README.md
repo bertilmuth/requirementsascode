@@ -167,7 +167,7 @@ It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexa
 * [requirements as code examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirements as code.
 
 # Build from sources
-Use Java >=8 and the project's gradle wrapper to build from sources.
+Use Java >= 11 and the project's gradle wrapper to build from sources.
 
 # Related topics
 * The work of Ivar Jacobson on Use Cases. As an example, have a look at [Use Case 2.0](https://www.ivarjacobson.com/publications/white-papers/use-case-ebook).

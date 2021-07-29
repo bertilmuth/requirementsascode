@@ -7,7 +7,7 @@ class HelloWorldActor01 extends AbstractActor{
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -29,7 +29,7 @@ class HelloWorldActor02 extends AbstractActor {
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -56,7 +56,7 @@ class HelloWorldActor03 extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -79,7 +79,7 @@ class HelloWorldActor03a extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted").as(validUser)
         .basicFlow()
@@ -108,7 +108,7 @@ class HelloWorldActor04 extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -137,7 +137,7 @@ class HelloWorldActor05 extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -171,7 +171,7 @@ class HelloWorldActor06 extends AbstractActor {
   }
 
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Get greeted")
         .basicFlow()
@@ -220,7 +220,7 @@ class HelloWorldActor07 extends AbstractActor {
   }
   
   @Override
-  public Model behavior() {
+  protected Model behavior() {
     Model model = Model.builder()
       .useCase("Handle colors")
         .basicFlow()
