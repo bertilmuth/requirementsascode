@@ -9,7 +9,7 @@ A *behavior model* maps message types to message handlers.
 
 A *message handler* is a function, consumer or supplier of messages.
 
-Your calling code sends all messages to the behavior. The behavior finds the right handler. The handler handles the message, and potentially produces a result.
+Your calling code sends all messages to the behavior. The behavior finds the right handler. The handler processes the message, and potentially produces a result.
 
 So the calling code doesn't need to know anything about the internals of your service. It sends all messages to a single behavior instance, and gets a result back. Black box behavior.
 
