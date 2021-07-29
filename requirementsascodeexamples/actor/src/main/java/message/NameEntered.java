@@ -1,9 +1,9 @@
-package actor.message;
+package message;
 
-public class EnterName {
+public class NameEntered {
 	private String userName;
 
-	public EnterName(String userName) {
+	public NameEntered(String userName) {
 		this.userName = userName;
 	}
 

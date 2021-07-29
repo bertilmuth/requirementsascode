@@ -3,8 +3,8 @@ package actor;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
-import actor.message.EnterName;
-import actor.message.NameEntered;
+import message.EnterName;
+import message.NameEntered;
 
 public class InteractingActorsExample {
   public static void main(String[] args) {

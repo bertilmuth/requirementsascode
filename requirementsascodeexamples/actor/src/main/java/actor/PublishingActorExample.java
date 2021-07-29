@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.requirementsascode.AbstractActor;
 import org.requirementsascode.Model;
 
-import actor.message.EnterName;
+import message.EnterName;
 
 public class PublishingActorExample {
   public static void main(String[] args) {
