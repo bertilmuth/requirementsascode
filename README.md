@@ -23,7 +23,7 @@ See this [wiki page](https://github.com/bertilmuth/requirementsascode/wiki/Actor
 
 You can find code examples for models with flows [here](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld).
 
-# Getting started
+## Getting started
 Requirements as code is available on Maven Central.
 
 The size of the core jar file is around 100 kBytes. It has no further dependencies.
@@ -46,11 +46,11 @@ implementation 'org.requirementsascode:requirementsascodecore:2.0'
 
 At least Java 8 is required to use requirements as code, download and install it if necessary.
 
-# How to create a behavior and send messages to it
+## How to create a behavior and send messages to it
 Let's look at the general steps first.
 After that, you'll see a concrete code example.
 
-## Step 1: Create a behavior model
+### Step 1: Create a behavior model
 ``` java
 class MyBehaviorModel implements BehaviorModel{
   @Override
@@ -77,13 +77,13 @@ Use `.step(...)` before `.user()`/`.on()` to explicitly name the step - otherwis
 
 The order of `user(..).system(...)` statements has no significance here.
 
-## Step 2: Create a behavior based on the model
+### Step 2: Create a behavior based on the model
 ``` java
 BehaviorModel myBehaviorModel = new MyBehaviorModel(...);
 Behavior myBehavior = StatelessBehavior.of(myBehaviorModel);
 ```
 
-## Step 3: Send a message to the behavior
+### Step 3: Send a message to the behavior
 ``` java
 Optional<T> queryResultOrEvent = myBehavior.reactTo(<Message POJO Object>);
 ```
@@ -92,7 +92,7 @@ Instead of T, use the type you expect to be published. Note that `reactTo()` cas
 If an unchecked exception is thrown in one of the handler methods, `reactTo()` will rethrow it.
 The call to `reactTo()` is synchronous.
 
-# Code example
+## Simple code example
 [Here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloUser.java)'s a behavior with a single interaction.
 
 The user sends a request with the user name ("Joe"). The system says hello ("Hello, Joe.")
@@ -148,29 +148,114 @@ class SayHelloRequest {
 }
 ```
 
-# Acknowledgements
-Requirements as code is influenced by the ideas of [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [hexagonal architecture](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture). 
+## Clean architecture outline
+The [following example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld/src/main/java/cleanarchitecture/CleanArchitectureOutline.java) shows how to implement a clean architecure with requirements as code, in principle:
 
-It can be used to [implement them](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf).
+``` java
+public class CleanArchitectureOutline {
+  public static void main(String[] args) {
+    ConsolePrinter consolePrinter = new ConsolePrinter(); 
+    GreetingServiceModel greetingServiceModel = new GreetingServiceModel(consolePrinter);
+    Behavior greetingService = StatelessBehavior.of(greetingServiceModel);
+    
+    greetingService.reactTo(new SayHelloRequest("Joe"));
+  }
+}
 
-# Further documentation of requirements as code
+/**
+ * The behavior model defines that a consumer reacts to SayHelloRequest.
+ * 
+ * @author b_muth
+ *
+ */
+class GreetingServiceModel implements BehaviorModel {
+  private final Consumer<String> outputPort;
+
+  public GreetingServiceModel(Consumer<String> outputPort) {
+    this.outputPort = outputPort;
+  }
+  
+  @Override
+  public Model model() {
+    Model model = Model.builder()
+      .user(SayHelloRequest.class).system(sayHello())
+    .build();
+    return model;
+  }
+  
+  private SayHello sayHello() {
+    return new SayHello(outputPort);
+  }
+}
+
+/**
+ * Command class
+ */
+class SayHelloRequest {
+  private final String userName;
+
+  public SayHelloRequest(String userName) {
+    this.userName = userName;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+}
+
+/**
+ * Message handler
+ */
+class SayHello implements Consumer<SayHelloRequest> {
+  private final Consumer<String> outputPort;
+
+  public SayHello(Consumer<String> outputPort) {
+    this.outputPort = outputPort;
+  }
+
+  public void accept(SayHelloRequest requestHello) {
+    String greeting = Greeting.forUser(requestHello.getUserName());
+    outputPort.accept(greeting);
+  }
+}
+
+/**
+ * Infrastructure class
+ */
+class ConsolePrinter implements Consumer<String>{
+  public void accept(String message) {
+    System.out.println(message);
+  }
+}
+
+/**
+ * Domain class
+ */
+class Greeting {
+  public static String forUser(String userName) {
+    return "Hello, " + userName + ".";
+  }
+}
+```
+
+## Further documentation of requirements as code
 * [Examples for building/running use case models with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 
-# Publications
+## Publications
 * [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
 
-# Subprojects
+## Subprojects
 * [requirements as code core](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodecore): create and run models. 
 * [requirements as code extract](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract): generate documentation from the models (or any other textual artifact).
 * [requirements as code examples](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples): example projects illustrating the use of requirements as code.
 
-# Build from sources
+## Build from sources
 Use Java >= 11 and the project's gradle wrapper to build from sources.
 
-# Related topics
+## Related topics
 * The work of Ivar Jacobson on Use Cases. As an example, have a look at [Use Case 2.0](https://www.ivarjacobson.com/publications/white-papers/use-case-ebook).
 * The work of Alistair Cockburn on Use Cases, specifically the different goal levels. Look [here](http://alistair.cockburn.us/Use+case+fundamentals) to get started, or read the book "Writing Effective Use Cases".
