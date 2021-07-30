@@ -55,7 +55,7 @@ subprojects{
 			publications {
 				mavenJava(MavenPublication) {
 					pom{
-						name = 'requirementsascodeextract'
+						name = 'requirementsascode'
 						description = 'Enables you to define and run executable use case specifications, in your code.'
 						url = 'http://requirementsascode.org/'
 						packaging = 'jar'
