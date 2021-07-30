@@ -1,4 +1,4 @@
-package behavior;
+package cleanarchitecture;
 
 import java.util.function.Consumer;
 
@@ -7,7 +7,7 @@ import org.requirementsascode.BehaviorModel;
 import org.requirementsascode.Model;
 import org.requirementsascode.StatelessBehavior;
 
-public class BehaviorExample {
+public class CleanArchitectureOutline {
   public static void main(String[] args) {
     ConsolePrinter consolePrinter = new ConsolePrinter(); 
     GreetingServiceModel greetingServiceModel = new GreetingServiceModel(consolePrinter);

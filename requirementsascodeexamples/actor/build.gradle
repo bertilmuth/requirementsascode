@@ -6,6 +6,5 @@ jar {
 
 dependencies {
   implementation project(':requirementsascodecore')
-  testImplementation "org.mockito:mockito-core:3.+"
 }
 

@@ -1,4 +1,4 @@
-package behavior;
+package cleanarchitecture;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.requirementsascode.Behavior;
 import org.requirementsascode.StatelessBehavior;
 
-public class BehaviorExampleTest {
+public class CleanArchitectureOutlineTest {
 
   @Test
   public void greetsJack() {
