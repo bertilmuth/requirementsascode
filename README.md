@@ -13,7 +13,7 @@ Your calling code sends all messages to the behavior. The behavior finds the rig
 
 So the calling code doesn't need to know anything about the internals of your service. It sends all messages to a single behavior instance, and gets a result back. Black box behavior.
 
-Since the behavior is the central point of control for all functions, you can inject and configure the dependencies of all functions through it. That makes it easy to implement a [hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf) or clean architecture.
+Since the behavior is the central point of control for all functions, you can inject and configure the dependencies of all functions through it. That makes it easy to implement a [hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf) or [clean architecture](https://www.freecodecamp.org/news/modern-clean-architecture/). 
 
 This page describes a simple way to get started. Learn how to create a stateless behavior that handles each message individually.
 
