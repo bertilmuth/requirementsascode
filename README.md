@@ -242,6 +242,7 @@ class Greeting {
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 
 ## Publications
+* [Implementing a clean architecture](https://www.freecodecamp.org/news/modern-clean-architecture/)
 * [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
