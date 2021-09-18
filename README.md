@@ -9,13 +9,13 @@ A *behavior model* maps message types to message handlers.
 
 A *message handler* is a function, consumer or supplier of messages.
 
-Your calling code sends all messages to the behavior. The behavior finds the right handler. The handler processes the message, and potentially produces a result.
+Your calling code sends messages to the behavior. The behavior finds the right handler. The handler processes the message, and potentially produces a result.
 
 So the calling code doesn't need to know anything about the internals of your service. It sends all messages to a single behavior instance, and gets a result back. Black box behavior.
 
-Since the behavior is the central point of control for all functions, you can inject and configure the dependencies of all functions through it. That makes it easy to implement a [hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf) or [clean architecture](https://www.freecodecamp.org/news/modern-clean-architecture/). 
+Since the behavior is the central point of control for all functions, you can inject and configure the dependencies of all functions through it. That makes it easy to implement a ports & adapters architecture. The [Behavior](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodecore/src/main/java/org/requirementsascode/Behavior.java) interface acts as the single driver port.
 
-This page describes a simple way to get started. Learn how to create a stateless behavior that handles each message individually.
+This page describes how to get started. Learn how to create a stateless behavior that handles each message individually.
 
 For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts or rejects messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
 
@@ -90,7 +90,7 @@ Instead of T, use the type you expect to be published. Note that `reactTo()` cas
 If an unchecked exception is thrown in one of the handler methods, `reactTo()` will rethrow it.
 The call to `reactTo()` is synchronous.
 
-## Simple code example
+## Code example
 [Here](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodeexamples/helloworld/src/main/java/helloworld/HelloUser.java)'s a behavior with a single interaction.
 
 The user sends a request with the user name ("Joe"). The system says hello ("Hello, Joe.")
@@ -146,104 +146,13 @@ class SayHelloRequest {
 }
 ```
 
-## Clean architecture outline
-The [following example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld/src/main/java/cleanarchitecture/CleanArchitectureOutline.java) shows how to implement a clean architecure with requirements as code, in principle:
-
-``` java
-public class CleanArchitectureOutline {
-  public static void main(String[] args) {
-    ConsolePrinter consolePrinter = new ConsolePrinter(); 
-    GreetingServiceModel greetingServiceModel = new GreetingServiceModel(consolePrinter);
-    Behavior greetingService = StatelessBehavior.of(greetingServiceModel);
-    
-    greetingService.reactTo(new SayHelloRequest("Joe"));
-  }
-}
-
-/**
- * The behavior model defines that a consumer reacts to SayHelloRequest.
- * 
- * @author b_muth
- *
- */
-class GreetingServiceModel implements BehaviorModel {
-  private final Consumer<String> outputPort;
-
-  public GreetingServiceModel(Consumer<String> outputPort) {
-    this.outputPort = outputPort;
-  }
-  
-  @Override
-  public Model model() {
-    Model model = Model.builder()
-      .user(SayHelloRequest.class).system(sayHello())
-    .build();
-    return model;
-  }
-  
-  private SayHello sayHello() {
-    return new SayHello(outputPort);
-  }
-}
-
-/**
- * Command class
- */
-class SayHelloRequest {
-  private final String userName;
-
-  public SayHelloRequest(String userName) {
-    this.userName = userName;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-}
-
-/**
- * Message handler
- */
-class SayHello implements Consumer<SayHelloRequest> {
-  private final Consumer<String> outputPort;
-
-  public SayHello(Consumer<String> outputPort) {
-    this.outputPort = outputPort;
-  }
-
-  public void accept(SayHelloRequest requestHello) {
-    String greeting = Greeting.forUser(requestHello.getUserName());
-    outputPort.accept(greeting);
-  }
-}
-
-/**
- * Infrastructure class
- */
-class ConsolePrinter implements Consumer<String>{
-  public void accept(String message) {
-    System.out.println(message);
-  }
-}
-
-/**
- * Domain class
- */
-class Greeting {
-  public static String forUser(String userName) {
-    return "Hello, " + userName + ".";
-  }
-}
-```
-
 ## Further documentation of requirements as code
 * [Examples for building/running use case models with flows](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/helloworld)
 * [Cross-cutting concerns example](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/crosscuttingconcerns)
 * [How to generate documentation from models](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeextract)
 
 ## Publications
-* [Implementing a clean architecture](https://www.freecodecamp.org/news/modern-clean-architecture/)
-* [Implementing a hexagonal architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
+* [Implementing a ports & adapters architecture](https://dev.to/bertilmuth/implementing-a-hexagonal-architecture-1kgf)
 * [Kissing the state machine goodbye](https://dev.to/bertilmuth/kissing-the-state-machine-goodbye-34n9)
 * [The truth is in the code](https://medium.freecodecamp.org/the-truth-is-in-the-code-86a712362c99)
 
