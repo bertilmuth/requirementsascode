@@ -15,6 +15,8 @@ So the calling code doesn't need to know anything about the internals of your se
 
 Since the behavior is the central point of control for all functions, you can inject and configure the dependencies of all functions through it. That makes it easy to implement a ports & adapters architecture. The [Behavior](https://github.com/bertilmuth/requirementsascode/blob/master/requirementsascodecore/src/main/java/org/requirementsascode/Behavior.java) interface acts as the single driver port.
 
+Having a central place also enables you to deal with cross-cutting concerns, like database transactions and logging. You can keep those concerns separate from your business functions, and change them without affecting those.
+
 This page describes how to get started. Learn how to create a stateless behavior that handles each message individually.
 
 For sequences of interactions, create an actor instead. An actor runs a use case model with flows. It remembers the current position in the flow, and accepts or rejects messages depending on that position. Thus, an actor can serve as an easy to understand alternative to state machines.
